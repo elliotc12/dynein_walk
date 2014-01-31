@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
 #include <math.h>
 
 const double thighLen = 10;
@@ -173,28 +174,23 @@ double Dynein::get_rKneeAngle() {
 
 /*** Utility Functions ***/
 
+double randAngle(double range) {
+	srand(time(NULL));
+	return ((((double)(rand() % 1000))/500) - 1)*range;
+}
+
 Dynein* initProtein(Dynein* dyn) {
+	
+	srand(time(NULL));
+	
 	dyn->set_hipX(0);
 	dyn->set_hipY(20);
 	
-	/*
+	dyn->set_lHipAngle(-5*M_PI/6 + randAngle(1));
+	dyn->set_rHipAngle(-M_PI/6 + randAngle(1));
 	
-	dyn->set_rKneeX(dyn->get_hipX() + thighLen*cos(-M_PI/6)); //-30 degrees
-	dyn->set_lKneeX(dyn->get_hipX() + thighLen*cos(-5*M_PI/6)); //-150 degrees
-	dyn->set_rKneeY(dyn->get_hipY() + thighLen*sin(-M_PI/6));
-	dyn->set_lKneeY(dyn->get_hipY() + thighLen*sin(-5*M_PI/6));
-	
-	dyn->set_lFootX(dyn->get_lKneeX() + calfLen*cos(-M_PI/3)); //-60 degrees
-	dyn->set_rFootX(dyn->get_rKneeX() + calfLen*cos(-2*M_PI/3)); //-120 degrees
-	dyn->set_lFootY(dyn->get_lKneeY() + calfLen*sin(-M_PI/3));
-	dyn->set_rFootY(dyn->get_rKneeY() + calfLen*sin(-2*M_PI/3));
-	*/
-	
-	dyn->set_lHipAngle(-5*M_PI/6);
-	dyn->set_rHipAngle(-M_PI/6);
-	
-	dyn->set_lKneeAngle(-M_PI/3);
-	dyn->set_rKneeAngle(-2*M_PI/3);
+	dyn->set_lKneeAngle(-M_PI/3 + randAngle(1));
+	dyn->set_rKneeAngle(-2*M_PI/3 + randAngle(1));
 }
 
 void printProtein(Dynein* dyn) {
@@ -220,10 +216,22 @@ void printProtein(Dynein* dyn) {
 	printf("rKneeAngle: \t %f\n", dyn->get_rKneeAngle());
 }
 
+void logProtein(Dynein* dyn) {
+	//Writing lFootX	lKneeX	hipX	rKneeX	rFootX	lFootY	lKneeY	hipY	rKneeY	rFootY	lHipAngle	rHipAngle	lKneeAngle	rKneeAngle
+	
+	FILE* file;
+	file = fopen("data.txt", "w");
+	
+	fprintf(file, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f", dyn->get_lFootX(), dyn->get_lKneeX(), dyn->get_hipX(),
+		dyn->get_rKneeX(), dyn->get_rFootX(), dyn->get_lFootY(), dyn->get_lKneeY(), dyn->get_hipY(), dyn->get_rKneeY(),
+		dyn->get_rFootY(), dyn->get_lHipAngle(), dyn->get_rHipAngle(), dyn->get_lKneeAngle(), dyn->get_rKneeAngle());	
+		
+}
+
 int main() {
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
 	initProtein(dyn);
-	printProtein(dyn);
+	logProtein(dyn);
 	free(dyn);
 	dyn = NULL;
 	return 0;
