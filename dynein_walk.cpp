@@ -3,173 +3,99 @@
 #include <fstream>
 #include <math.h>
 
-const double thighLen = 10;
-const double calfLen = 10;
+const double tail_stalk_length = 10;
+const double md_stalk_length = 10;
+
+double randAngle(double range);
+double dist(double d, double h, double i, double j);
 
 class Dynein {
 	public:
-		void set_hipX(double d), set_hipY(double d);
-		void set_lKneeX(double d), set_lKneeY(double d);
-		void set_rKneeX(double d), set_rKneeY(double d);
-		void set_lFootX(double d), set_lFootY(double d);
-		void set_rFootX(double d), set_rFootY(double d);
+		void set_blx(double d);
+		void set_bly(double d);
+		void set_bla(double d);
+		void set_mla(double d);
+		void set_ta(double d);
+		void set_mra(double d);
 		
-		void set_lHipAngle(double d), set_rHipAngle(double d);
-		void set_lKneeAngle(double d), set_rKneeAngle(double d);
+		double get_bly();
+		double get_blx();
+		double get_bla();
+		double get_mla();
+		double get_ta();
+		double get_mra();
 		
-		double get_hipX(), get_hipY();
-		double get_lKneeX(), get_lKneeY();
-		double get_rKneeX(), get_rKneeY();
-		double get_lFootX(), get_lFootY();
-		double get_rFootX(), get_rFootY();
-		
-		double get_lHipAngle(), get_rHipAngle();
-		double get_lKneeAngle(), get_rKneeAngle();
+		void log();
 		
 	private:
-		double hipX, hipY;
-		double lKneeX, lKneeY;
-		double rKneeX, rKneeY;
-		double lFootX, lFootY;
-		double rFootX, rFootY;
+		double tx, ty; //Tail domain
+		double mlx, mly; //Motor domain
+		double mrx, mry;
+		double blx, bly; //Binding domain
+		double brx, bry;
 };
 
 /*** Accessor Methods ***/
 
-void Dynein::set_hipX(double d) {
-	hipX = d;
+void Dynein::set_blx(double d) {
+	blx = d;
 }
 
-void Dynein::set_hipY(double d) {
-	hipY = d;
+void Dynein::set_bly(double d) {
+	bly = d;
 }
 
-void Dynein::set_lKneeX(double d) {
-	lKneeX = d;
+void Dynein::set_bla(double d) {
+	mlx = blx + md_stalk_length*cos(d);
+	mly = bly + md_stalk_length*sin(d);
+	set_mla(get_mla());
 }
 
-void Dynein::set_rKneeX(double d) {
-	rKneeX = d;
+void Dynein::set_mla(double d) {
+	tx = mlx + tail_stalk_length*cos(d + get_bla());
+	ty = mly + tail_stalk_length*sin(d + get_bla());
+	set_ta(get_ta());
 }
 
-void Dynein::set_lKneeY(double d) {
-	lKneeY = d;
+void Dynein::set_ta(double d) {
+	mrx = tx + tail_stalk_length*cos(d + get_mla() + get_bla());
+	mry = ty + tail_stalk_length*sin(d + get_mla() + get_bla());
+	set_mra(get_mra());
 }
 
-void Dynein::set_rKneeY(double d) {
-	rKneeY = d;
+void Dynein::set_mra(double d) {
+	brx = mrx + md_stalk_length*cos(d + get_ta() + get_mla() + get_bla());
+	bry = mry + md_stalk_length*sin(d + get_ta() + get_mla() + get_bla());
 }
 
-void Dynein::set_lFootX(double d) {
-	lFootX = d;
+double Dynein::get_bly() {
+	return bly;
+}
+double Dynein::get_blx(){
+	return blx;
+}
+double Dynein::get_bla() {
+	return (mly > bly) ? acos((mlx-blx)/dist(blx,bly,mlx,mly)) : -acos((mlx-blx)/dist(blx,bly,mlx,mly));
+}
+double Dynein::get_mla() {
+	return (ty > mly) ? acos((tx-mlx)/dist(mlx, mly, tx, ty)) - get_bla() : -acos((tx-mlx)/dist(mlx, mly, tx, ty)) - get_bla();
+}
+double Dynein::get_ta() {
+	return (mry > ty) ? acos((mrx-tx)/dist(tx, ty, mrx, mry)) - get_mla() - get_bla(): -acos((mrx-tx)/dist(tx, ty, mrx, mry)) - get_mla() - get_bla();
+}
+double Dynein::get_mra() {
+	return (bry > mry) ? acos((brx-mrx)/dist(mrx, mry, brx, bry)) - get_ta() - get_mla() - get_bla() :
+		-acos((brx-mrx)/dist(mrx, mry, brx, bry)) - get_ta() - get_mla() - get_bla();
 }
 
-void Dynein::set_rFootX(double d) {
-	rFootX = d;
-}
-
-void Dynein::set_lFootY(double d) {
-	lFootY = d;
-}
-
-void Dynein::set_rFootY(double d) {
-	rFootY = d;
-}
-
-void Dynein::set_lHipAngle(double d) {
-	double dX = hipX + thighLen*cos(d) - lKneeX;
-	double dY = hipY + thighLen*sin(d) - lKneeY;
-	lKneeX = hipX + thighLen*cos(d);
-	lKneeY = hipY + thighLen*sin(d);
-	lFootX += dX;
-	lFootY += dY;
-}
-
-void Dynein::set_rHipAngle(double d) {
-	double dX = hipX + thighLen*cos(d) - rKneeX;
-	double dY = hipY + thighLen*sin(d) - rKneeY;
-	rKneeX = hipX + thighLen*cos(d);
-	rKneeY = hipY + thighLen*sin(d);
-	rFootX += dX;
-	rFootY += dY;
-}
-
-void Dynein::set_lKneeAngle(double d) {
-	lFootX = lKneeX + calfLen*cos(d);
-	lFootY = lKneeY + calfLen*sin(d);
-}
-
-void Dynein::set_rKneeAngle(double d) {
-	rFootX = rKneeX + calfLen*cos(d);
-	rFootY = rKneeY + calfLen*sin(d);
-}
-
-double Dynein::get_hipX() {
-	return hipX;
-}
-
-double Dynein::get_hipY() {
-	return hipY;
-}
-
-double Dynein::get_lKneeY() {
-	return lKneeY;
-}
-
-double Dynein::get_rKneeY() {
-	return rKneeY;
-}
-
-double Dynein::get_lKneeX() {
-	return lKneeX;
-}
-
-double Dynein::get_rKneeX() {
-	return rKneeX;
-}
-
-double Dynein::get_lFootY() {
-	return lFootY;
-}
-
-double Dynein::get_rFootY() {
-	return rFootY;
-}
-
-double Dynein::get_lFootX() {
-	return lFootX;
-}
-
-double Dynein::get_rFootX() {
-	return rFootX;
-}
-
-double Dynein::get_lHipAngle() {
-	double hyp = sqrt(pow((hipX - lKneeX),2) + pow((hipY - lKneeY),2));
-	double adj = lKneeX - hipX;
-	if (hipY <= lKneeY) return acos(adj/hyp);
-	else return -acos(adj/hyp);
-}
-
-double Dynein::get_rHipAngle() {
-	double hyp = sqrt(pow((hipX - rKneeX),2) + pow((hipY - rKneeY),2));
-	double adj = rKneeX - hipX;
-	if (hipY <= rKneeY) return acos(adj/hyp);
-	else return -acos(adj/hyp);
-}
-
-double Dynein::get_lKneeAngle() {
-	double hyp = sqrt(pow((lKneeX - lFootX),2) + pow((lKneeY - lFootY),2));
-	double adj = lFootX - lKneeX;
-	if (lKneeY <= lFootY) return acos(adj/hyp);
-	else return -acos(adj/hyp);
-}
-
-double Dynein::get_rKneeAngle() {
-	double hyp = sqrt(pow((rKneeX - rFootX),2) + pow((rKneeY - rFootY),2));
-	double adj = rFootX - rKneeX;
-	if (rKneeY <= rFootY) return acos(adj/hyp);
-	else return -acos(adj/hyp);
+void Dynein::log() {
+	//Writing lFootX	lKneeX	hipX	rKneeX	rFootX	lFootY	lKneeY	hipY	rKneeY	rFootY	lHipAngle	rHipAngle	lKneeAngle	rKneeAngle
+	
+	FILE* file;
+	file = fopen("data.txt", "w");
+	
+	fprintf(file, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t", blx, mlx, tx, mrx, brx, bly, mly, ty, mry, bry, get_ta(), get_mla(), get_mra());	
+		
 }
 
 /*** Utility Functions ***/
@@ -179,59 +105,24 @@ double randAngle(double range) {
 	return ((((double)(rand() % 1000))/500) - 1)*range;
 }
 
+double dist(double x1, double y1, double x2, double y2) {
+	return sqrt(pow(x2-x1,2)+pow(y2-y1,2));
+}
+
 Dynein* initProtein(Dynein* dyn) {
+	dyn->set_blx(15);
+	dyn->set_bly(15);
 	
-	srand(time(NULL));
-	
-	dyn->set_hipX(0);
-	dyn->set_hipY(20);
-	
-	dyn->set_lHipAngle(-5*M_PI/6 + randAngle(1));
-	dyn->set_rHipAngle(-M_PI/6 + randAngle(1));
-	
-	dyn->set_lKneeAngle(-M_PI/3 + randAngle(1));
-	dyn->set_rKneeAngle(-2*M_PI/3 + randAngle(1));
-}
-
-void printProtein(Dynein* dyn) {
-	printf("hipX \t %f\n", dyn->get_hipX());
-	printf("hipY \t %f\n", dyn->get_hipY());
-	
-	printf("lKneeX \t %f\n", dyn->get_lKneeX());
-	printf("lKneeY \t %f\n", dyn->get_lKneeY());
-	
-	printf("rKneeX \t %f\n", dyn->get_rKneeX());
-	printf("rKneeY \t %f\n", dyn->get_rKneeY());
-	
-	printf("lFootX \t %f\n", dyn->get_lFootX());
-	printf("lFootY \t %f\n", dyn->get_lFootY());
-	
-	printf("rFootX \t %f\n", dyn->get_rFootX());
-	printf("rFootY \t %f\n", dyn->get_rFootY());
-	
-	printf("lHipAngle: \t %f\n", dyn->get_lHipAngle());
-	printf("rHipAngle: \t %f\n", dyn->get_rHipAngle());
-	
-	printf("lKneeAngle: \t %f\n", dyn->get_lKneeAngle());
-	printf("rKneeAngle: \t %f\n", dyn->get_rKneeAngle());
-}
-
-void logProtein(Dynein* dyn) {
-	//Writing lFootX	lKneeX	hipX	rKneeX	rFootX	lFootY	lKneeY	hipY	rKneeY	rFootY	lHipAngle	rHipAngle	lKneeAngle	rKneeAngle
-	
-	FILE* file;
-	file = fopen("data.txt", "w");
-	
-	fprintf(file, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f", dyn->get_lFootX(), dyn->get_lKneeX(), dyn->get_hipX(),
-		dyn->get_rKneeX(), dyn->get_rFootX(), dyn->get_lFootY(), dyn->get_lKneeY(), dyn->get_hipY(), dyn->get_rKneeY(),
-		dyn->get_rFootY(), dyn->get_lHipAngle(), dyn->get_rHipAngle(), dyn->get_lKneeAngle(), dyn->get_rKneeAngle());	
-		
+	dyn->set_bla(7.5*M_PI/18);
+	dyn->set_mla(-4*M_PI/18);
+	dyn->set_ta(-7*M_PI/18);
+	dyn->set_mra(-4*M_PI/18);
 }
 
 int main() {
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
 	initProtein(dyn);
-	logProtein(dyn);
+	dyn->log();
 	free(dyn);
 	dyn = NULL;
 	return 0;
