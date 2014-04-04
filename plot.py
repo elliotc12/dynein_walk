@@ -1,26 +1,50 @@
 #! /usr/bin/python
 
-import numpy 
-import matplotlib.pyplot as p
+import math
+import numpy
+import thread
+import matplotlib.pyplot as plib
 
-data = numpy.genfromtxt("data.txt", delimiter="\t")
-p1 = p.plot(data[0:5], data[5:10])
+def wait(flag):
+	raw_input()
+	flag.append(1)
 
-X[0] = data[0]
-X[1] = X[0] + cos(data[2])
-X[2] = X[1] + cos(data[3])
-X[3] = X[2] + cos(data[4] - pi/2)
-X[4] = X[3] + cos(data[5] - pi/2)
+Ls = 10
+Lt = 10
+X = [0, 1, 2, 3, 4]
+Y = [0, 1, 2, 3, 4]
+flag = []
+thread.start_new_thread(wait, (flag,))
+data = numpy.genfromtxt("data.txt", delimiter="\t", skiprows=1)
+plib.ion()
+figure = plib.figure()
+subplot = figure.add_subplot(111)
+subplot.set_aspect("equal", adjustable="box")
+subplot.set_xlim(-10,50)
+subplot.set_ylim(-10,50)
+line1, = subplot.plot(X, Y)
+line2, = subplot.plot(X, Y, 'ro')
 
-Y[0] = data[0]
-Y[1] = Y[0] + sin(data[2])
-Y[2] = Y[1] + sin(data[3])
-Y[3] = Y[2] + sin(data[4] - pi/2)
-Y[4] = Y[3] + sin(data[5] - pi/2)
+i = 0
+while (True):
+	X[0] = data[i][0]
+	X[1] = Ls*math.cos(data[i][2]) + X[0]
+	X[2] = Lt*math.cos(data[i][3]) + X[1]
+	X[3] = Lt*math.cos(-1*data[i][4]) + X[2]
+	X[4] = Ls*math.cos(-1*data[i][5]) + X[3]
 
-p.plot(X, Y, 'ro')
-p.text(5, 47, "Potential Energy: " + str(data[6]))
-p.ylim(-10,50)
-p.xlim(-10,50)
-p.gca().set_aspect("equal", adjustable="box")
-p.show()
+	Y[0] = data[i][1]
+	Y[1] = Ls*math.sin(data[i][2]) + Y[0]
+	Y[2] = Lt*math.sin(data[i][3]) + Y[1]
+	Y[3] = Lt*math.sin(-1*data[i][4]) + Y[2]
+	Y[4] = Ls*math.sin(-1*data[i][5]) + Y[3]
+	
+	line1.set_data(X,Y)
+	line2.set_data(X,Y)
+	
+	plib.draw()
+	
+	i += 1
+	if (i >= len(data)):
+		i = 0
+	if flag: break

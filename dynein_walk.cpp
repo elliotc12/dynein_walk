@@ -16,9 +16,11 @@ const double mb = 1;
 const double mm = 1;
 const double mt = 1;
 
-const double bA = 7.5*M_PI/18;
-const double mA = -4*M_PI/18;
-const double tA = -7*M_PI/18;
+const double bA = M_PI/4;
+const double mA = M_PI/4;
+const double tA = M_PI/4;
+
+FILE* file;
 
 typedef enum {
 	LEFTBOUND,
@@ -191,12 +193,7 @@ double Dynein::get_PE() {
 }
 
 void Dynein::log(double t) {
-	//Writing lFootX	lKneeX	hipX	rKneeX	rFootX	lFootY	lKneeY	hipY	rKneeY	rFootY	lHipAngle	rHipAngle	lKneeAngle	rKneeAngle
-	
-	FILE* file;
-	file = fopen("data.txt", "a");
-	
-	fprintf(file, "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n", get_blx(), get_bly(), get_bla(), get_mla(), get_mra(), get_bra(), get_PE(), t);	
+	fprintf(file, "%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%.3f\t%.2f\t\n", get_blx(), get_bly(), get_bla(), get_mla(), get_mra(), get_bra(), get_PE(), t);	
 }
 
 /*** Utility Functions ***/
@@ -219,12 +216,14 @@ double randAngle(double range) {
 }
 
 double resetLog() {
-	fopen("data.txt", "w");
+	file = fopen("data.txt", "w");
+	
+	fprintf(file, "blX\t\t\tblY\t\t\tbla\t\t\tmla\t\t\tmra\t\t\tbra\t\t\tPE\t\tt\n");
 }
 
 Dynein* initProtein(Dynein* dyn) {
-	dyn->set_blx(15);
-	dyn->set_bly(15);
+	dyn->set_blx(0);
+	dyn->set_bly(0);
 	
 	dyn->set_bla(bA);
 	dyn->set_mla(mA);
@@ -287,7 +286,7 @@ int main() {
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
 	resetLog();
 	initProtein(dyn);
-	simulateProtein(dyn, 0.1, 0.1);
+	simulateProtein(dyn, 0.1, 2.0);
 	free(dyn);
 	dyn = NULL;
 	return 0;
