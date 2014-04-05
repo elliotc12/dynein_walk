@@ -6,7 +6,7 @@
 const double Lt = 10;
 const double Ls = 10;
 
-const double kt = 1;
+const double kt  = 1;
 const double kml = 1;
 const double kmr = 1;
 const double kbl = 1;
@@ -16,9 +16,9 @@ const double mb = 1;
 const double mm = 1;
 const double mt = 1;
 
-const double bA = M_PI/4;
-const double mA = M_PI/4;
-const double tA = M_PI/4;
+const double bA = (30.0 / 180) * M_PI;
+const double mA = (210.0 / 180) * M_PI;
+const double tA = (60.0 / 180) * M_PI;
 
 FILE* file;
 
@@ -225,10 +225,10 @@ Dynein* initProtein(Dynein* dyn) {
 	dyn->set_blx(0);
 	dyn->set_bly(0);
 	
-	dyn->set_bla(bA);
-	dyn->set_mla(mA);
-	dyn->set_mra(tA);
-	dyn->set_bra(bA);
+	dyn->set_bla(M_PI/6);
+	dyn->set_mla(M_PI/3);
+	dyn->set_mra(M_PI/3);
+	dyn->set_bra(M_PI/6);
 }
 
 Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
@@ -286,7 +286,7 @@ int main() {
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
 	resetLog();
 	initProtein(dyn);
-	simulateProtein(dyn, 0.1, 2.0);
+	simulateProtein(dyn, 0.1, 50.0);
 	free(dyn);
 	dyn = NULL;
 	return 0;

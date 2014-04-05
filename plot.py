@@ -3,6 +3,8 @@
 import math
 import numpy
 import thread
+import time
+import sys
 import matplotlib.pyplot as plib
 
 def wait(flag):
@@ -20,31 +22,50 @@ plib.ion()
 figure = plib.figure()
 subplot = figure.add_subplot(111)
 subplot.set_aspect("equal", adjustable="box")
-subplot.set_xlim(-10,50)
-subplot.set_ylim(-10,50)
+subplot.set_xlim(-40,40)
+subplot.set_ylim(-40,40)
 line1, = subplot.plot(X, Y)
-line2, = subplot.plot(X, Y, 'ro')
+line2, = subplot.plot([X[0]], [Y[0]], 'ro')
+line3, = subplot.plot([X[1]], [Y[1]], 'bo')
+line4, = subplot.plot([X[2]], [Y[2]], 'go')
+line5, = subplot.plot([X[3]], [Y[3]], 'bo')
+line6, = subplot.plot([X[4]], [Y[4]], 'ro')
 
 i = 0
+print "Press enter to exit animation."
 while (True):
 	X[0] = data[i][0]
 	X[1] = Ls*math.cos(data[i][2]) + X[0]
 	X[2] = Lt*math.cos(data[i][3]) + X[1]
-	X[3] = Lt*math.cos(-1*data[i][4]) + X[2]
-	X[4] = Ls*math.cos(-1*data[i][5]) + X[3]
+	X[3] = Lt*math.cos(math.pi - data[i][4]) + X[2]
+	X[4] = Ls*math.cos(-data[i][5]) + X[3]
 
 	Y[0] = data[i][1]
 	Y[1] = Ls*math.sin(data[i][2]) + Y[0]
 	Y[2] = Lt*math.sin(data[i][3]) + Y[1]
-	Y[3] = Lt*math.sin(-1*data[i][4]) + Y[2]
-	Y[4] = Ls*math.sin(-1*data[i][5]) + Y[3]
+	Y[3] = Lt*math.sin(math.pi - data[i][4]) + Y[2]
+	Y[4] = Ls*math.sin(-data[i][5]) + Y[3]
 	
 	line1.set_data(X,Y)
-	line2.set_data(X,Y)
+	line2.set_data(X[0], Y[0])
+	line3.set_data(X[1], Y[1])
+	line4.set_data(X[2], Y[2])
+	line5.set_data(X[3], Y[3])
+	line6.set_data(X[4], Y[4])
 	
 	plib.draw()
+	
+	if len(sys.argv) == 2:
+		if sys.argv[1] == "step":
+			raw_input("Hit enter to step.")
+		elif sys.argv[1] == "slow":
+			time.sleep(1)
 	
 	i += 1
 	if (i >= len(data)):
 		i = 0
-	if flag: break
+		exit(0)
+	if (flag and len(sys.argv) != 2) or (flag and sys.argv[1] != "step"): break
+	
+#Rerun Mathematica file
+#Re-add X,Y code to .cpp
