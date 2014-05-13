@@ -2,10 +2,14 @@ CPPFLAGS = -ggdb
 
 walk: dynein_walk.cpp
 	g++ dynein_walk.cpp -o walk $(CPPFLAGS)
+	
+test: dynein_ftest.cpp
+	g++ dynein_ftest.cpp -o ftest $(CPPFLAGS)
 
 clean:
 	rm -f *.o
 	rm -f walk
+	rm -f ftest
 	rm -f data.txt
 	rm -f config.txt
 	rm -f to_replace.txt
