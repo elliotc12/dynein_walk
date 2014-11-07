@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 
 import math
 import numpy
@@ -15,8 +15,8 @@ if len(sys.argv) == 2:
 	if sys.argv[1] == "energy":
 		data = numpy.loadtxt("data.txt")
 		plib.plot(data[:,3], data[:,2], 'b-', label="Energy")
-		#plib.plot(data[:,3], data[:,1], 'g-', label="PE")
-		#plib.plot(data[:,3], data[:,0], 'r-', label="KE")
+		plib.plot(data[:,3], data[:,1], 'g-', label="PE")
+		plib.plot(data[:,3], data[:,0], 'r-', label="KE")
 		plib.legend()
 		plib.show()
 		raw_input("Press enter to exit.")
@@ -48,7 +48,7 @@ ke_text = plib.text(-65, 35, 'KE: ')
 t_text = plib.text(-65, -36, 't=:')
 
 i = 0
-print "Press enter to exit animation."
+print("Press enter to exit animation.")
 while (True):
 	X[0] = data[i][4]
 	X[1] = data[i][6]
@@ -83,9 +83,10 @@ while (True):
 	if len(sys.argv) == 2:
 		if sys.argv[1] == "step":
 			raw_input("Hit enter to step.")
-			i += 1
+			i += 10
 		elif sys.argv[1][0:6] == "speed=":
 			i += float(sys.argv[1][6:])
+			plib.pause(0.001)
 	else:
 		i += 10
 			
