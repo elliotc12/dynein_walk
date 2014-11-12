@@ -42,22 +42,44 @@ T = 0.5 * mm * (d_mlx **2 + d_mly **2) + \
 	0.5 * mt * (d_tx  **2 + d_ty  **2) + \
 	0.5 * mm * (d_mrx **2 + d_mry **2) + \
 	0.5 * mb * (d_brx **2 + d_mry **2)
-	
+
 U = 0.5 * kbl * (bla - ba) **2 + \
 	0.5 * kml * ((s.pi - bla) + mla - ma) **2 + \
 	0.5 * kt  * (s.pi - mla - mra - ta) **2 + \
 	0.5 * kmr * ((s.pi - bra) + mra - ma) **2 \
-	
-	
+
+
 L = T - U
 
-diff1 = s.diff( s.diff(L, s.diff(bla, t) ), t) - s.diff(L, bla)
-diff2 = s.diff( s.diff(L, s.diff(mla, t) ), t) - s.diff(L, mla)
-diff3 = s.diff( s.diff(L, s.diff(mra, t) ), t) - s.diff(L, mra)
-diff4 = s.diff( s.diff(L, s.diff(bra, t) ), t) - s.diff(L, bra)
+def euler_lagrange_equation(L, qfunc):
+    qdot = s.symbols('qdot')
+    q = s.symbols('q')
+    L = L.subs(s.diff(qfunc,t), qdot).subs(qfunc, q)
+    dL_dq = s.diff(L, q)
+    dL_dqdot = s.diff(L, qdot)
+    return (s.diff(dL_dqdot, t) - dL_dq).subs(q, qfunc).subs(qdot, s.diff(qfunc,t))
 
+el_bla = euler_lagrange_equation(L, bla)
+el_mla = euler_lagrange_equation(L, mla)
+el_bra = euler_lagrange_equation(L, bra)
+el_mra = euler_lagrange_equation(L, mra)
 
-sol = s.solve([diff1, diff2, diff3, diff4], dd_bla, dd_mla, dd_mra, dd_bra)
+def make_prettier(e):
+    e = e.subs(s.diff(bla,t), s.symbols('bladot'))
+    e = e.subs(s.diff(mla,t), s.symbols('mladot'))
+    e = e.subs(s.diff(bra,t), s.symbols('bradot'))
+    e = e.subs(s.diff(mra,t), s.symbols('mradot'))
+
+    e = e.subs(s.diff(bla,t,t), s.symbols('blaDDot'))
+    e = e.subs(s.diff(mla,t,t), s.symbols('mlaDDot'))
+    e = e.subs(s.diff(bra,t,t), s.symbols('braDDot'))
+    e = e.subs(s.diff(mra,t,t), s.symbols('mraDDot'))
+    return e
+
+#print make_prettier(el_bla)
+
+print 'starting to solve these silly things...'
+sol = s.solve([el_bla, el_mla, el_bra, el_mra], dd_bla, dd_mla, dd_mra, dd_bra)
 
 print sol
 
