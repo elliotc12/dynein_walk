@@ -112,14 +112,47 @@ bb_diff3 = s.diff( s.diff(bb_L, s.diff(mra, t) ), t) - s.diff(bb_L, mra)
 bb_diff4 = s.diff( s.diff(bb_L, s.diff(bra, t) ), t) - s.diff(bb_L, bra)
 
 
-#Solutions
+def euler_lagrange_equation(L, qfunc):
+    qdot = s.symbols('qdot')
+    q = s.symbols('q')
+    L = L.subs(s.diff(qfunc,t), qdot).subs(qfunc, q)
+    dL_dq = s.diff(L, q)
+    dL_dqdot = s.diff(L, qdot)
+    return (s.diff(dL_dqdot, t) - dL_dq).subs(q, qfunc).subs(qdot, s.diff(qfunc,t))
+    
+    
+# Solutions
 
-lb_sol = s.solve([lb_diff1, lb_diff2, lb_diff3, lb_diff4], dd_bla, dd_mla, dd_mra, dd_bra)
-rb_sol = s.solve([rb_diff1, rb_diff2, rb_diff3, rb_diff4], dd_bla, dd_mla, dd_mra, dd_bra)
-bb_sol = s.solve([bb_diff1, bb_diff2, bb_diff3, bb_diff4], dd_bla, dd_mla, dd_mra, dd_bra)
+lb_bla_deq = euler_lagrange_equation(lb_L, bla)
+lb_mla_deq = euler_lagrange_equation(lb_L, mla)
+lb_bra_deq = euler_lagrange_equation(lb_L, bra)
+lb_mra_deq = euler_lagrange_equation(lb_L, mra)
 
-print sol
+rb_bla_deq = euler_lagrange_equation(rb_L, bla)
+rb_mla_deq = euler_lagrange_equation(rb_L, mla)
+rb_bra_deq = euler_lagrange_equation(rb_L, bra)
+rb_mra_deq = euler_lagrange_equation(rb_L, mra)
 
+bb_bla_deq = euler_lagrange_equation(bb_L, bla)
+bb_mla_deq = euler_lagrange_equation(bb_L, mla)
+bb_bra_deq = euler_lagrange_equation(bb_L, bra)
+bb_mra_deq = euler_lagrange_equation(bb_L, mra)
+
+
+print "Solving leftbound case." 
+lb_sol = s.solve([lb_bla_deq, lb_mla_deq, lb_mra_deq, lb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
+print lb_sol
+
+print "Solving rightbound case."
+rb_sol = s.solve([rb_bla_deq, rb_mla_deq, rb_mra_deq, rb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
+print rb_sol
+
+print "Solving bothbound case."
+bb_sol = s.solve([bb_bla_deq, bb_mla_deq, bb_mra_deq, bb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
+print bb_sol
+
+
+# Writing to file
 f = open('LagrangianSolutions.txt', 'w')
 
 f.write(lb_sol)
