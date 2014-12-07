@@ -60,10 +60,6 @@ lb_U = \
 	b_mly * mly + b_ty * ty + b_mry * mry + b_bry * bry
 	
 lb_L = lb_T - lb_U
-lb_diff1 = s.diff( s.diff(lb_L, s.diff(bla, t) ), t) - s.diff(lb_L, bla)
-lb_diff2 = s.diff( s.diff(lb_L, s.diff(mla, t) ), t) - s.diff(lb_L, mla)
-lb_diff3 = s.diff( s.diff(lb_L, s.diff(mra, t) ), t) - s.diff(lb_L, mra)
-lb_diff4 = s.diff( s.diff(lb_L, s.diff(bra, t) ), t) - s.diff(lb_L, bra)
 
 # Rightbound Case ################
 
@@ -83,10 +79,6 @@ rb_U = \
 	b_bly * bly + b_mly * mly + b_ty * ty + b_mry * mry
 	
 rb_L = rb_T - rb_U
-rb_diff1 = s.diff( s.diff(rb_L, s.diff(bla, t) ), t) - s.diff(rb_L, bla)
-rb_diff2 = s.diff( s.diff(rb_L, s.diff(mla, t) ), t) - s.diff(rb_L, mla)
-rb_diff3 = s.diff( s.diff(rb_L, s.diff(mra, t) ), t) - s.diff(rb_L, mra)
-rb_diff4 = s.diff( s.diff(rb_L, s.diff(bra, t) ), t) - s.diff(rb_L, bra)
 
 
 # Bothbound Case ################
@@ -106,13 +98,9 @@ bb_U = \
 	b_mly * mly + b_ty * ty + b_mry * mry
 	
 bb_L = bb_T - bb_U
-bb_diff1 = s.diff( s.diff(bb_L, s.diff(bla, t) ), t) - s.diff(bb_L, bla)
-bb_diff2 = s.diff( s.diff(bb_L, s.diff(mla, t) ), t) - s.diff(bb_L, mla)
-bb_diff3 = s.diff( s.diff(bb_L, s.diff(mra, t) ), t) - s.diff(bb_L, mra)
-bb_diff4 = s.diff( s.diff(bb_L, s.diff(bra, t) ), t) - s.diff(bb_L, bra)
 
 
-def euler_lagrange_equation(L, qfunc):
+def euler_lagrange_equation(L, qfunc):		# Does derivative substitution for compatibility w/ old Scipy versions
     qdot = s.symbols('qdot')
     q = s.symbols('q')
     L = L.subs(s.diff(qfunc,t), qdot).subs(qfunc, q)
@@ -138,27 +126,24 @@ bb_mla_deq = euler_lagrange_equation(bb_L, mla)
 bb_bra_deq = euler_lagrange_equation(bb_L, bra)
 bb_mra_deq = euler_lagrange_equation(bb_L, mra)
 
+f = open('LagrangianSolutions.txt', 'w')
 
 print "Solving leftbound case." 
 lb_sol = s.solve([lb_bla_deq, lb_mla_deq, lb_mra_deq, lb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print lb_sol
+f.write(lb_sol)
+f.write('\n')
 
 print "Solving rightbound case."
 rb_sol = s.solve([rb_bla_deq, rb_mla_deq, rb_mra_deq, rb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print rb_sol
+f.write(rb_sol)
+f.write('\n')
 
 print "Solving bothbound case."
 bb_sol = s.solve([bb_bla_deq, bb_mla_deq, bb_mra_deq, bb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print bb_sol
-
-
-# Writing to file
-f = open('LagrangianSolutions.txt', 'w')
-
-f.write(lb_sol)
-f.write('\n')
-f.write(rb_sol)
-f.write('\n')
 f.write(bb_sol)
+f.write('\n')
 
 f.close()
