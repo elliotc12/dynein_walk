@@ -1,0 +1,998 @@
+{{Derivative[2][bla][t] -> 
+   -((((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*(kbl*(-bA + bla[t]) + Fmly*Ls*Cos[bla[t]] + 
+          (Fty*Ls*Cos[bla[t]])/2 - kml*(-mA + Pi - bla[t] + mla[t]) - 
+          Fmlx*Ls*Sin[bla[t]] - (Ftx*Ls*Sin[bla[t]])/2 - Ls*mm*Cos[bla[t]]*
+           Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+            Derivative[1][blx][t]) - Ls*mm*Sin[bla[t]]*Derivative[1][bla][t]*
+           (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t]) - 
+          (mm*(-2*Ls*Cos[bla[t]]*Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*
+                 Derivative[1][bla][t]) + Derivative[1][blx][t]) - 
+             2*Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                Derivative[1][bla][t] + Derivative[1][bly][t])))/2 + 
+          (Ls^2*mt*Cos[bra[t]]*Sin[bla[t]]*Derivative[1][bra][t]^2)/4 - 
+          (Ls^2*mt*Cos[bla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+          (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*Derivative[1][mla][t]^2)/4 - 
+          (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+          (Ls*Lt*mt*Cos[mra[t]]*Sin[bla[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Ls*mt*Sin[bla[t]]*Derivative[1][bla][t]*
+            (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+             Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+             Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+              Derivative[1][mra][t]))/4 - (Ls*mt*Cos[bla[t]]*
+            Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+             Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+             Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (mt*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Ls*Cos[bla[t]]*Derivative[1][
+                 bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - Ls*mm*Sin[bla[t]]*Derivative[2][blx][t] - 
+          (Ls*mt*Sin[bla[t]]*Derivative[2][blx][t])/4 + Ls*mm*Cos[bla[t]]*
+           Derivative[2][bly][t] + (Ls*mt*Cos[bla[t]]*Derivative[2][bly][t])/
+           4 - (Ls*mt*Sin[bla[t]]*Derivative[2][brx][t])/4 + 
+          (Ls*mt*Cos[bla[t]]*Derivative[2][bry][t])/4) - 
+        ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+            Sin[bra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+          kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - mra[t]) - 
+          (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*
+            Derivative[1][bla][t]^2)/4 + (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*
+            Derivative[1][bla][t]^2)/4 - (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*
+            Derivative[1][bra][t]^2)/4 + (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*
+            Derivative[1][bra][t]^2)/4 + (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*
+            Derivative[1][mra][t]^2)/4 - (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*
+            Derivative[1][mra][t]^2)/4 - (Lt*mt*Sin[mla[t]]*
+            Derivative[1][mla][t]*(Ls*Cos[bla[t]]*Derivative[1][bla][t] + 
+             Derivative[1][bly][t] + Ls*Cos[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][bry][t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+             Lt*Cos[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (Lt*mt*Cos[mla[t]]*Derivative[1][mla][t]*
+            (-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + Derivative[1][blx][
+              t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + Derivative[1][brx][
+              t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+              Derivative[1][mra][t]))/4 - 
+          (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*Derivative[1][
+                 mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+          (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+          (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+          (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) - 
+      (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+        ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+            Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+          (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4))*
+       (-(((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+           kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+             mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+             Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) + 
+        ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Fty*Lt*Cos[mra[t]])/2 - 
+          kt*(Pi - tA - mla[t] - mra[t]) + kmr*(-mA + Pi - bra[t] + mra[t]) - 
+          (Ftx*Lt*Sin[mra[t]])/2 - (Ls*Lt*mt*Cos[mra[t]]*Sin[bla[t]]*
+            Derivative[1][bla][t]^2)/4 + (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*
+            Derivative[1][bla][t]^2)/4 - (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*
+            Derivative[1][bra][t]^2)/4 + (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*
+            Derivative[1][bra][t]^2)/4 - (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*
+            Derivative[1][mla][t]^2)/4 + (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*
+            Derivative[1][mla][t]^2)/4 - (Lt*mt*Sin[mra[t]]*
+            Derivative[1][mra][t]*(Ls*Cos[bla[t]]*Derivative[1][bla][t] + 
+             Derivative[1][bly][t] + Ls*Cos[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][bry][t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+             Lt*Cos[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (Lt*mt*Cos[mra[t]]*Derivative[1][mra][t]*
+            (-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + Derivative[1][blx][
+              t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + Derivative[1][brx][
+              t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+              Derivative[1][mra][t]))/4 - 
+          (mt*(-(Lt*Sin[mra[t]]*Derivative[1][mra][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Lt*Cos[mra[t]]*Derivative[1][
+                 mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - (Lt*mt*Sin[mra[t]]*Derivative[2][blx][t])/4 + 
+          (Lt*mt*Cos[mra[t]]*Derivative[2][bly][t])/4 - 
+          (Lt*mt*Sin[mra[t]]*Derivative[2][brx][t])/4 + 
+          (Lt*mt*Cos[mra[t]]*Derivative[2][bry][t])/4)))/
+     ((-(((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mla[t]])/4)) + 
+        (Ls^2*mm*Cos[bla[t]]^2 + (Ls^2*mt*Cos[bla[t]]^2)/4 + 
+          Ls^2*mm*Sin[bla[t]]^2 + (Ls^2*mt*Sin[bla[t]]^2)/4)*
+         ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + 
+          (Ls*Lt*mt*Sin[bra[t]]*Sin[mla[t]])/4))*
+       ((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16) - 
+      (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+        ((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bla[t]]*
+            Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4))*
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+        ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+            Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+          (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4)))), 
+  Derivative[2][mla][t] -> 
+   (((-((Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+            Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+           ((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bla[t]]*
+              Sin[mla[t]])/4)) + ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + 
+           (Ls^2*mt*Sin[bla[t]]*Sin[bra[t]])/4)*
+          ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4))*((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*
+           Sin[mla[t]])/16 - (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*
+           Sin[bra[t]]*Sin[mra[t]])/16 - (Ls*Lt^3*mt^2*Cos[bra[t]]*
+           Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bla[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4))*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4) - 
+         (Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+           Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+          ((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + (Lt^2*mt*Sin[mla[t]]*
+             Sin[mra[t]])/4)))*
+      (((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*(kbl*(-bA + bla[t]) + Fmly*Ls*Cos[bla[t]] + 
+           (Fty*Ls*Cos[bla[t]])/2 - kml*(-mA + Pi - bla[t] + mla[t]) - 
+           Fmlx*Ls*Sin[bla[t]] - (Ftx*Ls*Sin[bla[t]])/2 - Ls*mm*Cos[bla[t]]*
+            Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+             Derivative[1][blx][t]) - Ls*mm*Sin[bla[t]]*Derivative[1][bla][t]*
+            (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t]) - 
+           (mm*(-2*Ls*Cos[bla[t]]*Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*
+                  Derivative[1][bla][t]) + Derivative[1][blx][t]) - 
+              2*Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                 Derivative[1][bla][t] + Derivative[1][bly][t])))/2 + 
+           (Ls^2*mt*Cos[bra[t]]*Sin[bla[t]]*Derivative[1][bra][t]^2)/4 - 
+           (Ls^2*mt*Cos[bla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*mt*Sin[bla[t]]*Derivative[1][bla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Ls*mt*Cos[bla[t]]*
+             Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Ls*Cos[bla[t]]*
+                Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - Ls*mm*Sin[bla[t]]*
+            Derivative[2][blx][t] - (Ls*mt*Sin[bla[t]]*Derivative[2][blx][t])/
+            4 + Ls*mm*Cos[bla[t]]*Derivative[2][bly][t] + 
+           (Ls*mt*Cos[bla[t]]*Derivative[2][bly][t])/4 - 
+           (Ls*mt*Sin[bla[t]]*Derivative[2][brx][t])/4 + 
+           (Ls*mt*Cos[bla[t]]*Derivative[2][bry][t])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+           kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+             mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+             Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+           (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4))*
+        (-(((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+              Sin[mra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+            kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+              mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+              Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+            (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                Derivative[1][bla][t] + Derivative[1][bly][t] + Ls*
+                Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+               Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+              Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                  t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                Derivative[1][bra][t] + Derivative[1][brx][t] - Lt*
+                Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                Derivative[1][mra][t]))/4 - 
+            (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                    Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                   Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                    t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+                   Lt*Cos[mra[t]]*Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                 Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                     t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                   Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                  Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                   Derivative[1][mra][t]))/2))/2 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) + 
+         ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Fty*Lt*Cos[mra[t]])/2 - 
+           kt*(Pi - tA - mla[t] - mra[t]) + kmr*(-mA + Pi - bra[t] + 
+             mra[t]) - (Ftx*Lt*Sin[mra[t]])/2 - (Ls*Lt*mt*Cos[mra[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*Derivative[1][bra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[1][mra][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mra[t]]*
+             Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mra[t]]*Derivative[1][mra][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bry][t])/4))))/
+     ((-(Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]*Cos[mra[t]]^2*
+          Sin[mla[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]*
+         Cos[mra[t]]^2*Sin[bra[t]]^2*Sin[mla[t]]^2)/64 - 
+       (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*Cos[mra[t]]^2*Sin[bra[t]]*
+         Sin[mla[t]]^3)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[mra[t]]^2*Sin[bra[t]]^3*
+         Sin[mla[t]]^3)/64 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^2*
+         Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/32 + 
+       (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^2*Cos[mra[t]]*Sin[bra[t]]^2*
+         Sin[mla[t]]*Sin[mra[t]])/32 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+         Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]]^2*Sin[mra[t]])/32 + 
+       (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]^3*Sin[mla[t]]^2*
+         Sin[mra[t]])/32 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^3*
+         Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^3*
+         Sin[bra[t]]^2*Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+         Cos[mla[t]]^2*Sin[bra[t]]*Sin[mla[t]]*Sin[mra[t]]^2)/64 - 
+       (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]^2*Sin[bra[t]]^3*Sin[mla[t]]*
+         Sin[mra[t]]^2)/64)*
+      ((-(((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+              Sin[bra[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + 
+            (Ls*Lt*mt*Sin[bla[t]]*Sin[mla[t]])/4)) + 
+         (Ls^2*mm*Cos[bla[t]]^2 + (Ls^2*mt*Cos[bla[t]]^2)/4 + 
+           Ls^2*mm*Sin[bla[t]]^2 + (Ls^2*mt*Sin[bla[t]]^2)/4)*
+          ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4))*((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*
+           Sin[mla[t]])/16 - (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*
+           Sin[bra[t]]*Sin[mra[t]])/16 - (Ls*Lt^3*mt^2*Cos[bra[t]]*
+           Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bla[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4))*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+           (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4)))) - 
+    (((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+        (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*(kbr*(-bA + bra[t]) + Fmry*Ls*Cos[bra[t]] + 
+          (Fty*Ls*Cos[bra[t]])/2 - kmr*(-mA + Pi - bra[t] + mra[t]) - 
+          Fmrx*Ls*Sin[bra[t]] - (Ftx*Ls*Sin[bra[t]])/2 - 
+          (Ls^2*mt*Cos[bra[t]]*Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+          (Ls^2*mt*Cos[bla[t]]*Sin[bra[t]]*Derivative[1][bla][t]^2)/4 - 
+          Ls*mm*Cos[bra[t]]*Derivative[1][bra][t]*
+           (-(Ls*Sin[bra[t]]*Derivative[1][bra][t]) + Derivative[1][brx][
+             t]) - Ls*mm*Sin[bra[t]]*Derivative[1][bra][t]*
+           (Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t]) - 
+          (mm*(-2*Ls*Cos[bra[t]]*Derivative[1][bra][t]*(-(Ls*Sin[bra[t]]*
+                 Derivative[1][bra][t]) + Derivative[1][brx][t]) - 
+             2*Ls*Sin[bra[t]]*Derivative[1][bra][t]*(Ls*Cos[bra[t]]*
+                Derivative[1][bra][t] + Derivative[1][bry][t])))/2 + 
+          (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][mla][t]^2)/4 - 
+          (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+          (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Ls*mt*Sin[bra[t]]*Derivative[1][bra][t]*
+            (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+             Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+             Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+              Derivative[1][mra][t]))/4 - (Ls*mt*Cos[bra[t]]*
+            Derivative[1][bra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+             Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+             Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (mt*(-(Ls*Sin[bra[t]]*Derivative[1][bra][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Ls*Cos[bra[t]]*Derivative[1][
+                 bra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - (Ls*mt*Sin[bra[t]]*Derivative[2][blx][t])/4 + 
+          (Ls*mt*Cos[bra[t]]*Derivative[2][bly][t])/4 - Ls*mm*Sin[bra[t]]*
+           Derivative[2][brx][t] - (Ls*mt*Sin[bra[t]]*Derivative[2][brx][t])/
+           4 + Ls*mm*Cos[bra[t]]*Derivative[2][bry][t] + 
+          (Ls*mt*Cos[bra[t]]*Derivative[2][bry][t])/4) - 
+        (Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+          Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+         ((Fty*Lt*Cos[mla[t]])/2 + kml*(-mA + Pi - bla[t] + mla[t]) - 
+          kt*(Pi - tA - mla[t] - mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - 
+          (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+          (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+          (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+          (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+          (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+          (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+            (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+             Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+             Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+              Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+            Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+             Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+             Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*Derivative[1][
+                 mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+          (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+          (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+          (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) - 
+      (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4) - 
+        (Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+          Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+         ((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + (Lt^2*mt*Sin[mla[t]]*
+            Sin[mra[t]])/4))*(-(((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+           kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+             mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+             Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) + 
+        ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+            Sin[mla[t]])/4)*((Fty*Lt*Cos[mra[t]])/2 - 
+          kt*(Pi - tA - mla[t] - mra[t]) + kmr*(-mA + Pi - bra[t] + mra[t]) - 
+          (Ftx*Lt*Sin[mra[t]])/2 - (Ls*Lt*mt*Cos[mra[t]]*Sin[bla[t]]*
+            Derivative[1][bla][t]^2)/4 + (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*
+            Derivative[1][bla][t]^2)/4 - (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*
+            Derivative[1][bra][t]^2)/4 + (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*
+            Derivative[1][bra][t]^2)/4 - (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*
+            Derivative[1][mla][t]^2)/4 + (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*
+            Derivative[1][mla][t]^2)/4 - (Lt*mt*Sin[mra[t]]*
+            Derivative[1][mra][t]*(Ls*Cos[bla[t]]*Derivative[1][bla][t] + 
+             Derivative[1][bly][t] + Ls*Cos[bra[t]]*Derivative[1][bra][t] + 
+             Derivative[1][bry][t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+             Lt*Cos[mra[t]]*Derivative[1][mra][t]))/4 - 
+          (Lt*mt*Cos[mra[t]]*Derivative[1][mra][t]*
+            (-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + Derivative[1][blx][
+              t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + Derivative[1][brx][
+              t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+              Derivative[1][mra][t]))/4 - 
+          (mt*(-(Lt*Sin[mra[t]]*Derivative[1][mra][t]*(Ls*Cos[bla[t]]*
+                  Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                 Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                  t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                  Derivative[1][mra][t]))/2 - (Lt*Cos[mra[t]]*Derivative[1][
+                 mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+                Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][
+                  t] + Derivative[1][brx][t] - Lt*Sin[mla[t]]*
+                 Derivative[1][mla][t] - Lt*Sin[mra[t]]*Derivative[1][mra][
+                  t]))/2))/2 - (Lt*mt*Sin[mra[t]]*Derivative[2][blx][t])/4 + 
+          (Lt*mt*Cos[mra[t]]*Derivative[2][bly][t])/4 - 
+          (Lt*mt*Sin[mra[t]]*Derivative[2][brx][t])/4 + 
+          (Lt*mt*Cos[mra[t]]*Derivative[2][bry][t])/4)))/
+     (-(Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]*Cos[mra[t]]^2*
+         Sin[mla[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]*
+        Cos[mra[t]]^2*Sin[bra[t]]^2*Sin[mla[t]]^2)/64 - 
+      (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*Cos[mra[t]]^2*Sin[bra[t]]*
+        Sin[mla[t]]^3)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[mra[t]]^2*Sin[bra[t]]^3*
+        Sin[mla[t]]^3)/64 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^2*
+        Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/32 + 
+      (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^2*Cos[mra[t]]*Sin[bra[t]]^2*
+        Sin[mla[t]]*Sin[mra[t]])/32 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+        Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]]^2*Sin[mra[t]])/32 + 
+      (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]^3*Sin[mla[t]]^2*
+        Sin[mra[t]])/32 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^3*
+        Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^3*
+        Sin[bra[t]]^2*Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+        Cos[mla[t]]^2*Sin[bra[t]]*Sin[mla[t]]*Sin[mra[t]]^2)/64 - 
+      (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]^2*Sin[bra[t]]^3*Sin[mla[t]]*
+        Sin[mra[t]]^2)/64), Derivative[2][mra][t] -> 
+   -((-4*kmr*mA*Cos[bra[t]]*Cos[mla[t]] + 4*kmr*Pi*Cos[bra[t]]*Cos[mla[t]] - 
+       4*kt*Pi*Cos[bra[t]]*Cos[mla[t]] + 4*kt*tA*Cos[bra[t]]*Cos[mla[t]] - 
+       4*kmr*bra[t]*Cos[bra[t]]*Cos[mla[t]] + 4*kml*mA*Cos[bra[t]]*
+        Cos[mra[t]] - 4*kml*Pi*Cos[bra[t]]*Cos[mra[t]] + 
+       4*kt*Pi*Cos[bra[t]]*Cos[mra[t]] - 4*kt*tA*Cos[bra[t]]*Cos[mra[t]] + 
+       4*kml*bla[t]*Cos[bra[t]]*Cos[mra[t]] + 4*kt*Cos[bra[t]]*Cos[mla[t]]*
+        mla[t] - 4*kml*Cos[bra[t]]*Cos[mra[t]]*mla[t] - 
+       4*kt*Cos[bra[t]]*Cos[mra[t]]*mla[t] + 4*kmr*Cos[bra[t]]*Cos[mla[t]]*
+        mra[t] + 4*kt*Cos[bra[t]]*Cos[mla[t]]*mra[t] - 
+       4*kt*Cos[bra[t]]*Cos[mra[t]]*mra[t] + 2*Ftx*Lt*Cos[bra[t]]*Cos[mra[t]]*
+        Sin[mla[t]] - 4*kmr*mA*Sin[bra[t]]*Sin[mla[t]] + 
+       4*kmr*Pi*Sin[bra[t]]*Sin[mla[t]] - 4*kt*Pi*Sin[bra[t]]*Sin[mla[t]] + 
+       4*kt*tA*Sin[bra[t]]*Sin[mla[t]] - 4*kmr*bra[t]*Sin[bra[t]]*
+        Sin[mla[t]] + 2*Fty*Lt*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]] + 
+       4*kt*mla[t]*Sin[bra[t]]*Sin[mla[t]] + 4*kmr*mra[t]*Sin[bra[t]]*
+        Sin[mla[t]] + 4*kt*mra[t]*Sin[bra[t]]*Sin[mla[t]] - 
+       2*Ftx*Lt*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]] + 
+       4*kml*mA*Sin[bra[t]]*Sin[mra[t]] - 4*kml*Pi*Sin[bra[t]]*Sin[mra[t]] + 
+       4*kt*Pi*Sin[bra[t]]*Sin[mra[t]] - 4*kt*tA*Sin[bra[t]]*Sin[mra[t]] + 
+       4*kml*bla[t]*Sin[bra[t]]*Sin[mra[t]] - 2*Fty*Lt*Cos[mla[t]]*
+        Sin[bra[t]]*Sin[mra[t]] - 4*kml*mla[t]*Sin[bra[t]]*Sin[mra[t]] - 
+       4*kt*mla[t]*Sin[bra[t]]*Sin[mra[t]] - 4*kt*mra[t]*Sin[bra[t]]*
+        Sin[mra[t]] - Ls*Lt*mt*Cos[bla[t]]*Cos[bra[t]]*Cos[mra[t]]*
+        Sin[mla[t]]*Derivative[1][bla][t]^2 - Ls*Lt*mt*Cos[mra[t]]*
+        Sin[bla[t]]*Sin[bra[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2 + 
+       Ls*Lt*mt*Cos[bla[t]]*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]*
+        Derivative[1][bla][t]^2 + Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*
+        Sin[bra[t]]*Sin[mra[t]]*Derivative[1][bla][t]^2 - 
+       Ls*Lt*mt*Cos[bra[t]]^2*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^
+         2 - Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]^2*Sin[mla[t]]*
+        Derivative[1][bra][t]^2 + Ls*Lt*mt*Cos[bra[t]]^2*Cos[mla[t]]*
+        Sin[mra[t]]*Derivative[1][bra][t]^2 + Ls*Lt*mt*Cos[mla[t]]*
+        Sin[bra[t]]^2*Sin[mra[t]]*Derivative[1][bra][t]^2 - 
+       Lt^2*mt*Cos[bra[t]]*Cos[mla[t]]*Cos[mra[t]]*Sin[mla[t]]*
+        Derivative[1][mla][t]^2 - Lt^2*mt*Cos[mra[t]]*Sin[bra[t]]*
+        Sin[mla[t]]^2*Derivative[1][mla][t]^2 + Lt^2*mt*Cos[bra[t]]*
+        Cos[mla[t]]^2*Sin[mra[t]]*Derivative[1][mla][t]^2 + 
+       Lt^2*mt*Cos[mla[t]]*Sin[bra[t]]*Sin[mla[t]]*Sin[mra[t]]*
+        Derivative[1][mla][t]^2 - Lt^2*mt*Cos[bra[t]]*Cos[mra[t]]^2*
+        Sin[mla[t]]*Derivative[1][mra][t]^2 + Lt^2*mt*Cos[bra[t]]*Cos[mla[t]]*
+        Cos[mra[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2 - 
+       Lt^2*mt*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]]*Sin[mra[t]]*
+        Derivative[1][mra][t]^2 + Lt^2*mt*Cos[mla[t]]*Sin[bra[t]]*
+        Sin[mra[t]]^2*Derivative[1][mra][t]^2 + Lt*mt*Cos[bra[t]]*Cos[mra[t]]*
+        Sin[mla[t]]*Derivative[2][blx][t] - Lt*mt*Cos[bra[t]]*Cos[mla[t]]*
+        Sin[mra[t]]*Derivative[2][blx][t] + Lt*mt*Cos[mra[t]]*Sin[bra[t]]*
+        Sin[mla[t]]*Derivative[2][bly][t] - Lt*mt*Cos[mla[t]]*Sin[bra[t]]*
+        Sin[mra[t]]*Derivative[2][bly][t] + Lt*mt*Cos[bra[t]]*Cos[mra[t]]*
+        Sin[mla[t]]*Derivative[2][brx][t] - Lt*mt*Cos[bra[t]]*Cos[mla[t]]*
+        Sin[mra[t]]*Derivative[2][brx][t] + Lt*mt*Cos[mra[t]]*Sin[bra[t]]*
+        Sin[mla[t]]*Derivative[2][bry][t] - Lt*mt*Cos[mla[t]]*Sin[bra[t]]*
+        Sin[mra[t]]*Derivative[2][bry][t])/
+      (Lt^2*mt*(Cos[mra[t]]*Sin[bra[t]] - Cos[bra[t]]*Sin[mra[t]])*
+       (Cos[mra[t]]*Sin[mla[t]] - Cos[mla[t]]*Sin[mra[t]]))) + 
+    (Ls*(-(Cos[mla[t]]*Sin[bla[t]]) + Cos[bla[t]]*Sin[mla[t]])*
+      (((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*(kbl*(-bA + bla[t]) + Fmly*Ls*Cos[bla[t]] + 
+           (Fty*Ls*Cos[bla[t]])/2 - kml*(-mA + Pi - bla[t] + mla[t]) - 
+           Fmlx*Ls*Sin[bla[t]] - (Ftx*Ls*Sin[bla[t]])/2 - Ls*mm*Cos[bla[t]]*
+            Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+             Derivative[1][blx][t]) - Ls*mm*Sin[bla[t]]*Derivative[1][bla][t]*
+            (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t]) - 
+           (mm*(-2*Ls*Cos[bla[t]]*Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*
+                  Derivative[1][bla][t]) + Derivative[1][blx][t]) - 
+              2*Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                 Derivative[1][bla][t] + Derivative[1][bly][t])))/2 + 
+           (Ls^2*mt*Cos[bra[t]]*Sin[bla[t]]*Derivative[1][bra][t]^2)/4 - 
+           (Ls^2*mt*Cos[bla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*mt*Sin[bla[t]]*Derivative[1][bla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Ls*mt*Cos[bla[t]]*
+             Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Ls*Cos[bla[t]]*
+                Derivative[1][bla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - Ls*mm*Sin[bla[t]]*
+            Derivative[2][blx][t] - (Ls*mt*Sin[bla[t]]*Derivative[2][blx][t])/
+            4 + Ls*mm*Cos[bla[t]]*Derivative[2][bly][t] + 
+           (Ls*mt*Cos[bla[t]]*Derivative[2][bly][t])/4 - 
+           (Ls*mt*Sin[bla[t]]*Derivative[2][brx][t])/4 + 
+           (Ls*mt*Cos[bla[t]]*Derivative[2][bry][t])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+           kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+             mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+             Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+           (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4))*
+        (-(((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+              Sin[mra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+            kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+              mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+              Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+            (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                Derivative[1][bla][t] + Derivative[1][bly][t] + Ls*
+                Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+               Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+              Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                  t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                Derivative[1][bra][t] + Derivative[1][brx][t] - Lt*
+                Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                Derivative[1][mra][t]))/4 - 
+            (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                    Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                   Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                    t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+                   Lt*Cos[mra[t]]*Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                 Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                     t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                   Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                  Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                   Derivative[1][mra][t]))/2))/2 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) + 
+         ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Fty*Lt*Cos[mra[t]])/2 - 
+           kt*(Pi - tA - mla[t] - mra[t]) + kmr*(-mA + Pi - bra[t] + 
+             mra[t]) - (Ftx*Lt*Sin[mra[t]])/2 - (Ls*Lt*mt*Cos[mra[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*Derivative[1][bra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[1][mra][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mra[t]]*
+             Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mra[t]]*Derivative[1][mra][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bry][t])/4))))/
+     (Lt*(Cos[mra[t]]*Sin[mla[t]] - Cos[mla[t]]*Sin[mra[t]])*
+      ((-(((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+              Sin[bra[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + 
+            (Ls*Lt*mt*Sin[bla[t]]*Sin[mla[t]])/4)) + 
+         (Ls^2*mm*Cos[bla[t]]^2 + (Ls^2*mt*Cos[bla[t]]^2)/4 + 
+           Ls^2*mm*Sin[bla[t]]^2 + (Ls^2*mt*Sin[bla[t]]^2)/4)*
+          ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4))*((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*
+           Sin[mla[t]])/16 - (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*
+           Sin[bra[t]]*Sin[mra[t]])/16 - (Ls*Lt^3*mt^2*Cos[bra[t]]*
+           Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls*Lt*mt*Cos[bla[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bla[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4))*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bla[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bla[t]]*Sin[mra[t]])/4) - 
+         ((Ls^2*mt*Cos[bla[t]]*Cos[bra[t]])/4 + (Ls^2*mt*Sin[bla[t]]*
+             Sin[bra[t]])/4)*((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+           (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4)))) + 
+    ((-(((Lt^2*mt*Cos[mla[t]]^2)/4 + (Lt^2*mt*Sin[mla[t]]^2)/4)*
+         ((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+          (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4)) + 
+       ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + 
+         (Ls*Lt*mt*Sin[bra[t]]*Sin[mla[t]])/4)*
+        ((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + 
+         (Lt^2*mt*Sin[mla[t]]*Sin[mra[t]])/4))*
+      (((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+         (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+        (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*(kbr*(-bA + bra[t]) + Fmry*Ls*Cos[bra[t]] + 
+           (Fty*Ls*Cos[bra[t]])/2 - kmr*(-mA + Pi - bra[t] + mra[t]) - 
+           Fmrx*Ls*Sin[bra[t]] - (Ftx*Ls*Sin[bra[t]])/2 - 
+           (Ls^2*mt*Cos[bra[t]]*Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls^2*mt*Cos[bla[t]]*Sin[bra[t]]*Derivative[1][bla][t]^2)/4 - 
+           Ls*mm*Cos[bra[t]]*Derivative[1][bra][t]*
+            (-(Ls*Sin[bra[t]]*Derivative[1][bra][t]) + Derivative[1][brx][
+              t]) - Ls*mm*Sin[bra[t]]*Derivative[1][bra][t]*
+            (Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t]) - 
+           (mm*(-2*Ls*Cos[bra[t]]*Derivative[1][bra][t]*(-(Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t]) + Derivative[1][brx][t]) - 
+              2*Ls*Sin[bra[t]]*Derivative[1][bra][t]*(Ls*Cos[bra[t]]*
+                 Derivative[1][bra][t] + Derivative[1][bry][t])))/2 + 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Ls*mt*Sin[bra[t]]*Derivative[1][bra][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Ls*mt*Cos[bra[t]]*
+             Derivative[1][bra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Ls*Sin[bra[t]]*Derivative[1][bra][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Ls*Cos[bra[t]]*
+                Derivative[1][bra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Ls*mt*Sin[bra[t]]*Derivative[2][blx][t])/4 + 
+           (Ls*mt*Cos[bra[t]]*Derivative[2][bly][t])/4 - Ls*mm*Sin[bra[t]]*
+            Derivative[2][brx][t] - (Ls*mt*Sin[bra[t]]*Derivative[2][brx][t])/
+            4 + Ls*mm*Cos[bra[t]]*Derivative[2][bry][t] + 
+           (Ls*mt*Cos[bra[t]]*Derivative[2][bry][t])/4) - 
+         (Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+           Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+          ((Fty*Lt*Cos[mla[t]])/2 + kml*(-mA + Pi - bla[t] + mla[t]) - 
+           kt*(Pi - tA - mla[t] - mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+             Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) - 
+       (((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+           (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4) - 
+         (Ls^2*mm*Cos[bra[t]]^2 + (Ls^2*mt*Cos[bra[t]]^2)/4 + 
+           Ls^2*mm*Sin[bra[t]]^2 + (Ls^2*mt*Sin[bra[t]]^2)/4)*
+          ((Lt^2*mt*Cos[mla[t]]*Cos[mra[t]])/4 + (Lt^2*mt*Sin[mla[t]]*
+             Sin[mra[t]])/4))*(-(((Ls*Lt*mt*Cos[bra[t]]*Cos[mra[t]])/4 + 
+            (Ls*Lt*mt*Sin[bra[t]]*Sin[mra[t]])/4)*((Fty*Lt*Cos[mla[t]])/2 + 
+            kml*(-mA + Pi - bla[t] + mla[t]) - kt*(Pi - tA - mla[t] - 
+              mra[t]) - (Ftx*Lt*Sin[mla[t]])/2 - (Ls*Lt*mt*Cos[mla[t]]*
+              Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bla[t]]*Sin[mla[t]]*Derivative[1][bla][t]^2)/4 - 
+            (Ls*Lt*mt*Cos[mla[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Ls*Lt*mt*Cos[bra[t]]*Sin[mla[t]]*Derivative[1][bra][t]^2)/4 + 
+            (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mra][t]^2)/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                Derivative[1][bla][t] + Derivative[1][bly][t] + Ls*
+                Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+               Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mla[t]]*
+              Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                  t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                Derivative[1][bra][t] + Derivative[1][brx][t] - Lt*
+                Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                Derivative[1][mra][t]))/4 - 
+            (mt*(-(Lt*Sin[mla[t]]*Derivative[1][mla][t]*(Ls*Cos[bla[t]]*
+                    Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                   Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                    t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + 
+                   Lt*Cos[mra[t]]*Derivative[1][mra][t]))/2 - (Lt*Cos[mla[t]]*
+                 Derivative[1][mla][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                     t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                   Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                  Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                   Derivative[1][mra][t]))/2))/2 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][blx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bly][t])/4 - 
+            (Lt*mt*Sin[mla[t]]*Derivative[2][brx][t])/4 + 
+            (Lt*mt*Cos[mla[t]]*Derivative[2][bry][t])/4)) + 
+         ((Ls*Lt*mt*Cos[bra[t]]*Cos[mla[t]])/4 + (Ls*Lt*mt*Sin[bra[t]]*
+             Sin[mla[t]])/4)*((Fty*Lt*Cos[mra[t]])/2 - 
+           kt*(Pi - tA - mla[t] - mra[t]) + kmr*(-mA + Pi - bra[t] + 
+             mra[t]) - (Ftx*Lt*Sin[mra[t]])/2 - (Ls*Lt*mt*Cos[mra[t]]*
+             Sin[bla[t]]*Derivative[1][bla][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bla[t]]*Sin[mra[t]]*Derivative[1][bla][t]^2)/4 - 
+           (Ls*Lt*mt*Cos[mra[t]]*Sin[bra[t]]*Derivative[1][bra][t]^2)/4 + 
+           (Ls*Lt*mt*Cos[bra[t]]*Sin[mra[t]]*Derivative[1][bra][t]^2)/4 - 
+           (Lt^2*mt*Cos[mra[t]]*Sin[mla[t]]*Derivative[1][mla][t]^2)/4 + 
+           (Lt^2*mt*Cos[mla[t]]*Sin[mra[t]]*Derivative[1][mla][t]^2)/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[1][mra][t]*
+             (Ls*Cos[bla[t]]*Derivative[1][bla][t] + Derivative[1][bly][t] + 
+              Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][t] + 
+              Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+               Derivative[1][mra][t]))/4 - (Lt*mt*Cos[mra[t]]*
+             Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][t]) + 
+              Derivative[1][blx][t] - Ls*Sin[bra[t]]*Derivative[1][bra][t] + 
+              Derivative[1][brx][t] - Lt*Sin[mla[t]]*Derivative[1][mla][t] - 
+              Lt*Sin[mra[t]]*Derivative[1][mra][t]))/4 - 
+           (mt*(-(Lt*Sin[mra[t]]*Derivative[1][mra][t]*(Ls*Cos[bla[t]]*
+                   Derivative[1][bla][t] + Derivative[1][bly][t] + 
+                  Ls*Cos[bra[t]]*Derivative[1][bra][t] + Derivative[1][bry][
+                   t] + Lt*Cos[mla[t]]*Derivative[1][mla][t] + Lt*Cos[mra[t]]*
+                   Derivative[1][mra][t]))/2 - (Lt*Cos[mra[t]]*
+                Derivative[1][mra][t]*(-(Ls*Sin[bla[t]]*Derivative[1][bla][
+                    t]) + Derivative[1][blx][t] - Ls*Sin[bra[t]]*
+                  Derivative[1][bra][t] + Derivative[1][brx][t] - 
+                 Lt*Sin[mla[t]]*Derivative[1][mla][t] - Lt*Sin[mra[t]]*
+                  Derivative[1][mra][t]))/2))/2 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][blx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bly][t])/4 - 
+           (Lt*mt*Sin[mra[t]]*Derivative[2][brx][t])/4 + 
+           (Lt*mt*Cos[mra[t]]*Derivative[2][bry][t])/4))))/
+     (((Ls*Lt^3*mt^2*Cos[mra[t]]^2*Sin[bra[t]]*Sin[mla[t]])/16 - 
+       (Ls*Lt^3*mt^2*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mra[t]])/16 - 
+       (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/16 + 
+       (Ls*Lt^3*mt^2*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]^2)/16)*
+      (-(Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]*Cos[mra[t]]^2*
+          Sin[mla[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]*
+         Cos[mra[t]]^2*Sin[bra[t]]^2*Sin[mla[t]]^2)/64 - 
+       (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*Cos[mra[t]]^2*Sin[bra[t]]*
+         Sin[mla[t]]^3)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[mra[t]]^2*Sin[bra[t]]^3*
+         Sin[mla[t]]^3)/64 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^2*
+         Cos[mra[t]]*Sin[mla[t]]*Sin[mra[t]])/32 + 
+       (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^2*Cos[mra[t]]*Sin[bra[t]]^2*
+         Sin[mla[t]]*Sin[mra[t]])/32 + (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+         Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]]^2*Sin[mra[t]])/32 + 
+       (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]*Cos[mra[t]]*Sin[bra[t]]^3*Sin[mla[t]]^2*
+         Sin[mra[t]])/32 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^3*Cos[mla[t]]^3*
+         Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]*Cos[mla[t]]^3*
+         Sin[bra[t]]^2*Sin[mra[t]]^2)/64 - (Ls^3*Lt^5*mm*mt^3*Cos[bra[t]]^2*
+         Cos[mla[t]]^2*Sin[bra[t]]*Sin[mla[t]]*Sin[mra[t]]^2)/64 - 
+       (Ls^3*Lt^5*mm*mt^3*Cos[mla[t]]^2*Sin[bra[t]]^3*Sin[mla[t]]*
+         Sin[mra[t]]^2)/64)), Derivative[2][bra][t] -> 
+   -((-(kmr*Ls*mA*Cos[mla[t]]*Sin[bra[t]]) + kmr*Ls*Pi*Cos[mla[t]]*
+       Sin[bra[t]] - kt*Ls*Pi*Cos[mla[t]]*Sin[bra[t]] + 
+      kt*Ls*tA*Cos[mla[t]]*Sin[bra[t]] - kmr*Ls*bra[t]*Cos[mla[t]]*
+       Sin[bra[t]] + kml*Ls*mA*Cos[mra[t]]*Sin[bra[t]] - 
+      kml*Ls*Pi*Cos[mra[t]]*Sin[bra[t]] + kt*Ls*Pi*Cos[mra[t]]*Sin[bra[t]] - 
+      kt*Ls*tA*Cos[mra[t]]*Sin[bra[t]] + kml*Ls*bla[t]*Cos[mra[t]]*
+       Sin[bra[t]] + kt*Ls*Cos[mla[t]]*mla[t]*Sin[bra[t]] - 
+      kml*Ls*Cos[mra[t]]*mla[t]*Sin[bra[t]] - kt*Ls*Cos[mra[t]]*mla[t]*
+       Sin[bra[t]] + kmr*Ls*Cos[mla[t]]*mra[t]*Sin[bra[t]] + 
+      kt*Ls*Cos[mla[t]]*mra[t]*Sin[bra[t]] - kt*Ls*Cos[mra[t]]*mra[t]*
+       Sin[bra[t]] + kmr*Ls*mA*Cos[bra[t]]*Sin[mla[t]] - 
+      kmr*Ls*Pi*Cos[bra[t]]*Sin[mla[t]] + kt*Ls*Pi*Cos[bra[t]]*Sin[mla[t]] - 
+      kt*Ls*tA*Cos[bra[t]]*Sin[mla[t]] + kmr*Ls*bra[t]*Cos[bra[t]]*
+       Sin[mla[t]] - bA*kbr*Lt*Cos[mra[t]]*Sin[mla[t]] + 
+      kmr*Lt*mA*Cos[mra[t]]*Sin[mla[t]] - kmr*Lt*Pi*Cos[mra[t]]*Sin[mla[t]] + 
+      kbr*Lt*bra[t]*Cos[mra[t]]*Sin[mla[t]] + kmr*Lt*bra[t]*Cos[mra[t]]*
+       Sin[mla[t]] + Fmry*Ls*Lt*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]] - 
+      kt*Ls*Cos[bra[t]]*mla[t]*Sin[mla[t]] - kmr*Ls*Cos[bra[t]]*mra[t]*
+       Sin[mla[t]] - kt*Ls*Cos[bra[t]]*mra[t]*Sin[mla[t]] - 
+      kmr*Lt*Cos[mra[t]]*mra[t]*Sin[mla[t]] - Fmrx*Ls*Lt*Cos[mra[t]]*
+       Sin[bra[t]]*Sin[mla[t]] - kml*Ls*mA*Cos[bra[t]]*Sin[mra[t]] + 
+      kml*Ls*Pi*Cos[bra[t]]*Sin[mra[t]] - kt*Ls*Pi*Cos[bra[t]]*Sin[mra[t]] + 
+      kt*Ls*tA*Cos[bra[t]]*Sin[mra[t]] - kml*Ls*bla[t]*Cos[bra[t]]*
+       Sin[mra[t]] + bA*kbr*Lt*Cos[mla[t]]*Sin[mra[t]] - 
+      kmr*Lt*mA*Cos[mla[t]]*Sin[mra[t]] + kmr*Lt*Pi*Cos[mla[t]]*Sin[mra[t]] - 
+      kbr*Lt*bra[t]*Cos[mla[t]]*Sin[mra[t]] - kmr*Lt*bra[t]*Cos[mla[t]]*
+       Sin[mra[t]] - Fmry*Ls*Lt*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]] + 
+      kml*Ls*Cos[bra[t]]*mla[t]*Sin[mra[t]] + kt*Ls*Cos[bra[t]]*mla[t]*
+       Sin[mra[t]] + kt*Ls*Cos[bra[t]]*mra[t]*Sin[mra[t]] + 
+      kmr*Lt*Cos[mla[t]]*mra[t]*Sin[mra[t]] + Fmrx*Ls*Lt*Cos[mla[t]]*
+       Sin[bra[t]]*Sin[mra[t]] - Ls*Lt*mm*Cos[mra[t]]*Sin[bra[t]]*Sin[mla[t]]*
+       Derivative[2][brx][t] + Ls*Lt*mm*Cos[mla[t]]*Sin[bra[t]]*Sin[mra[t]]*
+       Derivative[2][brx][t] + Ls*Lt*mm*Cos[bra[t]]*Cos[mra[t]]*Sin[mla[t]]*
+       Derivative[2][bry][t] - Ls*Lt*mm*Cos[bra[t]]*Cos[mla[t]]*Sin[mra[t]]*
+       Derivative[2][bry][t])/(Ls^2*Lt*mm*(Cos[bra[t]]^2 + Sin[bra[t]]^2)*
+      (Cos[mra[t]]*Sin[mla[t]] - Cos[mla[t]]*Sin[mra[t]])))}}
