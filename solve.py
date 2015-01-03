@@ -138,27 +138,23 @@ bb_mla_deq = euler_lagrange_equation(bb_L, mla)
 bb_bra_deq = euler_lagrange_equation(bb_L, bra)
 bb_mra_deq = euler_lagrange_equation(bb_L, mra)
 
+f = open('LagrangianSolutions.txt', 'w')
 
 print "Solving leftbound case." 
 lb_sol = s.solve([lb_bla_deq, lb_mla_deq, lb_mra_deq, lb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print lb_sol
+f.write(lb_sol)
+f.write('\n')
 
 print "Solving rightbound case."
 rb_sol = s.solve([rb_bla_deq, rb_mla_deq, rb_mra_deq, rb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print rb_sol
+f.write(rb_sol)
+f.write('\n')
 
 print "Solving bothbound case."
 bb_sol = s.solve([bb_bla_deq, bb_mla_deq, bb_mra_deq, bb_bra_deq], dd_bla, dd_mla, dd_mra, dd_bra)
 print bb_sol
-
-
-# Writing to file
-f = open('LagrangianSolutions.txt', 'w')
-
-f.write(lb_sol)
-f.write('\n')
-f.write(rb_sol)
-f.write('\n')
 f.write(bb_sol)
 
 f.close()
