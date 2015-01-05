@@ -25,6 +25,12 @@ const double bra_init = (100.0 / 180) * M_PI;
 const double inctime = 0.1;
 const double runtime = 10000.0;
 
+double fblx, fbly;		// Brownian variables
+double fmlx, fmly;
+double ftx, fty;
+double fmrx, fmry;
+double fbrx, fbry;
+
 typedef enum {
 	LEFTBOUND,
 	RIGHTBOUND,

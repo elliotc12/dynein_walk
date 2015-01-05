@@ -23,13 +23,23 @@ text = re.sub(r'[ ]{2,}', '', text)			 											# Delete all large spaces
 text = re.sub(r'(\([a-z]*)\^\\\[Prime\]\\\[Prime\]\)\[t\] \-\>', r'\n\1":\n', text)		# Change 'Derivative[1]...' to 'get_d_...'
 text = re.sub(r'Derivative\[1\]\[([a-z]*)\]\[t\]', r'get_d_\1()', text)					
 text = re.sub(r'([a-z]*)\[t\]', r'get_\1()', text)										# Change 'bla[t]' etc to 'get_bla(t)'
-text = re.sub(r'\\\[Pi\]', 'M_PI', text)												# Write pi in C
+text = re.sub('Pi', 'M_PI', text)												# Write pi in C
 text = re.sub(r'Sin', 'sin', text)														
 text = re.sub(r'Cos', 'cos', text)
 text = re.sub(r'\[', '(', text)															# Change Mathematica brackets to C parens
 text = re.sub(r'\]', ')', text)
 text = re.sub(r'([a-zA-Z]+)\^2', r'square(\1)', text)									# Change ^2/^3 to local square/cube functions for single-variable expressions
 text = re.sub(r'([a-zA-Z]+)\^3', r'cube(\1)', text)
+
+text = re.sub('Lt', 'lt', text)			# Convert from Mathematica variable naming scheme to C variable naming scheme
+text = re.sub('Ls', 'ls', text)
+text = re.sub('mA', 'ma', text)
+text = re.sub('bA', 'ba', text)
+text = re.sub('tA', 'ta', text)
+text = re.sub(r'F([mbrl]{2})x', r'f\1x', text)
+text = re.sub(r'F([mbrl]{2})y', r'f\1y', text)
+text = re.sub('Ftx', 'ftx', text)
+text = re.sub('Fty', 'fty', text)
 
 idx = 0
 while string.find(text, ")^2") != -1: # Change ^2/^3 to local square/cube functions for multi-variable expressions	
