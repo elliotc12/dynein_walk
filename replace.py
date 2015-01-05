@@ -8,9 +8,9 @@ import string
 
 # Set the Mathematica output display mode to Standard Form
 
-text_both =  open('DyneinBrownianBothboundSolutionsUnsimplified.txt', 'r').read()
-text_left =  open('DyneinBrownianLeftboundSolutionsUnsimplified.txt', 'r').read()
-text_right = open('DyneinBrownianRightboundSolutionsUnsimplified.txt', 'r').read()
+text_both =  open('Motion_Equations/DyneinBrownianBothboundSolutionsUnsimplified.txt', 'r').read()
+text_left =  open('Motion_Equations/DyneinBrownianLeftboundSolutionsUnsimplified.txt', 'r').read()
+text_right = open('Motion_Equations/DyneinBrownianRightboundSolutionsUnsimplified.txt', 'r').read()
 
 text = text_left + text_right + text_both
 out = open('dynein_motion_functions.cpp', 'w')
