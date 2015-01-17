@@ -15,21 +15,37 @@ text_right = open('Motion_Equations/DyneinBrownianRightboundSolutionsUnsimplifie
 text = text_left + text_right + text_both
 out = open('dynein_motion_functions.cpp', 'w')
 
+
 out.write("#include \"dynein_struct.h\"\n\n")
 
+#line = 0
+#while (string.find(text, "\n")) != -1:												# Annotate output .cpp with line numbers of original file
+	#idx = string.find(text, "\n")
+	#text = text[:idx] + "/* " + str(int(line)) + " */" + text[idx+2:]
+	#line += 1
+
 #	Replacement rules
+
+text = re.sub(r'\{\{Derivative\[2\]\[bla\]\[t\] -\>', 'BLA_DERIVATIVE_2: ', text)		# Build temp structure to hold different expressions
+text = re.sub(r'Derivative\[2\]\[mla\]\[t\] -\>', 'MLA_DERIVATIVE_2: ', text)
+text = re.sub(r'Derivative\[2\]\[mra\]\[t\] -\>', 'MRA_DERIVATIVE_2: ', text)
+text = re.sub(r'Derivative\[2\]\[bra\]\[t\] -\>', 'BRA_DERIVATIVE_2: ', text)
+
+
 text = re.sub('\n', '', text)															# Remove all line breaks
 text = re.sub(r'[ ]{2,}', '', text)			 											# Delete all large spaces
 text = re.sub(r'(\([a-z]*)\^\\\[Prime\]\\\[Prime\]\)\[t\] \-\>', r'\n\1":\n', text)		# Change 'Derivative[1]...' to 'get_d_...'
-text = re.sub(r'Derivative\[1\]\[([a-z]*)\]\[t\]', r'get_d_\1()', text)					
+text = re.sub(r'Derivative\[1\]\[([a-z]*)\]\[t\]', r'get_d_\1()', text)
+text = re.sub(r'Derivative\[2\]\[([a-z]*)\]\[t\]', r'get_dd_\1()', text)					
 text = re.sub(r'([a-z]*)\[t\]', r'get_\1()', text)										# Change 'bla[t]' etc to 'get_bla(t)'
-text = re.sub('Pi', 'M_PI', text)												# Write pi in C
+text = re.sub('Pi', 'M_PI', text)														# Write pi in C
 text = re.sub(r'Sin', 'sin', text)														
 text = re.sub(r'Cos', 'cos', text)
 text = re.sub(r'\[', '(', text)															# Change Mathematica brackets to C parens
 text = re.sub(r'\]', ')', text)
 text = re.sub(r'([a-zA-Z]+)\^2', r'square(\1)', text)									# Change ^2/^3 to local square/cube functions for single-variable expressions
 text = re.sub(r'([a-zA-Z]+)\^3', r'cube(\1)', text)
+text = re.sub(r'([a-zA-Z]+)\^5', r'fifth(\1)', text)
 
 text = re.sub('Lt', 'lt', text)			# Convert from Mathematica variable naming scheme to C variable naming scheme
 text = re.sub('Ls', 'ls', text)
@@ -54,12 +70,15 @@ while string.find(text, ")^2") != -1: # Change ^2/^3 to local square/cube functi
 			v = v - 1
 	if text[i-3:i] == "cos":
 		text = text[:i-3] + "square(" + text[i-3:idx+1] + ")" + text[idx+3:]
+		continue
 			
 	elif text[i-3:i] == "sin":
 		text = text[:i-3] + "square(" + text[i-3:idx+1] + ")" + text[idx+3:]
+		continue
 		
 	elif text[i-9:i-5] == "get_":
 		text = text[:i-9] + "square(" + text[i-9:idx+1] + ")" + text[idx+3:]
+		continue
 		
 	else:
 		text = text[:i] + "square" + text[i:idx+1] + text[idx+3:]
@@ -77,24 +96,28 @@ while string.find(text, ")^3") != -1:
 			v = v - 1
 	if text[i-3:i] == "cos":
 		text = text[:i-3] + "cube(" + text[i-3:idx+1] + ")" + text[idx+3:]
+		continue
 		
 	elif text[i-3:i] == "sin":
 		text = text[:i-3] + "cube(" + text[i-3:idx+1] + ")" + text[idx+3:]
+		continue
 		
 	elif text[i-9:i-5] == "get_":
 		text = text[:i-9] + "cube(" + text[i-9:idx+1] + ")" + text[idx+3:]
+		continue
 		
-	text = text[:i] + "cube" + text[i:idx+1] + text[idx+3:]
+	else:
+		text = text[:i] + "cube" + text[i:idx+1] + text[idx+3:]
 
 text = re.sub(r'([^ \t\r\f\v\-\+\\\*\-\>]+)[ \t\r\f\v]+([^ \t\r\f\v\-\+\\\*\-\>]+)', r'\1 * \2', text) # a b c d -> a * b c * d
 text = re.sub(r'([^ \t\r\f\v\-\+\\\*\-\>]+)[ \t\r\f\v]+([^ \t\r\f\v\-\+\\\*\-\>]+)', r'\1 * \2', text) # a * b c * d -> a * b * c * d
 text = re.sub(r'([0-9]+)', r'\1.0', text)
 text = re.sub(r'([\+-]{1})', r'\1 ', text)
 
-text = re.sub(r'\{\{Derivative\(2\.0\)\(bla\)get_\(\) - \>([^,\n]*),', r'bla: \1\n', text)		# Build temp structure to hold different expressions
-text = re.sub(r'Derivative\(2\.0\)\(mla\)get_\(\) - \>([^,\n]*),', r'mla: \1\n', text)
-text = re.sub(r'Derivative\(2\.0\)\(mra\)get_\(\) - \>([^,\n]*),', r'mra: \1\n', text)
-text = re.sub(r'Derivative\(2\.0\)\(bra\)get_\(\) - \>([^\}\n]*)\}\}', r'bra: \1\n', text)
+text = re.sub(r'BLA_DERIVATIVE_2\.0:([^,\n]*),', r'bla: \1\n', text)		# Build temp structure to hold different expressions
+text = re.sub(r'MLA_DERIVATIVE_2\.0:([^,\n]*),', r'mla: \1\n', text)
+text = re.sub(r'MRA_DERIVATIVE_2\.0:([^,\n]*),', r'mra: \1\n', text)
+text = re.sub(r'BRA_DERIVATIVE_2\.0:([^\}\n]*)\}\}', r'bra: \1\n', text)
 
 text = re.sub(r' \* ', '', text)
 

@@ -14,6 +14,5 @@ clean:
 	rm -f ftest
 	rm -f data.txt
 	rm -f config.txt
-	rm -f dynein_motion_functions.txt
 
 #	rm -f prevents rm from complaining when there is no such file to delete

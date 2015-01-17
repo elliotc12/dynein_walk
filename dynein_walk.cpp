@@ -4,7 +4,6 @@
 
 #include "dynein_struct.h"
 
-
 Dynein* initProtein(Dynein* dyn) {
 	dyn->set_blx(0);
 	dyn->set_bly(0);

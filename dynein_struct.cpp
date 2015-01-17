@@ -3,8 +3,12 @@
 
 #include "dynein_struct.h"
 
-//jeff comment
-// comment
+double fblx = 0;	double fbly = 0;
+double fmlx = 0;	double fmly = 0;
+double ftx = 0;		double fty = 0;
+double fmrx = 0;	double fmry = 0;
+double fbrx = 0;	double fbry = 0;
+
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
@@ -67,6 +71,70 @@ double Dynein::get_d_mra() {
 }
 
 double Dynein::get_d_bra() {
+	return d_bra;
+}
+
+double Dynein::get_d_blx() {
+	return d_bla;
+}
+
+double Dynein::get_d_mlx() {
+	return d_mla;
+}
+
+double Dynein::get_d_mrx() {
+	return d_mra;
+}
+
+double Dynein::get_d_brx() {
+	return d_bra;
+}
+
+double Dynein::get_d_bly() {
+	return d_bla;
+}
+
+double Dynein::get_d_mly() {
+	return d_mla;
+}
+
+double Dynein::get_d_mry() {
+	return d_mra;
+}
+
+double Dynein::get_d_bry() {
+	return d_bra;
+}
+
+double Dynein::get_dd_blx() {
+	return d_bla;
+}
+
+double Dynein::get_dd_mlx() {
+	return d_mla;
+}
+
+double Dynein::get_dd_mrx() {
+	return d_mra;
+}
+
+double Dynein::get_dd_brx() {
+	return d_bra;
+}
+
+double Dynein::get_dd_bly() {
+	return d_bla;
+}
+
+double Dynein::get_dd_mly() {
+	return d_mla;
+}
+
+double Dynein::get_dd_mry() {
+	return d_mra;
+}
+
+double Dynein::get_dd_bry() {
 	return d_bra;
 }
 
@@ -208,4 +276,8 @@ double square(double num) {
 
 double cube(double num) {
 	return num * num * num;
+}
+
+double fifth(double num) {
+	return num * num * num * num * num;
 }
