@@ -25,6 +25,12 @@ const double bra_init = (100.0 / 180) * M_PI;
 const double inctime = 0.1;
 const double runtime = 10000.0;
 
+extern double fblx, fbly;		// Brownian variables
+extern double fmlx, fmly;
+extern double ftx, fty;
+extern double fmrx, fmry;
+extern double fbrx, fbry;
+
 typedef enum {
 	LEFTBOUND,
 	RIGHTBOUND,
@@ -72,10 +78,30 @@ class Dynein {
 		double get_d_mra();
 		double get_d_bra();
 		
+		double get_d_blx();
+		double get_d_mlx();
+		double get_d_mrx();
+		double get_d_brx();
+		
+		double get_d_bly();
+		double get_d_mly();
+		double get_d_mry();
+		double get_d_bry();
+		
 		double get_dd_bla();
 		double get_dd_mla();
 		double get_dd_mra();
 		double get_dd_bra();
+		
+		double get_dd_blx();
+		double get_dd_mlx();
+		double get_dd_mrx();
+		double get_dd_brx();
+		
+		double get_dd_bly();
+		double get_dd_mly();
+		double get_dd_mry();
+		double get_dd_bry();
 		
 		double get_PE();
 		double get_KE();
@@ -107,3 +133,4 @@ double dist(double d, double h, double i, double j);
 void   resetLog(Dynein* dyn);
 double square(double num);
 double cube(double num);
+double fifth(double num);
