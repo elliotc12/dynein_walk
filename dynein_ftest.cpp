@@ -7,7 +7,7 @@
 //Display output of generated dynein_motion_functions.cpp file for various conditions
 //For use in testing accuracy of replace.py translation 
 
-Dynein* initProtein(Dynein* dyn) {
+Dynein* initProtein(Dynein* dyn, double bla_value, double mla_value, double mra_value, double bra_value) {
 	dyn->set_blx(0);
 	dyn->set_bly(0);
 	
@@ -16,13 +16,20 @@ Dynein* initProtein(Dynein* dyn) {
 	dyn->set_d_mra(0);
 	dyn->set_d_bra(0);
 	
-	dyn->set_bla(bla_init);
-	dyn->set_mla(mla_init);
-	dyn->set_mra(mra_init);
-	dyn->set_bra(bra_init);
+	dyn->set_bla(bla_value);
+	dyn->set_mla(mla_value);
+	dyn->set_mra(mra_value);
+	dyn->set_bra(bra_value);
 }
 
 int main() {
+	
+	 fblx = 1;	 fbly = 1;
+	 fmlx = 1;	 fmly = 1;
+	 ftx = 1;	 fty = 1;
+	 fmrx = 1;	 fmry = 1;
+	 fbrx = 1;	 fbry = 1;
+	
 	const double lt = 10.0;
 	const double ls = 10.0;
 
@@ -44,16 +51,10 @@ int main() {
 	const double mla_value = (36.0 / 180) * M_PI;
 	const double mra_value = (36.0 / 180) * M_PI;
 	const double bra_value = (100.0 / 180) * M_PI;
-
-	const double bla_d_value = 0;
-	const double mla_d_value = 0;
-	const double mra_d_value = 0;
-	const double bra_d_value = 0;
 	
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
-	initProtein(dyn);
+	initProtein(dyn, bla_value, mla_value, mra_value, bra_value);
 	
-	printf("Ke: %f\n", 	   dyn->get_KE());
 	printf("dd_bla: %E\n", dyn->get_dd_bla());
 	printf("dd_mla: %E\n", dyn->get_dd_mla());
 	printf("dd_mra: %E\n", dyn->get_dd_mra());
@@ -65,6 +66,3 @@ int main() {
 }
 
 
-
-
-//Add functionality into solve.py to output the outputs of its dd functions to this program in a varg which will compare them with the replace.py'd function outputs for error checking.

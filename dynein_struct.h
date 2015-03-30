@@ -23,7 +23,7 @@ const double mra_init = (36.0 / 180) * M_PI;
 const double bra_init = (100.0 / 180) * M_PI;
 
 const double inctime = 0.1;
-const double runtime = 10000.0;
+const double runtime = 1000.0;
 
 extern double fblx, fbly;		// Brownian variables
 extern double fmlx, fmly;

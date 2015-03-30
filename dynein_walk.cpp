@@ -1,4 +1,3 @@
-//Do testing in Mathematica to numerically evaluate each acceleration equation and compare those results to those of the replace.py'd C a. functions
 #include <stdio.h>
 #include <stdlib.h>
 
