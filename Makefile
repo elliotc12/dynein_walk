@@ -1,6 +1,6 @@
 CPPFLAGS = -ggdb
 
-walk: replace.py Motion_Equations/* dynein_walk.cpp dynein_struct.cpp dynein_motion_functions.cpp dynein_struct.h
+walk: replace.py Motion_Equations/* dynein_walk.cpp dynein_struct.cpp dynein_struct.h
 	python replace.py
 	g++ dynein_walk.cpp dynein_struct.cpp dynein_motion_functions.cpp -o walk $(CPPFLAGS)
 	
