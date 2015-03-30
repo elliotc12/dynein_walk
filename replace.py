@@ -2,11 +2,10 @@
 
 import re
 import string
-# Converts the output of selective Mathematica scripts to efficient, syntactically correct C++ code
+# Converts the output of Mathematica scripts (in Standard Form) in Motion_Equations/ to C++ code
 
-# input: DyneinBrownianBothboundSolutionsUnsimplified.txt, DyneinBrownianLeftboundSolutionsUnsimplified.txt, DyneinBrownianRightboundSolutionsUnsimplified.txt, output: replaced.txt
-
-# Set the Mathematica output display mode to Standard Form
+# input: DyneinBrownianBothboundSolutionsUnsimplified.txt, DyneinBrownianLeftboundSolutionsUnsimplified.txt, DyneinBrownianRightboundSolutionsUnsimplified.txt, 
+# output: dynein_motion_functions.cpp
 
 text_both =  open('Motion_Equations/DyneinBrownianBothboundSolutionsUnsimplified.txt', 'r').read()
 text_left =  open('Motion_Equations/DyneinBrownianLeftboundSolutionsUnsimplified.txt', 'r').read()
