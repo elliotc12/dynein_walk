@@ -1,9 +1,7 @@
-//Do testing in Mathematica to numerically evaluate each acceleration equation and compare those results to those of the replace.py'd C a. functions
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "dynein_struct.h"
-
 
 Dynein* initProtein(Dynein* dyn) {
 	dyn->set_blx(0);
@@ -22,7 +20,7 @@ Dynein* initProtein(Dynein* dyn) {
 
 Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 	double t = 0;
-	//Change floats to const double, put temp declarations inside while loop
+	
 	double temp_bla;
 	double temp_mla;
 	double temp_mra;
@@ -65,6 +63,7 @@ Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 		}
 		
 		if (dyn->get_state() == RIGHTBOUND) {
+			
 		}
 		
 		if (dyn->get_state() == BOTHBOUND) {
