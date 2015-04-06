@@ -50,15 +50,14 @@ lb_T = \
 	0.5 * mt * (d_tx  **2 + d_ty  **2) + \
 	0.5 * mm * (d_mrx **2 + d_mry **2) + \
 	0.5 * mb * (d_brx **2 + d_bry **2)
-	
-lb_U = \
-	0.5 * kbl * (bla - ba) **2 + \
-	0.5 * kml * ((s.pi - bla) + mla - ma) **2 + \
-	0.5 * kt  * (s.pi - mla - mra - ta) **2 + \
-	0.5 * kmr * ((s.pi - bra) + mra - ma) **2 + \
-	b_mlx * mlx + b_tx * tx + b_mrx * mrx + b_brx * brx +\
-	b_mly * mly + b_ty * ty + b_mry * mry + b_bry * bry
-	
+
+lb_U = (0.5 * kbl * (bla - ba) **2 +
+	0.5 * kml * ((s.pi - bla) + mla - ma) **2 +
+	0.5 * kt  * (s.pi - mla - mra - ta) **2 +
+	0.5 * kmr * ((s.pi - bra) + mra - ma) **2 +
+	b_mlx*mlx + b_tx*tx + b_mrx*mrx + b_brx*brx +
+	b_mly*mly + b_ty*ty + b_mry*mry + b_bry*bry)
+
 lb_L = lb_T - lb_U
 
 # Rightbound Case ################
