@@ -20,10 +20,10 @@ const double ta = (108.0 / 180) * M_PI;
 const double bla_init = (108.0 / 180) * M_PI;
 const double mla_init = (36.0 / 180) * M_PI;
 const double mra_init = (36.0 / 180) * M_PI;
-const double bra_init = (100.0 / 180) * M_PI;
+const double bra_init = (108.0 / 180) * M_PI;
 
 const double inctime = 0.1;
-const double runtime = 1000.0;
+const double runtime = 500.0;
 
 extern double fblx, fbly;		// Brownian variables
 extern double fmlx, fmly;

@@ -3,12 +3,6 @@
 
 #include "dynein_struct.h"
 
-double fblx = 0;	double fbly = 0;
-double fmlx = 0;	double fmly = 0;
-double ftx = 0;		double fty = 0;
-double fmrx = 0;	double fmry = 0;
-double fbrx = 0;	double fbry = 0;
-
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
