@@ -1,12 +1,9 @@
 CPPFLAGS = -ggdb
 
 solve: Mathematica/*
-	math -nonprompt -run "<<Mathematica/Dyn_br_right_solve.nb"
-	math -nonprompt -run "<<MathematicaDyn_br_right_solve.nb"
-	math -nonprompt -run "<<Mathematica/Dyn_br_right_solve.nb"
-	mv Mathematica/DyneinBrownianRightboundSolutionsUnsimplified.txt ../Motion_Equations
-	mv Mathematica/DyneinBrownianBothboundSolutionsUnsimplified.txt ../Motion_Equations
-	mv Mathematica/DyneinBrownianLeftboundSolutionsUnsimplified.txt ../Motion_Equations
+	math -noprompt -script Mathematica/Dyn_br_left_solve.m
+	math -noprompt -script Mathematica/Dyn_br_both_solve.m
+	math -noprompt -script Mathematica/Dyn_br_right_solve.m
 
 walk: replace.py Motion_Equations/* dynein_walk.cpp dynein_struct.cpp utilities.cpp dynein_struct.h
 	python replace.py
