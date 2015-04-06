@@ -35,7 +35,8 @@ text = re.sub('\n', '', text)															# Remove all line breaks
 text = re.sub(r'[ ]{2,}', '', text)			 											# Delete all large spaces
 text = re.sub(r'(\([a-z]*)\^\\\[Prime\]\\\[Prime\]\)\[t\] \-\>', r'\n\1":\n', text)		# Change 'Derivative[1]...' to 'get_d_...'
 text = re.sub(r'Derivative\[1\]\[([a-z]*)\]\[t\]', r'get_d_\1()', text)
-text = re.sub(r'Derivative\[2\]\[([a-z]*)\]\[t\]', r'get_dd_\1()', text)					
+text = re.sub(r'Derivative\[2\]\[([a-z]*)\]\[t\]', r'get_dd_\1()', text)
+
 text = re.sub(r'([a-z]*)\[t\]', r'get_\1()', text)										# Change 'bla[t]' etc to 'get_bla(t)'
 text = re.sub('Pi', 'M_PI', text)														# Write pi in C
 text = re.sub(r'Sin', 'sin', text)														

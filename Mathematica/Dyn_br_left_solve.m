@@ -5,7 +5,7 @@ mlx[t_] := Ls*Cos[bla[t]]+blx;
 mly[t_] := Ls*Sin[bla[t]]+bly;
 
 tx[t_] := Lt*Cos[mla[t]]+mlx[t];
-ty[t_]:= Lt*Sin[mla[t]]+mly[t];
+ty[t_] := Lt*Sin[mla[t]]+mly[t];
 
 mrx[t_] := Lt*Cos[-mra[t]]+tx[t];
 mry[t_] := Lt*Sin[-mra[t]]+ty[t];

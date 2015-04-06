@@ -12,11 +12,13 @@ double fbrx = 0;	double fbry = 0;
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
-/*** Accessor Methods ***/
-
 void Dynein::set_state(states s) {
 	state = s;
 }
+
+
+
+/*** Set positions and velocities ***/
 
 void Dynein::set_blx(double d) {
 	blx = d;
@@ -58,6 +60,10 @@ void Dynein::set_d_bra(double d) {
 	d_bra = d;
 }
 
+
+
+/*** Get angular velocities ***/
+
 double Dynein::get_d_bla() {
 	return d_bla;
 }
@@ -74,69 +80,109 @@ double Dynein::get_d_bra() {
 	return d_bra;
 }
 
+
+
+/*** Get coordinate velocities ***/
+
 double Dynein::get_d_blx() {
-	return d_bla;
+	if (state == LEFTBOUND) return 0;
+	else if (state == BOTHBOUND) return 0;
+	else return ls * d_bla * sin(-bla) + get_d_mlx();
 }
 
 double Dynein::get_d_mlx() {
-	return d_mla;
+	if (state == LEFTBOUND) return ls * d_bla * -sin(bla);
+	else if (state == BOTHBOUND) return 0;
+	else return lt * d_mla * sin(-mla) + get_d_tx();
+}
+
+double Dynein::get_d_tx() {
+	if (state == LEFTBOUND) return lt * d_mla * -sin(mla) + get_d_mlx();
+	else if (state == BOTHBOUND) return 0;
+	else return lt * d_mra * -sin(mra) + get_d_mrx();
 }
 
 double Dynein::get_d_mrx() {
-	return d_mra;
+	if (state == LEFTBOUND) return lt * d_mra * sin(-mra) + get_d_tx();
+	else if (state == BOTHBOUND) return 0;
+	else return ls * d_bra * -sin(bra);
 }
 
 double Dynein::get_d_brx() {
-	return d_bra;
+	if (state == LEFTBOUND) return ls * d_bra * sin(-bra) + get_d_mrx();
+	else if (state == BOTHBOUND) return 0;
+	else return 0;
 }
 
 double Dynein::get_d_bly() {
-	return d_bla;
+	if (state == LEFTBOUND) return 0;
+	else if (state == BOTHBOUND) return 0;
+	else return ls * -d_bla * cos(-bla) + get_d_mly();
 }
 
 double Dynein::get_d_mly() {
-	return d_mla;
+	if (state == LEFTBOUND) return ls * d_bla * cos(bla);
+	else if (state == BOTHBOUND) return 0;
+	else return lt * -d_mla * cos(-mla) + get_d_ty();
+}
+
+double Dynein::get_d_ty() {
+	if (state == LEFTBOUND) return lt * d_mla * cos(mla) + get_d_mly();
+	else if (state == BOTHBOUND) return 0;
+	else return lt * d_mra * cos(mra) + get_d_mry();
 }
 
 double Dynein::get_d_mry() {
-	return d_mra;
+	if (state == LEFTBOUND) return lt * -d_mra * cos(-mra) + get_d_ty();
+	else if (state == BOTHBOUND) return 0;
+	else return ls * d_bra * cos(bra);
 }
 
 double Dynein::get_d_bry() {
-	return d_bra;
+	if (state == LEFTBOUND) return ls * -d_bra * cos(-bra) + get_d_mry();
+	else if (state == BOTHBOUND) return 0;
+	else return 0;
 }
 
+
+
+/*** Get cartesian accelerations ***/
+
 double Dynein::get_dd_blx() {
-	return d_bla;
+	return 0;
 }
 
 double Dynein::get_dd_mlx() {
-	return d_mla;
+	return 0;
 }
 
 double Dynein::get_dd_mrx() {
-	return d_mra;
+	return 0;
 }
 
 double Dynein::get_dd_brx() {
-	return d_bra;
+	return 0;
 }
 
 double Dynein::get_dd_bly() {
-	return d_bla;
+	return 0;
 }
 
 double Dynein::get_dd_mly() {
-	return d_mla;
+	return 0;
 }
 
 double Dynein::get_dd_mry() {
-	return d_mra;
+	return 0;
 }
 
 double Dynein::get_dd_bry() {
-	return d_bra;
+	return 0;
 }
+
+
+
+/*** Get coordinates ***/
 
 double Dynein::get_blx() {
 	if (state == LEFTBOUND) return blx;
@@ -198,6 +244,10 @@ double Dynein::get_bry(){
 	else if (state == BOTHBOUND) return 0;
 }
 
+
+
+/*** Get angles ***/
+
 double Dynein::get_bla() {
 	return bla;
 }
@@ -217,6 +267,10 @@ double Dynein::get_bra() {
 states Dynein::get_state() {
 	return state;
 }
+
+
+
+/*** Get energies ***/
 
 double Dynein::get_PE() {
 	return (1.0/2) * kbl * pow(get_bla() - ba, 2) + (1.0/2) * kml * pow(M_PI - get_bla() + get_mla() - ma, 2) + (1.0/2) * kt * 
@@ -242,3 +296,5 @@ void Dynein::log(double t) {
 	get_mry(), get_brx(), get_bry(), get_state());
 	fclose(data_file);
 }
+
+

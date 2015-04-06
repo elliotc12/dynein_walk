@@ -57,15 +57,17 @@ class Dynein {
 		void set_d_mra(double d);
 		void set_d_bra(double d);
 		
-		double get_bly();
+		
 		double get_blx();
 		double get_mlx();
-		double get_mly();
 		double get_tx();
-		double get_ty();
 		double get_mrx();
-		double get_mry();
 		double get_brx();
+		
+		double get_bly();
+		double get_mly();
+		double get_ty();
+		double get_mry();
 		double get_bry();
 		
 		double get_bla();
@@ -80,11 +82,13 @@ class Dynein {
 		
 		double get_d_blx();
 		double get_d_mlx();
+		double get_d_tx();
 		double get_d_mrx();
 		double get_d_brx();
 		
 		double get_d_bly();
 		double get_d_mly();
+		double get_d_ty();
 		double get_d_mry();
 		double get_d_bry();
 		
