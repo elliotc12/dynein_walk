@@ -143,35 +143,51 @@ double Dynein::get_d_bry() {
 /*** Get cartesian accelerations ***/
 
 double Dynein::get_dd_blx() {
-	return 0;
+	if (state == LEFTBOUND) return 0
+	else if (state == BOTHBOUND) return 0;
+	else return square(-d_bla) * (-cos(-bla)) + dd_bla*sin(-bla) + get_dd_mlx();
 }
 
 double Dynein::get_dd_mlx() {
-	return 0;
+	if (state == LEFTBOUND) return square(d_bla) * (-cos(bla)) - dd_bla*sin(bla);
+	else if (state == BOTHBOUND) return 0;
+	else return square(-d_mla) * (-cos(-mla)) + dd_mla*sin(-mla) + get_dd_mrx();
 }
 
 double Dynein::get_dd_mrx() {
-	return 0;
+	if (state == LEFTBOUND) return square(-d_mra) * (-cos(-mra)) + dd_mra*sin(-mra) + get_dd_mlx(); 	// Derivative should have a negative sign compared to others?
+	else if (state == BOTHBOUND) return 0;
+	else return square(d_mra) * (-cos(mra)) - dd_mra*sin(mra);
 }
 
 double Dynein::get_dd_brx() {
-	return 0;
+	if (state == LEFTBOUND) return square(-d_bra) * (-cos(-bra)) + dd_bra*sin(-bra) + get_dd_mrx();
+	else if (state == BOTHBOUND) return 0;
+	else return 0;
 }
 
 double Dynein::get_dd_bly() {
-	return 0;
+	if (state == LEFTBOUND) return 0;
+	else if (state == BOTHBOUND) return 0;
+	else return -dd_bla * cos(-bla) + square(-d_bla) * sin(-bla) + get_dd_mly();
 }
 
 double Dynein::get_dd_mly() {
-	return 0;
+	if (state == LEFTBOUND) return dd_mla * cos(mla) - square(d_mla) * sin(mla);
+	else if (state == BOTHBOUND) return 0;
+	else return -dd_mla * cos(-mla) + square(-d_mla) * sin(-mla) + get_dd_mry();
 }
 
 double Dynein::get_dd_mry() {
-	return 0;
+	if (state == LEFTBOUND) return -dd_mra * cos(-mra) + square(-d_mra) * sin(-mra) + get_dd_mly();
+	else if (state == BOTHBOUND) return 0;
+	else return dd_mra * cos(mra) - square(d_mra) * sin(mra);
 }
 
 double Dynein::get_dd_bry() {
-	return 0;
+	if (state == LEFTBOUND) return -dd_bra * cos(-bra) + square(-d_bra) * sin(-bra) + get_dd_mry();
+	else if (state == BOTHBOUND) return 0;
+	else return 0;
 }
 
 
