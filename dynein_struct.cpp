@@ -86,19 +86,19 @@ double Dynein::get_d_blx() {
 
 double Dynein::get_d_mlx() {
 	if (state == LEFTBOUND) return ls * d_bla * -sin(bla);
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return -d_bla * ls * sin(bla);
 	else return lt * d_mla * sin(-mla) + get_d_tx();
 }
 
 double Dynein::get_d_tx() {
 	if (state == LEFTBOUND) return lt * d_mla * -sin(mla) + get_d_mlx();
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + get_d_mlx() + get_d_mrx());
 	else return lt * d_mra * -sin(mra) + get_d_mrx();
 }
 
 double Dynein::get_d_mrx() {
 	if (state == LEFTBOUND) return lt * d_mra * sin(-mra) + get_d_tx();
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return -d_bra * ls * sin(bra);
 	else return ls * d_bra * -sin(bra);
 }
 
@@ -116,19 +116,19 @@ double Dynein::get_d_bly() {
 
 double Dynein::get_d_mly() {
 	if (state == LEFTBOUND) return ls * d_bla * cos(bla);
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return d_bla * ls * cos(bla);
 	else return lt * -d_mla * cos(-mla) + get_d_ty();
 }
 
 double Dynein::get_d_ty() {
 	if (state == LEFTBOUND) return lt * d_mla * cos(mla) + get_d_mly();
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + get_d_mly() + get_d_mry());
 	else return lt * d_mra * cos(mra) + get_d_mry();
 }
 
 double Dynein::get_d_mry() {
 	if (state == LEFTBOUND) return lt * -d_mra * cos(-mra) + get_d_ty();
-	else if (state == BOTHBOUND) return 0;
+	else if (state == BOTHBOUND) return d_bra * ls * cos(mra);
 	else return ls * d_bra * cos(bra);
 }
 
@@ -143,25 +143,31 @@ double Dynein::get_d_bry() {
 /*** Get cartesian accelerations ***/
 
 double Dynein::get_dd_blx() {
-	if (state == LEFTBOUND) return 0
+	if (state == LEFTBOUND) return 0;
 	else if (state == BOTHBOUND) return 0;
-	else return square(-d_bla) * (-cos(-bla)) + dd_bla*sin(-bla) + get_dd_mlx();
+	else return square(-d_bla) * (-cos(-bla)) + get_dd_bla() * sin(-bla) + get_dd_mlx();
 }
 
 double Dynein::get_dd_mlx() {
-	if (state == LEFTBOUND) return square(d_bla) * (-cos(bla)) - dd_bla*sin(bla);
-	else if (state == BOTHBOUND) return 0;
-	else return square(-d_mla) * (-cos(-mla)) + dd_mla*sin(-mla) + get_dd_mrx();
+	if (state == LEFTBOUND) return square(d_bla) * (-cos(bla)) - get_dd_bla() * sin(bla);
+	else if (state == BOTHBOUND) return -get_dd_bla() * ls * sin(bla) + -square(d_bla) * ls * cos(bla);
+	else return square(-d_mla) * (-cos(-mla)) + get_dd_mla() * sin(-mla) + get_dd_tx();
+}
+
+double Dynein::get_dd_tx() {
+	if (state == LEFTBOUND) return square(d_mla) * (-cos(mla)) - get_dd_mra() * sin(mra) + get_dd_mlx();
+	else if (state == BOTHBOUND) return lt/2 * (-get_dd_mra() * sin(mra) + -square(d_mra) * cos(mra) + -get_dd_mla() * sin(mla) + -square(d_mla) * cos(mla) + get_d_mlx() + get_d_mrx());
+	else return square(d_mra) * (-cos(mra)) - get_dd_mra() * sin(mra) + get_dd_mrx();
 }
 
 double Dynein::get_dd_mrx() {
-	if (state == LEFTBOUND) return square(-d_mra) * (-cos(-mra)) + dd_mra*sin(-mra) + get_dd_mlx(); 	// Derivative should have a negative sign compared to others?
-	else if (state == BOTHBOUND) return 0;
-	else return square(d_mra) * (-cos(mra)) - dd_mra*sin(mra);
+	if (state == LEFTBOUND) return square(-d_mra) * (-cos(-mra)) + get_dd_mra() * sin(-mra) + get_dd_tx(); 	// Derivative should have a negative sign compared to others?
+	else if (state == BOTHBOUND) return -get_dd_bra() * ls * sin(bra) + -square(d_bra) * ls * cos(bra);
+	else return square(d_bra) * (-cos(bra)) - get_dd_bra() * sin(bra);
 }
 
 double Dynein::get_dd_brx() {
-	if (state == LEFTBOUND) return square(-d_bra) * (-cos(-bra)) + dd_bra*sin(-bra) + get_dd_mrx();
+	if (state == LEFTBOUND) return square(-d_bra) * -cos(-bra) + get_dd_bra() * sin(-bra) + get_dd_mrx();
 	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }
@@ -169,23 +175,29 @@ double Dynein::get_dd_brx() {
 double Dynein::get_dd_bly() {
 	if (state == LEFTBOUND) return 0;
 	else if (state == BOTHBOUND) return 0;
-	else return -dd_bla * cos(-bla) + square(-d_bla) * sin(-bla) + get_dd_mly();
+	else return -get_dd_bla() * cos(-bla) + square(-d_bla) * sin(-bla) + get_dd_mly();
 }
 
 double Dynein::get_dd_mly() {
-	if (state == LEFTBOUND) return dd_mla * cos(mla) - square(d_mla) * sin(mla);
-	else if (state == BOTHBOUND) return 0;
-	else return -dd_mla * cos(-mla) + square(-d_mla) * sin(-mla) + get_dd_mry();
+	if (state == LEFTBOUND) return get_dd_bla() * cos(bla) - square(d_bla) * sin(bla);
+	else if (state == BOTHBOUND) return get_dd_bla() * ls * cos(bla) + -square(d_bla) * ls * sin(bla);
+	else return -get_dd_mla() * cos(-mla) + square(-d_mla) * sin(-mla) + get_dd_ty();
+}
+
+double Dynein::get_dd_ty() {
+	if (state == LEFTBOUND) return get_dd_mla() * cos(mla) - square(d_mla) * sin(mla) + get_dd_mly();
+	else if (state == BOTHBOUND) return lt/2 * (get_dd_mra() * cos(mra) + -square(d_mra) * sin(mra) + get_dd_mla() * cos(mla) + -square(d_mla) * sin(mla) + get_d_mly() + get_d_mry());
+	else return get_dd_mra() * cos(mra) - square(d_mra) * sin(mra) + get_dd_mry();
 }
 
 double Dynein::get_dd_mry() {
-	if (state == LEFTBOUND) return -dd_mra * cos(-mra) + square(-d_mra) * sin(-mra) + get_dd_mly();
-	else if (state == BOTHBOUND) return 0;
-	else return dd_mra * cos(mra) - square(d_mra) * sin(mra);
+	if (state == LEFTBOUND) return -get_dd_mra() * cos(-mra) + square(-d_mra) * sin(-mra) + get_dd_ty();
+	else if (state == BOTHBOUND) return get_dd_bra() * ls * cos(mra) + -square(d_bra) * ls * sin(mra);
+	else return get_dd_bra() * cos(bra) - square(d_bra) * sin(bra);
 }
 
 double Dynein::get_dd_bry() {
-	if (state == LEFTBOUND) return -dd_bra * cos(-bra) + square(-d_bra) * sin(-bra) + get_dd_mry();
+	if (state == LEFTBOUND) return -get_dd_bra() * cos(-bra) + square(-d_bra) * sin(-bra) + get_dd_mry();
 	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }
