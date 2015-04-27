@@ -99,11 +99,13 @@ class Dynein {
 		
 		double get_dd_blx();
 		double get_dd_mlx();
+		double get_dd_tx();
 		double get_dd_mrx();
 		double get_dd_brx();
 		
 		double get_dd_bly();
 		double get_dd_mly();
+		double get_dd_ty();
 		double get_dd_mry();
 		double get_dd_bry();
 		
