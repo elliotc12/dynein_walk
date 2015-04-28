@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     28815,        851]
-NotebookOptionsPosition[     28056,        823]
-NotebookOutlinePosition[     28393,        838]
-CellTagsIndexPosition[     28350,        835]
+NotebookDataLength[     29772,        888]
+NotebookOptionsPosition[     28942,        857]
+NotebookOutlinePosition[     29279,        872]
+CellTagsIndexPosition[     29236,        869]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -681,7 +681,7 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"(", 
       RowBox[{"50.0", "/", "180"}], ")"}], "*", "Pi"}]}], ";"}], 
-  "\[IndentingNewLine]"}], "\n", 
+  "\n"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"dbraVal", "=", "1"}], ";"}], "\n", 
  RowBox[{
@@ -704,8 +704,7 @@ encountered. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
 ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
 ButtonData:>\\\"paclet:ref/message/General/infy\\\", ButtonNote -> \
 \\\"Power::infy\\\"]\\)\"\>"}]], "Message", "MSG",
- CellChangeTimes->{3.639077720395754*^9, 3.6390779326363983`*^9, 
-  3.639078138256322*^9}],
+ CellChangeTimes->{3.639206514973976*^9, 3.639206576531088*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -717,8 +716,7 @@ encountered. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
 ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
 ButtonData:>\\\"paclet:ref/message/General/infy\\\", ButtonNote -> \
 \\\"Power::infy\\\"]\\)\"\>"}]], "Message", "MSG",
- CellChangeTimes->{3.639077720395754*^9, 3.6390779326363983`*^9, 
-  3.639078138296563*^9}],
+ CellChangeTimes->{3.639206514973976*^9, 3.639206576567548*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -730,8 +728,7 @@ encountered. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
 ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
 ButtonData:>\\\"paclet:ref/message/General/infy\\\", ButtonNote -> \
 \\\"Power::infy\\\"]\\)\"\>"}]], "Message", "MSG",
- CellChangeTimes->{3.639077720395754*^9, 3.6390779326363983`*^9, 
-  3.639078138325151*^9}],
+ CellChangeTimes->{3.639206514973976*^9, 3.6392065765948753`*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -744,8 +741,7 @@ calculation. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
 ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
 ButtonData:>\\\"paclet:ref/message/General/stop\\\", ButtonNote -> \
 \\\"General::stop\\\"]\\)\"\>"}]], "Message", "MSG",
- CellChangeTimes->{3.639077720395754*^9, 3.6390779326363983`*^9, 
-  3.63907813834199*^9}],
+ CellChangeTimes->{3.639206514973976*^9, 3.6392065766092253`*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -785,40 +781,78 @@ encountered. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
 ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
 ButtonData:>\\\"paclet:ref/message/General/indet\\\", ButtonNote -> \
 \\\"Infinity::indet\\\"]\\)\"\>"}]], "Message", "MSG",
- CellChangeTimes->{3.639077720395754*^9, 3.6390779326363983`*^9, 
-  3.63907813837967*^9}]
+ CellChangeTimes->{3.639206514973976*^9, 3.6392065766470613`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[{
- RowBox[{"ddbla", "[", "t", "]"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"ddmla", "[", "t", "]"}], " "}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"WriteString", "[", 
+    RowBox[{
+    "$Output", ",", 
+     "\"\<\\n\\nMathematica Rightbound Accelerations:\\n\\n\>\""}], "]"}], 
+   ";"}], "\[IndentingNewLine]"}], "\n", 
  RowBox[{
-  RowBox[{"ddmra", "[", "t", "]"}], " "}], "\[IndentingNewLine]", 
+  RowBox[{"WriteString", "[", 
+   RowBox[{"$Output", ",", "\"\<ddbla: \>\""}], "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"ddbra", "[", "t", "]"}], " "}]}], "Input",
+  RowBox[{
+   RowBox[{"Print", "[", 
+    RowBox[{"ddbla", "[", "t", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"WriteString", "[", 
+   RowBox[{"$Output", ",", "\"\<ddmla: \>\""}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Print", "[", 
+    RowBox[{"ddmla", "[", "t", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"WriteString", "[", 
+   RowBox[{"$Output", ",", "\"\<ddmra: \>\""}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Print", "[", 
+    RowBox[{"ddmra", "[", "t", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"WriteString", "[", 
+   RowBox[{"$Output", ",", "\"\<ddbra: \>\""}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Print", "[", 
+   RowBox[{"ddbra", "[", "t", "]"}], "]"}], ";"}]}], "Input",
  CellChangeTimes->{{3.630545636270973*^9, 3.63054564961172*^9}, {
-  3.639077622532187*^9, 3.639077635836801*^9}}],
+  3.639077622532187*^9, 3.639077635836801*^9}, {3.6392064757712812`*^9, 
+  3.6392064848787746`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+
+
+Mathematica Rightbound Accelerations:
+
+ddbla: ddmla: ddmra: ddbra: \
+\>", "Print",
+ CellChangeTimes->{3.6392065151373034`*^9, 3.639206576728086*^9}],
 
 Cell[BoxData[
- RowBox[{"-", "0.32716481197663727`"}]], "Output",
- CellChangeTimes->{3.6390777205596113`*^9, 3.639077932798308*^9, 
-  3.639078138425591*^9}],
+ RowBox[{"-", "0.32716481197663727`"}]], "Print",
+ CellChangeTimes->{3.6392065151373034`*^9, 3.639206576728347*^9}],
 
 Cell[BoxData[
- RowBox[{"-", "0.06675715499398827`"}]], "Output",
- CellChangeTimes->{3.6390777205596113`*^9, 3.639077932798308*^9, 
-  3.639078138426139*^9}],
+ RowBox[{"-", "0.06675715499398827`"}]], "Print",
+ CellChangeTimes->{3.6392065151373034`*^9, 3.639206576728907*^9}],
 
-Cell[BoxData["ComplexInfinity"], "Output",
- CellChangeTimes->{3.6390777205596113`*^9, 3.639077932798308*^9, 
-  3.6390781384265537`*^9}],
+Cell[BoxData["ComplexInfinity"], "Print",
+ CellChangeTimes->{3.6392065151373034`*^9, 3.6392065767293463`*^9}],
 
-Cell[BoxData["Indeterminate"], "Output",
- CellChangeTimes->{3.6390777205596113`*^9, 3.639077932798308*^9, 
-  3.639078138426959*^9}]
+Cell[BoxData["Indeterminate"], "Print",
+ CellChangeTimes->{3.6392065151373034`*^9, 3.639206576729792*^9}]
+}, Open  ]]
 }, Open  ]]
 },
 WindowSize->{1920, 1029},
@@ -840,18 +874,21 @@ Notebook[{
 Cell[557, 20, 10689, 301, 825, "Input"],
 Cell[CellGroupData[{
 Cell[11271, 325, 11296, 369, 1177, "Input"],
-Cell[22570, 696, 494, 11, 49, "Message"],
-Cell[23067, 709, 494, 11, 49, "Message"],
-Cell[23564, 722, 494, 11, 49, "Message"],
-Cell[24061, 735, 576, 12, 23, "Message"],
-Cell[24640, 749, 2370, 39, 95, "Message"]
+Cell[22570, 696, 467, 10, 49, "Message"],
+Cell[23040, 708, 467, 10, 49, "Message"],
+Cell[23510, 720, 469, 10, 49, "Message"],
+Cell[23982, 732, 552, 11, 23, "Message"],
+Cell[24537, 745, 2346, 38, 95, "Message"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[27047, 793, 405, 9, 99, "Input"],
-Cell[27455, 804, 155, 3, 32, "Output"],
-Cell[27613, 809, 155, 3, 32, "Output"],
-Cell[27771, 814, 135, 2, 32, "Output"],
-Cell[27909, 818, 131, 2, 65, "Output"]
+Cell[26920, 788, 1325, 40, 330, "Input"],
+Cell[CellGroupData[{
+Cell[28270, 832, 160, 7, 87, "Print"],
+Cell[28433, 841, 129, 2, 23, "Print"],
+Cell[28565, 845, 129, 2, 23, "Print"],
+Cell[28697, 849, 109, 1, 23, "Print"],
+Cell[28809, 852, 105, 1, 23, "Print"]
+}, Open  ]]
 }, Open  ]]
 }
 ]

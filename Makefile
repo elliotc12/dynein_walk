@@ -4,15 +4,23 @@ solve: Mathematica/*
 	math -noprompt -script Mathematica/Dyn_br_left_solve.m
 	math -noprompt -script Mathematica/Dyn_br_both_solve.m
 	math -noprompt -script Mathematica/Dyn_br_right_solve.m
-
-walk: replace.py Motion_Equations/* dynein_walk.cpp dynein_struct.cpp utilities.cpp dynein_struct.h
+	
+motionequations: replace.py Motion_Equations/*
 	python replace.py
+
+walk: dynein_walk.cpp dynein_struct.cpp utilities.cpp dynein_struct.h
+	make motionequations
 	g++ dynein_walk.cpp dynein_struct.cpp dynein_motion_functions.cpp utilities.cpp -o walk $(CPPFLAGS)
 	./walk
 	
-test: replace.py Motion_Equations/* dynein_ftest.cpp dynein_struct.cpp dynein_motion_functions.cpp dynein_struct.h
-	python replace.py
-	g++ dynein_ftest.cpp dynein_struct.cpp dynein_motion_functions.cpp -o ftest $(CPPFLAGS)
+test: dynein_ftest.cpp dynein_struct.cpp dynein_motion_functions.cpp dynein_struct.h
+	make motionequations
+	g++ dynein_ftest.cpp dynein_struct.cpp dynein_motion_functions.cpp utilities.cpp -o ftest $(CPPFLAGS)
+	
+	math -noprompt -script Mathematica/Dyn_br_left_test.m
+	#math -noprompt -script Mathematica/Dyn_br_both_test.m
+	math -noprompt -script Mathematica/Dyn_br_right_test.m
+	./ftest
 
 clean:
 	rm -f *.o

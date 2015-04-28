@@ -5,7 +5,13 @@
 #include "dynein_struct.h"
 
 //Display output of generated dynein_motion_functions.cpp file for various conditions
-//For use in testing accuracy of replace.py translation 
+//For use in testing accuracy of replace.py translation
+
+     double fblx = 1;	 double fbly = 1;
+	 double fmlx = 1;	 double fmly = 1;
+	 double ftx = 1;	 double fty = 1;
+	 double fmrx = 1;	 double fmry = 1;
+	 double fbrx = 1;	 double fbry = 1;
 
 Dynein* initProtein(Dynein* dyn, double bla_value, double mla_value, double mra_value, double bra_value) {
 	dyn->set_blx(0);
@@ -23,12 +29,6 @@ Dynein* initProtein(Dynein* dyn, double bla_value, double mla_value, double mra_
 }
 
 int main() {
-	
-	 fblx = 1;	 fbly = 1;
-	 fmlx = 1;	 fmly = 1;
-	 ftx = 1;	 fty = 1;
-	 fmrx = 1;	 fmry = 1;
-	 fbrx = 1;	 fbry = 1;
 	
 	const double lt = 10.0;
 	const double ls = 10.0;
@@ -55,6 +55,15 @@ int main() {
 	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
 	initProtein(dyn, bla_value, mla_value, mra_value, bra_value);
 	
+	dyn->set_state(LEFTBOUND);
+	printf("\n\nC Leftbound Accelerations:\n\n");
+	printf("dd_bla: %E\n", dyn->get_dd_bla());
+	printf("dd_mla: %E\n", dyn->get_dd_mla());
+	printf("dd_mra: %E\n", dyn->get_dd_mra());
+	printf("dd_bra: %E\n", dyn->get_dd_bra());
+	
+	dyn->set_state(RIGHTBOUND);
+	printf("\n\nC Rightbound Accelerations:\n\n");
 	printf("dd_bla: %E\n", dyn->get_dd_bla());
 	printf("dd_mla: %E\n", dyn->get_dd_mla());
 	printf("dd_mra: %E\n", dyn->get_dd_mra());
