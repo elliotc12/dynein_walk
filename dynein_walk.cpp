@@ -75,12 +75,10 @@ Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 		if (dyn->get_state() == BOTHBOUND) {
 			
 		}
-																																																																																																			
 		dyn->log(t);
 		
 		t += dt;
 	}
-	
 }
 
 
