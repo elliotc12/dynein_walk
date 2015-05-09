@@ -62,13 +62,14 @@ int main() {
 	printf("dd_mra: %E\n", dyn->get_dd_mra());
 	printf("dd_bra: %E\n", dyn->get_dd_bra());
 	
+	/*
 	dyn->set_state(RIGHTBOUND);
 	printf("\n\nC Rightbound Accelerations:\n\n");
 	printf("dd_bla: %E\n", dyn->get_dd_bla());
 	printf("dd_mla: %E\n", dyn->get_dd_mla());
 	printf("dd_mra: %E\n", dyn->get_dd_mra());
 	printf("dd_bra: %E\n", dyn->get_dd_bra());
-	
+	*/
 	free(dyn);
 	dyn = NULL;
 	

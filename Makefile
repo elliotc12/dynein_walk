@@ -19,7 +19,7 @@ test: dynein_ftest.cpp dynein_struct.cpp dynein_motion_functions.cpp dynein_stru
 	
 	math -noprompt -script Mathematica/Dyn_br_left_test.m
 	#math -noprompt -script Mathematica/Dyn_br_both_test.m
-	math -noprompt -script Mathematica/Dyn_br_right_test.m
+	#math -noprompt -script Mathematica/Dyn_br_right_test.m
 	./ftest
 
 clean:
