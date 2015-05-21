@@ -37,21 +37,7 @@ Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 	double temp_d_mra = 0;
 	double temp_d_bra = 0;
 	
-	double temp_dd_bla = 0;
-	double temp_dd_mla = 0;
-	double temp_dd_mra = 0;
-	double temp_dd_bra = 0;
-	
 	while( t < tf ) {
-		temp_d_bla = dyn->get_d_bla() + dyn->get_dd_bla() * dt;
-		temp_d_mla = dyn->get_d_mla() + dyn->get_dd_mla() * dt;
-		temp_d_mra = dyn->get_d_mra() + dyn->get_dd_mra() * dt;
-		temp_d_bra = dyn->get_d_bra() + dyn->get_dd_bra() * dt;
-		
-		dyn->set_d_bla(temp_d_bla);
-		dyn->set_d_mla(temp_d_mla);
-		dyn->set_d_mra(temp_d_mra);
-		dyn->set_d_bra(temp_d_bra);
 		
 		temp_bla = dyn->get_bla() + dyn->get_d_bla() * dt;
 		temp_mla = dyn->get_mla() + dyn->get_d_mla() * dt;
@@ -63,18 +49,6 @@ Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 		dyn->set_mra(temp_mra);
 		dyn->set_bra(temp_bra);
 		
-		if (dyn->get_state() == LEFTBOUND) {
-			if (dyn->get_brx() <= -0.1)
-				dyn->set_state(BOTHBOUND);
-		}
-		
-		if (dyn->get_state() == RIGHTBOUND) {
-			
-		}
-		
-		if (dyn->get_state() == BOTHBOUND) {
-			
-		}
 		dyn->log(t);
 		
 		t += dt;

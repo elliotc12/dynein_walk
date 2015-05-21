@@ -33,6 +33,10 @@ double cube(double num) {
 	return num * num * num;
 }
 
+double fourth(double num) {
+	return num * num * num * num;
+}
+
 double fifth(double num) {
 	return num * num * num * num * num;
 }

@@ -55,27 +55,6 @@ void Dynein::set_d_bra(double d) {
 }
 
 
-
-/*** Get angular velocities ***/
-
-double Dynein::get_d_bla() {
-	return d_bla;
-}
-
-double Dynein::get_d_mla() {
-	return d_mla;
-}
-
-double Dynein::get_d_mra() {
-	return d_mra;
-}
-
-double Dynein::get_d_bra() {
-	return d_bra;
-}
-
-
-
 /*** Get coordinate velocities ***/
 
 double Dynein::get_d_blx() {
@@ -139,9 +118,8 @@ double Dynein::get_d_bry() {
 }
 
 
-
 /*** Get cartesian accelerations ***/
-
+/*
 double Dynein::get_dd_blx() {
 	if (state == LEFTBOUND) return 0;
 	else if (state == BOTHBOUND) return 0;
@@ -201,7 +179,7 @@ double Dynein::get_dd_bry() {
 	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }
-
+/*
 
 
 /*** Get coordinates ***/
@@ -266,6 +244,87 @@ double Dynein::get_bry(){
 	else if (state == BOTHBOUND) return 0;
 }
 
+
+/*** Get forces ***/
+double Dynein::get_f_blx() {
+	return 0;
+}
+
+double Dynein::get_f_mlx() {
+	return 0;
+}
+
+double Dynein::get_f_tx() {
+	return 0;
+}
+
+double Dynein::get_f_mrx() {
+	return 0;
+}
+
+double Dynein::get_f_brx() {
+	return 0;
+}
+
+double Dynein::get_r_blx() {
+	return 0;
+}
+
+double Dynein::get_r_mlx() {
+	return 0;
+}
+
+double Dynein::get_r_tx() {
+	return 0.1;
+}
+
+double Dynein::get_r_mrx() {
+	return 0;
+}
+
+double Dynein::get_r_brx() {
+	return 0;
+}
+
+double Dynein::get_f_bly() {
+	return 0;
+}
+
+double Dynein::get_f_mly() {
+	return 0;
+}
+
+double Dynein::get_f_ty() {
+	return 0;
+}
+
+double Dynein::get_f_mry() {
+	return 0;
+}
+
+double Dynein::get_f_bry() {
+	return 0;
+}
+
+double Dynein::get_r_bly() {
+	return 0;
+}
+
+double Dynein::get_r_mly() {
+	return 0;
+}
+
+double Dynein::get_r_ty() {
+	return 0;
+}
+
+double Dynein::get_r_mry() {
+	return 0;
+}
+
+double Dynein::get_r_bry() {
+	return 0;
+}
 
 
 /*** Get angles ***/

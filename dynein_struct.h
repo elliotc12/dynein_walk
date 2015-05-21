@@ -9,6 +9,8 @@ const double kmr = 1.0;
 const double kbl = 1.0;
 const double kbr = 1.0;
 
+const double g = 1;
+
 const double mb = 1.0; // Higher mass constant -> less movement
 const double mm = 1.0;
 const double mt = 1.0;
@@ -68,17 +70,7 @@ public:
   double get_ty();
   double get_mry();
   double get_bry();
-
-  double get_bla();
-  double get_mla();
-  double get_mra();
-  double get_bra();
-
-  double get_d_bla();
-  double get_d_mla();
-  double get_d_mra();
-  double get_d_bra();
-
+  
   double get_d_blx();
   double get_d_mlx();
   double get_d_tx();
@@ -91,22 +83,44 @@ public:
   double get_d_mry();
   double get_d_bry();
 
-  double get_dd_bla();
-  double get_dd_mla();
-  double get_dd_mra();
-  double get_dd_bra();
+  double get_bla();
+  double get_mla();
+  double get_mra();
+  double get_bra();
 
-  double get_dd_blx();
-  double get_dd_mlx();
-  double get_dd_tx();
-  double get_dd_mrx();
-  double get_dd_brx();
+  double get_d_bla();
+  double get_d_mla();
+  double get_d_mra();
+  double get_d_bra();
+  
+  double get_ls_force();
+  double get_lt_force();
+  double get_rt_force();
+  double get_rs_force();
 
-  double get_dd_bly();
-  double get_dd_mly();
-  double get_dd_ty();
-  double get_dd_mry();
-  double get_dd_bry();
+  double get_f_blx();
+  double get_f_mlx();
+  double get_f_tx();
+  double get_f_mrx();
+  double get_f_brx();
+  
+  double get_f_bly();
+  double get_f_mly();
+  double get_f_ty();
+  double get_f_mry();
+  double get_f_bry();
+  
+  double get_r_blx();
+  double get_r_mlx();
+  double get_r_tx();
+  double get_r_mrx();
+  double get_r_brx();
+  
+  double get_r_bly();
+  double get_r_mly();
+  double get_r_ty();
+  double get_r_mry();
+  double get_r_bry();
 
   double get_PE();
   double get_KE();
@@ -114,6 +128,7 @@ public:
   states get_state();
 
   void log(double t);
+  
 private:
   double bla;
   double mla;
@@ -137,4 +152,5 @@ double dist(double d, double h, double i, double j);
 void   resetLog(Dynein* dyn);
 double square(double num);
 double cube(double num);
+double fourth(double num);
 double fifth(double num);
