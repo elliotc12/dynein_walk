@@ -9,7 +9,7 @@ double ftx = 0;			double fty = 0;
 double fmrx = 0;		double fmry = 0;
 double fbrx = 0;		double fbry = 0;
 
-Dynein* initProtein(Dynein* dyn) {
+void initProtein(Dynein* dyn) {
 	dyn->set_blx(0);
 	dyn->set_bly(0);
 	
@@ -24,7 +24,7 @@ Dynein* initProtein(Dynein* dyn) {
 	dyn->set_bra(bra_init);
 }
 
-Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
+void simulateProtein(Dynein* dyn, double dt, double tf) {
 	double t = 0;
 	
 	double temp_bla;
@@ -32,12 +32,9 @@ Dynein* simulateProtein(Dynein* dyn, double dt, double tf) {
 	double temp_mra;
 	double temp_bra;
 	
-	double temp_d_bla = 0;
-	double temp_d_mla = 0;
-	double temp_d_mra = 0;
-	double temp_d_bra = 0;
-	
 	while( t < tf ) {
+		
+		dyn->next_timestep();
 		
 		temp_bla = dyn->get_bla() + dyn->get_d_bla() * dt;
 		temp_mla = dyn->get_mla() + dyn->get_d_mla() * dt;

@@ -3,13 +3,13 @@
 const double lt = 10.0;
 const double ls = 10.0;
 
+const double g = 1;
+
 const double kt  = 1.0; // Higher spring constant -> less deviation from equilibrium
 const double kml = 1.0;
 const double kmr = 1.0;
 const double kbl = 1.0;
 const double kbr = 1.0;
-
-const double g = 1;
 
 const double mb = 1.0; // Higher mass constant -> less movement
 const double mm = 1.0;
@@ -128,6 +128,7 @@ public:
   states get_state();
 
   void log(double t);
+  void next_timestep();
   
 private:
   double bla;
@@ -135,13 +136,33 @@ private:
   double mra;
   double bra;
 
+  double blx;
+  double bly;
+
   double d_bla; //Angular Velocities
   double d_mla;
   double d_mra;
   double d_bra;
 
-  double blx;
-  double bly;
+  double r_blx; //Brownian forces
+  double r_mlx;
+  double r_mrx;
+  double r_brx;
+
+  double r_bly;
+  double r_mly;
+  double r_mry;
+  double r_bry;
+
+  double f_blx; //External forces
+  double f_mlx;
+  double f_mrx;
+  double f_brx;
+
+  double f_bly;
+  double f_mly;
+  double f_mry;
+  double f_bry;
 
   states state;
 };
