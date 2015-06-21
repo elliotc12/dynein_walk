@@ -4,9 +4,6 @@
 
 #include "dynein_struct.h"
 
-//Display output of generated dynein_motion_functions.cpp file for various conditions
-//For use in testing accuracy of replace.py translation
-
      double fblx = 0;	 double fbly = 0;
 	 double fmlx = 0;	 double fmly = 0;
 	 double ftx = 0;	 double fty = 0;

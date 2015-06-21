@@ -10,92 +10,163 @@ void Dynein::set_state(states s) {
 	state = s;
 }
 
-void Dynein::next_timestep() {
+void Dynein::update_protein() {
 	
-	r_blx = 0;
-	r_mlx = 0;
-	r_mrx = 0;
-	r_brx = 0;
+	r_blx = 0;     r_bly = 0;
+	r_mlx = 0;     r_mly = 0;
+	r_mrx = 0;     r_mry = 0;
+	r_brx = 0;     r_bry = 0;
 
-	r_bly = 0;
-	r_mly = 0;
-	r_mry = 0;
-	r_bry = 0;
-
-	f_blx = 0;
-	f_mlx = 0;
-	f_mrx = 0;
-	f_brx = 0;
-
-	f_bly = 0;
-	f_mly = 0;
-	f_mry = 0;
-	f_bry = 0;
+	f_blx = 0;     f_bly = 0;
+	f_mlx = 0;     f_mly = 0;
+	f_mrx = 0;     f_mry = 0;
+	f_brx = 0;     f_bry = 0;
 	
 	double temp_d_bla;
 	double temp_d_mla;
 	double temp_d_mra;
 	double temp_d_bra;
 	
+	double temp_blx;    double temp_bly;
+	double temp_mlx;    double temp_mly;
+	double temp_tx;     double temp_ty;
+	double temp_mrx;    double temp_mry;
+	double temp_brx;    double temp_bry;
+	
+	double temp_d_blx;    double temp_d_bly;
+	double temp_d_mlx;    double temp_d_mly;
+	double temp_d_tx;     double temp_d_ty;
+	double temp_d_mrx;    double temp_d_mry;
+	double temp_d_brx;    double temp_d_bry;
+	
 	if (state == LEFTBOUND) {
-		temp_d_bla =
-			(get_mly()*( (1/g)*(get_f_brx() + get_f_mlx() + get_f_mrx() + get_f_tx()) + get_r_brx() + get_r_mlx() + get_r_mrx() + get_r_tx() - get_d_mlx() - get_d_mrx() - get_d_tx()) -
-			get_f_brx()*(1/g)*get_bly() - get_f_mlx()*(1/g)*get_bly() - get_f_mrx()*(1/g)*get_bly() - 
-			get_f_tx()*(1/g)*get_bly() + get_f_bry()*(1/g)*(get_blx() - get_mlx()) + get_f_mly()*(1/g)*(get_blx() - get_mlx()) +
-			get_f_mry()*(1/g)*get_blx() - get_f_mry()*(1/g)*get_mlx() + get_f_ty()*(1/g)*get_blx() - get_f_ty()*(1/g)*get_mlx() +
-			ls*get_d_bra()*cos(bra)*(get_blx() - get_mlx()) + ls*get_d_bra()*sin(bra)*(get_bly() - get_mly()) +
-			lt*(-(get_bly() - get_mly())*(get_d_mla()*sin(mla) - get_d_mra()*sin(mra)) + get_d_mla()*cos(mla)*(get_mlx() - get_blx()) + get_d_mra()*cos(mra)*(get_blx() - get_mlx())) -
-			get_r_brx()*get_bly() - get_r_mlx()*get_bly() - get_r_mrx()*get_bly() - get_r_tx()*get_bly() +
-			get_r_bry()*get_blx() - get_r_bry()*get_mlx() + get_r_mly()*get_blx() - get_r_mly()*get_mlx() +
-			get_r_mry()*get_blx() - get_r_mry()*get_mlx() + get_r_ty()*get_blx() - get_r_ty()*get_mlx() - get_blx()*get_d_mly() -
-			get_blx()*get_d_mry() - get_blx()*get_d_ty() + get_d_mlx()*get_bly() + get_d_mrx()*get_bly() + 
-			get_d_tx()*get_bly() + get_mlx()*get_d_mly() + get_mlx()*get_d_mry() + get_mlx()*get_d_ty())
-			/
-			(ls*cos(bla)*(get_blx() - get_mlx()) + ls*sin(bla)*(get_bly() - get_mly()));
 		
+		temp_blx = blx;
+		temp_mlx = ls * cos(get_bla()) + blx;
+		temp_tx  = ls * cos(get_bla()) + lt * cos(get_mla()) + blx;
+		temp_mrx = ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + blx;
+		temp_brx = ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + ls * cos(-get_bra()) + blx;
+		
+		temp_bly = bly;
+	    temp_mly = ls * sin(get_bla()) + bly;
+		temp_ty  = ls * sin(get_bla()) + lt * sin(get_mla()) + bly;
+		temp_mry = ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + bly;
+		temp_bry = ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + ls * sin(-get_bra()) + bly;
+		
+		temp_d_bla =
+			(mly*( (1/g)*(f_brx + f_mlx + f_mrx + f_tx) + r_brx + r_mlx + r_mrx + r_tx - d_mlx - d_mrx - d_tx) -
+			f_brx*(1/g)*bly - f_mlx*(1/g)*bly - f_mrx*(1/g)*bly - f_tx*(1/g)*bly + f_bry*(1/g)*(blx - mlx) + f_mly*(1/g)*(blx - mlx) +
+			f_mry*(1/g)*blx - f_mry*(1/g)*mlx + f_ty*(1/g)*blx - f_ty*(1/g)*mlx + ls*d_bra*cos(bra)*(blx - mlx) + ls*d_bra*sin(bra)*(bly - mly) +
+			lt*(-(bly - mly)*(d_mla*sin(mla) - d_mra*sin(mra)) + d_mla*cos(mla)*(mlx - blx) + d_mra*cos(mra)*(blx - mlx)) -
+			r_brx*bly - r_mlx*bly - r_mrx*bly - r_tx*bly + r_bry*blx - r_bry*mlx + r_mly*blx - r_mly*mlx + r_mry*blx - r_mry*mlx + r_ty*blx -
+			r_ty*mlx - blx*d_mly - blx*d_mry - blx*d_ty + d_mlx*bly + d_mrx*bly + d_tx*bly + mlx*d_mly + mlx*d_mry + mlx*d_ty)
+			/
+			(ls*cos(bla)*(blx - mlx) + ls*sin(bla)*(bly - mly));
+
 		temp_d_mla = 
-			(get_ty()*((1/g)*(get_f_brx() + get_f_mrx() + get_f_tx()) + get_r_brx() + get_r_mrx() + get_r_tx() - get_d_mlx() - get_d_mrx() - get_d_tx()) -
-			get_f_brx()*(1/g)*get_mly() - get_f_mrx()*(1/g)*get_mly() - get_f_tx()*(1/g)*get_mly() + get_f_bry()*(1/g)*(get_mlx() - get_tx()) + 
-			get_f_mry()*(1/g)*(get_mlx() - get_tx()) + get_f_ty()*(1/g)*get_mlx() - get_f_ty()*(1/g)*get_tx() + 
-			(get_mly() - get_ty()) * (ls*get_d_bra()*sin(bra) + lt*get_d_mra()*sin(mra)) +
-			ls*get_d_bra()*cos(bra) * (get_mlx() - get_tx()) +
-			lt*get_d_mra()*cos(mra) * (get_mlx() - get_tx()) -
-			get_r_brx()*get_mly() - get_r_mrx()*get_mly() - get_r_tx()*get_mly() + get_r_bry()*get_mlx() -
-			get_r_bry()*get_tx() + get_r_mry()*get_mlx() - get_r_mry()*get_tx() + get_r_ty()*get_mlx() -
-			get_r_ty()*get_tx() + get_d_mlx()*get_mly() + get_d_mrx()*get_mly() + get_d_tx()*get_mly() - get_mlx()*get_d_mly() -
-			get_mlx()*get_d_mry() -get_mlx()*get_d_ty() + get_tx()*get_d_mly() + get_tx()*get_d_mry() + get_tx()*get_d_ty())
+			(ty*((1/g)*(f_brx + f_mrx + f_tx) + r_brx + r_mrx + r_tx - d_mlx - d_mrx - d_tx) - f_brx*(1/g)*mly - f_mrx*(1/g)*mly - f_tx*(1/g)*mly + 
+			f_bry*(1/g)*(mlx - tx) + f_mry*(1/g)*(mlx - tx) + f_ty*(1/g)*mlx - f_ty*(1/g)*tx + (mly - ty) * (ls*d_bra*sin(bra) + 
+			lt*d_mra*sin(mra)) + ls*d_bra*cos(bra) * (mlx - tx) + lt*d_mra*cos(mra) * (mlx - tx) - r_brx*mly - r_mrx*mly - r_tx*mly + r_bry*mlx - r_bry*tx + 
+			r_mry*mlx - r_mry*tx + r_ty*mlx - r_ty*tx + d_mlx*mly + d_mrx*mly + d_tx*mly - mlx*d_mly - mlx*d_mry -mlx*d_ty + tx*d_mly + tx*d_mry + tx*d_ty)
 			/ 
-			(lt*cos(mla)*(get_mlx() - get_tx()) + lt*sin(mla)*(get_mly() - get_ty()));
-			
+			(lt*cos(mla)*(mlx - tx) + lt*sin(mla)*(mly - ty));
+
 		temp_d_mra =
-			((get_mry() - get_ty())*((1/g)*(get_f_brx() + get_f_mrx()) + get_r_brx() + get_r_mrx() - get_d_mrx() - get_d_tx()) + 
-			get_f_bry()*(1/g)*(get_tx() - get_mrx()) + get_f_mry()*(1/g)*(get_tx() - get_mrx()) + 
-			ls*get_d_bra()*(cos(bra)*(get_tx() - get_mrx()) + sin(bra)*(get_ty() - get_mry())) -
-			(get_mrx() - get_tx())*(get_r_bry() + get_r_bry() - get_d_mry() - get_d_ty()))
+			((mry - ty)*((1/g)*(f_brx + f_mrx) + r_brx + r_mrx - d_mrx - d_tx) + f_bry*(1/g)*(tx - mrx) + f_mry*(1/g)*(tx - mrx) + 
+			ls*d_bra*(cos(bra)*(tx - mrx) + sin(bra)*(ty - mry)) - (mrx - tx)*(r_bry + r_bry - d_mry - d_ty))
 			/
-			(lt*cos(mra)*(get_mrx()-get_tx()) + lt*sin(mra)*(get_mry()-get_ty()));
-			
+			(lt*cos(mra)*(mrx-tx) + lt*sin(mra)*(mry-ty));
+
 		temp_d_bra =
-			((get_f_brx()*(1/g) + get_r_brx() - get_d_mrx())*(get_bry()-get_mry()) + (get_f_bry()*(1/g) + get_r_bry() - get_d_mry())*(get_mrx()-get_brx()))
+			((f_brx*(1/g) + r_brx - d_mrx)*(bry-mry) + (f_bry*(1/g) + r_bry - d_mry)*(mrx-brx))
 			/
-			(ls*cos(bra)*(get_brx()-get_mrx()) + ls*sin(bra)*(get_bry()-get_mry()));
+			(ls*cos(bra)*(brx-mrx) + ls*sin(bra)*(bry-mry));
 		
 		d_bla = temp_d_bla;
 		d_mla = temp_d_mla;
 		d_mra = temp_d_mra;
 		d_bra = temp_d_bra;
+		
+		temp_d_blx = 0;
+		temp_d_mlx = ls * d_bla * -sin(bla);
+		temp_d_tx  = lt * d_mla * -sin(mla) + get_d_mlx();
+		temp_d_mrx = lt * d_mra * sin(-mra) + get_d_tx();
+		temp_d_brx = ls * d_bra * sin(-bra) + get_d_mrx();
+		
+		temp_d_bly = 0;
+		temp_d_mly = ls * d_bla * cos(bla);
+		temp_d_ty  = lt * d_mla * cos(mla) + get_d_mly();
+		temp_d_mry = lt * -d_mra * cos(-mra) + get_d_ty();
+		temp_d_bry = ls * -d_bra * cos(-bra) + get_d_mry();
+		
+		blx = temp_blx;      bly = temp_bly;
+		mlx = temp_mlx;      mly = temp_mly;
+		tx  = temp_tx;       ty  = temp_ty; 
+		mrx = temp_mrx;      mry = temp_mry;
+		brx = temp_brx;      bry = temp_bry;
+		
 		}
 	else if (state == BOTHBOUND) {
+		
+		temp_d_blx = 0;
+		temp_d_mlx = -d_bla * ls * sin(bla);
+		temp_d_tx  = lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + get_d_mlx() + get_d_mrx());
+		temp_d_mrx = -d_bra * ls * sin(bra);
+		temp_d_brx = 0;
+		            
+	    temp_d_bly = 0;
+		temp_d_mly = d_bla * ls * cos(bla);
+		temp_d_ty  = lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + get_d_mly() + get_d_mry());
+		temp_d_mry = d_bra * ls * cos(mra);
+		temp_d_bry = 0;
+		
 		d_bla = 0;
 		d_mla = 0;
 		d_mra = 0;
 		d_bra = 0;
+		
+		temp_blx = 0;      temp_bly = 0;
+		temp_mlx = 0;      temp_mly = 0;
+		temp_tx  = 0;      temp_ty  = 0;
+		temp_mrx = 0;      temp_mry = 0;
+		temp_brx = 0;      temp_bry = 0;
+		
+		blx = temp_blx;      bly = temp_bly;
+		mlx = temp_mlx;      mly = temp_mly;
+		tx  = temp_tx;       ty  = temp_ty; 
+		mrx = temp_mrx;      mry = temp_mry;
+		brx = temp_brx;      bry = temp_bry;
 	}
 	else {
+		
+		temp_d_blx = ls * d_bla * sin(-bla) + get_d_mlx();
+		temp_d_mlx = lt * d_mla * sin(-mla) + get_d_tx();
+		temp_d_tx  = lt * d_mra * -sin(mra) + get_d_mrx();
+		temp_d_mrx = ls * d_bra * -sin(bra);
+		temp_d_brx = 0;
+		             
+		temp_d_bly = ls * -d_bla * cos(-bla) + get_d_mly();
+		temp_d_mly = lt * -d_mla * cos(-mla) + get_d_ty();
+		temp_d_ty  = lt * d_mra * cos(mra) + get_d_mry();
+		temp_d_mry = ls * d_bra * cos(bra);
+		temp_d_bry = 0;
+		
 		d_bla = 0;
 		d_mla = 0;
 		d_mra = 0;
 		d_bra = 0;
+		
+		temp_blx = 0;      temp_bly = 0;
+		temp_mlx = 0;      temp_mly = 0;
+		temp_tx  = 0;      temp_ty  = 0;
+		temp_mrx = 0;      temp_mry = 0;
+		temp_brx = 0;      temp_bry = 0;
+		
+		blx = temp_blx;      bly = temp_bly;
+		mlx = temp_mlx;      mly = temp_mly;
+		tx  = temp_tx;       ty  = temp_ty; 
+		mrx = temp_mrx;      mry = temp_mry;
+		brx = temp_brx;      bry = temp_bry;
 	}
 	
 }
@@ -338,7 +409,7 @@ double Dynein::get_r_mlx() {
 }
 
 double Dynein::get_r_tx() {
-	return 0.1;
+	return 0;
 }
 
 double Dynein::get_r_mrx() {
@@ -397,27 +468,17 @@ states Dynein::get_state() {
 /*** Get energies ***/
 
 double Dynein::get_PE() {
-	return (1.0/2) * kbl * pow(get_bla() - ba, 2) + (1.0/2) * kml * pow(M_PI - get_bla() + get_mla() - ma, 2) + (1.0/2) * kt * 
-		pow(M_PI - get_mla() - get_mra() - ta, 2) + (1.0/2) * kmr * pow(M_PI - get_bra() + get_mra() - ma, 2);
+	return 0;
 }
 
 double Dynein::get_KE() {
-	return 1.0/2.0 * mb * (square(- (ls * get_d_bla() * sin(get_bla())) - ls * get_d_bra() * sin(get_bra()) - lt * get_d_mla() * sin(get_mla()) 
-		- lt * get_d_mra() * sin(get_mra())) +  square(ls * get_d_bla() * cos(get_bla()) -  ls * get_d_bra() * cos(get_bra()) + lt * get_d_mla() 
-		* cos(get_mla()) - lt * get_d_mra() * cos(get_mra()))) + 1.0/2.0 * mm * (square(ls) * square(get_d_bla()) * square(sin(get_bla())) 
-		+ square(ls) * square(get_d_bla()) * square(cos(get_bla()))) + 1.0/2.0 * mm * (square(- (ls * get_d_bla() * sin(get_bla())) - lt * 
-		get_d_mla() * sin(get_mla()) - lt * get_d_mra() * sin(get_mra())) +  square(ls * get_d_bla() * cos(get_bla()) +  lt * get_d_mla() * 
-		cos(get_mla()) - lt * get_d_mra() * cos(get_mra()))) + 1.0/2.0 * mt * (square(- (ls * get_d_bla() * sin(get_bla())) - lt * get_d_mla() 
-		* sin(get_mla())) +  square(ls * get_d_bla() * cos(get_bla()) +  lt * get_d_mla() * cos(get_mla())));
-	
-	//Rewrite with new d_blx, etc.
+	return 0;
 }
 
 void Dynein::log(double t) {
 	FILE* data_file = fopen("data.txt", "a+");
 	fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
-	get_KE(), get_PE(), get_KE() + get_PE(), t, get_blx(), get_bly(), get_mlx(), get_mly(), get_tx(), get_ty(), get_mrx(), 
-	get_mry(), get_brx(), get_bry(), get_state());
+	get_KE(), get_PE(), get_KE() + get_PE(), t, blx, bly, mlx, mly, tx, ty, mrx, mry, brx, bry, get_state());
 	fclose(data_file);
 }
 

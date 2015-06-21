@@ -128,7 +128,7 @@ public:
   states get_state();
 
   void log(double t);
-  void next_timestep();
+  void update_protein();
   
 private:
   double bla;
@@ -136,33 +136,34 @@ private:
   double mra;
   double bra;
 
-  double blx;
-  double bly;
+  double blx;     double bly;
+  double mlx;     double mly;
+  double tx;      double ty;
+  double mrx;     double mry;
+  double brx;     double bry;
 
-  double d_bla; //Angular Velocities
+  double d_bla;   //Angular Velocities
   double d_mla;
   double d_mra;
   double d_bra;
 
-  double r_blx; //Brownian forces
-  double r_mlx;
-  double r_mrx;
-  double r_brx;
+  double d_blx;   double d_bly;
+  double d_mlx;   double d_mly;
+  double d_tx;    double d_ty;
+  double d_mrx;   double d_mry;
+  double d_brx;   double d_bry;
 
-  double r_bly;
-  double r_mly;
-  double r_mry;
-  double r_bry;
+  double r_blx;   double r_bly; //Brownian forces
+  double r_mlx;   double r_mly;
+  double r_tx;    double r_ty;
+  double r_mrx;   double r_mry; 					
+  double r_brx;   double r_bry;					
 
-  double f_blx; //External forces
-  double f_mlx;
-  double f_mrx;
-  double f_brx;
-
-  double f_bly;
-  double f_mly;
-  double f_mry;
-  double f_bry;
+  double f_blx;   double f_bly;	//Internal Forces
+  double f_mlx;   double f_mly;
+  double f_tx;    double f_ty;
+  double f_mrx;   double f_mry;
+  double f_brx;   double f_bry;
 
   states state;
 };
