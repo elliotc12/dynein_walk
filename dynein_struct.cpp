@@ -6,6 +6,39 @@
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
+Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init) {
+	blx = 0;
+	bly = 0;
+	
+	d_bla = 0;
+	d_mla = 0;
+	d_mra = 0;
+	d_bra = 0;
+	
+	d_blx = 0;    d_bly = 0;
+	d_mlx = 0;    d_mly = 0;
+	d_mrx = 0;    d_mry = 0;
+	d_brx = 0;    d_bry = 0;
+	
+	bla = bla_init;
+	mla = mla_init;
+	mra = mra_init;
+	bra = bra_init;
+	
+	//blx = blx;
+	mlx = ls * cos(bla) + blx;
+	tx  = lt * cos(mla) + mlx;
+	mrx = lt * cos(-mra) + tx;
+	brx = ls * cos(-bra) + mrx;
+	
+	//bly = bly;
+	mly = ls * sin(bla) + bly;
+	ty  = lt * sin(mla) + mly;
+	mry = lt * sin(-mra) + ty;
+	bry = ls * sin(-bra) + mry;
+	
+}
+
 void Dynein::set_state(states s) {
 	state = s;
 }
@@ -42,16 +75,16 @@ void Dynein::update_protein() {
 	if (state == LEFTBOUND) {
 		
 		temp_blx = blx;
-		temp_mlx = ls * cos(get_bla()) + blx;
-		temp_tx  = ls * cos(get_bla()) + lt * cos(get_mla()) + blx;
-		temp_mrx = ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + blx;
-		temp_brx = ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + ls * cos(-get_bra()) + blx;
+		temp_mlx = ls * cos(bla) + temp_blx;
+		temp_tx  = lt * cos(mla) + temp_mlx;
+		temp_mrx = lt * cos(-mra) + temp_tx;
+		temp_brx = ls * cos(-bra) + temp_mrx;
 		
 		temp_bly = bly;
-	    temp_mly = ls * sin(get_bla()) + bly;
-		temp_ty  = ls * sin(get_bla()) + lt * sin(get_mla()) + bly;
-		temp_mry = ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + bly;
-		temp_bry = ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + ls * sin(-get_bra()) + bly;
+	    temp_mly = ls * sin(bla) + temp_bly;
+		temp_ty  = lt * sin(mla) + temp_mly;
+		temp_mry = lt * sin(-mra) + temp_ty;
+		temp_bry = ls * sin(-bra) + temp_mry;
 		
 		temp_d_bla =
 			(mly*( (1/g)*(f_brx + f_mlx + f_mrx + f_tx) + r_brx + r_mlx + r_mrx + r_tx - d_mlx - d_mrx - d_tx) -
@@ -89,15 +122,21 @@ void Dynein::update_protein() {
 		
 		temp_d_blx = 0;
 		temp_d_mlx = ls * d_bla * -sin(bla);
-		temp_d_tx  = lt * d_mla * -sin(mla) + get_d_mlx();
-		temp_d_mrx = lt * d_mra * sin(-mra) + get_d_tx();
-		temp_d_brx = ls * d_bra * sin(-bra) + get_d_mrx();
+		temp_d_tx  = lt * d_mla * -sin(mla) + temp_d_mlx;
+		temp_d_mrx = lt * d_mra * sin(-mra) + temp_d_tx;
+		temp_d_brx = ls * d_bra * sin(-bra) + temp_d_mrx;
 		
 		temp_d_bly = 0;
 		temp_d_mly = ls * d_bla * cos(bla);
-		temp_d_ty  = lt * d_mla * cos(mla) + get_d_mly();
-		temp_d_mry = lt * -d_mra * cos(-mra) + get_d_ty();
-		temp_d_bry = ls * -d_bra * cos(-bra) + get_d_mry();
+		temp_d_ty  = lt * d_mla * cos(mla) + temp_d_mly;
+		temp_d_mry = lt * -d_mra * cos(-mra) + temp_d_ty;
+		temp_d_bry = ls * -d_bra * cos(-bra) + temp_d_mry;
+		
+		d_blx = temp_d_blx;      d_bly = temp_d_bly;
+		d_mlx = temp_d_mlx;      d_mly = temp_d_mly;
+		d_tx  = temp_d_tx;       d_ty  = temp_d_ty; 
+		d_mrx = temp_d_mrx;      d_mry = temp_d_mry;
+		d_brx = temp_d_brx;      d_bry = temp_d_bry;
 		
 		blx = temp_blx;      bly = temp_bly;
 		mlx = temp_mlx;      mly = temp_mly;
@@ -105,19 +144,21 @@ void Dynein::update_protein() {
 		mrx = temp_mrx;      mry = temp_mry;
 		brx = temp_brx;      bry = temp_bry;
 		
+		//printf("d_bla: %f\n", );
+		
 		}
 	else if (state == BOTHBOUND) {
 		
 		temp_d_blx = 0;
 		temp_d_mlx = -d_bla * ls * sin(bla);
-		temp_d_tx  = lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + get_d_mlx() + get_d_mrx());
 		temp_d_mrx = -d_bra * ls * sin(bra);
+		temp_d_tx  = lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + temp_d_mlx + temp_d_mrx);
 		temp_d_brx = 0;
 		            
 	    temp_d_bly = 0;
 		temp_d_mly = d_bla * ls * cos(bla);
-		temp_d_ty  = lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + get_d_mly() + get_d_mry());
 		temp_d_mry = d_bra * ls * cos(mra);
+		temp_d_ty  = lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + temp_d_mly + temp_d_mry);
 		temp_d_bry = 0;
 		
 		d_bla = 0;
@@ -139,17 +180,17 @@ void Dynein::update_protein() {
 	}
 	else {
 		
-		temp_d_blx = ls * d_bla * sin(-bla) + get_d_mlx();
-		temp_d_mlx = lt * d_mla * sin(-mla) + get_d_tx();
-		temp_d_tx  = lt * d_mra * -sin(mra) + get_d_mrx();
-		temp_d_mrx = ls * d_bra * -sin(bra);
 		temp_d_brx = 0;
-		             
-		temp_d_bly = ls * -d_bla * cos(-bla) + get_d_mly();
-		temp_d_mly = lt * -d_mla * cos(-mla) + get_d_ty();
-		temp_d_ty  = lt * d_mra * cos(mra) + get_d_mry();
-		temp_d_mry = ls * d_bra * cos(bra);
+		temp_d_mrx = ls * d_bra * -sin(bra);
+		temp_d_tx  = lt * d_mra * -sin(mra) + temp_d_mrx;
+		temp_d_mlx = lt * d_mla * sin(-mla) + temp_d_tx;
+		temp_d_blx = ls * d_bla * sin(-bla) + temp_d_mlx;
+		
 		temp_d_bry = 0;
+		temp_d_mry = ls * d_bra * cos(bra);
+		temp_d_ty  = lt * d_mra * cos(mra) + temp_d_mry;
+		temp_d_mly = lt * -d_mla * cos(-mla) + temp_d_ty;
+		temp_d_bly = ls * -d_bla * cos(-bla) + temp_d_mly;
 		
 		d_bla = 0;
 		d_mla = 0;
@@ -463,8 +504,6 @@ states Dynein::get_state() {
 	return state;
 }
 
-
-
 /*** Get energies ***/
 
 double Dynein::get_PE() {
@@ -481,5 +520,3 @@ void Dynein::log(double t) {
 	get_KE(), get_PE(), get_KE() + get_PE(), t, blx, bly, mlx, mly, tx, ty, mrx, mry, brx, bry, get_state());
 	fclose(data_file);
 }
-
-

@@ -3,21 +3,6 @@
 
 #include "dynein_struct.h"
 
-void initProtein(Dynein* dyn) {
-	dyn->set_blx(0);
-	dyn->set_bly(0);
-	
-	dyn->set_d_bla(0);
-	dyn->set_d_mla(0);
-	dyn->set_d_mra(0);
-	dyn->set_d_bra(0);
-	
-	dyn->set_bla(bla_init);
-	dyn->set_mla(mla_init);
-	dyn->set_mra(mra_init);
-	dyn->set_bra(bra_init);
-}
-
 void simulateProtein(Dynein* dyn, double dt, double tf) {
 	double t = 0;
 	
@@ -50,9 +35,8 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 /* *********************************** MAIN ****************************************** */
 
 int main() {
-	Dynein* dyn = (Dynein*) malloc(sizeof(Dynein));
+	Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init);
 	resetLog(dyn);
-	initProtein(dyn);
 	simulateProtein(dyn, inctime, runtime);
 	free(dyn);
 	dyn = NULL;

@@ -25,7 +25,7 @@ const double mra_init = (36.0 / 180) * M_PI;
 const double bra_init = (108.0 / 180) * M_PI;
 
 const double inctime = 0.1;
-const double runtime = 500.0;
+const double runtime = 100.0;
 
 extern double fblx, fbly;		// Brownian variables
 extern double fmlx, fmly;
@@ -44,6 +44,8 @@ typedef enum {
 
 class Dynein {
 public:
+  Dynein(double bla_init, double mla_init, double mra_init, double bra_init);	
+	
   void set_bla(double d);
   void set_mla(double d);
   void set_mra(double d);
