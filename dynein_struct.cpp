@@ -37,6 +37,8 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 	mry = lt * sin(-mra) + ty;
 	bry = ls * sin(-bra) + mry;
 	
+	state = LEFTBOUND;
+	
 }
 
 void Dynein::set_state(states s) {
@@ -48,7 +50,7 @@ void Dynein::update_protein() {
 	r_blx = 0;     r_bly = 0;
 	r_mlx = 0;     r_mly = 0;
 	r_mrx = 0;     r_mry = 0;
-	r_brx = 0;     r_bry = 0;
+	r_brx = 0.1;     r_bry = 0;
 
 	f_blx = 0;     f_bly = 0;
 	f_mlx = 0;     f_mly = 0;

@@ -10,380 +10,174 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     32215,        912]
-NotebookOptionsPosition[     31282,        876]
-NotebookOutlinePosition[     31638,        892]
-CellTagsIndexPosition[     31595,        889]
+NotebookDataLength[     27724,        765]
+NotebookOptionsPosition[     26831,        733]
+NotebookOutlinePosition[     27188,        749]
+CellTagsIndexPosition[     27145,        746]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[
- RowBox[{"Solve", "[", "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{
-    RowBox[{
-     RowBox[{
-      RowBox[{"-", "Ls"}], "*", 
-      RowBox[{"Sin", "[", "Tbl", "]"}], "*", "Tdbl"}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fxml", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xml", "-", "Xbl"}], ")"}]}], "+", 
-      RowBox[{"G", "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xt", "-", "Xml"}], ")"}]}], "+", "Rxml"}]}], "     ", "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdml", "+", 
-      RowBox[{
-       RowBox[{"-", "Lt"}], "*", 
-       RowBox[{"Sin", "[", "Tml", "]"}], "*", "Tdml"}]}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fxt", ")"}]}], "  ", "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xt", "-", "Xml"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "+", "Rxt"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdt", "+", " ", 
-      RowBox[{
-       RowBox[{"-", "Lt"}], "*", 
-       RowBox[{"Sin", "[", 
-        RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fxmr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxmr"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdmr", "+", " ", 
-      RowBox[{
-       RowBox[{"-", "Ls"}], "*", 
-       RowBox[{"Sin", "[", 
-        RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fxbr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxbr"}]}], "&&", 
-    "\[IndentingNewLine]", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ls", "*", 
-      RowBox[{"Cos", "[", "Tbl", "]"}], "*", "Tdbl"}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fyml", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yml", "-", "Ybl"}], ")"}]}], "+", 
-      RowBox[{"G", "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yt", "-", "Yml"}], ")"}]}], "+", "Ryml"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydml", " ", "+", " ", 
-      RowBox[{"Lt", "*", 
-       RowBox[{"Cos", "[", "Tml", "]"}], "*", "Tdml"}]}], "==", 
-     RowBox[{
-      RowBox[{"G", " ", 
-       RowBox[{"(", "Fyt", ")"}]}], "  ", "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yt", "-", "Yml"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "+", "Ryt"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydt", "  ", "+", " ", 
-      RowBox[{"Lt", "*", 
-       RowBox[{"Cos", "[", 
-        RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "==", 
-     RowBox[{
-      RowBox[{"G", 
-       RowBox[{"(", "Fymr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rymr"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydmr", " ", "+", " ", 
-      RowBox[{"Ls", "*", 
-       RowBox[{"Cos", "[", 
-        RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "\[Equal]", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fybr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rybr"}]}]}], ",", 
-   "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{
-    "Tdbl", ",", " ", "Tdml", ",", "Tdmr", ",", "Tdbr", ",", "\[Lambda]ls", 
-     ",", "\[Lambda]lt", ",", "\[Lambda]rt", ",", "\[Lambda]rs"}], "}"}]}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.643743354545534*^9, 3.643743473659375*^9}, {
-  3.643743691897729*^9, 3.643743779704178*^9}, {3.6437438684618893`*^9, 
-  3.6437439414511633`*^9}, {3.643744007264847*^9, 3.643744007768684*^9}, {
-  3.643757397039897*^9, 3.6437575170345163`*^9}, {3.643757556896702*^9, 
-  3.643757582303719*^9}, {3.643757626357994*^9, 3.6437576270540247`*^9}, {
-  3.643757808537429*^9, 3.643757857188724*^9}, {3.6437579346892557`*^9, 
-  3.643757994852378*^9}, {3.6437586949788723`*^9, 3.643758698551002*^9}, {
-  3.643758800331704*^9, 3.6437590198833313`*^9}, {3.643759419081422*^9, 
-  3.6437594999005938`*^9}, {3.643759950397607*^9, 3.6437599547795143`*^9}, {
-  3.643760043260421*^9, 3.6437600448025837`*^9}, {3.643760545744982*^9, 
-  3.6437605472565413`*^9}}],
-
-Cell[CellGroupData[{
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}]}]], "Input",
+ CellChangeTimes->{{3.643983909087105*^9, 3.643983910219652*^9}}],
 
 Cell[BoxData[
- RowBox[{"Solve", "[", "\[IndentingNewLine]", "                ", 
-  RowBox[{
+ RowBox[{"(*", 
+  RowBox[{"Solve", "[", "\[IndentingNewLine]", "                ", 
    RowBox[{
     RowBox[{
      RowBox[{
-      RowBox[{"-", "Ls"}], "*", 
-      RowBox[{"Sin", "[", "Tbl", "]"}], "*", "Tdbl"}], "\[Equal]", 
-     "               ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fxml", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xml", "-", "Xbl"}], ")"}]}], "+", 
-      RowBox[{"G", "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xt", "-", "Xml"}], ")"}]}], "+", "Rxml"}]}], "     ", "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdml", "+", " ", 
-      RowBox[{
-       RowBox[{"-", "Lt"}], "*", 
-       RowBox[{"Sin", "[", "Tml", "]"}], "*", "Tdml"}]}], "\[Equal]", 
-     "              ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fxt", ")"}]}], "  ", "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xt", "-", "Xml"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "+", "Rxt"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdt", "  ", "+", " ", 
-      RowBox[{
-       RowBox[{"-", "Lt"}], "*", 
-       RowBox[{"Sin", "[", 
-        RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "\[Equal]", 
-     "      ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fxmr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxmr"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Xdmr", "+", " ", 
       RowBox[{
        RowBox[{"-", "Ls"}], "*", 
-       RowBox[{"Sin", "[", 
-        RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "\[Equal]", 
-     "      ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fxbr", ")"}]}], "+", 
+       RowBox[{"Sin", "[", "Tbl", "]"}], "*", "Tdbl"}], "\[Equal]", 
+      "               ", 
       RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxbr"}]}]}], ",", 
-   "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{
-    "\[Lambda]ls", ",", "\[Lambda]lt", ",", "\[Lambda]rt", ",", 
-     "\[Lambda]rs"}], "}"}]}], "]"}]], "Input",
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fxml", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xml", "-", "Xbl"}], ")"}]}], "+", 
+       RowBox[{"G", "*", "\[Lambda]lt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xt", "-", "Xml"}], ")"}]}], "+", "Rxml"}]}], "     ", "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Xdml", "+", " ", 
+       RowBox[{
+        RowBox[{"-", "Lt"}], "*", 
+        RowBox[{"Sin", "[", "Tml", "]"}], "*", "Tdml"}]}], "\[Equal]", 
+      "              ", 
+      RowBox[{
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fxt", ")"}]}], "  ", "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xt", "-", "Xml"}], ")"}]}], "  ", "+", 
+       RowBox[{"G", "*", "\[Lambda]rt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "+", "Rxt"}]}], "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Xdt", "  ", "+", " ", 
+       RowBox[{
+        RowBox[{"-", "Lt"}], "*", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "\[Equal]", 
+      "      ", 
+      RowBox[{
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fxmr", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "  ", "+", 
+       RowBox[{"G", "*", "\[Lambda]rs", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxmr"}]}], "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Xdmr", "+", " ", 
+       RowBox[{
+        RowBox[{"-", "Ls"}], "*", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "\[Equal]", 
+      "      ", 
+      RowBox[{
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fxbr", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
+        RowBox[{"(", 
+         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", "Rxbr"}]}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+     "\[Lambda]ls", ",", "\[Lambda]lt", ",", "\[Lambda]rt", ",", 
+      "\[Lambda]rs"}], "}"}]}], "]"}], "*)"}]], "Input",
  CellChangeTimes->{{3.6437599746622133`*^9, 3.643760014051887*^9}, {
   3.6437605375325727`*^9, 3.643760541772141*^9}, {3.6437607390803413`*^9, 
-  3.643760776066126*^9}}],
+  3.643760776066126*^9}, {3.644028210588441*^9, 3.64402821571386*^9}}],
 
 Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{"{", 
-   RowBox[{
-    RowBox[{"\[Lambda]ls", "\[Rule]", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{"Fxbr", " ", "G"}], "+", 
-        RowBox[{"Fxml", " ", "G"}], "+", 
-        RowBox[{"Fxmr", " ", "G"}], "+", 
-        RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxml", "+", "Rxmr", "+",
-         "Rxt", "-", "Xdml", "-", "Xdmr", "-", "Xdt", "+", 
-        RowBox[{"Ls", " ", "Tdbl", " ", 
-         RowBox[{"Sin", "[", "Tbl", "]"}]}], "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdml", " ", 
-         RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbl", "-", "Xml"}], ")"}]}]]}]}], ",", 
-    RowBox[{"\[Lambda]lt", "\[Rule]", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{"Fxbr", " ", "G"}], "+", 
-        RowBox[{"Fxmr", " ", "G"}], "+", 
-        RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxmr", "+", "Rxt", "-", 
-        "Xdml", "-", "Xdmr", "-", "Xdt", "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdml", " ", 
-         RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xml", "-", "Xt"}], ")"}]}]]}]}], ",", 
-    RowBox[{"\[Lambda]rt", "\[Rule]", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fxbr"}], " ", "G"}], "-", 
-        RowBox[{"Fxmr", " ", "G"}], "-", "Rxbr", "-", "Rxmr", "+", "Xdmr", 
-        "+", "Xdt", "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xmr", "-", "Xt"}], ")"}]}]]}]}], ",", 
-    RowBox[{"\[Lambda]rs", "\[Rule]", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fxbr"}], " ", "G"}], "-", "Rxbr", "+", "Xdmr", "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}]]}]}]}], "}"}], "}"}]], "Output",\
-
- CellChangeTimes->{3.6437600535403023`*^9, 3.643760602478087*^9, 
-  3.643760781692875*^9, 3.6437611034519*^9}]
-}, Open  ]],
-
-Cell[BoxData[
- RowBox[{"Solve", "[", "\[IndentingNewLine]", "                 ", 
-  RowBox[{
+ RowBox[{"(*", 
+  RowBox[{"Solve", "[", "\[IndentingNewLine]", "                 ", 
    RowBox[{
     RowBox[{
-     RowBox[{"Ls", "*", 
-      RowBox[{"Cos", "[", "Tbl", "]"}], "*", "Tdbl"}], "\[Equal]", 
-     "               ", 
      RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fyml", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yml", "-", "Ybl"}], ")"}]}], "+", 
-      RowBox[{"G", "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yt", "-", "Yml"}], ")"}]}], "+", "Ryml"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydml", " ", "+", " ", 
-      RowBox[{"Lt", "*", 
-       RowBox[{"Cos", "[", "Tml", "]"}], "*", "Tdml"}]}], "\[Equal]", 
-     "               ", 
-     RowBox[{
-      RowBox[{"G", " ", "*", 
-       RowBox[{"(", "Fyt", ")"}]}], "  ", "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Yt", "-", "Yml"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "+", "Ryt"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydt", "  ", "+", "  ", 
-      RowBox[{"Lt", "*", 
-       RowBox[{"Cos", "[", 
-        RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "\[Equal]", 
-     "      ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fymr", ")"}]}], "+", 
-      RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "  ", "+", 
-      RowBox[{"G", "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rymr"}]}], "&&", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Ydmr", " ", "+", " ", 
       RowBox[{"Ls", "*", 
-       RowBox[{"Cos", "[", 
-        RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "\[Equal]", 
-     "      ", 
-     RowBox[{
-      RowBox[{"G", "*", 
-       RowBox[{"(", "Fybr", ")"}]}], "+", 
+       RowBox[{"Cos", "[", "Tbl", "]"}], "*", "Tdbl"}], "\[Equal]", 
+      "               ", 
       RowBox[{
-       RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
-       RowBox[{"(", 
-        RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rybr"}]}]}], ",", 
-   "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{
-    "\[Lambda]ls", ",", "\[Lambda]lt", ",", "\[Lambda]rt", ",", 
-     "\[Lambda]rs"}], "}"}]}], "]"}]], "Input",
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fyml", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]ls", "*", 
+        RowBox[{"(", 
+         RowBox[{"Yml", "-", "Ybl"}], ")"}]}], "+", 
+       RowBox[{"G", "*", "\[Lambda]lt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Yt", "-", "Yml"}], ")"}]}], "+", "Ryml"}]}], "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Ydml", " ", "+", " ", 
+       RowBox[{"Lt", "*", 
+        RowBox[{"Cos", "[", "Tml", "]"}], "*", "Tdml"}]}], "\[Equal]", 
+      "               ", 
+      RowBox[{
+       RowBox[{"G", " ", "*", 
+        RowBox[{"(", "Fyt", ")"}]}], "  ", "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]lt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Yt", "-", "Yml"}], ")"}]}], "  ", "+", 
+       RowBox[{"G", "*", "\[Lambda]rt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "+", "Ryt"}]}], "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Ydt", "  ", "+", "  ", 
+       RowBox[{"Lt", "*", 
+        RowBox[{"Cos", "[", 
+         RowBox[{"Tmr", "-", "Pi"}], "]"}], "*", "Tdmr"}]}], "\[Equal]", 
+      "      ", 
+      RowBox[{
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fymr", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]rt", "*", 
+        RowBox[{"(", 
+         RowBox[{"Ymr", "-", "Yt"}], ")"}]}], "  ", "+", 
+       RowBox[{"G", "*", "\[Lambda]rs", "*", 
+        RowBox[{"(", 
+         RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rymr"}]}], "&&", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Ydmr", " ", "+", " ", 
+       RowBox[{"Ls", "*", 
+        RowBox[{"Cos", "[", 
+         RowBox[{"Tbr", "-", "Pi"}], "]"}], "*", "Tdbr"}]}], "\[Equal]", 
+      "      ", 
+      RowBox[{
+       RowBox[{"G", "*", 
+        RowBox[{"(", "Fybr", ")"}]}], "+", 
+       RowBox[{
+        RowBox[{"-", "G"}], "*", "\[Lambda]rs", "*", 
+        RowBox[{"(", 
+         RowBox[{"Ybr", "-", "Ymr"}], ")"}]}], "+", "Rybr"}]}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+     "\[Lambda]ls", ",", "\[Lambda]lt", ",", "\[Lambda]rt", ",", 
+      "\[Lambda]rs"}], "}"}]}], "]"}], "*)"}]], "Input",
  CellChangeTimes->{{3.643760072335084*^9, 3.643760089242982*^9}, {
   3.6437605200226803`*^9, 3.643760532396244*^9}, {3.6437606873834553`*^9, 
-  3.6437607289718437`*^9}}],
+  3.6437607289718437`*^9}, {3.6440282069341288`*^9, 3.644028218717548*^9}}],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{
@@ -457,307 +251,11 @@ Cell[BoxData[
   "\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
  CellChangeTimes->{{3.643761091608238*^9, 3.643761092415071*^9}}],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
- RowBox[{"FullSimplify", "[", 
-  RowBox[{"Solve", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fxbr"}], " ", "G"}], "-", "Rxbr", "+", "Xdmr", "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}]]}], "==", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fybr"}], " ", "G"}], "-", "Rybr", "+", "Ydmr", "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Cos", "[", "Tbr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Ybr", "-", "Ymr"}], ")"}]}]]}]}], ",", "Tdbr"}], "]"}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.643760111581279*^9, 3.643760158634315*^9}, {
-  3.643760610441935*^9, 3.64376062043368*^9}, {3.6437609909839783`*^9, 
-  3.643760991414583*^9}}],
-
-Cell[BoxData[
- FormBox[
+ RowBox[{"{", 
   RowBox[{"{", 
-   RowBox[{"{", 
-    RowBox[{"Tdbr", "\[Rule]", 
-     FractionBox[
-      RowBox[{
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"Ybr", "-", "Ymr"}], ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"Fxbr", " ", "G"}], "+", "Rxbr", "-", "Xdmr"}], ")"}]}], 
-       "+", 
-       RowBox[{"Fybr", " ", "G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xmr", "-", "Xbr"}], ")"}]}], "-", 
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"Rybr", "-", "Ydmr"}], ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}]}], 
-      RowBox[{
-       RowBox[{"Ls", " ", 
-        RowBox[{"cos", "(", "Tbr", ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbr", "-", "Xmr"}], ")"}]}], "+", 
-       RowBox[{"Ls", " ", 
-        RowBox[{"sin", "(", "Tbr", ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Ybr", "-", "Ymr"}], ")"}]}]}]]}], "}"}], "}"}], 
-  TraditionalForm]], "Output",
- CellChangeTimes->{{3.643760149712015*^9, 3.643760159659402*^9}, 
-   3.6437606218567123`*^9, 3.643760992626027*^9, 3.6437612139257793`*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"FullSimplify", "[", 
-  RowBox[{"Solve", "[", 
    RowBox[{
-    RowBox[{
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fxbr"}], " ", "G"}], "-", 
-        RowBox[{"Fxmr", " ", "G"}], "-", "Rxbr", "-", "Rxmr", "+", "Xdmr", 
-        "+", "Xdt", "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xmr", "-", "Xt"}], ")"}]}]]}], "==", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{
-         RowBox[{"-", "Fybr"}], " ", "G"}], "-", 
-        RowBox[{"Fymr", " ", "G"}], "-", "Rybr", "-", "Rymr", "+", "Ydmr", 
-        "+", "Ydt", "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Ymr", "-", "Yt"}], ")"}]}]]}]}], ",", "Tdmr"}], "]"}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.643761112975437*^9, 3.6437611400482492`*^9}}],
-
-Cell[BoxData[
- FormBox[
-  RowBox[{"{", 
-   RowBox[{"{", 
-    RowBox[{"Tdmr", "\[Rule]", 
-     FractionBox[
-      RowBox[{
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"Ymr", "-", "Yt"}], ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"G", " ", 
-           RowBox[{"(", 
-            RowBox[{"Fxbr", "+", "Fxmr"}], ")"}]}], "+", "Rxbr", "+", "Rxmr", 
-          "-", "Xdmr", "-", "Xdt"}], ")"}]}], "+", 
-       RowBox[{"Fybr", " ", "G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xt", "-", "Xmr"}], ")"}]}], "+", 
-       RowBox[{"Fymr", " ", "G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xt", "-", "Xmr"}], ")"}]}], "+", 
-       RowBox[{"Ls", " ", "Tdbr", " ", 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"cos", "(", "Tbr", ")"}], " ", 
-           RowBox[{"(", 
-            RowBox[{"Xt", "-", "Xmr"}], ")"}]}], "+", 
-          RowBox[{
-           RowBox[{"sin", "(", "Tbr", ")"}], " ", 
-           RowBox[{"(", 
-            RowBox[{"Yt", "-", "Ymr"}], ")"}]}]}], ")"}]}], "-", 
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"Xmr", "-", "Xt"}], ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Rybr", "+", "Rymr", "-", "Ydmr", "-", "Ydt"}], ")"}]}]}], 
-      RowBox[{
-       RowBox[{"Lt", " ", 
-        RowBox[{"cos", "(", "Tmr", ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Xmr", "-", "Xt"}], ")"}]}], "+", 
-       RowBox[{"Lt", " ", 
-        RowBox[{"sin", "(", "Tmr", ")"}], " ", 
-        RowBox[{"(", 
-         RowBox[{"Ymr", "-", "Yt"}], ")"}]}]}]]}], "}"}], "}"}], 
-  TraditionalForm]], "Output",
- CellChangeTimes->{{3.643761144946849*^9, 3.643761208422996*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"FullSimplify", "[", 
-  RowBox[{"Solve", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{"Fxbr", " ", "G"}], "+", 
-        RowBox[{"Fxmr", " ", "G"}], "+", 
-        RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxmr", "+", "Rxt", "-", 
-        "Xdml", "-", "Xdmr", "-", "Xdt", "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdml", " ", 
-         RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xml", "-", "Xt"}], ")"}]}]]}], "==", 
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{"Fybr", " ", "G"}], "+", 
-        RowBox[{"Fymr", " ", "G"}], "+", 
-        RowBox[{"Fyt", " ", "G"}], "+", "Rybr", "+", "Rymr", "+", "Ryt", "-", 
-        "Ydml", "-", "Ydmr", "-", "Ydt", "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdml", " ", 
-         RowBox[{"Cos", "[", "Tml", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Yml", "-", "Yt"}], ")"}]}]]}]}], ",", "Tdml"}], "]"}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.643761227564033*^9, 3.6437612770454607`*^9}}],
-
-Cell[BoxData[
- FormBox[
-  RowBox[{"{", 
-   RowBox[{"{", 
-    RowBox[{"Tdml", "\[Rule]", 
-     RowBox[{
-      FractionBox["1", 
-       RowBox[{
-        RowBox[{"Lt", " ", 
-         RowBox[{"cos", "(", "Tml", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Xml", "-", "Xt"}], ")"}]}], "+", 
-        RowBox[{"Lt", " ", 
-         RowBox[{"sin", "(", "Tml", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Yml", "-", "Yt"}], ")"}]}]}]], 
-      RowBox[{"(", 
-       RowBox[{
-        RowBox[{"Yt", " ", 
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"G", " ", 
-            RowBox[{"(", 
-             RowBox[{"Fxbr", "+", "Fxmr", "+", "Fxt"}], ")"}]}], "+", "Rxbr", 
-           "+", "Rxmr", "+", "Rxt", "-", "Xdml", "-", "Xdmr", "-", "Xdt"}], 
-          ")"}]}], "-", 
-        RowBox[{"Fxbr", " ", "G", " ", "Yml"}], "-", 
-        RowBox[{"Fxmr", " ", "G", " ", "Yml"}], "-", 
-        RowBox[{"Fxt", " ", "G", " ", "Yml"}], "+", 
-        RowBox[{"Fybr", " ", "G", " ", 
-         RowBox[{"(", 
-          RowBox[{"Xml", "-", "Xt"}], ")"}]}], "+", 
-        RowBox[{"Fymr", " ", "G", " ", 
-         RowBox[{"(", 
-          RowBox[{"Xml", "-", "Xt"}], ")"}]}], "+", 
-        RowBox[{"Fyt", " ", "G", " ", "Xml"}], "-", 
-        RowBox[{"Fyt", " ", "G", " ", "Xt"}], "+", 
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{"Yml", "-", "Yt"}], ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"Ls", " ", "Tdbr", " ", 
-            RowBox[{"sin", "(", "Tbr", ")"}]}], "+", 
-           RowBox[{"Lt", " ", "Tdmr", " ", 
-            RowBox[{"sin", "(", "Tmr", ")"}]}]}], ")"}]}], "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"cos", "(", "Tbr", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Xml", "-", "Xt"}], ")"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"cos", "(", "Tmr", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Xml", "-", "Xt"}], ")"}]}], "-", 
-        RowBox[{"Rxbr", " ", "Yml"}], "-", 
-        RowBox[{"Rxmr", " ", "Yml"}], "-", 
-        RowBox[{"Rxt", " ", "Yml"}], "+", 
-        RowBox[{"Rybr", " ", "Xml"}], "-", 
-        RowBox[{"Rybr", " ", "Xt"}], "+", 
-        RowBox[{"Rymr", " ", "Xml"}], "-", 
-        RowBox[{"Rymr", " ", "Xt"}], "+", 
-        RowBox[{"Ryt", " ", "Xml"}], "-", 
-        RowBox[{"Ryt", " ", "Xt"}], "+", 
-        RowBox[{"Xdml", " ", "Yml"}], "+", 
-        RowBox[{"Xdmr", " ", "Yml"}], "+", 
-        RowBox[{"Xdt", " ", "Yml"}], "-", 
-        RowBox[{"Xml", " ", "Ydml"}], "-", 
-        RowBox[{"Xml", " ", "Ydmr"}], "-", 
-        RowBox[{"Xml", " ", "Ydt"}], "+", 
-        RowBox[{"Xt", " ", "Ydml"}], "+", 
-        RowBox[{"Xt", " ", "Ydmr"}], "+", 
-        RowBox[{"Xt", " ", "Ydt"}]}], ")"}]}]}], "}"}], "}"}], 
-  TraditionalForm]], "Output",
- CellChangeTimes->{{3.643761287302827*^9, 3.643761293368589*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"FullSimplify", "[", 
-  RowBox[{"Solve", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"-", 
-      FractionBox[
-       RowBox[{
-        RowBox[{"Fxbr", " ", "G"}], "+", 
-        RowBox[{"Fxml", " ", "G"}], "+", 
-        RowBox[{"Fxmr", " ", "G"}], "+", 
-        RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxml", "+", "Rxmr", "+",
-         "Rxt", "-", "Xdml", "-", "Xdmr", "-", "Xdt", "+", 
-        RowBox[{"Ls", " ", "Tdbl", " ", 
-         RowBox[{"Sin", "[", "Tbl", "]"}]}], "-", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
-        RowBox[{"Lt", " ", "Tdml", " ", 
-         RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
-        RowBox[{"Lt", " ", "Tdmr", " ", 
-         RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
-       RowBox[{"G", " ", 
-        RowBox[{"(", 
-         RowBox[{"Xbl", "-", "Xml"}], ")"}]}]]}], "==", 
+    RowBox[{"\[Lambda]ls", "\[Rule]", 
      RowBox[{"-", 
       FractionBox[
        RowBox[{
@@ -776,106 +274,465 @@ Cell[BoxData[
          RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
        RowBox[{"G", " ", 
         RowBox[{"(", 
-         RowBox[{"Ybl", "-", "Yml"}], ")"}]}]]}]}], ",", "Tdbl"}], "]"}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.6437613431791143`*^9, 3.643761385805418*^9}}],
+         RowBox[{"Ybl", "-", "Yml"}], ")"}]}]]}]}], ",", 
+    RowBox[{"\[Lambda]lt", "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox[
+       RowBox[{
+        RowBox[{"Fybr", " ", "G"}], "+", 
+        RowBox[{"Fymr", " ", "G"}], "+", 
+        RowBox[{"Fyt", " ", "G"}], "+", "Rybr", "+", "Rymr", "+", "Ryt", "-", 
+        "Ydml", "-", "Ydmr", "-", "Ydt", "+", 
+        RowBox[{"Ls", " ", "Tdbr", " ", 
+         RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
+        RowBox[{"Lt", " ", "Tdml", " ", 
+         RowBox[{"Cos", "[", "Tml", "]"}]}], "+", 
+        RowBox[{"Lt", " ", "Tdmr", " ", 
+         RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
+       RowBox[{"G", " ", 
+        RowBox[{"(", 
+         RowBox[{"Yml", "-", "Yt"}], ")"}]}]]}]}], ",", 
+    RowBox[{"\[Lambda]rt", "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox[
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "Fybr"}], " ", "G"}], "-", 
+        RowBox[{"Fymr", " ", "G"}], "-", "Rybr", "-", "Rymr", "+", "Ydmr", 
+        "+", "Ydt", "-", 
+        RowBox[{"Ls", " ", "Tdbr", " ", 
+         RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
+        RowBox[{"Lt", " ", "Tdmr", " ", 
+         RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
+       RowBox[{"G", " ", 
+        RowBox[{"(", 
+         RowBox[{"Ymr", "-", "Yt"}], ")"}]}]]}]}], ",", 
+    RowBox[{"\[Lambda]rs", "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox[
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "Fybr"}], " ", "G"}], "-", "Rybr", "+", "Ydmr", "-", 
+        RowBox[{"Ls", " ", "Tdbr", " ", 
+         RowBox[{"Cos", "[", "Tbr", "]"}]}]}], 
+       RowBox[{"G", " ", 
+        RowBox[{"(", 
+         RowBox[{"Ybr", "-", "Ymr"}], ")"}]}]]}]}]}], "}"}], "}"}]], "Output",\
+
+ CellChangeTimes->{3.644028222878796*^9}]
+}, Open  ]],
 
 Cell[BoxData[
- FormBox[
-  RowBox[{"{", 
-   RowBox[{"{", 
-    RowBox[{"Tdbl", "\[Rule]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"solTdbr", "=", 
+    RowBox[{
      RowBox[{
-      FractionBox["1", 
+      RowBox[{"Solve", "[", 
        RowBox[{
-        RowBox[{"Ls", " ", 
-         RowBox[{"cos", "(", "Tbl", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Xbl", "-", "Xml"}], ")"}]}], "+", 
-        RowBox[{"Ls", " ", 
-         RowBox[{"sin", "(", "Tbl", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Ybl", "-", "Yml"}], ")"}]}]}]], 
-      RowBox[{"(", 
-       RowBox[{
-        RowBox[{"Yml", " ", 
-         RowBox[{"(", 
-          RowBox[{
+        RowBox[{
+         RowBox[{"-", 
+          FractionBox[
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "Fxbr"}], " ", "G"}], "-", "Rxbr", "+", "Xdmr", "+", 
+            RowBox[{"Ls", " ", "Tdbr", " ", 
+             RowBox[{"Sin", "[", "Tbr", "]"}]}]}], 
            RowBox[{"G", " ", 
             RowBox[{"(", 
-             RowBox[{"Fxbr", "+", "Fxml", "+", "Fxmr", "+", "Fxt"}], ")"}]}], 
-           "+", "Rxbr", "+", "Rxml", "+", "Rxmr", "+", "Rxt", "-", "Xdml", 
-           "-", "Xdmr", "-", "Xdt"}], ")"}]}], "-", 
-        RowBox[{"Fxbr", " ", "G", " ", "Ybl"}], "-", 
-        RowBox[{"Fxml", " ", "G", " ", "Ybl"}], "-", 
-        RowBox[{"Fxmr", " ", "G", " ", "Ybl"}], "-", 
-        RowBox[{"Fxt", " ", "G", " ", "Ybl"}], "+", 
-        RowBox[{"Fybr", " ", "G", " ", 
-         RowBox[{"(", 
-          RowBox[{"Xbl", "-", "Xml"}], ")"}]}], "+", 
-        RowBox[{"Fyml", " ", "G", " ", 
-         RowBox[{"(", 
-          RowBox[{"Xbl", "-", "Xml"}], ")"}]}], "+", 
-        RowBox[{"Fymr", " ", "G", " ", "Xbl"}], "-", 
-        RowBox[{"Fymr", " ", "G", " ", "Xml"}], "+", 
-        RowBox[{"Fyt", " ", "G", " ", "Xbl"}], "-", 
-        RowBox[{"Fyt", " ", "G", " ", "Xml"}], "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"cos", "(", "Tbr", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Xbl", "-", "Xml"}], ")"}]}], "+", 
-        RowBox[{"Ls", " ", "Tdbr", " ", 
-         RowBox[{"sin", "(", "Tbr", ")"}], " ", 
-         RowBox[{"(", 
-          RowBox[{"Ybl", "-", "Yml"}], ")"}]}], "+", 
-        RowBox[{"Lt", " ", 
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"-", 
+             RowBox[{"Xbr", "-", "Xmr"}], ")"}]}]]}], "==", 
+         RowBox[{"-", 
+          FractionBox[
+           RowBox[{
             RowBox[{
-             RowBox[{"(", 
-              RowBox[{"Ybl", "-", "Yml"}], ")"}], " ", 
-             RowBox[{"(", 
-              RowBox[{
-               RowBox[{"Tdml", " ", 
-                RowBox[{"sin", "(", "Tml", ")"}]}], "-", 
-               RowBox[{"Tdmr", " ", 
-                RowBox[{"sin", "(", "Tmr", ")"}]}]}], ")"}]}]}], "+", 
-           RowBox[{"Tdml", " ", 
-            RowBox[{"cos", "(", "Tml", ")"}], " ", 
+             RowBox[{"-", "Fybr"}], " ", "G"}], "-", "Rybr", "+", "Ydmr", "-", 
+            RowBox[{"Ls", " ", "Tdbr", " ", 
+             RowBox[{"Cos", "[", "Tbr", "]"}]}]}], 
+           RowBox[{"G", " ", 
             RowBox[{"(", 
-             RowBox[{"Xml", "-", "Xbl"}], ")"}]}], "+", 
-           RowBox[{"Tdmr", " ", 
-            RowBox[{"cos", "(", "Tmr", ")"}], " ", 
-            RowBox[{"(", 
-             RowBox[{"Xbl", "-", "Xml"}], ")"}]}]}], ")"}]}], "-", 
-        RowBox[{"Rxbr", " ", "Ybl"}], "-", 
-        RowBox[{"Rxml", " ", "Ybl"}], "-", 
-        RowBox[{"Rxmr", " ", "Ybl"}], "-", 
-        RowBox[{"Rxt", " ", "Ybl"}], "+", 
-        RowBox[{"Rybr", " ", "Xbl"}], "-", 
-        RowBox[{"Rybr", " ", "Xml"}], "+", 
-        RowBox[{"Ryml", " ", "Xbl"}], "-", 
-        RowBox[{"Ryml", " ", "Xml"}], "+", 
-        RowBox[{"Rymr", " ", "Xbl"}], "-", 
-        RowBox[{"Rymr", " ", "Xml"}], "+", 
-        RowBox[{"Ryt", " ", "Xbl"}], "-", 
-        RowBox[{"Ryt", " ", "Xml"}], "-", 
-        RowBox[{"Xbl", " ", "Ydml"}], "-", 
-        RowBox[{"Xbl", " ", "Ydmr"}], "-", 
-        RowBox[{"Xbl", " ", "Ydt"}], "+", 
-        RowBox[{"Xdml", " ", "Ybl"}], "+", 
-        RowBox[{"Xdmr", " ", "Ybl"}], "+", 
-        RowBox[{"Xdt", " ", "Ybl"}], "+", 
-        RowBox[{"Xml", " ", "Ydml"}], "+", 
-        RowBox[{"Xml", " ", "Ydmr"}], "+", 
-        RowBox[{"Xml", " ", "Ydt"}]}], ")"}]}]}], "}"}], "}"}], 
-  TraditionalForm]], "Output",
- CellChangeTimes->{{3.6437614060250196`*^9, 3.64376141314758*^9}}]
+             RowBox[{"Ybr", "-", "Ymr"}], ")"}]}]]}]}], ",", "Tdbr"}], "]"}], 
+      "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "//", "FullSimplify"}]}], ";"}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.643760111581279*^9, 3.643760158634315*^9}, {
+   3.643760610441935*^9, 3.64376062043368*^9}, {3.6437609909839783`*^9, 
+   3.643760991414583*^9}, {3.643983460473078*^9, 3.643983462527768*^9}, 
+   3.643984106790872*^9, {3.643984239611989*^9, 3.643984240873332*^9}, {
+   3.643984729335864*^9, 3.643984735235708*^9}, {3.643984842739461*^9, 
+   3.643984845097706*^9}, {3.6439848886807957`*^9, 3.6439850146161346`*^9}, {
+   3.643985181843113*^9, 3.643985215552417*^9}, {3.6439855521470327`*^9, 
+   3.643985622150198*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"solTdmr", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "Fxbr"}], " ", "G"}], "-", 
+           RowBox[{"Fxmr", " ", "G"}], "-", "Rxbr", "-", "Rxmr", "+", "Xdmr", 
+           "+", "Xdt", "+", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Xmr", "-", "Xt"}], ")"}]}]]}], "==", 
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "Fybr"}], " ", "G"}], "-", 
+           RowBox[{"Fymr", " ", "G"}], "-", "Rybr", "-", "Rymr", "+", "Ydmr", 
+           "+", "Ydt", "-", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Ymr", "-", "Yt"}], ")"}]}]]}]}], ",", "Tdmr"}], "]"}], 
+     "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "//", "FullSimplify"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.643761112975437*^9, 3.6437611400482492`*^9}, {
+   3.643983539125963*^9, 3.643983540904304*^9}, 3.643984103847557*^9, {
+   3.643984608972329*^9, 3.6439846234254637`*^9}, {3.643985629482687*^9, 
+   3.643985647866026*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"solTdml", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"Fxbr", " ", "G"}], "+", 
+           RowBox[{"Fxmr", " ", "G"}], "+", 
+           RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxmr", "+", "Rxt", 
+           "-", "Xdml", "-", "Xdmr", "-", "Xdt", "-", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
+           RowBox[{"Lt", " ", "Tdml", " ", 
+            RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Xml", "-", "Xt"}], ")"}]}]]}], "==", 
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"Fybr", " ", "G"}], "+", 
+           RowBox[{"Fymr", " ", "G"}], "+", 
+           RowBox[{"Fyt", " ", "G"}], "+", "Rybr", "+", "Rymr", "+", "Ryt", 
+           "-", "Ydml", "-", "Ydmr", "-", "Ydt", "+", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
+           RowBox[{"Lt", " ", "Tdml", " ", 
+            RowBox[{"Cos", "[", "Tml", "]"}]}], "+", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Yml", "-", "Yt"}], ")"}]}]]}]}], ",", "Tdml"}], "]"}], 
+     "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "//", "FullSimplify"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.643761227564033*^9, 3.6437612770454607`*^9}, {
+   3.6439835508060217`*^9, 3.643983552190157*^9}, 3.643984101584321*^9, {
+   3.643985654240748*^9, 3.643985655872003*^9}, {3.643985700391656*^9, 
+   3.643985708277051*^9}, {3.6439858258745117`*^9, 3.643985826048006*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"solTdbl", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"Fxbr", " ", "G"}], "+", 
+           RowBox[{"Fxml", " ", "G"}], "+", 
+           RowBox[{"Fxmr", " ", "G"}], "+", 
+           RowBox[{"Fxt", " ", "G"}], "+", "Rxbr", "+", "Rxml", "+", "Rxmr", 
+           "+", "Rxt", "-", "Xdml", "-", "Xdmr", "-", "Xdt", "+", 
+           RowBox[{"Ls", " ", "Tdbl", " ", 
+            RowBox[{"Sin", "[", "Tbl", "]"}]}], "-", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Sin", "[", "Tbr", "]"}]}], "+", 
+           RowBox[{"Lt", " ", "Tdml", " ", 
+            RowBox[{"Sin", "[", "Tml", "]"}]}], "-", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Sin", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Xbl", "-", "Xml"}], ")"}]}]]}], "==", 
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"Fybr", " ", "G"}], "+", 
+           RowBox[{"Fyml", " ", "G"}], "+", 
+           RowBox[{"Fymr", " ", "G"}], "+", 
+           RowBox[{"Fyt", " ", "G"}], "+", "Rybr", "+", "Ryml", "+", "Rymr", 
+           "+", "Ryt", "-", "Ydml", "-", "Ydmr", "-", "Ydt", "-", 
+           RowBox[{"Ls", " ", "Tdbl", " ", 
+            RowBox[{"Cos", "[", "Tbl", "]"}]}], "+", 
+           RowBox[{"Ls", " ", "Tdbr", " ", 
+            RowBox[{"Cos", "[", "Tbr", "]"}]}], "-", 
+           RowBox[{"Lt", " ", "Tdml", " ", 
+            RowBox[{"Cos", "[", "Tml", "]"}]}], "+", 
+           RowBox[{"Lt", " ", "Tdmr", " ", 
+            RowBox[{"Cos", "[", "Tmr", "]"}]}]}], 
+          RowBox[{"G", " ", 
+           RowBox[{"(", 
+            RowBox[{"Ybl", "-", "Yml"}], ")"}]}]]}]}], ",", "Tdbl"}], "]"}], 
+     "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "//", "FullSimplify"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.6437613431791143`*^9, 3.643761385805418*^9}, {
+   3.643983554342949*^9, 3.6439835557663307`*^9}, 3.643984096468109*^9, {
+   3.643985684517344*^9, 3.6439857121394587`*^9}, {3.6439860455686903`*^9, 
+   3.643986046982291*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Ls", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Lt", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fxbl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fxml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fxt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fxmr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fxbr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fybl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fyml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fyt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fymr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Fybr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rxbl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rxml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rxt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rxmr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rxbr", "=", "0.1"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rybl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ryml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ryt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rymr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rybr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xdbl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xdml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xdt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xdmr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xdbr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ydbl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ydml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ydt", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ydmr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Ydbr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Tbl", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"108.0", "/", "180"}], ")"}], "*", "Pi"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Tml", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"36.0", "/", "180"}], ")"}], "*", "Pi"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Tmr", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"36.0", "/", "180"}], ")"}], "*", "Pi"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Tbr", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"108.0", "/", "180"}], ")"}], "*", "Pi"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Xbl", "=", "0"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Xml", "=", 
+     RowBox[{
+      RowBox[{"Ls", "*", 
+       RowBox[{"Cos", "[", "Tbl", "]"}]}], "+", "Xbl"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Xt", "=", 
+     RowBox[{
+      RowBox[{"Lt", "*", 
+       RowBox[{"Cos", "[", "Tml", "]"}]}], "+", "Xml"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Xmr", "=", 
+     RowBox[{
+      RowBox[{"Lt", "*", 
+       RowBox[{"Cos", "[", 
+        RowBox[{"-", "Tmr"}], "]"}]}], "+", "Xt"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Xbr", "=", 
+     RowBox[{
+      RowBox[{"Ls", "*", 
+       RowBox[{"Cos", "[", 
+        RowBox[{"-", "Tbr"}], "]"}]}], "+", "Xmr"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"Ybl", "=", "0"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Yml", "=", 
+     RowBox[{
+      RowBox[{"Ls", "*", 
+       RowBox[{"Sin", "[", "Tbl", "]"}]}], "+", "Ybl"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Yt", "=", 
+     RowBox[{
+      RowBox[{"Lt", "*", 
+       RowBox[{"Sin", "[", "Tml", "]"}]}], "+", "Yml"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Ymr", "=", 
+     RowBox[{
+      RowBox[{"Lt", "*", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"-", "Tmr"}], "]"}]}], "+", "Yt"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Ybr", "=", 
+     RowBox[{
+      RowBox[{"Ls", "*", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"-", "Tbr"}], "]"}]}], "+", "Ymr"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"qTdbl", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"qTdml", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"qTdmr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"qTdbr", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.643986049921167*^9, 3.6439861380556593`*^9}, {
+  3.6439861769136267`*^9, 3.643986253451509*^9}, {3.643986321545652*^9, 
+  3.643986323391285*^9}, {3.643986360832325*^9, 3.643986361013968*^9}, {
+  3.643986411573201*^9, 3.643986490821456*^9}, {3.643986576991534*^9, 
+  3.643986733248559*^9}, {3.643987772224576*^9, 3.643987822850519*^9}, {
+  3.6439878766243677`*^9, 3.643987897726672*^9}, {3.6440281654640827`*^9, 
+  3.644028165734735*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Tdbr", "/.", 
+  RowBox[{"(", "solTdbr", ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Tdmr", "/.", 
+  RowBox[{"(", 
+   RowBox[{"solTdmr", "/.", 
+    RowBox[{"Tdbr", "\[Rule]", "qTdbr"}]}], ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Tdml", "/.", 
+  RowBox[{"(", 
+   RowBox[{"solTdml", "/.", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Tdmr", "\[Rule]", "qTdmr"}], ",", 
+      RowBox[{"Tdbr", "\[Rule]", "qTdbr"}]}], "}"}]}], 
+   ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Tdbl", "/.", 
+  RowBox[{"(", 
+   RowBox[{"solTdbl", "/.", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Tdmr", "\[Rule]", "qTdmr"}], ",", 
+      RowBox[{"Tdbr", "\[Rule]", "qTdbr"}], ",", 
+      RowBox[{"Tdml", "\[Rule]", "qTdml"}]}], "}"}]}], ")"}]}]}], "Input",
+ CellChangeTimes->{{3.643984156804192*^9, 3.643984164515147*^9}, {
+  3.643985787647812*^9, 3.6439858085977573`*^9}, {3.643987778394085*^9, 
+  3.643987837944749*^9}}],
+
+Cell[BoxData["0.011755705045849461`"], "Output",
+ CellChangeTimes->{{3.6439858368771467`*^9, 3.6439858487988787`*^9}, 
+   3.64398619702677*^9, 3.643986257592451*^9, 3.643986741215016*^9, 
+   3.643987781243746*^9, {3.64398784216529*^9, 3.643987853277132*^9}, 
+   3.643987900964835*^9, 3.644028174177514*^9, 3.644028257721348*^9}],
+
+Cell[BoxData[
+ RowBox[{"-", "0.019021130325903076`"}]], "Output",
+ CellChangeTimes->{{3.6439858368771467`*^9, 3.6439858487988787`*^9}, 
+   3.64398619702677*^9, 3.643986257592451*^9, 3.643986741215016*^9, 
+   3.643987781243746*^9, {3.64398784216529*^9, 3.643987853277132*^9}, 
+   3.643987900964835*^9, 3.644028174177514*^9, 3.644028257723954*^9}],
+
+Cell[BoxData[
+ RowBox[{"-", "0.005877852522924732`"}]], "Output",
+ CellChangeTimes->{{3.6439858368771467`*^9, 3.6439858487988787`*^9}, 
+   3.64398619702677*^9, 3.643986257592451*^9, 3.643986741215016*^9, 
+   3.643987781243746*^9, {3.64398784216529*^9, 3.643987853277132*^9}, 
+   3.643987900964835*^9, 3.644028174177514*^9, 3.644028257726528*^9}],
+
+Cell[BoxData[
+ RowBox[{"-", "0.009510565162951536`"}]], "Output",
+ CellChangeTimes->{{3.6439858368771467`*^9, 3.6439858487988787`*^9}, 
+   3.64398619702677*^9, 3.643986257592451*^9, 3.643986741215016*^9, 
+   3.643987781243746*^9, {3.64398784216529*^9, 3.643987853277132*^9}, 
+   3.643987900964835*^9, 3.644028174177514*^9, 3.644028257728611*^9}]
 }, Open  ]]
 },
-WindowSize->{1276, 658},
-WindowMargins->{{Automatic, 0}, {Automatic, 4}},
+WindowSize->{1280, 751},
+WindowMargins->{{-1, Automatic}, {Automatic, 0}},
 FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
 2012)",
 StyleDefinitions->"Default.nb"
@@ -891,28 +748,24 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 5176, 139, 199, "Input"],
+Cell[557, 20, 178, 3, 46, "Input"],
+Cell[738, 25, 2778, 77, 114, "Input"],
+Cell[3519, 104, 2695, 73, 114, "Input"],
 Cell[CellGroupData[{
-Cell[5758, 163, 2636, 76, 114, "Input"],
-Cell[8397, 241, 2629, 69, 129, "Output"]
+Cell[6239, 181, 2780, 70, 220, "Input"],
+Cell[9022, 253, 2560, 68, 129, "Output"]
 }, Open  ]],
-Cell[11041, 313, 2554, 72, 114, "Input"],
-Cell[13598, 387, 2780, 70, 220, InheritFromParent],
+Cell[11597, 324, 1589, 39, 70, "Input"],
+Cell[13189, 365, 1587, 42, 109, "Input"],
+Cell[14779, 409, 1913, 46, 109, "Input"],
+Cell[16695, 457, 2183, 52, 127, "Input"],
+Cell[18881, 511, 5606, 163, 1083, "Input"],
 Cell[CellGroupData[{
-Cell[16403, 461, 978, 28, 51, "Input"],
-Cell[17384, 491, 1116, 33, 50, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[18537, 529, 1215, 34, 121, "Input"],
-Cell[19755, 565, 1662, 48, 50, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[21454, 618, 1481, 38, 92, "Input"],
-Cell[22938, 658, 2858, 73, 112, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[25833, 736, 1777, 44, 121, "Input"],
-Cell[27613, 782, 3653, 91, 112, "Output"]
+Cell[24512, 678, 928, 25, 80, "Input"],
+Cell[25443, 705, 328, 4, 28, "Output"],
+Cell[25774, 711, 345, 5, 28, "Output"],
+Cell[26122, 718, 345, 5, 28, "Output"],
+Cell[26470, 725, 345, 5, 62, "Output"]
 }, Open  ]]
 }
 ]
