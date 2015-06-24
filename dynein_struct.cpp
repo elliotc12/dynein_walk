@@ -146,8 +146,7 @@ void Dynein::update_protein() {
 		
 		//printf("d_bla: %f\n", );
 		
-		}
-	else if (state == BOTHBOUND) {
+	} else if (state == BOTHBOUND) {
 		
 		temp_d_blx = 0;
 		temp_d_mlx = -d_bla * ls * sin(bla);
@@ -177,8 +176,7 @@ void Dynein::update_protein() {
 		tx  = temp_tx;       ty  = temp_ty; 
 		mrx = temp_mrx;      mry = temp_mry;
 		brx = temp_brx;      bry = temp_bry;
-	}
-	else {
+	} else {
 		
 		temp_d_brx = 0;
 		temp_d_mrx = ls * d_bra * -sin(bra);

@@ -4,17 +4,17 @@ import math
 import numpy
 import time
 import sys
-import matplotlib.pyplot as plib
+import matplotlib.pyplot as plt
 
 	
 if len(sys.argv) == 2:
 	if sys.argv[1] == "energy":
 		data = numpy.loadtxt("data.txt")
-		plib.plot(data[:,3], data[:,2], 'b-', label="Energy")
-		plib.plot(data[:,3], data[:,1], 'g-', label="PE")
-		plib.plot(data[:,3], data[:,0], 'r-', label="KE")
-		plib.legend()
-		plib.show()
+		plt.plot(data[:,3], data[:,2], 'b-', label="Energy")
+		plt.plot(data[:,3], data[:,1], 'g-', label="PE")
+		plt.plot(data[:,3], data[:,0], 'r-', label="KE")
+		plt.legend()
+		plt.show()
 		exit(0)
 
 
@@ -23,23 +23,23 @@ Y = [0, 1, 2, 3, 4]
 
 config = numpy.loadtxt("config.txt")
 data = numpy.genfromtxt("data.txt", delimiter="\t", skiprows=1)
-plib.ion()
+plt.ion()
 
-ax = plib.gca()
+ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-40,40)
 ax.set_ylim(-40,40)
-line1, = plib.plot(X, Y)
-line2, = plib.plot([X[0]], [Y[0]], 'ro')
-line3, = plib.plot([X[1]], [Y[1]], 'bo')
-line4, = plib.plot([X[2]], [Y[2]], 'go')
-line5, = plib.plot([X[3]], [Y[3]], 'bo')
-line6, = plib.plot([X[4]], [Y[4]], 'ro')
+line1, = plt.plot(X, Y)
+line2, = plt.plot([X[0]], [Y[0]], 'ro')
+line3, = plt.plot([X[1]], [Y[1]], 'bo')
+line4, = plt.plot([X[2]], [Y[2]], 'go')
+line5, = plt.plot([X[3]], [Y[3]], 'bo')
+line6, = plt.plot([X[4]], [Y[4]], 'ro')
 
-title_text = plib.text(-65, 45, 'State:')
-pe_text = plib.text(-65, 40, 'PE: ')
-ke_text = plib.text(-65, 35, 'KE: ')
-t_text = plib.text(-65, -36, 't=:')
+title_text = plt.text(-65, 45, 'State:')
+pe_text = plt.text(-65, 40, 'PE: ')
+ke_text = plt.text(-65, 35, 'KE: ')
+t_text = plt.text(-65, -36, 't=:')
 
 i = 0
 print("Press enter to exit animation.")
@@ -78,11 +78,11 @@ while (True):
 			i += 10
 		elif sys.argv[1][0:6] == "speed=":
 			i += float(sys.argv[1][6:])
-			plib.pause(0.001)
+			plt.pause(0.001)
 	else:
 		i += 10
-		plib.pause(0.001)	
+		plt.pause(0.001)	
 			
 	if (i >= len(data)):
 		i = 0
-	plib.draw()
+	plt.draw()

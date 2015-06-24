@@ -34,7 +34,7 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 
 /* *********************************** MAIN ****************************************** */
 
-int main() {
+int main(int argvc, char **argv) {
 	Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init);
 	resetLog(dyn);
 	simulateProtein(dyn, inctime, runtime);
