@@ -1,4 +1,4 @@
-CPPFLAGS = -ggdb -Wall
+CPPFLAGS = -g -Wall -O2
 
 all: walk data.txt
 

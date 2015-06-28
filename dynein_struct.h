@@ -47,7 +47,14 @@ public:
   void set_d_mra(double d);
   void set_d_bra(double d);
 
-  double get_blx();
+  double get_bla();
+  double get_mla();
+  double get_mra();
+  double get_bra();
+
+  double get_blx() {
+    return blx;
+  }
   double get_mlx();
   double get_tx();
   double get_mrx();
@@ -59,6 +66,8 @@ public:
   double get_mry();
   double get_bry();
   
+  // The following are dynamical properties that only exist in an
+  // ephemeral per-timestep way:
   double get_d_blx();
   double get_d_mlx();
   double get_d_tx();
@@ -71,21 +80,11 @@ public:
   double get_d_mry();
   double get_d_bry();
 
-  double get_bla();
-  double get_mla();
-  double get_mra();
-  double get_bra();
-
   double get_d_bla();
   double get_d_mla();
   double get_d_mra();
   double get_d_bra();
-  
-  double get_ls_force();
-  double get_lt_force();
-  double get_rt_force();
-  double get_rs_force();
-
+   
   double get_f_blx();
   double get_f_mlx();
   double get_f_tx();
@@ -125,12 +124,13 @@ private:
   double mra;
   double bra;
 
-  double blx;     double bly;
+  double blx, bly;
+  double brx;     double bry;
+
   double mlx;     double mly;
   double tx;      double ty;
   double mrx;     double mry;
-  double brx;     double bry;
-
+  
   double d_bla;   //Angular Velocities
   double d_mla;
   double d_mra;
