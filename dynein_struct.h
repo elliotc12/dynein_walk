@@ -5,20 +5,6 @@ const double ls = 10.0;
 
 const double g = 1;
 
-const double kt  = 1.0; // Higher spring constant -> less deviation from equilibrium
-const double kml = 1.0;
-const double kmr = 1.0;
-const double kbl = 1.0;
-const double kbr = 1.0;
-
-const double mb = 1.0; // Higher mass constant -> less movement
-const double mm = 1.0;
-const double mt = 1.0;
-
-const double ba = (108.0 / 180) * M_PI;
-const double ma = (108.0 / 180) * M_PI;
-const double ta = (108.0 / 180) * M_PI;
-
 const double bla_init = (108.0 / 180) * M_PI;
 const double mla_init = (36.0 / 180) * M_PI;
 const double mra_init = (36.0 / 180) * M_PI;
@@ -131,6 +117,7 @@ public:
 
   void log(double t);
   void update_protein();
+  void read_init_file();
   
 private:
   double bla;

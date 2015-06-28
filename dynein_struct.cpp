@@ -7,6 +7,9 @@
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
 Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init) {
+	
+	read_init_file();
+	
 	blx = 0;
 	bly = 0;
 	
@@ -41,6 +44,16 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 	
 }
 
+void Dynein::read_init_file() {
+	
+	FILE* file = fopen("init.txt","r");
+	
+	
+	
+	
+	fclose(file);
+}
+
 void Dynein::set_state(states s) {
 	state = s;
 }
@@ -62,11 +75,11 @@ void Dynein::update_protein() {
 	double temp_d_mra;
 	double temp_d_bra;
 	
-	double temp_blx;    double temp_bly;
-	double temp_mlx;    double temp_mly;
-	double temp_tx;     double temp_ty;
-	double temp_mrx;    double temp_mry;
-	double temp_brx;    double temp_bry;
+	double temp_blx;      double temp_bly;
+	double temp_mlx;      double temp_mly;
+	double temp_tx;       double temp_ty;
+	double temp_mrx;      double temp_mry;
+	double temp_brx;      double temp_bry;
 	
 	double temp_d_blx;    double temp_d_bly;
 	double temp_d_mlx;    double temp_d_mly;
