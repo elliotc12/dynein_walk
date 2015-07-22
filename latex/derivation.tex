@@ -166,11 +166,37 @@ $$
 \hspace*{-7.5cm} \mn L_{t}\cos(\Theta_{br}-\pi) \dot{\Theta}_{br} (Y_{mr} - Y_{t }) - L_{t}\sin(\Theta_{br}-\pi) \dot{\Theta}_{br} (X_{mr} - X_{t }) + \Big ( \dot{Y}_{t } - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} - R_{ybr} - \frac{1}{\gamma}F_{ybr} \Big ) (Y_{mr} - Y_{t }) - \Big ( \dot{X}_{t } - R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \Big ) (X_{mr} - X_{t })
 $$
 
-\begin{align}
-\dot{\Theta}_{mr} &= \nonumber \\
-&\frac{ \Big (\mn L_{t}\cos(\Theta_{br}-\pi) \dot{\Theta}_{br} + \dot{Y}_{t } - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} - R_{ybr} - \frac{1}{\gamma}F_{ybr} \Big ) (Y_{mr} - Y_{t }) - \Big (L_{t}\sin(\Theta_{br}-\pi) \dot{\Theta}_{br} - \dot{X}_{t } - R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \Big ) (X_{mr} - X_{t })}
-{L_{s}\sin(\Theta_{mr}-\pi)(X_{mr} - X_{t }) + L_{s}\cos(\Theta_{mr}-\pi)(Y_{mr} - Y_{t })}
-\end{align}
+\begin{multline}
+\dot{\Theta}_{mr} =
+\Bigg( \left(\mn L_{t}\cos(\Theta_{br}-\pi) \dot{\Theta}_{br} +
+  \dot{Y}_{t } - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} -
+  R_{ybr} - \frac{1}{\gamma}F_{ybr} \right) (Y_{mr} - Y_{t })
+  \\
+  - \left(L_{t}\sin(\Theta_{br}-\pi) \dot{\Theta}_{br} - \dot{X}_{t }
+          - R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} - R_{xbr} -
+          \frac{1}{\gamma}F_{xbr} \right) (X_{mr} - X_{t })
+          \Bigg) \\
+/ \left(L_{s}\sin(\Theta_{mr}-\pi)(X_{mr} - X_{t }) + L_{s}\cos(\Theta_{mr}-\pi)(Y_{mr} - Y_{t })\right)
+\end{multline}
+or alternatively
+\begin{multline}
+\dot{\Theta}_{mr} =
+\frac{ \mn L_{t}\cos(\Theta_{br}-\pi) \dot{\Theta}_{br} +
+  \dot{Y}_{t } - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} -
+  R_{ybr} - \frac{1}{\gamma}F_{ybr}
+}{
+  L_{s}\sin(\Theta_{mr}-\pi)\frac{X_{mr} - X_{t}}{Y_{mr} - Y_{t }} +
+  L_{s}\cos(\Theta_{mr}-\pi)
+}
+  \\
+  - \frac{L_{t}\sin(\Theta_{br}-\pi) \dot{\Theta}_{br} - \dot{X}_{t }
+          - R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} - R_{xbr} -
+          \frac{1}{\gamma}F_{xbr}
+          }{
+ L_{s}\sin(\Theta_{mr}-\pi) +
+L_{s}\cos(\Theta_{mr}-\pi)\frac{Y_{mr} - Y_{t }}{X_{mr} - X_{t }}
+}
+\end{multline}
 
 
 \end{document}
