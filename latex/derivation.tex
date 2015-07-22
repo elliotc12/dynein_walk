@@ -19,11 +19,15 @@
 \maketitle
 
 \section{Cartesian from Angular Coordinates}
-$$X_{bl}$$
-$$X_{ml} = X_{bl}+L_{t}\cos(\Theta_{bl})$$
-$$X_{t}  = X_{ml}+L_{s}\cos(\Theta_{ml})$$
-$$X_{mr} = X_{t} +L_{s}\cos(\Theta_{mr}-\pi)$$
-$$X_{br} = X_{mr}+L_{t}\cos(\Theta_{br}-\pi)$$
+\begin{align}
+  X_{bl} &= 0 \\
+  X_{ml} &= X_{bl}+L_{t}\cos(\Theta_{bl}) \\
+  X_{t}  &= X_{ml}+L_{s}\cos(\Theta_{ml}) \\
+  X_{mr} &= X_{t} +L_{s}\cos(\Theta_{mr}-\pi) \\
+  X_{br} &= X_{mr}+L_{t}\cos(\Theta_{br}-\pi) \label{eq:br-definition}
+\end{align}
+
+As we found in Eq.~\ref{eq:br-definition}... just kidding!
 
 $$Y_{bl}$$
 $$Y_{ml} = Y_{bl}+L_{t}\sin(\Theta_{bl})$$
