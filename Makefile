@@ -28,7 +28,7 @@ data.txt: walk
 	./walk
 
 latex/derivation.pdf: latex/derivation.tex
-	pdflatex latex/derivation.tex 
+	cd latex && pdflatex derivation.tex > latexlog.txt
 
 clean:
 	rm -f *.o
@@ -36,6 +36,7 @@ clean:
 	rm -f ftest
 	rm -f data.txt
 	rm -f config.txt
-	rm -f *.aux
-	rm -f *.log
-	rm -f *.pdf
+	rm -f latex/*.aux
+	rm -f latex/*.log
+	rm -f latex/*.pdf
+	rm -f latex/latexlog.txt
