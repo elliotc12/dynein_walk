@@ -3,8 +3,4 @@
 -How should I make a dynein init file?
 
 Todo:
-use \left and \right parenthesis instead of \Big (
-Get rid of excess *s
-Operator at beginning of line, not end
-Make equals more obvious by adding newlines
-Turn fractions of X/Ys into 
+Do trig simplifications
