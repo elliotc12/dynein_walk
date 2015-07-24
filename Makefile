@@ -27,8 +27,8 @@ test: dynein_ftest.o dynein_struct.o utilities.o
 data.txt: walk
 	./walk
 
-latex/derivation.pdf: latex/derivation.tex
-	cd latex && pdflatex derivation.tex > latexlog.txt
+derivation.pdf: latex/derivation.tex
+	cd latex && pdflatex derivation.tex > latexlog.txt && mv derivation.pdf ..
 
 clean:
 	rm -f *.o
