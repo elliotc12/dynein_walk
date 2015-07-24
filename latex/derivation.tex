@@ -19,6 +19,7 @@
 \maketitle
 
 \section{Cartesian from Angular Coordinates}
+This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
   X_{bl} &= 0 \\
   X_{ml} &= X_{bl}+L_{t}\cos(\Theta_{bl}) \\
@@ -36,6 +37,7 @@
 \end{align}
 
 \section{Cartesian Velocities}
+This section shows the velocity definitions. \\
 \begin{align}
   \dot{X}_{bl} &= 0 \\
   \dot{X}_{ml} &= \dot{X}_{bl} + L_{t}\sin(\Theta_{bl})      \dot{\Theta}_{bl} \\
@@ -54,6 +56,7 @@
 
 
 \section{Cartesian Velocities (expanded)}
+This section expands the above definitions. \\
 \begin{align}
   \dot{X}_{bl} &= 0 \\
   \dot{X}_{ml} &= L_{t}\sin(\Theta_{bl})  \dot{\Theta}_{bl} \\
@@ -71,7 +74,8 @@
 \end{align}
 
 
-  \section{Brownian Equations}
+\section{Brownian Equations}
+This section shows the velocity definitions using the Brownian dynamics equation. \\
 \begin{align}  
   \dot{X}_{bl} &= 0 \\
   \dot{X}_{ml} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{ls}(X_{ml} - X_{bl}) + \lambda_{lt}(X_{t } - X_{ml}) \Big) + R_{xml} \\
@@ -87,8 +91,43 @@
   \dot{Y}_{mr} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{rt}(Y_{mr} - Y_{t }) + \lambda_{rs}(Y_{br} - Y_{mr}) \Big) + R_{ymr} \\
   \dot{Y}_{br} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{rs}(Y_{br} - Y_{mr})                                 \Big) + R_{ybr}
 \end{align}
+
+\section{Expanded Brownian Equations}
+
+\begin{align}
+  &L_{t}\sin(\Theta_{bl})  \dot{\Theta}_{bl} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
+  &L_{t}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{s}\sin(\Theta_{ml})      \dot{\Theta}_{ml} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + \frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + R_{xt } \\
+  &L_{t}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{s}\sin(\Theta_{ml})      \dot{\Theta}_{ml} + L_{s}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xmr} \\
+  &L_{t}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{s}\sin(\Theta_{ml})      \dot{\Theta}_{ml} + L_{s}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} + L_{t}\sin(\Theta_{br}-\pi)  \dot{\Theta}_{br} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xbr}
+\end{align}
+
+\begin{align}
+  &\mn L_{t}\cos(\Theta_{bl})  \dot{\Theta}_{bl} = \frac{1}{\gamma}F_{yml} + \mn \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + R_{yml} \\
+  &\mn L_{t}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{s}\cos(\Theta_{ml})  \dot{\Theta}_{ml}  = \frac{1}{\gamma}F_{yt } + \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + R_{yt } \\
+  &\mn L_{t}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{s}\cos(\Theta_{ml})  \dot{\Theta}_{ml} + \mn L_{s}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} = \frac{1}{\gamma}F_{ymr} + \mn \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ymr} \\
+  &\mn L_{t}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{s}\cos(\Theta_{ml})  \dot{\Theta}_{ml} + \mn L_{s}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} + \mn L_{t}\cos(\Theta_{br}-\pi)  \dot{\Theta}_{br} = \frac{1}{\gamma}F_{ybr} + \mn \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ybr}
+\end{align}
+
+
+\section{System after Subtracting out Angular Velocity Terms}
+This is the system after subtracting equations from each other to eliminate some angular velocity terms.\\
+
+\begin{align}
+  L_{t}\sin(\Theta_{bl})      \dot{\Theta}_{bl} &= \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
+  L_{s}\sin(\Theta_{ml})      \dot{\Theta}_{ml} &= \frac{1}{\gamma}F_{xt } - \frac{2}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + \frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + R_{xt } - \frac{1}{\gamma}F_{xml} - \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) - R_{xml} \\
+  L_{s}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} &= \frac{1}{\gamma}F_{xmr} - \frac{2}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xmr} - \frac{1}{\gamma}F_{xt } - \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) - R_{xt } \\
+  L_{t}\sin(\Theta_{br}-\pi)  \dot{\Theta}_{br} &= \frac{1}{\gamma}F_{xbr} - \frac{2}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xbr} - \frac{1}{\gamma}F_{xmr} - \mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) - R_{xmr} 
+\end{align}
+
+\begin{align}
+  \mn L_{t}\cos(\Theta_{bl})      \dot{\Theta}_{bl} &= \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + R_{yml} \\
+  \mn L_{s}\cos(\Theta_{ml})      \dot{\Theta}_{ml} &= \frac{1}{\gamma}F_{yt } - \frac{2}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + R_{yt } - \frac{1}{\gamma}F_{yml} - \mn \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) - R_{yml}\\
+  \mn L_{s}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} &= \frac{1}{\gamma}F_{ymr} - \frac{2}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ymr} - \frac{1}{\gamma}F_{yt } - \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) - R_{yt } \\
+  \mn L_{t}\cos(\Theta_{br}-\pi)  \dot{\Theta}_{br} &= \frac{1}{\gamma}F_{ybr} - \frac{2}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ybr} - \frac{1}{\gamma}F_{ymr} - \mn \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) - R_{ymr} 
+\end{align}
   
-  \section{System of Equations}
+\section{System of Equations}
+This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
 
 \begin{align}  
   \dot{X}_{ml} &= \dot{X}_{bl} + L_{t}\sin(\Theta_{bl})      \dot{\Theta}_{bl} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
@@ -106,8 +145,8 @@
 
 
 
-\section{System after Addition to simplify RHS}
-
+\section{System after Addition}
+By adding coordinates for br to mr, mr to t, and t to ml, we simplify one side of our equations. \\
 
 \begin{multline}
 \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) =
@@ -161,6 +200,7 @@
 
 
 \section{Solution for $\dot{\Theta}_{br}$}
+The following sections come up with solutions for $\dot{\Theta}_{br}$, $\dot{\Theta}_{mr}$, $\dot{\Theta}_{ml}$ and $\dot{\Theta}_{bl}$ using the equations we found in the previous section. \\
 
 \begin{multline}
 \Big (\dot{X}_{mr} + L_{t}\sin(\Theta_{br}-\pi)  \dot{\Theta}_{br} - \frac{1}{\gamma}F_{xbr} - R_{xbr} \Big) \frac{1}{(X_{br} - X_{mr})} = \mn\frac{1}{\gamma}\lambda_{rs}
@@ -186,7 +226,6 @@
 \dot{\Theta}_{br} = \frac{\Big(\dot{Y}_{mr} - \frac{1}{\gamma}F_{ybr} - R_{ybr} \Big)(X_{br} - X_{mr}) - \Big(\dot{X}_{mr} - \frac{1}{\gamma}F_{xbr} 
 - R_{xbr} \Big)(Y_{br} - Y_{mr})}{\Big (L_{t}\sin(\Theta_{br}-\pi) \Big)(Y_{br} - Y_{mr}) + \Big (L_{t}\cos(\Theta_{br}-\pi) \Big)(X_{br} - X_{mr})}
 \end{equation}
-
 
 \begin{equation}
 \dot{\Theta}_{br} =
@@ -233,12 +272,6 @@
 \frac{1}{L_{t}}\Big(\dot{Y}_{mr} - \frac{1}{\gamma}F_{ybr} - R_{ybr} \Big)\cos(\Theta_{br}-\pi)
 + \frac{1}{L_{t}}\Big(\dot{X}_{mr} - \frac{1}{\gamma}F_{xbr} - R_{xbr} \Big)\sin(\Theta_{br}-\pi)
 \end{equation}
-
-
-
-
-
-
 
 
 \section{Solution for $\dot{\Theta}_{mr}$}
@@ -500,10 +533,10 @@ L_{s}\sin(\Theta_{mr}-\pi) \dot{\Theta}_{mr} (Y_{mr} - Y_{t }) + L_{s}\cos(\Thet
 \end{multline}
 
 \begin{multline}
-\dot{\Theta}_{bl} = \\
-\hspace*{-1.5cm}\frac{1}{L_t}\cos(\Theta_{bl})\Big(\dot{Y}_{bl} + \dot{Y}_{t } + \dot{Y}_{mr} + \dot{Y}_{br}
+\dot{\Theta}_{bl} =
+\frac{1}{L_t}\cos(\Theta_{bl})\Big(\dot{Y}_{bl} + \dot{Y}_{t } + \dot{Y}_{mr} + \dot{Y}_{br}
 - \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr} \Big)\\
-- \hspace*{-1.5cm}\frac{1}{L_t}\sin(\Theta_{bl})\Big(\dot{X}_{bl} + \dot{X}_{t } + \dot{X}_{mr} + \dot{X}_{br}
+- \frac{1}{L_t}\sin(\Theta_{bl})\Big(\dot{X}_{bl} + \dot{X}_{t } + \dot{X}_{mr} + \dot{X}_{br}
  - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)
 \end{multline}
 
