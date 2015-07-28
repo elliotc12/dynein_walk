@@ -573,6 +573,93 @@ Now expand the cartesian velocity definition: \\
 - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)
 \end{multline}
 
+\section{Preparing Equations for Matrix Form}
+
+\begin{multline}
+\dot{\Theta}_{br} =
+\big(\sin(\Theta_{br}-\pi)\sin(\Theta_{bl}) - \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big)\dot{\Theta}_{bl} + 
+\frac{L_{s}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) - L_{s}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_{t}}\dot{\Theta}_{ml}  + \\
+\frac{L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{br}-\pi) - L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{br}-\pi)}{L_{t}}\dot{\Theta}_{mr} - 
+\frac{\sin(\Theta_{br}-\pi)F_{xbr} + \cos(\Theta_{br}-\pi)F_{ybr}}{\gamma L_{t}} - 
+\frac{\sin(\Theta_{br}-\pi)R_{xbr} + \cos(\Theta_{br}-\pi)R_{ybr}}{L_{t}}
+\end{multline}
+
+
+\begin{multline}
+\dot{\Theta}_{mr} =
+\frac{2L_{t}\cos(\Theta_{bl})\cos(\Theta_{mr}-\pi) + \mn 2L_{t}\sin(\Theta_{bl})\sin(\Theta_{mr}-\pi)}{L_{s}}\dot{\Theta}_{bl} + 
+\big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{mr}-\pi) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big)\dot{\Theta}_{ml} + \\
+\big( \mn \cos(\Theta_{mr}-\pi)\cos(\Theta_{mr}-\pi) + \mn\sin(\Theta_{mr}-\pi)\sin(\Theta_{mr}-\pi)\big)\dot{\Theta}_{mr} + 
+\frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{mr}-\pi) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{mr}-\pi)}{L_{s}}\dot{\Theta}_{br} + \\
+\frac{\sin(\Theta_{mr}-\pi)F_{xmr} + \sin(\Theta_{mr}-\pi)F_{xbr} - \cos(\Theta_{mr}-\pi)F_{ymr} - \cos(\Theta_{mr}-\pi)F_{ybr}}{L_{s}\gamma} + \\
+\frac{\sin(\Theta_{mr}-\pi)R_{xmr} + \sin(\Theta_{mr}-\pi)R_{xbr} - \cos(\Theta_{mr}-\pi)R_{ymr} - \cos(\Theta_{mr}-\pi)R_{ybr}}{L_{s}}
+\end{multline}
+
+
+
+\begin{multline}
+\dot{\Theta}_{ml} =
+\frac{\mn 3L_{t}\sin(\Theta_{bl})\sin(\Theta_{ml}) + \mn3L_{t}\cos(\Theta_{bl})\cos(\Theta_{ml})}{L_s}\dot{\Theta}_{bl} + 
+\big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{ml})\cos(\Theta_{ml}) \big)\dot{\Theta}_{ml} + \\
+\big(\mn 2\sin(\Theta_{mr}-\pi)\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big)\dot{\Theta}_{mr} + 
+\frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_s}\dot{\Theta}_{br} + \\
+\frac{\sin(\Theta_{ml})F_{xt } + \mn \cos(\Theta_{ml})F_{yt } + \sin(\Theta_{ml})F_{xmr} + \mn \cos(\Theta_{ml})F_{ymr} + \sin(\Theta_{ml})F_{xbr} + \mn \cos(\Theta_{ml})F_{ybr}}{\gamma L_s} + \\
+\frac{\sin(\Theta_{ml})R_{xt } + \mn \cos(\Theta_{ml})R_{yt } + \sin(\Theta_{ml})R_{xmr} + \mn \cos(\Theta_{ml})R_{ymr} + \sin(\Theta_{ml})R_{xbr} + \mn \cos(\Theta_{ml})R_{ybr}}{L_s}
+\end{multline}
+
+
+
+\begin{multline}
+\dot{\Theta}_{bl} =
+\big(\mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) \big)\dot{\Theta}_{bl} +
+\frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{ml} + \\
+\frac{\mn 2L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{bl}) + \mn 2L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{mr} +
+\big(\mn \sin(\Theta_{bl}) \sin(\Theta_{br}-\pi) + \mn \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big) \dot{\Theta}_{br} + \\
+\frac{\sin(\Theta_{bl})F_{xml} + \mn\cos(\Theta_{bl})F_{yml} + \sin(\Theta_{bl})F_{xt } + \mn \cos(\Theta_{bl})F_{yt } + \sin(\Theta_{bl})F_{xmr} + \mn \cos(\Theta_{bl})F_{ymr} + \sin(\Theta_{bl})F_{xbr} + \mn \cos(\Theta_{bl})F_{ybr}}{\gamma L_t} + \\
+\frac{\sin(\Theta_{bl})R_{xml} + \mn \cos(\Theta_{bl})R_{yml} + \sin(\Theta_{bl})R_{xt } + \mn \cos(\Theta_{bl})R_{yt} + \sin(\Theta_{bl})R_{xmr} + \mn \cos(\Theta_{bl})R_{ymr} + \sin(\Theta_{bl})R_{xbr} + \mn \cos(\Theta_{bl})R_{ybr}}{L_t}
+\end{multline}
+
+\section{All velocity terms on LHS:}
+
+\begin{multline}
+\big(\sin(\Theta_{br}-\pi)\sin(\Theta_{bl}) - \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big)\dot{\Theta}_{bl} + 
+\frac{L_{s}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) - L_{s}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_{t}}\dot{\Theta}_{ml}  + \\
+\frac{L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{br}-\pi) - L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{br}-\pi)}{L_{t}}\dot{\Theta}_{mr} +
+\mn\dot{\Theta}_{br} =
+\frac{\sin(\Theta_{br}-\pi)F_{xbr} + \cos(\Theta_{br}-\pi)F_{ybr}}{\gamma L_{t}} + \\
+\frac{\sin(\Theta_{br}-\pi)R_{xbr} + \cos(\Theta_{br}-\pi)R_{ybr}}{L_{t}}
+\end{multline}
+
+
+\begin{multline}
+\frac{2L_{t}\cos(\Theta_{bl})\cos(\Theta_{mr}-\pi) + \mn 2L_{t}\sin(\Theta_{bl})\sin(\Theta_{mr}-\pi)}{L_{s}}\dot{\Theta}_{bl} + 
+\big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{mr}-\pi) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big)\dot{\Theta}_{ml} + \\
+\big( \mn \cos(\Theta_{mr}-\pi)\cos(\Theta_{mr}-\pi) + \mn\sin(\Theta_{mr}-\pi)\sin(\Theta_{mr}-\pi) - 1\big)\dot{\Theta}_{mr} + 
+\frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{mr}-\pi) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{mr}-\pi)}{L_{s}}\dot{\Theta}_{br} = \\
+\mn\frac{\sin(\Theta_{mr}-\pi)F_{xmr} + \sin(\Theta_{mr}-\pi)F_{xbr} - \cos(\Theta_{mr}-\pi)F_{ymr} - \cos(\Theta_{mr}-\pi)F_{ybr}}{L_{s}\gamma} + \\
+\mn\frac{\sin(\Theta_{mr}-\pi)R_{xmr} + \sin(\Theta_{mr}-\pi)R_{xbr} - \cos(\Theta_{mr}-\pi)R_{ymr} - \cos(\Theta_{mr}-\pi)R_{ybr}}{L_{s}}
+\end{multline}
+
+
+
+\begin{multline}
+\frac{\mn 3L_{t}\sin(\Theta_{bl})\sin(\Theta_{ml}) + \mn3L_{t}\cos(\Theta_{bl})\cos(\Theta_{ml})}{L_s}\dot{\Theta}_{bl} + 
+\big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{ml})\cos(\Theta_{ml}) - 1\big)\dot{\Theta}_{ml} + \\
+\big(\mn 2\sin(\Theta_{mr}-\pi)\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big)\dot{\Theta}_{mr} + 
+\frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_s}\dot{\Theta}_{br} = \\
+\mn \frac{\sin(\Theta_{ml})F_{xt } + \mn \cos(\Theta_{ml})F_{yt } + \sin(\Theta_{ml})F_{xmr} + \mn \cos(\Theta_{ml})F_{ymr} + \sin(\Theta_{ml})F_{xbr} + \mn \cos(\Theta_{ml})F_{ybr}}{\gamma L_s} + \\
+\mn \frac{\sin(\Theta_{ml})R_{xt } + \mn \cos(\Theta_{ml})R_{yt } + \sin(\Theta_{ml})R_{xmr} + \mn \cos(\Theta_{ml})R_{ymr} + \sin(\Theta_{ml})R_{xbr} + \mn \cos(\Theta_{ml})R_{ybr}}{L_s}
+\end{multline}
+
+
+\begin{multline}
+\big(\mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) -1\big)\dot{\Theta}_{bl} +
+\frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{ml} + \\
+\frac{\mn 2L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{bl}) + \mn 2L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{mr} +
+\big(\mn \sin(\Theta_{bl}) \sin(\Theta_{br}-\pi) + \mn \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big) \dot{\Theta}_{br} = \\
+\mn \frac{\sin(\Theta_{bl})F_{xml} + \mn\cos(\Theta_{bl})F_{yml} + \sin(\Theta_{bl})F_{xt } + \mn \cos(\Theta_{bl})F_{yt } + \sin(\Theta_{bl})F_{xmr} + \mn \cos(\Theta_{bl})F_{ymr} + \sin(\Theta_{bl})F_{xbr} + \mn \cos(\Theta_{bl})F_{ybr}}{\gamma L_t} + \\
+\mn \frac{\sin(\Theta_{bl})R_{xml} + \mn \cos(\Theta_{bl})R_{yml} + \sin(\Theta_{bl})R_{xt } + \mn \cos(\Theta_{bl})R_{yt} + \sin(\Theta_{bl})R_{xmr} + \mn \cos(\Theta_{bl})R_{ymr} + \sin(\Theta_{bl})R_{xbr} + \mn \cos(\Theta_{bl})R_{ybr}}{L_t}
+\end{multline}
 
 \end{document}
 
