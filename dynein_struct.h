@@ -52,17 +52,17 @@ public:
   double get_mra();
   double get_bra();
 
-  double get_blx() { return blx; }
-  double get_mlx() { return blx; }
-  double get_tx()  { return blx; }
-  double get_mrx() { return blx; }
-  double get_brx() { return blx; }
-
-  double get_bly() { return blx; }
-  double get_mly() { return blx; }
-  double get_ty()  { return blx; }
-  double get_mry() { return blx; }
-  double get_bry() { return blx; }
+  double get_blx();
+  double get_mlx();
+  double get_tx();
+  double get_mrx();
+  double get_brx();
+                  ;
+  double get_bly();
+  double get_mly();
+  double get_ty();
+  double get_mry();
+  double get_bry();
   
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
@@ -110,6 +110,8 @@ private:
   double mla;
   double mra;
   double bra;
+  
+  double blx, bly;
   
   double d_bla;   //Angular Velocities
   double d_mla;

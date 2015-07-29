@@ -18,27 +18,10 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 	d_mra = 0;
 	d_bra = 0;
 	
-	d_blx = 0;    d_bly = 0;
-	d_mlx = 0;    d_mly = 0;
-	d_mrx = 0;    d_mry = 0;
-	d_brx = 0;    d_bry = 0;
-	
 	bla = bla_init;
 	mla = mla_init;
 	mra = mra_init;
 	bra = bra_init;
-	
-	//blx = blx;
-	mlx = ls * cos(bla) + blx;
-	tx  = lt * cos(mla) + mlx;
-	mrx = lt * cos(-mra) + tx;
-	brx = ls * cos(-bra) + mrx;
-	
-	//bly = bly;
-	mly = ls * sin(bla) + bly;
-	ty  = lt * sin(mla) + mly;
-	mry = lt * sin(-mra) + ty;
-	bry = ls * sin(-bra) + mry;
 	
 	state = LEFTBOUND;
 	
@@ -64,25 +47,49 @@ void Dynein::update_protein() {
 	f_mrx = 0;     f_mry = 0;
 	f_brx = 0;     f_bry = 0;
 	
+	int A1, A2, A3, A4;
+	int B1, B2, B3, B4;
+	int C1, C2, C3, C4;
+	int D1, D2, D3, D4;
+	int X1, X2, X3, X4;
+	int Nbl, Nml, Nmr, Nbr;
+	int D;
 	
 	if (state == LEFTBOUND) {
 		
+		A1 = 0;
+		A2 = 0;
+		A3 = 0;
+		A4 = 0;
+		B1 = 0;
+		B2 = 0;
+		B3 = 0;
+		B4 = 0;
+		C1 = 0;
+		C2 = 0;
+		C3 = 0;
+		C4 = 0;
+		D1 = 0;
+		D2 = 0;
+		D3 = 0;
+		D4 = 0;
+		X1 = 0;
+		X2 = 0;
+		X3 = 0;
+		X4 = 0;
 		
-		d_bla = 0;
-		d_mla = 0;
-		d_mra = 0;
-		d_bra = 0;
+		Nbl = A1 + A2 + A3 + A4 + X1;
+		Nml = B1 + B2 + B3 + B4 + X2;
+		Nmr = C1 + C2 + C3 + C4 + X3;
+		Nbr = D1 + D2 + D3 + D4 + X4;
 		
+		D = 1;
 		
-		
-	} else if (state == BOTHBOUND) {
-		
-		
-	} else {
-		
-		
-	}
-	
+		d_bla = Nbl/D;
+		d_mla = Nml/D;
+		d_mra = Nmr/D;
+		d_bra = Nbr/D;
+	} 
 }
 
 /*** Set positions and velocities ***/
@@ -125,69 +132,6 @@ void Dynein::set_d_mra(double d) {
 
 void Dynein::set_d_bra(double d) {
 	d_bra = d;
-}
-
-
-/*** Get coordinate velocities ***/
-
-double Dynein::get_d_blx() {
-	if (state == LEFTBOUND) return 0;
-	else if (state == BOTHBOUND) return 0;
-	else return ls * d_bla * sin(-bla) + get_d_mlx();
-}
-
-double Dynein::get_d_mlx() {
-	if (state == LEFTBOUND) return ls * d_bla * -sin(bla);
-	else if (state == BOTHBOUND) return -d_bla * ls * sin(bla);
-	else return lt * d_mla * sin(-mla) + get_d_tx();
-}
-
-double Dynein::get_d_tx() {
-	if (state == LEFTBOUND) return lt * d_mla * -sin(mla) + get_d_mlx();
-	else if (state == BOTHBOUND) return lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + get_d_mlx() + get_d_mrx());
-	else return lt * d_mra * -sin(mra) + get_d_mrx();
-}
-
-double Dynein::get_d_mrx() {
-	if (state == LEFTBOUND) return lt * d_mra * sin(-mra) + get_d_tx();
-	else if (state == BOTHBOUND) return -d_bra * ls * sin(bra);
-	else return ls * d_bra * -sin(bra);
-}
-
-double Dynein::get_d_brx() {
-	if (state == LEFTBOUND) return ls * d_bra * sin(-bra) + get_d_mrx();
-	else if (state == BOTHBOUND) return 0;
-	else return 0;
-}
-
-double Dynein::get_d_bly() {
-	if (state == LEFTBOUND) return 0;
-	else if (state == BOTHBOUND) return 0;
-	else return ls * -d_bla * cos(-bla) + get_d_mly();
-}
-
-double Dynein::get_d_mly() {
-	if (state == LEFTBOUND) return ls * d_bla * cos(bla);
-	else if (state == BOTHBOUND) return d_bla * ls * cos(bla);
-	else return lt * -d_mla * cos(-mla) + get_d_ty();
-}
-
-double Dynein::get_d_ty() {
-	if (state == LEFTBOUND) return lt * d_mla * cos(mla) + get_d_mly();
-	else if (state == BOTHBOUND) return lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + get_d_mly() + get_d_mry());
-	else return lt * d_mra * cos(mra) + get_d_mry();
-}
-
-double Dynein::get_d_mry() {
-	if (state == LEFTBOUND) return lt * -d_mra * cos(-mra) + get_d_ty();
-	else if (state == BOTHBOUND) return d_bra * ls * cos(mra);
-	else return ls * d_bra * cos(bra);
-}
-
-double Dynein::get_d_bry() {
-	if (state == LEFTBOUND) return ls * -d_bra * cos(-bra) + get_d_mry();
-	else if (state == BOTHBOUND) return 0;
-	else return 0;
 }
 
 /*** Angular Velocities ***/
@@ -389,7 +333,7 @@ double Dynein::get_KE() {
 
 void Dynein::log(double t) {
 	FILE* data_file = fopen("data.txt", "a+");
-	fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
-	get_KE(), get_PE(), get_KE() + get_PE(), t, blx, bly, mlx, mly, tx, ty, mrx, mry, brx, bry, get_state());
+	//fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
+	//get_KE(), get_PE(), get_KE() + get_PE(), t, blx, bly, mlx, mly, tx, ty, mrx, mry, brx, bry, get_state());
 	fclose(data_file);
 }

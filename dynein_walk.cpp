@@ -3,6 +3,13 @@
 
 #include "dynein_struct.h"
 
+	/*
+	 * For every timestep, call update_protein to update internal velocities.
+	 * Then do Euler's method to update internal coordinates and log output.
+	 * update_protein must be called after every set_x command to update
+	 * internal velocities.
+	 */
+
 void simulateProtein(Dynein* dyn, double dt, double tf) {
 	double t = 0;
 	
