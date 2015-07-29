@@ -52,33 +52,20 @@ public:
   double get_mra();
   double get_bra();
 
-  double get_blx() {
-    return blx;
-  }
-  double get_mlx();
-  double get_tx();
-  double get_mrx();
-  double get_brx();
+  double get_blx() { return blx; }
+  double get_mlx() { return blx; }
+  double get_tx()  { return blx; }
+  double get_mrx() { return blx; }
+  double get_brx() { return blx; }
 
-  double get_bly();
-  double get_mly();
-  double get_ty();
-  double get_mry();
-  double get_bry();
+  double get_bly() { return blx; }
+  double get_mly() { return blx; }
+  double get_ty()  { return blx; }
+  double get_mry() { return blx; }
+  double get_bry() { return blx; }
   
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
-  double get_d_blx();
-  double get_d_mlx();
-  double get_d_tx();
-  double get_d_mrx();
-  double get_d_brx();
-
-  double get_d_bly();
-  double get_d_mly();
-  double get_d_ty();
-  double get_d_mry();
-  double get_d_bry();
 
   double get_d_bla();
   double get_d_mla();
@@ -123,24 +110,11 @@ private:
   double mla;
   double mra;
   double bra;
-
-  double blx, bly;
-  double brx;     double bry;
-
-  double mlx;     double mly;
-  double tx;      double ty;
-  double mrx;     double mry;
   
   double d_bla;   //Angular Velocities
   double d_mla;
   double d_mra;
   double d_bra;
-
-  double d_blx;   double d_bly;
-  double d_mlx;   double d_mly;
-  double d_tx;    double d_ty;
-  double d_mrx;   double d_mry;
-  double d_brx;   double d_bry;
 
   double r_blx;   double r_bly; //Brownian forces
   double r_mlx;   double r_mly;
