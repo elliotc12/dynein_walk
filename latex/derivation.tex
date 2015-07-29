@@ -5,10 +5,9 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{graphicx}
-
+\usepackage{mathtools}
 \usepackage{fullpage}
 
-\newtheorem{theorem}{Theorem}
 
 \title{Brownian Dynein Model}
 
@@ -573,7 +572,7 @@ Now expand the cartesian velocity definition: \\
 - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)
 \end{multline}
 
-\section{Preparing Equations for Matrix Form}
+\section{Making solvable system of equations}
 
 \begin{multline}
 \dot{\Theta}_{br} =
@@ -661,7 +660,7 @@ Now expand the cartesian velocity definition: \\
 \mn \frac{\sin(\Theta_{bl})R_{xml} + \mn \cos(\Theta_{bl})R_{yml} + \sin(\Theta_{bl})R_{xt } + \mn \cos(\Theta_{bl})R_{yt} + \sin(\Theta_{bl})R_{xmr} + \mn \cos(\Theta_{bl})R_{ymr} + \sin(\Theta_{bl})R_{xbr} + \mn \cos(\Theta_{bl})R_{ybr}}{L_t}
 \end{multline}
 
-\section{Make a matrix!}
+\section{Breaking terms down into symbols}
 
 \begin{align}
   A_1 &= \mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn +
@@ -710,29 +709,52 @@ Now expand the cartesian velocity definition: \\
   D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
 \end{align}
 
+\section{System solution!}
 This system is solved via Mathematica...\\
 \begin{multline}
-\Theta_{bl} = \\
-\frac{(-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 + A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 + 
-B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4))}
-{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
-A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
-\Theta_{ml} = \\
-\frac{(B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 + 
-B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4))}
-{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
-A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
-\Theta_{mr} = \\
-\frac{(-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 + 
-B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4 X_4))}
-{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
-A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
-\Theta_{br} = \\
-\frac{(B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 + 
-B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + B_2 (-C_3 D1 X_1 + C_1 D_3 X_1 + A_3 D1 X_3 - A_1 D_3 X_3 - A_3 C_1 X_4 + A_1 C_3 X_4))}
-{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
-A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}
+N_{bl} =
+(-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 +\\
+ A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 +\\
+B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - \\
+C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4)) \\
 \end{multline}
+
+\begin{multline}
+N_{ml} =
+(B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - \\
+A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 +\\
+B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + \\
+C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4)) \\
+\end{multline}
+
+\begin{multline}
+N_{mr} =
+(-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + \\
+A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 +\\
+B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + \\
+B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4 X_4)) \\
+\end{multline}
+
+\begin{multline}
+N_{br} =
+(B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - \\
+A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 +\\
+B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + \\
+B_2 (-C_3 D1 X_1 + C_1 D_3 X_1 + A_3 D1 X_3 - A_1 D_3 X_3 - A_3 C_1 X_4 + A_1 C_3 X_4)) \\
+\end{multline}
+
+\begin{multline}
+D = (A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + \\
+A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + \\
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))
+\end{multline}
+
+\begin{align}
+\dot{\Theta}_{bl} &= \frac{N_{bl}}{D} \\
+\dot{\Theta}_{ml} &= \frac{N_{ml}}{D} \\
+\dot{\Theta}_{mr} &= \frac{N_{mr}}{D} \\
+\dot{\Theta}_{br} &= \frac{N_{br}}{D}
+\end{align}
 
 \end{document}
 
