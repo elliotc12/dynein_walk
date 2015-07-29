@@ -711,73 +711,37 @@ Now expand the cartesian velocity definition: \\
 \end{align}
 
 This system is solved via Mathematica...\\
-
-{(-B2 C4 D3 X1 + B2 C3 D4 X1 + A4 C3 D2 X2 - A3 C4 D2 X2 - 
-    A4 C2 D3 X2 + A2 C4 D3 X2 + A3 C2 D4 X2 - A2 C3 D4 X2 + 
-    A4 B2 D3 X3 - A3 B2 D4 X3 - A4 B2 C3 X4 + A3 B2 C4 X4 + 
-    B4 (-C3 D2 X1 + C2 D3 X1 + A3 D2 X3 - A2 D3 X3 - A3 C2 X4 + 
-       A2 C3 X4) + 
-    B3 (C4 D2 X1 - C2 D4 X1 - A4 D2 X3 + A2 D4 X3 + A4 C2 X4 - 
-       A2 C4 X4))/(A2 B4 C3 D1 - A2 B3 C4 D1 - A1 B4 C3 D2 + 
-    A1 B3 C4 D2 - A2 B4 C1 D3 + A1 B4 C2 D3 + A2 B1 C4 D3 - 
-    A1 B2 C4 D3 + 
-    A4 (B3 C2 D1 - B2 C3 D1 - B3 C1 D2 + B1 C3 D2 + B2 C1 D3 - 
-       B1 C2 D3) + A2 B3 C1 D4 - A1 B3 C2 D4 - A2 B1 C3 D4 + 
-    A1 B2 C3 D4 + 
-    A3 (-B4 C2 D1 + B2 C4 D1 + B4 C1 D2 - B1 C4 D2 - B2 C1 D4 + 
-       B1 C2 D4)), (B1 C4 D3 X1 - B1 C3 D4 X1 - A4 C3 D1 X2 + 
-    A3 C4 D1 X2 + A4 C1 D3 X2 - A1 C4 D3 X2 - A3 C1 D4 X2 + 
-    A1 C3 D4 X2 - A4 B1 D3 X3 + A3 B1 D4 X3 + A4 B1 C3 X4 - 
-    A3 B1 C4 X4 + 
-    B4 (C3 D1 X1 - C1 D3 X1 - A3 D1 X3 + A1 D3 X3 + A3 C1 X4 - 
-       A1 C3 X4) + 
-    B3 (-C4 D1 X1 + C1 D4 X1 + A4 D1 X3 - A1 D4 X3 - A4 C1 X4 + 
-       A1 C4 X4))/(A2 B4 C3 D1 - A2 B3 C4 D1 - A1 B4 C3 D2 + 
-    A1 B3 C4 D2 - A2 B4 C1 D3 + A1 B4 C2 D3 + A2 B1 C4 D3 - 
-    A1 B2 C4 D3 + 
-    A4 (B3 C2 D1 - B2 C3 D1 - B3 C1 D2 + B1 C3 D2 + B2 C1 D3 - 
-       B1 C2 D3) + A2 B3 C1 D4 - A1 B3 C2 D4 - A2 B1 C3 D4 + 
-    A1 B2 C3 D4 + 
-    A3 (-B4 C2 D1 + B2 C4 D1 + B4 C1 D2 - B1 C4 D2 - B2 C1 D4 + 
-       B1 C2 D4)), (-B1 C4 D2 X1 + B1 C2 D4 X1 + A4 C2 D1 X2 - 
-    A2 C4 D1 X2 - A4 C1 D2 X2 + A1 C4 D2 X2 + A2 C1 D4 X2 - 
-    A1 C2 D4 X2 + A4 B1 D2 X3 - A2 B1 D4 X3 - A4 B1 C2 X4 + 
-    A2 B1 C4 X4 + 
-    B4 (-C2 D1 X1 + C1 D2 X1 + A2 D1 X3 - A1 D2 X3 - A2 C1 X4 + 
-       A1 C2 X4) + 
-    B2 (C4 D1 X1 - C1 D4 X1 - A4 D1 X3 + A1 D4 X3 + A4 C1 X4 - 
-       A1 C4 X4))/(A2 B4 C3 D1 - A2 B3 C4 D1 - A1 B4 C3 D2 + 
-    A1 B3 C4 D2 - A2 B4 C1 D3 + A1 B4 C2 D3 + A2 B1 C4 D3 - 
-    A1 B2 C4 D3 + 
-    A4 (B3 C2 D1 - B2 C3 D1 - B3 C1 D2 + B1 C3 D2 + B2 C1 D3 - 
-       B1 C2 D3) + A2 B3 C1 D4 - A1 B3 C2 D4 - A2 B1 C3 D4 + 
-    A1 B2 C3 D4 + 
-    A3 (-B4 C2 D1 + B2 C4 D1 + B4 C1 D2 - B1 C4 D2 - B2 C1 D4 + 
-       B1 C2 D4)), (B1 C3 D2 X1 - B1 C2 D3 X1 - A3 C2 D1 X2 + 
-    A2 C3 D1 X2 + A3 C1 D2 X2 - A1 C3 D2 X2 - A2 C1 D3 X2 + 
-    A1 C2 D3 X2 - A3 B1 D2 X3 + A2 B1 D3 X3 + A3 B1 C2 X4 - 
-    A2 B1 C3 X4 + 
-    B3 (C2 D1 X1 - C1 D2 X1 - A2 D1 X3 + A1 D2 X3 + A2 C1 X4 - 
-       A1 C2 X4) + 
-    B2 (-C3 D1 X1 + C1 D3 X1 + A3 D1 X3 - A1 D3 X3 - A3 C1 X4 + 
-       A1 C3 X4))/(A2 B4 C3 D1 - A2 B3 C4 D1 - A1 B4 C3 D2 + 
-    A1 B3 C4 D2 - A2 B4 C1 D3 + A1 B4 C2 D3 + A2 B1 C4 D3 - 
-    A1 B2 C4 D3 + 
-    A4 (B3 C2 D1 - B2 C3 D1 - B3 C1 D2 + B1 C3 D2 + B2 C1 D3 - 
-       B1 C2 D3) + A2 B3 C1 D4 - A1 B3 C2 D4 - A2 B1 C3 D4 + 
-    A1 B2 C3 D4 + 
-    A3 (-B4 C2 D1 + B2 C4 D1 + B4 C1 D2 - B1 C4 D2 - B2 C1 D4 + 
-       B1 C2 D4))}
-
-
-
-
-
-
-
-
+\begin{multline}
+\Theta_{bl} = \\
+\frac{(-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 + A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 + 
+B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4))}
+{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
+\Theta_{ml} = \\
+\frac{(B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 + 
+B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4))}
+{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
+\Theta_{mr} = \\
+\frac{(-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 + 
+B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4 X_4))}
+{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}\\
+\Theta_{br} = \\
+\frac{(B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 + 
+B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + B_2 (-C_3 D1 X_1 + C_1 D_3 X_1 + A_3 D1 X_3 - A_1 D_3 X_3 - A_3 C_1 X_4 + A_1 C_3 X_4))}
+{(A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + 
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))}
+\end{multline}
 
 \end{document}
+
+
+
+
+
+
+
 
 
 \begin{align}
