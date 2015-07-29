@@ -710,6 +710,21 @@ Now expand the cartesian velocity definition: \\
   D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
 \end{align}
 
+This system is solved via Mathematica...\\
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
 \begin{align}
   A_1\dot{\Theta}_{bl} + A_2 \dot{\Theta}_{ml} + A_3 \dot{\Theta}_{mr} + A_4 \dot{\Theta}_{br} &= X_1 \\
   B_1\dot{\Theta}_{bl} + B_2 \dot{\Theta}_{ml} + B_3 \dot{\Theta}_{mr} + B_4 \dot{\Theta}_{br} &= X_2 \\
@@ -748,23 +763,114 @@ Now expand the cartesian velocity definition: \\
 \end{align}
 
 \begin{align}
-  \left(A_1 - \frac{A_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(A_2 - \frac{A_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(A_3 - \frac{A_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{A_4}{D_4}X_4\\
+  \hspace*{-2cm}\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 &=
+		X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
   \left(B_1 - \frac{B_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(B_2 - \frac{B_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(B_3 - \frac{B_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{B_4}{D_4}X_4\\
-  \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + 
-  \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + 
-  \left(A_3 - \frac{A_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\\
+  \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + 
+		\frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + 
+		\left(B_3 - \frac{B_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\\
   D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
 \end{align}
 
+\begin{align}
+  \hspace*{-2cm}\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 &=
+		X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
+ \hspace*{-2cm}\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 &=
+		X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
+  \left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(C_3 - \frac{C_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{C_4}{D_4}X_4\\
+  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
+\end{align}
+
+\begin{multline}
+  \hspace*{-2cm}\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 =
+		X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
+\end{multline}
+\begin{multline}
+ \hspace*{-2cm}\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 = \\
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left( X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\right) \\
+\end{multline}
+\begin{align}
+  \left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(C_3 - \frac{C_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{C_4}{D_4}X_4\\
+  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
+\end{align}
+
+\begin{multline}
+  \hspace*{-2cm}\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right) - 
+  \frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\right)\dot{\Theta}_{bl} + \\
+		0 + 0 + 0 =
+		X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) -
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left( X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\right)\\
+\end{multline}
+\begin{align}
+  \hspace*{-2cm}\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 &=
+		X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
+  \left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(C_3 - \frac{C_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{C_4}{D_4}X_4\\
+  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4
+\end{align}
 
 
+\begin{multline}
+  \hspace*{-2cm}\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} = \\
+		\frac{\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)}
+		{\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right) - 
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\right)} * \\
+		\left(X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) -
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left( X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\right)\right)
+\end{multline}
+\begin{align}
+  \hspace*{-2cm}\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\dot{\Theta}_{bl} +
+		\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} + 0 + 0 &=
+		X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) \\
+  \left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(C_3 - \frac{C_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{C_4}{D_4}X_4\\
+  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4
+\end{align}
 
 
-
-\end{document}
-
-
-
+\begin{multline}
+  \hspace*{-2cm}\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right) - 
+  \frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\right)\dot{\Theta}_{bl} = \\
+		X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) -
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left( X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\right)\\
+\end{multline}
+\begin{multline}
+		\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)\dot{\Theta}_{ml} =
+		X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) -\\
+		\frac{\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)}
+		{\left(A_1 - \frac{A_4D_1}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right) - 
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left(B_1 - \frac{B_4D_1}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_1 - \frac{C_4D_1}{D_4}\right)\right)\right)} * \\
+		\left(X_1 - \frac{A_4}{D_4}X_4 - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right) -
+		\frac{\left(A_2 - \frac{A_4D_2}{D_4} - \frac{\left(A_3 - \frac{A_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		{\left(B_2 - \frac{B_4D_2}{D_4} - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(C_2 - \frac{C_4D_2}{D_4}\right)\right)}
+		\left( X_1 - \frac{B_4}{D_4}X_4 - \frac{\left(B_3 - \frac{B_4D_3}{D_4}\right)}{\left(C_3 - \frac{C_4D_3}{D_4}\right)}\left(X_1 - \frac{C_4}{D_4}X_4\right)\right)\right)
+\end{multline}
+\begin{align}
+  \left(C_1 - \frac{C_4D_1}{D_4}\right)\dot{\Theta}_{bl} + \left(C_2 - \frac{C_4D_2}{D_4}\right)\dot{\Theta}_{ml} + \left(C_3 - \frac{C_4D_3}{D_4}\right)\dot{\Theta}_{mr} + 0 &= X_1 - \frac{C_4}{D_4}X_4\\
+  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4
+\end{align}
 
 
 
