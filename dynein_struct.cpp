@@ -56,34 +56,63 @@ void Dynein::update_protein() {
 	int D;
 	
 	if (state == LEFTBOUND) {
+
+		A1 = \mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) -1 \\
+		A2 = \frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t} \\
+		A3 = \frac{L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{br}-\pi) - L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{br}-\pi)}{L_{t}} \\
+		A4 = -1 \\
+		B1 = \frac{2L_{t}\cos(\Theta_{bl})\cos(\Theta_{mr}-\pi) + \mn 2L_{t}\sin(\Theta_{bl})\sin(\Theta_{mr}-\pi)}{L_{s}} \\
+		B2 = \big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{mr}-\pi) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big) \\
+		B3 = \big( \mn \cos(\Theta_{mr}-\pi)\cos(\Theta_{mr}-\pi) + \mn\sin(\Theta_{mr}-\pi)\sin(\Theta_{mr}-\pi) - 1\big) \\
+		B4 = \frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{mr}-\pi) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{mr}-\pi)}{L_{s}} \\
+		C1 = \frac{\mn 3L_{t}\sin(\Theta_{bl})\sin(\Theta_{ml}) + \mn3L_{t}\cos(\Theta_{bl})\cos(\Theta_{ml})}{L_s} \\
+		C2 = \big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{ml})\cos(\Theta_{ml}) - 1\big) \\
+		C3 = \big(\mn 2\sin(\Theta_{mr}-\pi)\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big) \\
+		C4 = \frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_s} \\
+		D1 = \big(\mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) -1\big) \\
+		D2 = \frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t} \\
+		D3 = \frac{\mn 2L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{bl}) + \mn 2L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{mr} \\
+		D4 = \big(\mn \sin(\Theta_{bl}) \sin(\Theta_{br}-\pi) + \mn \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big) \\
 		
-		A1 = 0;
-		A2 = 0;
-		A3 = 0;
-		A4 = 0;
-		B1 = 0;
-		B2 = 0;
-		B3 = 0;
-		B4 = 0;
-		C1 = 0;
-		C2 = 0;
-		C3 = 0;
-		C4 = 0;
-		D1 = 0;
-		D2 = 0;
-		D3 = 0;
-		D4 = 0;
-		X1 = 0;
-		X2 = 0;
-		X3 = 0;
-		X4 = 0;
 		
-		Nbl = A1 + A2 + A3 + A4 + X1;
-		Nml = B1 + B2 + B3 + B4 + X2;
-		Nmr = C1 + C2 + C3 + C4 + X3;
-		Nbr = D1 + D2 + D3 + D4 + X4;
+		X_1 = \frac{\sin(\Theta_{br}-\pi)F_{xbr} + \cos(\Theta_{br}-\pi)F_{ybr}}{\gamma L_{t}} + \frac{\sin(\Theta_{br}-\pi)R_{xbr} + \cos(\Theta_{br}-\pi)R_{ybr}}{L_{t}} \\
+		X_2 = \mn\frac{\sin(\Theta_{mr}-\pi)F_{xmr} + \sin(\Theta_{mr}-\pi)F_{xbr} - \cos(\Theta_{mr}-\pi)F_{ymr} - \cos(\Theta_{mr}-\pi)F_{ybr}}{L_{s}\gamma} + \\
+  \mn\frac{\sin(\Theta_{mr}-\pi)R_{xmr} + \sin(\Theta_{mr}-\pi)R_{xbr} - \cos(\Theta_{mr}-\pi)R_{ymr} - \cos(\Theta_{mr}-\pi)R_{ybr}}{L_{s}}
+		X_3 = \mn \frac{\sin(\Theta_{ml})F_{xt } + \mn \cos(\Theta_{ml})F_{yt } + \sin(\Theta_{ml})F_{xmr} + \mn \cos(\Theta_{ml})F_{ymr} + \sin(\Theta_{ml})F_{xbr} + \mn \cos(\Theta_{ml})F_{ybr}}{\gamma L_s} + \\
+	\mn \frac{\sin(\Theta_{ml})R_{xt } + \mn \cos(\Theta_{ml})R_{yt } + \sin(\Theta_{ml})R_{xmr} + \mn \cos(\Theta_{ml})R_{ymr} + \sin(\Theta_{ml})R_{xbr} + \mn \cos(\Theta_{ml})R_{ybr}}{L_s}
+		X_4 = \mn \frac{\sin(\Theta_{bl})F_{xml} + \mn\cos(\Theta_{bl})F_{yml} + \sin(\Theta_{bl})F_{xt } + \mn \cos(\Theta_{bl})F_{yt } + \sin(\Theta_{bl})F_{xmr} + \mn \cos(\Theta_{bl})F_{ymr} + \sin(\Theta_{bl})F_{xbr} + \mn \cos(\Theta_{bl})F_{ybr}}
+  {\gamma L_t} \\+ \mn \frac{\sin(\Theta_{bl})R_{xml} +\mn \cos(\Theta_{bl})R_{yml} + \sin(\Theta_{bl})R_{xt } + \mn \cos(\Theta_{bl})R_{yt} + \sin(\Theta_{bl})R_{xmr} + \mn \cos(\Theta_{bl})R_{ymr} + \sin(\Theta_{bl})R_{xbr} + \mn \cos(\Theta_{bl})R_{ybr}}{L_t} \\
 		
-		D = 1;
+		N_{bl} =
+(-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 +\\
+ A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 +\\
+B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - \\
+C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4)) \\
+
+
+		N_{ml} =
+(B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - \\
+A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 +\\
+B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + \\
+C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4)) \\
+
+
+		N_{mr} =
+(-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + \\
+A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 +\\
+B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + \\
+B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4 X_4)) \\
+
+
+		N_{br} =
+(B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - \\
+A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 +\\
+B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + \\
+B_2 (-C_3 D1 X_1 + C_1 D_3 X_1 + A_3 D1 X_3 - A_1 D_3 X_3 - A_3 C_1 X_4 + A_1 C_3 X_4)) \\
+		
+		D = (A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + \\
+A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + \\
+A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))
 		
 		d_bla = Nbl/D;
 		d_mla = Nml/D;
