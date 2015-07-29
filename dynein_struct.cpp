@@ -57,63 +57,63 @@ void Dynein::update_protein() {
 	
 	if (state == LEFTBOUND) {
 
-		A1 = \mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) -1 \\
-		A2 = \frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t} \\
-		A3 = \frac{L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{br}-\pi) - L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{br}-\pi)}{L_{t}} \\
-		A4 = -1 \\
-		B1 = \frac{2L_{t}\cos(\Theta_{bl})\cos(\Theta_{mr}-\pi) + \mn 2L_{t}\sin(\Theta_{bl})\sin(\Theta_{mr}-\pi)}{L_{s}} \\
-		B2 = \big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{mr}-\pi) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big) \\
-		B3 = \big( \mn \cos(\Theta_{mr}-\pi)\cos(\Theta_{mr}-\pi) + \mn\sin(\Theta_{mr}-\pi)\sin(\Theta_{mr}-\pi) - 1\big) \\
-		B4 = \frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{mr}-\pi) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{mr}-\pi)}{L_{s}} \\
-		C1 = \frac{\mn 3L_{t}\sin(\Theta_{bl})\sin(\Theta_{ml}) + \mn3L_{t}\cos(\Theta_{bl})\cos(\Theta_{ml})}{L_s} \\
-		C2 = \big(\mn 2\sin(\Theta_{ml})\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{ml})\cos(\Theta_{ml}) - 1\big) \\
-		C3 = \big(\mn 2\sin(\Theta_{mr}-\pi)\sin(\Theta_{ml}) + \mn 2\cos(\Theta_{mr}-\pi)\cos(\Theta_{ml}) \big) \\
-		C4 = \frac{\mn L_{t}\sin(\Theta_{br}-\pi)\sin(\Theta_{ml}) + \mn L_{t}\cos(\Theta_{br}-\pi)\cos(\Theta_{ml})}{L_s} \\
-		D1 = \big(\mn 3\sin(\Theta_{bl})\sin(\Theta_{bl})\mn + 3\cos(\Theta_{bl})\cos(\Theta_{bl}) -1\big) \\
-		D2 = \frac{\mn 3L_{s}\sin(\Theta_{ml})\sin(\Theta_{bl}) + \mn 3L_{s}\cos(\Theta_{ml})\cos(\Theta_{bl})}{L_t} \\
-		D3 = \frac{\mn 2L_{s}\sin(\Theta_{mr}-\pi)\sin(\Theta_{bl}) + \mn 2L_{s}\cos(\Theta_{mr}-\pi)\cos(\Theta_{bl})}{L_t}\dot{\Theta}_{mr} \\
-		D4 = \big(\mn \sin(\Theta_{bl}) \sin(\Theta_{br}-\pi) + \mn \cos(\Theta_{br}-\pi)\cos(\Theta_{bl})\big) \\
-		
-		
-		X_1 = \frac{\sin(\Theta_{br}-\pi)F_{xbr} + \cos(\Theta_{br}-\pi)F_{ybr}}{\gamma L_{t}} + \frac{\sin(\Theta_{br}-\pi)R_{xbr} + \cos(\Theta_{br}-\pi)R_{ybr}}{L_{t}} \\
-		X_2 = \mn\frac{\sin(\Theta_{mr}-\pi)F_{xmr} + \sin(\Theta_{mr}-\pi)F_{xbr} - \cos(\Theta_{mr}-\pi)F_{ymr} - \cos(\Theta_{mr}-\pi)F_{ybr}}{L_{s}\gamma} + \\
-  \mn\frac{\sin(\Theta_{mr}-\pi)R_{xmr} + \sin(\Theta_{mr}-\pi)R_{xbr} - \cos(\Theta_{mr}-\pi)R_{ymr} - \cos(\Theta_{mr}-\pi)R_{ybr}}{L_{s}}
-		X_3 = \mn \frac{\sin(\Theta_{ml})F_{xt } + \mn \cos(\Theta_{ml})F_{yt } + \sin(\Theta_{ml})F_{xmr} + \mn \cos(\Theta_{ml})F_{ymr} + \sin(\Theta_{ml})F_{xbr} + \mn \cos(\Theta_{ml})F_{ybr}}{\gamma L_s} + \\
-	\mn \frac{\sin(\Theta_{ml})R_{xt } + \mn \cos(\Theta_{ml})R_{yt } + \sin(\Theta_{ml})R_{xmr} + \mn \cos(\Theta_{ml})R_{ymr} + \sin(\Theta_{ml})R_{xbr} + \mn \cos(\Theta_{ml})R_{ybr}}{L_s}
-		X_4 = \mn \frac{\sin(\Theta_{bl})F_{xml} + \mn\cos(\Theta_{bl})F_{yml} + \sin(\Theta_{bl})F_{xt } + \mn \cos(\Theta_{bl})F_{yt } + \sin(\Theta_{bl})F_{xmr} + \mn \cos(\Theta_{bl})F_{ymr} + \sin(\Theta_{bl})F_{xbr} + \mn \cos(\Theta_{bl})F_{ybr}}
-  {\gamma L_t} \\+ \mn \frac{\sin(\Theta_{bl})R_{xml} +\mn \cos(\Theta_{bl})R_{yml} + \sin(\Theta_{bl})R_{xt } + \mn \cos(\Theta_{bl})R_{yt} + \sin(\Theta_{bl})R_{xmr} + \mn \cos(\Theta_{bl})R_{ymr} + \sin(\Theta_{bl})R_{xbr} + \mn \cos(\Theta_{bl})R_{ybr}}{L_t} \\
-		
-		N_{bl} =
-(-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 +\\
- A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 +\\
-B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - \\
-C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4)) \\
+			A1 = -3*sin(bla)*sin(bla) - 3*cos(bla)*cos(bla) - 1;
+			A2 = (-3*ls*sin(mla)*sin(bla) + -3*ls*cos(mla)*cos(bla))/lt;
+			A3 = (ls*sin(mra-M_PI)*sin(bra-M_PI) - ls*cos(mra-M_PI)*cos(bra-M_PI))/lt;
+			A4 = -1;
+			B1 = (2*lt*cos(bla)*cos(mra-M_PI) + -2*lt*sin(bla)*sin(mra-M_PI))/ls;
+			B2 = (-2*sin(mla)*sin(mra-M_PI) + -2*cos(mra-M_PI)*cos(mla));
+			B3 = (-cos(mra-M_PI)*cos(mra-M_PI) + -sin(mra-M_PI)*sin(mra-M_PI) - 1);
+			B4 = (-lt*sin(bra-M_PI)*sin(mra-M_PI) + -lt*cos(bra-M_PI)*cos(mra-M_PI))/ls;
+			C1 = (-3*lt*sin(bla)*sin(mla) + -3*lt*cos(bla)*cos(mla))/ls;
+			C2 = (-2*sin(mla)*sin(mla) + -2*cos(mla)*cos(mla) - 1);
+			C3 = (-2*sin(mra-M_PI)*sin(mla) + -2*cos(mra-M_PI)*cos(mla));
+			C4 = (-lt*sin(bra-M_PI)*sin(mla) + -lt*cos(bra-M_PI)*cos(mla))/ls;
+			D1 = (-3*sin(bla)*sin(bla) - 3*cos(bla)*cos(bla) -1);
+			D2 = (-3*ls*sin(mla)*sin(bla) + -3*ls*cos(mla)*cos(bla))/lt;
+			D3 = (-2*ls*sin(mra-M_PI)*sin(bla) + -2*ls*cos(mra-M_PI)*cos(bla))/lt;
+			D4 = (-sin(bla)*sin(bra-M_PI) + -cos(bra-M_PI)*cos(bla));
 
 
-		N_{ml} =
-(B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - \\
-A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 +\\
-B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + \\
-C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4)) \\
+			X_1 = (sin(bra-M_PI)*f_brx + cos(bra-M_PI)*f_bry)/(g*lt) + (sin(bra-M_PI)*r_brx + cos(bra-M_PI)*r_bry)/(lt);
+			X_2 = -(sin(mra-M_PI)f_mrx + sin(mra-M_PI)f_brx - cos(mra-M_PI)*f_mry - cos(mra-M_PI)*f_bry)/(g*ls) + 
+		-(sin(mra-M_PI)*r_mrx + sin(mra-M_PI)*r_brx - cos(mra-M_PI)*r_mry - cos(mra-M_PI)*r_bry)/(ls);
+			X_3 = -(sin(mla)*f_tx + -cos(mla)*f_yt + sin(mla)f_mrx + -cos(mla)*f_mry + sin(mla)f_brx + -cos(mla)*f_bry)(g*ls) + 
+		-(sin(mla)*r_tx + -cos(mla)r_ty + sin(mla)*r_mrx + -cos(mla)*r_mry + sin(mla)*r_brx + -cos(mla)*r_bry)/(ls);
+			X_4 = -(sin(bla)*f_mlx + -cos(bla)*f_mly + sin(bla)F_{xt } + -cos(bla)*f_ty + sin(bla)*f_mrx + -cos(bla)*f_mry + sin(bla)*f_brx + -cos(bla)*f_bry)/(g*lt)
+		 + -(sin(bla)*r_mlx +-cos(bla)*r_mly + sin(bla)*r_tx + -cos(bla)*r_ty + sin(bla)*r_mrx + -cos(bla)*r_mry + sin(bla)*r_brx + -cos(bla)*r_bry)/(lt);
+
+			Nbl =
+		(-B_2*C_4*D_3*X_1 + B_2*C_3*D_4*X_1 + A_4*C_3*D_2*X_2 - A_3*C_4*D_2*X_2 - A_4*C_2*D_3*X_2 + A_2*C_4*D_3*X_2 +
+		A_3*C_2*D_4*X_2 - A_2*C_3*D_4*X_2 + A_4*B_2*D_3*X_3 - A_3*B_2*D_4*X_3 - A_4*B_2*C_3*X_4 + A_3*B_2*C_4*X_4 +
+		B_4*(-C_3*D_2*X_1 + C_2*D_3*X_1 + A_3*D_2*X_3 - A_2*D_3*X_3 - A_3*C_2*X_4 + A_2*C_3*X_4) + B_3*(C_4*D_2*X_1 - 
+		C_2*D_4*X_1 - A_4*D_2*X_3 + A_2*D_4*X_3 + A_4*C_2*X_4 - A_2*C_4*X_4));
 
 
-		N_{mr} =
-(-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + \\
-A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 +\\
-B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + \\
-B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4 X_4)) \\
+			Nml =
+		(B_1*C_4*D_3*X_1 - B_1*C_3*D_4*X_1 - A_4*C_3*D1*X_2 + A_3*C_4*D1*X_2 + A_4*C_1*D_3*X_2 - A_1*C_4*D_3*X_2 - 
+		A_3*C_1*D_4*X_2 + A_1*C_3*D_4*X_2 - A_4*B_1*D_3*X_3 + A_3*B_1*D_4*X_3 + A_4*B_1*C_3*X_4 - A_3*B_1*C_4*X_4 +
+		B_4*(C_3*D1*X_1 - C_1*D_3*X_1 - A_3*D1*X_3 + A_1*D_3*X_3 + A_3*C_1*X_4 - A_1*C_3*X_4) + B_3*(-C_4*D1*X_1 + 
+		C_1*D_4*X_1 + A_4*D1*X_3 - A_1*D_4*X_3 - A_4*C_1*X_4 + A_1*C_4*X_4));
 
 
-		N_{br} =
-(B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - \\
-A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 +\\
-B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + \\
-B_2 (-C_3 D1 X_1 + C_1 D_3 X_1 + A_3 D1 X_3 - A_1 D_3 X_3 - A_3 C_1 X_4 + A_1 C_3 X_4)) \\
-		
-		D = (A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B_4 C_1 D_3 + A_1 B_4 C_2 D_3 + \\
-A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + \\
-A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))
-		
+			Nmr =
+		(-B_1*C_4*D_2*X_1 + B_1*C_2*D_4*X_1 + A_4*C_2*D1*X_2 - A_2*C_4*D1*X_2 - A_4*C_1*D_2*X_2 + A_1*C_4*D_2*X_2 + 
+		A_2*C_1*D_4*X_2 - A_1*C_2*D_4*X_2 + A_4*B_1*D_2*X_3 - A_2*B_1*D_4*X_3 - A_4*B_1*C_2*X_4 + A_2*B_1*C_4*X_4 +
+		B_4*(-C_2*D1*X_1 + C_1*D_2*X_1 + A_2*D1*X_3 - A_1*D_2*X_3 - A_2*C_1*X_4 + A_1*C_2*X_4) + 
+		B_2*(C_4*D1*X_1 - C_1*D_4*X_1 - A_4*D1*X_3 + A_1*D_4*X_3 + A_4*C_1*X_4 - A_1*C_4*X_4));
+
+
+			Nbr =
+		(B_1*C_3*D_2*X_1 - B_1*C_2*D_3*X_1 - A_3*C_2*D1*X_2 + A_2*C_3*D1*X_2 + A_3*C_1*D_2*X_2 - A_1*C_3*D_2*X_2 - 
+		A_2*C_1*D_3*X_2 + A_1*C_2*D_3*X_2 - A_3*B_1*D_2*X_3 + A_2*B_1*D_3*X_3 + A_3*B_1*C_2*X_4 - A_2*B_1*C_3*X_4 +
+		B_3*(C_2*D1*X_1 - C_1*D_2*X_1 - A_2*D1*X_3 + A_1*D_2*X_3 + A_2*C_1*X_4 - A_1*C_2*X_4) + 
+		B_2*(-C_3*D1*X_1 + C_1*D_3*X_1 + A_3*D1*X_3 - A_1*D_3*X_3 - A_3*C_1*X_4 + A_1*C_3*X_4));
+
+			D = A_2*B_4*C_3*D1 - A_2*B_3*C_4*D1 - A_1*B_4*C_3*D_2 + A_1*B_3*C_4*D_2 - A_2*B_4*C_1*D_3 + A_1*B_4*C_2*D_3 + 
+		A_2*B_1*C_4*D_3 - A_1*B_2*C_4*D_3 + A_4*(B_3*C_2*D1 - B_2*C_3*D1 - B_3*C_1*D_2 + B_1*C_3*D_2 + B_2*C_1*D_3 - B_1*C_2*D_3) + 
+		A_2*B_3*C_1*D_4 - A_1*B_3*C_2*D_4 - A_2*B_1*C_3*D_4 + A_1*B_2*C_3*D_4 + A_3*(-B_4*C_2*D1 + B_2*C_4*D1 + B_4*C_1*D_2 - B_1*C_4*D_2 - B_2*C_1*D_4 + B_1*C_2*D_4);
+	
 		d_bla = Nbl/D;
 		d_mla = Nml/D;
 		d_mra = Nmr/D;
