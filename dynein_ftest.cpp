@@ -4,37 +4,30 @@
 
 #include "dynein_struct.h"
 
-const double bla_t = (108.0 / 180) * M_PI;
-const double mla_t = (36.0 / 180) * M_PI;
-const double mra_t = (36.0 / 180) * M_PI;
-const double bra_t = (108.0 / 180) * M_PI;
+double bla_t;
+double mla_t;
+double mra_t;
+double bra_t;
 
-const double blx_t = 0;
-const double bly_t = 0;
+double d_bla_t;
+double d_mla_t;
+double d_mra_t;
+double d_bra_t;
 
-const double d_bla_t = 1;
-const double d_mla_t = 1;
-const double d_mra_t = 1;
-const double d_bra_t = 1;
+double blx_t = 0;
+double bly_t = 0;
 
-const double r_blx_t = 1;     
-const double r_mlx_t = 1;     
-const double r_mrx_t = 1;     
-const double r_brx_t = 1;
-const double r_bly_t = 1;
-const double r_mly_t = 1;
-const double r_mry_t = 1;
-const double r_bry_t = 1;    
+double r_blx_t = 0;    double  r_bly_t = 0;
+double r_mlx_t = 0;    double  r_mly_t = 0;
+double r_tx_t  = 0;	   double  r_ty_t  = 0;
+double r_mrx_t = 0;    double  r_mry_t = 0;
+double r_brx_t = 0;    double  r_bry_t = 0;
 
-const double f_blx_t = 1;     
-const double f_mlx_t = 1;     
-const double f_mrx_t = 1;     
-const double f_brx_t = 1;     
-const double f_bly_t = 1;
-const double f_mly_t = 1;
-const double f_mry_t = 1;
-const double f_bry_t = 1;
-
+double f_blx_t = 0;    double  f_bly_t = 0;
+double f_mlx_t = 0;    double  f_mly_t = 0;
+double f_tx_t  = 1;    double  f_ty_t  = 1;
+double f_mrx_t = 1;    double  f_mry_t = 1;
+double f_brx_t = 1;    double  f_bry_t = 1;
 
 const int state_t = LEFTBOUND;
 
@@ -188,9 +181,34 @@ double get_bry(){
 
 
 int main() {
+	
+	bla_t = (108.0 / 180) * M_PI;
+	mla_t = (36.0 / 180) * M_PI;
+	mra_t = (36.0 / 180) * M_PI;
+	bra_t = (108.0 / 180) * M_PI;
+	
+	Dynein* dyn = new Dynein(bla_t, mla_t, mra_t, bra_t);
+
+	d_bla_t = dyn->get_d_bla();
+	d_mla_t = dyn->get_d_mla();
+	d_mra_t = dyn->get_d_mra();
+	d_bra_t = dyn->get_d_bra();
+	
 	printf("one: %f\n", (get_d_mrx() + lt*sin(bra_t-M_PI)*d_bra_t - (1/g)*f_brx_t - r_brx_t ) * 1/(get_brx() - get_mrx()));
 	printf("two: %f\n", (get_d_mry() - lt*cos(bra_t-M_PI)*d_bra_t - (1/g)*f_bry_t - r_bry_t ) * 1/(get_bry() - get_mry()));
+	
 	exit(EXIT_SUCCESS);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 

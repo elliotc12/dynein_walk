@@ -23,6 +23,7 @@ walk: dynein_walk.o dynein_struct.o utilities.o
 
 test: dynein_ftest.o dynein_struct.o utilities.o
 	g++ dynein_ftest.o dynein_struct.o utilities.o -o ftest
+	./ftest
 
 data.txt: walk
 	./walk

@@ -11,13 +11,7 @@ const double mra_init = (36.0 / 180) * M_PI;
 const double bra_init = (108.0 / 180) * M_PI;
 
 const double inctime = 0.1;
-const double runtime = 100.0;
-
-extern double fblx, fbly;		// Brownian variables
-extern double fmlx, fmly;
-extern double ftx, fty;
-extern double fmrx, fmry;
-extern double fbrx, fbry;
+const double runtime = 50.0;
 
 typedef enum {
 	LEFTBOUND,
@@ -102,7 +96,7 @@ public:
   states get_state();
 
   void log(double t);
-  void update_protein();
+  void update_velocities();
   void read_init_file();
   
 private:

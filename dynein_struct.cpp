@@ -13,17 +13,14 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 	blx = 0;
 	bly = 0;
 	
-	d_bla = 0;
-	d_mla = 0;
-	d_mra = 0;
-	d_bra = 0;
-	
 	bla = bla_init;
 	mla = mla_init;
 	mra = mra_init;
 	bra = bra_init;
 	
 	state = LEFTBOUND;
+	
+	update_velocities();
 	
 }
 
@@ -35,17 +32,19 @@ void Dynein::set_state(states s) {
 	state = s;
 }
 
-void Dynein::update_protein() {
+void Dynein::update_velocities() {
 	
 	r_blx = 0;     r_bly = 0;
 	r_mlx = 0;     r_mly = 0;
+	r_tx  = 0;	   r_ty  = 0;
 	r_mrx = 0;     r_mry = 0;
 	r_brx = 0;     r_bry = 0;
 
 	f_blx = 0;     f_bly = 0;
 	f_mlx = 0;     f_mly = 0;
-	f_mrx = 0;     f_mry = 0;
-	f_brx = 0;     f_bry = 0;
+	f_tx  = 1;     f_ty  = 1;
+	f_mrx = 1;     f_mry = 1;
+	f_brx = 1;     f_bry = 1;
 	
 	int A1, A2, A3, A4;
 	int B1, B2, B3, B4;
@@ -75,44 +74,35 @@ void Dynein::update_protein() {
 			D4 = (-sin(bla)*sin(bra-M_PI) + -cos(bra-M_PI)*cos(bla));
 
 
-			X_1 = (sin(bra-M_PI)*f_brx + cos(bra-M_PI)*f_bry)/(g*lt) + (sin(bra-M_PI)*r_brx + cos(bra-M_PI)*r_bry)/(lt);
-			X_2 = -(sin(mra-M_PI)f_mrx + sin(mra-M_PI)f_brx - cos(mra-M_PI)*f_mry - cos(mra-M_PI)*f_bry)/(g*ls) + 
-		-(sin(mra-M_PI)*r_mrx + sin(mra-M_PI)*r_brx - cos(mra-M_PI)*r_mry - cos(mra-M_PI)*r_bry)/(ls);
-			X_3 = -(sin(mla)*f_tx + -cos(mla)*f_yt + sin(mla)f_mrx + -cos(mla)*f_mry + sin(mla)f_brx + -cos(mla)*f_bry)(g*ls) + 
-		-(sin(mla)*r_tx + -cos(mla)r_ty + sin(mla)*r_mrx + -cos(mla)*r_mry + sin(mla)*r_brx + -cos(mla)*r_bry)/(ls);
-			X_4 = -(sin(bla)*f_mlx + -cos(bla)*f_mly + sin(bla)F_{xt } + -cos(bla)*f_ty + sin(bla)*f_mrx + -cos(bla)*f_mry + sin(bla)*f_brx + -cos(bla)*f_bry)/(g*lt)
-		 + -(sin(bla)*r_mlx +-cos(bla)*r_mly + sin(bla)*r_tx + -cos(bla)*r_ty + sin(bla)*r_mrx + -cos(bla)*r_mry + sin(bla)*r_brx + -cos(bla)*r_bry)/(lt);
+			X1 = (sin(bra-M_PI)*f_brx + cos(bra-M_PI)*f_bry)/(g*lt) + (sin(bra-M_PI)*r_brx + cos(bra-M_PI)*r_bry)/(lt);
+			
+			X2 = -(sin(mra-M_PI)*f_mrx + sin(mra-M_PI)*f_brx - cos(mra-M_PI)*f_mry - cos(mra-M_PI)*f_bry)/(g*ls) + 
+				-(sin(mra-M_PI)*r_mrx + sin(mra-M_PI)*r_brx - cos(mra-M_PI)*r_mry - cos(mra-M_PI)*r_bry)/(ls);
+		
+			X3 = -(sin(mla)*f_tx + -cos(mla)*f_ty + sin(mla)*f_mrx + -cos(mla)*f_mry + sin(mla)*f_brx + -cos(mla)*f_bry)/(g*ls) + 
+				-(sin(mla)*r_tx + -cos(mla)*r_ty + sin(mla)*r_mrx + -cos(mla)*r_mry + sin(mla)*r_brx + -cos(mla)*r_bry)/(ls);
+		
+			X4 = -(sin(bla)*f_mlx + -cos(bla)*f_mly + sin(bla)*f_tx + -cos(bla)*f_ty + sin(bla)*f_mrx + -cos(bla)*f_mry + sin(bla)*f_brx + -cos(bla)*f_bry)/(g*lt)
+				+ -(sin(bla)*r_mlx +-cos(bla)*r_mly + sin(bla)*r_tx + -cos(bla)*r_ty + sin(bla)*r_mrx + -cos(bla)*r_mry + sin(bla)*r_brx + -cos(bla)*r_bry)/(lt);
 
 			Nbl =
-		(-B_2*C_4*D_3*X_1 + B_2*C_3*D_4*X_1 + A_4*C_3*D_2*X_2 - A_3*C_4*D_2*X_2 - A_4*C_2*D_3*X_2 + A_2*C_4*D_3*X_2 +
-		A_3*C_2*D_4*X_2 - A_2*C_3*D_4*X_2 + A_4*B_2*D_3*X_3 - A_3*B_2*D_4*X_3 - A_4*B_2*C_3*X_4 + A_3*B_2*C_4*X_4 +
-		B_4*(-C_3*D_2*X_1 + C_2*D_3*X_1 + A_3*D_2*X_3 - A_2*D_3*X_3 - A_3*C_2*X_4 + A_2*C_3*X_4) + B_3*(C_4*D_2*X_1 - 
-		C_2*D_4*X_1 - A_4*D_2*X_3 + A_2*D_4*X_3 + A_4*C_2*X_4 - A_2*C_4*X_4));
-
+				(-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2 + A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4 +
+				B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4) + B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
 
 			Nml =
-		(B_1*C_4*D_3*X_1 - B_1*C_3*D_4*X_1 - A_4*C_3*D1*X_2 + A_3*C_4*D1*X_2 + A_4*C_1*D_3*X_2 - A_1*C_4*D_3*X_2 - 
-		A_3*C_1*D_4*X_2 + A_1*C_3*D_4*X_2 - A_4*B_1*D_3*X_3 + A_3*B_1*D_4*X_3 + A_4*B_1*C_3*X_4 - A_3*B_1*C_4*X_4 +
-		B_4*(C_3*D1*X_1 - C_1*D_3*X_1 - A_3*D1*X_3 + A_1*D_3*X_3 + A_3*C_1*X_4 - A_1*C_3*X_4) + B_3*(-C_4*D1*X_1 + 
-		C_1*D_4*X_1 + A_4*D1*X_3 - A_1*D_4*X_3 - A_4*C_1*X_4 + A_1*C_4*X_4));
-
+				(B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2 - A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4 +
+				B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4) + B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
 
 			Nmr =
-		(-B_1*C_4*D_2*X_1 + B_1*C_2*D_4*X_1 + A_4*C_2*D1*X_2 - A_2*C_4*D1*X_2 - A_4*C_1*D_2*X_2 + A_1*C_4*D_2*X_2 + 
-		A_2*C_1*D_4*X_2 - A_1*C_2*D_4*X_2 + A_4*B_1*D_2*X_3 - A_2*B_1*D_4*X_3 - A_4*B_1*C_2*X_4 + A_2*B_1*C_4*X_4 +
-		B_4*(-C_2*D1*X_1 + C_1*D_2*X_1 + A_2*D1*X_3 - A_1*D_2*X_3 - A_2*C_1*X_4 + A_1*C_2*X_4) + 
-		B_2*(C_4*D1*X_1 - C_1*D_4*X_1 - A_4*D1*X_3 + A_1*D_4*X_3 + A_4*C_1*X_4 - A_1*C_4*X_4));
-
+				(-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2 + A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4 +
+				B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4) + B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
 
 			Nbr =
-		(B_1*C_3*D_2*X_1 - B_1*C_2*D_3*X_1 - A_3*C_2*D1*X_2 + A_2*C_3*D1*X_2 + A_3*C_1*D_2*X_2 - A_1*C_3*D_2*X_2 - 
-		A_2*C_1*D_3*X_2 + A_1*C_2*D_3*X_2 - A_3*B_1*D_2*X_3 + A_2*B_1*D_3*X_3 + A_3*B_1*C_2*X_4 - A_2*B_1*C_3*X_4 +
-		B_3*(C_2*D1*X_1 - C_1*D_2*X_1 - A_2*D1*X_3 + A_1*D_2*X_3 + A_2*C_1*X_4 - A_1*C_2*X_4) + 
-		B_2*(-C_3*D1*X_1 + C_1*D_3*X_1 + A_3*D1*X_3 - A_1*D_3*X_3 - A_3*C_1*X_4 + A_1*C_3*X_4));
+				(B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2 - A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4 +
+				B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4) + B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
 
-			D = A_2*B_4*C_3*D1 - A_2*B_3*C_4*D1 - A_1*B_4*C_3*D_2 + A_1*B_3*C_4*D_2 - A_2*B_4*C_1*D_3 + A_1*B_4*C_2*D_3 + 
-		A_2*B_1*C_4*D_3 - A_1*B_2*C_4*D_3 + A_4*(B_3*C_2*D1 - B_2*C_3*D1 - B_3*C_1*D_2 + B_1*C_3*D_2 + B_2*C_1*D_3 - B_1*C_2*D_3) + 
-		A_2*B_3*C_1*D_4 - A_1*B_3*C_2*D_4 - A_2*B_1*C_3*D_4 + A_1*B_2*C_3*D_4 + A_3*(-B_4*C_2*D1 + B_2*C_4*D1 + B_4*C_1*D_2 - B_1*C_4*D_2 - B_2*C_1*D_4 + B_1*C_2*D_4);
+			D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3 + A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3 - B1*C2*D3) + 
+				A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4 + A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
 	
 		d_bla = Nbl/D;
 		d_mla = Nml/D;
@@ -362,7 +352,7 @@ double Dynein::get_KE() {
 
 void Dynein::log(double t) {
 	FILE* data_file = fopen("data.txt", "a+");
-	//fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
-	//get_KE(), get_PE(), get_KE() + get_PE(), t, blx, bly, mlx, mly, tx, ty, mrx, mry, brx, bry, get_state());
+	fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
+	get_KE(), get_PE(), get_KE() + get_PE(), t, get_blx(), get_bly(), get_mlx(), get_mly(), get_tx(), get_ty(), get_mrx(), get_mry(), get_brx(), get_bry(), get_state());
 	fclose(data_file);
 }
