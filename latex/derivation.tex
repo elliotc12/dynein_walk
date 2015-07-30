@@ -694,6 +694,21 @@ Now expand the cartesian velocity definition: \\
   X_3 = \mn \frac{\sin(\Theta_{ml})F_{xt } + \mn \cos(\Theta_{ml})F_{yt } + \sin(\Theta_{ml})F_{xmr} + \mn \cos(\Theta_{ml})F_{ymr} + \sin(\Theta_{ml})F_{xbr} + \mn \cos(\Theta_{ml})F_{ybr}}{\gamma L_s} + \\
 	\mn \frac{\sin(\Theta_{ml})R_{xt } + \mn \cos(\Theta_{ml})R_{yt } + \sin(\Theta_{ml})R_{xmr} + \mn \cos(\Theta_{ml})R_{ymr} + \sin(\Theta_{ml})R_{xbr} + \mn \cos(\Theta_{ml})R_{ybr}}{L_s}
 \end{multline}
+The following is David's simplification of $X_3$:
+\begin{align}
+  X_3 &= -\frac{1}{L_s}\left\{ \sin(\Theta_{ml})\left(\frac{F_{xt}+F_{xmr}+F_{xbr}}{\gamma} + R_{xt }+R_{xmr}+R_{xbr}\right) -
+    \cos(\Theta_{ml})\left(\frac{F_{yt }+F_{ymr}+F_{ybr}}{\gamma} +
+    R_{yt}+R_{ymr}+R_{ybr}\right) \right\}
+    \\
+    &?= \frac{\hat{a}_{ml}\cdot \vec{F}_{tot_{ml}}}{\gamma L_s}
+\end{align}
+where $\hat a$ is a unit vector in a the direction related to the $ml$
+segment, and $\vec{F}_{tot_{ml}}$ is a total force of some sort,
+including the random fluctuations.  I don't think we want to write the
+formula in this final way, but it may help in thinking about the
+equations.  I certainly think that the form with just one $\sin$ and
+one $\cos$ is an improvement, and reduces the likelihood of
+introducing sign errors (or sine errors, for that matter).
 
 \begin{multline}
   X_4 = \mn \frac{\sin(\Theta_{bl})F_{xml} + \mn\cos(\Theta_{bl})F_{yml} + \sin(\Theta_{bl})F_{xt } + \mn \cos(\Theta_{bl})F_{yt } + \sin(\Theta_{bl})F_{xmr} + \mn \cos(\Theta_{bl})F_{ymr} + \sin(\Theta_{bl})F_{xbr} + \mn \cos(\Theta_{bl})F_{ybr}}
