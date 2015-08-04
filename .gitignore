@@ -8,3 +8,7 @@ latex/latexlog.txt
 *.tum
 *~
 *.o
+config.txt
+data.txt
+ftest
+walk
