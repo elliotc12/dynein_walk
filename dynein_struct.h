@@ -19,6 +19,21 @@ typedef enum {
 	BOTHBOUND
 } states;
 
+typedef struct
+{
+  double r_blx;   double r_bly;
+  double r_mlx;   double r_mly;
+  double r_tx;    double r_ty;
+  double r_mrx;   double r_mry; 					
+  double r_brx;   double r_bry;					
+
+  double f_blx;   double f_bly;
+  double f_mlx;   double f_mly;
+  double f_tx;    double f_ty;
+  double f_mrx;   double f_mry;
+  double f_brx;   double f_bry;
+} forces;
+
 
 /* ******************************** DYNEIN CLASS DEFINITION *************************************** */
 
@@ -35,11 +50,8 @@ public:
   void set_bly(double d);
 
   void set_state(states s);
-
-  void set_d_bla(double d);
-  void set_d_mla(double d);
-  void set_d_mra(double d);
-  void set_d_bra(double d);
+  
+  void set_forces(forces f);
 
   double get_bla();
   double get_mla();
@@ -65,6 +77,18 @@ public:
   double get_d_mla();
   double get_d_mra();
   double get_d_bra();
+  
+  double get_d_blx();
+  double get_d_mlx();
+  double get_d_tx();
+  double get_d_mrx();
+  double get_d_brx();
+  
+  double get_d_bly();
+  double get_d_mly();
+  double get_d_ty();
+  double get_d_mry();
+  double get_d_bry();
    
   double get_f_blx();
   double get_f_mlx();

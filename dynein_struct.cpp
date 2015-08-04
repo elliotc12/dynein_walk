@@ -10,6 +10,18 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 	
 	read_init_file();
 	
+	r_blx = 0;     r_bly = 0;
+	r_mlx = 0;     r_mly = 0;
+	r_tx  = 0;	   r_ty  = 0;
+	r_mrx = 0;     r_mry = 0;
+	r_brx = 0;     r_bry = 0;
+
+	f_blx = 0;     f_bly = 0;
+	f_mlx = 0;     f_mly = 0;
+	f_tx  = 0;     f_ty  = 0;
+	f_mrx = 0;     f_mry = 0;
+	f_brx = 0;     f_bry = 0;
+	
 	blx = 0;
 	bly = 0;
 	
@@ -33,18 +45,6 @@ void Dynein::set_state(states s) {
 }
 
 void Dynein::update_velocities() {
-	
-	r_blx = 0;     r_bly = 0;
-	r_mlx = 0;     r_mly = 0;
-	r_tx  = 0;	   r_ty  = 0;
-	r_mrx = 0;     r_mry = 0;
-	r_brx = 0;     r_bry = 0;
-
-	f_blx = 0;     f_bly = 0;
-	f_mlx = 0;     f_mly = 0;
-	f_tx  = 1;     f_ty  = 1;
-	f_mrx = 1;     f_mry = 1;
-	f_brx = 1;     f_bry = 1;
 	
 	int A1, A2, A3, A4;
 	int B1, B2, B3, B4;
@@ -111,7 +111,7 @@ void Dynein::update_velocities() {
 	} 
 }
 
-/*** Set positions and velocities ***/
+/*** Set positions, velocities and forces ***/
 
 void Dynein::set_blx(double d) {
 	blx = d;
@@ -137,20 +137,20 @@ void Dynein::set_bra(double d) {
 	bra = d;
 }
 
-void Dynein::set_d_bla(double d) {
-	d_bla = d;
-}
+void Dynein::set_forces(forces f) {
+	
+	r_blx = f.r_blx;     r_bly = f.r_bly;
+	r_mlx = f.r_mlx;     r_mly = f.r_mly;
+	r_tx  = f.r_tx;	     r_ty  = f.r_ty;
+	r_mrx = f.r_mrx;     r_mry = f.r_mry;
+	r_brx = f.r_brx;     r_bry = f.r_bry;
 
-void Dynein::set_d_mla(double d) {
-	d_mla = d;
-}
-
-void Dynein::set_d_mra(double d) {
-	d_mra = d;
-}
-
-void Dynein::set_d_bra(double d) {
-	d_bra = d;
+	f_blx = f.f_blx;     f_bly = f.f_bly;
+	f_mlx = f.f_mlx;     f_mly = f.f_mly;
+	f_tx  = f.f_tx;      f_ty  = f.f_ty;
+	f_mrx = f.f_mrx;     f_mry = f.f_mry;
+	f_brx = f.f_brx;     f_bry = f.f_bry;
+	
 }
 
 /*** Angular Velocities ***/
@@ -230,6 +230,68 @@ double Dynein::get_brx() {
 double Dynein::get_bry(){
 	if (state == LEFTBOUND) return ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + ls * sin(-get_bra()) + bly;
 	else if (state == RIGHTBOUND) return 0;
+	else return 0;
+}
+
+/*** Get Cartesian Velocities ***/
+
+double Dynein::get_d_blx() {
+	if (state == LEFTBOUND) return 0;
+	else if (state == BOTHBOUND) return 0;
+	else return ls * d_bla * sin(-bla) + get_d_mlx();
+}
+
+double Dynein::get_d_mlx() {
+	if (state == LEFTBOUND) return ls * d_bla * -sin(bla);
+	else if (state == BOTHBOUND) return -d_bla * ls * sin(bla);
+	else return lt * d_mla * sin(-mla) + get_d_tx();
+}
+
+double Dynein::get_d_tx() {
+	if (state == LEFTBOUND) return lt * d_mla * -sin(mla) + get_d_mlx();
+	else if (state == BOTHBOUND) return lt/2 * (-d_mra * sin(mra) + -d_mla * sin(mla) + get_d_mlx() + get_d_mrx());
+	else return lt * d_mra * -sin(mra) + get_d_mrx();
+}
+
+double Dynein::get_d_mrx() {
+	if (state == LEFTBOUND) return lt * d_mra * sin(-mra) + get_d_tx();
+	else if (state == BOTHBOUND) return -d_bra * ls * sin(bra);
+	else return ls * d_bra * -sin(bra);
+}
+
+double Dynein::get_d_brx() {
+	if (state == LEFTBOUND) return ls * d_bra * sin(-bra) + get_d_mrx();
+	else if (state == BOTHBOUND) return 0;
+	else return 0;
+}
+
+double Dynein::get_d_bly() {
+	if (state == LEFTBOUND) return 0;
+	else if (state == BOTHBOUND) return 0;
+	else return ls * -d_bla * cos(-bla) + get_d_mly();
+}
+
+double Dynein::get_d_mly() {
+	if (state == LEFTBOUND) return ls * d_bla * cos(bla);
+	else if (state == BOTHBOUND) return d_bla * ls * cos(bla);
+	else return lt * -d_mla * cos(-mla) + get_d_ty();
+}
+
+double Dynein::get_d_ty() {
+	if (state == LEFTBOUND) return lt * d_mla * cos(mla) + get_d_mly();
+	else if (state == BOTHBOUND) return lt/2 * (d_mra * cos(mra) + d_mla * cos(mla) + get_d_mly() + get_d_mry());
+	else return lt * d_mra * cos(mra) + get_d_mry();
+}
+
+double Dynein::get_d_mry() {
+	if (state == LEFTBOUND) return lt * -d_mra * cos(-mra) + get_d_ty();
+	else if (state == BOTHBOUND) return d_bra * ls * cos(mra);
+	else return ls * d_bra * cos(bra);
+}
+
+double Dynein::get_d_bry() {
+	if (state == LEFTBOUND) return ls * -d_bra * cos(-bra) + get_d_mry();
+	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }
 

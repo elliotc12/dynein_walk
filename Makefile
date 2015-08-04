@@ -1,6 +1,6 @@
 CPPFLAGS = -g -Wall -O2
 
-all: walk data.txt derivation.pdf
+all: walk test data.txt derivation.pdf
 
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	#lint dynein_walk.cpp
@@ -29,7 +29,10 @@ data.txt: walk
 	./walk
 
 derivation.pdf: latex/derivation.tex
-	cd latex && pdflatex derivation.tex > latexlog.txt && mv derivation.pdf ..
+	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
+	
+corrected-derivation.pdf: latex/corrected-derivation.tex
+	cd latex && pdflatex corrected-derivation.tex && mv corrected-derivation.pdf ..
 
 clean:
 	rm -f *.o
