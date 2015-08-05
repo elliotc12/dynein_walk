@@ -6,21 +6,21 @@
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
-Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init) {
+Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init, forces f) {
 	
 	read_init_file();
 	
-	r_blx = 0;     r_bly = 0;
-	r_mlx = 0;     r_mly = 0;
-	r_tx  = 0;	   r_ty  = 0;
-	r_mrx = 0;     r_mry = 0;
-	r_brx = 0;     r_bry = 0;
+	r_blx = f.r_blx;     r_bly = f.r_bly;
+	r_mlx = f.r_mlx;     r_mly = f.r_mly;
+	r_tx  = f.r_tx;	     r_ty  = f.r_ty;
+	r_mrx = f.r_mrx;     r_mry = f.r_mry;
+	r_brx = f.r_brx;     r_bry = f.r_bry;
 
-	f_blx = 0;     f_bly = 0;
-	f_mlx = 0;     f_mly = 0;
-	f_tx  = 0;     f_ty  = 0;
-	f_mrx = 0;     f_mry = 0;
-	f_brx = 0;     f_bry = 0;
+	f_blx = f.f_blx;     f_bly = f.f_bly;
+	f_mlx = f.f_mlx;     f_mly = f.f_mly;
+	f_tx  = f.f_tx;      f_ty  = f.f_ty;
+	f_mrx = f.f_mrx;     f_mry = f.f_mry;
+	f_brx = f.f_brx;     f_bry = f.f_bry;
 	
 	blx = 0;
 	bly = 0;

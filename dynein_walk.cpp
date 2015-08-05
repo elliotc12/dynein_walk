@@ -42,7 +42,22 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 /* *********************************** MAIN ****************************************** */
 
 int main(int argvc, char **argv) {
-	Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init);
+	
+	forces f;
+	f.r_blx = r_blx_init;     f.r_bly = r_bly_init;
+	f.r_mlx = r_mlx_init;     f.r_mly = r_mly_init;
+	f.r_tx  =  r_tx_init;	  f.r_ty  =  r_ty_init;
+	f.r_mrx = r_mrx_init;     f.r_mry = r_mry_init;
+	f.r_brx = r_brx_init;     f.r_bry = r_bry_init;
+	
+	f.f_blx = f_blx_init;     f.f_bly = f_bly_init;
+	f.f_mlx = f_mlx_init;     f.f_mly = f_mly_init;
+	f.f_tx  =  f_tx_init;     f.f_ty  =  f_ty_init;
+	f.f_mrx = f_mrx_init;     f.f_mry = f_mry_init;
+	f.f_brx = f_brx_init;     f.f_bry = f_bry_init;
+	
+	Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, f);
+	
 	resetLog(dyn);
 	simulateProtein(dyn, inctime, runtime);
 	free(dyn);
