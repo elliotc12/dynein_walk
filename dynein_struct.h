@@ -5,10 +5,10 @@ const double ls = 10.0;
 
 const double g = 1;
 
-const double bla_init = (90.0 / 180) * M_PI;
-const double mla_init = (90.0 / 180) * M_PI;
-const double mra_init = (-90.0 / 180) * M_PI;
-const double bra_init = (-90.0 / 180) * M_PI;
+const double bla_init = (108.0 / 180) * M_PI;
+const double mla_init = (36.0 / 180) * M_PI;
+const double mra_init = (148.0 / 180) * M_PI;
+const double bra_init = (72.0 / 180) * M_PI;
 
 const double r_blx_init = 0;   const double r_bly_init = 0;
 const double r_mlx_init = 0;   const double r_mly_init = 0;

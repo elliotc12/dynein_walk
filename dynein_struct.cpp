@@ -46,13 +46,13 @@ void Dynein::set_state(states s) {
 
 void Dynein::update_velocities() {
 	
-	int A1, A2, A3, A4;
-	int B1, B2, B3, B4;
-	int C1, C2, C3, C4;
-	int D1, D2, D3, D4;
-	int X1, X2, X3, X4;
-	int Nbl, Nml, Nmr, Nbr;
-	int D;
+	float A1, A2, A3, A4;
+	float B1, B2, B3, B4;
+	float C1, C2, C3, C4;
+	float D1, D2, D3, D4;
+	float X1, X2, X3, X4;
+	float Nbl, Nml, Nmr, Nbr;
+	float D;
 	
 	if (state == LEFTBOUND) {
 
@@ -104,10 +104,14 @@ void Dynein::update_velocities() {
 			D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3 + A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3 - B1*C2*D3) + 
 				A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4 + A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
 	
+		if (D == 0) printf("Uh-oh. Divide by zero in velocity calculation. Unphysical situation?\n");
+	
 		d_bla = Nbl/D;
 		d_mla = Nml/D;
 		d_mra = Nmr/D;
 		d_bra = Nbr/D;
+		
+
 	} 
 }
 
@@ -210,25 +214,25 @@ double Dynein::get_ty(){
 }
 
 double Dynein::get_mrx() {
-	if (state == LEFTBOUND) return ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + blx;
+	if (state == LEFTBOUND) return ls * cos(get_bla()) + lt * cos(get_mla()) + -lt * cos(get_mra()) + blx;
 	else if (state == RIGHTBOUND) return 0;
 	else return 0;
 }
 
 double Dynein::get_mry(){
-	if (state == LEFTBOUND) return ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + bly;
+	if (state == LEFTBOUND) return ls * sin(get_bla()) + lt * sin(get_mla()) + -lt * sin(get_mra()) + bly;
 	else if (state == RIGHTBOUND) return 0;
 	else return 0;
 }
 
 double Dynein::get_brx() {
-	if (state == LEFTBOUND) return ls * cos(get_bla()) + lt * cos(get_mla()) + lt * cos(-get_mra()) + ls * cos(-get_bra()) + blx;
+	if (state == LEFTBOUND) return ls * cos(get_bla()) + lt * cos(get_mla()) + -lt * cos(get_mra()) + -ls * cos(get_bra()) + blx;
 	else if (state == RIGHTBOUND) return 0;
 	else return 0;
 }
 
 double Dynein::get_bry(){
-	if (state == LEFTBOUND) return ls * sin(get_bla()) + lt * sin(get_mla()) + lt * sin(-get_mra()) + ls * sin(-get_bra()) + bly;
+	if (state == LEFTBOUND) return ls * sin(get_bla()) + lt * sin(get_mla()) + -lt * sin(get_mra()) + -ls * sin(get_bra()) + bly;
 	else if (state == RIGHTBOUND) return 0;
 	else return 0;
 }
@@ -254,13 +258,13 @@ double Dynein::get_d_tx() {
 }
 
 double Dynein::get_d_mrx() {
-	if (state == LEFTBOUND) return lt * d_mra * sin(-mra) + get_d_tx();
+	if (state == LEFTBOUND) return lt * d_mra * sin(mra) + get_d_tx();
 	else if (state == BOTHBOUND) return -d_bra * ls * sin(bra);
 	else return ls * d_bra * -sin(bra);
 }
 
 double Dynein::get_d_brx() {
-	if (state == LEFTBOUND) return ls * d_bra * sin(-bra) + get_d_mrx();
+	if (state == LEFTBOUND) return ls * d_bra * sin(bra) + get_d_mrx();
 	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }
@@ -284,13 +288,13 @@ double Dynein::get_d_ty() {
 }
 
 double Dynein::get_d_mry() {
-	if (state == LEFTBOUND) return lt * -d_mra * cos(-mra) + get_d_ty();
+	if (state == LEFTBOUND) return lt * d_mra * -cos(mra) + get_d_ty();
 	else if (state == BOTHBOUND) return d_bra * ls * cos(mra);
 	else return ls * d_bra * cos(bra);
 }
 
 double Dynein::get_d_bry() {
-	if (state == LEFTBOUND) return ls * -d_bra * cos(-bra) + get_d_mry();
+	if (state == LEFTBOUND) return ls * d_bra * -cos(bra) + get_d_mry();
 	else if (state == BOTHBOUND) return 0;
 	else return 0;
 }

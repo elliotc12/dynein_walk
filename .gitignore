@@ -10,5 +10,5 @@ latex/latexlog.txt
 *.o
 config.txt
 data.txt
-ftest
+test
 walk

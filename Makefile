@@ -1,6 +1,6 @@
 CPPFLAGS = -g -Wall -O2
 
-all: test walk data.txt derivation.pdf
+all: derivation.pdf test walk data.txt 
 
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	g++ -c dynein_walk.cpp $(CPPFLAGS)
