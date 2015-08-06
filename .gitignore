@@ -1,11 +1,13 @@
 todo.txt
-dynein_motion_functions.cpp
 latex/latexlog.txt
-
 *.aux
 *.log
 *.pdf
 *.tum
 *~
 *.o
+config.txt
+data.txt
+test
+walk
 init.txt
