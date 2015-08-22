@@ -10,48 +10,47 @@ const double mla_init = (36.0 / 180) * M_PI;
 const double mra_init = (148.0 / 180) * M_PI;
 const double bra_init = (72.0 / 180) * M_PI;
 
-const double r_blx_init = 0;   const double r_bly_init = 0;
-const double r_mlx_init = 0;   const double r_mly_init = 0;
-const double  r_tx_init = 0;   const double  r_ty_init = 0;
-const double r_mrx_init = 0;   const double r_mry_init = 0; 					
-const double r_brx_init = 0;   const double r_bry_init = 0;					
-                               
-const double f_blx_init = 0;   const double f_bly_init = 0;
-const double f_mlx_init = 0;   const double f_mly_init = 0;
-const double  f_tx_init = 0;   const double  f_ty_init = 0;
-const double f_mrx_init = 0;   const double f_mry_init = 0;
-const double f_brx_init = 0;   const double f_bry_init = 0;
-
 const double inctime = 0.1;
-const double runtime = 50.0;
+const double runtime = 500.0;
 
-typedef enum {
-	LEFTBOUND,
-	RIGHTBOUND,
-	BOTHBOUND
-} states;
+typedef enum
+{
+  NO_BROWNIAN_FORCES,
+  //BROWNIAN,
+  //BROWNIAN_RIGHT,
+  //BROWNIAN_LEFT,
+} Brownian_mode;
+
+typedef enum
+{
+  NO_FORCES,
+  //PRE_POWERSTROKE,
+  //POST_POWERSTROKE
+} Mode;
+
+typedef enum
+{
+  LEFTBOUND,
+  RIGHTBOUND,
+  BOTHBOUND
+} State;
 
 typedef struct
 {
-  double r_blx;   double r_bly;
-  double r_mlx;   double r_mly;
-  double r_tx;    double r_ty;
-  double r_mrx;   double r_mry; 					
-  double r_brx;   double r_bry;					
-
-  double f_blx;   double f_bly;
-  double f_mlx;   double f_mly;
-  double f_tx;    double f_ty;
-  double f_mrx;   double f_mry;
-  double f_brx;   double f_bry;
+  double blx;   double bly;
+  double mlx;   double mly;
+  double tx;    double ty;
+  double mrx;   double mry;
+  double brx;   double bry;
 } forces;
 
+const Brownian_mode BROWNIAN_FORCE_MODE = NO_BROWNIAN_FORCES;
 
 /* ******************************** DYNEIN CLASS DEFINITION *************************************** */
 
 class Dynein {
 public:
-  Dynein(double bla_init, double mla_init, double mra_init, double bra_init, forces f);	
+  Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m);	
 	
   void set_bla(double d);
   void set_mla(double d);
@@ -61,9 +60,7 @@ public:
   void set_blx(double d);
   void set_bly(double d);
 
-  void set_state(states s);
-  
-  void set_forces(forces f);
+  void set_state(State s);
 
   double get_bla();
   double get_mla();
@@ -129,13 +126,16 @@ public:
   double get_PE();
   double get_KE();
 
-  states get_state();
+  State get_state();
 
   void log(double t);
   void update_velocities();
   void read_init_file();
   
 private:
+  void update_brownian_forces();
+  void update_internal_forces();
+  
   double bla;
   double mla;
   double mra;
@@ -160,7 +160,8 @@ private:
   double f_mrx;   double f_mry;
   double f_brx;   double f_bry;
 
-  states state;
+  Mode mode;
+  State state;
 };
 
 /* *********************************** UTILITY PROTOTYPES ****************************************** */
