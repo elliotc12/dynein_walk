@@ -6,7 +6,7 @@
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
-Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m) {
+Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m, Brownian_mode bm) {
   
   read_init_file();
 
@@ -20,22 +20,37 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
   
   state = s;
   mode = m;
+  bmode = bm;
   
   update_velocities();
 }
 
 void Dynein::update_brownian_forces() {
-  if (BROWNIAN_FORCE_MODE == NO_FORCES) {
+  if (bmode == TEST_NO_BROWNIAN_FORCES) {
     f_blx = 0;     f_bly = 0;
     f_mlx = 0;     f_mly = 0;
     f_tx  = 0;     f_ty  = 0;
     f_mrx = 0;     f_mry = 0;
     f_brx = 0;     f_bry = 0;
   }
+  if (bmode == TEST_RIGHT_BROWNIAN_FORCES) {
+    f_blx = 0;       f_bly = 0;
+    f_mlx = 1.0;     f_mly = 0;
+    f_tx  = 1.0;     f_ty  = 0;
+    f_mrx = 1.0;     f_mry = 0;
+    f_brx = 1.0;     f_bry = 0;
+  }
+  if (bmode == TEST_LEFT_BROWNIAN_FORCES) {
+    f_blx = 0;       f_bly = 0;
+    f_mlx = -1.0;    f_mly = 0;
+    f_tx  = -1.0;    f_ty  = 0;
+    f_mrx = -1.0;    f_mry = 0;
+    f_brx = -1.0;    f_bry = 0;
+  }
 }
 
 void Dynein::update_internal_forces() {
-  if (mode == NO_FORCES) {
+  if (mode == TEST_NO_INTERNAL_FORCES) {
     r_blx = 0;     r_bly = 0;
     r_mlx = 0;     r_mly = 0;
     r_tx  = 0;     r_ty  = 0;

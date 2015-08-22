@@ -15,17 +15,17 @@ const double runtime = 500.0;
 
 typedef enum
 {
-  NO_BROWNIAN_FORCES,
-  //BROWNIAN,
-  //BROWNIAN_RIGHT,
-  //BROWNIAN_LEFT,
+  TEST_NO_BROWNIAN_FORCES,
+  TEST_RIGHT_BROWNIAN_FORCES,
+  TEST_LEFT_BROWNIAN_FORCES,
+  BROWNIAN_REGULAR_FORCES
 } Brownian_mode;
 
 typedef enum
 {
-  NO_FORCES,
-  //PRE_POWERSTROKE,
-  //POST_POWERSTROKE
+  TEST_NO_INTERNAL_FORCES,
+  PRE_POWERSTROKE,
+  POST_POWERSTROKE
 } Mode;
 
 typedef enum
@@ -44,13 +44,11 @@ typedef struct
   double brx;   double bry;
 } forces;
 
-const Brownian_mode BROWNIAN_FORCE_MODE = NO_BROWNIAN_FORCES;
-
 /* ******************************** DYNEIN CLASS DEFINITION *************************************** */
 
 class Dynein {
 public:
-  Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m);	
+  Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m, Brownian_mode bm);	
 	
   void set_bla(double d);
   void set_mla(double d);
@@ -161,6 +159,7 @@ private:
   double f_brx;   double f_bry;
 
   Mode mode;
+  Brownian_mode bmode;
   State state;
 };
 

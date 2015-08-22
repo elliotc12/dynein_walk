@@ -42,7 +42,7 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 
 int main(int argvc, char **argv) {
   
-  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, (State) LEFTBOUND, (Mode) NO_FORCES);
+  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, (State) LEFTBOUND, (Mode) TEST_NO_INTERNAL_FORCES, (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
   
   resetLog(dyn);
   simulateProtein(dyn, inctime, runtime);
