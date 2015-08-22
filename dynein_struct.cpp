@@ -56,63 +56,59 @@ void Dynein::update_velocities() {
 	
 	if (state == LEFTBOUND) {
 
-	A1 = 
-	A2 = 
-	A3 = 
-	A4 = 
-	B1 = 
-	B2 = 
-	B3 = 
-	B4 = 
-	C1 = 
-	C2 = 
-	C3 = 
-	C4 = 
-	D1 = 
-	D2 = 
-	D3 = 
-	D4 = 
+	  A1 = -4*ls;
+	  A2 = -3*lt*(sin(mla)*sin(bla) + cos(mla)*cos(bla));
+	  A3 = 2*lt*(sin(mra)*sin(bla) + cos(mra)*cos(bla));
+	  A4 = ls*(sin(bra)*sin(bla) + cos(bra)*cos(bla));
+	  B1 = -3*ls*(sin(bla)*sin(mla) + cos(bla)*cos(mla));
+	  B2 = -3*lt;
+	  B3 = +2*lt*(sin(mra)*sin(mla) + cos(mra)*cos(mla));
+	  B4 = + ls*(sin(bra)*sin(mla) + cos(bra)*cos(mla));
+	  C1 = - 2*ls*(sin(bla)*sin(mra) + cos(bla)*cos(mra));
+	  C2 = - 2*lt*(sin(mla)*sin(mra) + cos(mla)*cos(mra));
+	  C3 = 2*lt;
+	  C4 = ls*(sin(bra)*sin(mra) + cos(bra)*cos(mra));
+	  D1 = ls*(cos(bra)*cos(bla) + sin(bra)*sin(bla));
+	  D2 = lt*(cos(bra)*cos(mla) + sin(bra)*sin(mla));
+	  D3 = -lt*(cos(bra)*cos(mra) + sin(bra)*sin(mra));
+	  D4 = -ls;
 
-	X1 = 
+          X1 = (- 1/g*f_mly - 1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r_mly - r_ty - r_mry - r_bry)*cos(bla)
+	  + ( 1/g*f_mlx + 1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r_mlx + r_tx + r_mrx + r_brx )*sin(bla);
 	
-	X2 = 
+	  X2 = (-1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r_ty - r_mry - r_bry)*cos(mla) + (1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r_tx + r_mrx + r_brx)*sin(mla);
+
+	  X3 = (-r_mry -r_bry - 1/g*f_mry - 1/g*f_bry)*cos(mra) + (r_mrx + r_brx + 1/g*f_mrx + 1/g*f_brx)*sin(mra);
 	
+	  X4 = (r_bry + 1/g*f_bry)*cos(bra) - (r_brx + 1/g*f_brx)*sin(bra);
 
-	X3 = 
-	
-
-	X4 =
-
-
-	Nbl =
+	  Nbl =
 		(-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2 + A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4 +
 		B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4) + B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
 
-	Nml =
+	  Nml =
 		(B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2 - A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4 +
 		B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4) + B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
 
-	Nmr =
+	  Nmr =
 		(-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2 + A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4 +
 		B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4) + B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
 
-	Nbr =
+	  Nbr =
 		(B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2 - A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4 +
 		B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4) + B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
 
-	D =
+	  D =
 	        A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3 + A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3 -
 		B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4 + A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
   
-	assert(D != 0);
+	  assert(D != 0);
 
-	d_bla = Nbl/D;
-	d_mla = Nml/D;
-	d_mra = Nmr/D;
-	d_bra = Nbr/D;
-		
-
-	} 
+	  d_bla = Nbl/D;
+	  d_mla = Nml/D;
+	  d_mra = Nmr/D;
+	  d_bra = Nbr/D;
+      	} 
 }
 
 /*** Set positions, velocities and forces ***/

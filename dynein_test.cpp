@@ -41,7 +41,7 @@ int main() {
 	forces zero_f;
 	zero_f.r_blx = 0;     zero_f.r_bly = 0;
 	zero_f.r_mlx = 0;     zero_f.r_mly = 0;
-	zero_f.r_tx  = 0;	 zero_f.r_ty  = 0;
+	zero_f.r_tx  = 0;     zero_f.r_ty  = 0;
 	zero_f.r_mrx = 0;     zero_f.r_mry = 0;
 	zero_f.r_brx = 0;     zero_f.r_bry = 0;
 
@@ -83,7 +83,7 @@ int main() {
                              (90.0 / 180) * M_PI,
                              -(90.0 / 180) * M_PI,
                              -(90.0 / 180) * M_PI,
-                             zero_f);
+                             f);
     printf("\n");
     num_failures += test("it is standing up (y)", dyn->get_bry(), 4*10);
     num_failures += test("it is standing up (x)", dyn->get_brx(), 0);
@@ -109,7 +109,7 @@ int main() {
                              (0.0 / 180) * M_PI,
                              -(180.0 / 180) * M_PI,
                              -(180.0 / 180) * M_PI,
-                             zero_f);
+                             f);
     printf("\n");
     num_failures += test("it is lying down (bry)", dyn->get_bry(), 0);
     num_failures += test("it is lying down (mry)", dyn->get_mry(), 0);

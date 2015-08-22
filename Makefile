@@ -1,4 +1,4 @@
-CPPFLAGS = -g -Wall -O2
+CPPFLAGS = -g -Wall -Werror -O2
 
 all: derivation.pdf test walk data.txt 
 

@@ -23,7 +23,7 @@ const double f_mrx_init = 0;   const double f_mry_init = 0;
 const double f_brx_init = 0;   const double f_bry_init = 0;
 
 const double inctime = 0.1;
-const double runtime = 1.0;
+const double runtime = 50.0;
 
 typedef enum {
 	LEFTBOUND,
