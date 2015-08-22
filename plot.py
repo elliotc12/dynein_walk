@@ -3,19 +3,23 @@
 import math
 import numpy
 import time
+import signal
 import sys
 import matplotlib.pyplot as plt
 
-	
+def close_windows(*_):
+  plt.close()
+  sys.exit()
+
 if len(sys.argv) == 2:
-	if sys.argv[1] == "energy":
-		data = numpy.loadtxt("data.txt")
-		plt.plot(data[:,3], data[:,2], 'b-', label="Energy")
-		plt.plot(data[:,3], data[:,1], 'g-', label="PE")
-		plt.plot(data[:,3], data[:,0], 'r-', label="KE")
-		plt.legend()
-		plt.show()
-		exit(0)
+  if sys.argv[1] == "energy":
+    data = numpy.loadtxt("data.txt")
+    plt.plot(data[:,3], data[:,2], 'b-', label="Energy")
+    plt.plot(data[:,3], data[:,1], 'g-', label="PE")
+    plt.plot(data[:,3], data[:,0], 'r-', label="KE")
+    plt.legend()
+    plt.show()
+    exit(0)
 
 
 X = [0, 1, 2, 3, 4]
@@ -42,47 +46,52 @@ ke_text = plt.text(-65, 35, 'KE: ')
 t_text = plt.text(-65, -36, 't=:')
 
 i = 0
-print("Press enter to exit animation.")
+
+signal.signal(signal.SIGINT, close_windows)
+
 while (True):
-	X[0] = data[i][4]
-	X[1] = data[i][6]
-	X[2] = data[i][8]
-	X[3] = data[i][10]
-	X[4] = data[i][12]
+  X[0] = data[i][4]
+  X[1] = data[i][6]
+  X[2] = data[i][8]
+  X[3] = data[i][10]
+  X[4] = data[i][12]
 
-	Y[0] = data[i][5]
-	Y[1] = data[i][7]
-	Y[2] = data[i][9]
-	Y[3] = data[i][11]
-	Y[4] = data[i][13]
-	
-	line1.set_data(X,Y)
-	line2.set_data(X[0], Y[0])
-	line3.set_data(X[1], Y[1])
-	line4.set_data(X[2], Y[2])
-	line5.set_data(X[3], Y[3])
-	line6.set_data(X[4], Y[4])
-	
-	if (data[i][4] == 0): title_text.set_text('State: Leftbound')
-	elif (data[i][4] == 1): title_text.set_text('State: Rightbound')
-	elif (data[i][4] == 2): title_text.set_text('State: Bothbound')
-	
-	pe_text.set_text('PE: ' + str(data[i][1]))
-	ke_text.set_text('KE: ' + str(data[i][0]))
+  Y[0] = data[i][5]
+  Y[1] = data[i][7]
+  Y[2] = data[i][9]
+  Y[3] = data[i][11]
+  Y[4] = data[i][13]
+  
+  line1.set_data(X,Y)
+  line2.set_data(X[0], Y[0])
+  line3.set_data(X[1], Y[1])
+  line4.set_data(X[2], Y[2])
+  line5.set_data(X[3], Y[3])
+  line6.set_data(X[4], Y[4])
+  
+  if (data[i][4] == 0):
+    title_text.set_text('State: Leftbound')
+  elif (data[i][4] == 1):
+    title_text.set_text('State: Rightbound')
+  elif (data[i][4] == 2):
+    title_text.set_text('State: Bothbound')
+  
+  pe_text.set_text('PE: ' + str(data[i][1]))
+  ke_text.set_text('KE: ' + str(data[i][0]))
 
-	t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[1]))
-	
-	if len(sys.argv) == 2:
-		if sys.argv[1] == "step":
-			raw_input("Hit enter to step.")
-			i += 10
-		elif sys.argv[1][0:6] == "speed=":
-			i += float(sys.argv[1][6:])
-			plt.pause(0.001)
-	else:
-		i += 10
-		plt.pause(0.001)	
-			
-	if (i >= len(data)):
-		i = 0
-	plt.draw()
+  t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[1]))
+  
+  if len(sys.argv) == 2:
+    if sys.argv[1] == "step":
+      raw_input("Hit enter to step.")
+      i += 10
+    elif sys.argv[1][0:6] == "speed=":
+      i += float(sys.argv[1][6:])
+      plt.pause(0.001)
+  else:
+    i += 10
+    plt.pause(0.001)  
+      
+  if (i >= len(data)):
+    i = 0
+  plt.draw()
