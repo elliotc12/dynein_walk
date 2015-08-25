@@ -3,15 +3,15 @@
 const double lt = 10.0;
 const double ls = 10.0;
 
-const double g = 1;
-
-const double bla_init = (108.0 / 180) * M_PI;
-const double mla_init = (36.0 / 180) * M_PI;
-const double mra_init = (148.0 / 180) * M_PI;
-const double bra_init = (72.0 / 180) * M_PI;
+const double g = 1.0;
 
 const double inctime = 0.1;
-const double runtime = 500.0;
+const double runtime = 100.0;
+
+const double bla_0 = (108.0 / 180) * M_PI;
+const double  la_0 = (108.0 / 180) * M_PI;
+const double  ta_0 = (108.0 / 180) * M_PI;
+const double  ra_0 = (252.0 / 180) * M_PI;
 
 typedef enum
 {
@@ -24,6 +24,8 @@ typedef enum
 typedef enum
 {
   TEST_NO_INTERNAL_FORCES,
+  TEST_LEFT_INTERNAL_FORCES,
+  TEST_RIGHT_INTERNAL_FORCES,
   PRE_POWERSTROKE,
   POST_POWERSTROKE
 } Mode;

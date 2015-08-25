@@ -41,8 +41,18 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 /* *********************************** MAIN ****************************************** */
 
 int main(int argvc, char **argv) {
+
+  if (argvc != 5) {
+    printf("Error. Usage: ./walk bla_init mla_init mra_init bra_init.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  double bla_init = strtod(argv[1], NULL) * M_PI;
+  double mla_init = strtod(argv[2], NULL) * M_PI;
+  double mra_init = strtod(argv[3], NULL) * M_PI;
+  double bra_init = strtod(argv[4], NULL) * M_PI;
   
-  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, (State) LEFTBOUND, (Mode) TEST_NO_INTERNAL_FORCES, (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, (State) LEFTBOUND, (Mode) PRE_POWERSTROKE, (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
   
   resetLog(dyn);
   simulateProtein(dyn, inctime, runtime);

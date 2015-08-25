@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "dynein_struct.h"
 
@@ -43,8 +42,8 @@ int main() {
   {
     Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
                              (36.0 / 180) * M_PI,
-                             -(144.0 / 180) * M_PI,
-                             -(72.0 / 180) * M_PI,
+                             (144.0 / 180) * M_PI,
+                             (72.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
 			     (Mode) TEST_NO_INTERNAL_FORCES,
 			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
@@ -147,13 +146,13 @@ int main() {
   {
     Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
                              (36.0 / 180) * M_PI,
-                             -(144.0 / 180) * M_PI,
-                             -(72.0 / 180) * M_PI,
+                             (144.0 / 180) * M_PI,
+                             (72.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
 			     (Mode) TEST_NO_INTERNAL_FORCES,
 			     (Brownian_mode) TEST_RIGHT_BROWNIAN_FORCES);
     
-    printf("\nTest: Dynein horizontal conformation, no internal forces, Brownian forces in positive x direction.\n");
+    printf("\nTest: Dynein pentagon conformation, no internal forces, Brownian forces in positive x direction.\n");
 
     num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
     num_failures += test_noteq("Is d_mlx nonzero", dyn->get_d_mlx(), 0);
@@ -162,7 +161,56 @@ int main() {
     
     free(dyn);
   }
+  
+  {
+    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
+                             (36.0 / 180) * M_PI,
+                             (144.0 / 180) * M_PI,
+                             (72.0 / 180) * M_PI,
+			     (State) LEFTBOUND,
+			     (Mode) TEST_LEFT_INTERNAL_FORCES,
+			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+    
+    printf("\nTest: Dynein pentagon conformation, internal forces in negative x direction, no Brownian forces.\n");
 
+    num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
+    num_failures += test_noteq("Is d_mlx nonzero", dyn->get_d_mlx(), 0);
+    num_failures += test_noteq("Is d_mrx nonzero", dyn->get_d_mrx(), 0);
+    num_failures += test_noteq("Is d_brx nonzero", dyn->get_d_brx(), 0);
+    
+    free(dyn);
+  }
+  
+  {
+    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
+                             (36.0 / 180) * M_PI,
+                             (144.0 / 180) * M_PI,
+                             (72.0 / 180) * M_PI,
+  			     (State) LEFTBOUND,
+  			     (Mode) PRE_POWERSTROKE,
+  			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+
+    printf("Test: Dynein pentagon conformation, internal forces, no Brownian forces.\n");
+    num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
+    num_failures += test("Is d_bly zero", dyn->get_d_bly(), 0);
+    num_failures += test("Is d_mlx zero", dyn->get_d_mlx(), 0);
+    num_failures += test("Is d_mly zero", dyn->get_d_mly(), 0);
+    num_failures += test("Is d_mrx zero", dyn->get_d_mrx(), 0);
+    num_failures += test("Is d_mry zero", dyn->get_d_mry(), 0);
+    num_failures += test("Is d_brx zero", dyn->get_d_brx(), 0);
+    num_failures += test("Is d_bry zero", dyn->get_d_bry(), 0);
+    
+    num_failures += test("Is d_bla zero", dyn->get_d_bla(), 0);
+    num_failures += test("Is d_mla zero", dyn->get_d_mla(), 0);
+    num_failures += test("Is d_mra zero", dyn->get_d_mra(), 0);
+    num_failures += test("Is d_bra zero", dyn->get_d_bra(), 0);    
+    
+    free(dyn);
+  }
+
+
+
+  
   if (num_failures == 0) {
     printf("All %d tests pass!\n\n", num_tests);
   } else {

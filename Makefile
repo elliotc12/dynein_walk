@@ -1,6 +1,6 @@
 CPPFLAGS = -g -Wall -Werror -O2
 
-all: derivation.pdf test walk data.txt 
+all: derivation.pdf test walk plot
 
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	g++ -c dynein_walk.cpp $(CPPFLAGS)
@@ -21,11 +21,9 @@ walk: test dynein_walk.o dynein_struct.o utilities.o
 test: dynein_test.o dynein_struct.o utilities.o
 	g++ dynein_test.o dynein_struct.o utilities.o -o test
 
-data.txt: walk
-	./walk
-
-plot: data.txt
-	./plot.py
+plot: walk
+	@echo "Run ./simulate.py pentagon/foot-wiggle/mega-wiggle to animate"
+#Eventually add better way for simulate to run stuff here
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..

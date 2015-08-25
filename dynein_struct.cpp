@@ -27,35 +27,57 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
 
 void Dynein::update_brownian_forces() {
   if (bmode == TEST_NO_BROWNIAN_FORCES) {
+    r_blx = 0;     r_bly = 0;
+    r_mlx = 0;     r_mly = 0;
+    r_tx  = 0;     r_ty  = 0;
+    r_mrx = 0;     r_mry = 0;
+    r_brx = 0;     r_bry = 0;
+  }
+  if (bmode == TEST_RIGHT_BROWNIAN_FORCES) {
+    r_blx = 0;       r_bly = 0;
+    r_mlx = 1.0;     r_mly = 0;
+    r_tx  = 1.0;     r_ty  = 0;
+    r_mrx = 1.0;     r_mry = 0;
+    r_brx = 1.0;     r_bry = 0;
+  }
+  if (bmode == TEST_LEFT_BROWNIAN_FORCES) {
+    r_blx = 0;       r_bly = 0;
+    r_mlx = -1.0;    r_mly = 0;
+    r_tx  = -1.0;    r_ty  = 0;
+    r_mrx = -1.0;    r_mry = 0;
+    r_brx = -1.0;    r_bry = 0;
+  }
+}
+
+void Dynein::update_internal_forces() {
+  if (mode == TEST_NO_INTERNAL_FORCES) {
     f_blx = 0;     f_bly = 0;
     f_mlx = 0;     f_mly = 0;
     f_tx  = 0;     f_ty  = 0;
     f_mrx = 0;     f_mry = 0;
     f_brx = 0;     f_bry = 0;
   }
-  if (bmode == TEST_RIGHT_BROWNIAN_FORCES) {
-    f_blx = 0;       f_bly = 0;
-    f_mlx = 1.0;     f_mly = 0;
-    f_tx  = 1.0;     f_ty  = 0;
-    f_mrx = 1.0;     f_mry = 0;
-    f_brx = 1.0;     f_bry = 0;
-  }
-  if (bmode == TEST_LEFT_BROWNIAN_FORCES) {
+
+ if (mode == TEST_LEFT_INTERNAL_FORCES) {
     f_blx = 0;       f_bly = 0;
     f_mlx = -1.0;    f_mly = 0;
     f_tx  = -1.0;    f_ty  = 0;
     f_mrx = -1.0;    f_mry = 0;
     f_brx = -1.0;    f_bry = 0;
   }
-}
+  
+  if (mode == PRE_POWERSTROKE) {
+    f_blx = 0;
+    f_mlx = (bla - bla_0) * sin(bla);
+    f_tx  = ((mla + M_PI - bla) - la_0) * sin(mla);
+    f_mrx = -((mra - mla) - ta_0) * sin(mra);
+    f_brx = ((mra + M_PI - bra) - ra_0) * sin(bra);
 
-void Dynein::update_internal_forces() {
-  if (mode == TEST_NO_INTERNAL_FORCES) {
-    r_blx = 0;     r_bly = 0;
-    r_mlx = 0;     r_mly = 0;
-    r_tx  = 0;     r_ty  = 0;
-    r_mrx = 0;     r_mry = 0;
-    r_brx = 0;     r_bry = 0;
+    f_bly = 0;
+    f_mly = (bla - bla_0) * -cos(bla);
+    f_ty  = ((mla + M_PI - bla) - la_0) * -cos(mla);
+    f_mry = -((mra - mla) - ta_0) * -cos(mra);
+    f_bry = ((mra + M_PI - bra) - ra_0) * -cos(bra);
   }
 }
 
