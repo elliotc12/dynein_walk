@@ -151,8 +151,8 @@ private:
   double r_blx;   double r_bly; //Brownian forces
   double r_mlx;   double r_mly;
   double r_tx;    double r_ty;
-  double r_mrx;   double r_mry; 					
-  double r_brx;   double r_bry;					
+  double r_mrx;   double r_mry;
+  double r_brx;   double r_bry;
 
   double f_blx;   double f_bly;	//Internal Forces
   double f_mlx;   double f_mly;
@@ -162,6 +162,8 @@ private:
 
   Mode mode;
   Brownian_mode bmode;
+  // brownian_testcase *forces;
+  // internal_testcase *forces;
   State state;
 };
 
