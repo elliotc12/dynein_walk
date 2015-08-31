@@ -1,0 +1,4 @@
+Things to do:
+Make internal forces member, not a bunch of float members for forces
+
+Don't have make automatically plot

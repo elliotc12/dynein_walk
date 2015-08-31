@@ -1,6 +1,0 @@
--To calculate d_mlx (get_d_mlx) I use d/dx (blx + ls*cos(bla)) = dblx + -ls*sin(bla)*d_bla. However, d_bla is calculated with other angle velocities (d_mla,mra,bra) in it already. Is this double-counting velocities?
-
--How should I make a dynein init file?
-
-Todo:
-Do trig simplifications
