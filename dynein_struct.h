@@ -6,7 +6,6 @@ const double ls = 10.0;
 const double g = 1.0;
 
 const double inctime = 0.1;
-const double runtime = 100.0;
 
 const double bla_0 = (108.0 / 180) * M_PI;
 const double  la_0 = (108.0 / 180) * M_PI;
@@ -129,6 +128,7 @@ public:
   State get_state();
 
   void log(double t);
+  void resetLog();
   void update_velocities();
   void read_init_file();
   
@@ -170,7 +170,6 @@ private:
 /* *********************************** UTILITY PROTOTYPES ****************************************** */
 double randAngle(double range);
 double dist(double d, double h, double i, double j);
-void   resetLog(Dynein* dyn);
 double square(double num);
 double cube(double num);
 double fourth(double num);

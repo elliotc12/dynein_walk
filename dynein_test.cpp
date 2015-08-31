@@ -4,6 +4,7 @@
 #include "dynein_struct.h"
 
 #define EPSILON 1e-12
+int runtime = 0;
 
 int equal(double v1, double v2) {
   if (fabs(v1) < EPSILON) { return fabs(v2) < EPSILON; }
@@ -38,6 +39,9 @@ int test_noteq(const char *msg, float one, float two) {
 
 int main() {
   // Dynein in normal pentagon conformation, check if velocities agree with definitions.
+
+  runtime = 1*runtime;
+  
   int num_failures = 0;
   {
     Dynein* dyn = new Dynein((108.0 / 180) * M_PI,

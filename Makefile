@@ -22,7 +22,7 @@ test: dynein_test.o dynein_struct.o utilities.o
 	g++ dynein_test.o dynein_struct.o utilities.o -o test
 
 plot: walk
-	@echo "Run ./simulate.py pentagon/foot-wiggle/mega-wiggle to animate"
+	@echo "Run ./simulate.py [slow/normal/fast/] [pentagon/foot-wiggle/mega-wiggle] to animate"
 #Eventually add better way for simulate to run stuff here
 
 derivation.pdf: latex/derivation.tex

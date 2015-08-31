@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "dynein_struct.h"
+extern int runtime;
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
@@ -66,18 +67,84 @@ void Dynein::update_internal_forces() {
     f_brx = -1.0;    f_bry = 0;
   }
   
-  if (mode == PRE_POWERSTROKE) {
-    f_blx = 0;
-    f_mlx = (bla - bla_0) * sin(bla);
-    f_tx  = ((mla + M_PI - bla) - la_0) * sin(mla);
-    f_mrx = -((mra - mla) - ta_0) * sin(mra);
-    f_brx = ((mra + M_PI - bra) - ra_0) * sin(bra);
+  if (mode == PRE_POWERSTROKE && state == LEFTBOUND) {
 
-    f_bly = 0;
-    f_mly = (bla - bla_0) * -cos(bla);
-    f_ty  = ((mla + M_PI - bla) - la_0) * -cos(mla);
-    f_mry = -((mra - mla) - ta_0) * -cos(mra);
-    f_bry = ((mra + M_PI - bra) - ra_0) * -cos(bra);
+    f_blx = 0;     f_bly = 0;
+    f_mlx = 0;     f_mly = 0;
+    f_tx  = 0;     f_ty  = 0;
+    f_mrx = 0;     f_mry = 0;
+    f_brx = 0;     f_bry = 0;
+
+    double T, f1, f2, f1x, f1y, f2x, f2y;
+    
+    T = bla - bla_0;
+    f1 = 0;
+    f2 = T/ls;
+    f1x = 0;
+    f1y = 0;
+    f2x = f2 * sin(bla);
+    f2y = f2 * -cos(bla);
+    f_mlx += f2x;
+    f_mly += f2y;
+    f_blx += -(f1x + f2x);
+    f_bly += -(f1y + f2y);
+
+    T = (mla + M_PI - bla) - la_0;
+    f1 = T/ls;
+    f2 = T/lt;
+    f1x = f1 * sin(bla);
+    f1y = f1 * -cos(bla);
+    f2x = f2 * sin(mla);
+    f2y = f2 * -cos(mla);
+    f_blx += f1x;
+    f_bly += f1y;
+    f_tx  += f2x;
+    f_ty  += f2y;
+    f_mlx += -(f1x + f2x);
+    f_mly += -(f1y + f2y);
+
+    T = -((mra - mla) - ta_0);
+    f1 = T / lt;
+    f2 = T / lt;
+    f1x = f1 * sin(bla);
+    f1y = f1 * -cos(bla);
+    f2x = f2 * sin(mra);
+    f2y = f2 * -cos(mra);
+    f_mlx += f1x;
+    f_mly += f1y;
+    f_mrx += f2x;
+    f_mry += f2y;
+    f_tx  += -(f1x + f2x);
+    f_ty  += -(f1y + f2y);
+
+    T = ((mra + M_PI - bra) - ra_0);
+    f1 = T / lt;
+    f2 = T / ls;
+    f1x = f1 * sin(mra);
+    f1y = f1 * -cos(mra);
+    f2x = f2 * sin(bra);
+    f2y = f2 * -cos(bra);
+    f_tx  += f1x;
+    f_ty  += f1y;
+    f_brx += f2x;
+    f_bry += f2y;
+    f_mrx += -(f1x + f2x);
+    f_mry += -(f1y + f2y);
+
+    blx = 0;
+    bly = 0;
+    
+    // f_blx = 0;
+    // f_mlx = (bla - bla_0) * sin(bla);
+    // f_tx  = ((mla + M_PI - bla) - la_0) * sin(mla);
+    // f_mrx = -((mra - mla) - ta_0) * sin(mra);
+    // f_brx = ((mra + M_PI - bra) - ra_0) * sin(bra);
+
+    // f_bly = 0;
+    // f_mly = (bla - bla_0) * -cos(bla);
+    // f_ty  = ((mla + M_PI - bla) - la_0) * -cos(mla);
+    // f_mry = -((mra - mla) - ta_0) * -cos(mra);
+    // f_bry = ((mra + M_PI - bra) - ra_0) * -cos(bra);
   }
 }
 
@@ -444,4 +511,16 @@ void Dynein::log(double t) {
   fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
   get_KE(), get_PE(), get_KE() + get_PE(), t, get_blx(), get_bly(), get_mlx(), get_mly(), get_tx(), get_ty(), get_mrx(), get_mry(), get_brx(), get_bry(), get_state());
   fclose(data_file);
+}
+
+void Dynein::resetLog() {
+	FILE* data_file = fopen("data.txt", "w");
+	FILE* config_file = fopen("config.txt", "w");
+	
+	fprintf(config_file, "#inctime\truntime\tstate\n%+.3f\t%+.3f\t%d\n", inctime, (double) runtime, (int) state);
+	fprintf(data_file,
+		"#KE\t\t\t\tPE\t\t\t\tEnergy\t\tt\t\tblX\t\t\tblY\t\t\tmlX\t\t\tmlY\t\t\ttX\t\t\ttY\t\t\tmrX\t\t\tmrY\t\t\tbrX\t\t\tbrY\t\t\tS\n");
+	
+	fclose(data_file);
+	fclose(config_file);
 }
