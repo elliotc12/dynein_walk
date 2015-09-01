@@ -46,6 +46,8 @@ int main() {
                              0,0,0,0,0};
   forces right_forces = forces {1,0,1,0,1,
                                 0,1,0,1,0};
+  forces up_forces = forces {0,1,0,1,0,1,
+                             0,1,0,1};
 
   int num_failures = 0;
   {
@@ -172,6 +174,28 @@ int main() {
   }
 
   {
+    Dynein* dyn = new Dynein(0.5*M_PI, 0.5*M_PI, 0.5*M_PI, 0.5*M_PI,
+			     (State) LEFTBOUND,
+			     (Mode) TEST_NO_INTERNAL_FORCES, &up_forces);
+
+    printf("\nTest: Dynein vertical, no internal forces, Brownian forces in positive y direction.\n");
+
+    num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
+    num_failures += test("Is d_mlx zero", dyn->get_d_mlx(), 0);
+    num_failures += test("Is d_tx zero", dyn->get_d_tx(), 0);
+    num_failures += test("Is d_mrx zero", dyn->get_d_mrx(), 0);
+    num_failures += test("Is d_brx zero", dyn->get_d_brx(), 0);
+
+    num_failures += test("Is d_bly zero", dyn->get_d_bly(), 0);
+    num_failures += test("Is d_mly zero", dyn->get_d_mly(), 0);
+    num_failures += test("Is d_ty zero", dyn->get_d_ty(), 0);
+    num_failures += test("Is d_mry zero", dyn->get_d_mry(), 0);
+    num_failures += test("Is d_bry zero", dyn->get_d_bry(), 0);
+
+    free(dyn);
+  }
+
+  {
     Dynein* dyn = new Dynein(0, 0, 0, 0,
 			     (State) LEFTBOUND,
 			     (Mode) TEST_NO_INTERNAL_FORCES, &right_forces);
@@ -189,6 +213,29 @@ int main() {
     num_failures += test("Is d_ty zero", dyn->get_d_ty(), 0);
     num_failures += test("Is d_mry zero", dyn->get_d_mry(), 0);
     num_failures += test("Is d_bry zero", dyn->get_d_bry(), 0);
+
+    free(dyn);
+  }
+
+
+  {
+    Dynein* dyn = new Dynein(0, 0, 0, 0,
+			     (State) LEFTBOUND,
+			     (Mode) TEST_NO_INTERNAL_FORCES, &up_forces);
+
+    printf("\nTest: Dynein horizontal, no internal forces, Brownian forces in positive y direction.\n");
+
+    num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
+    num_failures += test("Is d_mlx zero", dyn->get_d_mlx(), 0);
+    num_failures += test("Is d_tx zero", dyn->get_d_tx(), 0);
+    num_failures += test("Is d_mrx zero", dyn->get_d_mrx(), 0);
+    num_failures += test("Is d_brx zero", dyn->get_d_brx(), 0);
+
+    num_failures += test("Is d_bly zero", dyn->get_d_bly(), 0);
+    num_failures += test_noteq("Is d_mly nonzero", dyn->get_d_mly(), 0);
+    num_failures += test_noteq("Is d_ty nonzero", dyn->get_d_ty(), 0);
+    num_failures += test_noteq("Is d_mry nonzero", dyn->get_d_mry(), 0);
+    num_failures += test_noteq("Is d_bry nonzero", dyn->get_d_bry(), 0);
 
     free(dyn);
   }
