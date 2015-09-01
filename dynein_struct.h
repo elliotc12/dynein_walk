@@ -38,12 +38,24 @@ typedef struct
   double brx;   double bry;
 } forces;
 
+typedef struct
+{
+  double bla, la, ta, ra;
+} equilibrium_angles;
+
+const equilibrium_angles pre_powerstroke = {
+  (108.0 / 180) * M_PI,
+  (108.0 / 180) * M_PI,
+  (108.0 / 180) * M_PI,
+  (252.0 / 180) * M_PI
+};
+
 /* ******************************** DYNEIN CLASS DEFINITION *************************************** */
 
 class Dynein {
 public:
   Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
-         State s, Mode m, forces *brownian_test = 0);
+         State s, Mode m, forces *brownian_test = 0); // FIXME add eq angle to input
 
   void set_bla(double d);
   void set_mla(double d);
@@ -121,6 +133,8 @@ private:
   void update_internal_forces();
 
   MTRand rand;
+
+  equilibrium_angles eq;
 
   double bla;
   double mla;
