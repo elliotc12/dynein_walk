@@ -1,4 +1,5 @@
 #include <math.h>
+#include "MersenneTwister.h"
 
 const double lt = 10.0;
 const double ls = 10.0;
@@ -135,7 +136,9 @@ public:
 private:
   void update_brownian_forces();
   void update_internal_forces();
-  
+
+  MTRand rand;
+
   double bla;
   double mla;
   double mra;

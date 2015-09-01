@@ -48,6 +48,14 @@ void Dynein::update_brownian_forces() {
     r_mrx = -1.0;    r_mry = 0;
     r_brx = -1.0;    r_bry = 0;
   }
+  if (bmode == BROWNIAN_REGULAR_FORCES) {
+    const double gammakT2 = 1.0; // FIXME!
+    rand.gauss2(gammakT2, &r_blx, &r_bly);
+    rand.gauss2(gammakT2, &r_mlx, &r_mly);
+    rand.gauss2(gammakT2, &r_tx, &r_ty);
+    rand.gauss2(gammakT2, &r_mrx, &r_mry);
+    rand.gauss2(gammakT2, &r_brx, &r_bry);
+  }
 }
 
 void Dynein::update_internal_forces() {
