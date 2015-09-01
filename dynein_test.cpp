@@ -241,6 +241,42 @@ int main() {
   }
 
   {
+    Dynein* dyn = new Dynein(bla_0,
+                             bla_0 + la_0 - M_PI,
+                             bla_0 + la_0 - M_PI + ta_0,
+                             bla_0 + la_0 - M_PI + ta_0 + M_PI - ra_0,
+                             (State) LEFTBOUND, PRE_POWERSTROKE, &no_forces);
+
+    printf("\nTest: Dynein equilibrium, checking internal forces, no Brownian forces.\n");
+
+    num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
+    num_failures += test("Is d_mlx zero", dyn->get_d_mlx(), 0);
+    num_failures += test("Is d_tx zero", dyn->get_d_tx(), 0);
+    num_failures += test("Is d_mrx zero", dyn->get_d_mrx(), 0);
+    num_failures += test("Is d_brx zero", dyn->get_d_brx(), 0);
+
+    num_failures += test("Is d_bly zero", dyn->get_d_bly(), 0);
+    num_failures += test("Is d_mly zero", dyn->get_d_mly(), 0);
+    num_failures += test("Is d_ty zero", dyn->get_d_ty(), 0);
+    num_failures += test("Is d_mry zero", dyn->get_d_mry(), 0);
+    num_failures += test("Is d_bry zero", dyn->get_d_bry(), 0);
+
+    num_failures += test("Is f_blx zero", dyn->get_f_blx(), 0);
+    num_failures += test("Is f_mlx zero", dyn->get_f_mlx(), 0);
+    num_failures += test("Is f_tx zero", dyn->get_f_tx(), 0);
+    num_failures += test("Is f_mrx zero", dyn->get_f_mrx(), 0);
+    num_failures += test("Is f_brx zero", dyn->get_f_brx(), 0);
+
+    num_failures += test("Is f_bly zero", dyn->get_f_bly(), 0);
+    num_failures += test("Is f_mly zero", dyn->get_f_mly(), 0);
+    num_failures += test("Is f_ty zero", dyn->get_f_ty(), 0);
+    num_failures += test("Is f_mry zero", dyn->get_f_mry(), 0);
+    num_failures += test("Is f_bry zero", dyn->get_f_bry(), 0);
+
+    free(dyn);
+  }
+
+  {
     Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
                              (36.0 / 180) * M_PI,
                              (144.0 / 180) * M_PI,
