@@ -49,7 +49,7 @@ i = 0
 
 signal.signal(signal.SIGINT, close_windows)
 
-while (True):
+while i < len(data):
   X[0] = data[i][4]
   X[1] = data[i][6]
   X[2] = data[i][8]
@@ -91,7 +91,5 @@ while (True):
   else:
     i += 10
     plt.pause(0.001)  
-      
-  if (i >= len(data)):
-    i = 0
+
   plt.draw()
