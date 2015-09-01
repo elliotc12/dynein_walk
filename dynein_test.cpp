@@ -42,12 +42,12 @@ int main() {
 
   runtime = 1*runtime;
 
-  forces no_forces = forces {0,0,0,0,0,
-                             0,0,0,0,0};
-  forces right_forces = forces {1,0,1,0,1,
-                                0,1,0,1,0};
-  forces up_forces = forces {0,1,0,1,0,1,
-                             0,1,0,1};
+  forces no_forces = {0,0,0,0,0,
+                      0,0,0,0,0};
+  forces right_forces = {1,0,1,0,1,
+                         0,1,0,1,0};
+  forces up_forces = {0,1,0,1,0,1,
+                      0,1,0,1};
 
   int num_failures = 0;
   {
