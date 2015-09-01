@@ -15,14 +15,6 @@ const double  ra_0 = (252.0 / 180) * M_PI;
 
 typedef enum
 {
-  TEST_NO_BROWNIAN_FORCES,
-  TEST_RIGHT_BROWNIAN_FORCES,
-  TEST_LEFT_BROWNIAN_FORCES,
-  BROWNIAN_REGULAR_FORCES
-} Brownian_mode;
-
-typedef enum
-{
   TEST_NO_INTERNAL_FORCES,
   TEST_LEFT_INTERNAL_FORCES,
   TEST_RIGHT_INTERNAL_FORCES,
@@ -50,8 +42,9 @@ typedef struct
 
 class Dynein {
 public:
-  Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m, Brownian_mode bm);	
-	
+  Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
+         State s, Mode m, forces *brownian_test = 0);
+
   void set_bla(double d);
   void set_mla(double d);
   void set_mra(double d);
@@ -111,17 +104,7 @@ public:
   double get_f_mry();
   double get_f_bry();
   
-  double get_r_blx();
-  double get_r_mlx();
-  double get_r_tx();
-  double get_r_mrx();
-  double get_r_brx();
-  
-  double get_r_bly();
-  double get_r_mly();
-  double get_r_ty();
-  double get_r_mry();
-  double get_r_bry();
+  forces get_brownian();
 
   double get_PE();
   double get_KE();
@@ -151,11 +134,7 @@ private:
   double d_mra;
   double d_bra;
 
-  double r_blx;   double r_bly; //Brownian forces
-  double r_mlx;   double r_mly;
-  double r_tx;    double r_ty;
-  double r_mrx;   double r_mry;
-  double r_brx;   double r_bry;
+  forces r; //Brownian forces
 
   double f_blx;   double f_bly;	//Internal Forces
   double f_mlx;   double f_mly;
@@ -164,8 +143,7 @@ private:
   double f_brx;   double f_bry;
 
   Mode mode;
-  Brownian_mode bmode;
-  // brownian_testcase *forces;
+  forces *brownian_testcase;
   // internal_testcase *forces;
   State state;
 };

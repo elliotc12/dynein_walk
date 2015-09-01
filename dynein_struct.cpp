@@ -7,8 +7,9 @@ extern int runtime;
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
-Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init, State s, Mode m, Brownian_mode bm) {
-  
+Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
+               State s, Mode m, forces *brownian_test) {
+
   read_init_file();
 
   blx = 0;
@@ -21,40 +22,21 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
   
   state = s;
   mode = m;
-  bmode = bm;
-  
+  brownian_testcase = brownian_test;
+
   update_velocities();
 }
 
 void Dynein::update_brownian_forces() {
-  if (bmode == TEST_NO_BROWNIAN_FORCES) {
-    r_blx = 0;     r_bly = 0;
-    r_mlx = 0;     r_mly = 0;
-    r_tx  = 0;     r_ty  = 0;
-    r_mrx = 0;     r_mry = 0;
-    r_brx = 0;     r_bry = 0;
-  }
-  if (bmode == TEST_RIGHT_BROWNIAN_FORCES) {
-    r_blx = 0;       r_bly = 0;
-    r_mlx = 1.0;     r_mly = 0;
-    r_tx  = 1.0;     r_ty  = 0;
-    r_mrx = 1.0;     r_mry = 0;
-    r_brx = 1.0;     r_bry = 0;
-  }
-  if (bmode == TEST_LEFT_BROWNIAN_FORCES) {
-    r_blx = 0;       r_bly = 0;
-    r_mlx = -1.0;    r_mly = 0;
-    r_tx  = -1.0;    r_ty  = 0;
-    r_mrx = -1.0;    r_mry = 0;
-    r_brx = -1.0;    r_bry = 0;
-  }
-  if (bmode == BROWNIAN_REGULAR_FORCES) {
+  if (brownian_testcase) {
+    r = *brownian_testcase; // just copy over forces!
+  } else {
     const double gammakT2 = 1.0; // FIXME!
-    rand.gauss2(gammakT2, &r_blx, &r_bly);
-    rand.gauss2(gammakT2, &r_mlx, &r_mly);
-    rand.gauss2(gammakT2, &r_tx, &r_ty);
-    rand.gauss2(gammakT2, &r_mrx, &r_mry);
-    rand.gauss2(gammakT2, &r_brx, &r_bry);
+    rand.gauss2(gammakT2, &r.blx, &r.bly);
+    rand.gauss2(gammakT2, &r.mlx, &r.mly);
+    rand.gauss2(gammakT2, &r.tx, &r.ty);
+    rand.gauss2(gammakT2, &r.mrx, &r.mry);
+    rand.gauss2(gammakT2, &r.brx, &r.bry);
   }
 }
 
@@ -196,14 +178,14 @@ void Dynein::update_velocities() {
     D3 = -lt*(cos(bra)*cos(mra) + sin(bra)*sin(mra));
     D4 = -ls;
 
-    X1 = (- 1/g*f_mly - 1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r_mly - r_ty - r_mry - r_bry)*cos(bla)
-      + ( 1/g*f_mlx + 1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r_mlx + r_tx + r_mrx + r_brx )*sin(bla);
+    X1 = (- 1/g*f_mly - 1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r.mly - r.ty - r.mry - r.bry)*cos(bla)
+      + ( 1/g*f_mlx + 1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r.mlx + r.tx + r.mrx + r.brx )*sin(bla);
   
-    X2 = (-1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r_ty - r_mry - r_bry)*cos(mla) + (1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r_tx + r_mrx + r_brx)*sin(mla);
+    X2 = (-1/g*f_ty - 1/g*f_mry - 1/g*f_bry - r.ty - r.mry - r.bry)*cos(mla) + (1/g*f_tx + 1/g*f_mrx + 1/g*f_brx + r.tx + r.mrx + r.brx)*sin(mla);
 
-    X3 = (-r_mry -r_bry - 1/g*f_mry - 1/g*f_bry)*cos(mra) + (r_mrx + r_brx + 1/g*f_mrx + 1/g*f_brx)*sin(mra);
+    X3 = (-r.mry -r.bry - 1/g*f_mry - 1/g*f_bry)*cos(mra) + (r.mrx + r.brx + 1/g*f_mrx + 1/g*f_brx)*sin(mra);
   
-    X4 = (r_bry + 1/g*f_bry)*cos(bra) - (r_brx + 1/g*f_brx)*sin(bra);
+    X4 = (r.bry + 1/g*f_bry)*cos(bra) - (r.brx + 1/g*f_brx)*sin(bra);
 
     Nbl = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2 + A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
 	   + B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4) + B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
@@ -441,46 +423,9 @@ double Dynein::get_f_bry() {
 
 /*** Get Brownian forces ***/
 
-double Dynein::get_r_blx() {
-  return 0;
+forces Dynein::get_brownian() {
+  return r;
 }
-
-double Dynein::get_r_mlx() {
-  return 0;
-}
-
-double Dynein::get_r_tx() {
-  return 0;
-}
-
-double Dynein::get_r_mrx() {
-  return 0;
-}
-
-double Dynein::get_r_brx() {
-  return 0;
-}
-
-double Dynein::get_r_bly() {
-  return 0;
-}
-
-double Dynein::get_r_mly() {
-  return 0;
-}
-
-double Dynein::get_r_ty() {
-  return 0;
-}
-
-double Dynein::get_r_mry() {
-  return 0;
-}
-
-double Dynein::get_r_bry() {
-  return 0;
-}
-
 
 /*** Get angles ***/
 

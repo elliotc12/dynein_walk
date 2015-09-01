@@ -41,7 +41,12 @@ int main() {
   // Dynein in normal pentagon conformation, check if velocities agree with definitions.
 
   runtime = 1*runtime;
-  
+
+  forces no_forces = forces {0,0,0,0,0,
+                             0,0,0,0,0};
+  forces right_forces = forces {1,0,1,0,1,
+                                0,1,0,1,0};
+
   int num_failures = 0;
   {
     Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
@@ -49,8 +54,7 @@ int main() {
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
-			     (Mode) TEST_NO_INTERNAL_FORCES,
-			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+			     (Mode) TEST_NO_INTERNAL_FORCES, &no_forces);
 
     printf("Test: Dynein pentagon conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
@@ -76,8 +80,7 @@ int main() {
                              -(90.0 / 180) * M_PI,
                              -(90.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
-			     (Mode) TEST_NO_INTERNAL_FORCES,
-			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+			     (Mode) TEST_NO_INTERNAL_FORCES, &no_forces);
     
     printf("\nTest: Dynein vertical conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is brx zero", dyn->get_brx(), 0);
@@ -115,8 +118,7 @@ int main() {
                              -(180.0 / 180) * M_PI,
                              -(180.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
-			     (Mode) TEST_NO_INTERNAL_FORCES,
-     			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+			     (Mode) TEST_NO_INTERNAL_FORCES, &no_forces);
     
     printf("\nTest: Dynein horizontal conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is bry zero", dyn->get_bry(), 0);
@@ -153,8 +155,7 @@ int main() {
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
-			     (Mode) TEST_NO_INTERNAL_FORCES,
-			     (Brownian_mode) TEST_RIGHT_BROWNIAN_FORCES);
+			     (Mode) TEST_NO_INTERNAL_FORCES, &right_forces);
     
     printf("\nTest: Dynein pentagon conformation, no internal forces, Brownian forces in positive x direction.\n");
 
@@ -172,8 +173,7 @@ int main() {
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
 			     (State) LEFTBOUND,
-			     (Mode) TEST_LEFT_INTERNAL_FORCES,
-			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+			     (Mode) TEST_LEFT_INTERNAL_FORCES, &no_forces);
     
     printf("\nTest: Dynein pentagon conformation, internal forces in negative x direction, no Brownian forces.\n");
 
@@ -191,8 +191,7 @@ int main() {
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
   			     (State) LEFTBOUND,
-  			     (Mode) PRE_POWERSTROKE,
-  			     (Brownian_mode) TEST_NO_BROWNIAN_FORCES);
+  			     (Mode) PRE_POWERSTROKE, &no_forces);
 
     printf("Test: Dynein pentagon conformation, internal forces, no Brownian forces.\n");
     num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);

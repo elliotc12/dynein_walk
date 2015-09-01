@@ -1,4 +1,4 @@
-CPPFLAGS = -g -Wall -Werror -O2
+CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 
 all: derivation.pdf test walk plot
 
