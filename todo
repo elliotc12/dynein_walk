@@ -1,14 +1,5 @@
 Things to do:
 
-* Make internal forces "forces" member, not a bunch of float members for forces
-
-* Make internal forces test case a "forces" member, not an enum
-  (Requires updating tests)
-
-* Make equilibrium angles a member of dynein_struct, and an input to
-  constructor.
-  (Requires updating tests and enables new tests of internal forces)
-
 * Look up structure of dynein (maybe copying figures) to estimate
   lengths and angles.
 

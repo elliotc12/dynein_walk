@@ -15,9 +15,6 @@ const double  ra_0 = (252.0 / 180) * M_PI;
 
 typedef enum
 {
-  TEST_NO_INTERNAL_FORCES,
-  TEST_LEFT_INTERNAL_FORCES,
-  TEST_RIGHT_INTERNAL_FORCES,
   PRE_POWERSTROKE,
   POST_POWERSTROKE
 } Mode;
@@ -43,7 +40,7 @@ typedef struct
   double bla, la, ta, ra;
 } equilibrium_angles;
 
-const equilibrium_angles pre_powerstroke = {
+const equilibrium_angles pre_powerstroke_internal_forces = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
@@ -55,7 +52,7 @@ const equilibrium_angles pre_powerstroke = {
 class Dynein {
 public:
   Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
-         State s, Mode m, forces *brownian_test = 0); // FIXME add eq angle to input
+         State s, forces* internal_test, forces* brownian_test, equilibrium_angles* eq_angles);
 
   void set_bla(double d);
   void set_mla(double d);
@@ -104,18 +101,7 @@ public:
   double get_d_mry();
   double get_d_bry();
    
-  double get_f_blx();
-  double get_f_mlx();
-  double get_f_tx();
-  double get_f_mrx();
-  double get_f_brx();
-  
-  double get_f_bly();
-  double get_f_mly();
-  double get_f_ty();
-  double get_f_mry();
-  double get_f_bry();
-  
+  forces get_internal();
   forces get_brownian();
 
   double get_PE();
@@ -149,16 +135,11 @@ private:
   double d_bra;
 
   forces r; //Brownian forces
-
-  double f_blx;   double f_bly;	//Internal Forces
-  double f_mlx;   double f_mly;
-  double f_tx;    double f_ty;
-  double f_mrx;   double f_mry;
-  double f_brx;   double f_bry;
+  forces f; //Internal Forces
 
   Mode mode;
   forces *brownian_testcase;
-  // internal_testcase *forces;
+  forces *internal_testcase;
   State state;
 };
 

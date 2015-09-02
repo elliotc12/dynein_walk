@@ -54,7 +54,11 @@ int main(int argvc, char **argv) {
   double mra_init = strtod(argv[4], NULL) * M_PI;
   double bra_init = strtod(argv[5], NULL) * M_PI;
   
-  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, (State) LEFTBOUND, (Mode) PRE_POWERSTROKE);
+  Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, // Initial angles
+			   LEFTBOUND,                              // Initial state
+			   NULL,                                   // Optional custom internal forces
+			   NULL,                                   // Optional custom brownian forces
+			   NULL);                                  // Optional custom equilibrium angles
   
   dyn->resetLog();
   simulateProtein(dyn, inctime, runtime);

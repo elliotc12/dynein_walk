@@ -11,16 +11,14 @@ def close_windows(*_):
   plt.close()
   sys.exit()
 
-if len(sys.argv) == 2:
-  if sys.argv[1] == "energy":
-    data = numpy.loadtxt("data.txt")
-    plt.plot(data[:,3], data[:,2], 'b-', label="Energy")
-    plt.plot(data[:,3], data[:,1], 'g-', label="PE")
-    plt.plot(data[:,3], data[:,0], 'r-', label="KE")
-    plt.legend()
-    plt.show()
-    exit(0)
-
+if len(sys.argv) < 2:
+  print "Usage: ./plot.py speed=n [loop]"
+  sys.exit(1)
+  
+if len(sys.argv) == 3 and sys.argv[2] == "loop":
+  loop = True
+else:
+  loop = False
 
 X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
@@ -49,7 +47,10 @@ i = 0
 
 signal.signal(signal.SIGINT, close_windows)
 
-while i < len(data):
+while i < len(data) or loop:
+  if i >= len(data):
+    i = 0
+
   X[0] = data[i][4]
   X[1] = data[i][6]
   X[2] = data[i][8]
@@ -81,7 +82,7 @@ while i < len(data):
 
   t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[1]))
   
-  if len(sys.argv) == 2:
+  if len(sys.argv) >= 2:
     if sys.argv[1] == "step":
       raw_input("Hit enter to step.")
       i += 10

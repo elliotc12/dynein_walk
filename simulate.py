@@ -32,20 +32,26 @@ else:
     print "Error. Lengths: verylong, long, normal, short."
     sys.exit(1)
 
+
+if len(sys.argv) >= 5 and sys.argv[4] == "loop":
+        loop = True
+else:
+    loop = False
+
 if (plot == "pentagon"):
     subprocess.call(["./walk", str(runtime), ".6", ".2", ".8", ".4"])
-    subprocess.call(["./plot.py", "speed=" + str(rate)])
+    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "foot-wiggle"):
     subprocess.call(["./walk", str(runtime), ".6", ".2", ".8", ".7"])
-    subprocess.call(["./plot.py", "speed=" + str(rate)])
+    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "mega-wiggle"):
     subprocess.call(["./walk", str(runtime), "1.0", ".7", ".1", ".2"])
-    subprocess.call(["./plot.py", "speed=" + str(rate)])
+    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "random"):
     random.seed()
     subprocess.call(["./walk", str(runtime), str(2*random.random()), \
         str(2*random.random()), str(2*random.random()), str(2*random.random())])
-    subprocess.call(["./plot.py", "speed=" + str(rate)])
+    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
