@@ -1,17 +1,17 @@
 #include <math.h>
 #include "MersenneTwister.h"
 
+const double kb = 0.1;
+const double T = 1.0;
+
 const double lt = 10.0;
 const double ls = 10.0;
 
-const double g = 1.0;
+const double gm = 2.0;  // motor domain gamma
+const double gb = 1.0;  // binding domain gamma
+const double gt = 3.0;  // tail domain gamma
 
 const double inctime = 0.1;
-
-const double bla_0 = (108.0 / 180) * M_PI;
-const double  la_0 = (108.0 / 180) * M_PI;
-const double  ta_0 = (108.0 / 180) * M_PI;
-const double  ra_0 = (252.0 / 180) * M_PI;
 
 typedef enum
 {
@@ -40,7 +40,7 @@ typedef struct
   double bla, la, ta, ra;
 } equilibrium_angles;
 
-const equilibrium_angles pre_powerstroke_internal_forces = {
+const equilibrium_angles pre_powerstroke_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
@@ -112,7 +112,6 @@ public:
   void log(double t);
   void resetLog();
   void update_velocities();
-  void read_init_file();
   
 private:
   void update_brownian_forces();

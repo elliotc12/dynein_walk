@@ -9,9 +9,6 @@ extern int runtime;
 
 Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
                State s, forces *internal_test, forces *brownian_test, equilibrium_angles* eq_angles) {
-
-  read_init_file();
-
   blx = 0;
   bly = 0;
   mode = PRE_POWERSTROKE;
@@ -28,7 +25,7 @@ Dynein::Dynein(double bla_init, double mla_init, double mra_init, double bra_ini
   if (eq_angles) {
      eq = *eq_angles; 
   } else {
-    eq = pre_powerstroke_internal_forces;
+    eq = pre_powerstroke_internal_angles;
   }
   
   update_velocities();
@@ -38,12 +35,11 @@ void Dynein::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    const double gammakT2 = 1.0; // FIXME!
-    rand.gauss2(gammakT2, &r.blx, &r.bly);
-    rand.gauss2(gammakT2, &r.mlx, &r.mly);
-    rand.gauss2(gammakT2, &r.tx, &r.ty);
-    rand.gauss2(gammakT2, &r.mrx, &r.mry);
-    rand.gauss2(gammakT2, &r.brx, &r.bry);
+    rand.gauss2(sqrt(2*kb*T/gb), &r.blx, &r.bly);
+    rand.gauss2(sqrt(2*kb*T/gm), &r.mlx, &r.mly);
+    rand.gauss2(sqrt(2*kb*T/gt), &r.tx, &r.ty);
+    rand.gauss2(sqrt(2*kb*T/gm), &r.mrx, &r.mry);
+    rand.gauss2(sqrt(2*kb*T/gb), &r.brx, &r.bry);
   }
 }
 
@@ -109,14 +105,7 @@ void Dynein::update_internal_forces() {
     f.bry += f2y;
     f.mrx += -(f1x + f2x);
     f.mry += -(f1y + f2y);
-
-    blx = 0;
-    bly = 0;
   }
-}
-
-void Dynein::read_init_file() {
-  // Eventually put initialization parameter reading in here
 }
 
 void Dynein::set_state(State s) {
@@ -155,14 +144,14 @@ void Dynein::update_velocities() {
     D3 = -lt*(cos(bra)*cos(mra) + sin(bra)*sin(mra));
     D4 = -ls;
 
-    X1 = (- 1/g*f.mly - 1/g*f.ty - 1/g*f.mry - 1/g*f.bry - r.mly - r.ty - r.mry - r.bry)*cos(bla)
-      + ( 1/g*f.mlx + 1/g*f.tx + 1/g*f.mrx + 1/g*f.brx + r.mlx + r.tx + r.mrx + r.brx )*sin(bla);
+    X1 = (- 1/gm*f.mly - 1/gt*f.ty - 1/gm*f.mry - 1/gb*f.bry - r.mly - r.ty - r.mry - r.bry)*cos(bla)
+      + ( 1/gm*f.mlx + 1/gt*f.tx + 1/gm*f.mrx + 1/gb*f.brx + r.mlx + r.tx + r.mrx + r.brx )*sin(bla);
   
-    X2 = (-1/g*f.ty - 1/g*f.mry - 1/g*f.bry - r.ty - r.mry - r.bry)*cos(mla) + (1/g*f.tx + 1/g*f.mrx + 1/g*f.brx + r.tx + r.mrx + r.brx)*sin(mla);
+    X2 = (-1/gt*f.ty - 1/gm*f.mry - 1/gb*f.bry - r.ty - r.mry - r.bry)*cos(mla) + (1/gt*f.tx + 1/gm*f.mrx + 1/gb*f.brx + r.tx + r.mrx + r.brx)*sin(mla);
 
-    X3 = (-r.mry -r.bry - 1/g*f.mry - 1/g*f.bry)*cos(mra) + (r.mrx + r.brx + 1/g*f.mrx + 1/g*f.brx)*sin(mra);
+    X3 = (-r.mry -r.bry - 1/gm*f.mry - 1/gb*f.bry)*cos(mra) + (r.mrx + r.brx + 1/gm*f.mrx + 1/gb*f.brx)*sin(mra);
   
-    X4 = (r.bry + 1/g*f.bry)*cos(bra) - (r.brx + 1/g*f.brx)*sin(bra);
+    X4 = (r.bry + 1/gb*f.bry)*cos(bra) - (r.brx + 1/gb*f.brx)*sin(bra);
 
     Nbl = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2 + A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
 	   + B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4) + B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));

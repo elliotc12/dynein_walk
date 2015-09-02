@@ -14,7 +14,6 @@ int equal(double v1, double v2) {
 static int num_tests = 0;
 
 int test(const char *msg, float one, float two) {
-
   num_tests += 1;
   if (equal(one, two)) {
     printf("%30s: pass, %g == %g.\n", msg, one, two);
@@ -26,7 +25,6 @@ int test(const char *msg, float one, float two) {
 }
 
 int test_noteq(const char *msg, float one, float two) {
-
   num_tests += 1;
   if (!equal(one, two)) {
     printf("%30s: pass, %g != %g.\n", msg, one, two);
@@ -40,23 +38,28 @@ int test_noteq(const char *msg, float one, float two) {
 int main() {
   // Dynein in normal pentagon conformation, check if velocities agree with definitions.
 
-  runtime = 1*runtime;
+  //runtime = 1*runtime;
 
+  double bla_eq = pre_powerstroke_internal_angles.bla;
+  double la_eq = pre_powerstroke_internal_angles.la;
+  double ta_eq = pre_powerstroke_internal_angles.ta;
+  double ra_eq = pre_powerstroke_internal_angles.ra;
+  
   forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // blx, bly, mlx, mly, ...
   forces right_forces = {1,0,1,0,1,0,1,0,1,0};
   forces left_forces =  {-1,0,-1,0,-1,0,-1,0,-1,0};
   forces up_forces =    {0,1,0,1,0,1,0,1,0,1};
-
+  
   int num_failures = 0;
   {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,         // starting bla
-                             (36.0 / 180) * M_PI,          // starting mla
-                             (144.0 / 180) * M_PI,         // starting mra
-                             (72.0 / 180) * M_PI,          // starting bra
-			     LEFTBOUND,                    // starting state
-			     &no_forces,                   // optional specified internal forces
-			     &no_forces,                   // optional specified brownian forces
-		             (equilibrium_angles*) NULL);  // optional specified equilibrium angles
+    Dynein* dyn = new Dynein(bla_eq,                                           // starting bla
+                             bla_eq + la_eq - M_PI,                            // starting mla
+                             bla_eq + la_eq - M_PI + ta_eq,                    // starting mra
+                             bla_eq + la_eq - M_PI + ta_eq + M_PI - ra_eq,     // starting bra
+			     LEFTBOUND,                                        // starting state
+			     &no_forces,                         // optional specified internal forces
+			     &no_forces,                         // optional specified brownian forces
+		             (equilibrium_angles*) NULL);        // optional specified equilibrium angles
 
     printf("Test: Dynein pentagon conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is d_blx zero", dyn->get_d_blx(), 0);
@@ -253,10 +256,10 @@ int main() {
   }
 
   {
-    Dynein* dyn = new Dynein(bla_0,
-                             bla_0 + la_0 - M_PI,
-                             bla_0 + la_0 - M_PI + ta_0,
-                             bla_0 + la_0 - M_PI + ta_0 + M_PI - ra_0,
+    Dynein* dyn = new Dynein(bla_eq,
+                             bla_eq + la_eq - M_PI,
+                             bla_eq + la_eq - M_PI + ta_eq,
+                             bla_eq + la_eq - M_PI + ta_eq + M_PI - ra_eq,
                              LEFTBOUND,
 			     NULL,
 			     &no_forces,
