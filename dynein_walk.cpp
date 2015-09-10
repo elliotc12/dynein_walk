@@ -25,7 +25,6 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   while( t < tf ) {
 
     if (std::abs(dyn->get_bry()) < 0.1 && rand() % 2 == 0) {
-      printf("switching states!\n");
       double temp_brx = dyn->get_brx();
       double temp_bry = dyn->get_bry();
       double temp_bla = dyn->get_bla();
