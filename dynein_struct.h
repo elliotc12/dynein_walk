@@ -1,15 +1,20 @@
 #include <math.h>
 #include "MersenneTwister.h"
 
-const double kb = 0.1;
-const double T = 1.0;
+const double kb = 1.3806e-5; // nm^2 * kg / s^2 * K
+const double T = 290.0; // K
 
-const double lt = 10.0;
+const double lt = 5.0;   // nm, guess - not sure how DNA tail-bridge works
 const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
+const double gt = 1.5;   // tail domain gamma, not sure how to get since no info on DNA tail-bridge
 const double gm = 1.48;  // motor domain gamma, derived from PyMol, motor radius 148.6 angstroms
 const double gb = 0.14;  // binding domain gamma, derived from PyMol, binding radius 14.78 angstroms
-const double gt = 1.5;  // tail domain gamma, not sure how to get since no info on DNA tail-bridge
+                         // gamma units: s / nm^2 * kg
+
+const double ct = 0.1; // Newtons
+const double cm = 2;   // Newtons
+const double cb = 2;   // Newtons
 
 const double inctime = 0.1;
 

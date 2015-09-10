@@ -63,7 +63,7 @@ void Dynein::update_internal_forces() {
 
     double T, f1, f2, f1x, f1y, f2x, f2y;
     
-    T = bla - eq.bla;
+    T = cb*(bla - eq.bla);
     f2 = T/ls;
     f2x = f2 * sin(bla);
     f2y = f2 * -cos(bla);
@@ -72,7 +72,7 @@ void Dynein::update_internal_forces() {
     f.blx += -f2x; // Equal and opposite forces!  :)
     f.bly += -f2y; // Equal and opposite forces!  :)
 
-    T = (mla + M_PI - bla) - eq.la;
+    T = cm*((mla + M_PI - bla) - eq.la);
     f1 = T/ls;
     f2 = T/lt;
     f1x = f1 * sin(bla);
@@ -86,7 +86,7 @@ void Dynein::update_internal_forces() {
     f.mlx += -(f1x + f2x);
     f.mly += -(f1y + f2y);
 
-    T = -((mra - mla) - eq.ta);
+    T = ct*(-((mra - mla) - eq.ta));
     f1 = T / lt;
     f2 = T / lt;
     f1x = f1 * sin(bla);
@@ -100,7 +100,7 @@ void Dynein::update_internal_forces() {
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
 
-    T = ((mra + M_PI - bra) - eq.ra);
+    T = cm*(((mra + M_PI - bra) - eq.ra));
     f1 = T / lt;
     f2 = T / ls;
     f1x = f1 * sin(mra);

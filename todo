@@ -9,6 +9,12 @@ Things to do:
 
 * Implement smart binding code?
 
+* Make plotting prettier
+  - Look more like dynein...at least make motor domain dots larger than
+    binding dots
+    
+  - Somehow make "right" side of molecule look closer than left?
+
 * Equilibrium angle thoughts:
 
   - Two motor domain angles: bound angle + free angle (assume
