@@ -3,7 +3,30 @@ Things to do:
 * Look up structure of dynein (maybe copying figures) to estimate
   lengths and angles and gammas (radii of "spheres").
 
+* Rename left and right to bound and free.
+
+* Implement smart binding code?
+
+* Equilibrium angle thoughts:
+
+  - Two motor domain angles: bound angle + free angle (assume
+    instantaneous chemistry).  Hopefully assume just one stiffness for
+    the motor domain.
+
+    This could be four motor domain angles if symmetry is violated,
+    but there seems no need.  We don't think there is!
+
+  - Just one tail angle, possibly with zero torque as a
+    simplification.  Or maybe with a zero value for equilibrium angle
+    to represent symmetry.  One tail stiffness (which could be zero).
+
+  - One or two binding angles depending on our symmetry.  Let's just
+    say one binding angle for now and keep things symmetric.  We also
+    need a stiffness here ("ankle strength").
+
 EVENTUALLY:
+
+* Implement both-bound case!
 
 * Support stepping and walking...
 
