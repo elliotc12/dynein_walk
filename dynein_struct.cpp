@@ -256,19 +256,19 @@ double Dynein::get_ty(){
 }
 
 double Dynein::get_mrx() {
-  return ls * cos(get_bla()) + lt * cos(get_mla()) + -lt * cos(get_mra()) + blx;
+  return ls * cos(get_bla()) + lt * cos(get_mla()) - lt * cos(get_mra()) + blx;
 }
 
 double Dynein::get_mry(){
-  return ls * sin(get_bla()) + lt * sin(get_mla()) + -lt * sin(get_mra()) + bly;
+  return ls * sin(get_bla()) + lt * sin(get_mla()) - lt * sin(get_mra()) + bly;
 }
 
 double Dynein::get_brx() {
-  return ls * cos(get_bla()) + lt * cos(get_mla()) + -lt * cos(get_mra()) + -ls * cos(get_bra()) + blx;
+  return ls * cos(get_bla()) + lt * cos(get_mla()) - lt * cos(get_mra()) - ls * cos(get_bra()) + blx;
 }
 
 double Dynein::get_bry(){
-  return ls * sin(get_bla()) + lt * sin(get_mla()) + -lt * sin(get_mra()) + -ls * sin(get_bra()) + bly;
+  return ls * sin(get_bla()) + lt * sin(get_mla()) - lt * sin(get_mra()) - ls * sin(get_bra()) + bly;
 }
 
 /*** Get Cartesian Velocities ***/
@@ -356,8 +356,9 @@ double Dynein::get_KE() {
 
 void Dynein::log(double t) {
   FILE* data_file = fopen("data.txt", "a+");
-  fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n", 
-  get_KE(), get_PE(), get_KE() + get_PE(), t, get_blx(), get_bly(), get_mlx(), get_mly(), get_tx(), get_ty(), get_mrx(), get_mry(), get_brx(), get_bry(), get_state());
+  fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n",
+          get_KE(), get_PE(), get_KE() + get_PE(), t, get_blx(), get_bly(), get_mlx(), get_mly(),
+          get_tx(), get_ty(), get_mrx(), get_mry(), get_brx(), get_bry(), get_state());
   fclose(data_file);
 }
 
@@ -365,7 +366,8 @@ void Dynein::resetLog() {
 	FILE* data_file = fopen("data.txt", "w");
 	FILE* config_file = fopen("config.txt", "w");
 	
-	fprintf(config_file, "#gb\tgm\tgt\tdt\truntime\tstate\n%g\t%g\t%g\t%+.3f\t%+.3f\t%d\n", (double) gb, (double) gm, (double) gt, inctime, (double) runtime, (int) state);
+	fprintf(config_file, "#gb\tgm\tgt\tdt\truntime\tstate\n%g\t%g\t%g\t%+.3f\t%+.3f\t%d\n",
+          (double) gb, (double) gm, (double) gt, inctime, (double) runtime, (int) state);
 	fprintf(data_file,
 		"#KE\t\t\t\tPE\t\t\t\tEnergy\t\tt\t\tblX\t\t\tblY\t\t\tmlX\t\t\tmlY\t\t\ttX\t\t\ttY\t\t\tmrX\t\t\tmrY\t\t\tbrX\t\t\tbrY\t\t\tS\n");
 	
