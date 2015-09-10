@@ -365,7 +365,7 @@ void Dynein::resetLog() {
 	FILE* data_file = fopen("data.txt", "w");
 	FILE* config_file = fopen("config.txt", "w");
 	
-	fprintf(config_file, "#dt\truntime\tstate\n%+.3f\t%+.3f\t%d\n", inctime, (double) runtime, (int) state);
+	fprintf(config_file, "#gb\tgm\tgt\tdt\truntime\tstate\n%g\t%g\t%g\t%+.3f\t%+.3f\t%d\n", (double) gb, (double) gm, (double) gt, inctime, (double) runtime, (int) state);
 	fprintf(data_file,
 		"#KE\t\t\t\tPE\t\t\t\tEnergy\t\tt\t\tblX\t\t\tblY\t\t\tmlX\t\t\tmlY\t\t\ttX\t\t\ttY\t\t\tmrX\t\t\tmrY\t\t\tbrX\t\t\tbrY\t\t\tS\n");
 	

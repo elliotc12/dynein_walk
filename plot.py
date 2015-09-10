@@ -27,6 +27,10 @@ config = numpy.loadtxt("config.txt")
 data = numpy.genfromtxt("data.txt", delimiter="\t", skiprows=1)
 plt.ion()
 
+gb = float(config[0]) # FIXME: make point radii based on these
+gm = float(config[1])
+gt = float(config[2])
+
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-40,40)
@@ -80,7 +84,7 @@ while i < len(data) or loop:
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
 
-  t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[1]))
+  t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[4]))
   
   if len(sys.argv) >= 2:
     if sys.argv[1] == "step":

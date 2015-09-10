@@ -19,8 +19,29 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   double temp_mla;
   double temp_mra;
   double temp_bra;
+
+  srand(time(NULL));
   
-  while( t < tf ) {  
+  while( t < tf ) {
+
+    if (std::abs(dyn->get_bry()) < 0.1 && rand() % 2 == 0) {
+      printf("switching states!\n");
+      double temp_brx = dyn->get_brx();
+      double temp_bry = dyn->get_bry();
+      double temp_bla = dyn->get_bla();
+      double temp_mla = dyn->get_mla();
+      double temp_mra = dyn->get_mra();
+      double temp_bra = dyn->get_bra();
+      dyn->set_blx(temp_brx);
+      dyn->set_bly(temp_bry);
+      dyn->set_bla(temp_bra);
+      dyn->set_mla(temp_mra);
+      dyn->set_mra(temp_mla);
+      dyn->set_bra(temp_bla);
+      if (dyn->get_state() == LEFTBOUND) dyn->set_state(RIGHTBOUND);
+      else dyn->set_state(LEFTBOUND);
+    }
+    
     dyn->update_velocities();
     
     temp_bla = dyn->get_bla() + dyn->get_d_bla() * dt;
@@ -49,7 +70,7 @@ int main(int argvc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-  forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // blx, bly, mlx, mly, ...
+  //forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // blx, bly, mlx, mly, ...
   
   dt = strtod(argv[1], NULL);
   runtime  = atoi(argv[2]);
@@ -61,7 +82,7 @@ int main(int argvc, char **argv) {
   Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, // Initial angles
 			   RIGHTBOUND,                             // Initial state
 			   NULL,                                   // Optional custom internal forces
-			   &no_forces,                                   // Optional custom brownian forces
+			   NULL,                                   // Optional custom brownian forces
 			   NULL);                                  // Optional custom equilibrium angles
   
   dyn->resetLog();
