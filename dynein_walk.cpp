@@ -3,6 +3,7 @@
 
 #include "dynein_struct.h"
 int runtime;
+double dt;
 
   /*
    * For every timestep, call update_velocities to update internal velocities.
@@ -43,25 +44,28 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 
 int main(int argvc, char **argv) {
 
-  if (argvc != 6) {
+  if (argvc != 7) {
     printf("Error. Usage: ./walk inctime bla_init mla_init mra_init bra_init.\n");
     exit(EXIT_FAILURE);
   }
 
-  runtime  = atoi(argv[1]);  
-  double bla_init = strtod(argv[2], NULL) * M_PI;
-  double mla_init = strtod(argv[3], NULL) * M_PI;
-  double mra_init = strtod(argv[4], NULL) * M_PI;
-  double bra_init = strtod(argv[5], NULL) * M_PI;
+  forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // blx, bly, mlx, mly, ...
+  
+  dt = strtod(argv[1], NULL);
+  runtime  = atoi(argv[2]);
+  double bla_init = strtod(argv[3], NULL) * M_PI;
+  double mla_init = strtod(argv[4], NULL) * M_PI;
+  double mra_init = strtod(argv[5], NULL) * M_PI;
+  double bra_init = strtod(argv[6], NULL) * M_PI;
   
   Dynein* dyn = new Dynein(bla_init, mla_init, mra_init, bra_init, // Initial angles
-			   LEFTBOUND,                              // Initial state
+			   RIGHTBOUND,                             // Initial state
 			   NULL,                                   // Optional custom internal forces
-			   NULL,                                   // Optional custom brownian forces
+			   &no_forces,                                   // Optional custom brownian forces
 			   NULL);                                  // Optional custom equilibrium angles
   
   dyn->resetLog();
-  simulateProtein(dyn, inctime, runtime);
+  simulateProtein(dyn, dt, runtime);
   free(dyn);
   dyn = NULL;
   return 0;

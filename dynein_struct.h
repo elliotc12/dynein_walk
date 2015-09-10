@@ -40,11 +40,18 @@ typedef struct
   double bla, la, ta, ra;
 } equilibrium_angles;
 
-const equilibrium_angles pre_powerstroke_internal_angles = {
+const equilibrium_angles pre_powerstroke_leftbound_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
   (252.0 / 180) * M_PI
+};
+
+const equilibrium_angles pre_powerstroke_rightbound_internal_angles = {
+  (72.0 / 180) * M_PI,
+  (252.0 / 180) * M_PI,
+  (252.0 / 180) * M_PI,
+  (108.0 / 180) * M_PI
 };
 
 /* ******************************** DYNEIN CLASS DEFINITION *************************************** */

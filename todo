@@ -1,11 +1,7 @@
 Things to do:
 
 * Look up structure of dynein (maybe copying figures) to estimate
-  lengths and angles.
-
-* Make code support multiple gamma values for binding, motor, tail.
-  Estimate these.
-
+  lengths and angles and gammas (radii of "spheres").
 
 EVENTUALLY:
 

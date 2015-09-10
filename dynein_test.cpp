@@ -5,6 +5,7 @@
 
 #define EPSILON 1e-12
 int runtime = 0;
+double dt = 0.1;
 
 int equal(double v1, double v2) {
   if (fabs(v1) < EPSILON) { return fabs(v2) < EPSILON; }
@@ -40,10 +41,10 @@ int main() {
 
   //runtime = 1*runtime;
 
-  double bla_eq = pre_powerstroke_internal_angles.bla;
-  double la_eq = pre_powerstroke_internal_angles.la;
-  double ta_eq = pre_powerstroke_internal_angles.ta;
-  double ra_eq = pre_powerstroke_internal_angles.ra;
+  double bla_eq = pre_powerstroke_leftbound_internal_angles.bla;
+  double la_eq  = pre_powerstroke_leftbound_internal_angles.la;
+  double ta_eq  = pre_powerstroke_leftbound_internal_angles.ta;
+  double ra_eq  = pre_powerstroke_leftbound_internal_angles.ra;
   
   forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // blx, bly, mlx, mly, ...
   forces right_forces = {1,0,1,0,1,0,1,0,1,0};
