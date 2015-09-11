@@ -1,5 +1,7 @@
 Things to do:
 
+* Implement both-bound case!
+
 * Look up structure of dynein (maybe copying figures) to estimate
   lengths and angles and gammas (radii of "spheres").
 
@@ -24,10 +26,14 @@ Things to do:
     say one binding angle for now and keep things symmetric.  We also
     need a stiffness here ("ankle strength").
 
-EVENTUALLY:
-
-* Implement both-bound case!
+Eventually:
 
 * Support stepping and walking...
 
 * Make movie files.
+
+Papers:
+
+* Functions and mechanics of dynein motor proteins, Nature Reviews, Roberts
+* Dynein achieves processive motion using both stochastic and coordinated stepping, Nature Struct
+	& Molec Bio, Weihong Qiu
