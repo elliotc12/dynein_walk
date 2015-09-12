@@ -33,16 +33,16 @@ typedef enum
 
 typedef struct
 {
-  double blx;   double bly;
-  double mlx;   double mly;
+  double bbx;   double bby;
+  double bmx;   double bmy;
   double tx;    double ty;
-  double mrx;   double mry;
-  double brx;   double bry;
+  double fmx;   double fmy;
+  double fbx;   double fby;
 } forces;
 
 typedef struct
 {
-  double bla, la, ta, ra;
+  double bba, ba, ta, fa;
 } equilibrium_angles;
 
 const equilibrium_angles pre_powerstroke_leftbound_internal_angles = {
@@ -66,52 +66,52 @@ public:
   Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
          State s, forces* internal_test, forces* brownian_test, equilibrium_angles* eq_angles);
 
-  void set_bla(double d);
-  void set_mla(double d);
-  void set_mra(double d);
-  void set_bra(double d);
+  void set_bba(double d);
+  void set_bma(double d);
+  void set_fma(double d);
+  void set_fba(double d);
 
-  void set_blx(double d);
-  void set_bly(double d);
+  void set_bbx(double d);
+  void set_bby(double d);
 
   void set_state(State s);
 
-  double get_bla();
-  double get_mla();
-  double get_mra();
-  double get_bra();
+  double get_bba();
+  double get_bma();
+  double get_fma();
+  double get_fba();
 
-  double get_blx();
-  double get_mlx();
+  double get_bbx();
+  double get_bmx();
   double get_tx();
-  double get_mrx();
-  double get_brx();
+  double get_fmx();
+  double get_fbx();
                   ;
-  double get_bly();
-  double get_mly();
+  double get_bby();
+  double get_bmy();
   double get_ty();
-  double get_mry();
-  double get_bry();
+  double get_fmy();
+  double get_fby();
   
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
 
-  double get_d_bla();
-  double get_d_mla();
-  double get_d_mra();
-  double get_d_bra();
+  double get_d_bba();
+  double get_d_bma();
+  double get_d_fma();
+  double get_d_fba();
   
-  double get_d_blx();
-  double get_d_mlx();
+  double get_d_bbx();
+  double get_d_bmx();
   double get_d_tx();
-  double get_d_mrx();
-  double get_d_brx();
+  double get_d_fmx();
+  double get_d_fbx();
   
-  double get_d_bly();
-  double get_d_mly();
+  double get_d_bby();
+  double get_d_bmy();
   double get_d_ty();
-  double get_d_mry();
-  double get_d_bry();
+  double get_d_fmy();
+  double get_d_fby();
    
   forces get_internal();
   forces get_brownian();
@@ -133,17 +133,17 @@ private:
 
   equilibrium_angles eq;
 
-  double bla;
-  double mla;
-  double mra;
-  double bra;
+  double bba;
+  double bma;
+  double fma;
+  double fba;
   
-  double blx, bly;
+  double bbx, bby;
   
-  double d_bla;   //Angular Velocities
-  double d_mla;
-  double d_mra;
-  double d_bra;
+  double d_bba;   //Angular Velocities
+  double d_bma;
+  double d_fma;
+  double d_fba;
 
   forces r; //Brownian forces
   forces f; //Internal Forces

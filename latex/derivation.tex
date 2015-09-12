@@ -21,75 +21,75 @@
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
-  X_{bl} &= 0 \\
-  X_{ml} &= X_{bl}+L_{s}\cos(\Theta_{bl}) \\
-  X_{t}  &= X_{ml}+L_{t}\cos(\Theta_{ml}) \\
-  X_{mr} &= X_{t} - L_{t}\cos(\Theta_{mr}) \\
-  X_{br} &= X_{mr} - L_{s}\cos(\Theta_{br})
+  X_{bb} &= 0 \\
+  X_{bm} &= X_{bb}+L_{s}\cos(\Theta_{bb}) \\
+  X_{t}  &= X_{bm}+L_{t}\cos(\Theta_{bm}) \\
+  X_{fm} &= X_{t} - L_{t}\cos(\Theta_{fm}) \\
+  X_{fb} &= X_{fm} - L_{s}\cos(\Theta_{fb})
 \end{align}
 
 \begin{align}
-  Y_{bl} &= 0 \\
-  Y_{ml} &= Y_{bl}+L_{s}\sin(\Theta_{bl}) \\
-  Y_{t}  &= Y_{ml}+L_{t}\sin(\Theta_{ml}) \\
-  Y_{mr} &= Y_{t} +L_{t}\sin(\Theta_{mr}-\pi) = Y_{t} - L_{t}\sin(\Theta_{mr}) \\
-  Y_{br} &= Y_{mr}+L_{s}\sin(\Theta_{br}-\pi) = Y_{mr} - L_{s}\sin(\Theta_{br})
+  Y_{bb} &= 0 \\
+  Y_{bm} &= Y_{bb}+L_{s}\sin(\Theta_{bb}) \\
+  Y_{t}  &= Y_{bm}+L_{t}\sin(\Theta_{bm}) \\
+  Y_{fm} &= Y_{t} - L_{t}\sin(\Theta_{fm}) \\
+  Y_{fb} &= Y_{fm} - L_{s}\sin(\Theta_{fb})
 \end{align}
 
 \section{Cartesian Velocities}
 This section shows the velocity definitions. \\
 \begin{align}
-  \dot{X}_{bl} &= 0 \\
-  \dot{X}_{ml} &= \dot{X}_{bl} - L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} \\
-  \dot{X}_{t } &= \dot{X}_{ml} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} \\
-  \dot{X}_{mr} &= \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} \\
-  \dot{X}_{br} &= \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}
+  \dot{X}_{bb} &= 0 \\
+  \dot{X}_{bm} &= \dot{X}_{bb} - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} \\
+  \dot{X}_{t } &= \dot{X}_{bm} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} \\
+  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
+  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}  
              
 \begin{align}                                                                          
-  \dot{Y}_{bl} &= 0 \\                                                        
-  \dot{Y}_{ml} &= \dot{Y}_{bl} + L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} \\
-  \dot{Y}_{t}  &= \dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} \\
-  \dot{Y}_{mr} &= \dot{Y}_{t } - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} \\
-  \dot{Y}_{br} &= \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}
+  \dot{Y}_{bb} &= 0 \\                                                        
+  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} \\
+  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
+  \dot{Y}_{fm} &= \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
+  \dot{Y}_{fb} &= \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}
 
 
 \section{Cartesian Velocities (expanded)}
 This section expands the above definitions. \\
 \begin{align}
-  \dot{X}_{bl} &= 0 \\
-  \dot{X}_{ml} &= - L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} \\
-  \dot{X}_{t } &= - L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} \\
-  \dot{X}_{mr} &= - L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} \\
-  \dot{X}_{br} &= - L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}
+  \dot{X}_{bb} &= 0 \\
+  \dot{X}_{bm} &= - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} \\
+  \dot{X}_{t } &= - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} \\
+  \dot{X}_{fm} &= - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
+  \dot{X}_{fb} &= - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}             
              
 \begin{align}                                                                               
-  \dot{Y}_{bl} &= 0 \\                                                               
-  \dot{Y}_{ml} &= L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} \\
-  \dot{Y}_{t}  &= L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} \\
-  \dot{Y}_{mr} &= L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} \\
-  \dot{Y}_{br} &= L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}
+  \dot{Y}_{bb} &= 0 \\                                                               
+  \dot{Y}_{bm} &= L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} \\
+  \dot{Y}_{t}  &= L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
+  \dot{Y}_{fm} &= L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
+  \dot{Y}_{fb} &= L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}
 
 
 \section{Brownian Equations}
 This section shows the velocity definitions using the Brownian dynamics equation. \\
 \begin{align}  
-  \dot{X}_{bl} &= 0 \\
-  \dot{X}_{ml} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{ls}(X_{ml} - X_{bl}) + \lambda_{lt}(X_{t } - X_{ml}) \Big) + R_{xml} \\
-  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{lt}(X_{t } - X_{ml}) + \lambda_{rt}(X_{mr} - X_{t }) \Big) + R_{xt } \\
-  \dot{X}_{mr} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{rt}(X_{mr} - X_{t }) + \lambda_{rs}(X_{br} - X_{mr}) \Big) + R_{xmr} \\
-  \dot{X}_{br} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{rs}(X_{br} - X_{mr})                                 \Big) + R_{xbr}
+  \dot{X}_{bb} &= 0 \\
+  \dot{X}_{bm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{ls}(X_{bm} - X_{bb}) + \lambda_{lt}(X_{t } - X_{bm}) \Big) + R_{xml} \\
+  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{lt}(X_{t } - X_{bm}) + \lambda_{rt}(X_{fm} - X_{t }) \Big) + R_{xt } \\
+  \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{rt}(X_{fm} - X_{t }) + \lambda_{rs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
+  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{rs}(X_{fb} - X_{fm})                                 \Big) + R_{xbr}
 \end{align}
 
 \begin{align}  
-  \dot{Y}_{bl} &= 0 \\
-  \dot{Y}_{ml} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{ls}(Y_{ml} - Y_{bl}) + \lambda_{lt}(Y_{t } - Y_{ml}) \Big) + R_{yml} \\
-  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{lt}(Y_{t } - Y_{ml}) + \lambda_{rt}(Y_{mr} - Y_{t }) \Big) + R_{yt } \\
-  \dot{Y}_{mr} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{rt}(Y_{mr} - Y_{t }) + \lambda_{rs}(Y_{br} - Y_{mr}) \Big) + R_{ymr} \\
-  \dot{Y}_{br} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{rs}(Y_{br} - Y_{mr})                                 \Big) + R_{ybr}
+  \dot{Y}_{bb} &= 0 \\
+  \dot{Y}_{bm} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{ls}(Y_{bm} - Y_{bb}) + \lambda_{lt}(Y_{t } - Y_{bm}) \Big) + R_{yml} \\
+  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{lt}(Y_{t } - Y_{bm}) + \lambda_{rt}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
+  \dot{Y}_{fm} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{rt}(Y_{fm} - Y_{t }) + \lambda_{rs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
+  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{rs}(Y_{fb} - Y_{fm})                                 \Big) + R_{ybr}
 \end{align}
 
 %Unnecessary section commented out
@@ -97,17 +97,17 @@ This section shows the velocity definitions using the Brownian dynamics equation
 \section{Expanded Brownian Equations}
 
 \begin{align}
-  &L_{s}\sin(\Theta_{bl})  \dot{\Theta}_{bl} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
-  &L_{s}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{t}\sin(\Theta_{ml})      \dot{\Theta}_{ml} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + \frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + R_{xt } \\
-  &L_{s}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{t}\sin(\Theta_{ml})      \dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xmr} \\
-  &L_{s}\sin(\Theta_{bl})  \dot{\Theta}_{bl} + L_{t}\sin(\Theta_{ml})      \dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br}-\pi)  \dot{\Theta}_{br} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xbr}
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr}
 \end{align}
 
 \begin{align}
-  &\mn L_{s}\cos(\Theta_{bl})  \dot{\Theta}_{bl} = \frac{1}{\gamma}F_{yml} + \mn \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + R_{yml} \\
-  &\mn L_{s}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{t}\cos(\Theta_{ml})  \dot{\Theta}_{ml}  = \frac{1}{\gamma}F_{yt } + \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + R_{yt } \\
-  &\mn L_{s}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{t}\cos(\Theta_{ml})  \dot{\Theta}_{ml} + \mn L_{t}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} = \frac{1}{\gamma}F_{ymr} + \mn \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ymr} \\
-  &\mn L_{s}\cos(\Theta_{bl})  \dot{\Theta}_{bl} + \mn L_{t}\cos(\Theta_{ml})  \dot{\Theta}_{ml} + \mn L_{t}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} + \mn L_{s}\cos(\Theta_{br}-\pi)  \dot{\Theta}_{br} = \frac{1}{\gamma}F_{ybr} + \mn \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ybr}
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm}  = \frac{1}{\gamma}F_{yt } + \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr}
 \end{align}
 
 
@@ -115,17 +115,17 @@ This section shows the velocity definitions using the Brownian dynamics equation
 This is the system after subtracting equations from each other to eliminate some angular velocity terms.\\
 
 \begin{align}
-  L_{s}\sin(\Theta_{bl})      \dot{\Theta}_{bl} &= \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
-  L_{t}\sin(\Theta_{ml})      \dot{\Theta}_{ml} &= \frac{1}{\gamma}F_{xt } - \frac{2}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + \frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + R_{xt } - \frac{1}{\gamma}F_{xml} - \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) - R_{xml} \\
-  L_{t}\sin(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} &= \frac{1}{\gamma}F_{xmr} - \frac{2}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xmr} - \frac{1}{\gamma}F_{xt } - \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) - R_{xt } \\
-  L_{s}\sin(\Theta_{br}-\pi)  \dot{\Theta}_{br} &= \frac{1}{\gamma}F_{xbr} - \frac{2}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xbr} - \frac{1}{\gamma}F_{xmr} - \mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) - R_{xmr} 
+  L_{s}\sin(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
+  L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{xt } - \frac{2}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } - \frac{1}{\gamma}F_{xml} - \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) - R_{xml} \\
+  L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{xmr} - \frac{2}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} - \frac{1}{\gamma}F_{xt } - \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) - R_{xt } \\
+  L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{xbr} - \frac{2}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr} - \frac{1}{\gamma}F_{xmr} - \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) - R_{xmr} 
 \end{align}
 
 \begin{align}
-  \mn L_{s}\cos(\Theta_{bl})      \dot{\Theta}_{bl} &= \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + R_{yml} \\
-  \mn L_{t}\cos(\Theta_{ml})      \dot{\Theta}_{ml} &= \frac{1}{\gamma}F_{yt } - \frac{2}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + R_{yt } - \frac{1}{\gamma}F_{yml} - \mn \frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) - R_{yml}\\
-  \mn L_{t}\cos(\Theta_{mr}-\pi)  \dot{\Theta}_{mr} &= \frac{1}{\gamma}F_{ymr} - \frac{2}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ymr} - \frac{1}{\gamma}F_{yt } - \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) - R_{yt } \\
-  \mn L_{s}\cos(\Theta_{br}-\pi)  \dot{\Theta}_{br} &= \frac{1}{\gamma}F_{ybr} - \frac{2}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ybr} - \frac{1}{\gamma}F_{ymr} - \mn \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) - R_{ymr} 
+  \mn L_{s}\cos(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  \mn L_{t}\cos(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{yt } - \frac{2}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } - \frac{1}{\gamma}F_{yml} - \mn \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) - R_{yml}\\
+  \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{ymr} - \frac{2}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} - \frac{1}{\gamma}F_{yt } - \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) - R_{yt } \\
+  \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{ybr} - \frac{2}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr} - \frac{1}{\gamma}F_{ymr} - \mn \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) - R_{ymr} 
 \end{align}
 \end{comment}
   
@@ -133,75 +133,75 @@ This is the system after subtracting equations from each other to eliminate some
 This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
 
 \begin{align}  
-  \dot{X}_{ml} &= \dot{X}_{bl} + \mn L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + R_{xml} \\
-  \dot{X}_{t}  &= \dot{X}_{ml} + \mn L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) + \frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + R_{xt } \\
-  \dot{X}_{mr} &= \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xmr} \\
-  \dot{X}_{br} &= \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) + R_{xbr}
+  \dot{X}_{bm} &= \dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
+  \dot{X}_{t}  &= \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } \\
+  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} \\
+  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr}
 \end{align}
 
 \begin{align}  
-  \dot{Y}_{ml} &= \dot{Y}_{bl} + L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + R_{yml} \\
-  \dot{Y}_{t}  &= \dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) + \frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + R_{yt } \\
-  \dot{Y}_{mr} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ymr} \\
-  \dot{Y}_{br} &= \dot{Y}_{mr} + \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) + R_{ybr}
+  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } \\
+  \dot{Y}_{fm} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
+  \dot{Y}_{fb} &= \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr}
 \end{align}
 
 \section{System after Addition}
 By adding equations from our system together we can isolate the $\lambda$ values. This system has been verified via CAS.\\
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls}(X_{ml} - X_{bl}) =
-\dot{X}_{bl} + \mn L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{ml} + \mn L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} - R_{xt } \\
-- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr}
--\frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) =
+\dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } \\
+- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
+-\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Ax}
 \end{multline}%Fix'd
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{ml}) =
-\dot{X}_{ml} + \mn L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} - R_{xt } - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} \\
-- R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) =
+\dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
+- R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Bx}
 \end{multline}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rt}(X_{mr} - X_{t }) =
-\dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
-+ \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) =
+\dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
++ \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Cx}
 \end{equation}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rs}(X_{br} - X_{mr}) = 
-\dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) = 
+\dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Dx}
 \end{equation}%Fix'd
 
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls}(Y_{ml} - Y_{bl}) =
-\dot{Y}_{bl} + L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} \\
-- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr}
-+ \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\mn\frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) =
+\dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
+- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm}
++ \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:Ay}
 \end{multline}%Fix'd
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{ml}) =
-\dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} \\
-- R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} + \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) =
+\dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
+- R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:By}
 \end{multline}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rt}(Y_{mr} - Y_{t }) =
-\dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} + \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}
+\mn\frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) =
+\dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:Cy}
 \end{equation}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rs}(Y_{br} - Y_{mr}) = \dot{Y}_{mr} + \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\mn\frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) = \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:Dy}
 \end{equation}%Fix'd
 
@@ -211,365 +211,365 @@ Our goal is to take the above system of equations and put it in matrix form:
 
 
 \begin{align}
-  A_1\dot{\Theta}_{bl} + A_2 \dot{\Theta}_{ml} + A_3 \dot{\Theta}_{mr} + A_4 \dot{\Theta}_{br} &= X_1 \\
-  B_1\dot{\Theta}_{bl} + B_2 \dot{\Theta}_{ml} + B_3 \dot{\Theta}_{mr} + B_4 \dot{\Theta}_{br} &= X_2 \\
-  C_1\dot{\Theta}_{bl} + C_2 \dot{\Theta}_{ml} + C_3 \dot{\Theta}_{mr} + C_4 \dot{\Theta}_{br} &= X_3 \\
-  D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} &= X_4 \\
+  A_1\dot{\Theta}_{bb} + A_2 \dot{\Theta}_{bm} + A_3 \dot{\Theta}_{fm} + A_4 \dot{\Theta}_{fb} &= X_1 \\
+  B_1\dot{\Theta}_{bb} + B_2 \dot{\Theta}_{bm} + B_3 \dot{\Theta}_{fm} + B_4 \dot{\Theta}_{fb} &= X_2 \\
+  C_1\dot{\Theta}_{bb} + C_2 \dot{\Theta}_{bm} + C_3 \dot{\Theta}_{fm} + C_4 \dot{\Theta}_{fb} &= X_3 \\
+  D_1\dot{\Theta}_{bb} + D_2 \dot{\Theta}_{bm} + D_3 \dot{\Theta}_{fm} + D_4 \dot{\Theta}_{fb} &= X_4 \\
 \end{align}
 
 This will allow us to perform a matrix solution for the angular velocities. $X_1$, $X_2$, $X_3$ and $X_4$ contain only force terms and no unknown $\lambda$s. The above system of equations has four lambda terms: $\lambda_{ls}, \lambda_{lt}, \lambda_{rt}$ and $\lambda_{ls}$. Each term is present in two equations. We will use this redundancy to eliminate the lambda terms and create the above matrix.
 
 \subsection{Solving for $A_1$, $A_2$, $A_3$, $A_4$ and $X_1$}
-In this section we take Equations (\ref{eq:Ax}) and (\ref{eq:Ay}), equate them and manipulate them to be in form $A_1\dot{\Theta}_{bl} + A_2 \dot{\Theta}_{ml} + A_3 \dot{\Theta}_{mr} + A_4 \dot{\Theta}_{br} = X_1$\\
+In this section we take Equations (\ref{eq:Ax}) and (\ref{eq:Ay}), equate them and manipulate them to be in form $A_1\dot{\Theta}_{bb} + A_2 \dot{\Theta}_{bm} + A_3 \dot{\Theta}_{fm} + A_4 \dot{\Theta}_{fb} = X_1$\\
 
 We start by dividing out the position terms in Equations (\ref{eq:Ax}) and (\ref{eq:Ay}) to make their LHSs identical.
 
 \begin{multline}
 \mn\frac{1}{\gamma}\lambda_{ls} =
-\Big(\dot{X}_{bl} + \mn L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{ml} + \mn L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} - R_{xt } \\
-- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr}
--\frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)\frac{1}{(X_{ml} - X_{bl})}
+\Big(\dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } \\
+- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
+-\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)\frac{1}{(X_{bm} - X_{bb})}
 \end{multline}
 
 \begin{multline}
 \mn\frac{1}{\gamma}\lambda_{ls} =
-\Big( \dot{Y}_{bl} + L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} \\
-- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr}
-+ \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\frac{1}{(Y_{ml} - Y_{bl})}
+\Big( \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
+- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm}
++ \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\frac{1}{(Y_{bm} - Y_{bb})}
 \end{multline}
 
 We then equate them.
 
 \begin{multline}
-\Big(\dot{X}_{bl} + \mn L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{ml} + \mn L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} - R_{xt } \\
-- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr}
--\frac{1}{\gamma}F_{xmr} + \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)(Y_{ml} - Y_{bl}) = \\
-\Big( \dot{Y}_{bl} + L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{ml} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml}
-- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{mr} \\
-+ \mn L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)(X_{ml} - X_{bl})
+\Big(\dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } \\
+- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
+-\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)(Y_{bm} - Y_{bb}) = \\
+\Big( \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm}
+- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} \\
++ \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)(X_{bm} - X_{bb})
 \end{multline}
 
 Then we group like terms for clarity.
 
 \begin{multline}
-\Big(\dot{X}_{bl} + \dot{X}_{ml} + \dot{X}_{t } + \dot{X}_{mr} 
-- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} \\
+\Big(\dot{X}_{bb} + \dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm} 
+- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} \\
 - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } -\frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bl})) = \\
-\Big(\dot{Y}_{bl} + \dot{Y}_{ml} + \dot{Y}_{t } + \dot{Y}_{mr}
-+ L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} \\
+- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bb})) = \\
+\Big(\dot{Y}_{bb} + \dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm}
++ L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} \\
 - \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bl}))
+- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bb}))
 \end{multline}
 
 We then expand all the $\dot{X}$ terms using their definitions from the Cartesian Velocities section above.
 
 \begin{multline}
 \Big(
-- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl}
-- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml}
-- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr}\\
-- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}
+- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb}
+- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm}
+- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm}\\
+- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
 - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } -\frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bl})) = \\
+- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bb})) = \\
 \Big(
-+ L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl}
-+ L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml}
-+ L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr}\\
-+ L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}
++ L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb}
++ L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm}
++ L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}\\
++ L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 - \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bl}))
+- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bb}))
 \end{multline}
 
 Then we group together the like terms from the expansion.
 
 \begin{multline}
-\Big(- 4L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}
+\Big(- 4L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
 - \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}F_{xt } -\frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bl})) = \\
-\Big(4L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + 3L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - 2L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}
+- R_{xml} - R_{xt } - R_{xmr} - R_{xbr} \Big)(L_s\sin(\Theta_{bb})) = \\
+\Big(4L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + 3L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - 2L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 - \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bl}))
+- R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bb}))
 \end{multline}
 
 We then bring all the angular velocity terms to one side and all the force terms to the other side.
 
 \begin{multline}
-\Big(- 4L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml}
-+ 2L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\Big)(L_s\sin(\Theta_{bl}))\\
-\Big(-4L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml}
-+ 2L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)(L_s\cos(\Theta_{bl}))= \\
-\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bl}))
-+ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(L_s\sin(\Theta_{bl}))
+\Big(- 4L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm}
++ 2L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_s\sin(\Theta_{bb}))\\
+\Big(-4L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm}
++ 2L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_s\cos(\Theta_{bb}))= \\
+\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_s\cos(\Theta_{bb}))
++ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(L_s\sin(\Theta_{bb}))
 \end{multline}
 
-We then distribute the $L_s\sin(\Theta_{bl})$ and $L_s\cos(\Theta_{bl})$ terms into the expression.
+We then distribute the $L_s\sin(\Theta_{bb})$ and $L_s\cos(\Theta_{bb})$ terms into the expression.
 
 \begin{multline}
-\Big(- 4L_{s}\sin(\Theta_{bl})\sin(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})\sin(\Theta_{bl})\dot{\Theta}_{ml}
-+ 2L_{t}\sin(\Theta_{mr})\sin(\Theta_{bl})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\sin(\Theta_{bl})\dot{\Theta}_{br}\Big)\\
-\Big(-4L_{s}\cos(\Theta_{bl})\cos(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\cos(\Theta_{ml})\cos(\Theta_{bl})\dot{\Theta}_{ml}
-+ 2L_{t}\cos(\Theta_{mr})\cos(\Theta_{bl})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})\cos(\Theta_{bl})\dot{\Theta}_{br}\Big)= \\
-\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bl}))
-+ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bl}))
+\Big(- 4L_{s}\sin(\Theta_{bb})\sin(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})\sin(\Theta_{bb})\dot{\Theta}_{bm}
++ 2L_{t}\sin(\Theta_{fm})\sin(\Theta_{bb})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\sin(\Theta_{bb})\dot{\Theta}_{fb}\Big)\\
+\Big(-4L_{s}\cos(\Theta_{bb})\cos(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\cos(\Theta_{bm})\cos(\Theta_{bb})\dot{\Theta}_{bm}
++ 2L_{t}\cos(\Theta_{fm})\cos(\Theta_{bb})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})\cos(\Theta_{bb})\dot{\Theta}_{fb}\Big)= \\
+\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bb}))
++ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bb}))
 \end{multline}
 
 Finally, we group all terms by their angular velocity.
 
 \begin{multline}
--4L_{s}\Big(\sin(\Theta_{bl})\sin(\Theta_{bl}) + \cos(\Theta_{bl})\cos(\Theta_{bl})\Big)\dot{\Theta}_{bl}
--3L_{t}\Big(\sin(\Theta_{ml})\sin(\Theta_{bl}) + \cos(\Theta_{ml})\cos(\Theta_{bl})\Big)\dot{\Theta}_{ml}\\
-+2L_{t}\Big(\sin(\Theta_{mr})\sin(\Theta_{bl}) + \cos(\Theta_{mr})\cos(\Theta_{bl})\Big)\dot{\Theta}_{mr}
-+ L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{bl}) + \cos(\Theta_{br})\cos(\Theta_{bl})\Big)\dot{\Theta}_{br}= \\
-\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bl}))
-+ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bl}))
+-4L_{s}\Big(\sin(\Theta_{bb})\sin(\Theta_{bb}) + \cos(\Theta_{bb})\cos(\Theta_{bb})\Big)\dot{\Theta}_{bb}
+-3L_{t}\Big(\sin(\Theta_{bm})\sin(\Theta_{bb}) + \cos(\Theta_{bm})\cos(\Theta_{bb})\Big)\dot{\Theta}_{bm}\\
++2L_{t}\Big(\sin(\Theta_{fm})\sin(\Theta_{bb}) + \cos(\Theta_{fm})\cos(\Theta_{bb})\Big)\dot{\Theta}_{fm}
++ L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{bb}) + \cos(\Theta_{fb})\cos(\Theta_{bb})\Big)\dot{\Theta}_{fb}= \\
+\Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bb}))
++ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bb}))
 \end{multline}
 
 This is the form we want. We now know the value of $A_1, A_2, A_3, A_4$ and $X_1$.
 
 \begin{align}
   A_1 &= -4L_{s}\\
-  A_2 &= -3L_{t}\Big(\sin(\Theta_{ml})\sin(\Theta_{bl}) + \cos(\Theta_{ml})\cos(\Theta_{bl})\Big)\\
-  A_3 &= 2L_{t}\Big(\sin(\Theta_{mr})\sin(\Theta_{bl}) + \cos(\Theta_{mr})\cos(\Theta_{bl})\Big)\\
-  A_4 &= L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{bl}) + \cos(\Theta_{br})\cos(\Theta_{bl})\Big)\\
-  X_1 &= \Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bl}))+\\
-      &+ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bl}))
+  A_2 &= -3L_{t}\Big(\sin(\Theta_{bm})\sin(\Theta_{bb}) + \cos(\Theta_{bm})\cos(\Theta_{bb})\Big)\\
+  A_3 &= 2L_{t}\Big(\sin(\Theta_{fm})\sin(\Theta_{bb}) + \cos(\Theta_{fm})\cos(\Theta_{bb})\Big)\\
+  A_4 &= L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{bb}) + \cos(\Theta_{fb})\cos(\Theta_{bb})\Big)\\
+  X_1 &= \Big(- \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yml} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bb}))+\\
+      &+ \Big( \frac{1}{\gamma}F_{xml} + \frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xml} + R_{xt } + R_{xmr} + R_{xbr} \Big)(\sin(\Theta_{bb}))
 \end{align}
 
 
 \subsection{Solving for $B_1$, $B_2$, $B_3$, $B_4$ and $X_2$}
-Here we take Equations (\ref{eq:Bx}) and (\ref{eq:By}), equate them and manipulate them to be in form $B_1\dot{\Theta}_{bl} + B_2 \dot{\Theta}_{ml} + B_3 \dot{\Theta}_{mr} + B_4 \dot{\Theta}_{br} = X_2$
+Here we take Equations (\ref{eq:Bx}) and (\ref{eq:By}), equate them and manipulate them to be in form $B_1\dot{\Theta}_{bb} + B_2 \dot{\Theta}_{bm} + B_3 \dot{\Theta}_{fm} + B_4 \dot{\Theta}_{fb} = X_2$
 
 \begin{multline}
 -\frac{1}{\gamma}\lambda_{lt} =
 \Big(
-\dot{X}_{ml} + \dot{X}_{t } + \dot{X}_{mr}
-- L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} 
+\dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm}
+- L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xt } - R_{xmr} - R_{xbr}\Big) \frac{1}{(X_{t } - X_{ml})}
+- R_{xt } - R_{xmr} - R_{xbr}\Big) \frac{1}{(X_{t } - X_{bm})}
 \end{multline}
 
 \begin{multline}
 -\frac{1}{\gamma}\lambda_{lt} =
 \Big(
-\dot{Y}_{ml} + \dot{Y}_{t } + \dot{Y}_{mr} 
-+ L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} 
+\dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm} 
++ L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yt} - R_{ymr} - R_{ybr}\Big) \frac{1}{(Y_{t } - Y_{ml})}
+- R_{yt} - R_{ymr} - R_{ybr}\Big) \frac{1}{(Y_{t } - Y_{bm})}
 \end{multline}
 
 \begin{multline}
 \Big(
-\dot{X}_{ml} + \dot{X}_{t } + \dot{X}_{mr}
-- L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} 
+\dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm}
+- L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xt } - R_{xmr} - R_{xbr}\Big)(Y_{t } - Y_{ml}) =\\
+- R_{xt } - R_{xmr} - R_{xbr}\Big)(Y_{t } - Y_{bm}) =\\
 \Big(
-\dot{Y}_{ml} + \dot{Y}_{t } + \dot{Y}_{mr} 
-+ L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} 
+\dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm} 
++ L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yt} - R_{ymr} - R_{ybr}\Big)(X_{t } - X_{ml})
+- R_{yt} - R_{ymr} - R_{ybr}\Big)(X_{t } - X_{bm})
 \end{multline}
 
 \begin{multline}
 \Big(
-\dot{X}_{ml} + \dot{X}_{t } + \dot{X}_{mr}
-- L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} 
+\dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm}
+- L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr}
-- R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{ml})) =\\
+- R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{bm})) =\\
 \Big(
-\dot{Y}_{ml} + \dot{Y}_{t } + \dot{Y}_{mr} 
-+ L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} 
+\dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm} 
++ L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} 
 - \frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}
-- R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{ml}))
+- R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{bm}))
 \end{multline}
 
 \begin{multline}
-\Big(\dot{X}_{ml} + \dot{X}_{t } + \dot{X}_{mr}
-- L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\sin(\Theta_{ml}))\\
-- \Big(\dot{Y}_{ml} + \dot{Y}_{t } + \dot{Y}_{mr} 
-+ L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\cos(\Theta_{ml})) =\\
-\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{ml}))
-- \Big(-\frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{ml}))
+\Big(\dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm}
+- L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\sin(\Theta_{bm}))\\
+- \Big(\dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm} 
++ L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\cos(\Theta_{bm})) =\\
+\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{bm}))
+- \Big(-\frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{bm}))
 \end{multline}
 
 \begin{multline}
-\Big( -3L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr}
-+ L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\sin(\Theta_{ml}))\\
-- \Big( 3L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + 3L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} -2L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr}
-- L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\cos(\Theta_{ml})) =\\
-\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{ml}))
-- \Big(-\frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{ml}))
+\Big( -3L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm}
++ L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\sin(\Theta_{bm}))\\
+- \Big( 3L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + 3L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} -2L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}
+- L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\cos(\Theta_{bm})) =\\
+\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{bm}))
+- \Big(-\frac{1}{\gamma}F_{xt } - \frac{1}{\gamma}F_{xmr} - \frac{1}{\gamma}F_{xbr} - R_{xt } - R_{xmr} - R_{xbr}\Big)(L_t\sin(\Theta_{bm}))
 \end{multline}
 
 \begin{multline}
-\Big( -3L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr}
-+ L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\sin(\Theta_{ml}))\\
-+ \Big(-3L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - 3L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr}
-+ L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)(L_t\cos(\Theta_{ml})) =\\
-\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{ml}))
-+ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(L_t\sin(\Theta_{ml}))
+\Big( -3L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm}
++ L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\sin(\Theta_{bm}))\\
++ \Big(-3L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - 3L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}
++ L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)(L_t\cos(\Theta_{bm})) =\\
+\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{bm}))
++ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(L_t\sin(\Theta_{bm}))
 \end{multline}
 
 \begin{multline}
-\Big( -3L_{s}\sin(\Theta_{bl})L_t\sin(\Theta_{ml})\dot{\Theta}_{bl} - 3L_{t}\sin(\Theta_{ml})L_t\sin(\Theta_{ml})\dot{\Theta}_{ml}
-+ 2L_{t}\sin(\Theta_{mr})L_t\sin(\Theta_{ml})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})L_t\sin(\Theta_{ml})\dot{\Theta}_{br}\Big)\\
-+ \Big(-3L_{s}\cos(\Theta_{bl})L_t\cos(\Theta_{ml})\dot{\Theta}_{bl} - 3L_{t}\cos(\Theta_{ml})L_t\cos(\Theta_{ml})\dot{\Theta}_{ml}
-+ 2L_{t}\cos(\Theta_{mr})L_t\cos(\Theta_{ml})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})L_t\cos(\Theta_{ml})\dot{\Theta}_{br}\Big) =\\
-\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{ml}))
-+ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(L_t\sin(\Theta_{ml}))
+\Big( -3L_{s}\sin(\Theta_{bb})L_t\sin(\Theta_{bm})\dot{\Theta}_{bb} - 3L_{t}\sin(\Theta_{bm})L_t\sin(\Theta_{bm})\dot{\Theta}_{bm}
++ 2L_{t}\sin(\Theta_{fm})L_t\sin(\Theta_{bm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})L_t\sin(\Theta_{bm})\dot{\Theta}_{fb}\Big)\\
++ \Big(-3L_{s}\cos(\Theta_{bb})L_t\cos(\Theta_{bm})\dot{\Theta}_{bb} - 3L_{t}\cos(\Theta_{bm})L_t\cos(\Theta_{bm})\dot{\Theta}_{bm}
++ 2L_{t}\cos(\Theta_{fm})L_t\cos(\Theta_{bm})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})L_t\cos(\Theta_{bm})\dot{\Theta}_{fb}\Big) =\\
+\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(L_t\cos(\Theta_{bm}))
++ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(L_t\sin(\Theta_{bm}))
 \end{multline}
 
 \begin{multline}
--3L_{s}\Big(\sin(\Theta_{bl})\sin(\Theta_{ml}) + \cos(\Theta_{bl})\cos(\Theta_{ml})\Big)\dot{\Theta}_{bl}
--3L_{t}\Big(\sin(\Theta_{ml})\sin(\Theta_{ml}) + \cos(\Theta_{ml})\cos(\Theta_{ml})\Big)\dot{\Theta}_{ml}\\
-+2L_{t}\Big(\sin(\Theta_{mr})\sin(\Theta_{ml}) + \cos(\Theta_{mr})\cos(\Theta_{ml})\Big)\dot{\Theta}_{mr}
-+ L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{ml}) + \cos(\Theta_{br})\cos(\Theta_{ml})\Big)\dot{\Theta}_{br} =\\
-\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{ml}))
-+ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(\sin(\Theta_{ml}))
+-3L_{s}\Big(\sin(\Theta_{bb})\sin(\Theta_{bm}) + \cos(\Theta_{bb})\cos(\Theta_{bm})\Big)\dot{\Theta}_{bb}
+-3L_{t}\Big(\sin(\Theta_{bm})\sin(\Theta_{bm}) + \cos(\Theta_{bm})\cos(\Theta_{bm})\Big)\dot{\Theta}_{bm}\\
++2L_{t}\Big(\sin(\Theta_{fm})\sin(\Theta_{bm}) + \cos(\Theta_{fm})\cos(\Theta_{bm})\Big)\dot{\Theta}_{fm}
++ L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{bm}) + \cos(\Theta_{fb})\cos(\Theta_{bm})\Big)\dot{\Theta}_{fb} =\\
+\Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bm}))
++ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(\sin(\Theta_{bm}))
 \end{multline}
 
 \begin{align}
-  B_1 &= -3L_{s}\Big(\sin(\Theta_{bl})\sin(\Theta_{ml}) + \cos(\Theta_{bl})\cos(\Theta_{ml})\Big)\\
+  B_1 &= -3L_{s}\Big(\sin(\Theta_{bb})\sin(\Theta_{bm}) + \cos(\Theta_{bb})\cos(\Theta_{bm})\Big)\\
   B_2 &= -3L_{t}\\
-  B_3 &= +2L_{t}\Big(\sin(\Theta_{mr})\sin(\Theta_{ml}) + \cos(\Theta_{mr})\cos(\Theta_{ml})\Big)\\
-  B_4 &= + L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{ml}) + \cos(\Theta_{br})\cos(\Theta_{ml})\Big)\\
-  X_2 &= \Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{ml}))\\
-      &+ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(\sin(\Theta_{ml}))
+  B_3 &= +2L_{t}\Big(\sin(\Theta_{fm})\sin(\Theta_{bm}) + \cos(\Theta_{fm})\cos(\Theta_{bm})\Big)\\
+  B_4 &= + L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{bm}) + \cos(\Theta_{fb})\cos(\Theta_{bm})\Big)\\
+  X_2 &= \Big(-\frac{1}{\gamma}F_{yt } - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr} - R_{yt} - R_{ymr} - R_{ybr}\Big)(\cos(\Theta_{bm}))\\
+      &+ \Big(\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr} + R_{xt } + R_{xmr} + R_{xbr}\Big)(\sin(\Theta_{bm}))
 \end{align}
 
 
 \subsection{Solving for $C_1$, $C_2$, $C_3$, $C_4$ and $X_3$}
-Here we take Equations (\ref{eq:Cx}) and (\ref{eq:Cy}), equate them and manipulate them to be in form $ C_1\dot{\Theta}_{bl} + C_2 \dot{\Theta}_{ml} + C_3 \dot{\Theta}_{mr} + C_4 \dot{\Theta}_{br} = X_3$
+Here we take Equations (\ref{eq:Cx}) and (\ref{eq:Cy}), equate them and manipulate them to be in form $ C_1\dot{\Theta}_{bb} + C_2 \dot{\Theta}_{bm} + C_3 \dot{\Theta}_{fm} + C_4 \dot{\Theta}_{fb} = X_3$
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
-+ \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big) \frac{1}{(X_{mr} - X_{t })}
+-\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
++ \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big) \frac{1}{(X_{fm} - X_{t })}
 \end{equation}
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
-+ \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big) \frac{1}{(Y_{mr} - Y_{t })}
+-\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
++ \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big) \frac{1}{(Y_{fm} - Y_{t })}
 \end{equation}
 
 \begin{multline}
-\Big( \dot{X}_{t } + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
-+ \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)(-L_{t}\sin(\Theta_{mr})) = \\
-\Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
-+ \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)(-L_{t}\cos(\Theta_{mr}))
+\Big( \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
++ \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)(-L_{t}\sin(\Theta_{fm})) = \\
+\Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
++ \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)(-L_{t}\cos(\Theta_{fm}))
 \end{multline}
 
 \begin{multline}
-\Big( \dot{X}_{t } + \dot{X}_{mr} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} \Big)\sin(\Theta_{mr}) +
-\Big(- R_{xmr} - \frac{1}{\gamma}F_{xmr} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr}) = \\
-\Big(\dot{Y}_{t } + \dot{Y}_{mr} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)\cos(\Theta_{mr}) +
-\Big(- R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr})
+\Big( \dot{X}_{t } + \dot{X}_{fm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} \Big)\sin(\Theta_{fm}) +
+\Big(- R_{xmr} - \frac{1}{\gamma}F_{xmr} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm}) = \\
+\Big(\dot{Y}_{t } + \dot{Y}_{fm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)\cos(\Theta_{fm}) +
+\Big(- R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm})
 \end{multline}
 
 \begin{multline}
-\Big( \dot{X}_{t } + \dot{X}_{mr} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} \Big)\sin(\Theta_{mr})
-+ \Big(-\dot{Y}_{t } - \dot{Y}_{mr} + L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)\cos(\Theta_{mr}) = \\
-\Big(- R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr})
-+ \Big(R_{xmr} + \frac{1}{\gamma}F_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+\Big( \dot{X}_{t } + \dot{X}_{fm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} \Big)\sin(\Theta_{fm})
++ \Big(-\dot{Y}_{t } - \dot{Y}_{fm} + L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)\cos(\Theta_{fm}) = \\
+\Big(- R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm})
++ \Big(R_{xmr} + \frac{1}{\gamma}F_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{multline}
 
 \begin{multline}
-\Big(- L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + -L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} +
-L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} +L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} \Big)\sin(\Theta_{mr}) \\
-+ \Big(-(L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml}) -(L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} -
-L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr}) + L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)\cos(\Theta_{mr}) =\\
-\Big(-R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr}) + \Big(R_{xmr} + \frac{1}{\gamma}F_{xmr} + R_{xbr}
-+ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+\Big(- L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + -L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} +
+L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} +L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} \Big)\sin(\Theta_{fm}) \\
++ \Big(-(L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm}) -(L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} -
+L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}) + L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)\cos(\Theta_{fm}) =\\
+\Big(-R_{ymr} - \frac{1}{\gamma}F_{ymr} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm}) + \Big(R_{xmr} + \frac{1}{\gamma}F_{xmr} + R_{xbr}
++ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{multline}
 
 \begin{multline}
-\Big(-2L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} - 2L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr}
-+ L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} \Big)\sin(\Theta_{mr}) \\
-+ \Big(-2L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} - 2L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} + 2L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr}
-+ L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\Big)\cos(\Theta_{mr}) =\\
-\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
-+ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+\Big(-2L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - 2L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm}
++ L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} \Big)\sin(\Theta_{fm}) \\
++ \Big(-2L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - 2L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} + 2L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}
++ L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\Big)\cos(\Theta_{fm}) =\\
+\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
++ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{multline}
 
 \begin{multline}
-\Big(-2L_{s}\sin(\Theta_{bl})\sin(\Theta_{mr})\dot{\Theta}_{bl} - 2L_{t}\sin(\Theta_{ml})\sin(\Theta_{mr})\dot{\Theta}_{ml}
-+ 2L_{t}\sin(\Theta_{mr})\sin(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\sin(\Theta_{br})\sin(\Theta_{mr})\dot{\Theta}_{br} \Big)\\
-+ \Big(-2L_{s}\cos(\Theta_{bl})\cos(\Theta_{mr})\dot{\Theta}_{bl} - 2L_{t}\cos(\Theta_{ml})\cos(\Theta_{mr})\dot{\Theta}_{ml}
-+ 2L_{t}\cos(\Theta_{mr})\cos(\Theta_{mr})\dot{\Theta}_{mr} + L_{s}\cos(\Theta_{br})\cos(\Theta_{mr})\dot{\Theta}_{br}\Big) =\\
-\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
-+ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+\Big(-2L_{s}\sin(\Theta_{bb})\sin(\Theta_{fm})\dot{\Theta}_{bb} - 2L_{t}\sin(\Theta_{bm})\sin(\Theta_{fm})\dot{\Theta}_{bm}
++ 2L_{t}\sin(\Theta_{fm})\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\sin(\Theta_{fm})\dot{\Theta}_{fb} \Big)\\
++ \Big(-2L_{s}\cos(\Theta_{bb})\cos(\Theta_{fm})\dot{\Theta}_{bb} - 2L_{t}\cos(\Theta_{bm})\cos(\Theta_{fm})\dot{\Theta}_{bm}
++ 2L_{t}\cos(\Theta_{fm})\cos(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\cos(\Theta_{fb})\cos(\Theta_{fm})\dot{\Theta}_{fb}\Big) =\\
+\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
++ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{multline}
 
 \begin{multline}
-- 2L_{s}\Big(\sin(\Theta_{bl})\sin(\Theta_{mr}) + \cos(\Theta_{bl})\cos(\Theta_{mr})\Big)\dot{\Theta}_{bl}
-- 2L_{t}\Big(\sin(\Theta_{ml})\sin(\Theta_{mr}) + \cos(\Theta_{ml})\cos(\Theta_{mr})\Big)\dot{\Theta}_{ml}\\
-+ 2L_{t}\Big(\sin^2(\Theta_{mr}) + \cos^2(\Theta_{mr})\Big)\dot{\Theta}_{mr}
-+ L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{mr}) + \cos(\Theta_{br})\cos(\Theta_{mr})\Big)\dot{\Theta}_{br} =\\
-\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
-+ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+- 2L_{s}\Big(\sin(\Theta_{bb})\sin(\Theta_{fm}) + \cos(\Theta_{bb})\cos(\Theta_{fm})\Big)\dot{\Theta}_{bb}
+- 2L_{t}\Big(\sin(\Theta_{bm})\sin(\Theta_{fm}) + \cos(\Theta_{bm})\cos(\Theta_{fm})\Big)\dot{\Theta}_{bm}\\
++ 2L_{t}\Big(\sin^2(\Theta_{fm}) + \cos^2(\Theta_{fm})\Big)\dot{\Theta}_{fm}
++ L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{fm}) + \cos(\Theta_{fb})\cos(\Theta_{fm})\Big)\dot{\Theta}_{fb} =\\
+\Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm}) + \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr}
++ \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{multline}
 
 \begin{align}
-  C_1 &= - 2L_{s}\Big(\sin(\Theta_{bl})\sin(\Theta_{mr}) + \cos(\Theta_{bl})\cos(\Theta_{mr})\Big) \\
-  C_2 &= - 2L_{t}\Big(\sin(\Theta_{ml})\sin(\Theta_{mr}) + \cos(\Theta_{ml})\cos(\Theta_{mr})\Big) \\
+  C_1 &= - 2L_{s}\Big(\sin(\Theta_{bb})\sin(\Theta_{fm}) + \cos(\Theta_{bb})\cos(\Theta_{fm})\Big) \\
+  C_2 &= - 2L_{t}\Big(\sin(\Theta_{bm})\sin(\Theta_{fm}) + \cos(\Theta_{bm})\cos(\Theta_{fm})\Big) \\
   C_3 &= 2L_{t} \\
-  C_4 &= L_{s}\Big(\sin(\Theta_{br})\sin(\Theta_{mr}) + \cos(\Theta_{br})\cos(\Theta_{mr})\Big) \\
-  X_3 &= \Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{mr})\\
-      &+ \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{mr})
+  C_4 &= L_{s}\Big(\sin(\Theta_{fb})\sin(\Theta_{fm}) + \cos(\Theta_{fb})\cos(\Theta_{fm})\Big) \\
+  X_3 &= \Big(-R_{ymr} -R_{ybr} - \frac{1}{\gamma}F_{ymr} - \frac{1}{\gamma}F_{ybr}\Big)\cos(\Theta_{fm})\\
+      &+ \Big(R_{xmr} + R_{xbr} + \frac{1}{\gamma}F_{xmr} + \frac{1}{\gamma}F_{xbr}\Big)\sin(\Theta_{fm})
 \end{align}
 
 
 \subsection{Solving for $D_1$, $D_2$, $D_3$, $D_4$ and $X_4$}
-Here we take Equations (\ref{eq:Dx}) and (\ref{eq:Dy}), equate them and manipulate them to be in form $D_1\dot{\Theta}_{bl} + D_2 \dot{\Theta}_{ml} + D_3 \dot{\Theta}_{mr} + D_4 \dot{\Theta}_{br} = X_4$.
+Here we take Equations (\ref{eq:Dx}) and (\ref{eq:Dy}), equate them and manipulate them to be in form $D_1\dot{\Theta}_{bb} + D_2 \dot{\Theta}_{bm} + D_3 \dot{\Theta}_{fm} + D_4 \dot{\Theta}_{fb} = X_4$.
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rs} = \big( \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) \frac{1}{(Y_{br} - Y_{mr})}
+-\frac{1}{\gamma}\lambda_{rs} = \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) \frac{1}{(Y_{fb} - Y_{fm})}
 \end{equation}
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rs} = \big( \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) \frac{1}{(X_{br} - X_{mr})}
+-\frac{1}{\gamma}\lambda_{rs} = \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) \frac{1}{(X_{fb} - X_{fm})}
 \end{equation}
 
 \begin{equation}
-  \big( \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (X_{br} - X_{mr}) =
-  \big( \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (Y_{br} - Y_{mr})
+  \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (X_{fb} - X_{fm}) =
+  \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (Y_{fb} - Y_{fm})
 \end{equation}
 
 \begin{equation}
-  \big( \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (-L_s\cos{\Theta_{br}}) =
-  \big( \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (-L_s\sin{\Theta_{br}})
+  \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (-L_s\cos{\Theta_{fb}}) =
+  \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (-L_s\sin{\Theta_{fb}})
 \end{equation}
 
 \begin{equation}
-  \big( \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{br}}) =
-  \big( \dot{X}_{mr} + L_{s}\sin(\Theta_{br})\dot{\Theta}_{br} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{br}})
+  \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{fb}}) =
+  \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{fb}})
 \end{equation}
 
 \begin{equation}
-  \big( \dot{Y}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\big)(\cos{\Theta_{br}}) + \big(-\dot{X}_{mr} - L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\big)(\sin{\Theta_{br}}) =
-  \big(- R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{br}}) + \big(R_{ybr} + \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{br}})
+  \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\big)(\cos{\Theta_{fb}}) + \big(-\dot{X}_{fm} - L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\big)(\sin{\Theta_{fb}}) =
+  \big(- R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{fb}}) + \big(R_{ybr} + \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{fb}})
 \end{equation}
 
 \begin{multline}
-  \big(L_{s}\cos(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\cos(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\cos(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\cos(\Theta_{br})\dot{\Theta}_{br}\big)(\cos{\Theta_{br}})\\
-+ \big(L_{s}\sin(\Theta_{bl})\dot{\Theta}_{bl} + L_{t}\sin(\Theta_{ml})\dot{\Theta}_{ml} - L_{t}\sin(\Theta_{mr})\dot{\Theta}_{mr} - L_{s}\sin(\Theta_{br})\dot{\Theta}_{br}\big)(\sin{\Theta_{br}}) = \\
-  \big(- R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{br}}) + \big(R_{ybr} + \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{br}})
+  \big(L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}\big)(\cos{\Theta_{fb}})\\
++ \big(L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}\big)(\sin{\Theta_{fb}}) = \\
+  \big(- R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) (\sin{\Theta_{fb}}) + \big(R_{ybr} + \frac{1}{\gamma}F_{ybr}\big) (\cos{\Theta_{fb}})
 \end{multline}
 
 \begin{multline}
-  L_{s}(\cos(\Theta_{br})\cos(\Theta_{bl}) + \sin(\Theta_{br})\sin(\Theta_{bl}))\dot{\Theta}_{bl}
-  + L_{t}(\cos(\Theta_{br})\cos(\Theta_{ml}) + \sin(\Theta_{br})\sin(\Theta_{ml}))\dot{\Theta}_{ml} \\
-  - L_{t}(\cos(\Theta_{br})\cos(\Theta_{mr}) + \sin(\Theta_{br})\sin(\Theta_{mr}))\dot{\Theta}_{mr}
-  - L_{s}(\cos^2(\Theta_{br}) + \sin^2(\Theta_{br}))\dot{\Theta}_{br} = \\
-  (R_{ybr} + \frac{1}{\gamma}F_{ybr}) (\cos{\Theta_{br}}) - (R_{xbr} + \frac{1}{\gamma}F_{xbr} ) (\sin{\Theta_{br}})
+  L_{s}(\cos(\Theta_{fb})\cos(\Theta_{bb}) + \sin(\Theta_{fb})\sin(\Theta_{bb}))\dot{\Theta}_{bb}
+  + L_{t}(\cos(\Theta_{fb})\cos(\Theta_{bm}) + \sin(\Theta_{fb})\sin(\Theta_{bm}))\dot{\Theta}_{bm} \\
+  - L_{t}(\cos(\Theta_{fb})\cos(\Theta_{fm}) + \sin(\Theta_{fb})\sin(\Theta_{fm}))\dot{\Theta}_{fm}
+  - L_{s}(\cos^2(\Theta_{fb}) + \sin^2(\Theta_{fb}))\dot{\Theta}_{fb} = \\
+  (R_{ybr} + \frac{1}{\gamma}F_{ybr}) (\cos{\Theta_{fb}}) - (R_{xbr} + \frac{1}{\gamma}F_{xbr} ) (\sin{\Theta_{fb}})
 \end{multline}
 
 \begin{align}
-  D_1 &= L_{s}\Big(\cos(\Theta_{br})\cos(\Theta_{bl}) + \sin(\Theta_{br})\sin(\Theta_{bl})\Big)\\
-  D_2 &= L_{t}\Big(\cos(\Theta_{br})\cos(\Theta_{ml}) + \sin(\Theta_{br})\sin(\Theta_{ml})\Big)\\
-  D_3 &= -L_{t}\Big(\cos(\Theta_{br})\cos(\Theta_{mr}) + \sin(\Theta_{br})\sin(\Theta_{mr})\Big)\\
+  D_1 &= L_{s}\Big(\cos(\Theta_{fb})\cos(\Theta_{bb}) + \sin(\Theta_{fb})\sin(\Theta_{bb})\Big)\\
+  D_2 &= L_{t}\Big(\cos(\Theta_{fb})\cos(\Theta_{bm}) + \sin(\Theta_{fb})\sin(\Theta_{bm})\Big)\\
+  D_3 &= -L_{t}\Big(\cos(\Theta_{fb})\cos(\Theta_{fm}) + \sin(\Theta_{fb})\sin(\Theta_{fm})\Big)\\
   D_4 &= -L_{s}\\
-  X_4 &= (R_{ybr} + \frac{1}{\gamma}F_{ybr})\cos{\Theta_{br}} - (R_{xbr} + \frac{1}{\gamma}F_{xbr})\sin(\Theta_{br})
+  X_4 &= (R_{ybr} + \frac{1}{\gamma}F_{ybr})\cos{\Theta_{fb}} - (R_{xbr} + \frac{1}{\gamma}F_{xbr})\sin(\Theta_{fb})
 \end{align}
 
 
@@ -586,10 +586,10 @@ We now have our equations in the following form:
   \end{pmatrix}
 \times
   \begin{pmatrix}
-    \Theta_{bl} \\
-    \Theta_{ml} \\
-    \Theta_{mr} \\
-    \Theta_{br} \\
+    \Theta_{bb} \\
+    \Theta_{bm} \\
+    \Theta_{fm} \\
+    \Theta_{fb} \\
   \end{pmatrix}
 =
   \begin{pmatrix}
@@ -603,14 +603,14 @@ We now have our equations in the following form:
 We use a CAS (Mathematica) to solve this equation for the angular velocities. We arrive at the following expressions, which we have broken up into numerator and denominator for legibility:
 
 \begin{align}
-\dot{\Theta}_{bl} &= \frac{N_{bl}}{D} \\
-\dot{\Theta}_{ml} &= \frac{N_{ml}}{D} \\
-\dot{\Theta}_{mr} &= \frac{N_{mr}}{D} \\
-\dot{\Theta}_{br} &= \frac{N_{br}}{D}
+\dot{\Theta}_{bb} &= \frac{N_{bb}}{D} \\
+\dot{\Theta}_{bm} &= \frac{N_{bm}}{D} \\
+\dot{\Theta}_{fm} &= \frac{N_{fm}}{D} \\
+\dot{\Theta}_{fb} &= \frac{N_{fb}}{D}
 \end{align}
 
 \begin{multline}
-N_{bl} =
+N_{bb} =
 (-B_2 C_4 D_3 X_1 + B_2 C_3 D_4 X_1 + A_4 C_3 D_2 X_2 - A_3 C_4 D_2 X_2 - A_4 C_2 D_3 X_2 + A_2 C_4 D_3 X_2 +\\
  A_3 C_2 D_4 X_2 - A_2 C_3 D_4 X_2 + A_4 B_2 D_3 X_3 - A_3 B_2 D_4 X_3 - A_4 B_2 C_3 X_4 + A_3 B_2 C_4 X_4 +\\
 B_4 (-C_3 D_2 X_1 + C_2 D_3 X_1 + A_3 D_2 X_3 - A_2 D_3 X_3 - A_3 C_2 X_4 + A_2 C_3 X_4) + B_3 (C_4 D_2 X_1 - \\
@@ -618,7 +618,7 @@ C_2 D_4 X_1 - A_4 D_2 X_3 + A_2 D_4 X_3 + A_4 C_2 X_4 - A_2 C_4 X_4)) \\
 \end{multline}
 
 \begin{multline}
-N_{ml} =
+N_{bm} =
 (B_1 C_4 D_3 X_1 - B_1 C_3 D_4 X_1 - A_4 C_3 D1 X_2 + A_3 C_4 D1 X_2 + A_4 C_1 D_3 X_2 - A_1 C_4 D_3 X_2 - \\
 A_3 C_1 D_4 X_2 + A_1 C_3 D_4 X_2 - A_4 B_1 D_3 X_3 + A_3 B_1 D_4 X_3 + A_4 B_1 C_3 X_4 - A_3 B_1 C_4 X_4 +\\
 B_4 (C_3 D1 X_1 - C_1 D_3 X_1 - A_3 D1 X_3 + A_1 D_3 X_3 + A_3 C_1 X_4 - A_1 C_3 X_4) + B_3 (-C_4 D1 X_1 + \\
@@ -626,7 +626,7 @@ C_1 D_4 X_1 + A_4 D1 X_3 - A_1 D_4 X_3 - A_4 C_1 X_4 + A_1 C_4 X_4)) \\
 \end{multline}
 
 \begin{multline}
-N_{mr} =
+N_{fm} =
 (-B_1 C_4 D_2 X_1 + B_1 C_2 D_4 X_1 + A_4 C_2 D1 X_2 - A_2 C_4 D1 X_2 - A_4 C_1 D_2 X_2 + A_1 C_4 D_2 X_2 + \\
 A_2 C_1 D_4 X_2 - A_1 C_2 D_4 X_2 + A_4 B_1 D_2 X_3 - A_2 B_1 D_4 X_3 - A_4 B_1 C_2 X_4 + A_2 B_1 C_4 X_4 +\\
 B_4 (-C_2 D1 X_1 + C_1 D_2 X_1 + A_2 D1 X_3 - A_1 D_2 X_3 - A_2 C_1 X_4 + A_1 C_2 X_4) + \\
@@ -634,7 +634,7 @@ B_2 (C_4 D1 X_1 - C_1 D_4 X_1 - A_4 D1 X_3 + A_1 D_4 X_3 + A_4 C_1 X_4 - A_1 C_4
 \end{multline}
 
 \begin{multline}
-N_{br} =
+N_{fb} =
 (B_1 C_3 D_2 X_1 - B_1 C_2 D_3 X_1 - A_3 C_2 D1 X_2 + A_2 C_3 D1 X_2 + A_3 C_1 D_2 X_2 - A_1 C_3 D_2 X_2 - \\
 A_2 C_1 D_3 X_2 + A_1 C_2 D_3 X_2 - A_3 B_1 D_2 X_3 + A_2 B_1 D_3 X_3 + A_3 B_1 C_2 X_4 - A_2 B_1 C_3 X_4 +\\
 B_3 (C_2 D1 X_1 - C_1 D_2 X_1 - A_2 D1 X_3 + A_1 D_2 X_3 + A_2 C_1 X_4 - A_1 C_2 X_4) + \\

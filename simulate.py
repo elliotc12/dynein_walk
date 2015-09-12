@@ -42,6 +42,10 @@ if (plot == "pentagon"):
     subprocess.call(["./walk", str(dt), str(runtime), ".6", ".2", ".8", ".4"])
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
+if (plot == "natural"):
+    subprocess.call(["./walk", str(dt), str(runtime), ".6", ".2", ".2", ".6"])
+    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
+
 if (plot == "foot-wiggle"):
     subprocess.call(["./walk", str(dt), str(runtime), ".6", ".2", ".8", ".7"])
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
