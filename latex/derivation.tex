@@ -9,7 +9,6 @@
 \usepackage{fullpage}
 \usepackage{verbatim}
 
-
 \title{Brownian Dynein Model}
 
 \newcommand{\mn}{\scalebox{0.7}[1.0]{-}}
@@ -78,18 +77,18 @@ This section expands the above definitions. \\
 This section shows the velocity definitions using the Brownian dynamics equation. \\
 \begin{align}  
   \dot{X}_{bb} &= 0 \\
-  \dot{X}_{bm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{ls}(X_{bm} - X_{bb}) + \lambda_{lt}(X_{t } - X_{bm}) \Big) + R_{xml} \\
-  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{lt}(X_{t } - X_{bm}) + \lambda_{rt}(X_{fm} - X_{t }) \Big) + R_{xt } \\
-  \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{rt}(X_{fm} - X_{t }) + \lambda_{rs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
-  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{rs}(X_{fb} - X_{fm})                                 \Big) + R_{xbr}
+  \dot{X}_{bm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{bm} - X_{bb}) + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml} \\
+  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{bm}) + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt } \\
+  \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{ft}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
+  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{fs}(X_{fb} - X_{fm})                                 \Big) + R_{xbr}
 \end{align}
 
 \begin{align}  
   \dot{Y}_{bb} &= 0 \\
-  \dot{Y}_{bm} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{ls}(Y_{bm} - Y_{bb}) + \lambda_{lt}(Y_{t } - Y_{bm}) \Big) + R_{yml} \\
-  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{lt}(Y_{t } - Y_{bm}) + \lambda_{rt}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
-  \dot{Y}_{fm} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{rt}(Y_{fm} - Y_{t }) + \lambda_{rs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
-  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{rs}(Y_{fb} - Y_{fm})                                 \Big) + R_{ybr}
+  \dot{Y}_{bm} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{bm} - Y_{bb}) + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml} \\
+  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{bm}) + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
+  \dot{Y}_{fm} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{ft}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
+  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{fs}(Y_{fb} - Y_{fm})                                 \Big) + R_{ybr}
 \end{align}
 
 %Unnecessary section commented out
@@ -97,17 +96,17 @@ This section shows the velocity definitions using the Brownian dynamics equation
 \section{Expanded Brownian Equations}
 
 \begin{align}
-  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
-  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } \\
-  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} \\
-  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr}
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + R_{xml} \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\
+  &L_{s}\sin(\Theta_{bb})  \dot{\Theta}_{bb} + L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr}
 \end{align}
 
 \begin{align}
-  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
-  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm}  = \frac{1}{\gamma}F_{yt } + \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } \\
-  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
-  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr}
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn \frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm}  = \frac{1}{\gamma}F_{yt } + \mn \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
+  &\mn L_{s}\cos(\Theta_{bb})  \dot{\Theta}_{bb} + \mn L_{t}\cos(\Theta_{bm})  \dot{\Theta}_{bm} + \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} + \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr}
 \end{align}
 
 
@@ -115,17 +114,17 @@ This section shows the velocity definitions using the Brownian dynamics equation
 This is the system after subtracting equations from each other to eliminate some angular velocity terms.\\
 
 \begin{align}
-  L_{s}\sin(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
-  L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{xt } - \frac{2}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } - \frac{1}{\gamma}F_{xml} - \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) - R_{xml} \\
-  L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{xmr} - \frac{2}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} - \frac{1}{\gamma}F_{xt } - \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) - R_{xt } \\
-  L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{xbr} - \frac{2}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr} - \frac{1}{\gamma}F_{xmr} - \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) - R_{xmr} 
+  L_{s}\sin(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{xml} - \frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + R_{xml} \\
+  L_{t}\sin(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{xt } - \frac{2}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } - \frac{1}{\gamma}F_{xml} - \mn\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) - R_{xml} \\
+  L_{t}\sin(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{xmr} - \frac{2}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} - \frac{1}{\gamma}F_{xt } - \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) - R_{xt } \\
+  L_{s}\sin(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{xbr} - \frac{2}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr} - \frac{1}{\gamma}F_{xmr} - \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) - R_{xmr} 
 \end{align}
 
 \begin{align}
-  \mn L_{s}\cos(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
-  \mn L_{t}\cos(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{yt } - \frac{2}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } - \frac{1}{\gamma}F_{yml} - \mn \frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) - R_{yml}\\
-  \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{ymr} - \frac{2}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} - \frac{1}{\gamma}F_{yt } - \mn \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) - R_{yt } \\
-  \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{ybr} - \frac{2}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr} - \frac{1}{\gamma}F_{ymr} - \mn \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) - R_{ymr} 
+  \mn L_{s}\cos(\Theta_{bb})      \dot{\Theta}_{bb} &= \frac{1}{\gamma}F_{yml} - \frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  \mn L_{t}\cos(\Theta_{bm})      \dot{\Theta}_{bm} &= \frac{1}{\gamma}F_{yt } - \frac{2}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } - \frac{1}{\gamma}F_{yml} - \mn \frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) - R_{yml}\\
+  \mn L_{t}\cos(\Theta_{fm}-\pi)  \dot{\Theta}_{fm} &= \frac{1}{\gamma}F_{ymr} - \frac{2}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} - \frac{1}{\gamma}F_{yt } - \mn \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) - R_{yt } \\
+  \mn L_{s}\cos(\Theta_{fb}-\pi)  \dot{\Theta}_{fb} &= \frac{1}{\gamma}F_{ybr} - \frac{2}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr} - \frac{1}{\gamma}F_{ymr} - \mn \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) - R_{ymr} 
 \end{align}
 \end{comment}
   
@@ -133,24 +132,24 @@ This is the system after subtracting equations from each other to eliminate some
 This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
 
 \begin{align}  
-  \dot{X}_{bm} &= \dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + R_{xml} \\
-  \dot{X}_{t}  &= \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + R_{xt } \\
-  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xmr} \\
-  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) + R_{xbr}
+  \dot{X}_{bm} &= \dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + R_{xml} \\
+  \dot{X}_{t}  &= \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } \\
+  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\
+  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr}
 \end{align}
 
 \begin{align}  
-  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + R_{yml} \\
-  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + R_{yt } \\
-  \dot{Y}_{fm} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
-  \dot{Y}_{fb} &= \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) + R_{ybr}
+  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } \\
+  \dot{Y}_{fm} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
+  \dot{Y}_{fb} &= \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr}
 \end{align}
 
 \section{System after Addition}
 By adding equations from our system together we can isolate the $\lambda$ values. This system has been verified via CAS.\\
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls}(X_{bm} - X_{bb}) =
+\mn\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) =
 \dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } \\
 - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
 -\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
@@ -158,28 +157,28 @@ By adding equations from our system together we can isolate the $\lambda$ values
 \end{multline}%Fix'd
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{lt}(X_{t } - X_{bm}) =
+\mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) =
 \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
 - R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Bx}
 \end{multline}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rt}(X_{fm} - X_{t }) =
+\mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) =
 \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
 + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Cx}
 \end{equation}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rs}(X_{fb} - X_{fm}) = 
+\mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) = 
 \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
 \label{eq:Dx}
 \end{equation}%Fix'd
 
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls}(Y_{bm} - Y_{bb}) =
+\mn\frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) =
 \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
 - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm}
 + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
@@ -187,21 +186,21 @@ By adding equations from our system together we can isolate the $\lambda$ values
 \end{multline}%Fix'd
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{lt}(Y_{t } - Y_{bm}) =
+\mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) =
 \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
 - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:By}
 \end{multline}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rt}(Y_{fm} - Y_{t }) =
+\mn\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) =
 \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:Cy}
 \end{equation}%Fix'd
 
 \begin{equation}
-\mn\frac{1}{\gamma}\lambda_{rs}(Y_{fb} - Y_{fm}) = \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) = \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
 \label{eq:Dy}
 \end{equation}%Fix'd
 
@@ -217,7 +216,7 @@ Our goal is to take the above system of equations and put it in matrix form:
   D_1\dot{\Theta}_{bb} + D_2 \dot{\Theta}_{bm} + D_3 \dot{\Theta}_{fm} + D_4 \dot{\Theta}_{fb} &= X_4 \\
 \end{align}
 
-This will allow us to perform a matrix solution for the angular velocities. $X_1$, $X_2$, $X_3$ and $X_4$ contain only force terms and no unknown $\lambda$s. The above system of equations has four lambda terms: $\lambda_{ls}, \lambda_{lt}, \lambda_{rt}$ and $\lambda_{ls}$. Each term is present in two equations. We will use this redundancy to eliminate the lambda terms and create the above matrix.
+This will allow us to perform a matrix solution for the angular velocities. $X_1$, $X_2$, $X_3$ and $X_4$ contain only force terms and no unknown $\lambda$s. The above system of equations has four lambda terms: $\lambda_{bs}, \lambda_{bt}, \lambda_{ft}$ and $\lambda_{bs}$. Each term is present in two equations. We will use this redundancy to eliminate the lambda terms and create the above matrix.
 
 \subsection{Solving for $A_1$, $A_2$, $A_3$, $A_4$ and $X_1$}
 In this section we take Equations (\ref{eq:Ax}) and (\ref{eq:Ay}), equate them and manipulate them to be in form $A_1\dot{\Theta}_{bb} + A_2 \dot{\Theta}_{bm} + A_3 \dot{\Theta}_{fm} + A_4 \dot{\Theta}_{fb} = X_1$\\
@@ -225,14 +224,14 @@ In this section we take Equations (\ref{eq:Ax}) and (\ref{eq:Ay}), equate them a
 We start by dividing out the position terms in Equations (\ref{eq:Ax}) and (\ref{eq:Ay}) to make their LHSs identical.
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls} =
+\mn\frac{1}{\gamma}\lambda_{bs} =
 \Big(\dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} - R_{xt } \\
 - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
 -\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big)\frac{1}{(X_{bm} - X_{bb})}
 \end{multline}
 
 \begin{multline}
-\mn\frac{1}{\gamma}\lambda_{ls} =
+\mn\frac{1}{\gamma}\lambda_{bs} =
 \Big( \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
 - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm}
 + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big)\frac{1}{(Y_{bm} - Y_{bb})}
@@ -341,7 +340,7 @@ This is the form we want. We now know the value of $A_1, A_2, A_3, A_4$ and $X_1
 Here we take Equations (\ref{eq:Bx}) and (\ref{eq:By}), equate them and manipulate them to be in form $B_1\dot{\Theta}_{bb} + B_2 \dot{\Theta}_{bm} + B_3 \dot{\Theta}_{fm} + B_4 \dot{\Theta}_{fb} = X_2$
 
 \begin{multline}
--\frac{1}{\gamma}\lambda_{lt} =
+-\frac{1}{\gamma}\lambda_{bt} =
 \Big(
 \dot{X}_{bm} + \dot{X}_{t } + \dot{X}_{fm}
 - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} 
@@ -350,7 +349,7 @@ Here we take Equations (\ref{eq:Bx}) and (\ref{eq:By}), equate them and manipula
 \end{multline}
 
 \begin{multline}
--\frac{1}{\gamma}\lambda_{lt} =
+-\frac{1}{\gamma}\lambda_{bt} =
 \Big(
 \dot{Y}_{bm} + \dot{Y}_{t } + \dot{Y}_{fm} 
 + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} 
@@ -443,12 +442,12 @@ Here we take Equations (\ref{eq:Bx}) and (\ref{eq:By}), equate them and manipula
 Here we take Equations (\ref{eq:Cx}) and (\ref{eq:Cy}), equate them and manipulate them to be in form $ C_1\dot{\Theta}_{bb} + C_2 \dot{\Theta}_{bm} + C_3 \dot{\Theta}_{fm} + C_4 \dot{\Theta}_{fb} = X_3$
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
+-\frac{1}{\gamma}\lambda_{ft} = \Big( \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
 + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}\Big) \frac{1}{(X_{fm} - X_{t })}
 \end{equation}
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rt} = \Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
+-\frac{1}{\gamma}\lambda_{ft} = \Big( \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr}
 + \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\Big) \frac{1}{(Y_{fm} - Y_{t })}
 \end{equation}
 
@@ -523,11 +522,11 @@ L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm}) + L_{t}\cos(\Theta_{fm})\dot{\Theta}_{f
 Here we take Equations (\ref{eq:Dx}) and (\ref{eq:Dy}), equate them and manipulate them to be in form $D_1\dot{\Theta}_{bb} + D_2 \dot{\Theta}_{bm} + D_3 \dot{\Theta}_{fm} + D_4 \dot{\Theta}_{fb} = X_4$.
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rs} = \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) \frac{1}{(Y_{fb} - Y_{fm})}
+-\frac{1}{\gamma}\lambda_{fs} = \big( \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}\big) \frac{1}{(Y_{fb} - Y_{fm})}
 \end{equation}
 
 \begin{equation}
--\frac{1}{\gamma}\lambda_{rs} = \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) \frac{1}{(X_{fb} - X_{fm})}
+-\frac{1}{\gamma}\lambda_{fs} = \big( \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr} \big) \frac{1}{(X_{fb} - X_{fm})}
 \end{equation}
 
 \begin{equation}
@@ -646,6 +645,161 @@ D = (A_2 B_4 C_3 D1 - A_2 B_3 C_4 D1 - A_1 B_4 C_3 D_2 + A_1 B_3 C_4 D_2 - A_2 B
 A_2 B_1 C_4 D_3 - A_1 B_2 C_4 D_3 + A_4 (B_3 C_2 D1 - B_2 C_3 D1 - B_3 C_1 D_2 + B_1 C_3 D_2 + B_2 C_1 D_3 - B_1 C_2 D_3) + \\
 A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_4 C_2 D1 + B_2 C_4 D1 + B_4 C_1 D_2 - B_1 C_4 D_2 - B_2 C_1 D_4 + B_1 C_2 D_4))
 \end{multline}
+
+\clearpage
+{\huge Bothbound Solution} \\
+We now do a similar solution for velocities in the case where both of the model's binding domains are stuck to the microtubule.
+
+
+\section{Cartesian from Angular Coordinates}
+This section lays out the definitions of the coordinates of the Dynein model. \\
+\begin{align}
+  X_{b1} &= ?? \\
+  X_{m1} &= ?? \\
+  X_{t}  &= ?? \\
+  X_{m2} &= ?? \\
+  X_{b2} &= ??
+\end{align}
+
+\begin{align}
+  Y_{b1} &= ?? \\
+  Y_{m1} &= ?? \\
+  Y_{t}  &= ?? \\
+  Y_{m2} &= ?? \\
+  Y_{b2} &= ??
+\end{align}
+
+\section{Cartesian Velocities}
+This section shows the velocity definitions. \\
+\begin{align}
+  \dot{X}_{b1} &= ?? \\
+  \dot{X}_{m1} &= ?? \\
+  \dot{X}_{t } &= ?? \\
+  \dot{X}_{m2} &= ?? \\
+  \dot{X}_{b2} &= ??
+\end{align}  
+             
+\begin{align}                                                                          
+  \dot{Y}_{b1} &= ?? \\                                                        
+  \dot{Y}_{m1} &= ?? \\
+  \dot{Y}_{t}  &= ?? \\
+  \dot{Y}_{m2} &= ?? \\
+  \dot{Y}_{b2} &= ?? \\
+\end{align}
+
+
+\section{Cartesian Velocities (expanded)}
+This section expands the above definitions. \\
+\begin{align}
+  \dot{X}_{b1} &= ?? \\
+  \dot{X}_{m1} &= ?? \\
+  \dot{X}_{t } &= ?? \\
+  \dot{X}_{m2} &= ?? \\
+  \dot{X}_{b2} &= ?? \\
+\end{align}             
+             
+\begin{align}                                                                               
+  \dot{Y}_{b1} &= ?? \\
+  \dot{Y}_{m1} &= ?? \\
+  \dot{Y}_{t}  &= ?? \\
+  \dot{Y}_{m2} &= ?? \\
+  \dot{Y}_{b2} &= ?? \\
+\end{align}
+
+
+\section{Brownian Equations}
+This section shows the velocity definitions using the Brownian dynamics equation. \\
+\begin{align}  
+  \dot{X}_{b1} &= 0 \\
+  \dot{X}_{m1} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{m1} - X_{b1}) + \lambda_{bt}(X_{t } - X_{m1}) \Big) + R_{xml} \\
+  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{m1}) + \lambda_{bt}(X_{m2} - X_{t }) \Big) + R_{xt } \\
+  \dot{X}_{m2} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{bt}(X_{m2} - X_{t }) + \lambda_{fs}(X_{b2} - X_{m2}) \Big) + R_{xmr} \\
+  \dot{X}_{b2} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{fs}(X_{b2} - X_{m2})                                 \Big) + R_{xbr}
+\end{align}
+
+\begin{align}  
+  \dot{Y}_{b1} &= 0 \\
+  \dot{Y}_{m1} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{m1} - Y_{b1}) + \lambda_{bt}(Y_{t } - Y_{m1}) \Big) + R_{yml} \\
+  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{m1}) + \lambda_{bt}(Y_{m2} - Y_{t }) \Big) + R_{yt } \\
+  \dot{Y}_{m2} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{bt}(Y_{m2} - Y_{t }) + \lambda_{fs}(Y_{b2} - Y_{m2}) \Big) + R_{ymr} \\
+  \dot{Y}_{b2} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{fs}(Y_{b2} - Y_{m2})                                 \Big) + R_{ybr}
+\end{align}
+  
+\section{System of Equations}
+This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
+
+\begin{align}  
+  \dot{X}_{m1} &= \dot{X}_{b1} + \mn L_{s}\sin(\Theta_{b1})\dot{\Theta}_{b1} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{m1} - X_{b1}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{m1}) + R_{xml} \\
+  \dot{X}_{t}  &= \dot{X}_{m1} + \mn L_{t}\sin(\Theta_{m1})\dot{\Theta}_{m1} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{m1}) + \frac{1}{\gamma}\lambda_{bt}(X_{m2} - X_{t }) + R_{xt } \\
+  \dot{X}_{m2} &= \dot{X}_{t } + L_{t}\sin(\Theta_{m2})\dot{\Theta}_{m2} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{bt}(X_{m2} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{b2} - X_{m2}) + R_{xmr} \\
+  \dot{X}_{b2} &= \dot{X}_{m2} + L_{s}\sin(\Theta_{b2})\dot{\Theta}_{b2} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{b2} - X_{m2}) + R_{xbr}
+\end{align}
+
+\begin{align}  
+  \dot{Y}_{m1} &= \dot{Y}_{b1} + L_{s}\cos(\Theta_{b1})\dot{\Theta}_{b1} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{bs}(Y_{m1} - Y_{b1}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{m1}) + R_{yml} \\
+  \dot{Y}_{t}  &= \dot{Y}_{m1} + L_{t}\cos(\Theta_{m1})\dot{\Theta}_{m1} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{m1}) + \frac{1}{\gamma}\lambda_{bt}(Y_{m2} - Y_{t }) + R_{yt } \\
+  \dot{Y}_{m2} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{m2})\dot{\Theta}_{m2} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{m2} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{b2} - Y_{m2}) + R_{ymr} \\
+  \dot{Y}_{b2} &= \dot{Y}_{m2} + \mn L_{s}\cos(\Theta_{b2})\dot{\Theta}_{b2} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{b2} - Y_{m2}) + R_{ybr}
+\end{align}
+
+\section{System after Addition}
+By adding equations from our system together we can isolate the $\lambda$ values. This system has been verified via CAS.\\
+
+\begin{multline}
+\mn\frac{1}{\gamma}\lambda_{bs}(X_{m1} - X_{b1}) =
+\dot{X}_{b1} + \mn L_{s}\sin(\Theta_{b1})\dot{\Theta}_{b1} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{m1} + \mn L_{t}\sin(\Theta_{m1})\dot{\Theta}_{m1} - R_{xt } \\
+- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{m2})\dot{\Theta}_{m2} - R_{xmr}
+-\frac{1}{\gamma}F_{xmr} + \dot{X}_{m2} + L_{s}\sin(\Theta_{b2})\dot{\Theta}_{b2} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\label{eq:Ax}
+\end{multline}%Fix'd
+
+\begin{multline}
+\mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{m1}) =
+\dot{X}_{m1} + \mn L_{t}\sin(\Theta_{m1})\dot{\Theta}_{m1} - R_{xt } - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{m2})\dot{\Theta}_{m2} \\
+- R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{m2} + L_{s}\sin(\Theta_{b2})\dot{\Theta}_{b2} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\label{eq:Bx}
+\end{multline}%Fix'd
+
+\begin{equation}
+\mn\frac{1}{\gamma}\lambda_{bt}(X_{m2} - X_{t }) =
+\dot{X}_{t } + L_{t}\sin(\Theta_{m2})\dot{\Theta}_{m2} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
++ \dot{X}_{m2} + L_{s}\sin(\Theta_{b2})\dot{\Theta}_{b2} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\label{eq:Cx}
+\end{equation}%Fix'd
+
+\begin{equation}
+\mn\frac{1}{\gamma}\lambda_{fs}(X_{b2} - X_{m2}) = 
+\dot{X}_{m2} + L_{s}\sin(\Theta_{b2})\dot{\Theta}_{b2} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
+\label{eq:Dx}
+\end{equation}%Fix'd
+
+
+\begin{multline}
+\mn\frac{1}{\gamma}\lambda_{bs}(Y_{m1} - Y_{b1}) =
+\dot{Y}_{b1} + L_{s}\cos(\Theta_{b1})\dot{\Theta}_{b1} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{m1} + L_{t}\cos(\Theta_{m1})\dot{\Theta}_{m1} \\
+- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{m2})\dot{\Theta}_{m2} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{m2}
++ \mn L_{s}\cos(\Theta_{b2})\dot{\Theta}_{b2} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\label{eq:Ay}
+\end{multline}%Fix'd
+
+\begin{multline}
+\mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{m1}) =
+\dot{Y}_{m1} + L_{t}\cos(\Theta_{m1})\dot{\Theta}_{m1} - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{m2})\dot{\Theta}_{m2} \\
+- R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{m2} + \mn L_{s}\cos(\Theta_{b2})\dot{\Theta}_{b2} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\label{eq:By}
+\end{multline}%Fix'd
+
+\begin{equation}
+\mn\frac{1}{\gamma}\lambda_{bt}(Y_{m2} - Y_{t }) =
+\dot{Y}_{t } + \mn L_{t}\cos(\Theta_{m2})\dot{\Theta}_{m2} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{m2} + \mn L_{s}\cos(\Theta_{b2})\dot{\Theta}_{b2}
+- R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\label{eq:Cy}
+\end{equation}%Fix'd
+
+\begin{equation}
+\mn\frac{1}{\gamma}\lambda_{fs}(Y_{b2} - Y_{m2}) = \dot{Y}_{m2} + \mn L_{s}\cos(\Theta_{b2})\dot{\Theta}_{b2} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
+\label{eq:Dy}
+\end{equation}%Fix'd
 
 \begin{twocolumn}
 \section{Notes on physical parameters}
