@@ -654,58 +654,38 @@ We now do a similar solution for velocities in the case where both of the model'
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
-  X_{b1} &= ?? \\
-  X_{m1} &= ?? \\
+  X_{b1} &= 0 \\
+  X_{m1} &= L_{s}*\cos(\Theta_{b1}) \\
   X_{t}  &= ?? \\
-  X_{m2} &= ?? \\
-  X_{b2} &= ??
+  X_{m2} &= L_{s}*\cos(\Theta_{b2}) \\
+  X_{b2} &= L \\
 \end{align}
 
 \begin{align}
-  Y_{b1} &= ?? \\
-  Y_{m1} &= ?? \\
+  Y_{b1} &= 0 \\
+  Y_{m1} &= L_{s}*\sin(\Theta_{b1}) \\
   Y_{t}  &= ?? \\
-  Y_{m2} &= ?? \\
-  Y_{b2} &= ??
+  Y_{m2} &= L_{s}*\sin(\Theta_{b2}) \\
+  Y_{b2} &= 0
 \end{align}
 
 \section{Cartesian Velocities}
 This section shows the velocity definitions. \\
 \begin{align}
-  \dot{X}_{b1} &= ?? \\
-  \dot{X}_{m1} &= ?? \\
+  \dot{X}_{b1} &= 0 \\
+  \dot{X}_{m1} &= -L_{s}*\sin(\Theta_{b1})*\dot{\Theta}_{b1} \\
   \dot{X}_{t } &= ?? \\
-  \dot{X}_{m2} &= ?? \\
-  \dot{X}_{b2} &= ??
+  \dot{X}_{m2} &= -L_{s}*\sin(\Theta_{b2})*\dot{\Theta}_{b2} \\
+  \dot{X}_{b2} &= 0
 \end{align}  
              
 \begin{align}                                                                          
-  \dot{Y}_{b1} &= ?? \\                                                        
-  \dot{Y}_{m1} &= ?? \\
+  \dot{Y}_{b1} &= 0 \\                                         
+  \dot{Y}_{m1} &= L_{s}*\cos(\Theta_{b1})*\dot{\Theta}_{b1} \\
   \dot{Y}_{t}  &= ?? \\
-  \dot{Y}_{m2} &= ?? \\
-  \dot{Y}_{b2} &= ?? \\
+  \dot{Y}_{m2} &= L_{s}*\cos(\Theta_{b2})*\dot{\Theta}_{b2} \\
+  \dot{Y}_{b2} &= 0 \\
 \end{align}
-
-
-\section{Cartesian Velocities (expanded)}
-This section expands the above definitions. \\
-\begin{align}
-  \dot{X}_{b1} &= ?? \\
-  \dot{X}_{m1} &= ?? \\
-  \dot{X}_{t } &= ?? \\
-  \dot{X}_{m2} &= ?? \\
-  \dot{X}_{b2} &= ?? \\
-\end{align}             
-             
-\begin{align}                                                                               
-  \dot{Y}_{b1} &= ?? \\
-  \dot{Y}_{m1} &= ?? \\
-  \dot{Y}_{t}  &= ?? \\
-  \dot{Y}_{m2} &= ?? \\
-  \dot{Y}_{b2} &= ?? \\
-\end{align}
-
 
 \section{Brownian Equations}
 This section shows the velocity definitions using the Brownian dynamics equation. \\
