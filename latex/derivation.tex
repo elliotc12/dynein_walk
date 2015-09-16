@@ -650,6 +650,43 @@ A_2 B_3 C_1 D_4 - A_1 B_3 C_2 D_4 - A_2 B_1 C_3 D_4 + A_1 B_2 C_3 D_4 + A_3 (-B_
 {\huge Bothbound Solution} \\
 We now do a similar solution for velocities in the case where both of the model's binding domains are stuck to the microtubule.
 
+\begin{figure}[h!]
+  \caption{Key lengths and angles in bothbound dynein model.}
+  \centering
+    \includegraphics[width=0.7\textwidth]{../figures/bothbound_model.png}
+\end{figure}
+
+\section{Cartesian Coordinate Derivation}
+
+By the law of cosines:
+\begin{align}
+  L_n &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})}\\
+  L_f &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{fm})}\\
+\end{align}
+
+Also by the law of cosines, we see that:
+\begin{align}
+  \Theta_{1} &= \cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg) \\
+  \Theta_{2} &= \cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg) \\
+\end{align}
+
+We use these equations to solve for our nm (near motor) coordinates:
+
+\begin{align}
+  X_{nm} &= L_{s}*\cos(\Theta_{1}+\Theta_{2}) =
+     L_{s}*\cos\Bigg(\cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)
+     + \cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)\Bigg) \\
+  Y_{nm} &= L_{s}*\sin(\Theta_{1}+\Theta_{2}) =
+     L_{s}*\sin\Bigg(\cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)
+     + \cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)\Bigg) \\
+\end{align}
+
+We then use the trigonometric rules $$\cos\Big(cos^{-1}(a)+cos^{-1}(b)\Big) = ab - \sqrt{1-a^2}\sqrt{1-b^2}$$ and $$\sin\Big(cos^{-1}(a)+cos^{-1}(b)\Big) = \sqrt{1-a^2}b+a\sqrt{1-b^2}$$ to simplify our expressions:
+
+\begin{align}
+  X_{nm} &= L_{s}*((\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}})(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}) - \sqrt{1-(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}})^2}\sqrt{1-(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}})^2}) \\
+  Y_{nm} &= L_{s}*(\sqrt{1-(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}})^2}(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}})+(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}})\sqrt{1-(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}})^2}) \\
+\end{align}
 
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
