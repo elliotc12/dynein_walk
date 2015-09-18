@@ -21,6 +21,9 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   double temp_fba;
   
   while( t < tf ) {
+    if (dyn->get_fbx() < 0.1) {
+      dyn->switch_near_far_state();
+    }
     
     dyn->update_velocities();
     

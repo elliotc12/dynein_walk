@@ -59,7 +59,7 @@ const equilibrium_angles pre_powerstroke_rightbound_internal_angles = {
   (108.0 / 180) * M_PI
 };
 
-/* ******************************** DYNEIN CLASS DEFINITION *************************************** */
+/* ******************************** DYNEIN CLASS DEFINITION ************************************* */
 
 class Dynein {
 public:
@@ -116,6 +116,8 @@ public:
   forces get_internal();
   forces get_brownian();
 
+  void switch_near_far_state();
+
   double get_PE();
   double get_KE();
 
@@ -129,6 +131,9 @@ private:
   void update_brownian_forces();
   void update_internal_forces();
 
+  void update_velocities_onebound();
+  void update_velocities_bothbound();
+  
   MTRand rand;
 
   equilibrium_angles eq;

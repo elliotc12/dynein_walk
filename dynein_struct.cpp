@@ -124,7 +124,34 @@ void Dynein::set_state(State s) {
 }
 
 void Dynein::update_velocities() {
+
+  update_internal_forces();
+  update_brownian_forces();
+
+  if (state == LEFTBOUND || state == RIGHTBOUND) {
+    update_velocities_onebound();
+  }
+}
+
+void Dynein::switch_near_far_state() {
+
+  printf("I'm switching states.\n");
   
+  double temp_bba = bba;
+  double temp_bma = bma;
+  double temp_fma = fma;
+  double temp_fba = fba;
+
+  bba = temp_fba;
+  bma = temp_fma;
+  fma = temp_bma;
+  fba = temp_bba;
+
+  if (state == LEFTBOUND) state = RIGHTBOUND;
+  else state = LEFTBOUND;
+}
+
+void Dynein::update_velocities_onebound() {
   float A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
   float B1, B2, B3, B4;
   float C1, C2, C3, C4;
@@ -132,10 +159,7 @@ void Dynein::update_velocities() {
   float X1, X2, X3, X4;
   float Nbb, Nml, Nmr, Nbr;
   float D;
-
-  update_internal_forces();
-  update_brownian_forces();
-
+  
   A1 = -4*ls;
   A2 = -3*lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
   A3 = 2*lt*(sin(fma)*sin(bba) + cos(fma)*cos(bba));
@@ -183,6 +207,10 @@ void Dynein::update_velocities() {
   d_bma = Nml/D;
   d_fma = Nmr/D;
   d_fba = Nbr/D;
+}
+
+void Dynein::update_velocities_bothbound() {
+  // To be implemented
 }
 
 /*** Set positions, velocities and forces ***/
