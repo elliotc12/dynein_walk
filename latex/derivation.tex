@@ -688,6 +688,29 @@ We then use the trigonometric rules $$\cos\Big(cos^{-1}(a)+cos^{-1}(b)\Big) = ab
   Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}+\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
 \end{align}
 
+Also by the law of cosines, we can see that:
+
+\begin{equation}
+   \Theta_{1} = \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})
+\end{equation}
+
+We use this to find the value of $X_{t}$ and $Y_{t}$:
+
+\begin{align}
+  X_{t} &= L_n\cos(\Theta_{1}) \\
+       &= \frac{L^2+L_n^2-L_f^2}{2L} \\
+       &= \frac{L^2 + L_s^2 + L_t^2 - 2L_tL_s\cos(\Theta_{nm}) - L_s^2 - L_t^2 + 2L_sL_t\cos(\Theta_{fm})}{2L} \\
+       &= \frac{L^2 + 2L_tL_s\big(\cos(\Theta_{fm})-\cos(\Theta_{nm})\big)}{2L}
+\end{align}
+
+and
+
+\begin{align}
+  Y_{t} &= L_n\sin(\Theta_{1}) \\
+        &=
+\end{align}
+
+This is getting ugly and complicated. I will not do it. I will do it when I need to. \\
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
@@ -727,25 +750,25 @@ This section shows the velocity definitions. \\
 \section{Brownian Equations}
 This section shows the velocity definitions using the Brownian dynamics equation. \\
 \begin{align}  
-  \dot{X}_{nb} &= 0 \\
+  \dot{X}_{nb} &= \frac{1}{\gamma} \Big(F_{xnb} + \lambda_{fs}(X_{nm} - X_{nb})\Big) + R_{xnb} \\
   \dot{X}_{nm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{nm} - X_{nb}) + \lambda_{bt}(X_{t } - X_{nm}) \Big) + R_{xml} \\
   \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{nm}) + \lambda_{bt}(X_{fm} - X_{t }) \Big) + R_{xt } \\
   \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{bt}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
-  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{fs}(X_{fb} - X_{fm})                                 \Big) + R_{xbr}
+  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{fs}(X_{fb} - X_{fm})\Big) + R_{xbr}
 \end{align}
 
 \begin{align}  
-  \dot{Y}_{nb} &= 0 \\
+  \dot{Y}_{nb} &= \frac{1}{\gamma} \Big(F_{ynb} + \lambda_{fs}(Y_{nm} - Y_{nb})\Big) + R_{ynb} \\
   \dot{Y}_{nm} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{nm} - Y_{nb}) + \lambda_{bt}(Y_{t } - Y_{nm}) \Big) + R_{yml} \\
   \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{nm}) + \lambda_{bt}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
   \dot{Y}_{fm} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{bt}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
-  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{fs}(Y_{fb} - Y_{fm})                                 \Big) + R_{ybr}
+  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{fs}(Y_{fb} - Y_{fm})\Big) + R_{ybr}
 \end{align}
   
 \section{System of Equations}
 This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
 
-\begin{align}  
+\begin{align}
   \dot{X}_{nm} &= \dot{X}_{nb} + \mn L_{s}\sin(\Theta_{nb})\dot{\Theta}_{nb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{nm} - X_{nb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{nm}) + R_{xml} \\
   \dot{X}_{t}  &= \dot{X}_{nm} + \mn L_{t}\sin(\Theta_{nm})\dot{\Theta}_{nm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{nm}) + \frac{1}{\gamma}\lambda_{bt}(X_{fm} - X_{t }) + R_{xt } \\
   \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{bt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\

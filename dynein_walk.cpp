@@ -19,27 +19,8 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   double temp_bma;
   double temp_fma;
   double temp_fba;
-
-  srand(time(NULL));
   
   while( t < tf ) {
-
-    if (std::abs(dyn->get_fby()) < 0.1 && rand() % 2 == 0) {
-      double temp_fbx = dyn->get_fbx();
-      double temp_fby = dyn->get_fby();
-      double temp_bba = dyn->get_bba();
-      double temp_bma = dyn->get_bma();
-      double temp_fma = dyn->get_fma();
-      double temp_fba = dyn->get_fba();
-      dyn->set_bbx(temp_fbx);
-      dyn->set_bby(temp_fby);
-      dyn->set_bba(temp_fba);
-      dyn->set_bma(temp_fma);
-      dyn->set_fma(temp_bma);
-      dyn->set_fba(temp_bba);
-      if (dyn->get_state() == LEFTBOUND) dyn->set_state(RIGHTBOUND);
-      else dyn->set_state(LEFTBOUND);
-    }
     
     dyn->update_velocities();
     
