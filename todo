@@ -29,6 +29,8 @@ Things to do:
     say one binding angle for now and keep things symmetric.  We also
     need a stiffness here ("ankle strength").
 
+* Rebound force if points contact MT?
+
 Eventually:
 
 * Support stepping and walking...

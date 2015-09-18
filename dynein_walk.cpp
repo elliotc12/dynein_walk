@@ -19,10 +19,16 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   double temp_bma;
   double temp_fma;
   double temp_fba;
+
+  srand(time(NULL));
   
   while( t < tf ) {
-    if (dyn->get_fbx() < 0.1) {
-      dyn->switch_near_far_state();
+    if (fabs(dyn->get_fbx()) < 0.1) {
+      if ((rand() % 100) / 100.0 < dyn->get_binding_probability()) {
+	dyn->switch_near_far_state();
+      } else if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
+	dyn->unbind();
+      }
     }
     
     dyn->update_velocities();

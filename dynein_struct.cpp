@@ -124,7 +124,6 @@ void Dynein::set_state(State s) {
 }
 
 void Dynein::update_velocities() {
-
   update_internal_forces();
   update_brownian_forces();
 
@@ -149,6 +148,10 @@ void Dynein::switch_near_far_state() {
 
   if (state == LEFTBOUND) state = RIGHTBOUND;
   else state = LEFTBOUND;
+}
+
+void Dynein::unbind() {
+  state = UNBOUND;
 }
 
 void Dynein::update_velocities_onebound() {
@@ -211,6 +214,14 @@ void Dynein::update_velocities_onebound() {
 
 void Dynein::update_velocities_bothbound() {
   // To be implemented
+}
+
+double Dynein::get_binding_probability() {
+  return 0.0;
+}
+
+double Dynein::get_unbinding_probability() {
+  return 0.0;
 }
 
 /*** Set positions, velocities and forces ***/

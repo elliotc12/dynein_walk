@@ -28,7 +28,8 @@ typedef enum
 {
   LEFTBOUND,
   RIGHTBOUND,
-  BOTHBOUND
+  BOTHBOUND,
+  UNBOUND
 } State;
 
 typedef struct
@@ -117,6 +118,10 @@ public:
   forces get_brownian();
 
   void switch_near_far_state();
+  void unbind();
+
+  double get_binding_probability();
+  double get_unbinding_probability();
 
   double get_PE();
   double get_KE();
