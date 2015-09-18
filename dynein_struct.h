@@ -18,6 +18,8 @@ const double cb = 2;   // Newtons
 
 const double inctime = 0.1;
 
+const double UNBINDING_FORCE = 1.75;
+
 typedef enum
 {
   PRE_POWERSTROKE,

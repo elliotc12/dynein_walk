@@ -23,6 +23,8 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   srand(time(NULL));
   
   while( t < tf ) {
+    dyn->get_unbinding_probability();
+    
     if (fabs(dyn->get_fbx()) < 0.1) {
       if ((rand() % 100) / 100.0 < dyn->get_binding_probability()) {
 	dyn->switch_near_far_state();

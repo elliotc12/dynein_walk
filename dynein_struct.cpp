@@ -45,9 +45,6 @@ void Dynein::update_brownian_forces() {
     rand.gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
     rand.gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
     rand.gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
-
-    r.bbx = 0;
-    r.bby = 0;
   }
 }
 
@@ -113,9 +110,6 @@ void Dynein::update_internal_forces() {
     f.fby += f2y;
     f.fmx += -(f1x + f2x);
     f.fmy += -(f1y + f2y);
-
-    f.bbx = 0;
-    f.bby = 0;
   }
 }
 
@@ -217,11 +211,13 @@ void Dynein::update_velocities_bothbound() {
 }
 
 double Dynein::get_binding_probability() {
-  return 0.0;
+  return 0.1;
 }
 
 double Dynein::get_unbinding_probability() {
-  return 0.0;
+  if (f.bby + r.bby >= UNBINDING_FORCE) {
+      return 1.0;
+  } else return 0.0;
 }
 
 /*** Set positions, velocities and forces ***/
