@@ -41,10 +41,10 @@ int main() {
 
   //runtime = 1*runtime;
 
-  double bba_eq = pre_powerstroke_leftbound_internal_angles.bba;
-  double ba_eq  = pre_powerstroke_leftbound_internal_angles.ba;
-  double ta_eq  = pre_powerstroke_leftbound_internal_angles.ta;
-  double fa_eq  = pre_powerstroke_leftbound_internal_angles.fa;
+  double bba_eq = pre_powerstroke_nearbound_internal_angles.bba;
+  double ba_eq  = pre_powerstroke_nearbound_internal_angles.ba;
+  double ta_eq  = pre_powerstroke_nearbound_internal_angles.ta;
+  double fa_eq  = pre_powerstroke_nearbound_internal_angles.fa;
   
   forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
   forces right_forces = {1,0,1,0,1,0,1,0,1,0};
@@ -57,7 +57,7 @@ int main() {
                              bba_eq + ba_eq - M_PI,                            // starting bma
                              bba_eq + ba_eq - M_PI + ta_eq,                    // starting fma
                              bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,     // starting fba
-			     LEFTBOUND,                                        // starting state
+			     NEARBOUND,                                        // starting state
 			     &no_forces,                         // optional specified internal forces
 			     &no_forces,                         // optional specified brownian forces
 		             (equilibrium_angles*) NULL);        // optional specified equilibrium angles
@@ -85,7 +85,7 @@ int main() {
                              (90.0 / 180) * M_PI,
                              -(90.0 / 180) * M_PI,
                              -(90.0 / 180) * M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &no_forces,
 			     NULL);
@@ -125,7 +125,7 @@ int main() {
                              (0.0 / 180) * M_PI,
                              -(180.0 / 180) * M_PI,
                              -(180.0 / 180) * M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &no_forces,
 			     NULL);
@@ -161,7 +161,7 @@ int main() {
   
   {
     Dynein* dyn = new Dynein(0.5*M_PI, 0.5*M_PI, 0.5*M_PI, 0.5*M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &right_forces,
 			     NULL);
@@ -185,7 +185,7 @@ int main() {
 
   {
     Dynein* dyn = new Dynein(0.5*M_PI, 0.5*M_PI, 0.5*M_PI, 0.5*M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &up_forces,
 			     NULL);
@@ -209,7 +209,7 @@ int main() {
 
   {
     Dynein* dyn = new Dynein(0, 0, 0, 0,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &right_forces,
 			     NULL);
@@ -234,7 +234,7 @@ int main() {
 
   {
     Dynein* dyn = new Dynein(0, 0, 0, 0,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &up_forces,
 			     NULL);
@@ -261,7 +261,7 @@ int main() {
                              bba_eq + ba_eq - M_PI,
                              bba_eq + ba_eq - M_PI + ta_eq,
                              bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
-                             LEFTBOUND,
+                             NEARBOUND,
 			     NULL,
 			     &no_forces,
 			     NULL);
@@ -300,7 +300,7 @@ int main() {
                              (36.0 / 180) * M_PI,
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &no_forces,
 			     &right_forces,
 			     NULL);
@@ -320,7 +320,7 @@ int main() {
                              (36.0 / 180) * M_PI,
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
-			     LEFTBOUND,
+			     NEARBOUND,
 			     &left_forces,
 			     &no_forces,
 			     NULL);
@@ -340,7 +340,7 @@ int main() {
                              (36.0 / 180) * M_PI,
                              (144.0 / 180) * M_PI,
                              (72.0 / 180) * M_PI,
-  			     LEFTBOUND,
+  			     NEARBOUND,
   			     NULL,
 			     &no_forces,
 			     NULL);

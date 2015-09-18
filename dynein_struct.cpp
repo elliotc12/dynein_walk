@@ -26,11 +26,11 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   if (eq_angles) {
      eq = *eq_angles; 
   }
-  else if (state == LEFTBOUND) {
-    eq = pre_powerstroke_leftbound_internal_angles;
+  else if (state == NEARBOUND) {
+    eq = pre_powerstroke_nearbound_internal_angles;
   }
-  else if (state == RIGHTBOUND) {
-    eq = pre_powerstroke_rightbound_internal_angles;
+  else if (state == FARBOUND) {
+    eq = pre_powerstroke_farbound_internal_angles;
   }
 
   update_velocities();
@@ -121,7 +121,7 @@ void Dynein::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  if (state == LEFTBOUND || state == RIGHTBOUND) {
+  if (state == NEARBOUND || state == FARBOUND) {
     update_velocities_onebound();
   }
 }
@@ -140,8 +140,8 @@ void Dynein::switch_near_far_state() {
   fma = temp_bma;
   fba = temp_bba;
 
-  if (state == LEFTBOUND) state = RIGHTBOUND;
-  else state = LEFTBOUND;
+  if (state == NEARBOUND) state = FARBOUND;
+  else state = NEARBOUND;
 }
 
 void Dynein::unbind() {

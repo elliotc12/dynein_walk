@@ -28,8 +28,8 @@ typedef enum
 
 typedef enum
 {
-  LEFTBOUND,
-  RIGHTBOUND,
+  NEARBOUND,
+  FARBOUND,
   BOTHBOUND,
   UNBOUND
 } State;
@@ -48,17 +48,17 @@ typedef struct
   double bba, ba, ta, fa;
 } equilibrium_angles;
 
-const equilibrium_angles pre_powerstroke_leftbound_internal_angles = {
+const equilibrium_angles pre_powerstroke_nearbound_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
-  (252.0 / 180) * M_PI
+  (108.0 / 180) * M_PI
 };
 
-const equilibrium_angles pre_powerstroke_rightbound_internal_angles = {
-  (72.0 / 180) * M_PI,
-  (252.0 / 180) * M_PI,
-  (252.0 / 180) * M_PI,
+const equilibrium_angles pre_powerstroke_farbound_internal_angles = {
+  (108.0 / 180) * M_PI,
+  (108.0 / 180) * M_PI,
+  (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI
 };
 

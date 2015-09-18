@@ -69,7 +69,7 @@ int main(int argvc, char **argv) {
   double fba_init = strtod(argv[6], NULL) * M_PI;
   
   Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
-			   RIGHTBOUND,                             // Initial state
+			   FARBOUND,                               // Initial state
 			   NULL,                                   // Optional custom internal forces
 			   NULL,                                   // Optional custom brownian forces
 			   NULL);                                  // Optional custom equilibrium angles
