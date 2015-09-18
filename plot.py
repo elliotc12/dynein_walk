@@ -35,6 +35,10 @@ ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-40,40)
 ax.set_ylim(-40,40)
+
+microtubule = plt.plot([-40, 40], [-2, -2])
+plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
+
 line1, = plt.plot(X, Y)
 line2, = plt.plot([X[0]], [Y[0]], 'ro')
 line3, = plt.plot([X[1]], [Y[1]], 'bo')
