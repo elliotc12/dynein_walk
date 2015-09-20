@@ -13,7 +13,7 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   bbx = 0;
   bby = 0;
   mode = PRE_POWERSTROKE;
-  
+
   bba = bba_init;
   bma = bma_init;
   fma = fma_init;
@@ -25,11 +25,9 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   
   if (eq_angles) {
      eq = *eq_angles; 
-  }
-  else if (state == NEARBOUND) {
+  } else if (state == NEARBOUND) {
     eq = pre_powerstroke_nearbound_internal_angles;
-  }
-  else if (state == FARBOUND) {
+  } else if (state == FARBOUND) {
     eq = pre_powerstroke_farbound_internal_angles;
   }
 
@@ -110,11 +108,11 @@ void Dynein::update_internal_forces() {
     f.fby += f2y;
     f.fmx += -(f1x + f2x);
     f.fmy += -(f1y + f2y);
-
-    if (get_bmy() <= 0) f.bmy += MICROTUBULE_REPULSION_FORCE;
-    if (get_ty()  <= 0) f.ty  += MICROTUBULE_REPULSION_FORCE;
-    if (get_fmy() <= 0) f.fmy += MICROTUBULE_REPULSION_FORCE;
-    if (get_fby() <= 0) f.fby += MICROTUBULE_REPULSION_FORCE;    
+    
+    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE;
+    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE;
+    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE;
+    if (get_fby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE;
   }
 }
 

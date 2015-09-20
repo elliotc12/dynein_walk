@@ -344,7 +344,7 @@ int main() {
 			     &no_forces,
 			     NULL);
 
-    printf("Test: Dynein pentagon conformation, internal forces, no Brownian forces.\n");
+    printf("\nTest: Dynein pentagon conformation, internal forces, no Brownian forces.\n");
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
     num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
     num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
