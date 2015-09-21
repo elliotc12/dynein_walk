@@ -110,6 +110,11 @@ void Dynein::update_internal_forces() {
     f.fby += f2y;
     f.fmx += -(f1x + f2x);
     f.fmy += -(f1y + f2y);
+
+    if (get_bmy() <= 0) f.bmy += MICROTUBULE_REPULSION_FORCE;
+    if (get_ty()  <= 0) f.ty  += MICROTUBULE_REPULSION_FORCE;
+    if (get_fmy() <= 0) f.fmy += MICROTUBULE_REPULSION_FORCE;
+    if (get_fby() <= 0) f.fby += MICROTUBULE_REPULSION_FORCE;    
   }
 }
 
@@ -127,9 +132,6 @@ void Dynein::update_velocities() {
 }
 
 void Dynein::switch_near_far_state() {
-
-  printf("I'm switching states.\n");
-  
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;

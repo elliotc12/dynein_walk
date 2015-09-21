@@ -23,7 +23,9 @@ test: dynein_test.o dynein_struct.o utilities.o
 
 plot: walk
 	@echo "Run ./simulate.py slow/normal/fast/veryfast short/normal/long/verylong pentagon/foot-wiggle/mega-wiggle/natural [loop] to animate"
-#Eventually add better way for simulate to run stuff here
+
+defaultplot: walk
+	./simulate.py veryfast verylong natural loop
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..

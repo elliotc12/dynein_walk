@@ -2,7 +2,7 @@
 #include "MersenneTwister.h"
 
 const double kb = 1.3806e-5; // nm^2 * kg / s^2 * K
-const double T = 290.0; // K
+const double T = 10.0; // K
 
 const double lt = 5.0;   // nm, guess - not sure how DNA tail-bridge works
 const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
@@ -18,7 +18,9 @@ const double cb = 2;   // Newtons
 
 const double inctime = 0.1;
 
-const double UNBINDING_FORCE = 1.75;
+const double UNBINDING_FORCE = 1.75; // N
+
+const double MICROTUBULE_REPULSION_FORCE = 10.0; // N
 
 typedef enum
 {
@@ -51,14 +53,14 @@ typedef struct
 const equilibrium_angles pre_powerstroke_nearbound_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
-  (108.0 / 180) * M_PI,
+  0,
   (108.0 / 180) * M_PI
 };
 
 const equilibrium_angles pre_powerstroke_farbound_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
-  (108.0 / 180) * M_PI,
+  0,
   (108.0 / 180) * M_PI
 };
 

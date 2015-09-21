@@ -70,9 +70,9 @@ int main(int argvc, char **argv) {
   
   Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
 			   FARBOUND,                               // Initial state
-			   NULL,                                   // Optional custom internal forces
-			   NULL,                                   // Optional custom brownian forces
-			   NULL);                                  // Optional custom equilibrium angles
+			   NULL,                               // Optional custom internal forces
+			   NULL,                               // Optional custom brownian forces
+			   NULL);                              // Optional custom equilibrium angles
   
   dyn->resetLog();
   simulateProtein(dyn, dt, runtime);

@@ -37,10 +37,6 @@ int test_noteq(const char *msg, float one, float two) {
 }
 
 int main() {
-  // Dynein in normal pentagon conformation, check if velocities agree with definitions.
-
-  //runtime = 1*runtime;
-
   double bba_eq = pre_powerstroke_nearbound_internal_angles.bba;
   double ba_eq  = pre_powerstroke_nearbound_internal_angles.ba;
   double ta_eq  = pre_powerstroke_nearbound_internal_angles.ta;
@@ -58,9 +54,12 @@ int main() {
                              bba_eq + ba_eq - M_PI + ta_eq,                    // starting fma
                              bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,     // starting fba
 			     NEARBOUND,                                        // starting state
-			     &no_forces,                         // optional specified internal forces
-			     &no_forces,                         // optional specified brownian forces
-		             (equilibrium_angles*) NULL);        // optional specified equilibrium angles
+			     &no_forces,                    // optional specified internal forces
+			     &no_forces,                    // optional specified brownian forces
+		             (equilibrium_angles*) NULL);   // optional specified equilibrium angles
+
+
+    // Dynein in normal pentagon conformation, check if velocities agree with definitions.
 
     printf("Test: Dynein pentagon conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
@@ -296,10 +295,10 @@ int main() {
   }
 
   {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
+    Dynein* dyn = new Dynein(bba_eq,
+                             bba_eq + ba_eq - M_PI,
+                             bba_eq + ba_eq - M_PI + ta_eq,
+                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
 			     NEARBOUND,
 			     &no_forces,
 			     &right_forces,
@@ -316,10 +315,10 @@ int main() {
   }
   
   {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
+    Dynein* dyn = new Dynein(bba_eq,
+                             bba_eq + ba_eq - M_PI,
+                             bba_eq + ba_eq - M_PI + ta_eq,
+                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
 			     NEARBOUND,
 			     &left_forces,
 			     &no_forces,
@@ -336,10 +335,10 @@ int main() {
   }
   
   {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
+    Dynein* dyn = new Dynein(bba_eq,
+                             bba_eq + ba_eq - M_PI,
+                             bba_eq + ba_eq - M_PI + ta_eq,
+                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
   			     NEARBOUND,
   			     NULL,
 			     &no_forces,
