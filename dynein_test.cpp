@@ -37,14 +37,10 @@ int test_noteq(const char *msg, float one, float two) {
 }
 
 int main() {
-  // Dynein in normal pentagon conformation, check if velocities agree with definitions.
-
-  //runtime = 1*runtime;
-
-  double bba_eq = pre_powerstroke_nearbound_internal_angles.bba;
-  double ba_eq  = pre_powerstroke_nearbound_internal_angles.ba;
-  double ta_eq  = pre_powerstroke_nearbound_internal_angles.ta;
-  double fa_eq  = pre_powerstroke_nearbound_internal_angles.fa;
+  double bba_eq = bothbound_pre_powerstroke_internal_angles.bba;
+  double ba_eq  = bothbound_pre_powerstroke_internal_angles.ba;
+  double ta_eq  = bothbound_pre_powerstroke_internal_angles.ta;
+  double fa_eq  = bothbound_pre_powerstroke_internal_angles.fa;
   
   forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
   forces right_forces = {1,0,1,0,1,0,1,0,1,0};
@@ -58,11 +54,14 @@ int main() {
                              bba_eq + ba_eq - M_PI + ta_eq,                    // starting fma
                              bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,     // starting fba
 			     NEARBOUND,                                        // starting state
-			     &no_forces,                         // optional specified internal forces
-			     &no_forces,                         // optional specified brownian forces
-		             (equilibrium_angles*) NULL);        // optional specified equilibrium angles
+			     &no_forces,                    // optional specified internal forces
+			     &no_forces,                    // optional specified brownian forces
+		             (equilibrium_angles*) NULL);   // optional specified equilibrium angles
 
-    printf("Test: Dynein pentagon conformation, no internal forces, no Brownian forces.\n");
+
+    // Dynein in normal prepowerstroke conformation, check if velocities agree with definitions.
+
+    printf("Test: Dynein prepowerstroke conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
     num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
     num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
@@ -256,56 +255,56 @@ int main() {
     free(dyn);
   }
 
+  // { Test fails, cannot be in both leftbound and prepowerstroke states simultaneously
+  //   Dynein* dyn = new Dynein(bba_eq,
+  //                            bba_eq + ba_eq - M_PI,
+  //                            bba_eq + ba_eq - M_PI + ta_eq,
+  //                            bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
+  //                            NEARBOUND,
+  // 			     NULL,
+  // 			     &no_forces,
+  // 			     NULL);
+
+  //   printf("\nTest: Dynein equilibrium, checking internal forces, no Brownian forces.\n");
+
+  //   num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
+  //   num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
+  //   num_failures += test("Is d_tx zero", dyn->get_d_tx(), 0);
+  //   num_failures += test("Is d_fmx zero", dyn->get_d_fmx(), 0);
+  //   num_failures += test("Is d_fbx zero", dyn->get_d_fbx(), 0);
+
+  //   num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
+  //   num_failures += test("Is d_bmy zero", dyn->get_d_bmy(), 0);
+  //   num_failures += test("Is d_ty zero", dyn->get_d_ty(), 0);
+  //   num_failures += test("Is d_fmy zero", dyn->get_d_fmy(), 0);
+  //   num_failures += test("Is d_fby zero", dyn->get_d_fby(), 0);
+
+  //   num_failures += test("Is f_bbx zero", dyn->get_internal().bbx, 0);
+  //   num_failures += test("Is f_bmx zero", dyn->get_internal().bmx, 0);
+  //   num_failures += test("Is f_tx zero",  dyn->get_internal().tx, 0);
+  //   num_failures += test("Is f_fmx zero", dyn->get_internal().fmx, 0);
+  //   num_failures += test("Is f_fbx zero", dyn->get_internal().fbx, 0);
+
+  //   num_failures += test("Is f_bby zero", dyn->get_internal().bby, 0);
+  //   num_failures += test("Is f_bmy zero", dyn->get_internal().bmy, 0);
+  //   num_failures += test("Is f_ty zero",  dyn->get_internal().ty, 0);
+  //   num_failures += test("Is f_fmy zero", dyn->get_internal().fmy, 0);
+  //   num_failures += test("Is f_fby zero", dyn->get_internal().fby, 0);
+
+  //   free(dyn);
+  // }
+
   {
     Dynein* dyn = new Dynein(bba_eq,
                              bba_eq + ba_eq - M_PI,
                              bba_eq + ba_eq - M_PI + ta_eq,
                              bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
-                             NEARBOUND,
-			     NULL,
-			     &no_forces,
-			     NULL);
-
-    printf("\nTest: Dynein equilibrium, checking internal forces, no Brownian forces.\n");
-
-    num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
-    num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
-    num_failures += test("Is d_tx zero", dyn->get_d_tx(), 0);
-    num_failures += test("Is d_fmx zero", dyn->get_d_fmx(), 0);
-    num_failures += test("Is d_fbx zero", dyn->get_d_fbx(), 0);
-
-    num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
-    num_failures += test("Is d_bmy zero", dyn->get_d_bmy(), 0);
-    num_failures += test("Is d_ty zero", dyn->get_d_ty(), 0);
-    num_failures += test("Is d_fmy zero", dyn->get_d_fmy(), 0);
-    num_failures += test("Is d_fby zero", dyn->get_d_fby(), 0);
-
-    num_failures += test("Is f_bbx zero", dyn->get_internal().bbx, 0);
-    num_failures += test("Is f_bmx zero", dyn->get_internal().bmx, 0);
-    num_failures += test("Is f_tx zero",  dyn->get_internal().tx, 0);
-    num_failures += test("Is f_fmx zero", dyn->get_internal().fmx, 0);
-    num_failures += test("Is f_fbx zero", dyn->get_internal().fbx, 0);
-
-    num_failures += test("Is f_bby zero", dyn->get_internal().bby, 0);
-    num_failures += test("Is f_bmy zero", dyn->get_internal().bmy, 0);
-    num_failures += test("Is f_ty zero",  dyn->get_internal().ty, 0);
-    num_failures += test("Is f_fmy zero", dyn->get_internal().fmy, 0);
-    num_failures += test("Is f_fby zero", dyn->get_internal().fby, 0);
-
-    free(dyn);
-  }
-
-  {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
 			     NEARBOUND,
 			     &no_forces,
 			     &right_forces,
 			     NULL);
     
-    printf("\nTest: Dynein pentagon conformation, no internal forces, Brownian forces in positive x direction.\n");
+    printf("\nTest: Dynein prepowerstroke conformation, no internal forces, Brownian forces in positive x direction.\n");
 
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
     num_failures += test_noteq("Is d_bmx nonzero", dyn->get_d_bmx(), 0);
@@ -316,16 +315,16 @@ int main() {
   }
   
   {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
+    Dynein* dyn = new Dynein(bba_eq,
+                             bba_eq + ba_eq - M_PI,
+                             bba_eq + ba_eq - M_PI + ta_eq,
+                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,
 			     NEARBOUND,
 			     &left_forces,
 			     &no_forces,
 			     NULL);
     
-    printf("\nTest: Dynein pentagon conformation, internal forces in negative x direction, no Brownian forces.\n");
+    printf("\nTest: Dynein prepowerstroke conformation, internal forces in negative x direction, no Brownian forces.\n");
 
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
     num_failures += test_noteq("Is d_bmx nonzero", dyn->get_d_bmx(), 0);
@@ -334,35 +333,6 @@ int main() {
     
     free(dyn);
   }
-  
-  {
-    Dynein* dyn = new Dynein((108.0 / 180) * M_PI,
-                             (36.0 / 180) * M_PI,
-                             (144.0 / 180) * M_PI,
-                             (72.0 / 180) * M_PI,
-  			     NEARBOUND,
-  			     NULL,
-			     &no_forces,
-			     NULL);
-
-    printf("Test: Dynein pentagon conformation, internal forces, no Brownian forces.\n");
-    num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
-    num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
-    num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
-    num_failures += test("Is d_bmy zero", dyn->get_d_bmy(), 0);
-    num_failures += test("Is d_fmx zero", dyn->get_d_fmx(), 0);
-    num_failures += test("Is d_fmy zero", dyn->get_d_fmy(), 0);
-    num_failures += test("Is d_fbx zero", dyn->get_d_fbx(), 0);
-    num_failures += test("Is d_fby zero", dyn->get_d_fby(), 0);
-    
-    num_failures += test("Is d_bba zero", dyn->get_d_bba(), 0);
-    num_failures += test("Is d_bma zero", dyn->get_d_bma(), 0);
-    num_failures += test("Is d_fma zero", dyn->get_d_fma(), 0);
-    num_failures += test("Is d_fba zero", dyn->get_d_fba(), 0);    
-    
-    free(dyn);
-  }
-
   
   if (num_failures == 0) {
     printf("All %d tests pass!\n\n", num_tests);
