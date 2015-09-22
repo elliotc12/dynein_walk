@@ -25,7 +25,7 @@ plot: walk
 	@echo "Run ./simulate.py slow/normal/fast/veryfast short/normal/long/verylong pentagon/foot-wiggle/mega-wiggle/natural [loop] to animate"
 
 defaultplot: walk
-	./simulate.py veryfast verylong natural loop
+	./simulate.py veryfast verylong natural
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
