@@ -86,28 +86,30 @@ while i < len(data) or loop:
   motor2.set_data(X[3], Y[3])
   binding2.set_data(X[4], Y[4])
   
-  if (data[i][4] == 0):
+  if (data[i][14] == 0):
+    print "NEARBOUND"
     title_text.set_text('State: Nearbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
     
-  elif (data[i][4] == 1):
+  elif (data[i][14] == 1):
+    print "FARBOUND"
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
     tail1.set_linestyle('--')
     tail2.set_linestyle('-')
     stalk2.set_linestyle('-')
     
-  elif (data[i][4] == 2):
+  elif (data[i][14] == 2):
     title_text.set_text('State: Bothbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
     
-  elif (data[i][4] == 3):
+  elif (data[i][14] == 3):
     title_text.set_text('State: Unbound')
     # leave molecule plotted in last bound position
   

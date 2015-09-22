@@ -25,10 +25,10 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   
   if (eq_angles) {
      eq = *eq_angles; 
-  } else if (state == NEARBOUND) {
-    eq = pre_powerstroke_nearbound_internal_angles;
-  } else if (state == FARBOUND) {
-    eq = pre_powerstroke_farbound_internal_angles;
+  } else if (state == BOTHBOUND) {
+    eq = bothbound_pre_powerstroke_internal_angles;
+  } else if (state == NEARBOUND or state == FARBOUND) {
+    eq = near_farbound_post_powerstroke_internal_angles;
   }
 
   update_velocities();
@@ -109,10 +109,10 @@ void Dynein::update_internal_forces() {
     f.fmx += -(f1x + f2x);
     f.fmy += -(f1y + f2y);
     
-    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE;
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE;
-    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE;
-    if (get_fby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE;
+    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
+    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+    if (get_fby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE * fabs(get_fby());
   }
 }
 
@@ -129,7 +129,9 @@ void Dynein::update_velocities() {
   }
 }
 
-void Dynein::switch_near_far_state() {
+void Dynein::switch_to_bothbound() {
+  // At this time, actually just switch to near/farbound. Eventually implement bothbound.
+  printf("switching states\n");
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;
@@ -211,7 +213,8 @@ void Dynein::update_velocities_bothbound() {
 }
 
 double Dynein::get_binding_probability() {
-  return 0.1;
+  printf("getting binding probability.");
+  return 1.0;
 }
 
 double Dynein::get_unbinding_probability() {
@@ -393,7 +396,7 @@ void Dynein::log(double t) {
   FILE* data_file = fopen("data.txt", "a+");
   fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
-          get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), get_state());
+          get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
   fclose(data_file);
 }
 
