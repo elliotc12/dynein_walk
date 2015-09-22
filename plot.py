@@ -59,6 +59,8 @@ i = 0
 
 signal.signal(signal.SIGINT, close_windows)
 
+print type(stalk1)
+
 while i < len(data) or loop:
   if i >= len(data):
     i = 0
@@ -78,7 +80,7 @@ while i < len(data) or loop:
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
-  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])       
+  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])
                   
   binding1.set_data(X[0], Y[0])
   motor1.set_data(X[1], Y[1])
@@ -88,28 +90,19 @@ while i < len(data) or loop:
   
   if (data[i][4] == 0):
     title_text.set_text('State: Nearbound')
-    stalk1.color = "black"
-    tail1.color = "black"
-    tail2.color = "gray"
-    stalk2.color = "gray"
+    
     
   elif (data[i][4] == 1):
     title_text.set_text('State: Farbound')
-    stalk1.setp(color="gray")
-    tail1.setp(color="gray")
-    tail2.setp(color="black")
-    stalk2.setp(color="black")
+    
     
   elif (data[i][4] == 2):
     title_text.set_text('State: Bothbound')
-    stalk1.setp(color="black")
-    tail1.setp(color="black")
-    tail2.setp(color="gray")
-    stalk2.setp(color="gray")
+    
     
   elif (data[i][4] == 3):
     title_text.set_text('State: Unbound')
-    # leave molecule plotted in last place
+    # leave molecule plotted in last bound position
   
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
