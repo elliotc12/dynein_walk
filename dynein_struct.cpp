@@ -131,12 +131,14 @@ void Dynein::update_velocities() {
 
 void Dynein::switch_to_bothbound() {
   // At this time, actually just switch to near/farbound. Eventually implement bothbound.
-  printf("switching states\n");
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;
   double temp_fba = fba;
 
+  bbx = get_fbx();
+  bby = 0;
+  
   bba = temp_fba;
   bma = temp_fma;
   fma = temp_bma;
@@ -213,7 +215,6 @@ void Dynein::update_velocities_bothbound() {
 }
 
 double Dynein::get_binding_probability() {
-  printf("getting binding probability.");
   return 1.0;
 }
 
@@ -223,8 +224,8 @@ double Dynein::get_unbinding_probability() {
   } else return 0.0;
 }
 
-/*** Set positions, velocities and forces ***/
 
+/*** Set positions, velocities and forces ***/
 void Dynein::set_bbx(double d) {
   bbx = d;
 }

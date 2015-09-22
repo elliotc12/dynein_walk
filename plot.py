@@ -36,7 +36,7 @@ ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-40,40)
 ax.set_ylim(-40,40)
 
-microtubule = plt.plot([-40, 40], [-2, -2])
+microtubule = plt.plot([-400, 400], [-2, -2])
 plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
 
 stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ], color="black")
@@ -87,7 +87,6 @@ while i < len(data) or loop:
   binding2.set_data(X[4], Y[4])
   
   if (data[i][14] == 0):
-    print "NEARBOUND"
     title_text.set_text('State: Nearbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
@@ -95,7 +94,6 @@ while i < len(data) or loop:
     stalk2.set_linestyle('--')
     
   elif (data[i][14] == 1):
-    print "FARBOUND"
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
     tail1.set_linestyle('--')
