@@ -39,10 +39,10 @@ ax.set_ylim(-40,40)
 microtubule = plt.plot([-40, 40], [-2, -2])
 plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
 
-stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ])
-tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ])
-tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ])
-stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ])      
+stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ], color="black")
+tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
+tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
+stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
 binding1, = plt.plot([X[0]], [Y[0]], 'ro')
 motor1,   = plt.plot([X[1]], [Y[1]], 'bo')
@@ -58,8 +58,6 @@ t_text = plt.text(-65, -36, 't=:')
 i = 0
 
 signal.signal(signal.SIGINT, close_windows)
-
-print type(stalk1)
 
 while i < len(data) or loop:
   if i >= len(data):
@@ -80,7 +78,7 @@ while i < len(data) or loop:
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
-  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])
+  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])     
                   
   binding1.set_data(X[0], Y[0])
   motor1.set_data(X[1], Y[1])
@@ -90,15 +88,24 @@ while i < len(data) or loop:
   
   if (data[i][4] == 0):
     title_text.set_text('State: Nearbound')
-    
+    stalk1.set_linestyle('-')
+    tail1.set_linestyle('-')
+    tail2.set_linestyle('--')
+    stalk2.set_linestyle('--')
     
   elif (data[i][4] == 1):
     title_text.set_text('State: Farbound')
-    
+    stalk1.set_linestyle('--')
+    tail1.set_linestyle('--')
+    tail2.set_linestyle('-')
+    stalk2.set_linestyle('-')
     
   elif (data[i][4] == 2):
     title_text.set_text('State: Bothbound')
-    
+    stalk1.set_linestyle('-')
+    tail1.set_linestyle('-')
+    tail2.set_linestyle('--')
+    stalk2.set_linestyle('--')
     
   elif (data[i][4] == 3):
     title_text.set_text('State: Unbound')
