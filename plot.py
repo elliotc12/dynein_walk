@@ -39,12 +39,16 @@ ax.set_ylim(-40,40)
 microtubule = plt.plot([-40, 40], [-2, -2])
 plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
 
-line1, = plt.plot(X, Y)
-line2, = plt.plot([X[0]], [Y[0]], 'ro')
-line3, = plt.plot([X[1]], [Y[1]], 'bo')
-line4, = plt.plot([X[2]], [Y[2]], 'go')
-line5, = plt.plot([X[3]], [Y[3]], 'bo')
-line6, = plt.plot([X[4]], [Y[4]], 'ro')
+stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ])
+tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ])
+tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ])
+stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ])      
+
+binding1, = plt.plot([X[0]], [Y[0]], 'ro')
+motor1,   = plt.plot([X[1]], [Y[1]], 'bo')
+tail,     = plt.plot([X[2]], [Y[2]], 'go')
+motor2,   = plt.plot([X[3]], [Y[3]], 'bo')
+binding2, = plt.plot([X[4]], [Y[4]], 'ro')
 
 title_text = plt.text(-65, 45, 'State:')
 pe_text = plt.text(-65, 40, 'PE: ')
@@ -70,20 +74,42 @@ while i < len(data) or loop:
   Y[2] = data[i][9]
   Y[3] = data[i][11]
   Y[4] = data[i][13]
-  
-  line1.set_data(X,Y)
-  line2.set_data(X[0], Y[0])
-  line3.set_data(X[1], Y[1])
-  line4.set_data(X[2], Y[2])
-  line5.set_data(X[3], Y[3])
-  line6.set_data(X[4], Y[4])
+
+  stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
+  tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
+  tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
+  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])       
+                  
+  binding1.set_data(X[0], Y[0])
+  motor1.set_data(X[1], Y[1])
+  tail.set_data(X[2], Y[2])
+  motor2.set_data(X[3], Y[3])
+  binding2.set_data(X[4], Y[4])
   
   if (data[i][4] == 0):
-    title_text.set_text('State: Leftbound')
+    title_text.set_text('State: Nearbound')
+    stalk1.color = "black"
+    tail1.color = "black"
+    tail2.color = "gray"
+    stalk2.color = "gray"
+    
   elif (data[i][4] == 1):
-    title_text.set_text('State: Rightbound')
+    title_text.set_text('State: Farbound')
+    stalk1.setp(color="gray")
+    tail1.setp(color="gray")
+    tail2.setp(color="black")
+    stalk2.setp(color="black")
+    
   elif (data[i][4] == 2):
     title_text.set_text('State: Bothbound')
+    stalk1.setp(color="black")
+    tail1.setp(color="black")
+    tail2.setp(color="gray")
+    stalk2.setp(color="gray")
+    
+  elif (data[i][4] == 3):
+    title_text.set_text('State: Unbound')
+    # leave molecule plotted in last place
   
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
