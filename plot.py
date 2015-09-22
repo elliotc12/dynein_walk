@@ -61,10 +61,21 @@ t_text = plt.text(-65, -36, 't=:')
 
 i = 0
 
+frames = config[4] / config[3]
+if len(data) < frames:
+  unbound = True
+else:
+  ubound = False
+
 signal.signal(signal.SIGINT, close_windows)
 
 while i < len(data) or loop:
   if i >= len(data):
+    if unbound:
+      title_text.set_text('State: Unbound')
+      plt.draw()      
+      print "Protein unbound!"
+      plt.pause(3)
     i = 0
 
   X[0] = data[i][4]
@@ -110,16 +121,6 @@ while i < len(data) or loop:
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
-    
-  elif (data[i][14] == 3):
-    title_text.set_text('State: Unbound')
-    print "Protein unbound!"
-    plt.pause(1)
-    if loop:
-      i = 0
-      continue
-    else:
-      close_windows()
   
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
@@ -138,3 +139,8 @@ while i < len(data) or loop:
     plt.pause(0.001)  
 
   plt.draw()
+
+title_text.set_text('State: Unbound')
+plt.draw()      
+print "Protein unbound!"
+plt.pause(3)
