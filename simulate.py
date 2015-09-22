@@ -8,7 +8,7 @@ speed = sys.argv[1]
 length = sys.argv[2]
 plot = sys.argv[3]
 
-dt = 0.1
+dt = 1e-12 # seconds
 
 if speed == "veryfast":
     rate = 150
@@ -22,13 +22,13 @@ else:
     rate = int(sys.argv[1])
 
 if length == "verylong":
-    runtime = 5000
+    runtime = 50000*dt
 elif length == "long":
-    runtime = 1000
+    runtime = 1000*dt
 elif length == "normal":
-    runtime = 500
+    runtime = 500*dt
 elif length == "short":
-    runtime = 100
+    runtime = 100*dt
 else:
     runtime = int(sys.argv[2])
 
@@ -43,7 +43,8 @@ if (plot == "pentagon"):
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "natural"):
-    subprocess.call(["./walk", str(dt), str(runtime), ".6", ".2", ".2", ".6"])
+    subprocess.call(["./walk", str(dt), str(runtime), "0", "0", "0", "0"])
+    print "Finished with walk!"
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "foot-wiggle"):

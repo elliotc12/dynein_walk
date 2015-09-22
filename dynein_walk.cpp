@@ -2,15 +2,15 @@
 #include <stdlib.h>
 
 #include "dynein_struct.h"
-int runtime;
-double dt;
-
   /*
    * For every timestep, call update_velocities to update internal velocities.
    * Then do Euler's method to update internal coordinates and log output.
    * update_velocities must be called after every set_x command to update
    * internal velocities.
    */
+
+double dt;
+double runtime;
 
 void simulateProtein(Dynein* dyn, double dt, double tf) {
   double t = 0;
@@ -21,10 +21,15 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
   double temp_fba;
 
   srand(time(NULL));
-  
+
+  int which = 0;
   while( t < tf ) {
+    if (which++ % 100 == 0) printf("time %g/%g\n", t, tf);
     if (dyn->get_fby() < MICROTUBULE_BINDING_DISTANCE) {
       if ((rand() % 100) / 100.0 < dyn->get_binding_probability()) {
+        printf("I am switching thingies at %g\n", t);
+        printf("Binding domains:  %g, %g\n",
+               dyn->get_bbx(), dyn->get_fbx());
         dyn->switch_to_bothbound();
       } else if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
         dyn->unbind();
@@ -55,16 +60,19 @@ void simulateProtein(Dynein* dyn, double dt, double tf) {
 int main(int argvc, char **argv) {
 
   if (argvc != 7) {
-    printf("Error. Usage: ./walk inctime bla_init mla_init mra_init bra_init.\n");
+    printf("Error. Usage: ./walk dt bla_init mla_init mra_init bra_init.\n");
     exit(EXIT_FAILURE);
   }
-  
+
   dt = strtod(argv[1], NULL);
-  runtime  = atoi(argv[2]);
-  double bba_init = strtod(argv[3], NULL) * M_PI;
-  double bma_init = strtod(argv[4], NULL) * M_PI;
-  double fma_init = strtod(argv[5], NULL) * M_PI;
-  double fba_init = strtod(argv[6], NULL) * M_PI;
+  runtime  = strtod(argv[2], NULL);
+
+  equilibrium_angles eq = near_farbound_post_powerstroke_internal_angles;
+
+  double bba_init = strtod(argv[3], NULL) * M_PI + eq.bba;
+  double bma_init = strtod(argv[4], NULL) * M_PI + bba_init + eq.ba - M_PI;
+  double fma_init = strtod(argv[5], NULL) * M_PI + bma_init + eq.ta;
+  double fba_init = strtod(argv[6], NULL) * M_PI + fma_init + M_PI - eq.fa;
   
   Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
 			   FARBOUND,                               // Initial state

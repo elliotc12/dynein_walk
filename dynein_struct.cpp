@@ -3,8 +3,6 @@
 #include <cassert>
 
 #include "dynein_struct.h"
-extern int runtime;
-extern double dt;
 
 /* *********************************** DYNEIN FUNCTIONS ****************************************** */
 
@@ -59,6 +57,7 @@ void Dynein::update_internal_forces() {
     double T, f1, f2, f1x, f1y, f2x, f2y;
     
     T = cb*(bba - eq.bba);
+    // printf("binding angle from equilibrium: %g\n", bba - eq.bba);
     f2 = T/ls;
     f2x = f2 * sin(bba);
     f2y = f2 * -cos(bba);
@@ -68,6 +67,7 @@ void Dynein::update_internal_forces() {
     f.bby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*((bma + M_PI - bba) - eq.ba);
+    // printf("bound motor from equilibrium: %g\n", (bma + M_PI - bba) - eq.ba);
     f1 = T/ls;
     f2 = T/lt;
     f1x = f1 * sin(bba);
@@ -82,6 +82,7 @@ void Dynein::update_internal_forces() {
     f.bmy += -(f1y + f2y);
 
     T = ct*(-((fma - bma) - eq.ta));
+    // printf("tail from equilibrium: %g\n", -((fma - bma) - eq.ta));
     f1 = T / lt;
     f2 = T / lt;
     f1x = f1 * sin(bba);
@@ -95,7 +96,8 @@ void Dynein::update_internal_forces() {
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
 
-    T = cm*(((fma + M_PI - fba) - eq.fa));
+    T = cm*((fma + M_PI - fba) - eq.fa);
+    // printf("free motor from equilibrium: %g\n", (fma + M_PI - fba) - eq.fa);
     f1 = T / lt;
     f2 = T / ls;
     f1x = f1 * sin(fma);
@@ -215,7 +217,7 @@ void Dynein::update_velocities_bothbound() {
 }
 
 double Dynein::get_binding_probability() {
-  return 1.0;
+  return 0.01;
 }
 
 double Dynein::get_unbinding_probability() {
@@ -395,7 +397,7 @@ double Dynein::get_KE() {
 
 void Dynein::log(double t) {
   FILE* data_file = fopen("data.txt", "a+");
-  fprintf(data_file, "%.6f\t%12.6f\t%12.6f\t%.3f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%+.5f\t%d\n",
+  fprintf(data_file, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
   fclose(data_file);
@@ -405,8 +407,9 @@ void Dynein::resetLog() {
 	FILE* data_file = fopen("data.txt", "w");
 	FILE* config_file = fopen("config.txt", "w");
 	
-	fprintf(config_file, "#gb\tgm\tgt\tdt\truntime\tstate\n%g\t%g\t%g\t%+.3f\t%+.3f\t%d\n",
-          (double) gb, (double) gm, (double) gt, inctime, (double) runtime, (int) state);
+	fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
+	fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
+          (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
 	fprintf(data_file,
 		"#KE\t\t\t\tPE\t\t\t\tEnergy\t\tt\t\tbbX\t\t\tbbY\t\t\tbmx\t\t\tbmy\t\t\ttX\t\t\ttY\t\t\tfmx\t\t\tfmy\t\t\tfbx\t\t\tfby\t\t\tS\n");
 	

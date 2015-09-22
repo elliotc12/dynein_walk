@@ -4,7 +4,7 @@
 #include "dynein_struct.h"
 
 #define EPSILON 1e-12
-int runtime = 0;
+double runtime = 0;
 double dt = 0.1;
 
 int equal(double v1, double v2) {
