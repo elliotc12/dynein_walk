@@ -4,8 +4,6 @@ Things to do:
 
 * Find a way to get equilibrium angles of pre/post-powerstroke states.
 
-* Implement smart binding code?
-
 * Equilibrium angle thoughts:
 
   - Two motor domain angles: bound angle + free angle (assume

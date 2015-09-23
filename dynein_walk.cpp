@@ -23,14 +23,12 @@ void simulateProtein(Dynein* dyn, double tf) {
   srand(time(NULL));
   
   while( t < tf ) {
-    if (dyn->get_fby() < MICROTUBULE_BINDING_DISTANCE) {
-      if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
+    if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
         dyn->unbind();
 	dyn->log(t);
 	exit(EXIT_SUCCESS);
-      } else if ((rand() % 100) / 100 < dyn->get_binding_probability()) {
+    } else if ((rand() % 100) / 100 < dyn->get_binding_probability()) {
         dyn->switch_to_bothbound();
-      }
     }
     
     dyn->update_velocities();
