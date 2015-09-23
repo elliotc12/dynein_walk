@@ -28,7 +28,7 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   } else if (state == NEARBOUND or state == FARBOUND) {
     eq = near_farbound_post_powerstroke_internal_angles;
   }
-
+  
   update_velocities();
 }
 
