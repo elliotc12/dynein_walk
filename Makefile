@@ -22,7 +22,7 @@ test: dynein_test.o dynein_struct.o utilities.o
 	g++ dynein_test.o dynein_struct.o utilities.o -o test
 
 plot: walk
-	@echo "Run ./simulate.py slow/normal/fast/veryfast short/normal/long/verylong pentagon/foot-wiggle/mega-wiggle/natural [loop] to animate"
+	@echo "Run ./simulate.py slow/normal/fast/veryfast short/normal/long/verylong natural/random [loop] to animate"
 
 defaultplot: walk
 	./simulate.py veryfast verylong natural

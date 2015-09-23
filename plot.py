@@ -27,6 +27,10 @@ config = numpy.loadtxt("config.txt")
 data = numpy.genfromtxt("data.txt", delimiter="\t", skiprows=1)
 plt.ion()
 
+if str(type(data[0])) == "<type 'numpy.float64'>":
+       print "Very short animation!"
+       close_windows()
+
 gb = float(config[0]) # FIXME: make point radii based on these
 gm = float(config[1])
 gt = float(config[2])
@@ -109,7 +113,13 @@ while i < len(data) or loop:
     
   elif (data[i][14] == 3):
     title_text.set_text('State: Unbound')
-    # leave molecule plotted in last bound position
+    print "Protein unbound!"
+    plt.pause(1)
+    if loop:
+      i = 0
+      continue
+    else:
+      close_windows()
   
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))

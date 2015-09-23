@@ -2,10 +2,11 @@
 #include "MersenneTwister.h"
 
 extern double runtime;
-extern double dt;
+
+const double dt = 1e-12;
 
 const double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
-const double T = 300.0; // K
+const double T = 293.0; // K
 
 const double lt = 10.0;   // nm, guess - not sure how DNA tail-bridge works
 const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
@@ -34,9 +35,9 @@ const double gb = fake_radius_b*6*M_PI*water_viscosity_mu;
 
 const double ct = 1e-3; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
-const double cb = 0.1; // ???
+const double cb = 0.5; // ???
 
-const double UNBINDING_FORCE = 1.75; // N
+const double UNBINDING_FORCE = 8e10; // N
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
@@ -80,8 +81,8 @@ const equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 const equilibrium_angles near_farbound_post_powerstroke_internal_angles = {
   (108.0 / 180) * M_PI,
   (108.0 / 180) * M_PI,
-  (108.0 / 180) * M_PI,
-  (180.0 / 180) * M_PI
+  (52.0 / 180) * M_PI,
+  (138.0 / 180) * M_PI
 };
 
 /* ******************************** DYNEIN CLASS DEFINITION ************************************* */

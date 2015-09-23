@@ -128,11 +128,14 @@ void Dynein::update_velocities() {
 
   if (state == NEARBOUND || state == FARBOUND) {
     update_velocities_onebound();
+  } else if (state == BOTHBOUND) {
+    update_velocities_bothbound();
   }
 }
 
 void Dynein::switch_to_bothbound() {
   // At this time, actually just switch to near/farbound. Eventually implement bothbound.
+  printf("switching states!\n");
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;
@@ -147,7 +150,7 @@ void Dynein::switch_to_bothbound() {
   fba = temp_bba;
 
   if (state == NEARBOUND) state = FARBOUND;
-  else state = NEARBOUND;
+  else if (state == FARBOUND) state = NEARBOUND;
 }
 
 void Dynein::unbind() {
@@ -221,7 +224,7 @@ double Dynein::get_binding_probability() {
 }
 
 double Dynein::get_unbinding_probability() {
-  if (f.bby + r.bby >= UNBINDING_FORCE) {
+  if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains
       return 1.0;
   } else return 0.0;
 }

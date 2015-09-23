@@ -3,9 +3,9 @@
 
 #include "dynein_struct.h"
 
-#define EPSILON 1e-12
-double runtime = 0;
-double dt = 0.1;
+double EPSILON = 1e-12;
+double runtime = 0; // Define in dynein_test.cpp and dynein_walk.cpp to link, not used here
+extern const double dt;
 
 int equal(double v1, double v2) {
   if (fabs(v1) < EPSILON) { return fabs(v2) < EPSILON; }
