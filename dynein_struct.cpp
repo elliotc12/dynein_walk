@@ -224,8 +224,10 @@ double Dynein::get_binding_probability() {
 }
 
 double Dynein::get_unbinding_probability() {
+  printf("f.bby: %g, r.bby: %g\n", f.bby, r.bby);
   if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains
-      return 1.0;
+    printf("unbinding...\n");
+    return 1.0;
   } else return 0.0;
 }
 

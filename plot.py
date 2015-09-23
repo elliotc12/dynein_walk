@@ -65,8 +65,8 @@ frames = config[4] / config[3]
 if len(data) < frames:
   unbound = True
 else:
-  ubound = False
-
+  unbound = False
+  
 signal.signal(signal.SIGINT, close_windows)
 
 while i < len(data) or loop:
@@ -140,7 +140,8 @@ while i < len(data) or loop:
 
   plt.draw()
 
-title_text.set_text('State: Unbound')
-plt.draw()      
-print "Protein unbound!"
-plt.pause(3)
+if unbound:
+  title_text.set_text('State: Unbound')
+  plt.draw()      
+  print "Protein unbound!"
+  plt.pause(3)

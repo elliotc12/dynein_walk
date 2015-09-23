@@ -3,7 +3,7 @@
 
 extern double runtime;
 
-const double dt = 1e-12;
+const double dt = 1e-12; // s
 
 const double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 const double T = 293.0; // K
@@ -37,7 +37,7 @@ const double ct = 1e-3; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double UNBINDING_FORCE = 8e10; // N
+const double UNBINDING_FORCE = 8e11; // N
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
