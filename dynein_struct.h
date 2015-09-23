@@ -21,23 +21,24 @@ const double fake_radius_m = 1.48; // nm
 // angstroms
 const double fake_radius_b = 0.14; // nm
 
-// water viscosity is about 0.7 mPa = 7e-4 Pa = 7e-4 m^2 * kg/s^2 / m^3
-// mu = 7e-4 kg/s^2 / m
+// water viscosity is about 0.7 mPa s = 7e-4 Pa s = 7e-4 m^2 * kg/s / m^3
+// mu = 7e-4 kg/s / m
 //  ... thus this is ...
-// mu = 7e-4 kg/s^2 / (1e9 nm)
-//    = 7e-13 kg/s^2 / nm
-const double water_viscosity_mu = 7e-13; // kg/s^2/nm
+// mu = 7e-4 kg/s / (1e9 nm)
+//    = 7e-13 kg/s / nm
+const double water_viscosity_mu = 7e-13; // kg/(s*nm)
 
-const double gt = fake_radius_t*6*M_PI*water_viscosity_mu;
-const double gm = fake_radius_m*6*M_PI*water_viscosity_mu;
-const double gb = fake_radius_b*6*M_PI*water_viscosity_mu;
-                         // gamma units: s / nm^2 * kg
+const double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
+const double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
+const double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
 const double ct = 1e-3; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double UNBINDING_FORCE = 8e11; // N
+const double UNBINDING_FORCE = 8e11; // N -- seems awful high, but needed since brownian forces often
+//on order of 10^10... sqrt((2*(1.3*10^-5)*2.93*10^3)/(10^-12*10^-12)) ~ 10^11. Smaller
+//timesteps would decrease this, but the random forces would still be big...
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 

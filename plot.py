@@ -125,7 +125,6 @@ while i < len(data) or loop:
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
 
-  #t_text.set_text('t= ' + str(data[i][3]) + '/' + str(config[4]))
   t_text.set_text("Progress: {:3.1f}%".format(data[i][3]/config[4]*100))
   
   if len(sys.argv) >= 2:

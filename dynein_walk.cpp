@@ -21,8 +21,6 @@ void simulateProtein(Dynein* dyn, double tf) {
   double temp_fba;
 
   srand(time(NULL));
-
-  printf("there should be %g frames.\n", tf/dt);
   
   while( t < tf ) {
     if (dyn->get_fby() < MICROTUBULE_BINDING_DISTANCE) {

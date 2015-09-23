@@ -135,7 +135,6 @@ void Dynein::update_velocities() {
 
 void Dynein::switch_to_bothbound() {
   // At this time, actually just switch to near/farbound. Eventually implement bothbound.
-  printf("switching states!\n");
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;
