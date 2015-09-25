@@ -79,7 +79,7 @@ int main(int argvc, char **argv) {
   
   dyn->resetLog();
   simulateProtein(dyn, runtime);
-  free(dyn);
+  delete dyn;
   dyn = NULL;
   return 0;
 }
