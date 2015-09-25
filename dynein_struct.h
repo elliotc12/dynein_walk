@@ -154,7 +154,7 @@ public:
 
   State get_state();
 
-  void log(double t);
+  void log(double t, FILE* data_file);
   void resetLog();
   void update_velocities();
   

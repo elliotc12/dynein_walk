@@ -21,11 +21,12 @@ void simulateProtein(Dynein* dyn, double tf) {
   double temp_fba;
 
   srand(time(NULL));
+  FILE* data_file = fopen("data.txt", "a+");
   
   while( t < tf ) {
     if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
         dyn->unbind();
-	dyn->log(t);
+	dyn->log(t, data_file);
 	exit(EXIT_SUCCESS);
     } else if ((rand() % 100) / 100 < dyn->get_binding_probability()) {
         dyn->switch_to_bothbound();
@@ -43,10 +44,12 @@ void simulateProtein(Dynein* dyn, double tf) {
     dyn->set_fma(temp_fma);
     dyn->set_fba(temp_fba);
     
-    dyn->log(t);
+    dyn->log(t, data_file);
     
     t += dt;
   }
+  
+  fclose(data_file);
 }
 
 

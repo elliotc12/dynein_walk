@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.64"
-     inkscape:cx="299.6093"
-     inkscape:cy="670.23276"
+     inkscape:zoom="1.75"
+     inkscape:cx="289.90314"
+     inkscape:cy="790.53146"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -752,5 +752,80 @@
        id="path4393"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <rect
+       style="opacity:0;fill:#73ffff;stroke:#000000;fill-opacity:1;stroke-opacity:1"
+       id="rect4423"
+       width="364.57144"
+       height="141.14285"
+       x="117.71429"
+       y="452.93362" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6008"
+       width="358.85715"
+       height="145.71428"
+       x="120"
+       y="450.07648" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6010"
+       width="332"
+       height="132.57144"
+       x="129.71428"
+       y="456.93362"
+       ry="0"
+       rx="0" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6372"
+       width="97.14286"
+       height="107.42857"
+       x="502.85715"
+       y="354.07648" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6376"
+       width="121.71429"
+       height="119.42857"
+       x="536"
+       y="342.07648" />
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans;stroke-opacity:1"
+       d="m 132.3125,453.8125 0,0.25 0,144 0,0.25 0.25,0 324.59375,0 0.25,0 0,-0.25 0,-144 0,-0.25 -0.25,0 -324.59375,0 -0.25,0 z m 0.5,0.5 324.09375,0 0,143.5 -324.09375,0 0,-143.5 z"
+       id="rect6378"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6383"
+       width="718.85712"
+       height="269.71429"
+       x="-226.85715"
+       y="324.36218" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6385"
+       width="330.85712"
+       height="133.71432"
+       x="134.28572"
+       y="456.36218" />
+    <rect
+       style="opacity:0;fill:#73ffff;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6387"
+       width="335.79544"
+       height="138.35228"
+       x="132.38637"
+       y="453.49854" />
+    <rect
+       style="fill:#73ffff;fill-opacity:0;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6393"
+       width="338.35226"
+       height="148.01137"
+       x="128.97728"
+       y="446.39627"
+       rx="23.011377"
+       ry="44.176136"
+       inkscape:export-filename="/home/elliotc12/dynein_walk/figures/dynein_walking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

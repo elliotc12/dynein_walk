@@ -223,7 +223,6 @@ double Dynein::get_binding_probability() {
 }
 
 double Dynein::get_unbinding_probability() {
-  printf("f.bby: %g, r.bby: %g\n", f.bby, r.bby);
   if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains
     printf("unbinding...\n");
     return 1.0;
@@ -399,12 +398,10 @@ double Dynein::get_KE() {
   return 0;
 }
 
-void Dynein::log(double t) {
-  FILE* data_file = fopen("data.txt", "a+");
+void Dynein::log(double t, FILE* data_file) {
   fprintf(data_file, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
-  fclose(data_file);
 }
 
 void Dynein::resetLog() {
