@@ -20,15 +20,14 @@ void simulateProtein(Dynein* dyn, double tf) {
   double temp_fma;
   double temp_fba;
 
-  srand(time(NULL));
   FILE* data_file = fopen("data.txt", "a+");
   
   while( t < tf ) {
-    if ((rand() % 100) / 100 < dyn->get_unbinding_probability()) {
+    if (dyn->rand->rand() < dyn->get_unbinding_probability()) {
         dyn->unbind();
 	dyn->log(t, data_file);
 	exit(EXIT_SUCCESS);
-    } else if ((rand() % 100) / 100 < dyn->get_binding_probability()) {
+    } else if (dyn->rand->rand() < dyn->get_binding_probability()) {
         dyn->switch_to_bothbound();
     }
     
@@ -48,15 +47,13 @@ void simulateProtein(Dynein* dyn, double tf) {
     
     t += dt;
   }
-  
   fclose(data_file);
 }
 
 
 /* *********************************** MAIN ****************************************** */
 
-int main(int argvc, char **argv) {
-
+int main(int argvc, char **argv) {  
   if (argvc != 6) {
     printf("Error. Usage: ./walk runtime bla_init mla_init mra_init bra_init.\n");
     exit(EXIT_FAILURE);

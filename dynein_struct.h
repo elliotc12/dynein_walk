@@ -44,6 +44,8 @@ const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
 const double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
+const double RAND_INIT_SEED = 0;
+
 typedef enum
 {
   PRE_POWERSTROKE,
@@ -152,6 +154,8 @@ public:
   double get_PE();
   double get_KE();
 
+  MTRand* rand;
+
   State get_state();
 
   void log(double t, FILE* data_file);
@@ -164,8 +168,6 @@ private:
 
   void update_velocities_onebound();
   void update_velocities_bothbound();
-  
-  MTRand rand;
 
   equilibrium_angles eq;
 

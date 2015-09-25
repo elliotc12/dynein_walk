@@ -12,6 +12,8 @@ Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_ini
   bby = 0;
   mode = PRE_POWERSTROKE;
 
+  rand = new MTRand(RAND_INIT_SEED);
+
   bba = bba_init;
   bma = bma_init;
   fma = fma_init;
@@ -36,11 +38,11 @@ void Dynein::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand.gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
-    rand.gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
-    rand.gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
-    rand.gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
-    rand.gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
+    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
   }
 }
 
@@ -412,7 +414,7 @@ void Dynein::resetLog() {
 	fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
           (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
 	fprintf(data_file,
-		"#KE\t\t\t\tPE\t\t\t\tEnergy\t\tt\t\tbbX\t\t\tbbY\t\t\tbmx\t\t\tbmy\t\t\ttX\t\t\ttY\t\t\tfmx\t\t\tfmy\t\t\tfbx\t\t\tfby\t\t\tS\n");
+		"#KE\tPE\t\tEnergy\t\tt\t\tbbX\tbbY\tbmx\tbmy\ttX\ttY\tfmx\tfmy\tfbx\tfby\tS\n");
 	
 	fclose(data_file);
 	fclose(config_file);
