@@ -36,9 +36,7 @@ const double ct = 1e-3; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double UNBINDING_FORCE = 8e11; // N -- seems awful high, but needed since brownian forces often
-//on order of 10^10... sqrt((2*(1.3*10^-5)*2.93*10^3)/(10^-12*10^-12)) ~ 10^11. Smaller
-//timesteps would decrease this, but the random forces would still be big...
+const double UNBINDING_FORCE = 8e11;
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
