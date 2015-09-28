@@ -221,7 +221,11 @@ void Dynein::update_velocities_bothbound() {
 }
 
 double Dynein::get_binding_probability() {
-  return 0.01;
+  if (get_fby() < MICROTUBULE_BINDING_DISTANCE) {
+    return 0.01;
+  } else {
+    return 0;
+  }
 }
 
 double Dynein::get_unbinding_probability() {
