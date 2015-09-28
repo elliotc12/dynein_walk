@@ -405,7 +405,7 @@ double Dynein::get_KE() {
 }
 
 void Dynein::log(double t, FILE* data_file) {
-  fprintf(data_file, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%d\n",
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
 }
@@ -418,7 +418,7 @@ void Dynein::resetLog() {
 	fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
           (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
 	fprintf(data_file,
-		"#KE\tPE\t\tEnergy\t\tt\t\tbbX\tbbY\tbmx\tbmy\ttX\ttY\tfmx\tfmy\tfbx\tfby\tS\n");
+		"#KE\tPE\tEnergy\tt\tbbX\tbbY\tbmx\tbmy\ttX\ttY\tfmx\tfmy\tfbx\tfby\tS\n");
 	
 	fclose(data_file);
 	fclose(config_file);
