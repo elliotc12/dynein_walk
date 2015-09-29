@@ -220,15 +220,16 @@ void Dynein::update_velocities_bothbound() {
   // To be implemented
 }
 
-double Dynein::get_binding_probability() {
+double Dynein::get_binding_rate() {
   if (get_fby() < MICROTUBULE_BINDING_DISTANCE) {
-    return 0.01;
+    double bound_energy = 0.5*cb*square(fba - eq.bba);
+    return 1e10*exp(-bound_energy/kb/T); // per second
   } else {
     return 0;
   }
 }
 
-double Dynein::get_unbinding_probability() {
+double Dynein::get_unbinding_rate() {
   if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains
     printf("unbinding...\n");
     return 1.0;

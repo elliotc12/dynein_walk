@@ -23,11 +23,11 @@ void simulateProtein(Dynein* dyn, double tf) {
   FILE* data_file = fopen("data.txt", "a+");
   
   while( t < tf ) {
-    if (dyn->rand->rand() < dyn->get_unbinding_probability()) {
+    if (dyn->rand->rand() < dyn->get_unbinding_rate()*dt) {
         dyn->unbind();
 	dyn->log(t, data_file);
 	exit(EXIT_SUCCESS);
-    } else if (dyn->rand->rand() < dyn->get_binding_probability()) {
+    } else if (dyn->rand->rand() < dyn->get_binding_rate()*dt) {
         dyn->switch_to_bothbound();
     }
     

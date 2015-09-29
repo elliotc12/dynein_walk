@@ -41,6 +41,7 @@ ax.set_xlim(-40,40)
 ax.set_ylim(-40,40)
 
 microtubule = plt.plot([-400, 400], [-2, -2])
+plt.xlabel('$x$ (nm)')
 plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
 
 stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ], color="black")

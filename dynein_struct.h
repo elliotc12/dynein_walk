@@ -32,7 +32,7 @@ const double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 const double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 const double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-const double ct = 1e-3; // force*distance = energy = nm^2 * kg / s^2
+const double ct = 0.01; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
@@ -80,10 +80,10 @@ const equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 };
 
 const equilibrium_angles near_farbound_post_powerstroke_internal_angles = {
-  (108.0 / 180) * M_PI,
-  (108.0 / 180) * M_PI,
-  (52.0 / 180) * M_PI,
-  (138.0 / 180) * M_PI
+  0.5 * M_PI,
+  1.0 * M_PI,
+  (0.0 / 180) * M_PI,
+  1.1 * M_PI
 };
 
 /* ******************************** DYNEIN CLASS DEFINITION ************************************* */
@@ -146,8 +146,8 @@ public:
   void switch_to_bothbound();
   void unbind();
 
-  double get_binding_probability();
-  double get_unbinding_probability();
+  double get_binding_rate();
+  double get_unbinding_rate();
 
   double get_PE();
   double get_KE();
