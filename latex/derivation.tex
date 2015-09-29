@@ -688,13 +688,14 @@ We then use the trigonometric rules $$\cos\Big(cos^{-1}(a)+cos^{-1}(b)\Big) = ab
   Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}+\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
 \end{align}
 
-Also by the law of cosines, we can see that:
+We can also use the law of cosines to find an expression for $\Theta_{1}$:
 
-\begin{equation}
-   \Theta_{1} = \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})
-\end{equation}
+\begin{align}
+   L_f^2 &= L^2 + L_n^2 - 2LL_n\cos(\Theta_{1}) \\
+   \Theta_{1} &= \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n}) \\
+\end{align}
 
-We use this to find the value of $X_{t}$ and $Y_{t}$:
+We use this to find the value of $X_{t}$:
 
 \begin{align}
   X_{t} &= L_n\cos(\Theta_{1}) \\
@@ -703,11 +704,13 @@ We use this to find the value of $X_{t}$ and $Y_{t}$:
        &= \frac{L^2 + 2L_tL_s\big(\cos(\Theta_{fm})-\cos(\Theta_{nm})\big)}{2L}
 \end{align}
 
-and
+To find $Y_{t}$ we do something similar:
 
 \begin{align}
+  \Theta_{1} &= \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n}) \\
   Y_{t} &= L_n\sin(\Theta_{1}) \\
-        &=
+       &= L_n\sin(\cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})) \\
+       &= L_n\sqrt{1 - (\frac{L^2+L_n^2-L_f^2}{2LL_n})^2} \\
 \end{align}
 
 \section{Cartesian from Angular Coordinates}
