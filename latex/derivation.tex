@@ -686,8 +686,24 @@ cos^{-1}(b)\Big) = ab \mp \sqrt{1-a^2}\sqrt{1-b^2}$$
 and $$\sin\Big(cos^{-1}(a)\pm cos^{-1}(b)\Big) = \sqrt{1-a^2}b\pm a\sqrt{1-b^2}$$ to simplify our expressions:
 
 \begin{align}
-  X_{nm} &= L_{s}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\Big) - \sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
-  Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}+\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
+  X_{nm} &= L_{s}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\Big) \mp \sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
+  Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
+\end{align}
+
+We simplify...
+
+\begin{align}
+  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\Big) \mp \sqrt{L_{n}^2-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\bigg)^2}\sqrt{L_{n}^2-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\bigg)^2} \Bigg) \\
+  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\sqrt{L_{n}^2-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2L}\sqrt{L_{n}^2-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\bigg)^2} \Bigg) \\
+\end{align}
+
+We then expand $L_{n}$...
+
+\begin{align}
+  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\Big)\Big(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\Big) \mp \\
+  & \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\bigg)^2}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
+  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\bigg)^2} \pm \\
+  & \frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2+-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
 \end{align}
 
 We can also use the law of cosines to find an expression for $\Theta_{1}$:
