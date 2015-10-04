@@ -24,11 +24,13 @@ void simulateProtein(Dynein* dyn, double tf) {
   
   while( t < tf ) {
     if (dyn->rand->rand() < dyn->get_unbinding_rate()*dt) {
-        dyn->unbind();
-	dyn->log(t, data_file);
-	exit(EXIT_SUCCESS);
+      dyn->log_run(t);
+      dyn->unbind();
+      dyn->log(t, data_file);
+      exit(EXIT_SUCCESS);
     } else if (dyn->rand->rand() < dyn->get_binding_rate()*dt) {
-        dyn->switch_to_bothbound();
+      printf("Switching states at %g (%.2f%%)\n", t, t/tf*100);
+      dyn->switch_to_bothbound();
     }
     
     dyn->update_velocities();
@@ -47,6 +49,8 @@ void simulateProtein(Dynein* dyn, double tf) {
     
     t += dt;
   }
+  dyn->log_run(tf);
+  
   fclose(data_file);
 }
 

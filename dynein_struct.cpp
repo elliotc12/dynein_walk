@@ -137,6 +137,9 @@ void Dynein::update_velocities() {
 
 void Dynein::switch_to_bothbound() {
   // At this time, actually just switch to near/farbound. Eventually implement bothbound.
+  steps++;
+  distance_traveled += fabs(get_fbx() - get_bbx());
+
   double temp_bba = bba;
   double temp_bma = bma;
   double temp_fma = fma;
@@ -151,7 +154,7 @@ void Dynein::switch_to_bothbound() {
   fba = temp_bba;
 
   if (state == NEARBOUND) state = FARBOUND;
-  else if (state == FARBOUND) state = NEARBOUND;
+  else if (state == FARBOUND) state = NEARBOUND;  
 }
 
 void Dynein::unbind() {
@@ -409,6 +412,24 @@ void Dynein::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
+}
+
+void Dynein::log_run(float runtime) {
+  FILE* data_file = fopen("run_data.txt", "w");
+
+  float run_length = get_bbx();
+  float ave_step_dist = distance_traveled / steps;
+  float ave_step_time = runtime / steps;
+  
+  printf("\n\n***********Run data**********\n");
+  printf("Run length: %f\n", run_length);
+  printf("Distance traveled: %f\n", distance_traveled);
+  printf("Steps: %d\n", steps);
+  printf("Average step length: %f\n", ave_step_dist);
+  printf("Average step time: %g\n\n\n", ave_step_time);
+  fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
+  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+  fclose(data_file);
 }
 
 void Dynein::resetLog() {

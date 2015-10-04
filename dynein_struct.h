@@ -80,10 +80,10 @@ const equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 };
 
 const equilibrium_angles near_farbound_post_powerstroke_internal_angles = {
-  0.5 * M_PI,
-  1.0 * M_PI,
-  (0.0 / 180) * M_PI,
-  1.1 * M_PI
+  0.6 * M_PI,
+  0.6 * M_PI,
+  0.0 * M_PI,
+  0.6 * M_PI
 };
 
 /* ******************************** DYNEIN CLASS DEFINITION ************************************* */
@@ -157,7 +157,9 @@ public:
   State get_state();
 
   void log(double t, FILE* data_file);
+  void log_run(float runtime);
   void resetLog();
+  
   void update_velocities();
   
 private:
@@ -188,6 +190,9 @@ private:
   forces *brownian_testcase;
   forces *internal_testcase;
   State state;
+
+  int steps = 0;
+  float distance_traveled = 0;
 };
 
 /* *********************************** UTILITY PROTOTYPES ****************************************** */
