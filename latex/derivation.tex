@@ -664,6 +664,8 @@ By the law of cosines:
   L_f &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{fm})}\\
 \end{align}
 
+We want to find cartesian coordinates in terms of $L_n$ and $L_f$.\\
+
 Also by the law of cosines, we see that:
 \begin{align}
   \Theta_{1} &= \cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg) \\
@@ -697,52 +699,6 @@ We simplify...
   Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\sqrt{L_{n}^2-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2L}\sqrt{L_{n}^2-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\bigg)^2} \Bigg) \\
 \end{align}
 
-We then expand $L_{n}^2$...
-
-\begin{align}
-  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\Big)\Big(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\Big) \mp \\
-  & \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\bigg)^2}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
-  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\bigg)^2} \pm \\
-  & \frac{L^2+L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-L_{f}^2}{2L}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2+-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
-\end{align}
-
-and $L_{f}^2$...
-
-\begin{align}
-  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2-2L_{t}L_{s}\cos(\Theta_{nm})+2L_{t}L_{s}\cos(\Theta_{fm})}{2L}\Big)\Big(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\Big) \mp \\
-  & \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2-2L_{t}L_{s}\cos(\Theta_{nm})+2L_{t}L_{s}\cos(\Theta_{fm})}{2L}\bigg)^2}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
-  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{2L_{s}^2-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2-2L_{t}L_{s}\cos(\Theta_{nm})+2L_{t}L_{s}\cos(\Theta_{fm})}{2L}\bigg)^2} \pm \\
-  & \frac{L^2-2L_{t}L_{s}\cos(\Theta_{nm})+2L_{t}L_{s}\cos(\Theta_{fm})}{2L}\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{2L_{s}^2+-2L_{t}L_{s}\cos(\Theta_{nm})}{2L_{s}}\bigg)^2} \Bigg) \\
-\end{align}
-
-We then do some simplification...
-
-\begin{align}
-  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\Big)\Big(2L_{s}-L_{t}\cos(\Theta_{nm})\Big) \mp \\
-  & \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\bigg)^2}\sqrt{L_{t}^2-L_{t}^2\cos^2(\Theta_{nm})} \Bigg) \\
-  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(L_{s}-L_{t}\cos(\Theta_{nm})\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\bigg)^2} \pm \\
-  & \frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\sqrt{L_{t}^2-L_{t}^2\cos^2(\Theta_{nm})} \Bigg) \\
-\end{align}
-
-And even more simplification...
-
-\begin{align}
-  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\Big)\Big(2L_{s}-L_{t}\cos(\Theta_{nm})\Big) \mp \\
-  & L_{t}\sin(\Theta_{nm})\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\bigg)^2} \Bigg) \\
-  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg((L_{s}-L_{t}\cos(\Theta_{nm}))\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\bigg)^2} \pm \\
-  & \frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}L_{t}\sin(\Theta_{nm}) \Bigg) \\
-\end{align}
-
-We then combine terms and make the equations messier (TODO: Finish this part):
-
-\begin{multline}
-  X_{nm} = \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{2L^2L_s - L^2L_t\cos(\Theta_{nm}) + 4L_{t}L_{s}^2(\cos(\Theta_{fm})-\cos(\Theta_{nm})) - 2L_{t}^2L_{s}(\cos(\Theta_{fm})\cos(\Theta_{nm}) - \cos^2(\Theta_{nm}))}{2L}\Big) \mp \\
-\hspace*{-2 cm}  L_{t}\sin(\Theta_{nm})\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s} \cos(\Theta_{nm})-\bigg(
-    \frac{L^2+4L_{t}^2L_{s}^2\cos^2(\Theta_{fm})+ 4L_{t}^2L_{s}^2\cos^2(\Theta_{nm}) - 8L_{t}^2L_{s}^2\cos(\Theta_{fm})\cos(\Theta_{nm}) + 4L^2L_{t}L_{s}\cos(\Theta_{fm}) - 4L^2L_{t}L_{s}\cos(\Theta_{nm})}{2L}\bigg)} \Bigg) \\
-  Y_{nm} = \frac{L_{s}}{L_{n}}\Bigg((L_{s}-L_{t}\cos(\Theta_{nm}))\sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})-\bigg(\frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}\bigg)^2} \pm \\
-   \frac{L^2+2L_{t}L_{s}(\cos(\Theta_{fm})-\cos(\Theta_{nm}))}{2L}L_{t}\sin(\Theta_{nm}) \Bigg) \\
-\end{multline}
-
 We can also use the law of cosines to find an expression for $\Theta_{1}$:
 
 \begin{align}
@@ -755,8 +711,6 @@ We use this to find the value of $X_{t}$:
 \begin{align}
   X_{t} &= L_n\cos(\Theta_{1}) \\
        &= \frac{L^2+L_n^2-L_f^2}{2L} \\
-       &= \frac{L^2 + L_s^2 + L_t^2 - 2L_tL_s\cos(\Theta_{nm}) - L_s^2 - L_t^2 + 2L_sL_t\cos(\Theta_{fm})}{2L} \\
-       &= \frac{L^2 + 2L_tL_s\big(\cos(\Theta_{fm})-\cos(\Theta_{nm})\big)}{2L}
 \end{align}
 
 To find $Y_{t}$ we do something similar:
@@ -766,26 +720,24 @@ To find $Y_{t}$ we do something similar:
   Y_{t} &= L_n\sin(\Theta_{1}) \\
   &= L_n\sin(\cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})) \\
   &= L_n\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2} \\
-  &= L_n\sqrt{1 - (\frac{(L^2 + L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm}) - (L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{fm})))^2}{4L^2L_n^2})} \\
-  &= L_n\sqrt{1 - (\frac{(L^2 - 2L_{t}L_{s}(\cos(\Theta_{fm}) - \cos(\Theta_{nm})))^2}{4L^2L_n^2})} \\
-  &= L_n\sqrt{1 - (\frac{(L^4 + 4L_{t}^2L_{s}^2(\cos^2(\Theta_{fm}) + \cos^2(\Theta_{nm}) - 2\cos(\Theta_{fm})\cos(\Theta_{nm})) - 4L^2L_{t}L_{s}(\cos(\Theta_{fm}) - \cos(\Theta_{nm})))}{4L^2(L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm}))})} \\
 \end{align}
+
 
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
   X_{nb} &= 0 \\
-  X_{nm} &= L_{s}*\cos(\Theta_{nb}) \\
-  X_{t}  &= ?? \\
-  X_{fm} &= L_{s}*\cos(\Theta_{fb}) \\
+  X_{nm} &=  \\
+  X_{t}  &= \frac{L^2+L_n^2-L_f^2}{2L} \\
+  X_{fm} &=  \\
   X_{fb} &= L \\
 \end{align}
 
 \begin{align}
   Y_{nb} &= 0 \\
-  Y_{nm} &= L_{s}*\sin(\Theta_{nb}) \\
-  Y_{t}  &= ?? \\
-  Y_{fm} &= L_{s}*\sin(\Theta_{fb}) \\
+  Y_{nm} &=  \\
+  Y_{t}  &= L_n\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2} \\
+  Y_{fm} &=  \\
   Y_{fb} &= 0
 \end{align}
 
@@ -793,17 +745,17 @@ This section lays out the definitions of the coordinates of the Dynein model. \\
 This section shows the velocity definitions. \\
 \begin{align}
   \dot{X}_{nb} &= 0 \\
-  \dot{X}_{nm} &= -L_{s}*\sin(\Theta_{nb})*\dot{\Theta}_{nb} \\
-  \dot{X}_{t } &= ?? \\
-  \dot{X}_{fm} &= -L_{s}*\sin(\Theta_{fb})*\dot{\Theta}_{fb} \\
+  \dot{X}_{nm} &= \\
+  \dot{X}_{t } &= \frac{L^2+2L_n\dot{L}_n-2L_f\dot{L}_f}{2L} \\
+  \dot{X}_{fm} &= \\
   \dot{X}_{fb} &= 0
 \end{align}  
              
 \begin{align}                                                                          
   \dot{Y}_{nb} &= 0 \\                                         
-  \dot{Y}_{nm} &= L_{s}*\cos(\Theta_{nb})*\dot{\Theta}_{nb} \\
-  \dot{Y}_{t}  &= ?? \\
-  \dot{Y}_{fm} &= L_{s}*\cos(\Theta_{fb})*\dot{\Theta}_{fb} \\
+  \dot{Y}_{nm} &= \\
+  \dot{Y}_{t}  &= \frac{L_n}{2\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2}} * \big(\frac{(-L^2L_n^{-2}+\dot{L}_n - 2L_f\dot{L}_nL_n^{-1} + L_f^2L_n^{-2}}{2L}\big) - think this is rite?\\
+  \dot{Y}_{fm} &= \\
   \dot{Y}_{fb} &= 0 \\
 \end{align}
 
