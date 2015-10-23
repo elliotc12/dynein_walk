@@ -692,12 +692,47 @@ and $$\sin\Big(cos^{-1}(a)\pm cos^{-1}(b)\Big) = \sqrt{1-a^2}b\pm a\sqrt{1-b^2}$
   Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
 \end{align}
 
-We simplify...
+We simplify further...
 
 \begin{align}
-  X_{nm} &= \frac{L_{s}}{L_{n}}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\Big) \mp \sqrt{L_{n}^2-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\bigg)^2}\sqrt{L_{n}^2-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\bigg)^2} \Bigg) \\
-  Y_{nm} &= \frac{L_{s}}{L_{n}}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\sqrt{L_{n}^2-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2L}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2L}\sqrt{L_{n}^2-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}}\bigg)^2} \Bigg) \\
+  X_{nm} &= \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\Big) \mp L_s\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2}\\
+  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg)\\
 \end{align}
+
+\begin{align}
+  X_{nm} &= \frac{1}{4LL_s}\Big(L^2+L_{n}^2-L_{f}^2\Big)\Big(L_{s}^2+L_{n}^2-L_{t}^2\Big)\big(L_n \big)^{-2} \mp L_s\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2}\\
+  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg)\\
+\end{align}
+
+Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
+
+\begin{align}
+  \dot{X}_{nm} =
+  &-\frac{\text{Ls} \sqrt{1-\frac{\left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{4
+   \text{Ls}^2 \text{Ln}(t)^2}} \left(\frac{\text{Ln}'(t)
+   \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{2 L^2
+   \text{Ln}(t)^3}-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right) \left(2
+   \text{Ln}(t) \text{Ln}'(t)-2 \text{Lf}(t) \text{Lf}'(t)\right)}{2 L^2
+   \text{Ln}(t)^2}\right)}{2
+   \sqrt{1-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{4 L^2
+   \text{Ln}(t)^2}}} - \\
+  &\frac{\text{Ln}'(t) \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)
+   \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{2 L \text{Ls}
+   \text{Ln}(t)^3}\\
+  &-\frac{\text{Ls}
+   \sqrt{1-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{4 L^2 \text{Ln}(t)^2}}
+   \left(\frac{\text{Ln}'(t) \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{2
+   \text{Ls}^2 \text{Ln}(t)^3}-\frac{\text{Ln}'(t)
+   \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{\text{Ls}^2 \text{Ln}(t)}\right)}{2
+   \sqrt{1-\frac{\left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{4 \text{Ls}^2
+       \text{Ln}(t)^2}}}\\
+  & +\frac{\text{Ln}'(t) \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)}{2
+   L \text{Ls} \text{Ln}(t)}+\frac{\left(2 \text{Ln}(t) \text{Ln}'(t)-2 \text{Lf}(t)
+   \text{Lf}'(t)\right) \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{4 L \text{Ls}
+   \text{Ln}(t)^2}
+\end{align}
+
+This is becoming really ugly! I think I want to try another thing. Tomorrow I'll try and implement a different angle scheme and see if it works out easier...this is not tenable. The advantage to this scheme is that it avoids ambiguity, but it is also really really complicated. And even this model has ambiguity in that certain angles could have positive/negative values, so the C code will have to have memory and guess which value is correct. So I think it would be good to choose a simpler ambiguous model and code in ambiguity-resolution to the C code.\\
 
 We can also use the law of cosines to find an expression for $\Theta_{1}$:
 
@@ -759,99 +794,6 @@ This section shows the velocity definitions. \\
   \dot{Y}_{fb} &= 0 \\
 \end{align}
 
-\section{Brownian Equations}
-This section shows the velocity definitions using the Brownian dynamics equation. \\
-\begin{align}  
-  \dot{X}_{nb} &= \frac{1}{\gamma} \Big(F_{xnb} + \lambda_{fs}(X_{nm} - X_{nb})\Big) + R_{xnb} \\
-  \dot{X}_{nm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{nm} - X_{nb}) + \lambda_{bt}(X_{t } - X_{nm}) \Big) + R_{xml} \\
-  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{nm}) + \lambda_{bt}(X_{fm} - X_{t }) \Big) + R_{xt } \\
-  \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{bt}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
-  \dot{X}_{fb} &= \frac{1}{\gamma} \Big(F_{xbr} + \mn \lambda_{fs}(X_{fb} - X_{fm})\Big) + R_{xbr}
-\end{align}
-
-\begin{align}  
-  \dot{Y}_{nb} &= \frac{1}{\gamma} \Big(F_{ynb} + \lambda_{fs}(Y_{nm} - Y_{nb})\Big) + R_{ynb} \\
-  \dot{Y}_{nm} &= \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{nm} - Y_{nb}) + \lambda_{bt}(Y_{t } - Y_{nm}) \Big) + R_{yml} \\
-  \dot{Y}_{t}  &= \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{nm}) + \lambda_{bt}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
-  \dot{Y}_{fm} &= \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{bt}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
-  \dot{Y}_{fb} &= \frac{1}{\gamma} \Big(F_{ybr} + \mn \lambda_{fs}(Y_{fb} - Y_{fm})\Big) + R_{ybr}
-\end{align}
-  
-\section{System of Equations}
-This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
-
-\begin{align}
-  \dot{X}_{nm} &= \dot{X}_{nb} + \mn L_{s}\sin(\Theta_{nb})\dot{\Theta}_{nb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{nm} - X_{nb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{nm}) + R_{xml} \\
-  \dot{X}_{t}  &= \dot{X}_{nm} + \mn L_{t}\sin(\Theta_{nm})\dot{\Theta}_{nm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{nm}) + \frac{1}{\gamma}\lambda_{bt}(X_{fm} - X_{t }) + R_{xt } \\
-  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{bt}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\
-  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr}
-\end{align}
-
-\begin{align}  
-  \dot{Y}_{nm} &= \dot{Y}_{nb} + L_{s}\cos(\Theta_{nb})\dot{\Theta}_{nb} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{bs}(Y_{nm} - Y_{nb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{nm}) + R_{yml} \\
-  \dot{Y}_{t}  &= \dot{Y}_{nm} + L_{t}\cos(\Theta_{nm})\dot{\Theta}_{nm} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{nm}) + \frac{1}{\gamma}\lambda_{bt}(Y_{fm} - Y_{t }) + R_{yt } \\
-  \dot{Y}_{fm} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
-  \dot{Y}_{fb} &= \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr}
-\end{align}
-
-\section{System after Addition}
-By adding equations from our system together we can isolate the $\lambda$ values. This system has been verified via CAS.\\
-
-\begin{multline}
-\mn\frac{1}{\gamma}\lambda_{bs}(X_{nm} - X_{nb}) =
-\dot{X}_{nb} + \mn L_{s}\sin(\Theta_{nb})\dot{\Theta}_{nb} - R_{xml} - \frac{1}{\gamma}F_{xml} + \dot{X}_{nm} + \mn L_{t}\sin(\Theta_{nm})\dot{\Theta}_{nm} - R_{xt } \\
-- \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr}
--\frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
-\label{eq:Ax}
-\end{multline}%Fix'd
-
-\begin{multline}
-\mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{nm}) =
-\dot{X}_{nm} + \mn L_{t}\sin(\Theta_{nm})\dot{\Theta}_{nm} - R_{xt } - \frac{1}{\gamma}F_{xt } + \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
-- R_{xmr} - \frac{1}{\gamma}F_{xmr} + \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
-\label{eq:Bx}
-\end{multline}%Fix'd
-
-\begin{equation}
-\mn\frac{1}{\gamma}\lambda_{bt}(X_{fm} - X_{t }) =
-\dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} - R_{xmr} - \frac{1}{\gamma}F_{xmr}
-+ \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
-\label{eq:Cx}
-\end{equation}%Fix'd
-
-\begin{equation}
-\mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) = 
-\dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} - R_{xbr} - \frac{1}{\gamma}F_{xbr}
-\label{eq:Dx}
-\end{equation}%Fix'd
-
-
-\begin{multline}
-\mn\frac{1}{\gamma}\lambda_{bs}(Y_{nm} - Y_{nb}) =
-\dot{Y}_{nb} + L_{s}\cos(\Theta_{nb})\dot{\Theta}_{nb} - R_{yml} - \frac{1}{\gamma}F_{yml} + \dot{Y}_{nm} + L_{t}\cos(\Theta_{nm})\dot{\Theta}_{nm} \\
-- R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm}
-+ \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
-\label{eq:Ay}
-\end{multline}%Fix'd
-
-\begin{multline}
-\mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{nm}) =
-\dot{Y}_{nm} + L_{t}\cos(\Theta_{nm})\dot{\Theta}_{nm} - R_{yt} - \frac{1}{\gamma}F_{yt } + \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
-- R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
-\label{eq:By}
-\end{multline}%Fix'd
-
-\begin{equation}
-\mn\frac{1}{\gamma}\lambda_{bt}(Y_{fm} - Y_{t }) =
-\dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} - R_{ymr} - \frac{1}{\gamma}F_{ymr} + \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
-- R_{ybr} - \frac{1}{\gamma}F_{ybr}
-\label{eq:Cy}
-\end{equation}%Fix'd
-
-\begin{equation}
-\mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) = \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} - R_{ybr} - \frac{1}{\gamma}F_{ybr}
-\label{eq:Dy}
-\end{equation}%Fix'd
 
 \begin{twocolumn}
 \section{Notes on physical parameters}
