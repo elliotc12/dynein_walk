@@ -682,6 +682,17 @@ We now do a similar solution for velocities in the case where both of the model'
   &= \frac{B + L_s\cos(\theta_{fb}) + L_s\cos(\theta_{nb})}{2} \mp \frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2} * \\
   &\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb})\cos(\theta_{nb}) - 2L_s^2\sin(\theta_{fb})\sin(\theta_{nb})} -1}\\\\
   &= \frac{B + L_s\cos(\theta_{fb}) + L_s\cos(\theta_{nb})}{2} \mp \frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2}\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+  \dot{X}_t &= \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} - L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\\
+  &\mp \frac{d}{dt} \left(\frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+  &\mp \frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2}\frac{d}{dt} \left(\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\right)\\
+   \dot{X}_t &= \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} - L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\\
+  &\mp \left(\frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} - L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+   &\mp \frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2}\left(\frac{1}{2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}}\right) *\\
+   &\left(\frac{-4L_t^2}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2}\right) *\\
+   &\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb}-\dot{\theta}_{nb})\right)\\
+   \dot{X}_t &= \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} - L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\\
+  &\mp \left(\frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} - L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+   &\mp \frac{L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})}{2}\left(\frac{\left(\frac{-4L_t^2\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb}-\dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2}\right)}{2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}}\right)\\
 \end{align*}
 
 \subsection{$Y_t$}
@@ -777,29 +788,3 @@ constant to be $kT$ divided by that anglular fluctuation squared.
 \end{twocolumn}
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
