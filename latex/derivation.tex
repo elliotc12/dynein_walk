@@ -734,7 +734,7 @@ This section lays out the definitions of the coordinates of the bothbound Dynein
 \begin{align}
   Y_{nb} &= 0 \\
   Y_{nm} &= L_s\sin(\theta_{nb})\\
-  Y_{t}  &= \frac{L_s\sin(\theta_{fb}) + L_s\sin(\theta_{nb})}{2} \pm \frac{B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})}{2}\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}\\
+  Y_{t}  &= \frac{L_s\sin(\theta_{fb}) + L_s\sin(\theta_{nb})}{2} \pm \frac{B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})}{2}\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}\\
   Y_{fm} &= L_s\sin(\theta_{fb})\\
   Y_{fb} &= 0\\
 \end{align}
@@ -753,11 +753,53 @@ This section shows the velocity definitions. \\
 \begin{align}                                                                  
   \dot{Y}_{nb} &= 0 \\                                 
   \dot{Y}_{nm} &= L_s\cos(\theta_{nb})\dot{\theta}_{nb}\\
-  \dot{Y}_{t}  &= \frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} + L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2}\pm \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} + L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1} \\
- &\pm \frac{B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})}{2}\frac{\frac{-4L_t^2}{\left(2L_s^2 + B^2 + BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2}-BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb}+\dot{\theta}_{nb})}{2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}}\\
+  \dot{Y}_{t}  &= \frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} + L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2} \pm \left(\frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} + L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}\\
+  &\mp \frac{L_t^2\left(B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})\right)\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb} - \dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}}\\
   \dot{Y}_{fm} &= L_s\cos(\theta_{fb})\dot{\theta}_{fb}\\
   \dot{Y}_{fb} &= 0 \\
 \end{align}
+
+\section{System of Equations}
+
+\begin{align}
+  \dot{X}_{nb} &= 0 = \frac{1}{\gamma}F_{xnb} + \frac{1}{\gamma}\lambda_{ns}(X_{nm} - X_{nb}) + R_{xnb} \\
+  \dot{X}_{nm} &= -L_s\sin(\theta_{nb})\dot{\theta}_{nb} = \frac{1}{\gamma}F_{xnm} + \mn\frac{1}{\gamma}\lambda_{ns}(X_{nm} - X_{nb}) + \frac{1}{\gamma}\lambda_{nt}(X_{t } - X_{nm}) + R_{xnm} \\
+  \dot{X}_{t}  &= \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} - L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2} \mp \left(\frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} - L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+   &\pm \frac{L_{t}^2\left(L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})\right)\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb}-\dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}}\\ &= \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{nt}(X_{t } - X_{nm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } \\
+  \dot{X}_{fm} &= -L_s\sin(\theta_{fb})\dot{\theta}_{fb} = \frac{1}{\gamma}F_{xfm} + \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xfm} \\
+  \dot{X}_{fb} &= 0 = \frac{1}{\gamma}F_{xfb} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xfb}
+\end{align}
+
+\begin{align}
+  \dot{Y}_{nb} &= 0 = \frac{1}{\gamma}F_{ynb} + \frac{1}{\gamma}\lambda_{ns}(Y_{nm} - Y_{nb}) + R_{ynb} \\
+  \dot{Y}_{nm} &= L_s\cos(\theta_{nb})\dot{\theta}_{nb} = \frac{1}{\gamma}F_{ynm} + \mn\frac{1}{\gamma}\lambda_{ns}(Y_{nm} - Y_{nb}) + \frac{1}{\gamma}\lambda_{nt}(Y_{t } - Y_{nm}) + R_{ynm} \\
+  \dot{Y}_{t}  &= \frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} + L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2} \pm \left(\frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} + L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}\\
+  &\mp \frac{L_t^2\left(B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})\right)\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb} - \dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}}\\ &= \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{nt}(Y_{t } - Y_{nm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } \\
+  \dot{Y}_{fm} &= L_s\cos(\theta_{fb})\dot{\theta}_{fb} = \frac{1}{\gamma}F_{yfm} + \mn\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{yfm} \\
+  \dot{Y}_{fb} &= 0 = \frac{1}{\gamma}F_{yfb} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{yfb}
+\end{align} \\ \\
+
+\section{System After Addition?}
+
+\begin{align}
+  \dot{X}_{nb} &= 0 = \frac{1}{\gamma}F_{xnb} + \frac{1}{\gamma}\lambda_{ns}(X_{nm} - X_{nb}) + R_{xnb} \\
+  \dot{X}_{nm} &= -L_s\sin(\theta_{nb})\dot{\theta}_{nb} = \frac{1}{\gamma}F_{xnm} + \frac{1}{\gamma}F_{xnb} + \frac{1}{\gamma}\lambda_{nt}(X_{t } - X_{nm}) + R_{xnm} + R_{xnb}\\
+  \dot{X}_{t}  &= \frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} - L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2} \mp \left(\frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} - L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}\\
+   &\pm \frac{L_{t}^2\left(L_s\sin(\theta_{fb})-L_s\sin(\theta_{nb})\right)\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb}-\dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) - 2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} -1}}\\ &- L_s\sin(\theta_{nb})\dot{\theta}_{nb} - L_s\sin(\theta_{fb})\dot{\theta}_{fb} =\\ &\frac{1}{\gamma}F_{xt } + \frac{1}{\gamma}F_{xnm} + \frac{1}{\gamma}F_{xnb} + \frac{1}{\gamma}F_{xfm} + \frac{1}{\gamma}F_{xfb} + R_{xt } + R_{xnm} + R_{xnb} + R_{xfm} + R_{xfb}\\
+  \dot{X}_{fm} &= -L_s\sin(\theta_{fb})\dot{\theta}_{fb} = \frac{1}{\gamma}F_{xfm} + \frac{1}{\gamma}F_{xfb} + \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xfm} + R_{xfb} \\
+  \dot{X}_{fb} &= 0 = \frac{1}{\gamma}F_{xfb} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xfb}
+\end{align}
+
+\begin{align}
+  \dot{Y}_{nb} &= 0 = \frac{1}{\gamma}F_{ynb} + \frac{1}{\gamma}\lambda_{ns}(Y_{nm} - Y_{nb}) + R_{ynb} \\
+  \dot{Y}_{nm} &= L_s\cos(\theta_{nb})\dot{\theta}_{nb} = \frac{1}{\gamma}F_{ynm} + \frac{1}{\gamma}F_{ynb} + \frac{1}{\gamma}\lambda_{nt}(Y_{t } - Y_{nm}) + R_{ynm} + R_{ynb}\\
+  \dot{Y}_{t}  &= \frac{L_s\cos(\theta_{fb})\dot{\theta}_{fb} + L_s\cos(\theta_{nb})\dot{\theta}_{nb}}{2} \pm \left(\frac{-L_s\sin(\theta_{fb})\dot{\theta}_{fb} + L_s\sin(\theta_{nb})\dot{\theta}_{nb}}{2}\right)\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}\\
+  &\mp \frac{L_t^2\left(B + L_s\cos(\theta_{fb}) - L_s\cos(\theta_{nb})\right)\left(-2BL_s\sin(\theta_{fb})\dot{\theta}_{fb} + 2BL_s\sin(\theta_{nb})\dot{\theta}_{nb} + 2L_s^2\sin(\theta_{fb} - \theta_{nb})(\dot{\theta}_{fb} - \dot{\theta}_{nb})\right)}{\left(2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})\right)^2\sqrt{\frac{4L_t^2}{2L_s^2 + B^2 + 2BL_s\cos(\theta_{fb}) -2BL_s\cos(\theta_{nb}) - 2L_s^2\cos(\theta_{fb} - \theta_{nb})} - 1}}\\ &+ L_s\cos(\theta_{nb})\dot{\theta}_{nb} + L_s\cos(\theta_{fb})\dot{\theta}_{fb} =\\ & \frac{1}{\gamma}F_{yt } + \frac{1}{\gamma}F_{ynm} + \frac{1}{\gamma}F_{ynb} + \frac{1}{\gamma}F_{yfm} + \frac{1}{\gamma}F_{yfb} + \mn\frac{1}{\gamma}\lambda_{nt}(Y_{t } - Y_{nm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } + R_{ynm} + R_{ynb} + R_{yfm} + R_{yfb}\\
+  \dot{Y}_{fm} &= L_s\cos(\theta_{fb})\dot{\theta}_{fb} = \frac{1}{\gamma}F_{yfm} + \frac{1}{\gamma}F_{yfb} + \mn\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yfm} + R_{yfb}\\
+  \dot{Y}_{fb} &= 0 = \frac{1}{\gamma}F_{yfb} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{yfb}
+\end{align}
+
+
 
 \begin{twocolumn}
 \section{Notes on physical parameters}
