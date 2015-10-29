@@ -1,6 +1,6 @@
 \documentclass[11pt, landscape]{article}
 
-\newcommand{\shellcmd}[1]{\texttt{\footnotesize #1}}
+\usepackage[hmargin=1.25cm, vmargin=1.5cm]{geometry} % Document margins
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -664,15 +664,13 @@ By the law of cosines:
   L_f &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{fm})}\\
 \end{align}
 
-We want to find cartesian coordinates in terms of $L_n$ and $L_f$.\\
-
-Also by the law of cosines, we see that:
+By the law of cosines, we see that:
 \begin{align}
   \Theta_{1} &= \cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg) \\
   \Theta_{2} &= \pm\cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg) \\
 \end{align}
 
-We use these equations to solve for our nm (near motor) coordinates:
+\subsection{Solving for $X_{nm}$ and $Y_{nm}$}
 
 \begin{align}
   X_{nm} &= L_{s}*\cos(\Theta_{1}+\Theta_{2}) =
@@ -707,54 +705,21 @@ We simplify further...
 Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
 
 \begin{align}
-  \dot{X}_{nm} =
-  &-\frac{\text{Ls} \sqrt{1-\frac{\left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{4
-   \text{Ls}^2 \text{Ln}(t)^2}} \left(\frac{\text{Ln}'(t)
-   \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{2 L^2
-   \text{Ln}(t)^3}-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right) \left(2
-   \text{Ln}(t) \text{Ln}'(t)-2 \text{Lf}(t) \text{Lf}'(t)\right)}{2 L^2
-   \text{Ln}(t)^2}\right)}{2
-   \sqrt{1-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{4 L^2
-   \text{Ln}(t)^2}}} - \\
-  &\frac{\text{Ln}'(t) \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)
-   \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{2 L \text{Ls}
-   \text{Ln}(t)^3}\\
-  &-\frac{\text{Ls}
-   \sqrt{1-\frac{\left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)^2}{4 L^2 \text{Ln}(t)^2}}
-   \left(\frac{\text{Ln}'(t) \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{2
-   \text{Ls}^2 \text{Ln}(t)^3}-\frac{\text{Ln}'(t)
-   \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{\text{Ls}^2 \text{Ln}(t)}\right)}{2
-   \sqrt{1-\frac{\left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)^2}{4 \text{Ls}^2
-       \text{Ln}(t)^2}}}\\
-  & +\frac{\text{Ln}'(t) \left(L^2-\text{Lf}(t)^2+\text{Ln}(t)^2\right)}{2
-   L \text{Ls} \text{Ln}(t)}+\frac{\left(2 \text{Ln}(t) \text{Ln}'(t)-2 \text{Lf}(t)
-   \text{Lf}'(t)\right) \left(\text{Ln}(t)^2+\text{Ls}^2-\text{Lt}^2\right)}{4 L \text{Ls}
-   \text{Ln}(t)^2}
+  \dot{X}_{nm} &=\\
 \end{align}
 
-We can also use the law of cosines to find an expression for $\Theta_{1}$:
-
-\begin{align}
-   L_f^2 &= L^2 + L_n^2 - 2LL_n\cos(\Theta_{1}) \\
-   \Theta_{1} &= \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n}) \\
-\end{align}
-
-We use this to find the value of $X_{t}$:
+\subsection{$X_t$ and $Y_t$}
 
 \begin{align}
   X_{t} &= L_n\cos(\Theta_{1}) \\
        &= \frac{L^2+L_n^2-L_f^2}{2L} \\
 \end{align}
 
-To find $Y_{t}$ we do something similar:
-
 \begin{align}
-  \Theta_{1} &= \cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n}) \\
   Y_{t} &= L_n\sin(\Theta_{1}) \\
   &= L_n\sin(\cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})) \\
   &= L_n\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2} \\
 \end{align}
-
 
 \section{Cartesian from Angular Coordinates}
 This section lays out the definitions of the coordinates of the Dynein model. \\
