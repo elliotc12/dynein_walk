@@ -686,8 +686,8 @@ cos^{-1}(b)\Big) = ab \mp \sqrt{1-a^2}\sqrt{1-b^2}$$
 and $$\sin\Big(cos^{-1}(a)\pm cos^{-1}(b)\Big) = \sqrt{1-a^2}b\pm a\sqrt{1-b^2}$$ to simplify our expressions:
 
 \begin{align}
-  X_{nm} &= L_{s}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\Big) \mp \sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
-  Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg) \\
+  X_{nm} &= L_{s}\Bigg( \Big(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Big)\Big(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\Big) \mp \sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg)\\
+  Y_{nm} &= L_{s}\Bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm \frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg)\\
 \end{align}
 
 We simplify further...
@@ -720,14 +720,37 @@ Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
 \end{align}
 
 \begin{align}
-  \dot{X}_{nm} &= \frac{1}{{2L_n^{-3}LL_s}}\left(-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2\right)\dot{L}_n\\ &+ \frac{2L_nL^2\dot{L}_n + 2L_s^2L_{n}\dot{L}_n + 4L_n^3\dot{L}_n - 2L_t^2L_{n}\dot{L}_n - 2L_s^2L_{f}\dot{L}_f - 2L_nL_{f}^2\dot{L}_n - 2L_n^2L_{f}\dot{L}_f + 2L_t^2L_{f}\dot{L}_f}{4L_n^2LL_s}\\
+  \dot{X}_{nm} &= \frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}LL_s}}\dot{L}_n\\ &+ \frac{2L_nL^2\dot{L}_n + 2L_s^2L_{n}\dot{L}_n + 4L_n^3\dot{L}_n - 2L_t^2L_{n}\dot{L}_n - 2L_s^2L_{f}\dot{L}_f - 2L_nL_{f}^2\dot{L}_n - 2L_n^2L_{f}\dot{L}_f + 2L_t^2L_{f}\dot{L}_f}{4L_n^2LL_s}\\
   &\mp L_s\frac{\left(\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL^2_{n}} - \frac{2L_nL^2\dot{L}_n - 2L_fL^2\dot{L}_f + 2L^2L_{n}\dot{L}_n + 4L_{n}^3\dot{L}_n - 2L^2L_{f}\dot{L}_f  + 4L_{f}^3\dot{L}_f}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
   &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\\
   &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
-  &\frac{\frac{d}{dt} \left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}
+  &\frac{\left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}\dot{L}_n
     - \frac{2L_nL_{s}^2\dot{L}_n + 2L_s^2L_{n}\dot{L}_n + 4L_{n}^3\dot{L}_n - 2L_t^2L_{n}\dot{L}_n - 2L_nL_{t}^2\dot{L}_n}{2L_{s}L_{n}}\right)}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\\
 \end{align}
 
+\begin{align}
+  \dot{X}_{nm} &= \frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}LL_s}}\dot{L}_n\\
+  &+ \frac{2L_nL^2 + 2L_s^2L_{n} + 4L_n^3 - 2L_t^2L_{n} - 2L_nL_{f}^2\dot{L}_n}{4L_n^2LL_s}\dot{L}_n + \frac{-2L_s^2L_{f} - 2L_n^2L_{f} + 2L_t^2L_{f}}{4L_n^2LL_s}\dot{L}_f\\
+  &\mp L_s\frac{\left(\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL^2_{n}} - \frac{2L_nL^2 + 2L^2L_{n} + 4L_{n}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\dot{L}_n\\
+  &\mp L_s\frac{\left(-\frac{-2L_fL^2 - 2L^2L_{f} + 4L_{f}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\dot{L}_f\\
+  &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
+  &\frac{\left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}
+    - \frac{2L_nL_{s}^2 + 2L_s^2L_{n} + 4L_{n}^3 - 2L_t^2L_{n} - 2L_nL_{t}^2}{2L_{s}L_{n}}\right)}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\dot{L}_n\\
+\end{align}
+
+\begin{align}
+  \dot{X}_{nm} &= \Bigg(\frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}LL_s}}\\
+  &+ \frac{2L_nL^2 + 2L_s^2L_{n} + 4L_n^3 - 2L_t^2L_{n} - 2L_nL_{f}^2\dot{L}_n}{4L_n^2LL_s}\dot{L}_n\\
+  &\mp L_s\frac{\left(\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL^2_{n}} - \frac{2L_nL^2 + 2L^2L_{n} + 4L_{n}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\\
+  &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
+  &\frac{\left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}
+    - \frac{2L_nL_{s}^2 + 2L_s^2L_{n} + 4L_{n}^3 - 2L_t^2L_{n} - 2L_nL_{t}^2}{2L_{s}L_{n}}\right)}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\Bigg)\dot{L}_n\\
+  &+ \Bigg(\frac{-2L_s^2L_{f} - 2L_n^2L_{f} + 2L_t^2L_{f}}{4L_n^2LL_s} \mp L_s\frac{\left(-\frac{-2L_fL^2 - 2L^2L_{f} + 4L_{f}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\Bigg)\dot{L}_f\\
+\end{align}
 
 
 \subsection{Solving for $X_{fm}$ and $Y_{fm}$}
@@ -738,20 +761,22 @@ The nearbound and farbound angles are symmetric. We switch all instances of $L_n
   Y_{fm} &= \frac{L_{s}^2+L_{f}^2-L_{t}^2}{2L_{f}}\sqrt{1-\bigg(\frac{L^2+L_{f}^2-L_{n}^2}{2LL_{f}}\bigg)^2} \pm L_s\frac{L^2+L_{f}^2-L_{n}^2}{2LL_{f}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{f}^2-L_{t}^2}{2L_{s}L_{f}}\bigg)^2} \Bigg)\\
 \end{align}
 
-\subsection{Solving for $X_{fm}$ and $Y_{fm}$}
-The near motor and far motor cases are equivalent. If the farbound binding angles are set to take the same values and positions as $\theta_1$ and $\theta_2$, then we can see that 
-
 \subsection{Solving for $X_t$ and $Y_t$}
 
 \begin{align}
   X_{t} &= L_n\cos(\Theta_{1}) \\
-       &= \frac{L^2+L_n^2-L_f^2}{2L} \\
+  &= \frac{L^2+L_n^2-L_f^2}{2L} \\
+  \dot{X}_t &= \frac{L_n}{L}\dot{L}_n - \frac{L_f}{L}\dot{L}_f\\
 \end{align}
 
 \begin{align}
   Y_{t} &= L_n\sin(\Theta_{1}) \\
-  &= L_n\sin(\cos^{-1}(\frac{L^2+L_n^2-L_f^2}{2LL_n})) \\
-  &= L_n\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2} \\
+  &= L_n\sin\left(\cos^{-1}\left(\frac{L^2+L_n^2-L_f^2}{2LL_n}\right)\right) \\
+  &= L_n\sqrt{1 - \left(\frac{L^2+L_n^2-L_f^2}{2LL_n}\right)^2} \\
+  &= \sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2} \\
+  \dot{Y}_t &= \frac{2L_n\dot{L}_n - \left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_n\dot{L}_n - L_f\dot{L}_f}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
+  \dot{Y}_t &= \frac{2L_n - \left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_n}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\dot{L}_n +
+  \frac{\left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_f}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\dot{L}_f\\
 \end{align}
 
 \section{Cartesian from Angular Coordinates}
@@ -767,29 +792,53 @@ This section lays out the definitions of the coordinates of the Dynein model. \\
 \begin{align}
   Y_{nb} &= 0 \\
   Y_{nm} &=  \\
-  Y_{t}  &= L_n\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2} \\
+  Y_{t}  &= L_n\sqrt{1 - \left(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\right)^2} \\
   Y_{fm} &=  \\
   Y_{fb} &= 0
 \end{align}
 
 \section{Cartesian Velocities}
 This section shows the velocity definitions. \\
+
+\textbf{REFORMAT!}
+
 \begin{align}
-  \dot{X}_{nb} &= 0 \\
-  \dot{X}_{nm} &= \\
-  \dot{X}_{t } &= \frac{L^2+2L_n\dot{L}_n-2L_f\dot{L}_f}{2L} \\
-  \dot{X}_{fm} &= \\
-  \dot{X}_{fb} &= 0
-\end{align}  
-             
-\begin{align}                                                                          
-  \dot{Y}_{nb} &= 0 \\                                         
-  \dot{Y}_{nm} &= \\
-  \dot{Y}_{t}  &= \frac{L_n}{2\sqrt{1 - \big(\frac{(L^2+L_n^2-L_f^2}{2LL_n}\big)^2}} * \big(\frac{(-L^2L_n^{-2}+\dot{L}_n - 2L_f\dot{L}_nL_n^{-1} + L_f^2L_n^{-2}}{2L}\big) - think this is rite?\\
-  \dot{Y}_{fm} &= \\
-  \dot{Y}_{fb} &= 0 \\
+  A_{xn} &= \Bigg(\frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}LL_s}}\\
+  &+ \frac{2L_nL^2 + 2L_s^2L_{n} + 4L_n^3 - 2L_t^2L_{n} - 2L_nL_{f}^2\dot{L}_n}{4L_n^2LL_s}\dot{L}_n\\
+  &\mp L_s\frac{\left(\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL^2_{n}} - \frac{2L_nL^2 + 2L^2L_{n} + 4L_{n}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\\
+  &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
+  &\frac{\left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}
+    - \frac{2L_nL_{s}^2 + 2L_s^2L_{n} + 4L_{n}^3 - 2L_t^2L_{n} - 2L_nL_{t}^2}{2L_{s}L_{n}}\right)}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\Bigg)\\
+  A_{xf} &= \Bigg(\frac{-2L_s^2L_{f} - 2L_n^2L_{f} + 2L_t^2L_{f}}{4L_n^2LL_s} \mp L_s\frac{\left(-\frac{-2L_fL^2 - 2L^2L_{f} + 4L_{f}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
+  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\Bigg)\\
+  B_{xn} &= \frac{L_n}{L}\\
+  B_{xf} &= -\frac{L_f}{L}\\
+  C_{xn} &= \\
+  C_{xf} &= \\
+  A_{yn} &= \\
+  A_{yf} &= \\
+  B_{yn} &= \frac{2L_n - \left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_n}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
+  B_{yf} &= \frac{\left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_f}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
+  C_{yn} &= \\
+  C_{yf} &= \\
 \end{align}
 
+\begin{align}
+  \dot{X}_{nb} &= 0 \\
+  \dot{X}_{nm} &= A_{xn}\dot{L}_n + A_{xf}\dot{L}_f\\
+  \dot{X}_{t } &= B_{xn}\dot{L}_n + B_{xf}\dot{L}_f\\
+  \dot{X}_{fm} &= C_{xn}\dot{L}_n + C_{xf}\dot{L}_f\\
+  \dot{X}_{fb} &= 0
+\end{align}  
+
+\begin{align}                                                                          
+  \dot{Y}_{nb} &= 0 \\                           
+  \dot{Y}_{nm} &= A_{yn}\dot{L}_n + A_{yf}\dot{L}_f\\
+  \dot{Y}_{t}  &= B_{yn}\dot{L}_n + B_{yf}\dot{L}_f\\
+  \dot{Y}_{fm} &= C_{yn}\dot{L}_n + C_{yf}\dot{L}_f\\
+  \dot{Y}_{fb} &= 0 \\
+\end{align}
 
 \begin{twocolumn}
 \section{Notes on physical parameters}
