@@ -1,6 +1,6 @@
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 
-all: derivation.pdf test walk plot
+all: derivation.pdf derivation_confirmation.pdf test walk plot
 
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	g++ -c dynein_walk.cpp $(CPPFLAGS)
@@ -29,6 +29,9 @@ defaultplot: walk
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
+
+derivation_confirmation.pdf: latex/derivation_confirmation.tex
+	cd latex && pdflatex derivation_confirmation.tex && mv derivation_confirmation.pdf ..
 
 clean:
 	rm -f *.o

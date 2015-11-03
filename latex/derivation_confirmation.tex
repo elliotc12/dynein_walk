@@ -1,0 +1,45 @@
+\documentclass[11pt, landscape]{article}
+
+\usepackage[hmargin=1.25cm, vmargin=1.5cm]{geometry} % Document margins
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{fullpage}
+\usepackage{verbatim}
+
+\title{Brownian Dynein Model}
+
+\newcommand{\mn}{\scalebox{0.7}[1.0]{-}}
+
+\begin{document}
+
+\maketitle
+
+{\huge Bothbound Solution} \\
+We now do a similar solution for velocities in the case where both of the model's binding domains are stuck to the microtubule.
+
+\begin{figure}[h!]
+  \caption{Key lengths and angles in bothbound dynein model.}
+  \centering
+    \includegraphics[width=0.7\textwidth]{../figures/bothbound_model.png}
+\end{figure}
+
+\section{Cartesian Coordinate Derivation}
+
+By the law of cosines:
+\begin{align}
+  L_n &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{nm})}\\
+  L_f &= \sqrt{L_{s}^2+L_{t}^2-2L_{t}L_{s}\cos(\Theta_{fm})}\\
+\end{align}
+
+By the law of cosines, we see that:
+\begin{align}
+  \Theta_{1} &= \cos^{-1}\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg) \\
+  \Theta_{2} &= \pm\cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg) \\
+\end{align}
+
+\subsection{Solving for $X_{nm}$ and $Y_{nm}$}
+
+\end{document}
