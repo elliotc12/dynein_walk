@@ -752,6 +752,26 @@ Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
   &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\Bigg)\dot{L}_f\\
 \end{align}
 
+We now do the same for $\dot{Y}_{nm}$.
+
+\begin{align}
+  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L^2_{n}} \sqrt{L_n^2-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2}}\\
+  &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL^2_{n}}\sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}\\
+\end{align}
+
+\begin{align}
+  \dot{Y}_{nm} &= \left(\frac{L_{s}^2+2L_{n}\dot{L}_n - L_{t}^2}{2L^2_{n}} - 2\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L^3_{n}}\dot{L}_n\right) \sqrt{L_n^2-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2}}\\
+  &+ \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L^2_{n}} \left(\frac{d}{dt} \sqrt{L_n^2-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2}}\right)\\
+  &\pm L_s\left(\frac{L^2+2L_{n}\dot{L}_n - 2L_{f}\dot{L}_f}{2LL^2_n} - 2\frac{L^2+L_{n}^2-L_{f}^2}{2LL^3_n}\dot{L}_n\right) \sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}\\  
+  &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL^2_{n}} \left(\frac{d}{dt} \sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}\right)\\
+\end{align}
+
+\begin{align}
+  \dot{Y}_{nm} &= \left(\frac{L_{s}^2+2L_{n}\dot{L}_n - L_{t}^2}{2L^2_{n}} - 2\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L^3_{n}}\dot{L}_n\right) \sqrt{L_n^2-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2}}\\
+  &+ \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L^2_{n}}   \frac{2L_n\dot{L}_n - \frac{L^4 + 2L_nL^2\dot{L}_n - 2L_fL^2\dot{L}_f + 2L^2L_{n}\dot{L}_n + 4L_{n}^3\dot{L}_n - 2L_fL_{n}^2\dot{L}_f - 2L_f^2L_{n}\dot{L}_n - 2L^2L_{f}\dot{L}_f - 2L_nL_{f}^2\dot{L}_n - 2L_n^2L_{f}\dot{L}_f + 4L_{f}^3\dot{L}_f}{4L^2}}{2\sqrt{L_n^2-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2}}}\\
+  &\pm L_s\left(\frac{L^2+2L_{n}\dot{L}_n - 2L_{f}\dot{L}_f}{2LL^2_n} - 2\frac{L^2+L_{n}^2-L_{f}^2}{2LL^3_n}\dot{L}_n\right) \sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}\\  
+  &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL^2_{n}} \left(\frac{d}{dt} \sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}\right)\\
+\end{align}
 
 \subsection{Solving for $X_{fm}$ and $Y_{fm}$}
 The nearbound and farbound angles are symmetric. We switch all instances of $L_n$ and $L_f$.
