@@ -785,12 +785,49 @@ We now do the same for $\dot{Y}_{nm}$.
   &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL^2_{n}} \left(\frac{2L_n\dot{L}_n - \frac{2L_nL_{s}^2\dot{L}_n + 2L_s^2L_{n}\dot{L}_n + 4L_{n}^3\dot{L}_n - 2L_t^2L_{n}\dot{L}_n - 2L_nL_{t}^2\dot{L}_n}{4L^2_{s}}}{2\sqrt{L^2_n - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}}}} \right)\\
 \end{align}
 
+\begin{align}
+    \dot{Y}_{nm} &=
+    \Bigg(\left(-\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_n^2} + 1\right)\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}} +\\
+    &\frac{-2\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^3} + \frac{4L_n^3 + 4L^2L_n - 4L_n^2L_f}{4L^2L_n^2}}{2\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}}}\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}} \pm\\
+    &\left(-L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}^2} + \frac{L_s\dot{L}_n}{L}\right)\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}} \pm\\
+    &L_s\frac{-2\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^3} + \frac{4L_n^3 + 4L_sL_n - 4L_nL_t^2}{4L_s^2L_n^2}}{2\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}}}\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Bigg)\dot{L}_n\\
+    + &\Bigg(\frac{\frac{4L_f^3 - 4L^2L_f - 4L_n^2L_f}{4L^2L_n^2}}{2\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}}}\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\\
+    \pm &\left(\frac{-L_sL_{f}}{LL_{n}}\right)\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}}\Bigg)\dot{L}_f\\
+\end{align}
+
 \subsection{Solving for $X_{fm}$ and $Y_{fm}$}
 The nearbound and farbound angles are symmetric. We switch all instances of $L_n$ and $L_f$.
 
 \begin{align}
   X_{fm} &= \frac{1}{4LL_s}\Big(L^2+L_{f}^2-L_{n}^2\Big)\Big(L_{s}^2+L_{f}^2-L_{t}^2\Big)\big(L_f \big)^{-2} \mp L_s\sqrt{1-\bigg(\frac{L^2+L_{f}^2-L_{n}^2}{2LL_{f}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{f}^2-L_{t}^2}{2L_{s}L_{f}}\bigg)^2}\\
   Y_{fm} &= \frac{L_{s}^2+L_{f}^2-L_{t}^2}{2L_{f}}\sqrt{1-\bigg(\frac{L^2+L_{f}^2-L_{n}^2}{2LL_{f}}\bigg)^2} \pm L_s\frac{L^2+L_{f}^2-L_{n}^2}{2LL_{f}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{f}^2-L_{t}^2}{2L_{s}L_{f}}\bigg)^2} \Bigg)\\
+\end{align}
+
+\begin{align}
+  \dot{X}_{fm} &= \Bigg(\frac{-L_s^2L^2 - L_f^2L^2 + L_t^2L^2 - L_s^2L_f^2 - L_f^2L_f^2 + L_t^2L_f^2 + L_s^2L_n^2 + L_f^2L_n^2 - L_t^2L_n^2}{{2L_f^{3}L}}\\
+  &+ \frac{2L_fL^2 + 2L_s^2L_f + 4L_f^3 - 2L_t^2L_f - 2L_fL_n^2}{4L_f^2L}\\
+  &\mp \frac{\sqrt{1-\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{4L_{s}^2L_f^2}}}{2\sqrt{1-\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{4L^2L_f^2}}}*\\
+  &\left(L_s\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{4L^2L^3_{n}} - L_s\frac{2L_fL^2 + 2L^2L_f + 4L_f^3}{4L^2L_f^2}\right)\\
+  &\mp \left(L_s\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{4L_{s}^2L^3_{n}}
+    - L_s\frac{2L_fL_{s}^2 + 2L_s^2L_f + 4L_f^3 - 2L_t^2L_f - 2L_fL_{t}^2}{4L_{s}^2L_f^2}\right)\\
+  &\frac{\sqrt{1-\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{2LL_f}}}{2\sqrt{1-\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{2L_{s}L_f}}}\Bigg)\dot{L}_f\\
+  &\Bigg(\frac{-2L_nL_s^2 - 2L_nL_f^2 + 2L_nL_t^2}{4LL_f^2}
+  \mp L_s\frac{\sqrt{1-\left(\frac{L_s^4 + L_s^2L_f^2 - L_s^2L_t^2 L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L_{s}^2L_f^2}\right)}}{2\sqrt{1 - \left(\frac{L^4 + L^2L_f^2 - L^2L_n^2 + L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L^2L_f^2}\right)}}
+  *\left(\frac{2L^2L_n - 2L_f^2L_n - 2L_nL^2 - 2L_nL_f^2 + 4L_n^3}{4L^2L_f^2}\right)\\
+  &\mp L_s\frac{\sqrt{1 - \left(\frac{L^4 + L^2L_f^2 - L^2L_n^2 + L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L^2L_f^2}\right)}}{2\sqrt{1-\left(\frac{L_s^4 + L_s^2L_f^2 - L_s^2L_t^2 L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L_{s}^2L_f^2}\right)}}
+  *\left(\frac{-2L_f^2L_n - 2L_nL^2 - 2L_nL_f^2 + 4L_n^3}{4L_{s}^2L_f^2}\right)\Bigg)\dot{L}_n\\
+    %% &+ \Bigg(\frac{-L_s^2L_n - L_f^2L_n + L_t^2L_n}{2L_f^2L} \mp L_s\frac{\sqrt{1-\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{2L_{s}L_f}}}{2\sqrt{1-\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{2LL_f}}}*\\
+  %% &\left(-\frac{-2L_nL^2 - 2L^2L_n + 4L_n^3}{2LL_f}\right)\Bigg)\dot{L}_f\\
+\end{align}
+
+\begin{align}
+    \dot{Y}_{fm} &=
+    \Bigg(\left(-\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f^2} + 1\right)\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}} +\\
+    &\frac{-2\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^3} + \frac{4L_f^3 + 4L^2L_f - 4L_f^2L_n}{4L^2L_f^2}}{2\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}}}\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f} \pm\\
+    &\left(-L_s\frac{L^2+L_f^2-L_n^2}{2LL_f^2} + \frac{L_s\dot{L}_n}{L}\right)\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}} \pm\\
+    &L_s\frac{-2\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^3} + \frac{4L_f^3 + 4L_sL_f - 4L_fL_t^2}{4L_s^2L_f^2}}{2\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}}}\frac{L^2+L_f^2-L_n^2}{2LL_f}\Bigg)\dot{L}_f\\
+    + &\Bigg(\frac{\frac{4L_n^3 - 4L^2L_n - 4L_f^2L_n}{4L^2L_f^2}}{2\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}}}\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f}\\
+    \pm &\left(\frac{-L_sL_n}{LL_f}\right)\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}}\Bigg)\dot{L}_n\\
 \end{align}
 
 \subsection{Solving for $X_t$ and $Y_t$}
@@ -832,29 +869,8 @@ This section lays out the definitions of the coordinates of the Dynein model. \\
 \section{Cartesian Velocities}
 This section shows the velocity definitions. \\
 
-\textbf{REFORMAT!}
-
-\begin{align}
-  A_{xn} &= \Bigg(\frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}LL_s}}\\
-  &+ \frac{2L_nL^2 + 2L_s^2L_{n} + 4L_n^3 - 2L_t^2L_{n} - 2L_nL_{f}^2\dot{L}_n}{4L_n^2LL_s}\dot{L}_n\\
-  &\mp L_s\frac{\left(\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL^2_{n}} - \frac{2L_nL^2 + 2L^2L_{n} + 4L_{n}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
-  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\\
-  &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
-  &\frac{\left(\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L^2_{n}}
-    - \frac{2L_nL_{s}^2 + 2L_s^2L_{n} + 4L_{n}^3 - 2L_t^2L_{n} - 2L_nL_{t}^2}{2L_{s}L_{n}}\right)}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\Bigg)\\
-  A_{xf} &= \Bigg(\frac{-2L_s^2L_{f} - 2L_n^2L_{f} + 2L_t^2L_{f}}{4L_n^2LL_s} \mp L_s\frac{\left(-\frac{-2L_fL^2 - 2L^2L_{f} + 4L_{f}^3}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
-  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\Bigg)\\
-  B_{xn} &= \frac{L_n}{L}\\
-  B_{xf} &= -\frac{L_f}{L}\\
-  C_{xn} &= \\
-  C_{xf} &= \\
-  A_{yn} &= \\
-  A_{yf} &= \\
-  B_{yn} &= \frac{2L_n - \left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_n}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
-  B_{yf} &= \frac{\left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_f}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
-  C_{yn} &= \\
-  C_{yf} &= \\
-\end{align}
+\subsection{Velocity Coefficients}
+This subsection defines the coeffients to be used in further derivation.\\
 
 \begin{align}
   \dot{X}_{nb} &= 0 \\
@@ -870,6 +886,55 @@ This section shows the velocity definitions. \\
   \dot{Y}_{t}  &= B_{yn}\dot{L}_n + B_{yf}\dot{L}_f\\
   \dot{Y}_{fm} &= C_{yn}\dot{L}_n + C_{yf}\dot{L}_f\\
   \dot{Y}_{fb} &= 0 \\
+\end{align}
+
+\begin{align}
+  A_{xn} &= \Bigg(\frac{-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2}{{2L_n^{3}L}}\\
+  &+ \frac{2L_nL^2 + 2L_s^2L_{n} + 4L_n^3 - 2L_t^2L_{n} - 2L_nL_{f}^2}{4L_n^2L}\\
+  &\mp \frac{\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L_{s}^2L_{n}^2}}}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{4L^2L_{n}^2}}}*\\
+  &\left(L_s\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{4L^2L^3_{n}} - L_s\frac{2L_nL^2 + 2L^2L_{n} + 4L_{n}^3}{4L^2L_{n}^2}\right)\\
+  &\mp \left(L_s\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L_{s}^2L^3_{n}}
+    - L_s\frac{2L_nL_{s}^2 + 2L_s^2L_{n} + 4L_{n}^3 - 2L_t^2L_{n} - 2L_nL_{t}^2}{4L_{s}^2L_{n}^2}\right)\\
+    &\frac{\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}{2\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}}\Bigg)\\
+  A_{xf} &= \Bigg(\frac{-2L_fL_s^2 - 2L_fL_n^2 + 2L_fL_t^2}{4LL_{n}^2}
+  \mp L_s\frac{\sqrt{1-\left(\frac{L_s^4 + L_s^2L_n^2 - L_s^2L_t^2 L_n^2L^2 + L_n^4 - L_n^2L_f^2 - L_f^2L^2 - L_f^2L_n^2 + L_f^4}{4L_{s}^2L_{n}^2}\right)}}{2\sqrt{1 - \left(\frac{L^4 + L^2L_n^2 - L^2L_f^2 + L_n^2L^2 + L_n^4 - L_n^2L_f^2 - L_f^2L^2 - L_f^2L_n^2 + L_f^4}{4L^2L_{n}^2}\right)}}
+  *\left(\frac{2L^2L_f - 2L_n^2L_f - 2L_fL^2 - 2L_fL_n^2 + 4L_f^3}{4L^2L_{n}^2}\right)\\
+  &\mp L_s\frac{\sqrt{1 - \left(\frac{L^4 + L^2L_n^2 - L^2L_f^2 + L_n^2L^2 + L_n^4 - L_n^2L_f^2 - L_f^2L^2 - L_f^2L_n^2 + L_f^4}{4L^2L_{n}^2}\right)}}{2\sqrt{1-\left(\frac{L_s^4 + L_s^2L_n^2 - L_s^2L_t^2 L_n^2L^2 + L_n^4 - L_n^2L_f^2 - L_f^2L^2 - L_f^2L_n^2 + L_f^4}{4L_{s}^2L_{n}^2}\right)}}
+  *\left(\frac{-2L_n^2L_f - 2L_fL^2 - 2L_fL_n^2 + 4L_f^3}{4L_{s}^2L_{n}^2}\right)\Bigg)\\
+  B_{xn} &= \frac{L_n}{L}\\
+  B_{xf} &= - \frac{L_f}{L}\\
+\end{align}
+\begin{align}
+  C_{xn} &= \Bigg(\frac{-2L_nL_s^2 - 2L_nL_f^2 + 2L_nL_t^2}{4LL_f^2}
+  \mp L_s\frac{\sqrt{1-\left(\frac{L_s^4 + L_s^2L_f^2 - L_s^2L_t^2 L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L_{s}^2L_f^2}\right)}}{2\sqrt{1 - \left(\frac{L^4 + L^2L_f^2 - L^2L_n^2 + L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L^2L_f^2}\right)}}
+  *\left(\frac{2L^2L_n - 2L_f^2L_n - 2L_nL^2 - 2L_nL_f^2 + 4L_n^3}{4L^2L_f^2}\right)\\
+  &\mp L_s\frac{\sqrt{1 - \left(\frac{L^4 + L^2L_f^2 - L^2L_n^2 + L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L^2L_f^2}\right)}}{2\sqrt{1-\left(\frac{L_s^4 + L_s^2L_f^2 - L_s^2L_t^2 L_f^2L^2 + L_f^4 - L_f^2L_n^2 - L_n^2L^2 - L_n^2L_f^2 + L_n^4}{4L_{s}^2L_f^2}\right)}}
+  *\left(\frac{-2L_f^2L_n - 2L_nL^2 - 2L_nL_f^2 + 4L_n^3}{4L_{s}^2L_f^2}\right)\Bigg)\\
+  C_{xf} &= \Bigg(\frac{-L_s^2L^2 - L_f^2L^2 + L_t^2L^2 - L_s^2L_f^2 - L_f^2L_f^2 + L_t^2L_f^2 + L_s^2L_n^2 + L_f^2L_n^2 - L_t^2L_n^2}{{2L_f^{3}L}}\\
+  &+ \frac{2L_fL^2 + 2L_s^2L_f + 4L_f^3 - 2L_t^2L_f - 2L_fL_n^2}{4L_f^2L}\\
+  &\mp \frac{\sqrt{1-\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{4L_{s}^2L_f^2}}}{2\sqrt{1-\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{4L^2L_f^2}}}*\\
+  &\left(L_s\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{4L^2L^3_{n}} - L_s\frac{2L_fL^2 + 2L^2L_f + 4L_f^3}{4L^2L_f^2}\right)\\
+  &\mp \left(L_s\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{4L_{s}^2L^3_{n}}
+    - L_s\frac{2L_fL_{s}^2 + 2L_s^2L_f + 4L_f^3 - 2L_t^2L_f - 2L_fL_{t}^2}{4L_{s}^2L_f^2}\right)\\
+    &\frac{\sqrt{1-\frac{L^4 + L_f^2L^2 - L_n^2L^2 + L^2L_f^2 + L_f^4 - L_n^2L_f^2 - L^2L_n^2 + L_f^2L_n^2 + L_n^4}{2LL_f}}}{2\sqrt{1-\frac{L_{s}^4 + L_f^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_f^2 + L_f^4 - L_t^2L_f^2 - L_s^2L_{t}^2 - L_f^2L_{t}^2 + L_{t}^4}{2L_{s}L_f}}}\Bigg)\\
+\end{align}
+\begin{align}
+  A_{yn} &= \Bigg(\left(-\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_n^2} + 1\right)\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}} +\\
+    &\frac{-2\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^3} + \frac{4L_n^3 + 4L^2L_n - 4L_n^2L_f}{4L^2L_n^2}}{2\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}}}\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}} \pm\\
+    &\left(-L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}^2} + \frac{L_s\dot{L}_n}{L}\right)\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}} \pm\\
+    &L_s\frac{-2\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^3} + \frac{4L_n^3 + 4L_sL_n - 4L_nL_t^2}{4L_s^2L_n^2}}{2\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}}}\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\Bigg)\\
+  A_{yf} &= \Bigg(\frac{\frac{4L_f^3 - 4L^2L_f - 4L_n^2L_f}{4L^2L_n^2}}{2\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_n^2}}}\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\\
+    \pm &\left(\frac{-L_sL_{f}}{LL_{n}}\right)\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_sL_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_s^2L_n^2}}\Bigg)\\
+  B_{yn} &= \frac{2L_n - \left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_n}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
+  B_{yf} &= \frac{\left(\frac{L^2+L_n^2-L_f^2}{L}\right)\left(\frac{L_f}{L}\right)}{2\sqrt{L_n^2 - \left(\frac{L^2+L_n^2-L_f^2}{2L}\right)^2}}\\
+\end{align}
+\begin{align}
+  C_{yn} &= \Bigg(\frac{\frac{4L_n^3 - 4L^2L_n - 4L_f^2L_n}{4L^2L_f^2}}{2\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}}}\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f}\\
+    \pm &\left(\frac{-L_sL_n}{LL_f}\right)\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}}\Bigg)\\
+  C_{yf} &= \Bigg(\left(-\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f^2} + 1\right)\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}} +\\
+    &\frac{-2\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^3} + \frac{4L_f^3 + 4L^2L_f - 4L_f^2L_n}{4L^2L_f^2}}{2\sqrt{1-\frac{L^4 + L_f^4 + L_n^4 + 2L^2L_f^2 - 2L^2L_n^2 - 2L_f^2L_n^2}{4L^2L_f^2}}}\frac{L_{s}^2+L_f^2-L_{t}^2}{2L_f} \pm\\
+    &\left(-L_s\frac{L^2+L_f^2-L_n^2}{2LL_f^2} + \frac{L_s\dot{L}_n}{L}\right)\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}} \pm\\
+    &L_s\frac{-2\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^3} + \frac{4L_f^3 + 4L_sL_f - 4L_fL_t^2}{4L_s^2L_f^2}}{2\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}}}\frac{L^2+L_f^2-L_n^2}{2LL_f}\Bigg)\\
 \end{align}
 
 \begin{twocolumn}
