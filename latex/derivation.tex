@@ -952,6 +952,38 @@ This section creates a system of equations by equating the Brownian dynamics equ
   \dot{Y}_{fm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{ft}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} &= C_{yn}\dot{L}_n + C_{yf}\dot{L}_f
 \end{align}
 
+\section{Matrix Solution via Mathematica}
+Here we convert the above system into matrix form, solve it in Mathematica and list the results.
+
+\[
+\begin{pmatrix}
+  -A_{xn} & -A_{xf} & -\frac{X_{bm}-X_{bb}}{\gamma} & \frac{X_{t}-X_{bm}}{\gamma} & 0 & 0\\
+  -B_{xn} & -B_{xf} & 0 & -\frac{X_{t}-X_{bm}}{\gamma} & \frac{X_{fm}-X_{t}}{\gamma} & 0\\
+  -C_{xn} & -C_{xf} & 0 & 0 & -\frac{X_{fm}-X_{t}}{\gamma} & \frac{X_{fb}-X_{fm}}{\gamma}\\
+  -A_{yn} & -A_{yf} & -\frac{Y_{bm}-Y_{bb}}{\gamma} & \frac{Y_{t}-Y_{bm}}{\gamma} & 0 & 0\\
+  -B_{yn} & -B_{yf} & 0 & -\frac{Y_{t}-Y_{bm}}{\gamma} & \frac{Y_{fm}-Y_{t}}{\gamma} & 0\\
+  -C_{yn} & -C_{yf} & 0 & 0 & -\frac{Y_{fm}-Y_{t}}{\gamma} & \frac{Y_{fb}-Y_{fm}}{\gamma}\\
+\end{pmatrix}
+\begin{pmatrix}
+  \dot{L}_n\\
+  \dot{L}_f\\
+  \lambda_{bs}\\
+  \lambda_{bt}\\
+  \lambda_{ft}\\
+  \lambda_{fs}\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+  -\frac{F_{xml}}{\gamma} - R_{xml}\\
+  -\frac{F_{xt}}{\gamma} - R_{xt}\\
+  -\frac{F_{xmr}}{\gamma} - R_{xmr}\\
+  -\frac{F_{yml}}{\gamma} - R_{yml}\\
+  -\frac{F_{yt}}{\gamma} - R_{yt}\\
+  -\frac{F_{ymr}}{\gamma} - R_{ymr}\\
+\end{pmatrix}
+\]
+
+
 \begin{twocolumn}
 \section{Notes on physical parameters}
 
