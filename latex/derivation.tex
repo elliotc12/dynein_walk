@@ -937,6 +937,21 @@ This subsection defines the coeffients to be used in further derivation.\\
     &L_s\frac{-2\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^3} + \frac{4L_f^3 + 4L_sL_f - 4L_fL_t^2}{4L_s^2L_f^2}}{2\sqrt{1-\frac{L_s^4 + L_f^4 + L_t^4 + 2L_sL_f^2 - 2L_s^2L_t^2 - 2L_f^2L_t^2}{4L_s^2L_f^2}}}\frac{L^2+L_f^2-L_n^2}{2LL_f}\Bigg)\\
 \end{align}
 
+\section{System of Equations}
+This section creates a system of equations by equating the Brownian dynamics equations for velocity with the derivatives we just found.
+
+\begin{align}  
+  \dot{X}_{bm} = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{bm} - X_{bb}) + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml}  &= A_{nx}\dot{L}_n + A_{fx}\dot{L}_f\\
+  \dot{X}_{t } = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{bm}) + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt } &= B_{xn}\dot{L}_n + B_{xf}\dot{L}_f\\
+  \dot{X}_{fm} = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{ft}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} &= C_{xn}\dot{L}_n + C_{xf}\dot{L}_f
+\end{align}
+
+\begin{align}  
+  \dot{Y}_{bm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{bm} - Y_{bb}) + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml} &= A_{yn}\dot{L}_n + A_{yf}\dot{L}_f\\
+  \dot{Y}_{t}  &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{bm}) + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt } &= B_{yn}\dot{L}_n + B_{yf}\dot{L}_f\\
+  \dot{Y}_{fm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{ft}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} &= C_{yn}\dot{L}_n + C_{yf}\dot{L}_f
+\end{align}
+
 \begin{twocolumn}
 \section{Notes on physical parameters}
 
