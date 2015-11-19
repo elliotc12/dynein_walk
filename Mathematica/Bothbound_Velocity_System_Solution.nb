@@ -1,0 +1,162 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4735,        153]
+NotebookOptionsPosition[      4439,        138]
+NotebookOutlinePosition[      4797,        154]
+CellTagsIndexPosition[      4754,        151]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"A", " ", "=", " ", 
+   RowBox[{"{", "   ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Axn"}], ",", " ", 
+       RowBox[{"-", "Bxf"}], ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Xbm", "-", "Xbb"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Xt", "-", "Xbm"}], ")"}], "/", "g"}], ",", " ", "0", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Bxn"}], ",", " ", 
+       RowBox[{"-", "Bxf"}], ",", " ", "0", ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Xt", "-", "Xbm"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Xfm", "-", "Xt"}], ")"}], "/", "g"}], ",", " ", "0"}], 
+      "}"}], ",", "\[IndentingNewLine]", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Cxn"}], ",", " ", 
+       RowBox[{"-", "Cxf"}], ",", " ", "0", ",", " ", "0", ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Xfm", "-", "Xt"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Xfb", "-", "Xfm"}], ")"}], "/", "g"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Ayn"}], ",", " ", 
+       RowBox[{"-", "Ayf"}], ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Ybm", "-", "Ybb"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Yt", "-", "Ybm"}], ")"}], "/", "g"}], ",", " ", "0", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Byn"}], ",", " ", 
+       RowBox[{"-", "Byf"}], ",", " ", "0", ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Yt", "-", "Ybm"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Yfm", "-", "Yt"}], ")"}], "/", "g"}], ",", " ", "0"}], 
+      "}"}], ",", "\[IndentingNewLine]", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "Cyn"}], ",", " ", 
+       RowBox[{"-", "Cyf"}], ",", " ", "0", ",", " ", "0", ",", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"(", 
+          RowBox[{"Yfm", "-", "Yt"}], ")"}]}], "/", "g"}], ",", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Yfb", "-", "Yfm"}], ")"}], "/", "g"}]}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"X", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fxml"}], "/", "g"}], "-", "Rxml"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fxt"}], "/", "g"}], "-", "Rxt"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fxmr"}], "/", "g"}], "-", "Rxmr"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fyml"}], "/", "g"}], "-", "Ryml"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fyt"}], "/", "g"}], "-", "Ryt"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "Fymr"}], "/", "g"}], "-", "Rymr"}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"\t"}]}], "Input",
+ CellChangeTimes->{{3.6569416178687487`*^9, 3.656941820981436*^9}, {
+  3.656941877038568*^9, 3.656942023535441*^9}, {3.656942101547607*^9, 
+  3.6569421049084063`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LinearSolve", "[", 
+   RowBox[{"A", ",", "X"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6569420435353117`*^9, 3.6569420556532793`*^9}, 
+   3.656942110412026*^9}]
+},
+WindowSize->{740, 651},
+WindowMargins->{{Automatic, 262}, {Automatic, 47}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 3673, 109, 165, "Input"],
+Cell[4233, 131, 202, 5, 28, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
