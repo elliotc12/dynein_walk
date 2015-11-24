@@ -220,7 +220,29 @@ void Dynein::update_velocities_onebound() {
 }
 
 void Dynein::update_velocities_bothbound() {
-  // To be implemented
+
+  int pm = 1;
+  int mp = 0;
+  
+  double Axn = ((-ls*ls*l*l - ln*ln*l*l + lt*lt*l*t - ls*ls*ln*ln - ln*ln*ln*ln + lt*lt*ln*ln + ls*ls*lf*lf + ln*ln*lf*lf - lt*lt*lf*lf) / (2*ln*ln*ln*l) +
+		(2*ln*l*l + 2*ls*ls*ln + 4*ln*ln*ln - 2*lt*lt*ln - 2*ln*lf*lf)/(4*ln*ln*l) +
+		mp*(sqrt(1 - (ls*ls*ls*ls + ln*ln*ls*ls - lt*lt*ls*ls + ls*ls*ln*ln + ln*ln*ln*ln - lt*lt*ln*ln - ls*ls*lt*lt - ln*ln*lt*lt + lt*lt*lt*lt)/(4*ls*ls*ln*ln) ))/(2*sqrt(1 - (l*l*l*l + ln*ln*l*l - lf*lf*l*l + l*l*ln*ln + ln*ln*ln*ln - lf*lf*ln*ln - l*l*lf*lf + ln*ln*lf*lf + lf*lf*lf*lf)/(4*l*l*ln*ln) )) *
+		ls*( (l*l*l*l + ln*ln*l*l - lf*lf*l*l + l*l*ln*ln + ln*ln*ln*ln - lf*lf*ln*ln - l*l*lf*lf + ln*ln*lf*lf + lf*lf*lf*lf)/(4*l*l*ln*ln*ln) - (2*ln*l*l + 2*l*l*ln + 4*ln*ln*ln)/(4*ls*ls*ln*ln) ) +
+		mp*ls*( ... )
+
+		)
+  double Axf =;
+  double Bxn =;
+  double Bxf =;
+  double Cxn =;
+  double Cxf =;
+  
+  double Ayn =;
+  double Ayf =;
+  double Byn =;
+  double Byf =;
+  double Cyn =;
+  double Cyf =;
 }
 
 double Dynein::get_binding_rate() {
