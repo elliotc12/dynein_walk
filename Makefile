@@ -23,6 +23,7 @@ test: dynein_test.o dynein_struct.o utilities.o
 
 plot: walk
 	@echo "Run ./simulate.py slow/normal/fast/veryfast short/normal/long/verylong natural/random [loop] to animate"
+	./simulate.py veryfast verylong natural loop
 
 defaultplot: walk
 	./simulate.py veryfast verylong natural
