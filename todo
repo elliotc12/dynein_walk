@@ -1,5 +1,14 @@
 Things to do:
 
+-Solve matrix (ideally not using Mathematica, or at least start it out w/o Mathematica)
+
+-Convert Latex coefficient definitions to C
+
+-Implement bothbound C motion function
+
+-Add analytics script to get interesting info from data.txt
+
+-------------------
 * Implement both-bound case!
 
 * Find a way to get equilibrium angles of pre/post-powerstroke states.

@@ -670,6 +670,13 @@ By the law of cosines, we see that:
   \Theta_{2} &= \pm\cos^{-1}\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg) \\
 \end{align}
 
+We now note the time derivatives of $\Theta$. We don't use them explicitly here, as we will be solving for $\dot{L_n}$ and $\dot{L_f}$ for simplicity. We will need these $\Theta$ derivatives later.
+
+\begin{align}
+  \dot{\Theta_{1}} &= \frac{1}{\sqrt{1-\left(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\right)^2}}\left(\frac{2L_n\dot{L_n} - 2L_f\dot{L_f}}{2LL_n}\right)\left(\frac{L^2+L_n^2-L_f^2}{-2LL_n^2\dot{L_n}}\right)\\
+  \dot{\Theta_{2}} &= \pm \frac{1}{\sqrt{1-\left(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\right)^2}}\left(\frac{L_n\dot{L_n}}{L_s}\right)\left(\frac{L_s^2+L_{n}^2-L_t^2}{-2L_sL_n^2\dot{L_n}}\right)\\
+\end{align}
+
 \subsection{Solving for $X_{nm}$ and $Y_{nm}$}
 
 \begin{align}
@@ -698,19 +705,35 @@ We simplify further...
 \end{align}
 
 \begin{align}
-  X_{nm} &= \frac{1}{4LL_s}\Big(L^2+L_{n}^2-L_{f}^2\Big)\Big(L_{s}^2+L_{n}^2-L_{t}^2\Big)\big(L_n \big)^{-2} \mp L_s\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2}\\
+  X_{nm} &= \frac{1}{4LL_n^2}\Big(L^2+L_{n}^2-L_{f}^2\Big)\Big(L_{s}^2+L_{n}^2-L_{t}^2\Big) \mp L_s\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2}\\
   Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\sqrt{1-\bigg(\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\bigg)^2} \pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1-\bigg(\frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{s}L_{n}}\bigg)^2} \Bigg)\\
 \end{align}
 
 \begin{align}
-  X_{nm} &= \frac{L_s^2L^2 + L_n^2L^2 - L_t^2L^2 + L_s^2L_{n}^2 + L_n^2L_{n}^2 - L_t^2L_{n}^2 - L_s^2L_{f}^2 - L_n^2L_{f}^2 + L_t^2L_{f}^2}{4L_n^2LL_s}\\
-  &\mp L_s\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}*\\
-  &\sqrt{1-\frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{2L_{s}L_{n}}}\\
-  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}} \sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 - L_n^2L_{f}^2 + L_{f}^4}{4L^2L^2_{n}}}\\ &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1 - \frac{L_{s}^4 + L_n^2L_{s}^2 - L_t^2L_{s}^2 + L_s^2L_{n}^2 + L_{n}^4 - L_t^2L_{n}^2 - L_s^2L_{t}^2 - L_n^2L_{t}^2 + L_{t}^4}{4L^2_{s}L^2_{n}}}\\
+  X_{nm} &= \frac{L_s^2L^2 + L_n^2L^2 - L_t^2L^2 + L_s^2L_{n}^2 + L_n^2L_{n}^2 - L_t^2L_{n}^2 - L_s^2L_{f}^2 - L_n^2L_{f}^2 + L_t^2L_{f}^2}{4L_n^2L}\\
+  &\mp L_s\sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L_{n}^2}}*\\
+  &\sqrt{1-\frac{L_s^4 + L_n^4 + L_t^4 + 2L_s^2L_n^2 - 2L_s^2L_t^2 - 2L_n^2L_t^2}{4L_{s}^2L_{n}^2}}\\
+  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}} \sqrt{1-\frac{L^4 + L_n^4 + L_f^4 + 2L^2L_n^2 - 2L^2L_f^2 - 2L_n^2L_f^2}{4L^2L^2_{n}}}\\
+  &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1 - \frac{L_s^4 + L_n^4 + L_t^4 + 2L_s^2L_n^2 - 2L_s^2L_t^2 - 2L_n^2L_f^2}{4L^2_{s}L^2_{n}}}\\
 \end{align}
 
-Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
+\begin{align}
+  X_{nm} &= \frac{L_s^2L^2 - L_t^2L^2 - L_s^2L_{f}^2 + L_t^2L_{f}^2}{4L_n^2L} + \frac{L + L_s^2 + L_n^2 - L_t^2 - L_{f}^2}{4L}\\
+  &\mp L_s\sqrt{1-\frac{L^4 + L_f^4 - 2L^2L_f^2}{4L^2L_{n}^2} - \frac{L_n^2 + 2L^2 - 2L_f^2}{4L^2}}*\\
+  &\sqrt{1-\frac{L_s^4 + L_t^4 - 2L_s^2L_t^2}{4L_{s}^2L_{n}^2} - \frac{L_n^2 + 2L_s^2 - 2L_t^2}{4L_s^2}}\\
+  Y_{nm} &= \frac{L_{s}^2+L_{n}^2-L_{t}^2}{2L_{n}}\sqrt{1-\frac{L^4 + L_f^4 - 2L^2L_f^2}{4L^2L^2_{n}} - \frac{L_n^2 + 2L^2 - 2L_f^2}{4L^2}}\\
+  &\pm L_s\frac{L^2+L_{n}^2-L_{f}^2}{2LL_{n}}\sqrt{1 - \frac{L_s^4 + L_t^4 - 2L_s^2L_t^2}{4L_s^2L_n^2} - \frac{L_n^2 + 2L_s^2 - 2L_f^2}{4L_s^2}}\\
+\end{align}
 
+
+Now i'm here. Just fixed the above, now go redo these derivations.\\
+Now we derive with respect to time. Things which are time-dependent: $L_n, L_f$.
+\subsection{New derivation}
+\begin{align}
+  hi
+\end{align}
+
+\subsection{Old derivation}
 \begin{align}
   \dot{X}_{nm} &= \frac{1}{{2L_n^{-3}LL_s}}\left(-L_s^2L^2 - L_n^2L^2 + L_t^2L^2 - L_s^2L_{n}^2 - L_n^2L_{n}^2 + L_t^2L_{n}^2 + L_s^2L_{f}^2 + L_n^2L_{f}^2 - L_t^2L_{f}^2\right)\dot{L}_n\\ &+ \frac{2L_nL^2\dot{L}_n + 2L_s^2L_{n}\dot{L}_n + 4L_n^3\dot{L}_n - 2L_t^2L_{n}\dot{L}_n - 2L_s^2L_{f}\dot{L}_f - 2L_nL_{f}^2\dot{L}_n - 2L_n^2L_{f}\dot{L}_f + 2L_t^2L_{f}\dot{L}_f}{4L_n^2LL_s}\\
   &\mp L_s\frac{\frac{d}{dt}\left(1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}\right)}{2\sqrt{1-\frac{L^4 + L_n^2L^2 - L_f^2L^2 + L^2L_{n}^2 + L_{n}^4 - L_f^2L_{n}^2 - L^2L_{f}^2 + L_n^2L_{f}^2 + L_{f}^4}{2LL_{n}}}}*\\
