@@ -221,22 +221,145 @@ void Dynein::update_velocities_onebound() {
 
 void Dynein::update_velocities_bothbound() {
 
-  int pm = 1;
-  int mp = 0;
+  int pm_n = 1;
+  int pm_f = 1;
+  if (nma > M_PI) pm_n = -1;
+  if (fma > M_PI) pm_f = -1;
   
-  double Axn =;
-  double Axf =;
-  double Bxn =;
-  double Bxf =;
-  double Cxn =;
-  double Cxf =;
+  double Axn = (pow(L, 2)*pow(Lt, 2) - pow(L, 2)*pow(Ls, 2)) / (2*(L*pow(Ln, 3))) 
+  + (Lf*pow(Lt, 2) - Lf*pow(Ls, 2)) / (2*(L*pow(Ln, 2))) 
+  + (pow(Lf, 2)*pow(Ls, 2) - pow(Lf, 2)*pow(Lt, 2)) / (2*(L*pow(Ln, 3))) 
+  - Ls*(pm_n*((pow(L, 2) / (2*pow(Ln, 3)) 
+  + (pow(Lf, 4) - 2*(pow(L, 2)*pow(Lf, 2))) / (2*(pow(L, 2)*pow(Ln, 3))) 
+  - Ln / (2*pow(L, 2)))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+         + (2*pow(Lt, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1))) 
+      / (2*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
+  - Ls*(pm_n*(((pow(Ls, 4) + pow(Lt, 4) - 2*(pow(Ls, 2)*pow(Lt, 2))) 
+  / (2*(pow(Ln, 3)*pow(Ls, 2))) - Ln / (2*pow(Ls, 2)))
+ *sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+         + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+      / (2*sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+  / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+  + (2*pow(Lt, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1));
   
-  double Ayn =;
-  double Ayf =;
-  double Byn =;
-  double Byf =;
-  double Cyn =;
-  double Cyf =;
+  double Axf = Ls*(pm*(((Lf*pow(L, 2) - pow(Lf, 3)) / (pow(L, 2)*pow(Ln, 2)) + Lf / pow(L, 2))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Ln, 2)*pow(Ls, 2)))
+         + (2*pow(Lt, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1))) 
+  / (-2*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))));
+  
+  double Bxn = Ln/L;
+  
+  double Bxf = -Lf/L;
+  
+  double Cxn = - pm * Ls\frac{\sqrt{1 - \frac{Ls^4 + Lt^4 - 2Ls^2Lt^2}{4Ls^2Lf^2} - \frac{Lf^2 + 2Ls^2 - 2Lt^2}{4Ls^2}}}{2\sqrt{1 - \frac{L^2}{4Lf^2} - \frac{Ln^4 - 2L^2Ln^2}{4L^2Lf^2} - \frac{Lf^2 + 2L^2 - 2Ln^2}{4L^2}}}\left(-\frac{Ln^3 - L^2Ln}{L^2Lf^2} + \frac{Ln}{L^2}\right);
+  
+  double Cxf = (pow(L, 2)*pow(Lt, 2) - pow(L, 2)*pow(Ls, 2)) / (2*(L*pow(Lf, 3))) 
+  + (Ln*pow(Lt, 2) - Ln*pow(Ls, 2)) / (2*(L*pow(Lf, 2))) 
+  + (pow(Ln, 2)*pow(Ls, 2) - pow(Ln, 2)*pow(Lt, 2)) / (2*(L*pow(Lf, 3))) 
+  - Ls*(pm*((pow(L, 2) / (2*pow(Lf, 3)) 
+  + (pow(Ln, 4) - 2*(pow(L, 2)*pow(Ln, 2))) / (2*(pow(L, 2)*pow(Lf, 3))) 
+  - Lf / (2*pow(L, 2)))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+         + (2*pow(Lt, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1))) 
+      / (2*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Lf, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
+  - Ls*(pm*(((pow(Ls, 4) + pow(Lt, 4) - 2*(pow(Ls, 2)*pow(Lt, 2))) 
+  / (2*(pow(Lf, 3)*pow(Ls, 2))) - Lf / (2*pow(Ls, 2)))
+ *sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+         + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Lf, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+      / (2*sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+  / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+  + (2*pow(Lt, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1));
+  
+  double Ayn = ((pow(Lt, 2) - pow(Ls, 2) - pow(Ln, 2)) / (2*pow(Ln, 2)) + 1)
+ *sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+         + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
+  + (pow(L, 2) / (2*pow(Ln, 3)) 
+       + (pow(Lf, 4) - 2*(pow(L, 2)*pow(Lf, 2))) / (2*(pow(L, 2)*pow(Ln, 3))) 
+       - Ln / (2*pow(L, 2)))*(pow(Ls, 2) + pow(Ln, 2) - pow(Lt, 2)) 
+      / (4*(Ln*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*pow(L, 2[n] + 2)) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(Ls(1 / L + (pow(Lf, 2) - pow(L, 2) - pow(Ln, 2)) / (2*pow(LLn, 2)))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)) 
+  + Ls*(pm*((pow(L, 2) + pow(Ln, 2) - pow(Lf, 2))
+ *((pow(Ls, 4) + pow(Lt, 4) - 2*(pow(Ls, 2)*pow(Lt, 2))) 
+     / (2*(pow(Ln, 3)*pow(Ls, 2))) - Ln / (2*pow(Ls, 2))))) 
+      / (4*(LLn
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)));
+  
+  double Ayf = ((Lf*pow(L, 2) - pow(Lf, 3)) / (pow(L, 2)*pow(Ln, 2)) + Lf / pow(L, 2))
+ *(pow(Ls, 2) + pow(Ln, 2) - pow(Lt, 2)) 
+  / (4*(Ln*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(Ls(-(Lf / (L*Ln)))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)) 
+  + Lf*(pm*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2))) 
+      / (4*(L*(Ln*(Ls*sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+  / (4*(pow(Ln, 2)*pow(Ls, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)))));
+  
+  double Byn = (2*Ln - Ln*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / pow(L, 2)) 
+  / (2*sqrt(pow(Ln, 2) 
+  - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2) / (4*pow(L, 2))));
+  
+  double Byf = Lf*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) 
+  / (2*(pow(L, 2)
+ *sqrt(pow(Ln, 2) - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2) / (4*pow(L, 2)))));
+  
+  double Cyn = ((Ln*pow(L, 2) - pow(Ln, 3)) / (pow(L, 2)*pow(Ln, 2)) + Ln / pow(L, 2))
+ *(pow(Ls, 2) + pow(Lf, 2) - pow(Lt, 2)) 
+  / (4*(Lf*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(Ls(-(Ln / (L*Lf)))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)) 
+  + Ln*(pm*(pow(L, 2) + pow(Lf, 2) - pow(Ln, 2))) 
+      / (4*(L*(Lf*(Ls*sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+  / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)))));
+  
+  double Cyf = ((pow(Lt, 2) - pow(Ls, 2) - pow(Lf, 2)) / (2*pow(Lf, 2)) + 1)
+ *sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+         + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
+  + (pow(L, 2) / (2*pow(Lf, 3)) 
+       + (pow(Ln, 4) - 2*(pow(L, 2)*pow(Ln, 2))) / (2*(pow(L, 2)*pow(Lf, 3))) 
+       - Lf / (2*pow(L, 2)))*(pow(Ls, 2) + pow(Lf, 2) - pow(Lt, 2)) 
+      / (4*(Lf*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(Ls(1 / L + (pow(Ln, 2) - pow(L, 2) - pow(Lf, 2)) / (2*(L*pow(Lf, 2))))
+ *sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+         / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1)) 
+  + Ls*(pm*((pow(L, 2) + pow(Lf, 2) - pow(Ln, 2))
+ *((pow(Ls, 4) + pow(Lt, 4) - 2*(pow(Ls, 2)*pow(Lt, 2)))
+     / (2*(pow(Lf, 3)*pow(Ls, 2))) - Lf / (2*pow(Ls, 2))))) 
+      / (4*(L*(Lf*sqrt((2*(pow(Ls, 2)*pow(Lt, 2)) - pow(Ls, 4) - pow(Lt, 4)) 
+  / (4*(pow(Lf, 2)*pow(Ls, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1))));
 
   double Lndot = ; // from Mathematica
   double Lfdot = ; // from Mathematica
