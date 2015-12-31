@@ -1,15 +1,10 @@
 Things to do:
 
+-Find way to clear up far-binding vs free-binding naming problem in dynein_struct
+
 -Solve matrix (ideally not using Mathematica, or at least start it out w/o Mathematica)
 
--Convert Latex coefficient definitions to C
-
--Implement bothbound C motion function
-
--Add analytics script to get interesting info from data.txt
-
 -------------------
-* Implement both-bound case!
 
 * Find a way to get equilibrium angles of pre/post-powerstroke states.
 
@@ -37,5 +32,4 @@ Eventually:
 Papers:
 
 * Functions and mechanics of dynein motor proteins, Nature Reviews, Roberts
-* Dynein achieves processive motion using both stochastic and coordinated stepping, Nature Struct
-	& Molec Bio, Weihong Qiu
+* Dynein achieves processive motion using both stochastic and coordinated stepping, Nature Struct & Molec Bio, Weihong Qiu

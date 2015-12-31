@@ -93,6 +93,7 @@ public:
   Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
          State s, forces* internal_test, forces* brownian_test, equilibrium_angles* eq_angles);
 
+  /** Onebound functions **/
   void set_bba(double d);
   void set_bma(double d);
   void set_fma(double d);
@@ -100,9 +101,7 @@ public:
 
   void set_bbx(double d);
   void set_bby(double d);
-
-  void set_state(State s);
-
+  
   double get_bba();
   double get_bma();
   double get_fma();
@@ -119,11 +118,34 @@ public:
   double get_ty();
   double get_fmy();
   double get_fby();
+
+  /** Bothbound functions **/
+  void set_nma(double d);
+  void set_fma(double d);
+  void set_L(double d);
+
+  double get_nma();
+  double get_fma();
+  double get_L();
+
+  double get_nbx();
+  double get_nmx();
+  double get_tx();
+  double get_fmx();
+  double get_fbx();
+                  ;
+  double get_nby();
+  double get_nmy();
+  double get_ty();
+  double get_fmy();
+  double get_fby();
+
+  void set_state(State s);
   
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
 
-  double get_d_bba();
+  double get_d_bba(); // onebound
   double get_d_bma();
   double get_d_fma();
   double get_d_fba();
@@ -139,11 +161,25 @@ public:
   double get_d_ty();
   double get_d_fmy();
   double get_d_fby();
+
+  double get_d_nma();  // bothbound
+  double get_d_fma();
+
+  double get_d_nmx();
+  double get_d_tx();
+  double get_d_fmx();
+
+  double get_d_nmy();
+  double get_d_ty();
+  double get_d_fmy();
    
   forces get_internal();
   forces get_brownian();
 
   void switch_to_bothbound();
+  void switch_to_nearbound();
+  void switch_to_farbound();
+  
   void unbind();
 
   double get_binding_rate();

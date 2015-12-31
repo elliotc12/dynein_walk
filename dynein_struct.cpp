@@ -136,25 +136,63 @@ void Dynein::update_velocities() {
 }
 
 void Dynein::switch_to_bothbound() {
-  // At this time, actually just switch to near/farbound. Eventually implement bothbound.
-  steps++;
-  distance_traveled += fabs(get_fbx() - get_bbx());
+  double temp_nma;
+  double temp_fma;
+  
+  if (state == NEARBOUND) {
+    temp_nma = M_PI + bma - bba;
+    temp_fma = M_PI + fma - fba;
+    nbx = get_bbx();
+    L = fbx - nbx;
+  } else {
+    temp_nma = M_PI + fma - fba;
+    temp_fma = M_PI + bma - bba;
+    nbx = get_fbx();
+    L = bbx - fbx;
+  }
+  
+  nma = temp_nma;
+  fma = temp_fma;
+  state = BOTHBOUND;
 
-  double temp_bba = bba;
-  double temp_bma = bma;
+  distance_traveled += fabs(get_fbx() - get_bbx());
+  steps++;
+}
+
+void Dynein::switch_to_nearbound() {
+  //nearbound -> bma is nma
+  double temp_bba = get_nba();
+  double temp_bma = nma;
   double temp_fma = fma;
-  double temp_fba = fba;
+  double temp_fba = get_fba();
+
+  bbx = get_nbx();
+  bby = 0;
+  
+  bba = temp_bba;
+  bma = temp_bma;
+  fma = temp_fma;
+  fba = temp_fba;
+
+  state = NEARBOUND;
+}
+
+void Dynein::switch_to_farbound() {
+  //nearbound -> bma is fma
+  double temp_bba = get_fba();
+  double temp_bma = fma;
+  double temp_fma = nma;
+  double temp_fba = get_nba();
 
   bbx = get_fbx();
   bby = 0;
   
-  bba = temp_fba;
-  bma = temp_fma;
-  fma = temp_bma;
-  fba = temp_bba;
+  bba = temp_bba;
+  bma = temp_bma;
+  fma = temp_fma;
+  fba = temp_fba;
 
-  if (state == NEARBOUND) state = FARBOUND;
-  else if (state == FARBOUND) state = NEARBOUND;  
+  state = FARBOUND;
 }
 
 void Dynein::unbind() {
@@ -177,9 +215,9 @@ void Dynein::update_velocities_onebound() {
   B1 = -3*ls*(sin(bba)*sin(bma) + cos(bba)*cos(bma));
   B2 = -3*lt;
   B3 = +2*lt*(sin(fma)*sin(bma) + cos(fma)*cos(bma));
-  B4 = + ls*(sin(fba)*sin(bma) + cos(fba)*cos(bma));
-  C1 = - 2*ls*(sin(bba)*sin(fma) + cos(bba)*cos(fma));
-  C2 = - 2*lt*(sin(bma)*sin(fma) + cos(bma)*cos(fma));
+  B4 = +ls*(sin(fba)*sin(bma) + cos(fba)*cos(bma));
+  C1 = -2*ls*(sin(bba)*sin(fma) + cos(bba)*cos(fma));
+  C2 = -2*lt*(sin(bma)*sin(fma) + cos(bma)*cos(fma));
   C3 = 2*lt;
   C4 = ls*(sin(fba)*sin(fma) + cos(fba)*cos(fma));
   D1 = ls*(cos(fba)*cos(bba) + sin(fba)*sin(bba));
@@ -225,6 +263,8 @@ void Dynein::update_velocities_bothbound() {
   int pm_f = 1;
   if (nma > M_PI) pm_n = -1;
   if (fma > M_PI) pm_f = -1;
+
+  double L = fbx - nbx;
   
   double Axn = (pow(L, 2)*pow(Lt, 2) - pow(L, 2)*pow(Ls, 2)) / (2*(L*pow(Ln, 3))) 
   + (Lf*pow(Lt, 2) - Lf*pow(Ls, 2)) / (2*(L*pow(Ln, 2))) 
@@ -361,8 +401,8 @@ void Dynein::update_velocities_bothbound() {
   / (4*(pow(Lf, 2)*pow(Ls, 2))) 
   + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(Ls, 2)) / (4*pow(Ls, 2)) + 1))));
 
-  double Lndot = ; // from Mathematica
-  double Lfdot = ; // from Mathematica
+  double Lndot = 1; // from Mathematica
+  double Lfdot = 1; // from Mathematica
 }
 
 double Dynein::get_binding_rate() {
