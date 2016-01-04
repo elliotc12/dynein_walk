@@ -60,8 +60,8 @@ typedef enum
 
 typedef struct
 {
-  double bbx;   double bby;
-  double bmx;   double bmy;
+  double nbx;   double nby;
+  double nmx;   double nmy;
   double tx;    double ty;
   double fmx;   double fmy;
   double fbx;   double fby;
@@ -69,17 +69,23 @@ typedef struct
 
 typedef struct
 {
-  double bba, ba, ta, fa;
-} equilibrium_angles;
+  double bba, bma, ta, uma;
+} onebound_equilibrium_angles;
 
-const equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  (108.0 / 180) * M_PI,
-  (108.0 / 180) * M_PI,
-  0,
-  (108.0 / 180) * M_PI
+typedef struct
+{
+  double nba, nm, ta, fma, fba;
+} bothbound_equilibrium_angles;
+
+const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
+  1,
+  2,
+  3,
+  4,
+  5
 };
 
-const equilibrium_angles near_farbound_post_powerstroke_internal_angles = {
+const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI,
   0.6 * M_PI,
   0.0 * M_PI,
@@ -96,44 +102,46 @@ public:
   /** Onebound functions **/
   void set_bba(double d);
   void set_bma(double d);
-  void set_fma(double d);
-  void set_fba(double d);
+  void set_uma(double d);
+  void set_uba(double d);
 
   void set_bbx(double d);
   void set_bby(double d);
   
   double get_bba();
   double get_bma();
-  double get_fma();
-  double get_fba();
+  double get_uma();
+  double get_uba();
 
   double get_bbx();
   double get_bmx();
   double get_tx();
-  double get_fmx();
-  double get_fbx();
-                  ;
+  double get_umx();
+  double get_ubx();
+
   double get_bby();
   double get_bmy();
   double get_ty();
-  double get_fmy();
-  double get_fby();
+  double get_umy();
+  double get_uby();
 
   /** Bothbound functions **/
   void set_nma(double d);
   void set_fma(double d);
   void set_L(double d);
 
-  double get_nma();
+  double get_nma(); // actual coordinates
   double get_fma();
-  double get_L();
 
+  double get_nba(); // utility fns, calculated from nma, fma
+  double get_fba(); 
+  
   double get_nbx();
   double get_nmx();
   double get_tx();
   double get_fmx();
   double get_fbx();
-                  ;
+
   double get_nby();
   double get_nmy();
   double get_ty();
@@ -147,20 +155,20 @@ public:
 
   double get_d_bba(); // onebound
   double get_d_bma();
-  double get_d_fma();
-  double get_d_fba();
+  double get_d_uma();
+  double get_d_uba();
   
   double get_d_bbx();
   double get_d_bmx();
   double get_d_tx();
-  double get_d_fmx();
-  double get_d_fbx();
+  double get_d_umx();
+  double get_d_ubx();
   
   double get_d_bby();
   double get_d_bmy();
   double get_d_ty();
-  double get_d_fmy();
-  double get_d_fby();
+  double get_d_umy();
+  double get_d_uby();
 
   double get_d_nma();  // bothbound
   double get_d_fma();
@@ -172,7 +180,7 @@ public:
   double get_d_nmy();
   double get_d_ty();
   double get_d_fmy();
-   
+
   forces get_internal();
   forces get_brownian();
 
@@ -205,19 +213,26 @@ private:
   void update_velocities_onebound();
   void update_velocities_bothbound();
 
-  equilibrium_angles eq;
+  void* eq;      //Equilibrium angles
 
-  double bba;
+  double bba;    //Onebound coordinates
   double bma;
-  double fma;
-  double fba;
+  double uma;
+  double uba;
   
   double bbx, bby;
   
-  double d_bba;   //Angular Velocities
+  double d_bba;   //Onebound angular velocities
   double d_bma;
-  double d_fma;
-  double d_fba;
+  double d_uma;
+  double d_uba;
+
+  double nma, fma; //Bothbound coordinates
+  double nbx, nby;
+  double L;
+
+  double d_ln;   //Bothbound velocities
+  double d_lf;
 
   forces r; //Brownian forces
   forces f; //Internal Forces
