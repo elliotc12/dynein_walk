@@ -5,6 +5,7 @@ import glob
 cppfiles = glob.glob('*.cpp')
 for cpp in cppfiles:
     print '| g++ -std=c++11 -g -Wall -Werror -O2 -c %s' % cpp
+    print '> %s.o' % cpp[:-4]
     print
 
 mainfiles = ['dynein_test.cpp', 'dynein_walk.cpp']
