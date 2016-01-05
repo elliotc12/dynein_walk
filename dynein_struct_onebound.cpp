@@ -5,12 +5,15 @@
 #include "dynein_struct_onebound.h"
 #include "dynein_data.h"
 
-/* ********************* ONEBOUND DYNEIN FUNCTIONS ****************************** */
+/* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */
 
-Dynein_onebound::Dynein_onebound(double bba_init, double bma_init, double fma_init, double fba_init,
-                                 double bbx_init, double bby_init, State s, onebound_forces *internal_test,
-                                 onebound_forces *brownian_test, onebound_equilibrium_angles* eq_angles,
-                                 MTRand *r) {
+Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
+				 double fma_init, double fba_init,
+				 double bbx_init, double bby_init,
+				 State s, onebound_forces *internal_test,
+				 onebound_forces *brownian_test,
+				 onebound_equilibrium_angles* eq_angles,
+				 MTRand *r) {
   bbx = bbx_init;
   bby = bby_init;
 
@@ -22,7 +25,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init, double fma_in
   state = s;
   internal_testcase = internal_test;
   brownian_testcase = brownian_test;
-  
+
   if (eq_angles) {
     eq = *eq_angles; // use test angles
   } else {
@@ -43,7 +46,7 @@ void Dynein_onebound::update_brownian_forces() {
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.umx, &r.umy);
     rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.ubx, &r.uby);
-  } 
+  }
 }
 
 void Dynein_onebound::update_internal_forces() {
@@ -84,7 +87,7 @@ void Dynein_onebound::update_internal_forces() {
     T = ct*(uma - bma - eq.ta);  //-- this used to be the negation, this is right?
     f1 = T / lt;
     f2 = T / lt;
-    f1x = f1 * sin(bma);  
+    f1x = f1 * sin(bma);
     f1y = f1 * -cos(bma);
     f2x = f2 * -sin(uma);  // not sure if these angles are right?
     f2y = f2 * cos(uma);
@@ -108,12 +111,12 @@ void Dynein_onebound::update_internal_forces() {
     f.uby += f2y;
     f.umx += -(f1x + f2x);
     f.umy += -(f1y + f2y);
-    
+
     if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
     if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
     if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
-  } 
+  }
 }
 
 void Dynein_onebound::set_state(State s) {
@@ -123,7 +126,7 @@ void Dynein_onebound::set_state(State s) {
 // void Dynein_onebound::switch_to_bothbound() {
 //   double temp_nma;
 //   double temp_fma;
-  
+
 //   if (state == NEARBOUND) {
 //     temp_nma = M_PI + bma - bba;
 //     temp_fma = M_PI + uma - uba;
@@ -138,7 +141,7 @@ void Dynein_onebound::set_state(State s) {
 
 //   distance_traveled += fabs(get_ubx() - get_bbx());
 //   steps++;
-  
+
 //   state = BOTHBOUND;
 //   nma = temp_nma;
 //   fma = temp_fma;
@@ -153,7 +156,7 @@ void Dynein_onebound::set_state(State s) {
 
 //   bbx = get_nbx();
 //   bby = 0;
-  
+
 //   bba = temp_bba;
 //   bma = temp_bma;
 //   uma = temp_uma;
@@ -171,7 +174,7 @@ void Dynein_onebound::set_state(State s) {
 
 //   bbx = get_fbx();
 //   bby = 0;
-  
+
 //   bba = temp_bba;
 //   bma = temp_bma;
 //   uma = temp_uma;
@@ -195,7 +198,7 @@ void Dynein_onebound::update_velocities() {
   float X1, X2, X3, X4;
   float Nbb, Nml, Nmr, Nbr;
   float D;
-  
+
   A1 = -4*ls;
   A2 = -3*lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
   A3 = 2*lt*(sin(uma)*sin(bba) + cos(uma)*cos(bba));

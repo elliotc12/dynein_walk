@@ -7,7 +7,7 @@
 
 /* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */
 
-Dynein::Dynein(double nma_init, double fma_init, double nbx_init, double nby_init,
+Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init, double nby_init,
 	       bothbound_forces* internal_test, bothbound_forces* brownian_test,
 	       bothbound_equilibrium_angles* eq_angles) {
   nbx = nbx_init;
@@ -28,7 +28,7 @@ Dynein::Dynein(double nma_init, double fma_init, double nbx_init, double nby_ini
   update_velocities();
 }
 
-void Dynein::update_brownian_forces() {
+void Dynein_bothbound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
@@ -40,7 +40,7 @@ void Dynein::update_brownian_forces() {
   } 
 }
 
-void Dynein::update_internal_forces() {
+void Dynein_bothbound::update_internal_forces() {
   if (internal_testcase) {
     f = *internal_testcase;
   } else {
@@ -120,11 +120,11 @@ void Dynein::update_internal_forces() {
   } 
 }
 
-void Dynein::set_state(State s) {
+void Dynein_bothbound::set_state(State s) {
   state = s;
 }
 
-void Dynein::update_velocities() {
+void Dynein_bothbound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
@@ -135,7 +135,7 @@ void Dynein::update_velocities() {
   }
 }
 
-void Dynein::switch_to_bothbound() {
+void Dynein_bothbound::switch_to_bothbound() {
   double temp_nma;
   double temp_fma;
   
@@ -159,7 +159,7 @@ void Dynein::switch_to_bothbound() {
   fma = temp_fma;
 }
 
-void Dynein::switch_to_nearbound() {
+void Dynein_bothbound::switch_to_nearbound() {
   //nearbound -> bma is nma
   double temp_bba = get_nba();
   double temp_bma = nma;
@@ -177,7 +177,7 @@ void Dynein::switch_to_nearbound() {
   state = NEARBOUND;
 }
 
-void Dynein::switch_to_farbound() {
+void Dynein_bothbound::switch_to_farbound() {
   //nearbound -> bma is fma
   double temp_bba = get_fba();
   double temp_bma = fma;
@@ -195,11 +195,11 @@ void Dynein::switch_to_farbound() {
   state = FARBOUND;
 }
 
-void Dynein::unbind() {
+void Dynein_bothbound::unbind() {
   state = UNBOUND;
 }
 
-void Dynein::update_velocities_onebound() {
+void Dynein_bothbound::update_velocities_onebound() {
   assert(state != BOTHBOUND);
   float A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
   float B1, B2, B3, B4;
@@ -253,7 +253,7 @@ void Dynein::update_velocities_onebound() {
   d_uba = Nbr/D;
 }
 
-void Dynein::update_velocities_bothbound() {
+void Dynein_bothbound::update_velocities_bothbound() {
 
   int pm_n = 1;
   int pm_f = 1;
@@ -401,7 +401,7 @@ void Dynein::update_velocities_bothbound() {
   d_lf = 1; // from Mathematica
 }
 
-double Dynein::get_binding_rate() {
+double Dynein_bothbound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
     double bound_energy = 0.5*cb*square(fba - eq.bba);
     return 1e10*exp(-bound_energy/kb/T); // per second
@@ -410,7 +410,7 @@ double Dynein::get_binding_rate() {
   }
 }
 
-double Dynein::get_unbinding_rate() {
+double Dynein_bothbound::get_unbinding_rate() {
   if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains?
     printf("unbinding...\n");
     return 1.0;
@@ -418,81 +418,81 @@ double Dynein::get_unbinding_rate() {
 }
 
 /*** Set positions, velocities and forces ***/
-void Dynein::set_bbx(double d) {   // onebound
+void Dynein_bothbound::set_bbx(double d) {   // onebound
   assert(C != BOTHBOUND);
   bbx = d;
 }
 
-void Dynein::set_bby(double d) {   // onebound
+void Dynein_bothbound::set_bby(double d) {   // onebound
   assert(C != BOTHBOUND);
   bby = d;
 }
 
-void Dynein::set_bba(double d) {   // onebound
+void Dynein_bothbound::set_bba(double d) {   // onebound
   assert(C != BOTHBOUND);
   bba = d;
 }
 
-void Dynein::set_bma(double d) {   // onebound
+void Dynein_bothbound::set_bma(double d) {   // onebound
   assert(C != BOTHBOUND);
   bma = d;
 }
 
-void Dynein::set_fma(double d) {   // onebound
+void Dynein_bothbound::set_fma(double d) {   // onebound
   assert(C != BOTHBOUND);
   fma = d;
 }
 
-void Dynein::set_fba(double d) {   // onebound
+void Dynein_bothbound::set_fba(double d) {   // onebound
   assert(C != BOTHBOUND);
   fba = d;
 }
 
-void Dynein::set_nma(double d) {   // bothbound
+void Dynein_bothbound::set_nma(double d) {   // bothbound
   assert(C == BOTHBOUND);
   nma = d;
 }
 
-void Dynein::set_fma(double d) {   // bothbound
+void Dynein_bothbound::set_fma(double d) {   // bothbound
   assert(C == BOTHBOUND);
   fma = d;
 }
 
-void Dynein::set_L(double d) {     // bothbound
+void Dynein_bothbound::set_L(double d) {     // bothbound
   assert(C == BOTHBOUND);
   L = d;
 }
 
 /*** Angular Velocities ***/
 
-double Dynein::get_d_bba() {
+double Dynein_bothbound::get_d_bba() {
   assert(C != BOTHBOUND);
   return d_bba;
 }
 
-double Dynein::get_d_bma() {
+double Dynein_bothbound::get_d_bma() {
   assert(C != BOTHBOUND);
   return d_bma;
 }
 
-double Dynein::get_d_fma() {
+double Dynein_bothbound::get_d_fma() {
   assert(C != BOTHBOUND);
   return d_fma;
 }
 
-double Dynein::get_d_fba() {
+double Dynein_bothbound::get_d_fba() {
   assert(C != BOTHBOUND);
   return d_fba;
 }
 
-double Dynein::get_d_nma() {  // bothbound
+double Dynein_bothbound::get_d_nma() {  // bothbound
   assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
   return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - ln*ln) / (2*lt*ls),2))
     * (ln / (lt*ls)) * d_ln;
 }
 
-double Dynein::get_d_fma() {  // bothbound
+double Dynein_bothbound::get_d_fma() {  // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
   return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - lf*lf) / (2*lt*ls),2))
@@ -501,111 +501,111 @@ double Dynein::get_d_fma() {  // bothbound
 
 /*** Get coordinates ***/
 
-double Dynein::get_bbx() {
+double Dynein_bothbound::get_bbx() {
   assert(C != BOTHBOUND);
   return bbx;
 }
 
-double Dynein::get_bby(){
+double Dynein_bothbound::get_bby(){
   assert(C != BOTHBOUND);
   return bby;
 }
 
-double Dynein::get_bmx() {
+double Dynein_bothbound::get_bmx() {
   assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + bbx;
 }
 
-double Dynein::get_bmy(){
+double Dynein_bothbound::get_bmy(){
   assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + bby;
 }
 
-double Dynein::get_tx() {
+double Dynein_bothbound::get_tx() {
   assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + lt * cos(get_bma()) + bbx;
 }
 
-double Dynein::get_ty(){
+double Dynein_bothbound::get_ty(){
   assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + lt * sin(get_bma()) + bby;
 }
 
-double Dynein::get_fmx() {
+double Dynein_bothbound::get_fmx() {
   assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_fma()) + bbx;
 }
 
-double Dynein::get_umy(){
+double Dynein_bothbound::get_umy(){
   assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_fma()) + bby;
 }
 
-double Dynein::get_fbx() {
+double Dynein_bothbound::get_fbx() {
   assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_fma()) - ls * cos(get_fba()) + bbx;
 }
 
-double Dynein::get_uby(){
+double Dynein_bothbound::get_uby(){
   assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_fma()) - ls * sin(get_fba()) + bby;
 }
 
-double Dynein::get_nbx() {   // bothbound
+double Dynein_bothbound::get_nbx() {   // bothbound
   assert(C == BOTHBOUND);
   return nbx;
 }
 
-double Dynein::get_nmx() {   // bothbound
+double Dynein_bothbound::get_nmx() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
   return ls*cos(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) p
          + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
 }
 
-double Dynein::get_tx() {   // bothbound
+double Dynein_bothbound::get_tx() {   // bothbound
   assert(C == BOTHBOUND);
   return (pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*L);
 }
 
-double Dynein::get_fmx() {   // bothbound
+double Dynein_bothbound::get_fmx() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
   return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));;
 }
 
-double Dynein::get_fbx() {   // bothbound
+double Dynein_bothbound::get_fbx() {   // bothbound
   assert(C == BOTHBOUND);
   return L;
 }
 
-double Dynein::get_nby() {   // bothbound
+double Dynein_bothbound::get_nby() {   // bothbound
   assert(C == BOTHBOUND);
   return 0;
 }
 
-double Dynein::get_nmy() {   // bothbound
+double Dynein_bothbound::get_nmy() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
   return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) 
          + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
 }
 
-double Dynein::get_ty() {   // bothbound
+double Dynein_bothbound::get_ty() {   // bothbound
   assert(C == BOTHBOUND);
   return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2) 
   / (4*(pow(L, 2)*pow(ln, 2))));
 }
 
-double Dynein::get_fmy() {   // bothbound
+double Dynein_bothbound::get_fmy() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
   return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));
 }
 
-double Dynein::get_fby() {   // bothbound
+double Dynein_bothbound::get_fby() {   // bothbound
   assert(C == BOTHBOUND);
   return 0;
 }
@@ -613,164 +613,164 @@ double Dynein::get_fby() {   // bothbound
 
 /*** Get Cartesian Velocities ***/
 
-double Dynein::get_d_bbx() {
+double Dynein_bothbound::get_d_bbx() {
   assert(C != BOTHBOUND);
   return 0;
 }
 
-double Dynein::get_d_bmx() {
+double Dynein_bothbound::get_d_bmx() {
   assert(C != BOTHBOUND);
   return ls * d_bba * -sin(bba);
 }
 
-double Dynein::get_d_tx() {
+double Dynein_bothbound::get_d_tx() {
   assert(C != BOTHBOUND);
   return lt * d_bma * -sin(bma) + get_d_bmx();
 }
 
-double Dynein::get_d_fmx() {
+double Dynein_bothbound::get_d_fmx() {
   assert(C != BOTHBOUND);
   return lt * d_fma * sin(fma) + get_d_tx();
 }
 
-double Dynein::get_d_fbx() {
+double Dynein_bothbound::get_d_fbx() {
   assert(C != BOTHBOUND);
   return ls * d_fba * sin(fba) + get_d_fmx();
 }
 
-double Dynein::get_d_bby() {
+double Dynein_bothbound::get_d_bby() {
   assert(C != BOTHBOUND);
   return 0;
 }
 
-double Dynein::get_d_bmy() {
+double Dynein_bothbound::get_d_bmy() {
   assert(C != BOTHBOUND);
   return ls * d_bba * cos(bba);
 }
 
-double Dynein::get_d_ty() {
+double Dynein_bothbound::get_d_ty() {
   assert(C != BOTHBOUND);
   return lt * d_bma * cos(bma) + get_d_bmy();
 }
 
-double Dynein::get_d_umy() {
+double Dynein_bothbound::get_d_umy() {
   assert(C != BOTHBOUND);
   return lt * d_fma * -cos(fma) + get_d_ty();
 }
 
-double Dynein::get_d_uby() {
+double Dynein_bothbound::get_d_uby() {
   assert(C != BOTHBOUND);
   return ls * d_fba * -cos(fba) + get_d_umy();
 }
 
-double Dynein::get_d_nbx() {   // bothbound
+double Dynein_bothbound::get_d_nbx() {   // bothbound
   assert(C == BOTHBOUND);
   return ;
 }
 
-double Dynein::get_d_nmx() {   // bothbound
-  assert(C == BOTHBOUND);
-  int pm = (nma > M_PI) ? -1 : 1;
-  return ;
-}
-
-double Dynein::get_d_tx() {   // bothbound
-  assert(C == BOTHBOUND);
-  return ;
-}
-
-double Dynein::get_d_fmx() {   // bothbound
-  assert(C == BOTHBOUND);
-  int pm = (fma > M_PI) ? -1 : 1;
-  return ;
-}
-
-double Dynein::get_d_fbx() {   // bothbound
-  assert(C == BOTHBOUND);
-  return ;
-}
-
-double Dynein::get_d_nby() {   // bothbound
-  assert(C == BOTHBOUND);
-  return ;
-}
-
-double Dynein::get_d_nmy() {   // bothbound
+double Dynein_bothbound::get_d_nmx() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
   return ;
 }
 
-double Dynein::get_d_ty() {   // bothbound
+double Dynein_bothbound::get_d_tx() {   // bothbound
   assert(C == BOTHBOUND);
   return ;
 }
 
-double Dynein::get_d_fmy() {   // bothbound
+double Dynein_bothbound::get_d_fmx() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
   return ;
 }
 
-double Dynein::get_d_fby() {   // bothbound
+double Dynein_bothbound::get_d_fbx() {   // bothbound
+  assert(C == BOTHBOUND);
+  return ;
+}
+
+double Dynein_bothbound::get_d_nby() {   // bothbound
+  assert(C == BOTHBOUND);
+  return ;
+}
+
+double Dynein_bothbound::get_d_nmy() {   // bothbound
+  assert(C == BOTHBOUND);
+  int pm = (nma > M_PI) ? -1 : 1;
+  return ;
+}
+
+double Dynein_bothbound::get_d_ty() {   // bothbound
+  assert(C == BOTHBOUND);
+  return ;
+}
+
+double Dynein_bothbound::get_d_fmy() {   // bothbound
+  assert(C == BOTHBOUND);
+  int pm = (fma > M_PI) ? -1 : 1;
+  return ;
+}
+
+double Dynein_bothbound::get_d_fby() {   // bothbound
   assert(C == BOTHBOUND);
   return ;
 }
 
 /*** Get forces ***/
-forces Dynein::get_internal() {
+forces Dynein_bothbound::get_internal() {
   return f;
 }
 
-forces Dynein::get_brownian() {
+forces Dynein_bothbound::get_brownian() {
   return r;
 }
 
 /*** Get angles ***/
 
-double Dynein::get_bba() {
+double Dynein_bothbound::get_bba() {
   return bba;
 }
 
-double Dynein::get_bma() {
+double Dynein_bothbound::get_bma() {
   return bma;
 }
 
-double Dynein::get_fma() {
+double Dynein_bothbound::get_fma() {
   return fma;
 }
 
-double Dynein::get_fba() {
+double Dynein_bothbound::get_fba() {
   return fba;
 }
 
-State Dynein::get_state() {
+State Dynein_bothbound::get_state() {
   return state;
 }
 
 /*** Get energies ***/
 
-double Dynein::get_PE() {
+double Dynein_bothbound::get_PE() {
   return 0;
 }
 
-double Dynein::get_KE() {
+double Dynein_bothbound::get_KE() {
   return 0;
 }
 
-void Dynein::log(double t, FILE* data_file) {
+void Dynein_bothbound::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_umy(), get_fbx(), get_uby(), state);
 }
 
-void Dynein::log_run(float runtime) {
+void Dynein_bothbound::log_run(float runtime) {
   FILE* data_file = fopen("run_data.txt", "w");
 
   float run_length = get_bbx();
   float ave_step_dist = distance_traveled / steps;
   float ave_step_time = runtime / steps;
-  
+
   printf("\n\n***********Run data**********\n");
   printf("Run length: %f nm\n", run_length);
   printf("Distance traveled: %f nm\n", distance_traveled);
@@ -782,16 +782,16 @@ void Dynein::log_run(float runtime) {
   fclose(data_file);
 }
 
-void Dynein::resetLog() {
+void Dynein_bothbound::resetLog() {
   FILE* data_file = fopen("data.txt", "w");
   FILE* config_file = fopen("config.txt", "w");
-  
+
   fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
           (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
   fprintf(data_file,
 	  "#KE\tPE\tEnergy\tt\tnbX\tnbY\tnmx\tnmy\ttX\ttY\tfmx\tfmy\tfbx\tuby\tS\n");
-	
+
   fclose(data_file);
   fclose(config_file);
 }
