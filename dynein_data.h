@@ -1,3 +1,6 @@
+#ifndef DYNEIN_DATA
+#define DYNEIN_DATA
+
 extern double runtime;
 
 const double dt = 1e-12; // s
@@ -62,3 +65,5 @@ double square(double num);
 double cube(double num);
 double fourth(double num);
 double fifth(double num);
+
+#endif

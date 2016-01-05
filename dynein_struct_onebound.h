@@ -1,5 +1,6 @@
 #include <math.h>
 #include "MersenneTwister.h"
+#include "dynein_data.h"
 
 typedef struct
 {
@@ -26,9 +27,10 @@ const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
 
 class Dynein_onebound {
 public:
-  Dynein(double bba_init, double bma_init, double fma_init, double fba_init,
-	       double bbx_init, double bby_init, State s, forces *internal_test,
-	       forces *brownian_test, equilibrium_angles* eq_angles);
+  Dynein_onebound(double bba_init, double bma_init, double fma_init, double fba_init,
+                  double bbx_init, double bby_init, State s, onebound_forces *internal_test,
+                  onebound_forces *brownian_test, onebound_equilibrium_angles* eq_angles,
+                  MTRand *rand = 0);
 
   /** Onebound functions **/
   void set_bba(double d);
@@ -78,8 +80,8 @@ public:
   double get_d_umy();
   double get_d_uby();
 
-  forces get_internal();
-  forces get_brownian();
+  onebound_forces get_internal();
+  onebound_forces get_brownian();
 
   double get_binding_rate();
   double get_unbinding_rate();
@@ -96,6 +98,7 @@ private:
   void update_internal_forces();
 
   onebound_equilibrium_angles eq;      //Equilibrium angles
+  MTRand *rand;
 
   double bba;    //Onebound coordinates
   double bma;
