@@ -27,8 +27,9 @@ const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 
 class Dynein_bothbound {
 public:
-  Dynein(double nma_init, double fma_init, bothbound_forces* internal_test,
-	 bothbound_forces* brownian_test, bothbound_equilibrium_angles* eq_angles);
+  Dynein(double nma_init, double fma_init, double nbx_init, double nby_init,
+	 bothbound_forces* internal_test, bothbound_forces* brownian_test,
+	 bothbound_equilibrium_angles* eq_angles);
 
   void set_nma(double d);
   void set_fma(double d);

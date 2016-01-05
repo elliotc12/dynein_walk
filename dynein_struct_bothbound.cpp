@@ -2,33 +2,27 @@
 #include <fstream>
 #include <cassert>
 
-#include "dynein_struct.h"
+#include "dynein_struct_bothbound.h"
+#include "dynein_data.h"
 
-/* *********************************** DYNEIN FUNCTIONS ****************************************** */
+/* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */
 
-Dynein::Dynein(double bba_init, double bma_init, double fma_init, double fba_init,
-               State s, forces *internal_test, forces *brownian_test, equilibrium_angles* eq_angles) {
-  bbx = 0;
-  bby = 0;
-  mode = PRE_POWERSTROKE;
+Dynein::Dynein(double nma_init, double fma_init, double nbx_init, double nby_init,
+	       bothbound_forces* internal_test, bothbound_forces* brownian_test,
+	       bothbound_equilibrium_angles* eq_angles) {
+  nbx = nbx_init;
+  nby = nby_init;
 
-  rand = new MTRand(RAND_INIT_SEED);
+  nma = nma_init;
+  fma = fma_init;
 
-  bba = bba_init;
-  bma = bma_init;
-  uma = fma_init;
-  uba = fba_init;
-
-  state = s;
   internal_testcase = internal_test;
   brownian_testcase = brownian_test;
   
   if (eq_angles) {
-    eq = *eq_angles; 
-  } else if (state == BOTHBOUND) {
-    eq = &bothbound_pre_powerstroke_internal_angles;
-  } else if (state == NEARBOUND or state == FARBOUND) {
-    eq = &near_farbound_post_powerstroke_internal_angles;
+    eq = *eq_angles; // use test angles
+  } else {
+    eq = bothbound_pre_powerstroke_internal_angles; // use experimental angles
   }
   
   update_velocities();
@@ -49,7 +43,7 @@ void Dynein::update_brownian_forces() {
 void Dynein::update_internal_forces() {
   if (internal_testcase) {
     f = *internal_testcase;
-  } else if (state == NEARBOUND) {
+  } else {
     f.nbx = 0;     f.nby = 0;     // Initialize forces to zero
     f.nmx = 0;     f.nmy = 0;
     f.tx  = 0;     f.ty  = 0;
@@ -58,24 +52,22 @@ void Dynein::update_internal_forces() {
 
     double T, f1, f2, f1x, f1y, f2x, f2y;
 
-    T = cb*(bba - eq.bba);
-    // printf("binding angle from equilibrium: %g\n", bba - eq.bba);
+    T = cb*(get_nba() - eq.nba);
     f2 = T/ls;
-    f2x = f2 * sin(bba);
-    f2y = f2 * -cos(bba);
+    f2x = f2 * sin(get_nba());
+    f2y = f2 * -cos(get_nba());
     f.nmx += f2x;
     f.nmy += f2y;
     f.nbx += -f2x; // Equal and opposite forces!  :)
     f.nby += -f2y; // Equal and opposite forces!  :)
 
-    T = cm*((bma + M_PI - bba) - eq.ba);
-    // printf("bound motor from equilibrium: %g\n", (bma + M_PI - bba) - eq.ba);
+    T = cm*(nma - eq.nma);
     f1 = T/ls;
     f2 = T/lt;
-    f1x = f1 * sin(bba);
-    f1y = f1 * -cos(bba);
-    f2x = f2 * sin(bma);
-    f2y = f2 * -cos(bma);
+    f1x = f1 * sin(get_nba());
+    f1y = f1 * -cos(get_nba());
+    f2x = f2 * sin(nma - (M_PI - get_nba()));
+    f2y = f2 * -cos(nma - (M_PI - get_nba()));
     f.nbx += f1x;
     f.nby += f1y;
     f.tx  += f2x;
@@ -83,14 +75,13 @@ void Dynein::update_internal_forces() {
     f.nmx += -(f1x + f2x);
     f.nmy += -(f1y + f2y);
 
-    T = ct*(-((uma - bma) - eq.ta));
-    // printf("tail from equilibrium: %g\n", -((fma - bma) - eq.ta));
+    T = ct*(fma + get_fba() - nma - get_nba() - eq.ta);
     f1 = T / lt;
     f2 = T / lt;
-    f1x = f1 * sin(bba);
-    f1y = f1 * -cos(bba);
-    f2x = f2 * sin(uma);
-    f2y = f2 * -cos(uma);
+    f1x = f1 * sin(nma + get_nba() - M_PI); 
+    f1y = f1 * -cos(nma + get_nba() - M_PI);
+    f2x = f2 * -sin(fma + get_fba() - M_PI);  // not sure if these angles are right?
+    f2y = f2 * cos(fma + get_fba() - M_PI);
     f.nmx += f1x;
     f.nmy += f1y;
     f.fmx += f2x;
@@ -98,97 +89,35 @@ void Dynein::update_internal_forces() {
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
 
-    T = cm*((uma + M_PI - uba) - eq.uma);
-    // printf("free motor from equilibrium: %g\n", (fma + M_PI - fba) - eq.fa);
+    T = cm*(fma - eq.fma);
     f1 = T / lt;
     f2 = T / ls;
-    f1x = f1 * sin(uma);
-    f1y = f1 * -cos(uma);
-    f2x = f2 * sin(uba);
-    f2y = f2 * -cos(uba);
+    f1x = f1 * sin(fma + get_fba() - M_PI);
+    f1y = f1 * -cos(fma + get_fba() - M_PI);
+    f2x = f2 * sin(get_fba());
+    f2y = f2 * -cos(get_fba());
     f.tx  += f1x;
     f.ty  += f1y;
     f.fbx += f2x;
     f.fby += f2y;
     f.fmx += -(f1x + f2x);
     f.fmy += -(f1y + f2y);
-    
-    if (get_bmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_umy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    if (get_uby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
-    
-  } else if (state == FARBOUND) {
-    f.nbx = 0;     f.nby = 0;     // Initialize forces to zero
-    f.nmx = 0;     f.nmy = 0;
-    f.tx  = 0;     f.ty  = 0;
-    f.fmx = 0;     f.fmy = 0;
-    f.fbx = 0;     f.fby = 0;
 
-    double T, f1, f2, f1x, f1y, f2x, f2y;
-
-    T = cb*(bba - eq.bba);
-    // printf("binding angle from equilibrium: %g\n", bba - eq.bba);
-    f2 = T/ls;
-    f2x = f2 * sin(bba);
-    f2y = f2 * -cos(bba);
-    f.fmx += f2x;
-    f.fmy += f2y;
-    f.fbx += -f2x; // Equal and opposite forces!  :)
-    f.fby += -f2y; // Equal and opposite forces!  :)
-
-    T = cm*((bma + M_PI - bba) - eq.ba);
-    // printf("bound motor from equilibrium: %g\n", (bma + M_PI - bba) - eq.ba);
-    f1 = T/ls;
-    f2 = T/lt;
-    f1x = f1 * sin(bba);
-    f1y = f1 * -cos(bba);
-    f2x = f2 * sin(bma);
-    f2y = f2 * -cos(bma);
-    f.fbx += f1x;
-    f.fby += f1y;
-    f.tx  += f2x;
-    f.ty  += f2y;
-    f.fmx += -(f1x + f2x);
-    f.fmy += -(f1y + f2y);
-
-    T = ct*(-((uma - bma) - eq.ta));
-    // printf("tail from equilibrium: %g\n", -((fma - bma) - eq.ta));
-    f1 = T / lt;
-    f2 = T / lt;
-    f1x = f1 * sin(bba);
-    f1y = f1 * -cos(bba);
-    f2x = f2 * sin(uma);
-    f2y = f2 * -cos(uma);
+    T = cb*(get_fba() - eq.fba);
+    f1 = T / ls;
+    f1x = f1 * sin(get_fba());
+    f1y = f1 * -cos(get_fba());
     f.fmx += f1x;
     f.fmy += f1y;
-    f.nmx += f2x;
-    f.nmy += f2y;
-    f.tx  += -(f1x + f2x);
-    f.ty  += -(f1y + f2y);
+    f.fbx += -f1x;
+    f.fby += -f1y;
 
-    T = cm*((uma + M_PI - uba) - eq.uma);
-    // printf("free motor from equilibrium: %g\n", (fma + M_PI - fba) - eq.fa);
-    f1 = T / lt;
-    f2 = T / ls;
-    f1x = f1 * sin(uma);
-    f1y = f1 * -cos(uma);
-    f2x = f2 * sin(uba);
-    f2y = f2 * -cos(uba);
-    f.tx  += f1x;
-    f.ty  += f1y;
-    f.nbx += f2x;
-    f.nby += f2y;
-    f.nmx += -(f1x + f2x);
-    f.nmy += -(f1y + f2y);
-    
-    if (get_bmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
+    if (get_nby() < 0) f.nby += MICROTUBULE_REPULSION_FORCE * fabs(get_nby());
+    if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_umy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    if (get_uby() < 0) f.nby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
-  } else {
-    // bothbound internal force update goes here
-  }
+    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+    if (get_fby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE * fabs(get_fby());
+  } 
 }
 
 void Dynein::set_state(State s) {

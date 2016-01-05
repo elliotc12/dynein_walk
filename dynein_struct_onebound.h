@@ -26,9 +26,9 @@ const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
 
 class Dynein_onebound {
 public:
-  Dynein(double bla_init, double mla_init, double mra_init, double bra_init,
-         State s, onebound_forces* internal_test, onebound_forces* brownian_test,
-	 equilibrium_angles* eq_angles);
+  Dynein(double bba_init, double bma_init, double fma_init, double fba_init,
+	       double bbx_init, double bby_init, State s, forces *internal_test,
+	       forces *brownian_test, equilibrium_angles* eq_angles);
 
   /** Onebound functions **/
   void set_bba(double d);
