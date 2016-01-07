@@ -14,11 +14,6 @@ double runtime;
 
 void simulateProtein(Dynein* dyn, double tf) {
   double t = 0;
-  
-  double temp_bba;
-  double temp_bma;
-  double temp_fma;
-  double temp_fba;
 
   FILE* data_file = fopen("data.txt", "a+");
   
@@ -34,16 +29,27 @@ void simulateProtein(Dynein* dyn, double tf) {
     }
     
     dyn->update_velocities();
+
+    if (dyn->get_state() != Dynein::BOTHBOUND) {
+      double temp_bba,temp_bma, temp_fma, temp_fba;
+      temp_bba = dyn->get_bba() + dyn->get_d_bba() * dt;
+      temp_bma = dyn->get_bma() + dyn->get_d_bma() * dt;
+      temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
+      temp_fba = dyn->get_fba() + dyn->get_d_fba() * dt;
     
-    temp_bba = dyn->get_bba() + dyn->get_d_bba() * dt;
-    temp_bma = dyn->get_bma() + dyn->get_d_bma() * dt;
-    temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
-    temp_fba = dyn->get_fba() + dyn->get_d_fba() * dt;
+      dyn->set_bba(temp_bba);
+      dyn->set_bma(temp_bma);
+      dyn->set_fma(temp_fma);
+      dyn->set_fba(temp_fba);
+    }
+    else {
+      double temp_nma, temp_fma;
+      temp_nma = dyn->get_nma() + dyn->get_d_nma() * dt;
+      temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
     
-    dyn->set_bba(temp_bba);
-    dyn->set_bma(temp_bma);
-    dyn->set_fma(temp_fma);
-    dyn->set_fba(temp_fba);
+      dyn->set_nma(temp_nma);
+      dyn->set_fma(temp_fma);
+    }
     
     dyn->log(t, data_file);
     
@@ -74,9 +80,9 @@ int main(int argvc, char **argv) {
   
   Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
 			   FARBOUND,                               // Initial state
-			   NULL,                               // Optional custom internal forces
-			   NULL,                               // Optional custom brownian forces
-			   NULL);                              // Optional custom equilibrium angles
+			   NULL,                // Optional custom internal forces
+			   NULL,                // Optional custom brownian forces
+			   NULL);               // Optional custom equilibrium angles
   
   dyn->resetLog();
   simulateProtein(dyn, runtime);
