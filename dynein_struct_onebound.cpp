@@ -2,13 +2,12 @@
 #include <fstream>
 #include <cassert>
 
-#include "dynein_struct_onebound.h"
-#include "dynein_data.h"
+#include "dynein_struct.h"
 
 /* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */
 
 Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
-				 double fma_init, double fba_init,
+				 double uma_init, double uba_init,
 				 double bbx_init, double bby_init,
 				 State s, onebound_forces *internal_test,
 				 onebound_forces *brownian_test,
@@ -19,8 +18,8 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 
   bba = bba_init;
   bma = bma_init;
-  uma = fma_init;
-  uba = fba_init;
+  uma = uma_init;
+  uba = uba_init;
 
   state = s;
   internal_testcase = internal_test;
@@ -119,10 +118,6 @@ void Dynein_onebound::update_internal_forces() {
   }
 }
 
-void Dynein_onebound::set_state(State s) {
-  state = s;
-}
-
 // void Dynein_onebound::switch_to_bothbound() {
 //   double temp_nma;
 //   double temp_fma;
@@ -183,10 +178,6 @@ void Dynein_onebound::set_state(State s) {
 //   state = FARBOUND;
 // }
 
-void Dynein_onebound::unbind() {
-  state = UNBOUND;
-}
-
 void Dynein_onebound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
@@ -215,26 +206,43 @@ void Dynein_onebound::update_velocities() {
   D2 = lt*(cos(uba)*cos(bma) + sin(uba)*sin(bma));
   D3 = -lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
   D4 = -ls;
-  
-  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy - r.ty - r.umy - r.uby)*cos(bba)
-      + ( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx + r.tx + r.umx + r.ubx )*sin(bba);
-  
-  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty - r.umy - r.uby)*cos(bma) + (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx + r.umx + r.ubx)*sin(bma);
 
-  X3 = (-r.umy -r.uby - 1/gm*f.umy - 1/gb*f.uby)*cos(uma) + (r.umx + r.ubx + 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
-  
+  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy - r.ty - r.umy - r.uby)*cos(bba)
+      +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx + r.tx + r.umx + r.ubx )*sin(bba);
+
+  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty - r.umy - r.uby)*cos(bma)
+    + (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx + r.umx + r.ubx)*sin(bma);
+
+  X3 = (-r.umy -r.uby - 1/gm*f.umy - 1/gb*f.uby)*cos(uma)
+    + (r.umx + r.ubx + 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+
   X4 = (r.uby + 1/gb*f.uby)*cos(uba) - (r.ubx + 1/gb*f.ubx)*sin(uba);
 
-  Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2 + A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4 + B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4) + B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
+  Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2
+	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
+	 +B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4)
+	 +B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
 
-  Nml = (B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2 - A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4 + B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4) + B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
+  Nml = (B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2
+	 -A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4
+	 +B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4)
+	 +B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
 
-  Nmr = (-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2 + A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4 + B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4) + B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
+  Nmr = (-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2
+	 +A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4
+	 +B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4)
+	 +B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
 
-  Nbr = (B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2 - A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4 + B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4) + B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
+  Nbr = (B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2
+	 -A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4
+	 +B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4)
+	 +B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
 
-  D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3 + A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3 - B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4 + A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
-  
+  D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3
+         +A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3
+         -B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4
+         +A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
+
   assert(D != 0);
 
   d_bba = Nbb/D;
@@ -261,33 +269,27 @@ double Dynein_onebound::get_unbinding_rate() {
 
 /*** Set positions, velocities and forces ***/
 void Dynein_onebound::set_bbx(double d) {   // onebound
-  assert(C != BOTHBOUND);
   bbx = d;
 }
 
 void Dynein_onebound::set_bby(double d) {   // onebound
-  assert(C != BOTHBOUND);
   bby = d;
 }
 
 void Dynein_onebound::set_bba(double d) {   // onebound
-  assert(C != BOTHBOUND);
   bba = d;
 }
 
 void Dynein_onebound::set_bma(double d) {   // onebound
-  assert(C != BOTHBOUND);
   bma = d;
 }
 
-void Dynein_onebound::set_fma(double d) {   // onebound
-  assert(C != BOTHBOUND);
-  fma = d;
+void Dynein_onebound::set_uma(double d) {   // onebound
+  uma = d;
 }
 
-void Dynein_onebound::set_fba(double d) {   // onebound
-  assert(C != BOTHBOUND);
-  fba = d;
+void Dynein_onebound::set_uba(double d) {   // onebound
+  uba = d;
 }
 
 void Dynein_onebound::set_nma(double d) {   // bothbound
@@ -295,48 +297,32 @@ void Dynein_onebound::set_nma(double d) {   // bothbound
   nma = d;
 }
 
-void Dynein_onebound::set_fma(double d) {   // bothbound
-  assert(C == BOTHBOUND);
-  fma = d;
-}
-
-void Dynein_onebound::set_L(double d) {     // bothbound
-  assert(C == BOTHBOUND);
-  L = d;
-}
-
 /*** Angular Velocities ***/
 
 double Dynein_onebound::get_d_bba() {
-  assert(C != BOTHBOUND);
   return d_bba;
 }
 
 double Dynein_onebound::get_d_bma() {
-  assert(C != BOTHBOUND);
   return d_bma;
 }
 
 double Dynein_onebound::get_d_fma() {
-  assert(C != BOTHBOUND);
   return d_fma;
 }
 
 double Dynein_onebound::get_d_fba() {
-  assert(C != BOTHBOUND);
   return d_fba;
 }
 
-double Dynein_onebound::get_d_nma() {  // bothbound
-  assert(C == BOTHBOUND);
-  int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
+double Dynein_onebound::get_d_bma() {  // bothbound
+  int pm = (bma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
   return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - ln*ln) / (2*lt*ls),2))
     * (ln / (lt*ls)) * d_ln;
 }
 
-double Dynein_onebound::get_d_fma() {  // bothbound
-  assert(C == BOTHBOUND);
-  int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
+double Dynein_onebound::get_d_uma() {  // bothbound
+  int pm = (uma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
   return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - lf*lf) / (2*lt*ls),2))
     * (lf / (lt*ls)) * d_lf;
 }
@@ -344,111 +330,93 @@ double Dynein_onebound::get_d_fma() {  // bothbound
 /*** Get coordinates ***/
 
 double Dynein_onebound::get_bbx() {
-  assert(C != BOTHBOUND);
   return bbx;
 }
 
 double Dynein_onebound::get_bby(){
-  assert(C != BOTHBOUND);
   return bby;
 }
 
 double Dynein_onebound::get_bmx() {
-  assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + bbx;
 }
 
 double Dynein_onebound::get_bmy(){
-  assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + bby;
 }
 
 double Dynein_onebound::get_tx() {
-  assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + lt * cos(get_bma()) + bbx;
 }
 
 double Dynein_onebound::get_ty(){
-  assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + lt * sin(get_bma()) + bby;
 }
 
 double Dynein_onebound::get_fmx() {
-  assert(C != BOTHBOUND);
   return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_fma()) + bbx;
 }
 
 double Dynein_onebound::get_umy(){
-  assert(C != BOTHBOUND);
   return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_fma()) + bby;
 }
 
 double Dynein_onebound::get_fbx() {
-  assert(C != BOTHBOUND);
-  return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_fma()) - ls * cos(get_fba()) + bbx;
+  return ls * cos(get_bba()) + lt * cos(get_bma())
+    - lt * cos(get_fma()) - ls * cos(get_fba()) + bbx;
 }
 
 double Dynein_onebound::get_uby(){
-  assert(C != BOTHBOUND);
-  return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_fma()) - ls * sin(get_fba()) + bby;
+  return ls * sin(get_bba()) + lt * sin(get_bma())
+    - lt * sin(get_fma()) - ls * sin(get_fba()) + bby;
 }
 
 double Dynein_onebound::get_nbx() {   // bothbound
-  assert(C == BOTHBOUND);
   return nbx;
 }
 
 double Dynein_onebound::get_nmx() {   // bothbound
-  assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
   return ls*cos(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) p
          + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
 }
 
 double Dynein_onebound::get_tx() {   // bothbound
-  assert(C == BOTHBOUND);
   return (pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*L);
 }
 
 double Dynein_onebound::get_fmx() {   // bothbound
-  assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
+  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));;
 }
 
 double Dynein_onebound::get_fbx() {   // bothbound
-  assert(C == BOTHBOUND);
   return L;
 }
 
 double Dynein_onebound::get_nby() {   // bothbound
-  assert(C == BOTHBOUND);
   return 0;
 }
 
 double Dynein_onebound::get_nmy() {   // bothbound
-  assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) 
+  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln)))
          + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
 }
 
 double Dynein_onebound::get_ty() {   // bothbound
-  assert(C == BOTHBOUND);
-  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2) 
+  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2)
   / (4*(pow(L, 2)*pow(ln, 2))));
 }
 
 double Dynein_onebound::get_fmy() {   // bothbound
-  assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
+  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));
 }
 
 double Dynein_onebound::get_fby() {   // bothbound
-  assert(C == BOTHBOUND);
   return 0;
 }
 
@@ -456,48 +424,39 @@ double Dynein_onebound::get_fby() {   // bothbound
 /*** Get Cartesian Velocities ***/
 
 double Dynein_onebound::get_d_bbx() {
-  assert(C != BOTHBOUND);
   return 0;
 }
 
 double Dynein_onebound::get_d_bmx() {
-  assert(C != BOTHBOUND);
   return ls * d_bba * -sin(bba);
 }
 
 double Dynein_onebound::get_d_tx() {
-  assert(C != BOTHBOUND);
   return lt * d_bma * -sin(bma) + get_d_bmx();
 }
 
 double Dynein_onebound::get_d_fmx() {
-  assert(C != BOTHBOUND);
   return lt * d_fma * sin(fma) + get_d_tx();
 }
 
 double Dynein_onebound::get_d_fbx() {
-  assert(C != BOTHBOUND);
   return ls * d_fba * sin(fba) + get_d_fmx();
 }
 
 double Dynein_onebound::get_d_bby() {
-  assert(C != BOTHBOUND);
   return 0;
 }
 
 double Dynein_onebound::get_d_bmy() {
-  assert(C != BOTHBOUND);
-  return ls * d_bba * cos(bba);
+    return ls * d_bba * cos(bba);
 }
 
 double Dynein_onebound::get_d_ty() {
-  assert(C != BOTHBOUND);
-  return lt * d_bma * cos(bma) + get_d_bmy();
+    return lt * d_bma * cos(bma) + get_d_bmy();
 }
 
 double Dynein_onebound::get_d_umy() {
-  assert(C != BOTHBOUND);
-  return lt * d_fma * -cos(fma) + get_d_ty();
+    return lt * d_fma * -cos(fma) + get_d_ty();
 }
 
 double Dynein_onebound::get_d_uby() {
@@ -546,7 +505,8 @@ double Dynein_onebound::get_KE() {
 }
 
 void Dynein_onebound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
+	  "%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_umy(), get_fbx(), get_uby(), state);
 }
@@ -557,7 +517,7 @@ void Dynein_onebound::log_run(float runtime) {
   float run_length = get_bbx();
   float ave_step_dist = distance_traveled / steps;
   float ave_step_time = runtime / steps;
-  
+
   printf("\n\n***********Run data**********\n");
   printf("Run length: %f nm\n", run_length);
   printf("Distance traveled: %f nm\n", distance_traveled);
@@ -565,20 +525,21 @@ void Dynein_onebound::log_run(float runtime) {
   printf("Average step length: %f nm\n", ave_step_dist);
   printf("Average step time: %g s\n\n\n", ave_step_time);
   fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n",
+	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
   fclose(data_file);
 }
 
 void Dynein_onebound::resetLog() {
   FILE* data_file = fopen("data.txt", "w");
   FILE* config_file = fopen("config.txt", "w");
-  
+
   fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
           (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
   fprintf(data_file,
 	  "#KE\tPE\tEnergy\tt\tnbX\tnbY\tnmx\tnmy\ttX\ttY\tfmx\tfmy\tfbx\tuby\tS\n");
-	
+
   fclose(data_file);
   fclose(config_file);
 }

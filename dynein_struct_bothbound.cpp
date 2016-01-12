@@ -18,13 +18,13 @@ Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init, doub
 
   internal_testcase = internal_test;
   brownian_testcase = brownian_test;
-  
+
   if (eq_angles) {
     eq = *eq_angles; // use test angles
   } else {
     eq = bothbound_pre_powerstroke_internal_angles; // use experimental angles
   }
-  
+
   update_velocities();
 }
 
@@ -37,7 +37,7 @@ void Dynein_bothbound::update_brownian_forces() {
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
     rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
-  } 
+  }
 }
 
 void Dynein_bothbound::update_internal_forces() {
@@ -571,7 +571,7 @@ double Dynein_bothbound::get_tx() {   // bothbound
 double Dynein_bothbound::get_fmx() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
+  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));;
 }
 
@@ -588,20 +588,20 @@ double Dynein_bothbound::get_nby() {   // bothbound
 double Dynein_bothbound::get_nmy() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (nma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) 
+  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln)))
          + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
 }
 
 double Dynein_bothbound::get_ty() {   // bothbound
   assert(C == BOTHBOUND);
-  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2) 
+  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2)
   / (4*(pow(L, 2)*pow(ln, 2))));
 }
 
 double Dynein_bothbound::get_fmy() {   // bothbound
   assert(C == BOTHBOUND);
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf))) 
+  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
          + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));
 }
 
@@ -759,7 +759,8 @@ double Dynein_bothbound::get_KE() {
 }
 
 void Dynein_bothbound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
           get_tx(), get_ty(), get_fmx(), get_umy(), get_fbx(), get_uby(), state);
 }
@@ -778,7 +779,8 @@ void Dynein_bothbound::log_run(float runtime) {
   printf("Average step length: %f nm\n", ave_step_dist);
   printf("Average step time: %g s\n\n\n", ave_step_time);
   fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps,
+	  ave_step_dist, ave_step_time);
   fclose(data_file);
 }
 

@@ -136,8 +136,6 @@ public:
   double get_umy();
   double get_uby();
 
-  void set_state(State s);
-
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
 
@@ -247,8 +245,8 @@ public:
   double get_d_fmy();
   double get_d_fby();
 
-  forces get_internal();
-  forces get_brownian();
+  bothbound_forces get_internal();
+  bothbound_forces get_brownian();
 
   double get_binding_rate();
   double get_unbinding_rate();
