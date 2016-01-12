@@ -1,1 +1,3 @@
 | pdflatex derivation.tex && pdflatex derivation.tex
+
+| pdflatex paper.tex && pdflatex paper.tex
