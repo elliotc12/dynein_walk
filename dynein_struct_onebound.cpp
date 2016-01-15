@@ -253,7 +253,7 @@ void Dynein_onebound::update_velocities() {
 
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
-    double bound_energy = 0.5*cb*square(fba - eq.bba);
+    double bound_energy = 0.5*cb*square(bba - eq.bba);
     return 1e10*exp(-bound_energy/kb/T); // per second
   } else {
     return 0;
@@ -292,11 +292,6 @@ void Dynein_onebound::set_uba(double d) {   // onebound
   uba = d;
 }
 
-void Dynein_onebound::set_nma(double d) {   // bothbound
-  assert(C == BOTHBOUND);
-  nma = d;
-}
-
 /*** Angular Velocities ***/
 
 double Dynein_onebound::get_d_bba() {
@@ -307,24 +302,12 @@ double Dynein_onebound::get_d_bma() {
   return d_bma;
 }
 
-double Dynein_onebound::get_d_fma() {
-  return d_fma;
+double Dynein_onebound::get_d_uma() {
+  return d_uma;
 }
 
-double Dynein_onebound::get_d_fba() {
-  return d_fba;
-}
-
-double Dynein_onebound::get_d_bma() {  // bothbound
-  int pm = (bma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - ln*ln) / (2*lt*ls),2))
-    * (ln / (lt*ls)) * d_ln;
-}
-
-double Dynein_onebound::get_d_uma() {  // bothbound
-  int pm = (uma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - lf*lf) / (2*lt*ls),2))
-    * (lf / (lt*ls)) * d_lf;
+double Dynein_onebound::get_d_uba() {
+  return d_uba;
 }
 
 /*** Get coordinates ***/
@@ -354,70 +337,21 @@ double Dynein_onebound::get_ty(){
 }
 
 double Dynein_onebound::get_fmx() {
-  return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_fma()) + bbx;
+  return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_uma()) + bbx;
 }
 
 double Dynein_onebound::get_umy(){
-  return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_fma()) + bby;
+  return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_uma()) + bby;
 }
 
 double Dynein_onebound::get_fbx() {
   return ls * cos(get_bba()) + lt * cos(get_bma())
-    - lt * cos(get_fma()) - ls * cos(get_fba()) + bbx;
+    - lt * cos(get_uma()) - ls * cos(get_uba()) + bbx;
 }
 
 double Dynein_onebound::get_uby(){
   return ls * sin(get_bba()) + lt * sin(get_bma())
-    - lt * sin(get_fma()) - ls * sin(get_fba()) + bby;
-}
-
-double Dynein_onebound::get_nbx() {   // bothbound
-  return nbx;
-}
-
-double Dynein_onebound::get_nmx() {   // bothbound
-  int pm = (nma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln))) p
-         + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
-}
-
-double Dynein_onebound::get_tx() {   // bothbound
-  return (pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*L);
-}
-
-double Dynein_onebound::get_fmx() {   // bothbound
-  int pm = (fma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
-         + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));;
-}
-
-double Dynein_onebound::get_fbx() {   // bothbound
-  return L;
-}
-
-double Dynein_onebound::get_nby() {   // bothbound
-  return 0;
-}
-
-double Dynein_onebound::get_nmy() {   // bothbound
-  int pm = (nma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln)))
-         + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
-}
-
-double Dynein_onebound::get_ty() {   // bothbound
-  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2)
-  / (4*(pow(L, 2)*pow(ln, 2))));
-}
-
-double Dynein_onebound::get_fmy() {   // bothbound
-  int pm = (fma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
-         + pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));
-}
-
-double Dynein_onebound::get_fby() {   // bothbound
-  return 0;
+    - lt * sin(get_uma()) - ls * sin(get_uba()) + bby;
 }
 
 
@@ -435,12 +369,12 @@ double Dynein_onebound::get_d_tx() {
   return lt * d_bma * -sin(bma) + get_d_bmx();
 }
 
-double Dynein_onebound::get_d_fmx() {
-  return lt * d_fma * sin(fma) + get_d_tx();
+double Dynein_onebound::get_d_umx() {
+  return lt * d_uma * sin(uma) + get_d_tx();
 }
 
-double Dynein_onebound::get_d_fbx() {
-  return ls * d_fba * sin(fba) + get_d_fmx();
+double Dynein_onebound::get_d_ubx() {
+  return ls * d_uba * sin(uba) + get_d_fmx();
 }
 
 double Dynein_onebound::get_d_bby() {
@@ -456,11 +390,11 @@ double Dynein_onebound::get_d_ty() {
 }
 
 double Dynein_onebound::get_d_umy() {
-    return lt * d_fma * -cos(fma) + get_d_ty();
+    return lt * d_uma * -cos(uma) + get_d_ty();
 }
 
 double Dynein_onebound::get_d_uby() {
-  return ls * d_fba * -cos(fba) + get_d_umy();
+  return ls * d_uba * -cos(uba) + get_d_umy();
 }
 
 /*** Get forces ***/
@@ -482,22 +416,19 @@ double Dynein_onebound::get_bma() {
   return bma;
 }
 
-double Dynein_onebound::get_fma() {
-  return fma;
+double Dynein_onebound::get_uma() {
+  return uma;
 }
 
-double Dynein_onebound::get_fba() {
-  return fba;
+double Dynein_onebound::get_uba() {
+  return uba;
 }
-
-// State Dynein_onebound::get_state() {
-//   return state;
-// }
 
 /*** Get energies ***/
 
 double Dynein_onebound::get_PE() {
-  return 0;
+  return 0.5*cb*square(bba - eq.bba) + 0.5*cb*square(bma - eq.bma)
+    + 0.5*cb*square(uma - eq.uma) + 0.5*cb*square(uba - eq.uba);
 }
 
 double Dynein_onebound::get_KE() {
@@ -508,7 +439,7 @@ void Dynein_onebound::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
 	  "%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
-          get_tx(), get_ty(), get_fmx(), get_umy(), get_fbx(), get_uby(), state);
+          get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
 }
 
 void Dynein_onebound::log_run(float runtime) {
@@ -528,18 +459,4 @@ void Dynein_onebound::log_run(float runtime) {
   fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n",
 	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
   fclose(data_file);
-}
-
-void Dynein_onebound::resetLog() {
-  FILE* data_file = fopen("data.txt", "w");
-  FILE* config_file = fopen("config.txt", "w");
-
-  fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
-  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%d\n",
-          (double) gb, (double) gm, (double) gt, dt, runtime, (int) state);
-  fprintf(data_file,
-	  "#KE\tPE\tEnergy\tt\tnbX\tnbY\tnmx\tnmy\ttX\ttY\tfmx\tfmy\tfbx\tuby\tS\n");
-
-  fclose(data_file);
-  fclose(config_file);
 }
