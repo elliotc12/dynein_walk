@@ -9,6 +9,11 @@
    * internal velocities.
    */
 
+//each step:
+//if onebound, check if time to unbind, then check if time to bind, else update
+//else if bothbound, check if time to unbind, else update
+//update velocities
+
 extern const double dt;
 double runtime;
 
@@ -16,54 +21,71 @@ void simulateProtein(Dynein* dyn, double tf) {
   double t = 0;
 
   FILE* data_file = fopen("data.txt", "a+");
-  
+  MTRand* rand = MTRand::Mtrand();
+
   while( t < tf ) {
-    if (dyn->rand->rand() < dyn->get_unbinding_rate()*dt) {
-      dyn->log_run(t);
-      dyn->unbind();
-      dyn->log(t, data_file);
-      exit(EXIT_SUCCESS);
-    } else if (dyn->rand->rand() < dyn->get_binding_rate()*dt) {
-      printf("Switching states at %g (%.2f%%)\n", t, t/tf*100);
-      dyn->switch_to_bothbound();
+    if (dyn->get_state() != State::BOTHBOUND) {
+      if (rand->rand() < dyn->get_unbinding_rate()*dt) {
+	dyn->log_run(t);
+	dyn->unbind();
+	dyn->log(t, data_file);
+	exit(EXIT_SUCCESS);
+      }
+      if (rand->rand() < dyn->get_binding_rate()*dt) {
+	// switch to bothbound
+	if (state == State::NEARBOUND) {
+	  Dynein_bothbound* new_dynein
+	    = Dynein_onebound::Dynein_onebound(dyn, NEARBOUND);
+	} else {
+	  Dynein_bothbound* new_dynein
+	    = Dynein_onebound::Dynein_onebound(dyn, FARBOUND);
+	}
+      } else {
+	// move like normal
+	double temp_bba,temp_bma, temp_fma, temp_fba;
+	temp_bba = dyn->get_bba() + dyn->get_d_bba() * dt;
+	temp_bma = dyn->get_bma() + dyn->get_d_bma() * dt;
+	temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
+	temp_fba = dyn->get_fba() + dyn->get_d_fba() * dt;
+
+	dyn->set_bba(temp_bba);
+	dyn->set_bma(temp_bma);
+	dyn->set_fma(temp_fma);
+	dyn->set_fba(temp_fba);
+      }
+	
+      }
+    } else {
+      
     }
-    
+
     dyn->update_velocities();
 
-    if (dyn->get_state() != Dynein::BOTHBOUND) {
-      double temp_bba,temp_bma, temp_fma, temp_fba;
-      temp_bba = dyn->get_bba() + dyn->get_d_bba() * dt;
-      temp_bma = dyn->get_bma() + dyn->get_d_bma() * dt;
-      temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
-      temp_fba = dyn->get_fba() + dyn->get_d_fba() * dt;
-    
-      dyn->set_bba(temp_bba);
-      dyn->set_bma(temp_bma);
-      dyn->set_fma(temp_fma);
-      dyn->set_fba(temp_fba);
+    if (dyn->get_state() != State::BOTHBOUND) {
+      
     }
     else {
       double temp_nma, temp_fma;
       temp_nma = dyn->get_nma() + dyn->get_d_nma() * dt;
       temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
-    
+
       dyn->set_nma(temp_nma);
       dyn->set_fma(temp_fma);
     }
-    
+
     dyn->log(t, data_file);
-    
+
     t += dt;
   }
   dyn->log_run(tf);
-  
+
   fclose(data_file);
 }
 
 
 /* *********************************** MAIN ****************************************** */
 
-int main(int argvc, char **argv) {  
+int main(int argvc, char **argv) {
   if (argvc != 6) {
     printf("Error. Usage: ./walk runtime bla_init mla_init mra_init bra_init.\n");
     exit(EXIT_FAILURE);
@@ -77,13 +99,13 @@ int main(int argvc, char **argv) {
   double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.ba - M_PI;
   double fma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
   double fba_init = strtod(argv[5], NULL) * M_PI + fma_init + M_PI - eq.fa;
-  
+
   Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
 			   FARBOUND,                               // Initial state
 			   NULL,                // Optional custom internal forces
 			   NULL,                // Optional custom brownian forces
 			   NULL);               // Optional custom equilibrium angles
-  
+
   dyn->resetLog();
   simulateProtein(dyn, runtime);
   delete dyn;

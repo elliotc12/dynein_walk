@@ -7,14 +7,18 @@
 
 /* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */
 
-Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init, double nby_init,
-	       bothbound_forces* internal_test, bothbound_forces* brownian_test,
-	       bothbound_equilibrium_angles* eq_angles) {
+Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
+			 double nby_init, double L_init,
+			 bothbound_forces* internal_test,
+			 bothbound_forces* brownian_test,
+			 bothbound_equilibrium_angles* eq_angles) {
   nbx = nbx_init;
   nby = nby_init;
 
   nma = nma_init;
   fma = fma_init;
+
+  L = L_init;
 
   internal_testcase = internal_test;
   brownian_testcase = brownian_test;
@@ -26,6 +30,56 @@ Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init, doub
   }
 
   update_velocities();
+}
+
+Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein) { // out of old dyn
+  bothbound_forces old_r = old_dynein->get_internal_forces();
+  bothbound_forces old_r = old_dynein->get_internal_forces();
+
+  if (old_dynein->get_state() == State::NEARBOUND) {
+    nbx = old_dynein->get_bbx();
+    nby = 0;
+
+    f.nbx = old_f.bbx;     f.nby = old_f.bby;
+    f.nmx = old_f.bmx;     f.nmy = old_f.bmy;
+    f.tx  = old_f.tx;      f.ty  = old_f.ty;
+    f.fmx = old_f.umx;     f.fmy = old_f.umy;
+    f.fbx = old_f.ubx;     f.fby = old_f.uby;
+
+    r.nbx = old_r.bbx;     r.nby = old_r.bby;
+    r.nmx = old_r.bmx;     r.nmy = old_r.bmy;
+    r.tx  = old_r.tx;      r.ty  = old_r.ty;
+    r.fmx = old_r.umx;     r.fmy = old_r.umy;
+    r.fbx = old_r.ubx;     r.fby = old_r.uby;
+
+    nma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
+    fma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
+
+    L = old_dynein->ubx - old_dynein->bbx;
+
+  } else {
+    nbx = old_dynein->get_ubx();
+    nby = 0;
+
+    f.nbx = old_f.ubx;     f.nby = old_f.uby;
+    f.nmx = old_f.umx;     f.nmy = old_f.umy;
+    f.tx  = old_f.tx;      f.ty  = old_f.ty;
+    f.fmx = old_f.bmx;     f.fmy = old_f.bmy;
+    f.fbx = old_f.bbx;     f.fby = old_f.bby;
+
+    r.nbx = old_r.ubx;     r.nby = old_r.uby;
+    r.nmx = old_r.umx;     r.nmy = old_r.umy;
+    r.tx  = old_r.tx;      r.ty  = old_r.ty;
+    r.fmx = old_r.bmx;     r.fmy = old_r.bmy;
+    r.fbx = old_r.bbx;     r.fby = old_r.bby;
+
+    nma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
+    fma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
+
+    L = old_dynein->bbx - old_dynein->ubx;
+  }
+
+  update_velocity();
 }
 
 void Dynein_bothbound::update_brownian_forces() {
@@ -117,11 +171,15 @@ void Dynein_bothbound::update_internal_forces() {
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
     if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
     if (get_fby() < 0) f.fby += MICROTUBULE_REPULSION_FORCE * fabs(get_fby());
-  } 
+  }
 }
 
 void Dynein_bothbound::set_state(State s) {
   state = s;
+}
+
+State Dynein_bothbound::get_state() {
+  return State::BOTHBOUND;
 }
 
 void Dynein_bothbound::update_velocities() {

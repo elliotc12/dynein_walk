@@ -11,8 +11,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 double bbx_init, double bby_init,
 				 State s, onebound_forces *internal_test,
 				 onebound_forces *brownian_test,
-				 onebound_equilibrium_angles* eq_angles,
-				 MTRand *r) {
+				 onebound_equilibrium_angles* eq_angles) {
   bbx = bbx_init;
   bby = bby_init;
 
@@ -30,8 +29,60 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   } else {
     eq = onebound_post_powerstroke_internal_angles; // use experimental angles
   }
-  rand = r;
-  if (!rand) rand = new MTRand();
+
+  update_velocities();
+}
+
+Dynein_onebound::Dynein_onebound(Dynein* old_dynein, state s) {
+  bothbound_forces old_r = old_dynein->get_internal_forces();
+  bothbound_forces old_r = old_dynein->get_internal_forces();
+
+  if (s == State::NEARBOUND) {
+    bbx = old_dynein->get_nbx();
+    bby = 0;
+
+    f.bbx = old_f.nbx;     f.bby = old_f.nby;
+    f.bmx = old_f.nmx;     f.bmy = old_f.nmy;
+    f.tx  = old_f.tx;      f.ty  = old_f.ty;
+    f.umx = old_f.fmx;     f.umy = old_f.fmy;
+    f.ubx = old_f.fbx;     f.uby = old_f.fby;
+
+    r.bbx = old_r.nbx;     r.bby = old_r.nby;
+    r.bmx = old_r.nmx;     r.bmy = old_r.nmy;
+    r.tx  = old_r.tx;      r.ty  = old_r.ty;
+    r.umx = old_r.fmx;     r.umy = old_r.fmy;
+    r.ubx = old_r.fbx;     r.uby = old_r.fby;
+
+    state = State::NEARBOUND;
+
+    bba = old_dynein->get_nba();
+    bma = old_dynein->get_nma() + old_dynein->get_nba() - M_PI;
+    uma = old_dynein->get_fma() + old_dynein->get_fba() - M_PI;
+    uba = old_dynein->get_fba();
+
+  } else {
+    bbx = old_dynein->get_fbx();
+    bby = 0;
+
+    f.bbx = old_f.fbx;     f.bby = old_f.fby;
+    f.bmx = old_f.fmx;     f.bmy = old_f.fmy;
+    f.tx  = old_f.tx;      f.ty  = old_f.ty;
+    f.umx = old_f.nmx;     f.umy = old_f.nmy;
+    f.ubx = old_f.nbx;     f.uby = old_f.nby;
+
+    r.bbx = old_r.fbx;     r.bby = old_r.fby;
+    r.bmx = old_r.fmx;     r.bmy = old_r.fmy;
+    r.tx  = old_r.tx;      r.ty  = old_r.ty;
+    r.umx = old_r.nmx;     r.umy = old_r.nmy;
+    r.ubx = old_r.nbx;     r.uby = old_r.nby;
+
+    state = State::FARBOUND;
+
+    bba = old_dynein->get_fba();
+    bma = old_dynein->get_fma() + old_dynein->get_fba() - M_PI;
+    uma = old_dynein->get_nma() + old_dynein->get_nba() - M_PI;
+    uba = old_dynein->get_nba();
+  }
 
   update_velocities();
 }

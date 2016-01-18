@@ -106,9 +106,12 @@ const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 class Dynein_onebound {
 public:
   Dynein_onebound(double bba_init, double bma_init, double fma_init, double fba_init,
-                  double bbx_init, double bby_init, State s, onebound_forces *internal_test,
-                  onebound_forces *brownian_test, onebound_equilibrium_angles* eq_angles,
-                  MTRand *rand = 0);
+                  double bbx_init, double bby_init, State s,
+		  onebound_forces *internal_test,
+                  onebound_forces *brownian_test,
+		  onebound_equilibrium_angles* eq_angles);
+
+  Dynein_onebound(Dynein* old_dynein, state s);
 
   /** Onebound functions **/
   void set_bba(double d);
@@ -201,9 +204,12 @@ private:
 
 class Dynein_bothbound {
 public:
-  Dynein_bothbound(double nma_init, double fma_init, double nbx_init, double nby_init,
-	 bothbound_forces* internal_test, bothbound_forces* brownian_test,
-	 bothbound_equilibrium_angles* eq_angles);
+  Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
+		   double nby_init, double L_init,
+		   bothbound_forces* internal_test, bothbound_forces* brownian_test,
+		   bothbound_equilibrium_angles* eq_angles);
+
+  Dynein_bothbound(Dynein_onebound* old_dynein);
 
   void set_nma(double d);
   void set_fma(double d);
@@ -260,13 +266,13 @@ private:
   void update_brownian_forces();
   void update_internal_forces();
 
-  bothbound_equilibrium_angles eq;      //Equilibrium angles
+  bothbound_equilibrium_angles eq;  //Equilibrium angles
 
-  double nma, fma; //Bothbound coordinates
+  double nma, fma;  //Bothbound coordinates
   double nbx, nby;
   double L;
 
-  double d_ln;   //Bothbound velocities
+  double d_ln;  //Bothbound velocities
   double d_lf;
 
   bothbound_forces r; //Brownian forces
