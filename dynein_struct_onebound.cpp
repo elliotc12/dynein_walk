@@ -261,8 +261,7 @@ double Dynein_onebound::get_binding_rate() {
 }
 
 double Dynein_onebound::get_unbinding_rate() {
-  if (f.bby + r.bby >= UNBINDING_FORCE) { // bad, doesn't take into account forces on other domains?
-    printf("unbinding...\n");
+  if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
     return 1.0;
   } else return 0.0;
 }
@@ -336,7 +335,7 @@ double Dynein_onebound::get_ty(){
   return ls * sin(get_bba()) + lt * sin(get_bma()) + bby;
 }
 
-double Dynein_onebound::get_fmx() {
+double Dynein_onebound::get_umx() {
   return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_uma()) + bbx;
 }
 
@@ -344,7 +343,7 @@ double Dynein_onebound::get_umy(){
   return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_uma()) + bby;
 }
 
-double Dynein_onebound::get_fbx() {
+double Dynein_onebound::get_ubx() {
   return ls * cos(get_bba()) + lt * cos(get_bma())
     - lt * cos(get_uma()) - ls * cos(get_uba()) + bbx;
 }
