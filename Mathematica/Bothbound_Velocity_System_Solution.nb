@@ -10,14 +10,18 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      7485,        226]
-NotebookOptionsPosition[      7002,        205]
-NotebookOutlinePosition[      7359,        221]
-CellTagsIndexPosition[      7316,        218]
+NotebookDataLength[     19966,        422]
+NotebookOptionsPosition[     19385,        398]
+NotebookOutlinePosition[     19722,        413]
+CellTagsIndexPosition[     19679,        410]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell[BoxData[
+ RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.6621067998224163`*^9, 3.6621068307192287`*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"A", " ", "=", " ", 
@@ -123,13 +127,10 @@ Cell[BoxData[{
       RowBox[{
        RowBox[{
         RowBox[{"-", "Fymr"}], "/", "g"}], "-", "Rymr"}], "}"}]}], "}"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"\t"}]}], "Input",
+  ";"}]}], "Input",
  CellChangeTimes->{{3.6569416178687487`*^9, 3.656941820981436*^9}, {
   3.656941877038568*^9, 3.656942023535441*^9}, {3.656942101547607*^9, 
-  3.6569421049084063`*^9}}],
-
-Cell[CellGroupData[{
+  3.6569421049084063`*^9}, {3.661957752724674*^9, 3.661957753011133*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -137,76 +138,267 @@ Cell[BoxData[
    RowBox[{"LinearSolve", "[", 
     RowBox[{"A", ",", "X"}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.6569420435353117`*^9, 3.6569420556532793`*^9}, {
-  3.656942110412026*^9, 3.6569177544087*^9}, {3.656917786377181*^9, 
-  3.656917804092094*^9}, {3.656918183474106*^9, 3.6569181906673317`*^9}, {
-  3.656923777967198*^9, 3.656923784335791*^9}, {3.656924166520013*^9, 
-  3.656924168504587*^9}, {3.657318950187941*^9, 3.657318950693522*^9}}],
-
-Cell[BoxData["$Aborted"], "Output",
- CellChangeTimes->{3.6592420395313253`*^9, 3.6593457766347857`*^9}]
-}, Open  ]],
+   3.656942110412026*^9, 3.6569177544087*^9}, {3.656917786377181*^9, 
+   3.656917804092094*^9}, {3.656918183474106*^9, 3.6569181906673317`*^9}, {
+   3.656923777967198*^9, 3.656923784335791*^9}, {3.656924166520013*^9, 
+   3.656924168504587*^9}, {3.657318950187941*^9, 3.657318950693522*^9}, 
+   3.661959136631723*^9, {3.662107424349469*^9, 3.662107430140978*^9}}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{"Lndot", " ", "=", " ", 
-   RowBox[{"Simplify", "[", 
-    RowBox[{
-     RowBox[{"sol", "[", "1", "]"}], ",", " ", 
-     RowBox[{"TimeConstraint", " ", "\[Rule]", " ", "Infinity"}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Lfdot", " ", "=", " ", 
-   RowBox[{"Simplify", "[", 
-    RowBox[{
-     RowBox[{"sol", "[", "2", "]"}], ",", " ", 
-     RowBox[{"TimeConstraint", " ", "\[Rule]", " ", "Infinity"}]}], "]"}]}], 
-  ";"}]}], "Input",
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "2", "]"}], "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.657318957649362*^9, 3.6573189899973803`*^9}, {
-  3.657320832102614*^9, 3.657320854405822*^9}}],
+  3.657320832102614*^9, 3.657320854405822*^9}, {3.661145192575598*^9, 
+  3.66114522292105*^9}, {3.661145619527684*^9, 3.6611456206216908`*^9}, {
+  3.661234244588949*^9, 3.661234250429929*^9}, {3.66195774696259*^9, 
+  3.661957749074325*^9}, {3.6619577946863623`*^9, 3.6619578818394747`*^9}, {
+  3.662107280349533*^9, 3.662107298545525*^9}, {3.662107409301261*^9, 
+  3.662107416830472*^9}, {3.662107650818408*^9, 3.6621076577496443`*^9}}],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
- RowBox[{"\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{
-    RowBox[{"myLndot", " ", "=", " ", 
-     RowBox[{"Compile", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "Axn", ",", " ", "Axf", ",", " ", "Ayn", ",", " ", "Ayf", ",", " ", 
-         "Bxn", ",", " ", "Bxf", ",", " ", "Byn", ",", " ", "Byf", ",", " ", 
-         "Cxn", ",", " ", "Cxf", ",", " ", "Cyn", ",", " ", "Cyf", ",", "g"}],
-         "}"}], ",", "Lndot"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"myLfdot", " ", "=", " ", 
-     RowBox[{"Compile", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "Axn", ",", " ", "Axf", ",", " ", "Ayn", ",", " ", "Ayf", ",", " ", 
-         "Bxn", ",", " ", "Bxf", ",", " ", "Byn", ",", " ", "Byf", ",", " ", 
-         "Cxn", ",", " ", "Cxf", ",", " ", "Cyn", ",", " ", "Cyf", ",", "g"}],
-         "}"}], ",", "Lfdot"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"Export", "[", 
-     RowBox[{
-     "\"\<~/dynein_walk/myLndot.c\>\"", ",", " ", "myLndot", ",", " ", 
-      "\"\<C\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"Export", "[", 
-     RowBox[{
-     "\"\<~/dynein_walk/myLfdot.c\>\"", ",", " ", "myLfdot", ",", " ", 
-      "\"\<C\>\""}], "]"}], ";"}]}]}]], "Input",
- CellChangeTimes->{{3.65910376525592*^9, 3.659103799388137*^9}, {
-  3.6591038492415123`*^9, 3.659103863350831*^9}}],
+ RowBox[{"CForm", "[", 
+  RowBox[{"Lndot", "[", 
+   RowBox[{"[", "1", "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.662107665942647*^9, 3.6621076994847593`*^9}, {
+  3.662107740623815*^9, 3.662107773181604*^9}, {3.6621080913105087`*^9, 
+  3.662108095752017*^9}, {3.662108178327243*^9, 3.6621082560476723`*^9}}],
 
-Cell[BoxData[""], "Input",
- CellChangeTimes->{3.659270383406958*^9, 3.6592704160887337`*^9}]
+Cell["\<\
+(Cyf*Fxmr - Cxf*Fymr + Cyf*g*Rxmr - Cxf*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - \
+(((Cxn*(Cxn*Cyf - Cxf*Cyn)*
+           (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
+Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - \
+Byn*Rxmr + Cxn*Ryt))*(Xbm - Xt))/g - 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/g) + \
+(Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + \
+(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
+           (Ybm - Yt))/g)*(Cyf*Xfm - Cyf*Xt - Cxf*Yfm + Cxf*Yt))/
+    ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
+               (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + \
+Yt))/g)))/g) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
++ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
+- (Cxn*(-Yfm + Yt))/g)))/g)) - 
+   (((-(Cyf*Xfb) + Cyf*Xfm + Cxf*Yfb - Cxf*Yfm)/((Cxn*Cyf - Cxf*Cyn)*g) - \
+(((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*
+                ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g - 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
+Xfm))/g - (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
+Yfm))/g))*(Ybm - Yt))/g)*
+           (Cyf*Xfm - Cyf*Xt - Cxf*Yfm + Cxf*Yt))/
+         ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - \
+Yt)*((Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
+                    (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm \
++ Yt))/g)))/g) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
+Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g)))*
+      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Ayn*Fxmr)/g) + (Cxn*Fyml)/g - Ayn*Rxmr + Cxn*Ryml) - 
+                         (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/g) + \
+(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*(Xbb - Xbm))/g) + 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/g \
+- (Axn*Fxmr)/g + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + \
+Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
+                     (Ybb - Ybm))/g)*(Ybm - Yt))/g) - (-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + 
+              (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr + \
+Cxn*Ryt))*
+            (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2)))*
+         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
+Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) - 
+        ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) \
++ (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) \
++ (Cxn*Fyt)/g - Byn*Rxmr + Cxn*Ryt))*
+              (Xbm - Xt))/g - (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Bxn*Fxmr)/g) + (Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - 
+                (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
+Cyn*Rxmr + Cxn*Rymr))*(Ybm - Yt))/g)*
+         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2))*
+              ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) \
+- (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(Xbb - Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
+                   g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
+(Cxn*(-Yfm + Yt))/g)))/g))/g)))/
+    ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb - \
+Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g) + 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(Xfb - Xfm))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - \
+(Cxn*(Yfb - Yfm))/g)))/g)*(Ybm - Yt))/g) - 
+         ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*
+          (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2)))*
+       (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
++ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
+- (Cxn*(-Yfm + Yt))/g)))/g) - 
+      ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
+Xfm))/g - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
+Yfm))/g)))/g - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - \
+(-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*(Ybm - \
+Yt))/g)*
+       (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2))*
+            ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - \
+(-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb \
+- Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
+                 g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
+(Cxn*(-Yfm + Yt))/g)))/g))/g))\
+\>", "Output",
+ CellChangeTimes->{3.662108268651752*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", 
+  RowBox[{"Lfdot", "[", 
+   RowBox[{"[", "1", "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6621076703268557`*^9, 3.662107688733193*^9}, {
+  3.662108250286022*^9, 3.662108262269946*^9}}],
+
+Cell["\<\
+(-(Cyn*Fxmr) + Cxn*Fymr - Cyn*g*Rxmr + Cxn*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - \
+(((Cxn*(Cxn*Cyf - Cxf*Cyn)*
+           (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
+Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - \
+Byn*Rxmr + Cxn*Ryt))*(Xbm - Xt))/g - 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/g) + \
+(Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + \
+(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
+           (Ybm - Yt))/g)*(-(Cyn*Xfm) + Cyn*Xt + Cxn*Yfm - Cxn*Yt))/
+    ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
+               (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + \
+Yt))/g)))/g) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
++ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
+- (Cxn*(-Yfm + Yt))/g)))/g)) - 
+   (((Cyn*Xfb - Cyn*Xfm - Cxn*Yfb + Cxn*Yfm)/((Cxn*Cyf - Cxf*Cyn)*g) - \
+(((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*
+                ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g - 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
+Xfm))/g - (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
+Yfm))/g))*(Ybm - Yt))/g)*
+           (-(Cyn*Xfm) + Cyn*Xt + Cxn*Yfm - Cxn*Yt))/
+         ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - \
+Yt)*((Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
+                    (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm \
++ Yt))/g)))/g) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
+Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g)))*
+      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Ayn*Fxmr)/g) + (Cxn*Fyml)/g - Ayn*Rxmr + Cxn*Ryml) - 
+                         (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/g) + \
+(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*(Xbb - Xbm))/g) + 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/g \
+- (Axn*Fxmr)/g + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + \
+Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
+                     (Ybb - Ybm))/g)*(Ybm - Yt))/g) - (-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + 
+              (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr + \
+Cxn*Ryt))*
+            (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2)))*
+         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
+Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) - 
+        ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) \
++ (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) \
++ (Cxn*Fyt)/g - Byn*Rxmr + Cxn*Ryt))*
+              (Xbm - Xt))/g - (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Bxn*Fxmr)/g) + (Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - 
+                (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
+Cyn*Rxmr + Cxn*Rymr))*(Ybm - Yt))/g)*
+         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2))*
+              ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) \
+- (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(Xbb - Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
+                   g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
+(Cxn*(-Yfm + Yt))/g)))/g))/g)))/
+    ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb - \
+Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g) + 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(Xfb - Xfm))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - \
+(Cxn*(Yfb - Yfm))/g)))/g)*(Ybm - Yt))/g) - 
+         ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*
+          (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2)))*
+       (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
++ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
+- (Cxn*(-Yfm + Yt))/g)))/g) - 
+      ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
+Xfm))/g - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
+Yfm))/g)))/g - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - \
+(-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*(Ybm - \
+Yt))/g)*
+       (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
+Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
+Xbm)*(-Ybm + Yt))/Power(g,2))*
+            ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - \
+(-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb \
+- Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
+                 g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
+Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
+(Cxn*(-Yfm + Yt))/g)))/g))/g))\
+\>", "Output",
+ CellChangeTimes->{3.662108268824564*^9}]
+}, Open  ]]
 },
-WindowSize->{1280, 756},
-WindowMargins->{{-2, Automatic}, {Automatic, 0}},
-FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
-2012)",
+WindowSize->{1916, 1058},
+WindowMargins->{{Automatic, 4}, {4, Automatic}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (December 4, 2014)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -220,14 +412,18 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 3673, 109, 148, "Input"],
+Cell[557, 20, 146, 2, 32, "Input"],
+Cell[706, 24, 3678, 108, 165, "Input"],
+Cell[4387, 134, 577, 10, 32, "Input"],
+Cell[4967, 146, 783, 15, 55, "Input"],
 Cell[CellGroupData[{
-Cell[4255, 133, 501, 9, 28, "Input"],
-Cell[4759, 144, 103, 1, 28, "Output"]
+Cell[5775, 165, 330, 6, 32, "Input"],
+Cell[6108, 173, 6492, 105, 769, "Output"]
 }, Open  ]],
-Cell[4877, 148, 610, 16, 46, "Input"],
-Cell[5490, 166, 1413, 34, 97, "Input"],
-Cell[6906, 202, 92, 1, 28, "Input"]
+Cell[CellGroupData[{
+Cell[12637, 283, 231, 5, 32, "Input"],
+Cell[12871, 290, 6498, 105, 769, "Output"]
+}, Open  ]]
 }
 ]
 *)
