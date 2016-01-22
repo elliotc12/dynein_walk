@@ -33,9 +33,11 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   update_velocities();
 }
 
-Dynein_onebound::Dynein_onebound(Dynein* old_dynein, state s) {
+Dynein_onebound::Dynein_onebound(Dynein* old_dynein, MTRand* mtrand, state s) {
   bothbound_forces old_r = old_dynein->get_internal_forces();
   bothbound_forces old_r = old_dynein->get_internal_forces();
+
+  rand = mtrand;
 
   if (s == State::NEARBOUND) {
     bbx = old_dynein->get_nbx();

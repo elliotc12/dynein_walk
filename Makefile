@@ -1,6 +1,7 @@
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 
-all: test walk plot
+#all: test walk plot
+all: walk plot
 
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	g++ -c dynein_walk.cpp $(CPPFLAGS)
@@ -17,8 +18,9 @@ dynein_test.o: dynein_test.cpp dynein_struct.h
 utilities.o: utilities.cpp dynein_struct.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
-walk: test dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	./test
+#walk: test dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+walk: dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+#	./test
 	g++ dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o walk
 
 test: dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o

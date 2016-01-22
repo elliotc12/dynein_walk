@@ -2,29 +2,28 @@
 #include <stdlib.h>
 
 #include "dynein_struct.h"
+#include "utilities.h"
+
 /*
  * For every timestep, call update_velocities to update internal velocities.
  * Then do Euler's method to update internal coordinates and log output.
- * update_velocities must be called after every set_x command to update
+ * update_velocities must be called after every set_a command to update
  * internal velocities.
  */
-
-//each step:
-//if onebound, check if time to unbind, then check if time to bind, else update
-//else if bothbound, check if time to unbind, else update
-//update velocities
 
 extern const double dt;
 double runtime;
 
-void simulateProtein(Dynein* dyn, double tf) {
+void simulateProtein(Dynein_onebound* dyn, double tf) {
   double t = 0;
 
   FILE* data_file = fopen("data.txt", "a+");
-  MTRand* rand = MTRand::Mtrand();
+  MTRand* rand = new :Mtrand(RAND_INIT_SEED);
 
   while( t < tf ) {
-    if (dyn->get_state() != State::BOTHBOUND) { // onebound case
+             // onebound case
+    if (dyn->get_state() != State::BOTHBOUND) {
+             // unbind
       if (rand->rand() < dyn->get_unbinding_rate()*dt) {
 	dyn->log_run(t);
 	dyn->unbind();
@@ -34,7 +33,7 @@ void simulateProtein(Dynein* dyn, double tf) {
       else if (rand->rand() < dyn->get_binding_rate()*dt) {
 	     // switch to bothbound
 	Dynein_bothbound* new_dynein
-	  = Dynein_bothbound::Dynein_bothbound(dyn);
+	  = Dynein_bothbound::Dynein_bothbound(dyn, rand);
 	free(dyn);
 	dyn = new_dynein;
       }
@@ -51,16 +50,19 @@ void simulateProtein(Dynein* dyn, double tf) {
 	dyn->set_fba(temp_fba);
       }
     }
-    else { // bothbound case
+    else {
+             // bothbound case
       if (rand->rand() < dyn->get_near_unbinding_rate()*dt) {
+	     // switch to farbound
 	Dynein_onebound* new_dynein
-	  = Dynein_onebound::Dynein_onebound(dyn, FARBOUND);
+	  = Dynein_onebound::Dynein_onebound(dyn, rand, FARBOUND);
 	free(dyn);
 	dyn = new_dynein;
       }
       else if (rand->rand() < dyn->get_far_unbinding_rate()*dt) {
+	     // switch to nearbound
 	Dynein_onebound* new_dynein
-	  = Dynein_onebound::Dynein_onebound(dyn, NEARBOUND);
+	  = Dynein_onebound::Dynein_onebound(dyn, rand, NEARBOUND);
 	free(dyn);
 	dyn = new_dynein;
       }
@@ -95,20 +97,22 @@ int main(int argvc, char **argv) {
 
   runtime  = strtod(argv[1], NULL) * dt;
 
-  equilibrium_angles eq = near_farbound_post_powerstroke_internal_angles;
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
 
   double bba_init = strtod(argv[2], NULL) * M_PI + eq.bba;
-  double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.ba - M_PI;
-  double fma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
-  double fba_init = strtod(argv[5], NULL) * M_PI + fma_init + M_PI - eq.fa;
+  double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.bma - M_PI;
+  double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
+  double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
 
-  Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
-			   FARBOUND,                               // Initial state
-			   NULL,                // Optional custom internal forces
-			   NULL,                // Optional custom brownian forces
-			   NULL);               // Optional custom equilibrium angles
+  Dynein_onebound* dyn = new Dynein_onebound(
+				    bba_init, bma_init, uma_init, uba_init, // Initial angles
+				    0, 0,                // Starting coordinates
+				    FARBOUND,            // Initial state
+				    NULL,                // Optional custom internal forces
+				    NULL,                // Optional custom brownian forces
+				    NULL);               // Optional custom equilibrium angles
 
-  dyn->resetLog();
+  resetLog();
   simulateProtein(dyn, runtime);
   delete dyn;
   dyn = NULL;
