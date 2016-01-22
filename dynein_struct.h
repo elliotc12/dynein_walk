@@ -104,6 +104,8 @@ const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */
 
+class Dynein_bothbound;
+
 class Dynein_onebound {
 public:
   Dynein_onebound(double bba_init, double bma_init, double fma_init, double fba_init,

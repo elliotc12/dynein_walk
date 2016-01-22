@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cassert>
 
-#include "dynein_struct_bothbound.h"
+#include "dynein_struct.h"
 #include "dynein_data.h"
 
 /* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */

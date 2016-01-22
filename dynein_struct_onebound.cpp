@@ -33,7 +33,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   update_velocities();
 }
 
-Dynein_onebound::Dynein_onebound(Dynein* old_dynein, MTRand* mtrand, state s) {
+Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, state s) {
   bothbound_forces old_r = old_dynein->get_internal_forces();
   bothbound_forces old_r = old_dynein->get_internal_forces();
 
