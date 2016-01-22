@@ -32,9 +32,14 @@ Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
   update_velocities();
 }
 
-Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein) { // out of old dyn
+Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) { // out of old dyn
   bothbound_forces old_r = old_dynein->get_internal_forces();
   bothbound_forces old_r = old_dynein->get_internal_forces();
+
+  rand = mtrand;
+
+  distance_traveled = old_dynein->distance_traveled;
+  steps = old_dynein->steps;
 
   if (old_dynein->get_state() == State::NEARBOUND) {
     nbx = old_dynein->get_bbx();
@@ -626,9 +631,7 @@ void Dynein_bothbound::log(double t, FILE* data_file) {
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
 }
 
-void Dynein_bothbound::log_run(float runtime) {
-  FILE* data_file = fopen("run_data.txt", "w");
-
+void Dynein_bothbound::log_run(float runtime, FILE* data_file) {
   float run_length = (get_nbx() + get_fbx()) / 2;
   float ave_step_dist = distance_traveled / steps;
   float ave_step_time = runtime / steps;

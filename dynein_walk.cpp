@@ -2,84 +2,91 @@
 #include <stdlib.h>
 
 #include "dynein_struct.h"
+
 /*
  * For every timestep, call update_velocities to update internal velocities.
  * Then do Euler's method to update internal coordinates and log output.
- * update_velocities must be called after every set_x command to update
+ * update_velocities must be called after every set_a command to update
  * internal velocities.
  */
-
-//each step:
-//if onebound, check if time to unbind, then check if time to bind, else update
-//else if bothbound, check if time to unbind, else update
-//update velocities
 
 extern const double dt;
 double runtime;
 
-void simulateProtein(Dynein* dyn, double tf) {
+void simulateProtein(void* dyn, double tf) {
   double t = 0;
 
   FILE* data_file = fopen("data.txt", "a+");
-  MTRand* rand = MTRand::Mtrand();
+  FILE* run_file = fopen("run.txt", "a+");
+
+  MTRand* rand = new MTRand(RAND_INIT_SEED);
 
   while( t < tf ) {
-    if (dyn->get_state() != State::BOTHBOUND) { // onebound case
-      if (rand->rand() < dyn->get_unbinding_rate()*dt) {
-	dyn->log_run(t);
-	dyn->unbind();
-	dyn->log(t, data_file);
+             // onebound case
+    if (((Dynein_onebound*) dyn)->get_state() != BOTHBOUND) { // fix type
+             // unbind
+      if (rand->rand() < ((Dynein_onebound*) dyn)->get_unbinding_rate()*dt) {
+	printf("unbinding.");
+	((Dynein_onebound*) dyn)->log_run(t, run_file);
+	((Dynein_onebound*) dyn)->log(t, data_file);
 	exit(EXIT_SUCCESS);
       }
-      else if (rand->rand() < dyn->get_binding_rate()*dt) {
+      else if (rand->rand() < ((Dynein_onebound*) dyn)->get_binding_rate()*dt) {
 	     // switch to bothbound
 	Dynein_bothbound* new_dynein
-	  = Dynein_bothbound::Dynein_bothbound(dyn);
-	free(dyn);
+	  = new Dynein_bothbound(((Dynein_onebound*) dyn), rand);
+	free(((Dynein_onebound*) dyn));
 	dyn = new_dynein;
       }
       else { // move like normal
-	double temp_bba,temp_bma, temp_fma, temp_fba;
-	temp_bba = dyn->get_bba() + dyn->get_d_bba() * dt;
-	temp_bma = dyn->get_bma() + dyn->get_d_bma() * dt;
-	temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
-	temp_fba = dyn->get_fba() + dyn->get_d_fba() * dt;
+	double temp_bba,temp_bma, temp_uma, temp_uba;
+	temp_bba = ((Dynein_onebound*) dyn)->get_bba() + ((Dynein_onebound*) dyn)->get_d_bba() * dt;
+	temp_bma = ((Dynein_onebound*) dyn)->get_bma() + ((Dynein_onebound*) dyn)->get_d_bma() * dt;
+	temp_uma = ((Dynein_onebound*) dyn)->get_uma() + ((Dynein_onebound*) dyn)->get_d_uma() * dt;
+	temp_uba = ((Dynein_onebound*) dyn)->get_uba() + ((Dynein_onebound*) dyn)->get_d_uba() * dt;
 
-	dyn->set_bba(temp_bba);
-	dyn->set_bma(temp_bma);
-	dyn->set_fma(temp_fma);
-	dyn->set_fba(temp_fba);
+	((Dynein_onebound*) dyn)->set_bba(temp_bba);
+	((Dynein_onebound*) dyn)->set_bma(temp_bma);
+	((Dynein_onebound*) dyn)->set_uma(temp_uma);
+	((Dynein_onebound*) dyn)->set_uba(temp_uba);
       }
+
+      ((Dynein_onebound*) dyn)->update_velocities();
+      ((Dynein_onebound*) dyn)->log(t, data_file);
     }
-    else { // bothbound case
-      if (rand->rand() < dyn->get_near_unbinding_rate()*dt) {
+    else {
+             // bothbound case
+      if (rand->rand() < ((Dynein_bothbound*) dyn)->get_near_unbinding_rate()*dt) {
+	     // switch to farbound
 	Dynein_onebound* new_dynein
-	  = Dynein_onebound::Dynein_onebound(dyn, FARBOUND);
-	free(dyn);
+	  = new Dynein_onebound(((Dynein_bothbound*) dyn), rand, FARBOUND);
+	free(((Dynein_bothbound*) dyn));
 	dyn = new_dynein;
       }
-      else if (rand->rand() < dyn->get_far_unbinding_rate()*dt) {
+      else if (rand->rand() < ((Dynein_bothbound*) dyn)->get_far_unbinding_rate()*dt) {
+	     // switch to nearbound
 	Dynein_onebound* new_dynein
-	  = Dynein_onebound::Dynein_onebound(dyn, NEARBOUND);
-	free(dyn);
+	  = new Dynein_onebound(((Dynein_bothbound*) dyn), rand, NEARBOUND);
+	free(((Dynein_bothbound*) dyn));
 	dyn = new_dynein;
       }
       else {
 	double temp_nma, temp_fma;
-	temp_nma = dyn->get_nma() + dyn->get_d_nma() * dt;
-	temp_fma = dyn->get_fma() + dyn->get_d_fma() * dt;
+	temp_nma = ((Dynein_bothbound*) dyn)->get_nma() + ((Dynein_bothbound*) dyn)->get_d_nma()*dt;
+	temp_fma = ((Dynein_bothbound*) dyn)->get_fma() + ((Dynein_bothbound*) dyn)->get_d_fma()*dt;
 
-	dyn->set_nma(temp_nma);
-	dyn->set_fma(temp_fma);
+	((Dynein_bothbound*) dyn)->set_nma(temp_nma);
+	((Dynein_bothbound*) dyn)->set_fma(temp_fma);
       }
-    }
 
-    dyn->update_velocities();
-    dyn->log(t, data_file);
+      ((Dynein_bothbound*) dyn)->update_velocities();
+      ((Dynein_bothbound*) dyn)->log(t, data_file);
+    }
 
     t += dt;
   }
-  dyn->log_run(tf);
+
+  ((Dynein_onebound*) dyn)->log_run(tf, run_file); // fix type
 
   fclose(data_file);
 }
@@ -95,20 +102,22 @@ int main(int argvc, char **argv) {
 
   runtime  = strtod(argv[1], NULL) * dt;
 
-  equilibrium_angles eq = near_farbound_post_powerstroke_internal_angles;
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
 
   double bba_init = strtod(argv[2], NULL) * M_PI + eq.bba;
-  double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.ba - M_PI;
-  double fma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
-  double fba_init = strtod(argv[5], NULL) * M_PI + fma_init + M_PI - eq.fa;
+  double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.bma - M_PI;
+  double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
+  double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
 
-  Dynein* dyn = new Dynein(bba_init, bma_init, fma_init, fba_init, // Initial angles
-			   FARBOUND,                               // Initial state
-			   NULL,                // Optional custom internal forces
-			   NULL,                // Optional custom brownian forces
-			   NULL);               // Optional custom equilibrium angles
+  Dynein_onebound* dyn = new Dynein_onebound(
+				    bba_init, bma_init, uma_init, uba_init, // Initial angles
+				    0, 0,                // Starting coordinates
+				    FARBOUND,            // Initial state
+				    NULL,                // Optional custom internal forces
+				    NULL,                // Optional custom brownian forces
+				    NULL);               // Optional custom equilibrium angles
 
-  dyn->resetLog();
+  resetLog();
   simulateProtein(dyn, runtime);
   delete dyn;
   dyn = NULL;
