@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "dynein_struct.h"
-#include "utilities.h"
 
 /*
  * For every timestep, call update_velocities to update internal velocities.
@@ -81,6 +80,7 @@ void simulateProtein(Dynein_onebound* dyn, double tf) {
 
     t += dt;
   }
+
   dyn->log_run(tf);
 
   fclose(data_file);

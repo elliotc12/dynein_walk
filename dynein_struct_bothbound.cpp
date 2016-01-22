@@ -38,6 +38,9 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
 
   rand = mtrand;
 
+  distance_traveled = old_dynein->distance_traveled;
+  steps = old_dynein->steps;
+
   if (old_dynein->get_state() == State::NEARBOUND) {
     nbx = old_dynein->get_bbx();
     nby = 0;

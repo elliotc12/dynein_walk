@@ -172,7 +172,7 @@ public:
   State get_state();
 
   void log();
-  void log_run();
+  void log_run(float runtime);
 
   void update_velocities();
 
@@ -265,7 +265,7 @@ public:
   double get_KE();
 
   void log();
-  void log_run();
+  void log_run(float runtime);
 
   void update_velocities();
 
