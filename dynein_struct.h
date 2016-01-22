@@ -112,7 +112,7 @@ public:
                   onebound_forces *brownian_test,
 		  onebound_equilibrium_angles* eq_angles);
 
-  Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* rand, state s);
+  Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* rand, State s);
 
   /** Onebound functions **/
   void set_bba(double d);
@@ -171,8 +171,8 @@ public:
 
   State get_state();
 
-  void log();
-  void log_run(float runtime);
+  void log(float t, FILE* data_file);
+  void log_run(float runtime, FILE* data_file);
 
   void update_velocities();
 
@@ -264,8 +264,8 @@ public:
   double get_PE();
   double get_KE();
 
-  void log();
-  void log_run(float runtime);
+  void log(float t, FILE* data_file);
+  void log_run(float runtime, FILE* data_file);
 
   void update_velocities();
 

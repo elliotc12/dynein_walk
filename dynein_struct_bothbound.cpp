@@ -631,9 +631,7 @@ void Dynein_bothbound::log(double t, FILE* data_file) {
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), state);
 }
 
-void Dynein_bothbound::log_run(float runtime) {
-  FILE* data_file = fopen("run_data.txt", "w");
-
+void Dynein_bothbound::log_run(float runtime, FILE* data_file) {
   float run_length = (get_nbx() + get_fbx()) / 2;
   float ave_step_dist = distance_traveled / steps;
   float ave_step_time = runtime / steps;

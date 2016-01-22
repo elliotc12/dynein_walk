@@ -497,9 +497,7 @@ void Dynein_onebound::log(double t, FILE* data_file) {
           get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
 }
 
-void Dynein_onebound::log_run(float runtime) {
-  FILE* data_file = fopen("run_data.txt", "w");
-
+void Dynein_onebound::log_run(float runtime, FILE* data_file) {
   float run_length = get_bbx();
   float ave_step_dist = distance_traveled / steps;
   float ave_step_time = runtime / steps;
