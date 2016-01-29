@@ -173,8 +173,8 @@ public:
 
   State get_state();
 
-  void log(float t, FILE* data_file);
-  void log_run(float runtime, FILE* data_file);
+  void log(double t, FILE* data_file);
+  void log_run(double runtime, FILE* data_file);
 
   void update_velocities();
 
@@ -266,8 +266,8 @@ public:
   double get_PE();
   double get_KE();
 
-  void log(float t, FILE* data_file);
-  void log_run(float runtime, FILE* data_file);
+  void log(double t, FILE* data_file);
+  void log_run(double runtime, FILE* data_file);
 
   void update_velocities();
 

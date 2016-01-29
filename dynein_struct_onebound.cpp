@@ -33,30 +33,12 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   update_velocities();
 }
 
-Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, state s) {
-  bothbound_forces old_r = old_dynein->get_internal_forces();
-  bothbound_forces old_r = old_dynein->get_internal_forces();
-
+Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
   rand = mtrand;
-
-  distance_traveled = old_dynein->distance_traveled;
-  steps = old_dynein->steps;
 
   if (s == State::NEARBOUND) {
     bbx = old_dynein->get_nbx();
     bby = 0;
-
-    f.bbx = old_f.nbx;     f.bby = old_f.nby;
-    f.bmx = old_f.nmx;     f.bmy = old_f.nmy;
-    f.tx  = old_f.tx;      f.ty  = old_f.ty;
-    f.umx = old_f.fmx;     f.umy = old_f.fmy;
-    f.ubx = old_f.fbx;     f.uby = old_f.fby;
-
-    r.bbx = old_r.nbx;     r.bby = old_r.nby;
-    r.bmx = old_r.nmx;     r.bmy = old_r.nmy;
-    r.tx  = old_r.tx;      r.ty  = old_r.ty;
-    r.umx = old_r.fmx;     r.umy = old_r.fmy;
-    r.ubx = old_r.fbx;     r.uby = old_r.fby;
 
     state = State::NEARBOUND;
 
@@ -68,18 +50,6 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, s
   } else {
     bbx = old_dynein->get_fbx();
     bby = 0;
-
-    f.bbx = old_f.fbx;     f.bby = old_f.fby;
-    f.bmx = old_f.fmx;     f.bmy = old_f.fmy;
-    f.tx  = old_f.tx;      f.ty  = old_f.ty;
-    f.umx = old_f.nmx;     f.umy = old_f.nmy;
-    f.ubx = old_f.nbx;     f.uby = old_f.nby;
-
-    r.bbx = old_r.fbx;     r.bby = old_r.fby;
-    r.bmx = old_r.fmx;     r.bmy = old_r.fmy;
-    r.tx  = old_r.tx;      r.ty  = old_r.ty;
-    r.umx = old_r.nmx;     r.umy = old_r.nmy;
-    r.ubx = old_r.nbx;     r.uby = old_r.nby;
 
     state = State::FARBOUND;
 
@@ -429,7 +399,7 @@ double Dynein_onebound::get_d_umx() {
 }
 
 double Dynein_onebound::get_d_ubx() {
-  return ls * d_uba * sin(uba) + get_d_fmx();
+  return ls * d_uba * sin(uba) + get_d_umx();
 }
 
 double Dynein_onebound::get_d_bby() {
@@ -482,8 +452,8 @@ double Dynein_onebound::get_uba() {
 /*** Get energies ***/
 
 double Dynein_onebound::get_PE() {
-  return 0.5*cb*square(bba - eq.bba) + 0.5*cb*square(bma - eq.bma)
-    + 0.5*cb*square(uma - eq.uma) + 0.5*cb*square(uba - eq.uba);
+  return 0.5*cb*square(bba - eq.bba) + 0.5*cm*square(bma - eq.bma)
+    + 0.5*ct*square(M_PI - bma - uma - eq.ta) + 0.5*cm*square(uma - eq.uma);
 }
 
 double Dynein_onebound::get_KE() {
@@ -497,19 +467,19 @@ void Dynein_onebound::log(double t, FILE* data_file) {
           get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
 }
 
-void Dynein_onebound::log_run(float runtime, FILE* data_file) {
-  float run_length = get_bbx();
-  float ave_step_dist = distance_traveled / steps;
-  float ave_step_time = runtime / steps;
+void Dynein_onebound::log_run(double runtime, FILE* data_file) {
+  // float run_length = get_bbx();
+  // float ave_step_dist = distance_traveled / steps;
+  // float ave_step_time = runtime / steps;
 
   printf("\n\n***********Run data**********\n");
-  printf("Run length: %f nm\n", run_length);
-  printf("Distance traveled: %f nm\n", distance_traveled);
-  printf("Steps: %d\n", steps);
-  printf("Average step length: %f nm\n", ave_step_dist);
-  printf("Average step time: %g s\n\n\n", ave_step_time);
-  fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n",
-	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+  // printf("Run length: %f nm\n", run_length);
+  // printf("Distance traveled: %f nm\n", distance_traveled);
+  // printf("Steps: %d\n", steps);
+  // printf("Average step length: %f nm\n", ave_step_dist);
+  // printf("Average step time: %g s\n\n\n", ave_step_time);
+  // fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
+  // fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n",
+  // 	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
   fclose(data_file);
 }

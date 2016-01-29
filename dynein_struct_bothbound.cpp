@@ -3,7 +3,6 @@
 #include <cassert>
 
 #include "dynein_struct.h"
-#include "dynein_data.h"
 
 /* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */
 
@@ -33,9 +32,6 @@ Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
 }
 
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) { // out of old dyn
-  bothbound_forces old_r = old_dynein->get_internal_forces();
-  bothbound_forces old_r = old_dynein->get_internal_forces();
-
   rand = mtrand;
 
   distance_traveled = old_dynein->distance_traveled;
@@ -45,18 +41,6 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     nbx = old_dynein->get_bbx();
     nby = 0;
 
-    f.nbx = old_f.bbx;     f.nby = old_f.bby;
-    f.nmx = old_f.bmx;     f.nmy = old_f.bmy;
-    f.tx  = old_f.tx;      f.ty  = old_f.ty;
-    f.fmx = old_f.umx;     f.fmy = old_f.umy;
-    f.fbx = old_f.ubx;     f.fby = old_f.uby;
-
-    r.nbx = old_r.bbx;     r.nby = old_r.bby;
-    r.nmx = old_r.bmx;     r.nmy = old_r.bmy;
-    r.tx  = old_r.tx;      r.ty  = old_r.ty;
-    r.fmx = old_r.umx;     r.fmy = old_r.umy;
-    r.fbx = old_r.ubx;     r.fby = old_r.uby;
-
     nma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
     fma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
 
@@ -65,18 +49,6 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   } else {
     nbx = old_dynein->get_ubx();
     nby = 0;
-
-    f.nbx = old_f.ubx;     f.nby = old_f.uby;
-    f.nmx = old_f.umx;     f.nmy = old_f.umy;
-    f.tx  = old_f.tx;      f.ty  = old_f.ty;
-    f.fmx = old_f.bmx;     f.fmy = old_f.bmy;
-    f.fbx = old_f.bbx;     f.fby = old_f.bby;
-
-    r.nbx = old_r.ubx;     r.nby = old_r.uby;
-    r.nmx = old_r.umx;     r.nmy = old_r.umy;
-    r.tx  = old_r.tx;      r.ty  = old_r.ty;
-    r.fmx = old_r.bmx;     r.fmy = old_r.bmy;
-    r.fbx = old_r.bbx;     r.fby = old_r.bby;
 
     nma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
     fma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
@@ -632,18 +604,18 @@ void Dynein_bothbound::log(double t, FILE* data_file) {
 }
 
 void Dynein_bothbound::log_run(float runtime, FILE* data_file) {
-  float run_length = (get_nbx() + get_fbx()) / 2;
-  float ave_step_dist = distance_traveled / steps;
-  float ave_step_time = runtime / steps;
+  // float run_length = (get_nbx() + get_fbx()) / 2;
+  // float ave_step_dist = distance_traveled / steps;
+  // float ave_step_time = runtime / steps;
 
   printf("\n\n***********Run data**********\n");
-  printf("Run length: %f nm\n", run_length);
-  printf("Distance traveled: %f nm\n", distance_traveled);
-  printf("Steps: %d\n", steps);
-  printf("Average step length: %f nm\n", ave_step_dist);
-  printf("Average step time: %g s\n\n\n", ave_step_time);
-  fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-  fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps,
-	  ave_step_dist, ave_step_time);
+  // printf("Run length: %f nm\n", run_length);
+  // printf("Distance traveled: %f nm\n", distance_traveled);
+  // printf("Steps: %d\n", steps);
+  // printf("Average step length: %f nm\n", ave_step_dist);
+  // printf("Average step time: %g s\n\n\n", ave_step_time);
+  // fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
+  // fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps,
+  // 	  ave_step_dist, ave_step_time);
   fclose(data_file);
 }
