@@ -17,6 +17,8 @@
 
 \maketitle
 
+\section{Both bound}
+
 \begin{figure}
   \includegraphics[width=\columnwidth]{../figures/code-bothbound}
   \caption{Angles used in both-bound case.}\label{fig:bothbound}
@@ -24,6 +26,47 @@
 
 In the both-bound case, we use two angles, as illustrated in
 Fig.~\ref{fig:bothbound}.
+
+These are the distances to the tail domain from the near and far
+binding domains:
+\begin{align}
+  L_n &= \sqrt{L_s^2 + L_t^2 - 2L_sL_t\cos{\theta_{nm}}} \\
+  L_f &= \sqrt{L_s^2 + L_t^2 - 2L_sL_t\cos{\theta_{fm}}}
+\end{align}
+We use two angles to determine the position of the motor domain:
+\begin{align}
+  \cos\theta_n &= \frac{L^2 + L_n^2 - L_f^2}{2L L_n} \\
+  \sin\theta_{n} &= \sqrt{1 - \cos^2\theta_{n}} \\
+  \cos\theta_{ns} &= \frac{L_s^2 + L_n^2 - L_t^2}{2L_s L_n} \\
+  \sin\theta_{ns} &=
+  \begin{cases}
+    +\sqrt{1 - \cos^2\theta_{ns}} & \theta_{nm} < \pi \\
+    -\sqrt{1 - \cos^2\theta_{ns}} & \theta_{nm} > \pi
+  \end{cases}
+\end{align}
+Given these definitions, the position of the motor domain is given
+simply by $\cos$ and $\sin$ of $\theta_n$ and $\theta_{ns}$:
+\begin{align}
+  X_{nm} &= L_s\left(
+  \cos\theta_n\cos\theta_{ns} - \sin\theta_n\sin\theta_{ns}
+  \right)
+  \\
+  Y_{nm} &= L_s\left(
+  \cos\theta_n\sin\theta_{ns} + \sin\theta_n\cos\theta_{ns}
+  \right)
+\end{align}
+Looking at their derivatives gives
+\begin{align}
+  \dot{X}_{nm} &= ??? L_s\left(
+  \cos\theta_n\cos\theta_{ns} - \sin\theta_n\sin\theta_{ns}
+  \right) \dot{\cos\theta_n}
+  \\
+  \dot{Y}_{nm} &= ??? L_s\left(
+  \cos\theta_n\sin\theta_{ns} + \sin\theta_n\cos\theta_{ns}
+  \right)
+\end{align}
+
+\section{One bound}
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{../figures/code-onebound}

@@ -10,6 +10,8 @@ const double T = 293.0; // K
 
 const double lt = 10.0;   // nm, guess - not sure how DNA tail-bridge works
 const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
+const double Lt = lt;
+const double Ls = ls; // FIXME remove ls and lt in favor of Ls and Lt
 
 // tail domain radius, not sure how to get since no info on DNA
 // tail-bridge
@@ -276,6 +278,7 @@ private:
   void update_internal_forces();
 
   bothbound_equilibrium_angles eq;  //Equilibrium angles
+  MTRand *rand;
 
   double nma, fma;  //Bothbound coordinates
   double nbx, nby;
@@ -288,8 +291,8 @@ private:
   bothbound_forces f; //Internal Forces
 
   Mode mode;
-  bothbound_forces brownian_testcase;
-  bothbound_forces internal_testcase;
+  bothbound_forces *brownian_testcase;
+  bothbound_forces *internal_testcase;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */

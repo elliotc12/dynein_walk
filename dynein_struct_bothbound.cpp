@@ -4,13 +4,17 @@
 
 #include "dynein_struct.h"
 
+inline double sqr(double x) {
+  return x*x;
+}
+
 /* ********************* BOTHBOUND DYNEIN FUNCTIONS ****************************** */
 
-Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
-			 double nby_init, double L_init,
-			 bothbound_forces* internal_test,
-			 bothbound_forces* brownian_test,
-			 bothbound_equilibrium_angles* eq_angles) {
+Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
+                                   double nby_init, double L_init,
+                                   bothbound_forces* internal_test,
+                                   bothbound_forces* brownian_test,
+                                   bothbound_equilibrium_angles* eq_angles) {
   nbx = nbx_init;
   nby = nby_init;
 
@@ -34,9 +38,6 @@ Dynein::Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) { // out of old dyn
   rand = mtrand;
 
-  distance_traveled = old_dynein->distance_traveled;
-  steps = old_dynein->steps;
-
   if (old_dynein->get_state() == State::NEARBOUND) {
     nbx = old_dynein->get_bbx();
     nby = 0;
@@ -44,7 +45,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     nma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
     fma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
 
-    L = old_dynein->ubx - old_dynein->bbx;
+    L = old_dynein->get_ubx() - old_dynein->get_bbx();
 
   } else {
     nbx = old_dynein->get_ubx();
@@ -53,10 +54,10 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     nma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
     fma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
 
-    L = old_dynein->bbx - old_dynein->ubx;
+    L = old_dynein->get_bbx() - old_dynein->get_ubx();
   }
 
-  update_velocity();
+  update_velocities();
 }
 
 void Dynein_bothbound::update_brownian_forces() {
@@ -151,160 +152,165 @@ void Dynein_bothbound::update_internal_forces() {
   }
 }
 
-State Dynein_bothbound::get_state() {
-  return State::BOTHBOUND;
-}
-
 void Dynein_bothbound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  int pm_n = 1;
-  int pm_f = 1;
+  double pm_n = 1; // plus or minus
+  double pm_f = 1;
   if (nma > M_PI) pm_n = -1;
   if (fma > M_PI) pm_f = -1;
 
-  double L = fbx - nbx;
+  const double Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
+  const double Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
-  double Axn = (pow(L, 2)*pow(lt, 2) - pow(L, 2)*pow(ls, 2)) / (2*(L*pow(ln, 3))) 
-  + (lf*pow(lt, 2) - lf*pow(ls, 2)) / (2*(L*pow(ln, 2))) 
-  + (pow(lf, 2)*pow(ls, 2) - pow(lf, 2)*pow(lt, 2)) / (2*(L*pow(ln, 3))) 
-  - ls*(pm_n*((pow(L, 2) / (2*pow(ln, 3)) 
-  + (pow(lf, 4) - 2*(pow(L, 2)*pow(lf, 2))) / (2*(pow(L, 2)*pow(ln, 3))) 
-  - ln / (2*pow(L, 2)))
+  double Axn = (pow(L, 2)*pow(lt, 2) - pow(L, 2)*pow(ls, 2)) / (2*(L*pow(Ln, 3))) 
+  + (Lf*pow(lt, 2) - Lf*pow(ls, 2)) / (2*(L*pow(Ln, 2))) 
+  + (pow(Lf, 2)*pow(ls, 2) - pow(Lf, 2)*pow(lt, 2)) / (2*(L*pow(Ln, 3))) 
+  - ls*(pm_n*((pow(L, 2) / (2*pow(Ln, 3)) 
+  + (pow(Lf, 4) - 2*(pow(L, 2)*pow(Lf, 2))) / (2*(pow(L, 2)*pow(Ln, 3))) 
+  - Ln / (2*pow(L, 2)))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(ln, 2)*pow(ls, 2))) 
-         + (2*pow(lt, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))) 
-      / (2*sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-  + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-  + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
+         / (4*(pow(Ln, 2)*pow(ls, 2))) 
+         + (2*pow(lt, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))) 
+      / (2*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
   - ls*(pm_n*(((pow(ls, 4) + pow(lt, 4) - 2*(pow(ls, 2)*pow(lt, 2))) 
-  / (2*(pow(ln, 3)*pow(ls, 2))) - ln / (2*pow(ls, 2)))
- *sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-         + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-         + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  / (2*(pow(Ln, 3)*pow(ls, 2))) - Ln / (2*pow(ls, 2)))
+ *sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+         + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
       / (2*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-  / (4*(pow(ln, 2)*pow(ls, 2))) 
-  + (2*pow(lt, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1));
+  / (4*(pow(Ln, 2)*pow(ls, 2))) 
+  + (2*pow(lt, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1));
 
-  double Axf = ls*(pm*(((lf*pow(L, 2) - pow(lf, 3)) / (pow(L, 2)*pow(ln, 2)) + lf / pow(L, 2))
+  double Axf = ls*(pm_n*(((Lf*pow(L, 2) - pow(Lf, 3)) / (pow(L, 2)*pow(Ln, 2)) + Lf / pow(L, 2))
+                         *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4))
+                               / (4*(pow(Ln, 2)*pow(ls, 2)))
+                               + (2*pow(lt, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)))
+    / (-2*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2))
+               + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2)))
+               + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))));
+  
+  double Bxn = Ln/L;
+  
+  double Bxf = -Lf/L;
+
+  double Cxn = - pm * ls *
+    sqrt(1 - (pow(ls,4) + pow(lt,4) - 2*sqr(ls)*sqr(lt)
+              )/(4*pow(ls,2)*pow(Lf,2)) -
+         (pow(Lf,2) + 2*pow(ls,2) - 2*pow(lt,2)
+          )/(4*pow(ls,2)))
+    /(2*sqrt(1 - pow(L,2)/(4*pow(Lf,2))
+             - (Ln^4 - 2*pow(L,2)*pow(Ln,2)
+                )/(4*pow(L,2)*pow(Lf,2))
+             - (pow(Lf,2) + 2*pow(L,2) - 2*pow(Ln,2)
+                )/(4*pow(L,2))))
+    (-(Ln^3 - pow(L,2)*Ln
+       )/(pow(L,2)*pow(Lf,2)) + Ln/pow(L,2));
+
+  double Cxf = (pow(L, 2)*pow(lt, 2) - pow(L, 2)*pow(ls, 2)) / (2*(L*pow(Lf, 3))) 
+  + (Ln*pow(lt, 2) - Ln*pow(ls, 2)) / (2*(L*pow(Lf, 2))) 
+  + (pow(Ln, 2)*pow(ls, 2) - pow(Ln, 2)*pow(lt, 2)) / (2*(L*pow(Lf, 3))) 
+  - ls*(pm*((pow(L, 2) / (2*pow(Lf, 3)) 
+  + (pow(Ln, 4) - 2*(pow(L, 2)*pow(Ln, 2))) / (2*(pow(L, 2)*pow(Lf, 3))) 
+  - Lf / (2*pow(L, 2)))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(ln, 2)*pow(ls, 2)))
-         + (2*pow(lt, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))) 
-  / (-2*sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-  + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-  + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))));
-  
-  double Bxn = ln/L;
-  
-  double Bxf = -lf/L;
-  
-  double Cxn = - pm * ls\frac{\sqrt{1 - \frac{ls^4 + lt^4 - 2ls^2lt^2}{4ls^2lf^2} -
-	\frac{lf^2 + 2ls^2 - 2lt^2}{4ls^2}}}{2\sqrt{1 - \frac{L^2}{4lf^2}
-      - \frac{ln^4 - 2L^2ln^2}{4L^2lf^2} - \frac{lf^2 + 2L^2 - 2ln^2}{4L^2}}}
-        \left(-\frac{ln^3 - L^2ln}{L^2lf^2} + \frac{ln}{L^2}\right);
-  
-  double Cxf = (pow(L, 2)*pow(lt, 2) - pow(L, 2)*pow(ls, 2)) / (2*(L*pow(lf, 3))) 
-  + (ln*pow(lt, 2) - ln*pow(ls, 2)) / (2*(L*pow(lf, 2))) 
-  + (pow(ln, 2)*pow(ls, 2) - pow(ln, 2)*pow(lt, 2)) / (2*(L*pow(lf, 3))) 
-  - ls*(pm*((pow(L, 2) / (2*pow(lf, 3)) 
-  + (pow(ln, 4) - 2*(pow(L, 2)*pow(ln, 2))) / (2*(pow(L, 2)*pow(lf, 3))) 
-  - lf / (2*pow(L, 2)))
- *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(lf, 2)*pow(ls, 2))) 
-         + (2*pow(lt, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))) 
-      / (2*sqrt(1 - pow(L, 2) / (4*pow(lf, 2)) 
-  + (2*(pow(L, 2)*pow(ln, 2)) - pow(ln, 4)) / (4*(pow(L, 2)*pow(lf, 2))) 
-  + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
+         / (4*(pow(Lf, 2)*pow(ls, 2))) 
+         + (2*pow(lt, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))) 
+      / (2*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Lf, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2)))) 
   - ls*(pm*(((pow(ls, 4) + pow(lt, 4) - 2*(pow(ls, 2)*pow(lt, 2))) 
-  / (2*(pow(lf, 3)*pow(ls, 2))) - lf / (2*pow(ls, 2)))
- *sqrt(1 - pow(L, 2) / (4*pow(lf, 2)) 
-         + (2*(pow(L, 2)*pow(ln, 2)) - pow(ln, 4)) / (4*(pow(L, 2)*pow(lf, 2))) 
-         + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  / (2*(pow(Lf, 3)*pow(ls, 2))) - Lf / (2*pow(ls, 2)))
+ *sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+         + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Lf, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
       / (2*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-  / (4*(pow(lf, 2)*pow(ls, 2))) 
-  + (2*pow(lt, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1));
+  / (4*(pow(Lf, 2)*pow(ls, 2))) 
+  + (2*pow(lt, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1));
   
-  double Ayn = ((pow(lt, 2) - pow(ls, 2) - pow(ln, 2)) / (2*pow(ln, 2)) + 1)
- *sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-         + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-         + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
-  + (pow(L, 2) / (2*pow(ln, 3)) 
-       + (pow(lf, 4) - 2*(pow(L, 2)*pow(lf, 2))) / (2*(pow(L, 2)*pow(ln, 3))) 
-       - ln / (2*pow(L, 2)))*(pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) 
-      / (4*(ln*sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-  + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*pow(L, 2[n] + 2)) 
-  + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
-  + pm*(ls(1 / L + (pow(lf, 2) - pow(L, 2) - pow(ln, 2)) / (2*pow(Lln, 2)))
+  double Ayn = ((pow(lt, 2) - pow(ls, 2) - pow(Ln, 2)) / (2*pow(Ln, 2)) + 1)
+ *sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+         + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
+  + (pow(L, 2) / (2*pow(Ln, 3)) 
+       + (pow(Lf, 4) - 2*(pow(L, 2)*pow(Lf, 2))) / (2*(pow(L, 2)*pow(Ln, 3))) 
+       - Ln / (2*pow(L, 2)))*(pow(ls, 2) + pow(Ln, 2) - pow(lt, 2)) 
+      / (4*(Ln*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*pow(L, 2[n] + 2)) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(ls(1 / L + (pow(Lf, 2) - pow(L, 2) - pow(Ln, 2)) / (2*pow(LLn, 2)))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(ln, 2)*pow(ls, 2))) 
-         + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
-  + ls*(pm*((pow(L, 2) + pow(ln, 2) - pow(lf, 2))
+         / (4*(pow(Ln, 2)*pow(ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
+  + ls*(pm*((pow(L, 2) + pow(Ln, 2) - pow(Lf, 2))
  *((pow(ls, 4) + pow(lt, 4) - 2*(pow(ls, 2)*pow(lt, 2))) 
-     / (2*(pow(ln, 3)*pow(ls, 2))) - ln / (2*pow(ls, 2))))) 
-      / (4*(Lln
+     / (2*(pow(Ln, 3)*pow(ls, 2))) - Ln / (2*pow(ls, 2))))) 
+      / (4*(LLn
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(ln, 2)*pow(ls, 2))) 
-         + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)));
+         / (4*(pow(Ln, 2)*pow(ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)));
   
-  double Ayf = ((lf*pow(L, 2) - pow(lf, 3)) / (pow(L, 2)*pow(ln, 2)) + lf / pow(L, 2))
- *(pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) 
-  / (4*(ln*sqrt(1 - pow(L, 2) / (4*pow(ln, 2)) 
-  + (2*(pow(L, 2)*pow(lf, 2)) - pow(lf, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-  + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
-  + pm*(ls(-(lf / (L*ln)))
+  double Ayf = ((Lf*pow(L, 2) - pow(Lf, 3)) / (pow(L, 2)*pow(Ln, 2)) + Lf / pow(L, 2))
+ *(pow(ls, 2) + pow(Ln, 2) - pow(lt, 2)) 
+  / (4*(Ln*sqrt(1 - pow(L, 2) / (4*pow(Ln, 2)) 
+  + (2*(pow(L, 2)*pow(Lf, 2)) - pow(Lf, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(ls(-(Lf / (L*Ln)))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(ln, 2)*pow(ls, 2))) 
-         + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
-  + lf*(pm*(pow(L, 2) + pow(ln, 2) - pow(lf, 2))) 
-      / (4*(L*(ln*(ls*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-  / (4*(pow(ln, 2)*pow(ls, 2))) 
-  + (2*pow(lf, 2) - pow(ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)))));
+         / (4*(pow(Ln, 2)*pow(ls, 2))) 
+         + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
+  + Lf*(pm*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2))) 
+      / (4*(L*(Ln*(ls*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
+  / (4*(pow(Ln, 2)*pow(ls, 2))) 
+  + (2*pow(Lf, 2) - pow(Ln, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)))));
   
-  double Byn = (2*ln - ln*(pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / pow(L, 2)) 
-  / (2*sqrt(pow(ln, 2) 
-  - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2) / (4*pow(L, 2))));
+  double Byn = (2*Ln - Ln*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / pow(L, 2)) 
+  / (2*sqrt(pow(Ln, 2) 
+  - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2) / (4*pow(L, 2))));
   
-  double Byf = lf*(pow(L, 2) + pow(ln, 2) - pow(lf, 2)) 
+  double Byf = Lf*(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) 
   / (2*(pow(L, 2)
- *sqrt(pow(ln, 2) - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2) / (4*pow(L, 2)))));
+ *sqrt(pow(Ln, 2) - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2) / (4*pow(L, 2)))));
   
-  double Cyn = ((ln*pow(L, 2) - pow(ln, 3)) / (pow(L, 2)*pow(ln, 2)) + ln / pow(L, 2))
- *(pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) 
-  / (4*(lf*sqrt(1 - pow(L, 2) / (4*pow(lf, 2)) 
-  + (2*(pow(L, 2)*pow(ln, 2)) - pow(ln, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-  + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
-  + pm*(ls(-(ln / (L*lf)))
+  double Cyn = ((Ln*pow(L, 2) - pow(Ln, 3)) / (pow(L, 2)*pow(Ln, 2)) + Ln / pow(L, 2))
+ *(pow(ls, 2) + pow(Lf, 2) - pow(lt, 2)) 
+  / (4*(Lf*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(ls(-(Ln / (L*Lf)))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(lf, 2)*pow(ls, 2))) 
-         + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
-  + ln*(pm*(pow(L, 2) + pow(lf, 2) - pow(ln, 2))) 
-      / (4*(L*(lf*(ls*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-  / (4*(pow(lf, 2)*pow(ls, 2))) 
-  + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)))));
+         / (4*(pow(Lf, 2)*pow(ls, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
+  + Ln*(pm*(pow(L, 2) + pow(Lf, 2) - pow(Ln, 2))) 
+      / (4*(L*(Lf*(ls*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
+  / (4*(pow(Lf, 2)*pow(ls, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)))));
   
-  double Cyf = ((pow(lt, 2) - pow(ls, 2) - pow(lf, 2)) / (2*pow(lf, 2)) + 1)
- *sqrt(1 - pow(L, 2) / (4*pow(lf, 2)) 
-         + (2*(pow(L, 2)*pow(ln, 2)) - pow(ln, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-         + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
-  + (pow(L, 2) / (2*pow(lf, 3)) 
-       + (pow(ln, 4) - 2*(pow(L, 2)*pow(ln, 2))) / (2*(pow(L, 2)*pow(lf, 3))) 
-       - lf / (2*pow(L, 2)))*(pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) 
-      / (4*(lf*sqrt(1 - pow(L, 2) / (4*pow(lf, 2)) 
-  + (2*(pow(L, 2)*pow(ln, 2)) - pow(ln, 4)) / (4*(pow(L, 2)*pow(ln, 2))) 
-  + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
-  + pm*(ls(1 / L + (pow(ln, 2) - pow(L, 2) - pow(lf, 2)) / (2*(L*pow(lf, 2))))
+  double Cyf = ((pow(lt, 2) - pow(ls, 2) - pow(Lf, 2)) / (2*pow(Lf, 2)) + 1)
+ *sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+         + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))) 
+  + (pow(L, 2) / (2*pow(Lf, 3)) 
+       + (pow(Ln, 4) - 2*(pow(L, 2)*pow(Ln, 2))) / (2*(pow(L, 2)*pow(Lf, 3))) 
+       - Lf / (2*pow(L, 2)))*(pow(ls, 2) + pow(Lf, 2) - pow(lt, 2)) 
+      / (4*(Lf*sqrt(1 - pow(L, 2) / (4*pow(Lf, 2)) 
+  + (2*(pow(L, 2)*pow(Ln, 2)) - pow(Ln, 4)) / (4*(pow(L, 2)*pow(Ln, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(L, 2)) / (4*pow(L, 2))))) 
+  + pm*(ls(1 / L + (pow(Ln, 2) - pow(L, 2) - pow(Lf, 2)) / (2*(L*pow(Lf, 2))))
  *sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-         / (4*(pow(lf, 2)*pow(ls, 2))) 
-         + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
-  + ls*(pm*((pow(L, 2) + pow(lf, 2) - pow(ln, 2))
+         / (4*(pow(Lf, 2)*pow(ls, 2))) 
+         + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1)) 
+  + ls*(pm*((pow(L, 2) + pow(Lf, 2) - pow(Ln, 2))
  *((pow(ls, 4) + pow(lt, 4) - 2*(pow(ls, 2)*pow(lt, 2)))
-     / (2*(pow(lf, 3)*pow(ls, 2))) - lf / (2*pow(ls, 2))))) 
-      / (4*(L*(lf*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
-  / (4*(pow(lf, 2)*pow(ls, 2))) 
-  + (2*pow(ln, 2) - pow(lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))));
+     / (2*(pow(Lf, 3)*pow(ls, 2))) - Lf / (2*pow(ls, 2))))) 
+      / (4*(L*(Lf*sqrt((2*(pow(ls, 2)*pow(lt, 2)) - pow(ls, 4) - pow(lt, 4)) 
+  / (4*(pow(Lf, 2)*pow(ls, 2))) 
+  + (2*pow(Ln, 2) - pow(Lf, 2) - 2*pow(ls, 2)) / (4*pow(ls, 2)) + 1))));
 
-  d_ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*g*Rxmr - Cxf*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - (((Cxn*(Cxn*Cyf -
+  d_Ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*g*Rxmr - Cxf*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - (((Cxn*(Cxn*Cyf -
     Cxf*Cyn)*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) +
     (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr + Cxn*Ryt))*(Xbm - Xt))/g -
     (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn) *(-((Bxn*Fxmr)/g) + (Cxn*Fxt)/g - Bxn*Rxmr +
@@ -372,7 +378,7 @@ void Dynein_bothbound::update_velocities() {
     Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g))/g)); // from Mathematica
 
   
-  d_lf = (-(Cyn*Fxmr) + Cxn*Fymr - Cyn*g*Rxmr + Cxn*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) -
+  d_Lf = (-(Cyn*Fxmr) + Cxn*Fymr - Cyn*g*Rxmr + Cxn*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) -
            (((Cxn*(Cxn*Cyf - Cxf*Cyn)* (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g -
            Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr +
            Cxn*Ryt))*(Xbm - Xt))/g - (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/g)
@@ -490,14 +496,14 @@ double Dynein_bothbound::get_d_fba() {
 
 double Dynein_bothbound::get_d_nma() {
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - ln*ln) / (2*lt*ls),2))
-    * (ln / (lt*ls)) * d_ln;
+  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
+    * (Ln / (lt*ls)) * d_Ln;
 }
 
 double Dynein_bothbound::get_d_fma() {
   int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - lf*lf) / (2*lt*ls),2))
-    * (lf / (lt*ls)) * d_lf;
+  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
+    * (Lf / (lt*ls)) * d_Lf;
 }
 
 /*** Get coordinates ***/
@@ -507,18 +513,18 @@ double Dynein_bothbound::get_nbx() {
 
 double Dynein_bothbound::get_nmx() {
   int pm = (nma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln)))
-         + pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
+  return ls*cos(acos((pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / (2*(L*Ln)))
+         + pm*acos((pow(ls, 2) + pow(Ln, 2) - pow(lt, 2)) / (2*(Ln*ls))));
 }
 
 double Dynein_bothbound::get_tx() {
-  return (pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*L);
+  return (pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / (2*L);
 }
 
 double Dynein_bothbound::get_fmx() {
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*cos(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
-		+ pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));;
+  return ls*cos(acos((pow(L, 2) + pow(Lf, 2) - pow(Ln, 2)) / (2*(L*Lf)))
+		+ pm*acos((pow(ls, 2) + pow(Lf, 2) - pow(lt, 2)) / (2*(Lf*ls))));;
 }
 
 double Dynein_bothbound::get_fbx() {
@@ -531,19 +537,19 @@ double Dynein_bothbound::get_nby() {
 
 double Dynein_bothbound::get_nmy() {
   int pm = (nma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(ln, 2) - pow(lf, 2)) / (2*(L*ln)))
-		+ pm*acos((pow(ls, 2) + pow(ln, 2) - pow(lt, 2)) / (2*(ln*ls))));
+  return ls*sin(acos((pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / (2*(L*Ln)))
+		+ pm*acos((pow(ls, 2) + pow(Ln, 2) - pow(lt, 2)) / (2*(Ln*ls))));
 }
 
 double Dynein_bothbound::get_ty() {
-  return ln*sqrt(1 - pow(pow(L, 2) + pow(ln, 2) - pow(lf, 2), 2)
-		 / (4*(pow(L, 2)*pow(ln, 2))));
+  return Ln*sqrt(1 - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2)
+		 / (4*(pow(L, 2)*pow(Ln, 2))));
 }
 
 double Dynein_bothbound::get_fmy() {
   int pm = (fma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(lf, 2) - pow(ln, 2)) / (2*(L*lf)))
-		+ pm*acos((pow(ls, 2) + pow(lf, 2) - pow(lt, 2)) / (2*(lf*ls))));
+  return ls*sin(acos((pow(L, 2) + pow(Lf, 2) - pow(Ln, 2)) / (2*(L*Lf)))
+		+ pm*acos((pow(ls, 2) + pow(Lf, 2) - pow(lt, 2)) / (2*(Lf*ls))));
 }
 
 double Dynein_bothbound::get_fby() {
