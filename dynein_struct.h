@@ -284,8 +284,8 @@ private:
   double nbx, nby;
   double L;
 
-  double d_ln;  //Bothbound velocities
-  double d_lf;
+  double d_Ln;  //Bothbound velocities
+  double d_Lf;
 
   bothbound_forces r; //Brownian forces
   bothbound_forces f; //Internal Forces
