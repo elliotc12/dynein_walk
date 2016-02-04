@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     19966,        422]
-NotebookOptionsPosition[     19385,        398]
-NotebookOutlinePosition[     19722,        413]
-CellTagsIndexPosition[     19679,        410]
+NotebookDataLength[     20552,        433]
+NotebookOptionsPosition[     19951,        408]
+NotebookOutlinePosition[     20308,        424]
+CellTagsIndexPosition[     20265,        421]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -30,15 +30,15 @@ Cell[BoxData[{
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Axn"}], ",", " ", 
-       RowBox[{"-", "Bxf"}], ",", " ", 
+       RowBox[{"-", "Axf"}], ",", " ", 
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Xbm", "-", "Xbb"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_nmx", "-", "get_nbx"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Xt", "-", "Xbm"}], ")"}], "/", "g"}], ",", " ", "0", ",", 
-       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"get_tx", "-", "get_nmx"}], ")"}], "/", "gm"}], ",", " ", 
+       "0", ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Bxn"}], ",", " ", 
@@ -46,11 +46,12 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Xt", "-", "Xbm"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_tx", "-", "get_nmx"}], ")"}]}], "/", "gt"}], ",", " ", 
+       
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Xfm", "-", "Xt"}], ")"}], "/", "g"}], ",", " ", "0"}], 
-      "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"get_fmx", "-", "get_tx"}], ")"}], "/", "gt"}], ",", " ", 
+       "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Cxn"}], ",", " ", 
@@ -58,11 +59,12 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Xfm", "-", "Xt"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_fmx", "-", "get_tx"}], ")"}]}], "/", "gm"}], ",", " ", 
+       
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Xfb", "-", "Xfm"}], ")"}], "/", "g"}]}], "}"}], ",", 
-     "\[IndentingNewLine]", "\t", 
+         RowBox[{"get_fbx", "-", "get_fmx"}], ")"}], "/", "gm"}]}], "}"}], 
+     ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Ayn"}], ",", " ", 
@@ -70,11 +72,11 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Ybm", "-", "Ybb"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_nmy", "-", "get_nby"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Yt", "-", "Ybm"}], ")"}], "/", "g"}], ",", " ", "0", ",", 
-       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"get_ty", "-", "get_nmy"}], ")"}], "/", "gm"}], ",", " ", 
+       "0", ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Byn"}], ",", " ", 
@@ -82,11 +84,12 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Yt", "-", "Ybm"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_ty", "-", "get_nby"}], ")"}]}], "/", "gt"}], ",", " ", 
+       
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Yfm", "-", "Yt"}], ")"}], "/", "g"}], ",", " ", "0"}], 
-      "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"get_fmy", "-", "get_ty"}], ")"}], "/", "gt"}], ",", " ", 
+       "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Cyn"}], ",", " ", 
@@ -94,11 +97,12 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"Yfm", "-", "Yt"}], ")"}]}], "/", "g"}], ",", " ", 
+          RowBox[{"get_fmy", "-", "get_ty"}], ")"}]}], "/", "gm"}], ",", " ", 
+       
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"Yfb", "-", "Yfm"}], ")"}], "/", "g"}]}], "}"}]}], "}"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+         RowBox[{"get_fby", "-", "get_fmy"}], ")"}], "/", "gm"}]}], "}"}]}], 
+    "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"X", " ", "=", " ", 
    RowBox[{"{", 
@@ -106,31 +110,37 @@ Cell[BoxData[{
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fxml"}], "/", "g"}], "-", "Rxml"}], "}"}], ",", " ", 
+        RowBox[{"-", "Fxml"}], "/", "gm"}], "-", "Rxml"}], "}"}], ",", " ", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fxt"}], "/", "g"}], "-", "Rxt"}], "}"}], ",", " ", 
+        RowBox[{"-", "Fxt"}], "/", "gt"}], "-", "Rxt"}], "}"}], ",", " ", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fxmr"}], "/", "g"}], "-", "Rxmr"}], "}"}], ",", " ", 
+        RowBox[{"-", "Fxmr"}], "/", "gm"}], "-", "Rxmr"}], "}"}], ",", " ", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fyml"}], "/", "g"}], "-", "Ryml"}], "}"}], ",", " ", 
+        RowBox[{"-", "Fyml"}], "/", "gm"}], "-", "Ryml"}], "}"}], ",", " ", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fyt"}], "/", "g"}], "-", "Ryt"}], "}"}], ",", " ", 
+        RowBox[{"-", "Fyt"}], "/", "gt"}], "-", "Ryt"}], "}"}], ",", " ", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{
-        RowBox[{"-", "Fymr"}], "/", "g"}], "-", "Rymr"}], "}"}]}], "}"}]}], 
+        RowBox[{"-", "Fymr"}], "/", "gm"}], "-", "Rymr"}], "}"}]}], "}"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.6569416178687487`*^9, 3.656941820981436*^9}, {
-  3.656941877038568*^9, 3.656942023535441*^9}, {3.656942101547607*^9, 
-  3.6569421049084063`*^9}, {3.661957752724674*^9, 3.661957753011133*^9}}],
+   3.656941877038568*^9, 3.656942023535441*^9}, {3.656942101547607*^9, 
+   3.6569421049084063`*^9}, {3.661957752724674*^9, 3.661957753011133*^9}, 
+   3.663601612159568*^9, {3.663602110222822*^9, 3.663602132954121*^9}, {
+   3.663602414623946*^9, 3.663602467296089*^9}, {3.663602528165567*^9, 
+   3.663602649401771*^9}, {3.6636027695102243`*^9, 3.663602770562108*^9}, {
+   3.663603060321084*^9, 3.663603110097969*^9}, {3.663604051338892*^9, 
+   3.663604083843937*^9}, {3.663604144000749*^9, 3.663604149216453*^9}, {
+   3.663604194840556*^9, 3.6636042194875*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -396,9 +406,10 @@ Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
  CellChangeTimes->{3.662108268824564*^9}]
 }, Open  ]]
 },
-WindowSize->{1916, 1058},
-WindowMargins->{{Automatic, 4}, {4, Automatic}},
-FrontEndVersion->"10.0 for Linux x86 (64-bit) (December 4, 2014)",
+WindowSize->{715, 643},
+WindowMargins->{{49, Automatic}, {Automatic, 15}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -412,17 +423,17 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 146, 2, 32, "Input"],
-Cell[706, 24, 3678, 108, 165, "Input"],
-Cell[4387, 134, 577, 10, 32, "Input"],
-Cell[4967, 146, 783, 15, 55, "Input"],
+Cell[557, 20, 146, 2, 28, "Input"],
+Cell[706, 24, 4244, 118, 148, "Input"],
+Cell[4953, 144, 577, 10, 28, "Input"],
+Cell[5533, 156, 783, 15, 46, "Input"],
 Cell[CellGroupData[{
-Cell[5775, 165, 330, 6, 32, "Input"],
-Cell[6108, 173, 6492, 105, 769, "Output"]
+Cell[6341, 175, 330, 6, 28, "Input"],
+Cell[6674, 183, 6492, 105, 629, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[12637, 283, 231, 5, 32, "Input"],
-Cell[12871, 290, 6498, 105, 769, "Output"]
+Cell[13203, 293, 231, 5, 28, "Input"],
+Cell[13437, 300, 6498, 105, 629, "Output"]
 }, Open  ]]
 }
 ]
