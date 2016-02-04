@@ -247,6 +247,9 @@ public:
   double get_d_nma();
   double get_d_fma();
 
+  double get_d_nba(); // computed values
+  double get_d_fba();
+
   double get_d_nbx();
   double get_d_nmx();
   double get_d_tx();
@@ -284,6 +287,8 @@ private:
   double nbx, nby;
   double L;
 
+  double Ln, Lf;
+
   double d_Ln;  //Bothbound velocities
   double d_Lf;
 
@@ -302,4 +307,4 @@ double square(double num);
 double cube(double num);
 double fourth(double num);
 double fifth(double num);
-double resetLog();
+void   resetLog();
