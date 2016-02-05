@@ -324,11 +324,11 @@ void Dynein_bothbound::update_velocities() {
 
   // David -- emacs comand to take all below and make it 100-char lines?
 
-d_Ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*gm*Rxmr - Cxf*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm) - ((Cyf*get_fmx() - Cxf*get_fmy() - Cyf*get_tx() + Cxf*get_ty())*
-      (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
-               (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gt) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
-             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt)))/gt))/
+d_Ln = (Cyf*f.fmx - Cxf*f.fmy + Cyf*gm*r.fmx - Cxf*gm*r.fmy)/((Cxn*Cyf - Cxf*Cyn)*gm) - ((Cyf*get_fmx() - Cxf*get_fmy() - Cyf*get_tx() + Cxf*get_ty())*
+      (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
+               (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
+             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt))/
     ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
@@ -346,20 +346,20 @@ d_Ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*gm*Rxmr - Cxf*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
                 (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)*
          (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/gm - (Axn*Fxmr)/gm + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm - 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*Fxmr)/gm) + (Cxn*Fyml)/gm - Ayn*Rxmr + Cxn*Ryml) - 
-                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm))/gt) - 
+                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*f.nmx)/gm - (Axn*f.fmx)/gm + Cxn*r.nmx - Axn*r.fmx) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm - 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*f.fmx)/gm) + (Cxn*f.nmy)/gm - Ayn*r.fmx + Cxn*r.nmy) - 
+                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm))/gt) - 
            (-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt))) - 
+            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty))) - 
         (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
               (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
                    (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
                 (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
-                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
-                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt)))/gt)))/
+             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
+                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
+                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt)))/
     (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt)*
          (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
@@ -378,11 +378,11 @@ d_Ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*gm*Rxmr - Cxf*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm
          (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
               (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
 
-  d_Lf = (-(Cyn*Fxmr) + Cxn*Fymr - Cyn*gm*Rxmr + Cxn*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm) - 
+  d_Lf = (-(Cyn*f.fmx) + Cxn*f.fmy - Cyn*gm*r.fmx + Cxn*gm*r.fmy)/((Cxn*Cyf - Cxf*Cyn)*gm) - 
    ((-(Cyn*get_fmx()) + Cxn*get_fmy() + Cyn*get_tx() - Cxn*get_ty())*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*
-             ((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gt) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
-             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt)))/gt))/
+             ((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
+             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt))/
     ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
@@ -400,20 +400,20 @@ d_Ln = (Cyf*Fxmr - Cxf*Fymr + Cyf*gm*Rxmr - Cxf*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
                 (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)*
          (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/gm - (Axn*Fxmr)/gm + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm - 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*Fxmr)/gm) + (Cxn*Fyml)/gm - Ayn*Rxmr + Cxn*Ryml) - 
-                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm))/gt) - 
+                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*f.nmx)/gm - (Axn*f.fmx)/gm + Cxn*r.nmx - Axn*r.fmx) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm - 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*f.fmx)/gm) + (Cxn*f.nmy)/gm - Ayn*r.fmx + Cxn*r.nmy) - 
+                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm))/gt) - 
            (-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt))) - 
+            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty))) - 
         (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
               (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
                    (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
                 (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
-                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
-                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr + Cxn*Ryt)))/gt)))/
+             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
+                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
+                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt)))/
     (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
            (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt)*
          (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
