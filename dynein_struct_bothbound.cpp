@@ -163,8 +163,6 @@ void Dynein_bothbound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  double g = 1.0; // this is temporary!!!
-
   double pm_n = 1; // plus or minus
   double pm_f = 1;
   if (nma > M_PI) pm_n = -1;
