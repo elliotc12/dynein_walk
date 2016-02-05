@@ -18,7 +18,7 @@ void simulateProtein(Dynein_onebound* dyn1, double tf) {
   Dynein_bothbound *dynB = 0;
 
   FILE* data_file = fopen("data.txt", "a+");
-  FILE* run_file = fopen("run.txt", "a+");
+  //FILE* run_file = fopen("run.txt", "a+");
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
 
@@ -27,7 +27,7 @@ void simulateProtein(Dynein_onebound* dyn1, double tf) {
       if (rand->rand() < dyn1->get_unbinding_rate()*dt) {
         // this is the case where we fall off and become zerobound!
         printf("unbinding.");
-        dyn1->log_run(t, run_file);
+        //dyn1->log_run(t, run_file);
         dyn1->log(t, data_file);
         return;
       } else if (rand->rand() < dyn1->get_binding_rate()*dt) {
@@ -50,6 +50,7 @@ void simulateProtein(Dynein_onebound* dyn1, double tf) {
       dyn1->log(t, data_file);
       t += dt;
     }
+    printf("switch to bothbound!\n");
     while (t < tf) { // loop as long as it is bothbound
       bool unbind_near = rand->rand() < dynB->get_near_unbinding_rate()*dt;
       bool unbind_far = rand->rand() < dynB->get_far_unbinding_rate()*dt;
@@ -79,7 +80,7 @@ void simulateProtein(Dynein_onebound* dyn1, double tf) {
       dynB->log(t, data_file);
       t += dt;
     }
-
+    printf("switch to onebound!\n");
   }
 
   // dyn1->log_run(tf, run_file); // fix type

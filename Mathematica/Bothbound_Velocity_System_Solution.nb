@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     20552,        433]
-NotebookOptionsPosition[     19951,        408]
-NotebookOutlinePosition[     20308,        424]
-CellTagsIndexPosition[     20265,        421]
+NotebookDataLength[     22917,        476]
+NotebookOptionsPosition[     22336,        452]
+NotebookOutlinePosition[     22673,        467]
+CellTagsIndexPosition[     22630,        464]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -34,11 +34,11 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_nmx", "-", "get_nbx"}], ")"}]}], "/", "gm"}], ",", " ", 
+          RowBox[{"getnmx", "-", "getnbx"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_tx", "-", "get_nmx"}], ")"}], "/", "gm"}], ",", " ", 
-       "0", ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"gettx", "-", "getnmx"}], ")"}], "/", "gm"}], ",", " ", "0", 
+       ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Bxn"}], ",", " ", 
@@ -46,11 +46,10 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_tx", "-", "get_nmx"}], ")"}]}], "/", "gt"}], ",", " ", 
-       
+          RowBox[{"gettx", "-", "getnmx"}], ")"}]}], "/", "gt"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_fmx", "-", "get_tx"}], ")"}], "/", "gt"}], ",", " ", 
+         RowBox[{"getfmx", "-", "gettx"}], ")"}], "/", "gt"}], ",", " ", 
        "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
@@ -59,12 +58,11 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_fmx", "-", "get_tx"}], ")"}]}], "/", "gm"}], ",", " ", 
-       
+          RowBox[{"getfmx", "-", "gettx"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_fbx", "-", "get_fmx"}], ")"}], "/", "gm"}]}], "}"}], 
-     ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"getfbx", "-", "getfmx"}], ")"}], "/", "gm"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Ayn"}], ",", " ", 
@@ -72,11 +70,11 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_nmy", "-", "get_nby"}], ")"}]}], "/", "gm"}], ",", " ", 
+          RowBox[{"getnmy", "-", "getnby"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_ty", "-", "get_nmy"}], ")"}], "/", "gm"}], ",", " ", 
-       "0", ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
+         RowBox[{"getty", "-", "getnmy"}], ")"}], "/", "gm"}], ",", " ", "0", 
+       ",", " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"-", "Byn"}], ",", " ", 
@@ -84,11 +82,10 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_ty", "-", "get_nby"}], ")"}]}], "/", "gt"}], ",", " ", 
-       
+          RowBox[{"getty", "-", "getnby"}], ")"}]}], "/", "gt"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_fmy", "-", "get_ty"}], ")"}], "/", "gt"}], ",", " ", 
+         RowBox[{"getfmy", "-", "getty"}], ")"}], "/", "gt"}], ",", " ", 
        "0"}], "}"}], ",", "\[IndentingNewLine]", "\t", 
      RowBox[{"{", 
       RowBox[{
@@ -97,11 +94,10 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"-", 
          RowBox[{"(", 
-          RowBox[{"get_fmy", "-", "get_ty"}], ")"}]}], "/", "gm"}], ",", " ", 
-       
+          RowBox[{"getfmy", "-", "getty"}], ")"}]}], "/", "gm"}], ",", " ", 
        RowBox[{
         RowBox[{"(", 
-         RowBox[{"get_fby", "-", "get_fmy"}], ")"}], "/", "gm"}]}], "}"}]}], 
+         RowBox[{"getfby", "-", "getfmy"}], ")"}], "/", "gm"}]}], "}"}]}], 
     "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"X", " ", "=", " ", 
@@ -140,7 +136,8 @@ Cell[BoxData[{
    3.663602649401771*^9}, {3.6636027695102243`*^9, 3.663602770562108*^9}, {
    3.663603060321084*^9, 3.663603110097969*^9}, {3.663604051338892*^9, 
    3.663604083843937*^9}, {3.663604144000749*^9, 3.663604149216453*^9}, {
-   3.663604194840556*^9, 3.6636042194875*^9}}],
+   3.663604194840556*^9, 3.6636042194875*^9}, {3.6636269015587473`*^9, 
+   3.663626972909439*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -182,111 +179,134 @@ Cell[BoxData[
   3.662108095752017*^9}, {3.662108178327243*^9, 3.6621082560476723`*^9}}],
 
 Cell["\<\
-(Cyf*Fxmr - Cxf*Fymr + Cyf*g*Rxmr - Cxf*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - \
-(((Cxn*(Cxn*Cyf - Cxf*Cyn)*
-           (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
-Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - \
-Byn*Rxmr + Cxn*Ryt))*(Xbm - Xt))/g - 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/g) + \
-(Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + \
-(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
-           (Ybm - Yt))/g)*(Cyf*Xfm - Cyf*Xt - Cxf*Yfm + Cxf*Yt))/
-    ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
-               (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + \
-Yt))/g)))/g) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
-+ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
-- (Cxn*(-Yfm + Yt))/g)))/g)) - 
-   (((-(Cyf*Xfb) + Cyf*Xfm + Cxf*Yfb - Cxf*Yfm)/((Cxn*Cyf - Cxf*Cyn)*g) - \
-(((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*
-                ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g - 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
-Xfm))/g - (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
-Yfm))/g))*(Ybm - Yt))/g)*
-           (Cyf*Xfm - Cyf*Xt - Cxf*Yfm + Cxf*Yt))/
-         ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - \
-Yt)*((Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
-                    (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm \
-+ Yt))/g)))/g) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
-Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g)))*
-      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Ayn*Fxmr)/g) + (Cxn*Fyml)/g - Ayn*Rxmr + Cxn*Ryml) - 
-                         (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/g) + \
-(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*(Xbb - Xbm))/g) + 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/g \
-- (Axn*Fxmr)/g + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + \
-Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
-                     (Ybb - Ybm))/g)*(Ybm - Yt))/g) - (-((-(Byn*Cxf) + \
-Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + 
-              (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr + \
-Cxn*Ryt))*
-            (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2)))*
-         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
-Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
-Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) - 
-        ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) \
-+ (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) \
-+ (Cxn*Fyt)/g - Byn*Rxmr + Cxn*Ryt))*
-              (Xbm - Xt))/g - (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Bxn*Fxmr)/g) + (Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - 
-                (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
-Cyn*Rxmr + Cxn*Rymr))*(Ybm - Yt))/g)*
-         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2))*
-              ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) \
-- (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - \
-Cxf*Cyn)*(Xbb - Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
-                   g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
-(Cxn*(-Yfm + Yt))/g)))/g))/g)))/
-    ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb - \
-Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g) + 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(Xfb - Xfm))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - \
-(Cxn*(Yfb - Yfm))/g)))/g)*(Ybm - Yt))/g) - 
-         ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*
-          (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2)))*
-       (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
-Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
-+ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
-- (Cxn*(-Yfm + Yt))/g)))/g) - 
-      ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
-Xfm))/g - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
-Yfm))/g)))/g - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - \
-(-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*(Ybm - \
-Yt))/g)*
-       (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2))*
-            ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - \
-(-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb \
-- Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
-                 g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
-(Cxn*(-Yfm + Yt))/g)))/g))/g))\
+(Cyf*Fxmr - Cxf*Fymr + Cyf*gm*Rxmr - Cxf*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm) - \
+((Cyf*getfmx - Cxf*getfmy - Cyf*gettx + Cxf*getty)*
+      (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
+               (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
+             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr \
++ Cxn*Ryt)))/gt))/
+    ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - \
+getty)*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy \
++ getty))/gm)) + 
+               (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - (Cxn*(getfmx \
+- gettx))/gt)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+             (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - (Cxn*(getfmy - \
+getty))/gt)))/gt)) - 
+   (((-(Cyf*getfbx) + Cxf*getfby + Cyf*getfmx - Cxf*getfmy)/((Cxn*Cyf - \
+Cxf*Cyn)*gm) - 
+        ((Cyf*getfmx - Cxf*getfmy - Cyf*gettx + Cxf*getty)*(-((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getty)*
+                  (-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm))/gt) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt))/
+         ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - \
+getty)*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy \
++ getty))/gm)) + 
+                    (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                  (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmy - getty))/gt)))/gt)))*
+      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                  (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmy - getty))/gt)))/gt)*
+         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/gm - (Axn*Fxmr)/gm + \
+Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*Fxmr)/gm) + \
+(Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm - 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Ayn*Fxmr)/gm) + (Cxn*Fyml)/gm - Ayn*Rxmr + Cxn*Ryml) - 
+                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/gm) + \
+(Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm))/gt) - 
+           (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt \
+- Byn*Rxmr + Cxn*Ryt))) - 
+        (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + \
+gettx))/gm - (Cxn*(getfmy - getty))/gt))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + \
+gettx))/gm))/gm - 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + gettx))/gm))/gm))
+             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
+                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
+                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - \
+Byn*Rxmr + Cxn*Ryt)))/gt)))/
+    (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Bxn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt)*
+         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + \
+gettx))/gm - (Cxn*(getfmy - getty))/gt))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + \
+gettx))/gm))/gm - 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + gettx))/gm))/gm))
+             /gt)) + (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + 
+              (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnbx - \
+getnmx)*(-getnmy + getty))/Power(gm,2))*
+            (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm)) - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                 (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm))/gm - 
+              (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gm))/
+          gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+              (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - (Cxn*(getfmy \
+- getty))/gt)))/gt))\
 \>", "Output",
- CellChangeTimes->{3.662108268651752*^9}]
+ CellChangeTimes->{3.6636255731063766`*^9, 3.663626994004654*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -299,117 +319,140 @@ Cell[BoxData[
   3.662108250286022*^9, 3.662108262269946*^9}}],
 
 Cell["\<\
-(-(Cyn*Fxmr) + Cxn*Fymr - Cyn*g*Rxmr + Cxn*g*Rymr)/((Cxn*Cyf - Cxf*Cyn)*g) - \
-(((Cxn*(Cxn*Cyf - Cxf*Cyn)*
-           (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
-Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - \
-Byn*Rxmr + Cxn*Ryt))*(Xbm - Xt))/g - 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/g) + \
-(Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + \
-(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
-           (Ybm - Yt))/g)*(-(Cyn*Xfm) + Cyn*Xt + Cxn*Yfm - Cxn*Yt))/
-    ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
-               (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + \
-Yt))/g)))/g) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
-+ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
-- (Cxn*(-Yfm + Yt))/g)))/g)) - 
-   (((Cyn*Xfb - Cyn*Xfm - Cxn*Yfb + Cxn*Yfm)/((Cxn*Cyf - Cxf*Cyn)*g) - \
-(((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*
-                ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g - 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
-Xfm))/g - (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
-Yfm))/g))*(Ybm - Yt))/g)*
-           (-(Cyn*Xfm) + Cyn*Xt + Cxn*Yfm - Cxn*Yt))/
-         ((Cxn*Cyf - Cxf*Cyn)*g*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - \
-Yt)*((Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - 
-                    (-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm \
-+ Yt))/g)))/g) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
-Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g)))*
-      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Ayn*Fxmr)/g) + (Cxn*Fyml)/g - Ayn*Rxmr + Cxn*Ryml) - 
-                         (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/g) + \
-(Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*(Xbb - Xbm))/g) + 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/g \
-- (Axn*Fxmr)/g + Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + \
-Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr))*
-                     (Ybb - Ybm))/g)*(Ybm - Yt))/g) - (-((-(Byn*Cxf) + \
-Byf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + 
-              (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) + (Cxn*Fyt)/g - Byn*Rxmr + \
-Cxn*Ryt))*
-            (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2)))*
-         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
-Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - \
-Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) - 
-        ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/g) \
-+ (Cxn*Fymr)/g - Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/g) \
-+ (Cxn*Fyt)/g - Byn*Rxmr + Cxn*Ryt))*
-              (Xbm - Xt))/g - (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Bxn*Fxmr)/g) + (Cxn*Fxt)/g - Bxn*Rxmr + Cxn*Rxt) - 
-                (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/g) + (Cxn*Fymr)/g - \
-Cyn*Rxmr + Cxn*Rymr))*(Ybm - Yt))/g)*
-         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2))*
-              ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) \
-- (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - \
-Cxf*Cyn)*(Xbb - Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
-                   g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
-(Cxn*(-Yfm + Yt))/g)))/g))/g)))/
-    ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb - \
-Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g)))/g) + 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(Xfb - Xfm))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - \
-(Cxn*(Yfb - Yfm))/g)))/g)*(Ybm - Yt))/g) - 
-         ((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - (-(Byn*Cxf) + \
-Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*
-          (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2)))*
-       (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*((Cxn*Cyf - \
-Cxf*Cyn)*(-((Cxn*(Xfm - Xt))/g) + (Bxn*(-Xfm + Xt))/g) - (-(Bxn*Cxf) + \
-Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/g) + 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm \
-+ Xt))/g - (Cxn*(Yfm - Yt))/g) - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g \
-- (Cxn*(-Yfm + Yt))/g)))/g) - 
-      ((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbm - Xt)*((Byn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - \
-Xfm))/g - (-(Byn*Cxf) + Byf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - \
-Yfm))/g)))/g - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*((Bxn*(Cxn*Cyf - Cxf*Cyn)*(Xfb - Xfm))/g - \
-(-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(Xfb - Xfm))/g - (Cxn*(Yfb - Yfm))/g))*(Ybm - \
-Yt))/g)*
-       (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(-Xbm + Xt)*(Ybb - \
-Ybm))/Power(g,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(Xbb - \
-Xbm)*(-Ybm + Yt))/Power(g,2))*
-            ((Cxn*Cyf - Cxf*Cyn)*((Byn*(-Xfm + Xt))/g - (Cxn*(Yfm - Yt))/g) - \
-(-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g))) - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybm - Yt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(Xbb \
-- Xbm)*((Ayn*(Cxn*Cyf - Cxf*Cyn)*(-Xfm + Xt))/g - (-(Ayn*Cxf) + \
-Ayf*Cxn)*((Cyn*(-Xfm + Xt))/g - (Cxn*(-Yfm + Yt))/g)))/
-                 g) + (Cxn*(Cxn*Cyf - Cxf*Cyn)*(Ybb - Ybm)*((Axn*(Cxn*Cyf - \
-Cxf*Cyn)*(-Xfm + Xt))/g - (-(Axn*Cxf) + Bxf*Cxn)*((Cyn*(-Xfm + Xt))/g - \
-(Cxn*(-Yfm + Yt))/g)))/g))/g))\
+(-(Cyn*Fxmr) + Cxn*Fymr - Cyn*gm*Rxmr + Cxn*gm*Rymr)/((Cxn*Cyf - Cxf*Cyn)*gm) \
+- 
+   ((-(Cyn*getfmx) + Cxn*getfmy + Cyn*gettx - Cxn*getty)*(-((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getty)*
+             ((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr \
++ Cxn*Rxt) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
+             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - Byn*Rxmr \
++ Cxn*Ryt)))/gt))/
+    ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - \
+getty)*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy \
++ getty))/gm)) + 
+               (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - (Cxn*(getfmx \
+- gettx))/gt)))/gt) + 
+        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+             (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - (Cxn*(getfmy - \
+getty))/gt)))/gt)) - 
+   (((Cyn*getfbx - Cxn*getfby - Cyn*getfmx + Cxn*getfmy)/((Cxn*Cyf - \
+Cxf*Cyn)*gm) - 
+        ((-(Cyn*getfmx) + Cxn*getfmy + Cyn*gettx - \
+Cxn*getty)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*
+                  (-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm))/gt) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt))/
+         ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - \
+getty)*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy \
++ getty))/gm)) + 
+                    (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                  (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmy - getty))/gt)))/gt)))*
+      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                  (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmy - getty))/gt)))/gt)*
+         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*Fxml)/gm - (Axn*Fxmr)/gm + \
+Cxn*Rxml - Axn*Rxmr) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*Fxmr)/gm) + \
+(Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm - 
+                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Ayn*Fxmr)/gm) + (Cxn*Fyml)/gm - Ayn*Rxmr + Cxn*Ryml) - 
+                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*Fxmr)/gm) + \
+(Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)))/gm))/gt) - 
+           (-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt \
+- Byn*Rxmr + Cxn*Ryt))) - 
+        (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + \
+gettx))/gm - (Cxn*(getfmy - getty))/gt))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + \
+gettx))/gm))/gm - 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + gettx))/gm))/gm))
+             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*Cyf - \
+Cxf*Cyn)*(-((Bxn*Fxmr)/gm) + (Cxn*Fxt)/gt - Bxn*Rxmr + Cxn*Rxt) - 
+                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - \
+Cyn*Rxmr + Cxn*Rymr)))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*(-((Cyn*Fxmr)/gm) + (Cxn*Fymr)/gm - Cyn*Rxmr + Cxn*Rymr)) + 
+                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*Fxmr)/gm) + (Cxn*Fyt)/gt - \
+Byn*Rxmr + Cxn*Ryt)))/gt)))/
+    (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Bxn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt) + 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gt)*
+         (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + (Power(Cxn,2)*Power(Cxn*Cyf - \
+Cxf*Cyn,2)*(getnbx - getnmx)*(-getnmy + getty))/Power(gm,2))*
+              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + \
+gettx))/gm - (Cxn*(getfmy - getty))/gt))) - 
+           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-getfmx + gettx))/gm - \
+(Cxn*(-getfmy + getty))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + \
+gettx))/gm))/gm - 
+                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(-getfmx + gettx))/gm))/gm))
+             /gt)) + (-((-((Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnby - \
+getnmy)*(-getnmx + gettx))/Power(gm,2)) + 
+              (Power(Cxn,2)*Power(Cxn*Cyf - Cxf*Cyn,2)*(getnbx - \
+getnmx)*(-getnmy + getty))/Power(gm,2))*
+            (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm)) - 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*((Cxn*(Cxn*Cyf - \
+Cxf*Cyn)*(getnby - getnmy)*
+                 (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(getfbx - getfmx))/gm - \
+(Cxn*(getfby - getfmy))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - \
+getfmx))/gm))/gm - 
+              (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnbx - getnmx)*(-((-(Ayn*Cxf) + \
+Ayf*Cxn)*((Cyn*(getfbx - getfmx))/gm - (Cxn*(getfby - getfmy))/gm)) + \
+(Ayn*(Cxn*Cyf - Cxf*Cyn)*(getfbx - getfmx))/gm))/gm))/
+          gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnby - getty)*(-((-(Bxn*Cxf) + \
+Bxf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-getfmx + gettx))/gm - \
+(Cxn*(getfmx - gettx))/gt)))/gt) + 
+         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(getnmx - gettx)*(-((-(Byn*Cxf) + \
+Byf*Cxn)*((Cyn*(-getfmx + gettx))/gm - (Cxn*(-getfmy + getty))/gm)) + 
+              (Cxn*Cyf - Cxf*Cyn)*((Byn*(-getfmx + gettx))/gm - (Cxn*(getfmy \
+- getty))/gt)))/gt))\
 \>", "Output",
- CellChangeTimes->{3.662108268824564*^9}]
+ CellChangeTimes->{3.663625573151862*^9, 3.6636269940465918`*^9}]
 }, Open  ]]
 },
-WindowSize->{715, 643},
-WindowMargins->{{49, Automatic}, {Automatic, 15}},
-FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
-2012)",
+WindowSize->{1916, 1058},
+WindowMargins->{{Automatic, 4}, {4, Automatic}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (December 4, 2014)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -423,17 +466,17 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 146, 2, 28, "Input"],
-Cell[706, 24, 4244, 118, 148, "Input"],
-Cell[4953, 144, 577, 10, 28, "Input"],
-Cell[5533, 156, 783, 15, 46, "Input"],
+Cell[557, 20, 146, 2, 32, "Input"],
+Cell[706, 24, 4240, 115, 165, "Input"],
+Cell[4949, 141, 577, 10, 32, "Input"],
+Cell[5529, 153, 783, 15, 55, "Input"],
 Cell[CellGroupData[{
-Cell[6341, 175, 330, 6, 28, "Input"],
-Cell[6674, 183, 6492, 105, 629, "Output"]
+Cell[6337, 172, 330, 6, 32, "Input"],
+Cell[6670, 180, 7688, 128, 985, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13203, 293, 231, 5, 28, "Input"],
-Cell[13437, 300, 6498, 105, 629, "Output"]
+Cell[14395, 313, 231, 5, 32, "Input"],
+Cell[14629, 320, 7691, 129, 985, "Output"]
 }, Open  ]]
 }
 ]

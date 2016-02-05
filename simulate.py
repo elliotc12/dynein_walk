@@ -20,7 +20,7 @@ else:
     rate = int(sys.argv[1])
 
 if length == "verylong":
-    runtime = 50000
+    runtime = 100000
 elif length == "long":
     runtime = 10000
 elif length == "normal":

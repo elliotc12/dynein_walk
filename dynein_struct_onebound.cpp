@@ -379,7 +379,6 @@ double Dynein_onebound::get_uby(){
     - lt * sin(get_uma()) - ls * sin(get_uba()) + bby;
 }
 
-
 /*** Get Cartesian Velocities ***/
 
 double Dynein_onebound::get_d_bbx() {
@@ -422,13 +421,17 @@ double Dynein_onebound::get_d_uby() {
   return ls * d_uba * -cos(uba) + get_d_umy();
 }
 
-/*** Get forces ***/
+/*** Get forces, state ***/
 onebound_forces Dynein_onebound::get_internal() {
   return f;
 }
 
 onebound_forces Dynein_onebound::get_brownian() {
   return r;
+}
+
+State Dynein_onebound::get_state() {
+  return state;
 }
 
 /*** Get angles ***/
