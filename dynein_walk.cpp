@@ -20,7 +20,7 @@ void simulateProtein(Dynein_onebound* dyn1, double tf) {
   FILE* data_file = fopen("data.txt", "a+");
   //FILE* run_file = fopen("run.txt", "a+");
 
-  MTRand* rand = new MTRand(RAND_INIT_SEED);
+  MTRand* rand = dyn1->rand;
 
   while( t < tf ) {
     while (t < tf) { // loop as long as it is onebound
@@ -106,13 +106,15 @@ int main(int argvc, char **argv) {
   double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
   double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
 
+  MTRand* rand = new MTRand(RAND_INIT_SEED);
   Dynein_onebound* dyn = new Dynein_onebound(
 				    bba_init, bma_init, uma_init, uba_init, // Initial angles
 				    0, 0,                // Starting coordinates
 				    FARBOUND,            // Initial state
 				    NULL,                // Optional custom internal forces
 				    NULL,                // Optional custom brownian forces
-				    NULL);               // Optional custom equilibrium angles
+				    NULL,                // Optional custom equilibrium angles
+                                    rand);
 
   resetLog();
   simulateProtein(dyn, runtime);

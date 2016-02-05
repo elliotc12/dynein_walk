@@ -11,7 +11,9 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 double bbx_init, double bby_init,
 				 State s, onebound_forces *internal_test,
 				 onebound_forces *brownian_test,
-				 onebound_equilibrium_angles* eq_angles) {
+				 onebound_equilibrium_angles* eq_angles,
+                                 MTRand* mtrand) {
+  rand = mtrand;
   bbx = bbx_init;
   bby = bby_init;
 
@@ -35,6 +37,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 
 Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
   rand = mtrand;
+  printf("new rand is %p\n", rand);
 
   if (s == State::NEARBOUND) {
     bbx = old_dynein->get_nbx();
@@ -66,6 +69,7 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
+    printf("the rand is now %p\n", rand);
     rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);

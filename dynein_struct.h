@@ -114,9 +114,12 @@ public:
                   double bbx_init, double bby_init, State s,
 		  onebound_forces *internal_test,
                   onebound_forces *brownian_test,
-		  onebound_equilibrium_angles* eq_angles);
+		  onebound_equilibrium_angles* eq_angles,
+                  MTRand* mtrand);
 
   Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* rand, State s);
+
+  MTRand *rand;
 
   /** Onebound functions **/
   void set_bba(double d);
@@ -185,7 +188,6 @@ private:
   void update_internal_forces();
 
   onebound_equilibrium_angles eq;      //Equilibrium angles
-  MTRand *rand;
 
   double bba;    //Onebound coordinates
   double bma;
