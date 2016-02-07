@@ -468,23 +468,6 @@ double Dynein_onebound::get_KE() {
 void Dynein_onebound::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
 	  "%.4f\t%.4f\t%d\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
-          get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
+	  get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
+	  get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
 }
-
-// void Dynein_onebound::log_run(double runtime, FILE* data_file) {
-//   // float run_length = get_bbx();
-//   // float ave_step_dist = distance_traveled / steps;
-//   // float ave_step_time = runtime / steps;
-
-//   printf("\n\n***********Run data**********\n");
-//   // printf("Run length: %f nm\n", run_length);
-//   // printf("Distance traveled: %f nm\n", distance_traveled);
-//   // printf("Steps: %d\n", steps);
-//   // printf("Average step length: %f nm\n", ave_step_dist);
-//   // printf("Average step time: %g s\n\n\n", ave_step_time);
-//   // fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-//   // fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n",
-//   // 	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
-//   fclose(data_file);
-// }

@@ -179,7 +179,6 @@ public:
   State get_state();
 
   void log(double t, FILE* data_file);
-  //void log_run(double runtime, FILE* data_file);
 
   void update_velocities();
 
@@ -274,7 +273,6 @@ public:
   double get_KE();
 
   void log(double t, FILE* data_file);
-  //void log_run(double runtime, FILE* data_file);
 
   void update_velocities();
 
@@ -309,4 +307,6 @@ double square(double num);
 double cube(double num);
 double fourth(double num);
 double fifth(double num);
-void   resetLog();
+void   resetLogs(FILE* data_file, FILE* config_file);
+void   log_run(FILE* run_file, double runtime,
+	       double run_length, double distance_traveled, int steps);

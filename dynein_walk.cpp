@@ -1,5 +1,7 @@
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "dynein_struct.h"
 
@@ -14,78 +16,7 @@ extern const double dt;
 double runtime;
 
 void simulateProtein(Dynein_onebound* dyn1, double tf) {
-  double t = 0;
-  Dynein_bothbound *dynB = 0;
 
-  FILE* data_file = fopen("data.txt", "a+");
-  //FILE* run_file = fopen("run.txt", "a+");
-
-  MTRand* rand = dyn1->rand;
-
-  while( t < tf ) {
-    while (t < tf) { // loop as long as it is onebound
-      if (rand->rand() < dyn1->get_unbinding_rate()*dt) {
-        // this is the case where we fall off and become zerobound!
-        printf("unbinding.");
-        //dyn1->log_run(t, run_file);
-        dyn1->log(t, data_file);
-        return;
-      } else if (rand->rand() < dyn1->get_binding_rate()*dt) {
-        // switch to bothbound
-        dynB = new Dynein_bothbound(dyn1, rand);
-        delete dyn1;
-        break;
-      } else { // move like normal
-        double temp_bba = dyn1->get_bba() + dyn1->get_d_bba() * dt;
-        double temp_bma = dyn1->get_bma() + dyn1->get_d_bma() * dt;
-        double temp_uma = dyn1->get_uma() + dyn1->get_d_uma() * dt;
-        double temp_uba = dyn1->get_uba() + dyn1->get_d_uba() * dt;
-
-        dyn1->set_bba(temp_bba);
-        dyn1->set_bma(temp_bma);
-        dyn1->set_uma(temp_uma);
-        dyn1->set_uba(temp_uba);
-      }
-      dyn1->update_velocities();
-      dyn1->log(t, data_file);
-      t += dt;
-    }
-    printf("switch to bothbound!\n");
-    while (t < tf) { // loop as long as it is bothbound
-      bool unbind_near = rand->rand() < dynB->get_near_unbinding_rate()*dt;
-      bool unbind_far = rand->rand() < dynB->get_far_unbinding_rate()*dt;
-      if (unbind_near && unbind_far) {
-        printf("THEY BOTH WANT TO FALL OFF TOGETHER!!!\n");
-        printf("WHAT SHOULD THEY DO????\n");
-      }
-      if (unbind_near) {
-        // switch to farbound
-	dyn1 = new Dynein_onebound(dynB, rand, FARBOUND);
-	delete dynB;
-        break;
-      } else if (unbind_far) {
-        // switch to nearbound
-	dyn1 = new Dynein_onebound(dynB, rand, NEARBOUND);
-	delete dynB;
-        break;
-      } else {
-	double temp_nma = dynB->get_nma() + dynB->get_d_nma()*dt;
-	double temp_fma = dynB->get_fma() + dynB->get_d_fma()*dt;
-
-	dynB->set_nma(temp_nma);
-	dynB->set_fma(temp_fma);
-      }
-
-      dynB->update_velocities();
-      dynB->log(t, data_file);
-      t += dt;
-    }
-    printf("switch to onebound!\n");
-  }
-
-  // dyn1->log_run(tf, run_file); // fix type
-
-  fclose(data_file);
 }
 
 
@@ -107,7 +38,7 @@ int main(int argvc, char **argv) {
   double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
-  Dynein_onebound* dyn = new Dynein_onebound(
+  Dynein_onebound* dyn_ob = new Dynein_onebound(
 				    bba_init, bma_init, uma_init, uba_init, // Initial angles
 				    0, 0,                // Starting coordinates
 				    FARBOUND,            // Initial state
@@ -115,9 +46,90 @@ int main(int argvc, char **argv) {
 				    NULL,                // Optional custom brownian forces
 				    NULL,                // Optional custom equilibrium angles
                                     rand);
+  Dynein_bothbound *dyn_bb = 0;
 
-  resetLog();
-  simulateProtein(dyn, runtime);
-  delete dyn;
+  double t = 0;
+
+  double distance_traveled = 0;
+  double run_length = 0;
+  double steps = 0;
+
+  FILE* data_file = fopen("data.txt", "w");
+  FILE* run_file = fopen("run.txt", "w");
+  FILE* config_file = fopen("config.txt", "w");
+
+  resetLogs(data_file, config_file);
+
+  while( t < runtime ) {
+    while (t < runtime) { // loop as long as it is onebound
+      if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) {
+        // this is the case where we fall off and become zerobound!
+        printf("unbinding.");
+        dyn_ob->log(t, data_file);
+	goto end_simulation;
+        return EXIT_SUCCESS;
+      } else if (rand->rand() < dyn_ob->get_binding_rate()*dt) {
+        // switch to bothbound
+	steps++;
+	distance_traveled += fabs(dyn_ob->get_ubx() - dyn_ob->get_bbx());
+	run_length = (dyn_ob->get_bbx() + dyn_ob->get_ubx()) / 2.0;
+
+        dyn_bb = new Dynein_bothbound(dyn_ob, rand);
+        delete dyn_ob;
+        break;
+      } else { // move like normal
+        double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
+        double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
+        double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
+        double temp_uba = dyn_ob->get_uba() + dyn_ob->get_d_uba() * dt;
+
+        dyn_ob->set_bba(temp_bba);
+        dyn_ob->set_bma(temp_bma);
+        dyn_ob->set_uma(temp_uma);
+        dyn_ob->set_uba(temp_uba);
+      }
+      dyn_ob->update_velocities();
+      dyn_ob->log(t, data_file);
+      t += dt;
+    }
+
+    printf("switch to bothbound!\n");
+    while (t < runtime) { // loop as long as it is bothbound
+      bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
+      bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate()*dt;
+      if (unbind_near && unbind_far) {
+        printf("THEY BOTH WANT TO FALL OFF TOGETHER!!!\n");
+        printf("WHAT SHOULD THEY DO????\n");
+      }
+      if (unbind_near) {
+        // switch to farbound
+	dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
+	delete dyn_bb;
+        break;
+      } else if (unbind_far) {
+        // switch to nearbound
+	dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
+	delete dyn_bb;
+        break;
+      } else {
+	double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma()*dt;
+	double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
+
+	dyn_bb->set_nma(temp_nma);
+	dyn_bb->set_fma(temp_fma);
+      }
+
+      dyn_bb->update_velocities();
+      dyn_bb->log(t, data_file);
+      t += dt;
+    }
+    printf("switch to onebound!\n");
+  }
+
+ end_simulation: log_run(run_file, t, run_length, distance_traveled, steps); // dontkillme
+  fclose(data_file);
+  fclose(run_file);
+  fclose(config_file);
+
   return 0;
 }

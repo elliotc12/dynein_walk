@@ -33,16 +33,28 @@ double fifth(double num) {
 	return num * num * num * num * num;
 }
 
-void resetLog() {
-  FILE* data_file = fopen("data.txt", "w");
-  FILE* config_file = fopen("config.txt", "w");
-
+void resetLogs(FILE* data_file, FILE* config_file) {
   fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\n",
           (double) gb, (double) gm, (double) gt, dt, runtime);
   fprintf(data_file,
 	  "#KE\tPE\tEnergy\tt\tc1x\tc1y\tc2x\tc2y\tc3x\tc3y\tc4x\tc4y\tc5x\tc5y\tS\n");
+}
 
-  fclose(data_file);
-  fclose(config_file);
+void log_run(FILE* run_file, double runtime, double run_length,
+			      double distance_traveled, int steps) {
+
+  float ave_step_dist = distance_traveled / steps;
+  float ave_step_time = runtime / steps;
+
+  printf("\n\n***********Run data**********\n");
+  printf("Run length: %g nm\n", run_length);
+  printf("Distance traveled: %g nm\n", distance_traveled);
+  printf("Steps: %d\n", steps);
+  printf("Average step length: %g nm\n", ave_step_dist);
+  printf("Average step time: %g s\n\n\n", ave_step_time);
+  fprintf(run_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
+  fprintf(run_file, "%f\t%f\t%d\t%f\t%g\n",
+  	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+  fclose(run_file);
 }
