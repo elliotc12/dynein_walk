@@ -432,10 +432,10 @@ d_Ln = (Cyf*f.fmx - Cxf*f.fmy + Cyf*gm*r.fmx - Cxf*gm*r.fmy)/((Cxn*Cyf - Cxf*Cyn
                 (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
          (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
               (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx()             + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
-  
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
+  //printf("bb.f.nby: %g, bb.r.nby: %g, both: %g\n", f.nby, r.nby, f.nby + r.nby);
   if (f.nby + r.nby >= BOTHBOUND_UNBINDING_FORCE) {
     return 1.0;
   } else return 0.0;
@@ -602,7 +602,8 @@ double Dynein_bothbound::get_KE() {
 }
 
 void Dynein_bothbound::log(int step, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), step, get_nbx(), get_nby(), get_nmx(), get_nmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND);
 }

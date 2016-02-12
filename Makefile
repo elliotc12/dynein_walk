@@ -27,7 +27,7 @@ test: dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities
 	g++ dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test
 
 plot: walk
-	./simulate.py veryfast verylong natural loop
+	./simulate.py veryfast short natural loop
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
