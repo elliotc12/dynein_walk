@@ -14,7 +14,7 @@ def close_windows(*_):
 if len(sys.argv) < 2:
   print "Usage: ./plot.py speed=n [loop]"
   sys.exit(1)
-  
+
 if len(sys.argv) == 3 and sys.argv[2] == "loop":
   loop = True
 else:
@@ -24,7 +24,7 @@ X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
 
 config = numpy.loadtxt("config.txt")
-data = numpy.genfromtxt("data.txt", delimiter="\t", skiprows=1)
+data = numpy.loadtxt("data.txt", delimiter="\t", skiprows=1)
 plt.ion()
 
 if str(type(data[0])) == "<type 'numpy.float64'>":
@@ -67,14 +67,14 @@ if len(data) < frames:
   unbound = True
 else:
   unbound = False
-  
+
 signal.signal(signal.SIGINT, close_windows)
 
 while i < len(data) or loop:
   if i >= len(data):
     if unbound:
       title_text.set_text('State: Unbound')
-      plt.draw()      
+      plt.draw()
       print "Protein unbound!"
       plt.pause(3)
     i = 0
@@ -94,40 +94,40 @@ while i < len(data) or loop:
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
-  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])     
-                  
+  stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])
+
   binding1.set_data(X[0], Y[0])
   motor1.set_data(X[1], Y[1])
   tail.set_data(X[2], Y[2])
   motor2.set_data(X[3], Y[3])
   binding2.set_data(X[4], Y[4])
-  
+
   if (data[i][14] == 0):
     title_text.set_text('State: Nearbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
-    
+
   elif (data[i][14] == 1):
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
     tail1.set_linestyle('--')
     tail2.set_linestyle('-')
     stalk2.set_linestyle('-')
-    
+
   elif (data[i][14] == 2):
     title_text.set_text('State: Bothbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
-  
+
   pe_text.set_text('PE: ' + str(data[i][1]))
   ke_text.set_text('KE: ' + str(data[i][0]))
 
   t_text.set_text("Progress: {:3.1f}%".format(data[i][3]/config[4]*100))
-  
+
   if len(sys.argv) >= 2:
     if sys.argv[1] == "step":
       raw_input("Hit enter to step.")
@@ -137,12 +137,12 @@ while i < len(data) or loop:
       plt.pause(0.001)
   else:
     i += 10
-    plt.pause(0.001)  
+    plt.pause(0.001)
 
   plt.draw()
 
 if unbound:
   title_text.set_text('State: Unbound')
-  plt.draw()      
+  plt.draw()
   print "Protein unbound!"
   plt.pause(3)

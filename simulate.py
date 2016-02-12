@@ -30,7 +30,6 @@ elif length == "short":
 else:
     runtime = int(sys.argv[2])
 
-
 if len(sys.argv) >= 5 and sys.argv[4] == "loop":
         loop = True
 else:
@@ -38,6 +37,7 @@ else:
 
 if (plot == "natural"):
     subprocess.call(["./walk", str(runtime), "0", "0", "0", "0"])
+    print "I just ran ./walk"
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "random"):

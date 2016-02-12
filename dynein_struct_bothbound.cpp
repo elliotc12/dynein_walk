@@ -71,11 +71,23 @@ void Dynein_bothbound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby);
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy);
-    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
+    printf("bothbound update brownian forces\n");
+    printf("&r: %p\n", &r);
+    printf("&r.nby: %p\n", &r.nby);
+    double a1;
+
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &a1, &a1); printf("nbx\n");
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &a1, &a1); printf("nmx\n");
+    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &a1, &a1);   printf("tx\n");
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &a1, &a1); printf("fmx\n");
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &a1, &a1); printf("fbx\n");
+
+
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby); printf("nbx\n");
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy); printf("nmx\n");
+    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);   printf("tx\n");
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy); printf("fmx\n");
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby); printf("fbx\n");
   }
 }
 
@@ -598,26 +610,8 @@ double Dynein_bothbound::get_KE() {
   return 0;
 }
 
-void Dynein_bothbound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), t, get_nbx(), get_nby(), get_nmx(), get_nmy(),
+void Dynein_bothbound::log(int step, FILE* data_file) {
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
+          get_KE(), get_PE(), get_KE() + get_PE(), step, get_nbx(), get_nby(), get_nmx(), get_nmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND);
 }
-
-// void Dynein_bothbound::log_run(float runtime, FILE* data_file) {
-//   // float run_length = (get_nbx() + get_fbx()) / 2;
-//   // float ave_step_dist = distance_traveled / steps;
-//   // float ave_step_time = runtime / steps;
-
-//   printf("\n\n***********Run data**********\n");
-//   // printf("Run length: %f nm\n", run_length);
-//   // printf("Distance traveled: %f nm\n", distance_traveled);
-//   // printf("Steps: %d\n", steps);
-//   // printf("Average step length: %f nm\n", ave_step_dist);
-//   // printf("Average step time: %g s\n\n\n", ave_step_time);
-//   // fprintf(data_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-//   // fprintf(data_file, "%f\t%f\t%d\t%f\t%g\n", run_length, distance_traveled, steps,
-//   // 	  ave_step_dist, ave_step_time);
-//   fclose(data_file);
-// }

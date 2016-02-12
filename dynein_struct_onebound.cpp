@@ -68,6 +68,7 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
+    printf("onebound update brownian forces\n");
     rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
@@ -465,9 +466,9 @@ double Dynein_onebound::get_KE() {
   return 0;
 }
 
-void Dynein_onebound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%.5g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
+void Dynein_onebound::log(int step, FILE* data_file) {
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
 	  "%.4f\t%.4f\t%d\n",
-	  get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
+	  get_KE(), get_PE(), get_KE() + get_PE(), step, get_bbx(), get_bby(), get_bmx(), get_bmy(),
 	  get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
 }

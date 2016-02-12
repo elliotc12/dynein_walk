@@ -49,12 +49,6 @@ const double RAND_INIT_SEED = 0;
 
 typedef enum
 {
-  PRE_POWERSTROKE,
-  POST_POWERSTROKE
-} Mode;
-
-typedef enum
-{
   NEARBOUND,
   FARBOUND,
   BOTHBOUND,
@@ -178,7 +172,7 @@ public:
 
   State get_state();
 
-  void log(double t, FILE* data_file);
+  void log(int step, FILE* data_file);
 
   void update_velocities();
 
@@ -203,7 +197,6 @@ private:
   onebound_forces r; //Brownian forces
   onebound_forces f; //Internal Forces
 
-  Mode mode;
   onebound_forces *brownian_testcase;
   onebound_forces *internal_testcase;
   State state;
@@ -272,7 +265,7 @@ public:
   double get_PE();
   double get_KE();
 
-  void log(double t, FILE* data_file);
+  void log(int step, FILE* data_file);
 
   void update_velocities();
 
@@ -295,7 +288,6 @@ private:
   bothbound_forces r; //Brownian forces
   bothbound_forces f; //Internal Forces
 
-  Mode mode;
   bothbound_forces *brownian_testcase;
   bothbound_forces *internal_testcase;
 };
