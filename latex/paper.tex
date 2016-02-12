@@ -56,15 +56,26 @@ simply by $\cos$ and $\sin$ of $\theta_n$ and $\theta_{ns}$:
   \right)
 \end{align}
 Looking at their derivatives gives
-\begin{align}
-  \dot{X}_{nm} &= ??? L_s\left(
-  \cos\theta_n\cos\theta_{ns} - \sin\theta_n\sin\theta_{ns}
-  \right) \dot{\cos\theta_n}
-  \\
-  \dot{Y}_{nm} &= ??? L_s\left(
-  \cos\theta_n\sin\theta_{ns} + \sin\theta_n\cos\theta_{ns}
-  \right)
-\end{align}
+\begin{multline}
+  \dot{X}_{nm} = L_s\Big(
+  \cos\theta_n\dot{\cos\theta_{ns}} + \cos\theta_{ns}\dot{\cos\theta_{n}} \\
+  - \sin\theta_n\dot{\sin\theta_{ns}} - \sin\theta_{ns}\dot{\sin\theta_{n}}
+  \Big)
+\end{multline}
+\begin{multline}
+  \dot{Y}_{nm} = L_s\Big(
+  \cos\theta_n\dot{\sin\theta_{ns}} + \sin\theta_{ns}\dot{\cos\theta_{n}} \\
+  + \sin\theta_n\dot{\cos\theta_{ns}} + \cos\theta_{ns}\dot{\sin\theta_{n}}
+  \Big)
+\end{multline}
+
+C++ code could look like:
+\begin{verbatim}
+  dXnm_dLn = Ls*(cosAn*dcosAns_dLn
+                 + cosAns*dcosAn_dLn
+                 - sinAn*dsinAns_dLn
+                 - sinAns*dsinAn_dLn);
+\end{verbatim}
 
 \section{One bound}
 
