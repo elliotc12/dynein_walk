@@ -56,5 +56,4 @@ void log_run(FILE* run_file, double runtime, double run_length,
   fprintf(run_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
   fprintf(run_file, "%f\t%f\t%d\t%f\t%g\n",
   	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
-  fclose(run_file);
 }

@@ -13,7 +13,6 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 onebound_forces *brownian_test,
 				 onebound_equilibrium_angles* eq_angles,
                                  MTRand* mtrand) {
-  rand = mtrand;
   bbx = bbx_init;
   bby = bby_init;
 
@@ -32,11 +31,12 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
     eq = onebound_post_powerstroke_internal_angles; // use experimental angles
   }
 
+  rand = mtrand;
+
   update_velocities();
 }
 
 Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
-  rand = mtrand;
 
   if (s == State::NEARBOUND) {
     bbx = old_dynein->get_nbx();
@@ -61,6 +61,8 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
     uba = old_dynein->get_nba();
   }
 
+  rand = mtrand;
+
   update_velocities();
 }
 
@@ -68,7 +70,6 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    printf("onebound update brownian forces\n");
     rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);

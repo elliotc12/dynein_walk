@@ -18,7 +18,6 @@ double runtime;
 /* *********************************** MAIN ****************************************** */
 
 int main(int argvc, char **argv) {
-  printf("entering walk.\n");
   if (argvc != 6) {
     printf("Error. Usage: ./walk runtime bla_init mla_init mra_init bra_init.\n");
     exit(EXIT_FAILURE);
@@ -46,19 +45,15 @@ int main(int argvc, char **argv) {
   // Dynein_bothbound *dyn_bb = 0;
 
   Dynein_onebound* dyn_ob = NULL;
-  printf("about to make bb\n");
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
 						  30 * M_PI / 180, 30 * M_PI / 180, 0,
-						  0, 10, NULL, NULL,
-						  NULL);
-  printf("just made bb\n");
+						  0, 10, NULL, NULL, NULL, rand);
   double t = 0;
 
   double distance_traveled = 0;
   double run_length = 0;
   double steps = 0;
 
-  printf("creating files...\n");
   FILE* data_file = fopen("data.txt", "w+");
   FILE* run_file = fopen("run.txt", "w+");
   FILE* config_file = fopen("config.txt", "w+");

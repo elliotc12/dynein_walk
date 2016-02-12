@@ -36,12 +36,11 @@ else:
     loop = False
 
 if (plot == "natural"):
-    subprocess.call(["./walk", str(runtime), "0", "0", "0", "0"])
-    print "I just ran ./walk"
+    subprocess.check_call(["./walk", str(runtime), "0", "0", "0", "0"])
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "random"):
     random.seed()
-    subprocess.call(["./walk", str(runtime), str(2*random.random()), \
+    subprocess.check_call(["./walk", str(runtime), str(2*random.random()), \
         str(2*random.random()), str(2*random.random()), str(2*random.random())])
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])

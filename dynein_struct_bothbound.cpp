@@ -14,7 +14,8 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
                                    double nby_init, double L_init,
                                    bothbound_forces* internal_test,
                                    bothbound_forces* brownian_test,
-                                   bothbound_equilibrium_angles* eq_angles) {
+                                   bothbound_equilibrium_angles* eq_angles,
+				   MTRand* mtrand) {
   nbx = nbx_init;
   nby = nby_init;
 
@@ -35,13 +36,13 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
     eq = bothbound_pre_powerstroke_internal_angles; // use experimental angles
   }
 
+  rand = mtrand;
+
   update_velocities();
 }
 
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) {
   // out of old dyn
-  rand = mtrand;
-
   if (old_dynein->get_state() == State::NEARBOUND) {
     nbx = old_dynein->get_bbx();
     nby = 0;
@@ -64,6 +65,8 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
+  rand = mtrand;
+
   update_velocities();
 }
 
@@ -71,23 +74,11 @@ void Dynein_bothbound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    printf("bothbound update brownian forces\n");
-    printf("&r: %p\n", &r);
-    printf("&r.nby: %p\n", &r.nby);
-    double a1;
-
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &a1, &a1); printf("nbx\n");
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &a1, &a1); printf("nmx\n");
-    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &a1, &a1);   printf("tx\n");
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &a1, &a1); printf("fmx\n");
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &a1, &a1); printf("fbx\n");
-
-
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby); printf("nbx\n");
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy); printf("nmx\n");
-    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);   printf("tx\n");
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy); printf("fmx\n");
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby); printf("fbx\n");
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby);
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy);
+    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
+    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
   }
 }
 

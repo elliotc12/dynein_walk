@@ -209,7 +209,8 @@ public:
   Dynein_bothbound(double nma_init, double fma_init, double nbx_init,
 		   double nby_init, double L_init,
 		   bothbound_forces* internal_test, bothbound_forces* brownian_test,
-		   bothbound_equilibrium_angles* eq_angles);
+		   bothbound_equilibrium_angles* eq_angles,
+		   MTRand* mtrand);
 
   Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* rand);
 
