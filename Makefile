@@ -35,6 +35,9 @@ derivation.pdf: latex/derivation.tex
 derivation_confirmation.pdf: latex/derivation_confirmation.tex
 	cd latex && pdflatex derivation_confirmation.tex && mv derivation_confirmation.pdf ..
 
+paper.pdf: latex/paper.tex
+	cd latex && pdflatex paper.tex && mv paper.pdf ..
+
 clean:
 	rm -f *.o
 	rm -f walk
