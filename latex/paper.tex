@@ -68,14 +68,48 @@ Looking at their derivatives gives
   + \sin\theta_n\dot{\cos\theta_{ns}} + \cos\theta_{ns}\dot{\sin\theta_{n}}
   \Big)
 \end{multline}
+which we can apply the chain rule to using
+\begin{align}
+  \dot{Y}_{nm} = \frac{\partial Y_{nm}}{\partial L_n} \dot{L_n}
+  +  \frac{\partial Y_{nm}}{\partial L_{f}} \dot{L_{f}}
+\end{align}
+and correspondingly for the $X$ formula.  So that now the interesting
+things to compute in order to relate the time derivatives of $L_n$ and
+$L_f$ to that of $Y_{nm}$ can easily be expressed in terms of these
+partial derivatives with respect to the lengths $L_n$ and $L_f$.  This
+gives us something like
+\begin{multline}
+  \frac{\partial X_{nm}}{\partial L_n} = L_s\Bigg(
+  \cos\theta_n\frac{\partial \cos\theta_{ns}}{\partial L_n}
+  + \cos\theta_{ns}\frac{\partial \cos\theta_{n}}{\partial L_n} \\
+  - \sin\theta_n\frac{\partial \sin\theta_{ns}}{\partial L_n}
+  - \sin\theta_{ns}\frac{\partial \sin\theta_{n}}{\partial L_n}
+  \Bigg)
+\end{multline}
+However, the $\sin$s of our angles are expressed in terms of the
+cosines, so we will (in practice) want to make use of the fact that
+\begin{align}
+  \frac{\partial \sin\theta_{n}}{\partial L_n} &=
+  \frac{d \sin\theta_{n}}{d \cos\theta_n}
+  \frac{\partial \cos\theta_{n}}{\partial L_n} \\
+  &=
+  -\frac{\cos\theta_{n}}{\sin\theta_n}
+  \frac{\partial \cos\theta_{n}}{\partial L_n}
+\end{align}
+Using this we could imagine simplifying our former equation using this
+expression for $\frac{\partial \sin\theta_{n}}{\partial L_n}$, but
+that would only make it harder to read and check.  Let's keep all
+chain rules and derivatives as explicit as possible!
 
-C++ code could look like:
+The
+corresponding C++ code could look like:
 \begin{verbatim}
   dXnm_dLn = Ls*(cosAn*dcosAns_dLn
                  + cosAns*dcosAn_dLn
                  - sinAn*dsinAns_dLn
                  - sinAns*dsinAn_dLn);
 \end{verbatim}
+Basically, we have lots of chain rules.
 
 \section{One bound}
 
