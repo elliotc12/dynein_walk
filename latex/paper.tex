@@ -44,6 +44,16 @@ We use two angles to determine the position of the motor domain:
     -\sqrt{1 - \cos^2\theta_{ns}} & \theta_{nm} > \pi
   \end{cases}
 \end{align}
+
+and the derivatives are given by:
+
+\begin{align}
+  \frac{\partial \cos\theta_n}{\partial L_n} &= -\frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\\
+  \frac{\partial \cos\theta_n}{\partial L_f} &= -\frac{L_f}{LL_n}\\
+  \frac{\partial \sin\theta_n}{\partial L_n} &= \frac{-\cos\theta_n}{\sqrt{1-\cos^2\theta_n}}
+  \frac{\partial \cos\theta_n}{\partial L_n}\\
+\end{align}
+
 Given these definitions, the position of the motor domain is given
 simply by $\cos$ and $\sin$ of $\theta_n$ and $\theta_{ns}$:
 \begin{align}
