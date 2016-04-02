@@ -84,14 +84,15 @@ simply by $\cos$ and $\sin$ of $\theta_n$ and $\theta_{ns}$:
 
 Looking at their derivatives gives:
 
-\begin{align}
-  \frac{dX_{nm}}{dL_n} &= L_s\Big(
+\begin{multline}
+  \frac{dX_{nm}}{dL_n} = L_s\Big(
   \cos\theta_n\frac{d\cos\theta_{ns}}{dL_n}
   + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_n} \\
-  &- \sin\theta_n\frac{d\sin\theta_{ns}}{dL_n}
+  - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_n}
   - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_n}
   \Big)\\
-\end{align}
+\end{multline}
+
 \begin{multline}
   \frac{dY_{nm}}{dL_n} = L_s\Big(
   \cos\theta_n\frac{d\sin\theta_{ns}}{dL_n}
@@ -109,6 +110,7 @@ Looking at their derivatives gives:
   - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_f}
   \Big)
 \end{multline}
+
 \begin{multline}
   \frac{dY_{nm}}{dL_f} = L_s\Big(
   \cos\theta_n\frac{d\sin\theta_{ns}}{dL_f}
@@ -125,63 +127,82 @@ Looking at their derivatives gives:
   \frac{dY_{t}}{dL_f} &= 0\\
 \end{align}
 
-which we apply our coordinate derivatives to and get:
-
-\begin{align}
-  \frac{dX_{nm}}{dL_n} &= L_s\Big(
-  \cos\theta_n\left(\frac{1}{L_s} - \frac{L_s^2 + L_n^2 - L_t^2}{2L_sL_n^2}\right)\\
-  &+ \cos\theta_{ns}\left(\frac{1}{L} - \frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\right)\\
-  &- \sin\theta_n\frac{-\cos\theta_n}{\sqrt{1-\cos^2\theta_n}}
-  \left(\frac{1}{L} - \frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\right)\\
-  &\pm \sin\theta_{ns}
-    \frac{\cos\theta_{ns}}{\sqrt{1-\cos^2\theta_{ns}}}
-    \left(\frac{1}{L_s} - \frac{L_s^2+L_n^2-L_t^2}{2LL_n^2}\right)
-  \Big)
-\end{align}
-
-which we can apply the chain rule to using:
-
-\begin{align}
-  \dot{Y}_{nm} = \frac{\partial Y_{nm}}{\partial L_n} \dot{L_n}
-  +  \frac{\partial Y_{nm}}{\partial L_{f}} \dot{L_{f}}
-\end{align}
-and correspondingly for the $X$ formula.  So that now the interesting
-things to compute in order to relate the time derivatives of $L_n$ and
-$L_f$ to that of $Y_{nm}$ can easily be expressed in terms of these
-partial derivatives with respect to the lengths $L_n$ and $L_f$.  This
-gives us something like
-\begin{multline}
-  \frac{\partial X_{nm}}{\partial L_n} = L_s\Bigg(
-  \cos\theta_n\frac{\partial \cos\theta_{ns}}{\partial L_n}
-  + \cos\theta_{ns}\frac{\partial \cos\theta_{n}}{\partial L_n} \\
-  - \sin\theta_n\frac{\partial \sin\theta_{ns}}{\partial L_n}
-  - \sin\theta_{ns}\frac{\partial \sin\theta_{n}}{\partial L_n}
-  \Bigg)
-\end{multline}
-However, the $\sin$s of our angles are expressed in terms of the
-cosines, so we will (in practice) want to make use of the fact that
-\begin{align}
-  \frac{\partial \sin\theta_{n}}{\partial L_n} &=
-  \frac{d \sin\theta_{n}}{d \cos\theta_n}
-  \frac{\partial \cos\theta_{n}}{\partial L_n} \\
-  &=
-  -\frac{\cos\theta_{n}}{\sin\theta_n}
-  \frac{\partial \cos\theta_{n}}{\partial L_n}
-\end{align}
-Using this we could imagine simplifying our former equation using this
-expression for $\frac{\partial \sin\theta_{n}}{\partial L_n}$, but
-that would only make it harder to read and check.  Let's keep all
-chain rules and derivatives as explicit as possible!
-
-The
-corresponding C++ code could look like:
+The corresponding C++ code could look like:
 \begin{verbatim}
   dXnm_dLn = Ls*(cosAn*dcosAns_dLn
                  + cosAns*dcosAn_dLn
                  - sinAn*dsinAns_dLn
                  - sinAns*dsinAn_dLn);
 \end{verbatim}
-Basically, we have lots of chain rules.
+Basically, we have lots of chain rules.\\
+
+We then create a system of equations by equating velocities from Brownian dynamics to the velocities
+we derived above:
+
+\onecolumn
+
+\begin{align}
+  \dot{X}_{nm} = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{bm} - X_{bb})
+  + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml}
+  &= \frac{X_{nm}}{Ln}\dot{L}_n + \frac{X_{nm}}{Lf}\dot{L}_f\\
+  \dot{X}_{t } = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{bm})
+  + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt }
+  &= \frac{X_{t}}{Ln}\dot{L}_n + \frac{X_{t}}{Lf}\dot{L}_f\\
+  \dot{X}_{fm} = \hspace{1cm}& \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{ft}(X_{fm} - X_{t })
+  + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr}
+  &= \frac{X_{fm}}{Ln}\dot{L}_n + \frac{X_{fm}}{Lf}\dot{L}_f
+\end{align}
+
+\begin{align}
+  \dot{Y}_{nm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{bm} - Y_{bb})
+  + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml}
+  &= \frac{Y_{nm}}{Ln}\dot{L}_n + \frac{Y_{nm}}{Lf}\dot{L}_f\\
+  \dot{Y}_{t}  &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{bm})
+  + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt }
+  &= \frac{Y_{t}}{Ln}\dot{L}_n + \frac{Y_{t}}{Lf}\dot{L}_f\\
+  \dot{Y}_{fm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{ft}(Y_{fm} - Y_{t })
+  + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr}
+  &= \frac{Y_{fm}}{Ln}\dot{L}_n + \frac{Y_{fm}}{Lf}\dot{L}_f
+\end{align}
+
+\section{Matrix Solution via Mathematica}
+Here we convert the above system into matrix form, solve it in Mathematica and list the results.
+
+\[
+\begin{pmatrix}
+  -\frac{X_{nm}}{Ln} & -\frac{X_{nm}}{Lf}
+  & -\frac{X_{bm}-X_{bb}}{\gamma} & \frac{X_{t}-X_{bm}}{\gamma} & 0 & 0\\
+  -\frac{X_{t}}{Ln} & -\frac{X_{t}}{Lf}
+  & 0 & -\frac{X_{t}-X_{bm}}{\gamma} & \frac{X_{fm}-X_{t}}{\gamma} & 0\\
+  -\frac{X_{fm}}{Ln} & -\frac{X_{fm}}{Lf}
+  & 0 & 0 & -\frac{X_{fm}-X_{t}}{\gamma} & \frac{X_{fb}-X_{fm}}{\gamma}\\
+  -\frac{Y_{nm}}{Ln} & -\frac{Y_{nm}}{Lf}
+  & -\frac{Y_{bm}-Y_{bb}}{\gamma} & \frac{Y_{t}-Y_{bm}}{\gamma} & 0 & 0\\
+  -\frac{Y_{t}}{Ln} & -\frac{Y_{t}}{Lf}
+  & 0 & -\frac{Y_{t}-Y_{bm}}{\gamma} & \frac{Y_{fm}-Y_{t}}{\gamma} & 0\\
+  -\frac{Y_{fm}}{Ln} & -\frac{Y_{fm}}{Lf}
+  & 0 & 0 & -\frac{Y_{fm}-Y_{t}}{\gamma} & \frac{Y_{fb}-Y_{fm}}{\gamma}\\
+\end{pmatrix}
+\begin{pmatrix}
+  \dot{L}_n\\
+  \dot{L}_f\\
+  \lambda_{bs}\\
+  \lambda_{bt}\\
+  \lambda_{ft}\\
+  \lambda_{fs}\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+  -\frac{F_{xml}}{\gamma} - R_{xml}\\
+  -\frac{F_{xt}}{\gamma} - R_{xt}\\
+  -\frac{F_{xmr}}{\gamma} - R_{xmr}\\
+  -\frac{F_{yml}}{\gamma} - R_{yml}\\
+  -\frac{F_{yt}}{\gamma} - R_{yt}\\
+  -\frac{F_{ymr}}{\gamma} - R_{ymr}\\
+\end{pmatrix}
+\]
+
+\twocolumn
 
 \section{One bound}
 

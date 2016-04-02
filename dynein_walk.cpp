@@ -47,7 +47,7 @@ int main(int argvc, char **argv) {
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
 						  20 * M_PI / 180,
-						  20 * M_PI / 180,
+						  2 * M_PI / 180,
 						  0,
 						  0,
 						  10,
