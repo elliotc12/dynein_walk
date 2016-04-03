@@ -166,130 +166,171 @@ void Dynein_bothbound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  if (nma > M_PI) pm_n = -1;
-  if (fma > M_PI) pm_f = -1;
-
   double cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   double sinAn = sqrt(1 - cosAn*cosAn);
   double cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
   double sinAns = (nma < M_PI) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
 
+  double cosAf = (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
+  double sinAf = sqrt(1 - cosAf*cosAf);
+  double cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
+  double sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
+
   double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   double dcosAn_dLf = -(Lf) / (L*Ln);
   double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
   double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
-  
+  double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
+  double dcosAns_dLf = 0;
+  double dsinAns_dLn = (nma < M_PI) ?
+     -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
+    : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
+  double dsinAns_dLf = 0;
+
+  double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
+  double dcosAf_dLn = -(Ln) / (L*Lf);
+  double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
+  double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
+  double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
+  double dcosAfs_dLn = 0;
+  double dsinAfs_dLf = (fma < M_PI) ?
+     -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
+    : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
+  double dsinAfs_dLn = 0;
+
+  double dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
+			- sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
+  double dYnm_dLn = Ls*(cosAn * dsinAns_dLn + sinAns * dcosAn_dLn
+			+ sinAn * dcosAns_dLn + cosAns * dsinAn_dLn);
+  double dXnm_dLf = Ls*(cosAn * dcosAns_dLf + cosAns * dcosAn_dLf
+			- sinAn * dsinAns_dLf - sinAns * dsinAn_dLf);
+  double dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
+			+ sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
+
+  double dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
+			- sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
+  double dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
+			+ sinAf * dcosAfs_dLf + cosAfs * dsinAf_dLf);
+  double dXfm_dLn = Ls*(cosAf * dcosAfs_dLn + cosAfs * dcosAf_dLn
+			- sinAf * dsinAfs_dLn - sinAfs * dsinAf_dLn);
+  double dYfm_dLn = Ls*(cosAf * dsinAfs_dLn + sinAfs * dcosAf_dLn
+			+ sinAf * dcosAfs_dLn + cosAfs * dsinAf_dLn);
+
+  double dXt_dLn = cosAn;
+  double dYt_dLn = sinAn;
+  double dXt_dLf = 0;
+  double dYt_dLf = 0;
 
   // David -- emacs comand to take all below and make it 100-char lines?
 
-d_Ln = (Cyf*f.fmx - Cxf*f.fmy + Cyf*gm*r.fmx - Cxf*gm*r.fmy)/((Cxn*Cyf - Cxf*Cyn)*gm) - ((Cyf*get_fmx() - Cxf*get_fmy() - Cyf*get_tx() + Cxf*get_ty())*
-      (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
-               (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
+  d_Ln = (dYfm_dLf*f.fmx - dXfm_dLf*f.fmy + dYfm_dLf*gm*r.fmx - dXfm_dLf*gm*r.fmy)/((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm) - ((dYfm_dLf*get_fmx() - dXfm_dLf*get_fmy() - dYfm_dLf*get_tx() + dXfm_dLf*get_ty())*
+      (-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dXt_dLn*f.fmx)/gm) + (dXfm_dLn*f.tx)/gt - dXt_dLn*r.fmx + dXfm_dLn*r.tx) - 
+               (-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gt) + 
 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
-             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt))/
-    ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-               (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-             (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)) - 
-   (((-(Cyf*get_fbx()) + Cxf*get_fby() + Cyf*get_fmx() - Cxf*get_fmy())/((Cxn*Cyf - Cxf*Cyn)*gm) - 
-        ((Cyf*get_fmx() - Cxf*get_fmy() - Cyf*get_tx() + Cxf*get_ty())*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*
-                  (-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt))/
-         ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                    (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                  (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)))*
-      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                  (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)*
-         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*f.nmx)/gm - (Axn*f.fmx)/gm + Cxn*r.nmx - Axn*r.fmx) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm - 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*f.fmx)/gm) + (Cxn*f.nmy)/gm - Ayn*r.fmx + Cxn*r.nmy) - 
-                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm))/gt) - 
-           (-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty))) - 
-        (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
-                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
-                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt)))/
-    (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt)*
-         (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)) + (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + 
-              (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm)) - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                 (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gm - 
-              (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gm))/
-          gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-              (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
+        (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + 
+             (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty)))/gt))/
+    ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+               (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+        (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+             (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)) - 
+   (((-(dYfm_dLf*get_fbx()) + dXfm_dLf*get_fby() + dYfm_dLf*get_fmx() - dXfm_dLf*get_fmy())/((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm) - 
+        ((dYfm_dLf*get_fmx() - dXfm_dLf*get_fmy() - dYfm_dLf*get_tx() + dXfm_dLf*get_ty())*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*
+                  (-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt) + 
+             (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt))/
+         ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                    (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+             (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                  (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)))*
+      ((-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                  (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)*
+         (-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                     ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXfm_dLn*f.nmx)/gm - (dXnm_dLn*f.fmx)/gm + dXfm_dLn*r.nmx - dXnm_dLn*r.fmx) - (-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gm - 
+                  (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYnm_dLn*f.fmx)/gm) + (dXfm_dLn*f.nmy)/gm - dYnm_dLn*r.fmx + dXfm_dLn*r.nmy) - 
+                       (-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gm))/gt) - 
+           (-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+            (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty))) - 
+        (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+              (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt))) - 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                   (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm - 
+                (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm))
+             /gt)*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dXt_dLn*f.fmx)/gm) + (dXfm_dLn*f.tx)/gt - dXt_dLn*r.fmx + dXfm_dLn*r.tx) - 
+                  (-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty)))/gt)))/
+    (-((-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt)*
+         (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+              (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt))) - 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                   (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm - 
+                (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm))
+             /gt)) + (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + 
+              (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+            (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm)) - 
+         (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                 (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gm - 
+              (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gm))/
+          gt)*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+         (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+              (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
 
-  d_Lf = (-(Cyn*f.fmx) + Cxn*f.fmy - Cyn*gm*r.fmx + Cxn*gm*r.fmy)/((Cxn*Cyf - Cxf*Cyn)*gm) - 
-   ((-(Cyn*get_fmx()) + Cxn*get_fmy() + Cyn*get_tx() - Cxn*get_ty())*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*
-             ((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
-             (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt))/
-    ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-               (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-        (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-             (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)) - 
-   (((Cyn*get_fbx() - Cxn*get_fby() - Cyn*get_fmx() + Cxn*get_fmy())/((Cxn*Cyf - Cxf*Cyn)*gm) - 
-        ((-(Cyn*get_fmx()) + Cxn*get_fmy() + Cyn*get_tx() - Cxn*get_ty())*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*
-                  (-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt))/
-         ((Cxn*Cyf - Cxf*Cyn)*gm*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                    (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-             (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                  (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)))*
-      ((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                  (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)*
-         (-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                     ((Cxn*Cyf - Cxf*Cyn)*((Cxn*f.nmx)/gm - (Axn*f.fmx)/gm + Cxn*r.nmx - Axn*r.fmx) - (-(Axn*Cxf) + Axf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm - 
-                  (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*((Cxn*Cyf - Cxf*Cyn)*(-((Ayn*f.fmx)/gm) + (Cxn*f.nmy)/gm - Ayn*r.fmx + Cxn*r.nmy) - 
-                       (-(Ayn*Cxf) + Ayf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gm))/gt) - 
-           (-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty))) - 
-        (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*Cyf - Cxf*Cyn)*(-((Bxn*f.fmx)/gm) + (Cxn*f.tx)/gt - Bxn*r.fmx + Cxn*r.tx) - 
-                  (-(Bxn*Cxf) + Bxf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*(-((Cyn*f.fmx)/gm) + (Cxn*f.fmy)/gm - Cyn*r.fmx + Cxn*r.fmy)) + 
-                (Cxn*Cyf - Cxf*Cyn)*(-((Byn*f.fmx)/gm) + (Cxn*f.ty)/gt - Byn*r.fmx + Cxn*r.ty)))/gt)))/
-    (-((-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Bxn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt) + 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gt)*
-         (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-              (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt))) - 
-           (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                   (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm - 
-                (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(-get_fmx() + get_tx()))/gm))/gm))
-             /gt)) + (-((-((pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + 
-              (pow(Cxn,2)*pow(Cxn*Cyf - Cxf*Cyn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
-            (-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Byn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm)) - 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_nmy())*
-                 (-((-(Axn*Cxf) + Axf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Axn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gm - 
-              (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nbx() - get_nmx())*(-((-(Ayn*Cxf) + Ayf*Cxn)*((Cyn*(get_fbx() - get_fmx()))/gm - (Cxn*(get_fby() - get_fmy()))/gm)) + (Ayn*(Cxn*Cyf - Cxf*Cyn)*(get_fbx() - get_fmx()))/gm))/gm))/
-          gt)*(-((Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nby() - get_ty())*(-((-(Bxn*Cxf) + Bxf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-                (Cxn*Cyf - Cxf*Cyn)*((Bxn*(-get_fmx() + get_tx()))/gm - (Cxn*(get_fmx() - get_tx()))/gt)))/gt) + 
-         (Cxn*(Cxn*Cyf - Cxf*Cyn)*(get_nmx() - get_tx())*(-((-(Byn*Cxf) + Byf*Cxn)*((Cyn*(-get_fmx() + get_tx()))/gm - (Cxn*(-get_fmy() + get_ty()))/gm)) + 
-              (Cxn*Cyf - Cxf*Cyn)*((Byn*(-get_fmx()             + get_tx()))/gm - (Cxn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
+  d_Lf = (-(dYfm_dLn*f.fmx) + dXfm_dLn*f.fmy - dYfm_dLn*gm*r.fmx + dXfm_dLn*gm*r.fmy)/((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm) - 
+   ((-(dYfm_dLn*get_fmx()) + dXfm_dLn*get_fmy() + dYfm_dLn*get_tx() - dXfm_dLn*get_ty())*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*
+             ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dXt_dLn*f.fmx)/gm) + (dXfm_dLn*f.tx)/gt - dXt_dLn*r.fmx + dXfm_dLn*r.tx) - (-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gt) + 
+        (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + 
+             (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty)))/gt))/
+    ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+               (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+        (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+             (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)) - 
+   (((dYfm_dLn*get_fbx() - dXfm_dLn*get_fby() - dYfm_dLn*get_fmx() + dXfm_dLn*get_fmy())/((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm) - 
+        ((-(dYfm_dLn*get_fmx()) + dXfm_dLn*get_fmy() + dYfm_dLn*get_tx() - dXfm_dLn*get_ty())*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*
+                  (-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt) + 
+             (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt))/
+         ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*gm*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                    (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+             (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                  (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)))*
+      ((-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                  (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)*
+         (-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                     ((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXfm_dLn*f.nmx)/gm - (dXnm_dLn*f.fmx)/gm + dXfm_dLn*r.nmx - dXnm_dLn*r.fmx) - (-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gm - 
+                  (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYnm_dLn*f.fmx)/gm) + (dXfm_dLn*f.nmy)/gm - dYnm_dLn*r.fmx + dXfm_dLn*r.nmy) - 
+                       (-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gm))/gt) - 
+           (-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+            (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty))) - 
+        (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+              (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt))) - 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                   (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm - 
+                (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm))
+             /gt)*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dXt_dLn*f.fmx)/gm) + (dXfm_dLn*f.tx)/gt - dXt_dLn*r.fmx + dXfm_dLn*r.tx) - 
+                  (-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*(-((dYfm_dLn*f.fmx)/gm) + (dXfm_dLn*f.fmy)/gm - dYfm_dLn*r.fmx + dXfm_dLn*r.fmy)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-((dYt_dLn*f.fmx)/gm) + (dXfm_dLn*f.ty)/gt - dYt_dLn*r.fmx + dXfm_dLn*r.ty)))/gt)))/
+    (-((-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt) + 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gt)*
+         (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+              (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt))) - 
+           (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                   (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm - 
+                (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(-get_fmx() + get_tx()))/gm))/gm))
+             /gt)) + (-((-((pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nby() - get_nmy())*(-get_nmx() + get_tx()))/pow(gm,2)) + 
+              (pow(dXfm_dLn,2)*pow(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn,2)*(get_nbx() - get_nmx())*(-get_nmy() + get_ty()))/pow(gm,2))*
+            (-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYt_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm)) - 
+         (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_nmy())*
+                 (-((-(dXnm_dLn*dXfm_dLf) + dXnm_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dXnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gm - 
+              (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nbx() - get_nmx())*(-((-(dYnm_dLn*dXfm_dLf) + dYnm_dLf*dXfm_dLn)*((dYfm_dLn*(get_fbx() - get_fmx()))/gm - (dXfm_dLn*(get_fby() - get_fmy()))/gm)) + (dYnm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_fbx() - get_fmx()))/gm))/gm))/
+          gt)*(-((dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nby() - get_ty())*(-((-(dXt_dLn*dXfm_dLf) + dXt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+                (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dXt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmx() - get_tx()))/gt)))/gt) + 
+         (dXfm_dLn*(dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*(get_nmx() - get_tx())*(-((-(dYt_dLn*dXfm_dLf) + dYt_dLf*dXfm_dLn)*((dYfm_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(-get_fmy() + get_ty()))/gm)) + 
+              (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
