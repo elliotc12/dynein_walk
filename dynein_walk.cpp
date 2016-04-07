@@ -46,8 +46,8 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  20 * M_PI / 180,
-						  2 * M_PI / 180,
+						  80 * M_PI / 180,
+						  80 * M_PI / 180,
 						  0,
 						  0,
 						  10,
@@ -134,7 +134,7 @@ int main(int argvc, char **argv) {
     }
   }
 
- end_simulation: log_run(run_file, t, run_length, distance_traveled, steps); // dontkillme
+ end_simulation: log_run(run_file, t, run_length, distance_traveled, steps);
   fclose(data_file);
   fclose(run_file);
   fclose(config_file);

@@ -391,15 +391,11 @@ double Dynein_bothbound::get_fma() {
 }
 
 double Dynein_bothbound::get_nba() {
-  double Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
-  double Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
   double pm_n = (nma > M_PI) ? -1.0 : 1.0;
   return acos((L*L + Ln*Ln - Lf*Lf)/(2*L*Ln)) + pm_n * acos((Ls*Ls + Ln*Ln - Lt*Lt)/(2*Ls*Ln));
 }
 
 double Dynein_bothbound::get_fba() {
-  double Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
-  double Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
   double pm_f = (fma > M_PI) ? -1.0 : 1.0; // right?
   return acos((L*L + Lf*Lf - Ln*Ln)/(2*L*Lf)) + pm_f * acos((Ls*Ls + Lf*Lf - Lt*Lt)/(2*Ls*Lf));
 }
