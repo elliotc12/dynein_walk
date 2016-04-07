@@ -35,8 +35,12 @@ if len(sys.argv) >= 5 and sys.argv[4] == "loop":
 else:
     loop = False
 
-if (plot == "natural"):
+def verbose_run(command):
+    print ' '.join(command)
     subprocess.check_call(["./walk", str(runtime), "0", "0", "0", "0"])
+
+if (plot == "natural"):
+    verbose_run(["./walk", str(runtime), "0", "0", "0", "0"])
     subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
 
 if (plot == "random"):

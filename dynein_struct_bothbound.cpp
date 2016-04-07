@@ -27,9 +27,6 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
   internal_testcase = internal_test;
   brownian_testcase = brownian_test;
 
-  Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
-  Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
-
   if (eq_angles) {
     eq = *eq_angles; // use test angles
   } else {
@@ -61,9 +58,6 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
 
     L = old_dynein->get_bbx() - old_dynein->get_ubx();
   }
-
-  Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
-  Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
   rand = mtrand;
 
@@ -162,19 +156,35 @@ void Dynein_bothbound::update_internal_forces() {
   }
 }
 
+void Dynein_bothbound::update_coordinates() {
+  Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
+  Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
+
+  cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
+  sinAn = sqrt(1 - cosAn*cosAn);
+  cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
+  sinAns = (nma < M_PI) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
+
+  cosAf = (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
+  sinAf = sqrt(1 - cosAf*cosAf);
+  cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
+  sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
+
+  xnm = Ls*(cosAn*cosAns - sinAn*sinAns);
+  ynm = Ls*(cosAn*sinAns + sinAn*cosAns);
+  xt = Ln*cosAn;
+  yt = Ln*sinAn;
+  xfm = L + Ls*(cosAf*cosAfs - sinAf*sinAfs);
+  yfm = Ls*(cosAf*sinAfs + sinAf*cosAfs);
+
+  // angle of first stalk from horizontal
+  nba = atan2(ynm, xnm);
+}
+
 void Dynein_bothbound::update_velocities() {
+  update_coordinates();
   update_internal_forces();
   update_brownian_forces();
-
-  double cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
-  double sinAn = sqrt(1 - cosAn*cosAn);
-  double cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
-  double sinAns = (nma < M_PI) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
-
-  double cosAf = (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
-  double sinAf = sqrt(1 - cosAf*cosAf);
-  double cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
-  double sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
   double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   double dcosAn_dLf = -(Lf) / (L*Ln);
@@ -501,4 +511,5 @@ void Dynein_bothbound::log(int step, FILE* data_file) {
 	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
           get_KE(), get_PE(), get_KE() + get_PE(), step, get_nbx(), get_nby(), get_nmx(), get_nmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND);
+  fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
 }

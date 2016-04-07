@@ -38,7 +38,7 @@ void resetLogs(FILE* data_file, FILE* config_file) {
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\n",
           (double) gb, (double) gm, (double) gt, dt, runtime);
   fprintf(data_file,
-	  "#KE\tPE\tEnergy\tt\tc1x\tc1y\tc2x\tc2y\tc3x\tc3y\tc4x\tc4y\tc5x\tc5y\tS\n");
+	  "#KE\tPE\tEnergy\t%10s\tb1x\tm1y\tm1x\tb2y\ttx\tty\tm2x\tm2y\tb2x\tb2y\tS\n", "t");
 }
 
 void log_run(FILE* run_file, double runtime, double run_length,

@@ -268,6 +268,7 @@ public:
 
   void log(int step, FILE* data_file);
 
+  void update_coordinates();
   void update_velocities();
 
 private:
@@ -281,8 +282,6 @@ private:
   double nbx, nby;
   double L;
 
-  double Ln, Lf;
-
   double d_Ln;  //Bothbound velocities
   double d_Lf;
 
@@ -291,6 +290,16 @@ private:
 
   bothbound_forces *brownian_testcase;
   bothbound_forces *internal_testcase;
+
+  // Various distances and angles useful in computations (see paper)
+  double Ln, Lf;
+  double cosAn, sinAn, cosAns, sinAns;
+  double cosAf, sinAf, cosAfs, sinAfs;
+  double xnm, xfm, xt;
+  double ynm, yfm, yt;
+
+  // Angles needed for torque computations
+  double nba;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */
