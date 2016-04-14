@@ -20,7 +20,7 @@
 \section{Both bound}
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{../figures/code-bothbound.png}
+  \includegraphics[width=\columnwidth]{../figures/code-bothbound}
   \caption{Angles used in both-bound case.}\label{fig:bothbound}
 \end{figure}
 
@@ -168,9 +168,28 @@ we derived above:
   &= \frac{Y_{fm}}{Ln}\dot{L}_n + \frac{Y_{fm}}{Lf}\dot{L}_f
 \end{align}
 
+\twocolumn
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{../figures/similar-bothbound}
+  \caption{Angles used in both-bound case.}\label{fig:similar}
+\end{figure}
+
 \subsection{Farbound coordinates}
-The farbound coordinates are defined identically to the nearbound coordinates, except
-Ln and Lf coordinates switch places.
+The farbound coordinates are defined similarly (but not quite) to the nearbound coordinates, with
+$L_n$ and $L_f$ coordinates switched places.
+\begin{align}
+  \cos\theta_f &= -\frac{L^2 + L_f^2 - L_n^2}{2L L_f} \\
+  \sin\theta_{f} &= \sqrt{1 - \cos^2\theta_{f}} \\
+  \cos\theta_{fs} &= \frac{L_s^2 + L_f^2 - L_t^2}{2L_s L_f} \\
+  \sin\theta_{fs} &=
+  \begin{cases}
+    +\sqrt{1 - \cos^2\theta_{fs}} & \theta_{fm} < \pi \\
+    -\sqrt{1 - \cos^2\theta_{fs}} & \theta_{fm} > \pi
+  \end{cases}
+\end{align}
+
+\onecolumn
 
 \section{Matrix Solution via Mathematica}
 Here we convert the above system into matrix form, solve it in Mathematica and list the results.
