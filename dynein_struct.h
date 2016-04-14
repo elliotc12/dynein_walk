@@ -295,8 +295,8 @@ private:
   double Ln, Lf;
   double cosAn, sinAn, cosAns, sinAns;
   double cosAf, sinAf, cosAfs, sinAfs;
-  double xnm, xfm, xt;
-  double ynm, yfm, yt;
+  double nmx, fmx, tx;
+  double nmy, fmy, ty;
 
   // Angles needed for torque computations
   double nba;

@@ -170,15 +170,15 @@ void Dynein_bothbound::update_coordinates() {
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
   sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
-  xnm = Ls*(cosAn*cosAns - sinAn*sinAns);
-  ynm = Ls*(cosAn*sinAns + sinAn*cosAns);
-  xt = Ln*cosAn;
-  yt = Ln*sinAn;
-  xfm = L + Ls*(cosAf*cosAfs - sinAf*sinAfs);
-  yfm = Ls*(cosAf*sinAfs + sinAf*cosAfs);
+  nmx = Ls*(cosAn*cosAns - sinAn*sinAns);
+  nmy = Ls*(cosAn*sinAns + sinAn*cosAns);
+  tx = Ln*cosAn;
+  ty = Ln*sinAn;
+  fmx = L + Ls*(cosAf*cosAfs - sinAf*sinAfs);
+  fmy = Ls*(cosAf*sinAfs + sinAf*cosAfs);
 
   // angle of first stalk from horizontal
-  nba = atan2(ynm, xnm);
+  nba = atan2(nmy, nmx);
 }
 
 void Dynein_bothbound::update_velocities() {
