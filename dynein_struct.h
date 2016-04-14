@@ -221,14 +221,14 @@ public:
   double get_nma(); // actual bothbound coordinates
   double get_fma();
 
-  double get_nba(); // utility fns, calculated from nma, fma
-  double get_fba();
+  double get_nba() { return nba; }
+  double get_fba() { return fba; }
 
-  double get_nbx();
-  double get_nmx();
-  double get_tx();
-  double get_fmx();
-  double get_fbx();
+  double get_nbx() { return nbx; }
+  double get_nmx() { return nmx; }
+  double get_tx() { return tx; }
+  double get_fmx() { return fmx; }
+  double get_fbx() { return nbx + L; }
 
   double get_nby();
   double get_nmy();
@@ -299,7 +299,7 @@ private:
   double nmy, fmy, ty;
 
   // Angles needed for torque computations
-  double nba;
+  double nba, fba;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */
