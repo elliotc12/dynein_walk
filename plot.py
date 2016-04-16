@@ -74,9 +74,17 @@ while i < len(data) or loop:
   if i >= len(data):
     if unbound:
       title_text.set_text('State: Unbound')
+      stalk1.set_color('r')
+      tail1.set_color('r')
+      tail2.set_color('r')
+      stalk2.set_color('r')
       plt.draw()
       print "Protein unbound!"
       plt.pause(3)
+      stalk1.set_color('black')
+      tail1.set_color('black')
+      tail2.set_color('black')
+      stalk2.set_color('black')
     i = 0
 
   X[0] = data[i][4]

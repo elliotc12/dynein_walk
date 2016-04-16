@@ -163,7 +163,7 @@ void Dynein_bothbound::update_coordinates() {
   cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
   sinAns = (nma < M_PI) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
 
-  cosAf = (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
+  cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
   sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);

@@ -38,8 +38,8 @@ const double ct = 0.01; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double ONEBOUND_UNBINDING_FORCE = 8e11;
-const double BOTHBOUND_UNBINDING_FORCE = 8e11;
+const double ONEBOUND_UNBINDING_FORCE = 8e13;
+const double BOTHBOUND_UNBINDING_FORCE = 8e13;
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
