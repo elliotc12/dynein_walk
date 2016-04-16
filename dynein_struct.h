@@ -38,8 +38,8 @@ const double ct = 0.01; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double ONEBOUND_UNBINDING_FORCE = 8e11;
-const double BOTHBOUND_UNBINDING_FORCE = 2e11;
+const double ONEBOUND_UNBINDING_FORCE = 8e12;
+const double BOTHBOUND_UNBINDING_FORCE = 2e12;
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
@@ -93,7 +93,7 @@ const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
 const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
   0.6 * M_PI,
   0.6 * M_PI,
-  0.6 * M_PI,
+  0.0 * M_PI,
   1.4 * M_PI,
   0.4 * M_PI
 };
