@@ -343,7 +343,7 @@ void Dynein_bothbound::update_velocities() {
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
-  //printf("bb.f.nby: %g, bb.r.nby: %g, both: %g\n", f.nby, r.nby, f.nby + r.nby);
+  //printf("bb.f.nby: %g, bb.r.nby: %g, both: %g", f.nby, r.nby, f.nby + r.nby);
   if (f.nby + r.nby >= BOTHBOUND_UNBINDING_FORCE) {
     return 1.0;
   } else return 0.0;
@@ -470,10 +470,10 @@ double Dynein_bothbound::get_KE() {
   return 0;
 }
 
-void Dynein_bothbound::log(int step, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+void Dynein_bothbound::log(double t, FILE* data_file) {
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
 	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), step, nbx, get_nby(), get_nmx(), get_nmy(),
+          get_KE(), get_PE(), get_KE() + get_PE(), t, nbx, get_nby(), get_nmx(), get_nmy(),
           get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND);
   fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
 }

@@ -62,7 +62,8 @@ t_text = plt.text(-65, -36, 't=:')
 
 i = 0
 
-frames = config[4] / config[3]
+frames = int(config[4] / config[3])
+
 if len(data) < frames:
   unbound = True
 else:
@@ -73,6 +74,7 @@ signal.signal(signal.SIGINT, close_windows)
 while i < len(data) or loop:
   if i >= len(data):
     if unbound:
+      print "i: " + str(i)
       title_text.set_text('State: Unbound')
       stalk1.set_color('r')
       tail1.set_color('r')

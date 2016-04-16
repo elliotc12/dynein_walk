@@ -38,8 +38,8 @@ const double ct = 0.01; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
-const double ONEBOUND_UNBINDING_FORCE = 8e13;
-const double BOTHBOUND_UNBINDING_FORCE = 8e13;
+const double ONEBOUND_UNBINDING_FORCE = 8e11;
+const double BOTHBOUND_UNBINDING_FORCE = 2e11;
 
 const double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
@@ -172,7 +172,7 @@ public:
 
   State get_state();
 
-  void log(int step, FILE* data_file);
+  void log(double t, FILE* data_file);
 
   void update_velocities();
 
@@ -266,7 +266,7 @@ public:
   double get_PE();
   double get_KE();
 
-  void log(int step, FILE* data_file);
+  void log(double t, FILE* data_file);
 
   void update_coordinates();
   void update_velocities();

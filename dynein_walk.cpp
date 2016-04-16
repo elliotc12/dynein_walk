@@ -46,11 +46,11 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  80 * M_PI / 180,
-						  80 * M_PI / 180,
+						  120 * M_PI / 180,
+						  150 * M_PI / 180,
 						  0,
 						  0,
-						  10,
+						  15,
 						  NULL, NULL, NULL, rand);
   double t = 0;
 
@@ -70,10 +70,10 @@ int main(int argvc, char **argv) {
 	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) {
 	  // this is the case where we fall off and become zerobound!
 	  printf("unbinding.");
-	  dyn_ob->log((int) t/dt, data_file);
+	  dyn_ob->log(t, data_file);
 	  goto end_simulation;
 	  return EXIT_SUCCESS;
-	} else if (rand->rand() < dyn_ob->get_binding_rate()*dt) {
+	} else if (rand->rand() < dyn_ob->get_binding_rate()*dt*1e40) { // testing, bind rate huge
 	  // switch to bothbound
 	  steps++;
 	  distance_traveled += fabs(dyn_ob->get_ubx() - dyn_ob->get_bbx());
@@ -95,14 +95,14 @@ int main(int argvc, char **argv) {
 	  dyn_ob->set_uba(temp_uba);
 	}
 	dyn_ob->update_velocities();
-	dyn_ob->log((int) t/dt, data_file);
+	dyn_ob->log(t, data_file);
 	t += dt;
       }
 
     if (dyn_bb != NULL) {
       while (t < runtime) { // loop as long as it is bothbound
-	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
-	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate()*dt;
+	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate();
+	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate();
 	if (unbind_near && unbind_far) {
 	  printf("THEY BOTH WANT TO FALL OFF TOGETHER!!!\n");
 	  printf("WHAT SHOULD THEY DO????\n");
@@ -128,7 +128,7 @@ int main(int argvc, char **argv) {
 	}
 
 	dyn_bb->update_velocities();
-	dyn_bb->log((int) t/dt, data_file);
+	dyn_bb->log(t, data_file);
 	t += dt;
       }
     }
