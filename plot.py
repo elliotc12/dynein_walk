@@ -53,6 +53,10 @@ tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
 tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
+force_line = [i for i in range(5)]
+for i in range(5):
+  force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
+
 binding1, = plt.plot([X[0]], [Y[0]], 'ro')
 motor1,   = plt.plot([X[1]], [Y[1]], 'bo')
 tail,     = plt.plot([X[2]], [Y[2]], 'go')
@@ -93,22 +97,22 @@ while i < len(data) or loop:
       stalk2.set_color('black')
     i = 0
 
-  X[0] = data[i][4]
-  X[1] = data[i][6]
-  X[2] = data[i][8]
-  X[3] = data[i][10]
-  X[4] = data[i][12]
-
-  Y[0] = data[i][5]
-  Y[1] = data[i][7]
-  Y[2] = data[i][9]
-  Y[3] = data[i][11]
-  Y[4] = data[i][13]
+  X[:] = data[i][4:13:2]
+  Y[:] = data[i][5:14:2]
+  Fx = data[i][15:24:2]
+  Fy = data[i][16:25:2]
+  print 'Fx', Fx
+  print 'Fy', Fy
 
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
   stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])
+
+  force_scaling = 500
+  for j in range(5):
+    force_line[j].set_data([X[j], X[j]+force_scaling*Fx[j]],
+                           [Y[j], Y[j]+force_scaling*Fy[j]])
 
   binding1.set_data(X[0], Y[0])
   motor1.set_data(X[1], Y[1])
@@ -143,8 +147,13 @@ while i < len(data) or loop:
   t_text.set_text("Progress: {:3.1f}%".format(data[i][3]/config[4]*100))
 
   if step:
-      raw_input("Hit enter to step.")
-      i += 10
+      k = raw_input("Hit enter to step. [b=back,s=small]")
+      if k == 'b':
+        i -= 10
+      elif k == 's':
+        i += 1
+      else:
+        i += 10
   elif len(sys.argv) >= 2 and sys.argv[1][0:6] == "speed=":
       i += float(sys.argv[1][6:])
       plt.pause(0.001)

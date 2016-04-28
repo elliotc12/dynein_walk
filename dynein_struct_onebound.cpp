@@ -468,8 +468,11 @@ double Dynein_onebound::get_KE() {
 }
 
 void Dynein_onebound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
-	  "%.4f\t%.4f\t%d\n",
+  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d"
+          "\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g"
+          "\n",
 	  get_KE(), get_PE(), get_KE() + get_PE(), t, get_bbx(), get_bby(), get_bmx(), get_bmy(),
-	  get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state);
+	  get_tx(), get_ty(), get_umx(), get_umy(), get_ubx(), get_uby(), state,
+          f.bbx, f.bby, f.bmx, f.bmy, f.tx, f.ty, f.umx, f.umy, f.ubx, f.uby);
 }

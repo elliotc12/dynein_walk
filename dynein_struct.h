@@ -35,7 +35,7 @@ const double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 const double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 const double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-const double ct = 0.01; // force*distance = energy = nm^2 * kg / s^2
+const double ct = 0.001; // force*distance = energy = nm^2 * kg / s^2
 const double cm = 0.1; // ???
 const double cb = 0.5; // ???
 
@@ -79,11 +79,6 @@ typedef struct
   double bba, bma, ta, uma;
 } onebound_equilibrium_angles;
 
-typedef struct
-{
-  double nba, nma, ta, fma, fba;
-} bothbound_equilibrium_angles;
-
 const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI,
   0.6 * M_PI,
@@ -91,12 +86,17 @@ const onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI
 };
 
+typedef struct
+{
+  double nba, nma, ta, fma, fba;
+} bothbound_equilibrium_angles;
+
 const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
   0.6 * M_PI,
-  0.6 * M_PI,
+  0.7 * M_PI,
   0.0 * M_PI,
-  1.4 * M_PI,
-  0.4 * M_PI
+  0.7 * M_PI,
+  0.6 * M_PI
 };
 
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */

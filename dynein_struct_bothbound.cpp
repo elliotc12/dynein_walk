@@ -86,22 +86,20 @@ void Dynein_bothbound::update_internal_forces() {
     f.fmx = 0;     f.fmy = 0;
     f.fbx = 0;     f.fby = 0;
 
-    double T, f1, f2, f1x, f1y, f2x, f2y;
-
-    T = cb*(nba - eq.nba);
-    f2 = T/ls;
-    f2x = f2 * sin(nba);
-    f2y = f2 * -cos(nba);
+    double T = cb*(nba - eq.nba);
+    double f2 = T/ls;
+    double f2x = f2 * sin(nba);
+    double f2y = f2 * -cos(nba);
     f.nmx += f2x;
     f.nmy += f2y;
     f.nbx += -f2x; // Equal and opposite forces!  :)
     f.nby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
-    f1 = T/ls;
+    double f1 = T/ls;
     f2 = T/lt;
-    f1x = f1 * sin(nba);
-    f1y = f1 * -cos(nba);
+    double f1x = f1 * sin(nba);
+    double f1y = f1 * -cos(nba);
     f2x = f2 * sin(nma - (M_PI - nba));
     f2y = f2 * -cos(nma - (M_PI - nba));
     f.nbx += f1x;
@@ -166,7 +164,7 @@ void Dynein_bothbound::update_coordinates() {
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
-  sinAfs = (fma > M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs); // changed < to >
+  sinAfs = (fma > M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs); // changed < to > (AND BACK AGAIN.  DR)
 
   nmx = Ls*(cosAn*cosAns - sinAn*sinAns);
   nmy = Ls*(cosAn*sinAns + sinAn*cosAns);
@@ -472,8 +470,11 @@ double Dynein_bothbound::get_KE() {
 
 void Dynein_bothbound::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), t, nbx, get_nby(), get_nmx(), get_nmy(),
-          get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND);
+	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d"
+          "\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g"
+          "\n",
+          get_KE(), get_PE(), get_KE() + get_PE(), t,
+          nbx, get_nby(), get_nmx(), get_nmy(), get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND,
+          f.nbx, f.nby, f.nmx, f.nmy, f.tx, f.ty, f.fmx, f.fmy, f.fbx, f.fby);
   fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
 }
