@@ -46,12 +46,19 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  120 * M_PI / 180,
-						  150 * M_PI / 180,
+						  179 * M_PI / 180,
+						  179 * M_PI / 180,
 						  0,
 						  0,
-						  15,
+						  10,
 						  NULL, NULL, NULL, rand);
+
+  printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
+	 dyn_bb->get_nba()/M_PI*180,
+	 dyn_bb->get_nma()/M_PI*180,
+	 dyn_bb->get_fma()/M_PI*180,
+	 dyn_bb->get_fba()/M_PI*180);
+
   double t = 0;
 
   double distance_traveled = 0;

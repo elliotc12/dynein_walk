@@ -30,10 +30,13 @@ elif length == "short":
 else:
     runtime = int(sys.argv[2])
 
-if len(sys.argv) >= 5 and sys.argv[4] == "loop":
-        loop = True
+if len(sys.argv) >= 5:
+    if sys.argv[4] == "loop":
+        flag = "loop"
+    elif sys.argv[4] == "step":
+        flag = "step"
 else:
-    loop = False
+    flag = ""
 
 def verbose_run(command):
     print ' '.join(command)
@@ -41,10 +44,10 @@ def verbose_run(command):
 
 if (plot == "natural"):
     verbose_run(["./walk", str(runtime), "0", "0", "0", "0"])
-    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
+    subprocess.call(["./plot.py", "speed=" + str(rate), flag])
 
 if (plot == "random"):
     random.seed()
     subprocess.check_call(["./walk", str(runtime), str(2*random.random()), \
         str(2*random.random()), str(2*random.random()), str(2*random.random())])
-    subprocess.call(["./plot.py", "speed=" + str(rate), "loop" if loop else ""])
+    subprocess.call(["./plot.py", "speed=" + str(rate), flag])

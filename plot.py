@@ -15,10 +15,14 @@ if len(sys.argv) < 2:
   print "Usage: ./plot.py speed=n [loop]"
   sys.exit(1)
 
-if len(sys.argv) == 3 and sys.argv[2] == "loop":
-  loop = True
-else:
-  loop = False
+loop = False
+step = False
+
+if len(sys.argv) == 3:
+  if sys.argv[2] == "loop":
+    loop = True
+  elif sys.argv[2] == "step":
+    step = True
 
 X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
@@ -138,11 +142,10 @@ while i < len(data) or loop:
 
   t_text.set_text("Progress: {:3.1f}%".format(data[i][3]/config[4]*100))
 
-  if len(sys.argv) >= 2:
-    if sys.argv[1] == "step":
+  if step:
       raw_input("Hit enter to step.")
       i += 10
-    elif sys.argv[1][0:6] == "speed=":
+  elif len(sys.argv) >= 2 and sys.argv[1][0:6] == "speed=":
       i += float(sys.argv[1][6:])
       plt.pause(0.001)
   else:
