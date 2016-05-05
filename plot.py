@@ -101,8 +101,8 @@ while i < len(data) or loop:
   Y[:] = data[i][5:14:2]
   Fx = data[i][15:24:2]
   Fy = data[i][16:25:2]
-  print 'Fx', Fx
-  print 'Fy', Fy
+  # print 'Fx', Fx
+  # print 'Fy', Fy
 
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])

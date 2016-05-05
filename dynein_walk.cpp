@@ -50,7 +50,7 @@ int main(int argvc, char **argv) {
 						  179 * M_PI / 180,
 						  0,
 						  0,
-						  10,
+						  2.01*lt,
 						  NULL, NULL, NULL, rand);
 
   printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",

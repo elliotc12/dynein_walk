@@ -92,11 +92,11 @@ typedef struct
 } bothbound_equilibrium_angles;
 
 const bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  0.6 * M_PI,
-  0.7 * M_PI,
-  0.0 * M_PI,
-  0.7 * M_PI,
-  0.6 * M_PI
+  0.5 * M_PI,
+  0.5 * M_PI,
+  1.0 * M_PI,
+  1.5 * M_PI,
+  0.5 * M_PI
 };
 
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */

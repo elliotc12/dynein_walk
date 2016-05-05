@@ -86,20 +86,22 @@ void Dynein_bothbound::update_internal_forces() {
     f.fmx = 0;     f.fmy = 0;
     f.fbx = 0;     f.fby = 0;
 
-    double T = cb*(nba - eq.nba);
-    double f2 = T/ls;
-    double f2x = f2 * sin(nba);
-    double f2y = f2 * -cos(nba);
+    double T, f1, f2, f1x, f2x, f1y, f2y;
+
+    T = cb*(nba - eq.nba);
+    f2 = T/ls;
+    f2x = f2 * sin(nba);
+    f2y = f2 * -cos(nba);
     f.nmx += f2x;
     f.nmy += f2y;
     f.nbx += -f2x; // Equal and opposite forces!  :)
     f.nby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
-    double f1 = T/ls;
+    f1 = T/ls;
     f2 = T/lt;
-    double f1x = f1 * sin(nba);
-    double f1y = f1 * -cos(nba);
+    f1x = f1 * sin(nba);
+    f1y = f1 * -cos(nba);
     f2x = f2 * sin(nma - (M_PI - nba));
     f2y = f2 * -cos(nma - (M_PI - nba));
     f.nbx += f1x;
@@ -109,40 +111,41 @@ void Dynein_bothbound::update_internal_forces() {
     f.nmx += -(f1x + f2x);
     f.nmy += -(f1y + f2y);
 
-    T = ct*(fma + get_fba() - nma - nba - eq.ta);
+    T = ct*(fma + fba - nma - nba - eq.ta);
     f1 = T / lt;
     f2 = T / lt;
     f1x = f1 * sin(nma + nba - M_PI);
     f1y = f1 * -cos(nma + nba - M_PI);
-    f2x = f2 * -sin(fma + get_fba() - M_PI);  // not sure if these angles are right?
-    f2y = f2 * cos(fma + get_fba() - M_PI);
+    f2x = f2 * -sin(fma + fba - M_PI);
+    f2y = f2 * cos(fma + fba - M_PI);
     f.nmx += f1x;
     f.nmy += f1y;
-    f.fmx += f2x;
-    f.fmy += f2y;
+    f.fmx += -f2x; // flip sign of this to fake correct force
+    // (force is calculated properly, but motion equations don't take it into acct)
+    f.fmy += -f2y; // flip sign of this to fake correct force
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
 
     T = cm*(fma - eq.fma);
     f1 = T / lt;
     f2 = T / ls;
-    f1x = f1 * sin(fma + get_fba() - M_PI);
-    f1y = f1 * -cos(fma + get_fba() - M_PI);
-    f2x = f2 * sin(get_fba());
-    f2y = f2 * -cos(get_fba());
+    f1x = f1 * sin(fma + fba - M_PI);
+    f1y = f1 * -cos(fma + fba - M_PI);
+    f2x = f2 * sin(fba);
+    f2y = f2 * -cos(fba);
     f.tx  += f1x;
     f.ty  += f1y;
     f.fbx += f2x;
     f.fby += f2y;
-    f.fmx += -(f1x + f2x);
-    f.fmy += -(f1y + f2y);
+    f.fmx += (f1x + f2x); // flip sign of this to fake correct force
+    f.fmy += (f1y + f2y);
 
-    T = cb*(get_fba() - eq.fba);
+    T = cb*(fba - eq.fba);
     f1 = T / ls;
-    f1x = f1 * sin(get_fba());
-    f1y = f1 * -cos(get_fba());
-    f.fmx += f1x;
-    f.fmy += f1y;
+    f1x = f1 * sin(fba);
+    f1y = f1 * -cos(fba);
+    f.fmx += -f1x; // flip sign of this to fake correct force
+    f.fmy += -f1y; // flip sign of this to fake correct force
     f.fbx += -f1x;
     f.fby += -f1y;
 
@@ -164,7 +167,7 @@ void Dynein_bothbound::update_coordinates() {
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
-  sinAfs = (fma > M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs); // changed < to > (AND BACK AGAIN.  DR)
+  sinAfs = (fma > M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
   nmx = Ls*(cosAn*cosAns - sinAn*sinAns);
   nmy = Ls*(cosAn*sinAns + sinAn*cosAns);
@@ -174,8 +177,8 @@ void Dynein_bothbound::update_coordinates() {
   fmy = Ls*(cosAf*sinAfs + sinAf*cosAfs);
 
   // angle of stalks from horizontal
-  nba = atan2(nmy, nmx);
-  fba = atan2(fmy, fmx - L);
+  nba = atan2(nmy, nmx - nbx);
+  fba = atan2(fmy, fmx - (nbx + L));
 }
 
 void Dynein_bothbound::update_velocities() {

@@ -24,7 +24,7 @@ figures: figures/*
 	cd figures && make
 
 plot: walk
-	./simulate.py veryfast verylong natural step
+	./simulate.py veryfast verylong natural
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
