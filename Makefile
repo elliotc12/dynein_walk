@@ -11,6 +11,9 @@ derivation_confirmation.pdf: latex/derivation_confirmation.tex
 dynein_walk.o: dynein_walk.cpp dynein_struct.h
 	g++ -c dynein_walk.cpp $(CPPFLAGS)
 
+test_bothbound.o: test_bothbound.cpp dynein_struct.h
+	g++ -c test_bothbound.cpp $(CPPFLAGS)
+
 dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h
 	g++ -c dynein_struct_onebound.cpp $(CPPFLAGS)
 
@@ -28,6 +31,10 @@ plot: walk
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
+
+test_bothbound: test_bothbound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+#	./test
+	g++ test_bothbound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test_bothbound
 
 test: dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test
