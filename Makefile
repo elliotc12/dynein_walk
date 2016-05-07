@@ -20,8 +20,8 @@ dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h
 dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h
 	g++ -c dynein_struct_bothbound.cpp $(CPPFLAGS)
 
-dynein_test.o: dynein_test.cpp dynein_struct.h
-	g++ -c dynein_test.cpp $(CPPFLAGS)
+test_onebound.o: test_onebound.cpp dynein_struct.h
+	g++ -c test_onebound.cpp $(CPPFLAGS)
 
 figures: figures/*
 	cd figures && make
@@ -32,14 +32,14 @@ plot: walk
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
 
-test_bothbound: test_bothbound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-#	./test
-	g++ test_bothbound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test_bothbound
+test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o
+	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound
+	./test_bothbound
 
-test: dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	g++ dynein_test.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test
+test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test
+	./test_onebound
 
-#walk: test dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 walk: dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 #	./test
 	g++ dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o walk

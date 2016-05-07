@@ -4,7 +4,8 @@
 #include "dynein_struct.h"
 
 double EPSILON = 1e-12;
-double runtime = 0; // Define in dynein_test.cpp and dynein_walk.cpp to link, not used here
+double runtime = 0; // dynein_struct.h needs this to be defined here
+
 extern const double dt;
 
 int equal(double v1, double v2) {
@@ -41,27 +42,30 @@ int main() {
   double ba_eq  = bothbound_pre_powerstroke_internal_angles.ba;
   double ta_eq  = bothbound_pre_powerstroke_internal_angles.ta;
   double fa_eq  = bothbound_pre_powerstroke_internal_angles.fa;
-  
+
   forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
   forces right_forces = {1,0,1,0,1,0,1,0,1,0};
   forces left_forces =  {-1,0,-1,0,-1,0,-1,0,-1,0};
   forces up_forces =    {0,1,0,1,0,1,0,1,0,1};
-  
+
   int num_failures = 0;
   {
-    Dynein* dyn = new Dynein(bba_eq,                                           // starting bba
-                             bba_eq + ba_eq - M_PI,                            // starting bma
-                             bba_eq + ba_eq - M_PI + ta_eq,                    // starting fma
-                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq,     // starting fba
-			     NEARBOUND,                                        // starting state
-			     &no_forces,                    // optional specified internal forces
-			     &no_forces,                    // optional specified brownian forces
-		             (equilibrium_angles*) NULL);   // optional specified equilibrium angles
+    Dynein* dyn = new Dynein(bba_eq,                                 // starting bba
+                             bba_eq + ba_eq - M_PI,                  // starting bma
+                             bba_eq + ba_eq - M_PI + ta_eq,          // starting fma
+                             bba_eq + ba_eq - M_PI + ta_eq + M_PI - fa_eq, //    fba
+			     NEARBOUND,       // starting state
+			     &no_forces,      // optional specified internal forces
+			     &no_forces,      // optional specified brownian forces
+		             (equilibrium_angles*) NULL);   // optional eq angles
 
 
-    // Dynein in normal prepowerstroke conformation, check if velocities agree with definitions.
+    // Dynein in normal prepowerstroke conformation,
+    // check if velocities agree with definitions.
 
-    printf("Test: Dynein prepowerstroke conformation, no internal forces, no Brownian forces.\n");
+    printf("Test: Dynein prepowerstroke conformation, "
+	   "no internal forces, no Brownian forces.\n");
+
     num_failures += test("Is d_bbx zero", dyn->get_d_bbx(), 0);
     num_failures += test("Is d_bby zero", dyn->get_d_bby(), 0);
     num_failures += test("Is d_bmx zero", dyn->get_d_bmx(), 0);
@@ -70,12 +74,12 @@ int main() {
     num_failures += test("Is d_fmy zero", dyn->get_d_fmy(), 0);
     num_failures += test("Is d_fbx zero", dyn->get_d_fbx(), 0);
     num_failures += test("Is d_fby zero", dyn->get_d_fby(), 0);
-    
+
     num_failures += test("Is d_bba zero", dyn->get_d_bba(), 0);
     num_failures += test("Is d_bma zero", dyn->get_d_bma(), 0);
     num_failures += test("Is d_fma zero", dyn->get_d_fma(), 0);
-    num_failures += test("Is d_fba zero", dyn->get_d_fba(), 0);    
-    
+    num_failures += test("Is d_fba zero", dyn->get_d_fba(), 0);
+
     free(dyn);
   }
 
@@ -88,7 +92,7 @@ int main() {
 			     &no_forces,
 			     &no_forces,
 			     NULL);
-    
+
     printf("\nTest: Dynein vertical conformation, no internal forces, no Brownian forces.\n");
     num_failures += test("Is fbx zero", dyn->get_fbx(), 0);
     num_failures += test("Is fmx zero", dyn->get_fmx(), 0);
