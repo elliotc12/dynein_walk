@@ -46,11 +46,11 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  179 * M_PI / 180,
-						  179 * M_PI / 180,
+						  150 * M_PI / 180,
+						  150 * M_PI / 180,
 						  0,
 						  0,
-						  2.01*lt,
+						  0.0001,
 						  NULL, NULL, NULL, rand);
 
   printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
