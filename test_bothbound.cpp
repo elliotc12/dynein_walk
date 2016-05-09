@@ -93,6 +93,58 @@ int main(int argvc, char **argv) {
     if (test("tx  zero?", dyn_bb.get_tx(), 0) == 0) num_failures++;
     if (test("fmx zero?", dyn_bb.get_fmx(), 0) == 0) num_failures++;
     if (test("fbx zero?", dyn_bb.get_fbx(), 0) == 0) num_failures++;
+
+    if (test("nby zero?", dyn_bb.get_nby(), 0) == 0) num_failures++;
+    if (test_noteq("nmy nonzero?", dyn_bb.get_nmy(), 0) == 0) num_failures++;
+    if (test_noteq("ty  nonzero?", dyn_bb.get_ty(), 0) == 0) num_failures++;
+    if (test_noteq("fmy nonzero?", dyn_bb.get_fmy(), 0) == 0) num_failures++;
+    if (test("fby zero?", dyn_bb.get_fby(), 0) == 0) num_failures++;
+  }
+
+  { /*** Upwards line conformation ***/
+
+    printf("Testing upwards line conformation\n");
+
+    bothbound_equilibrium_angles natural_eq_angles = {
+      108*M_PI/180,
+      108*M_PI/180,
+      108*M_PI/180,
+      2*M_PI - 108*M_PI/180,
+      M_PI - 108*M_PI/180
+    };
+
+    Dynein_bothbound dyn_bb(M_PI,              // nma_init
+                            M_PI,              // fma_init
+                            0,                 // nbx_init
+                            0,                 // nby_init
+                            1e-25,             // L
+                            NULL,              // internal forces
+			    NULL,              // brownian forces
+			    &line_eq_angles,   // equilibrium angles
+			    rand);             // MTRand
+
+    if (test("f.nbx zero?", dyn_bb.get_internal().nbx, 0) == 0) num_failures++;
+    if (test("f.nmx zero?", dyn_bb.get_internal().nmx, 0) == 0) num_failures++;
+    if (test("f.tx  zero?", dyn_bb.get_internal().tx , 0) == 0) num_failures++;
+    if (test("f.fmx zero?", dyn_bb.get_internal().fmx, 0) == 0) num_failures++;
+    if (test("f.fbx zero?", dyn_bb.get_internal().fbx, 0) == 0) num_failures++;
+    if (test("f.nby zero?", dyn_bb.get_internal().nby, 0) == 0) num_failures++;
+    if (test("f.nmy zero?", dyn_bb.get_internal().nmy, 0) == 0) num_failures++;
+    if (test("f.ty  zero?", dyn_bb.get_internal().ty , 0) == 0) num_failures++;
+    if (test("f.fmy zero?", dyn_bb.get_internal().fmy, 0) == 0) num_failures++;
+    if (test("f.fby zero?", dyn_bb.get_internal().fby, 0) == 0) num_failures++;
+
+    if (test("nbx zero?", dyn_bb.get_nbx(), 0) == 0) num_failures++;
+    if (test("nmx zero?", dyn_bb.get_nmx(), 0) == 0) num_failures++;
+    if (test("tx  zero?", dyn_bb.get_tx(), 0) == 0) num_failures++;
+    if (test("fmx zero?", dyn_bb.get_fmx(), 0) == 0) num_failures++;
+    if (test("fbx zero?", dyn_bb.get_fbx(), 0) == 0) num_failures++;
+
+    if (test("nby zero?", dyn_bb.get_nby(), 0) == 0) num_failures++;
+    if (test_noteq("nmy nonzero?", dyn_bb.get_nmy(), 0) == 0) num_failures++;
+    if (test_noteq("ty  nonzero?", dyn_bb.get_ty(), 0) == 0) num_failures++;
+    if (test_noteq("fmy nonzero?", dyn_bb.get_fmy(), 0) == 0) num_failures++;
+    if (test("fby zero?", dyn_bb.get_fby(), 0) == 0) num_failures++;
   }
 
 

@@ -46,11 +46,11 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  150 * M_PI / 180,
-						  150 * M_PI / 180,
+						  180 * M_PI / 180 - 1e1,
+						  180 * M_PI / 180 - 1e1,
 						  0,
 						  0,
-						  0.0001,
+						  1e1,
 						  NULL, NULL, NULL, rand);
 
   printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
@@ -58,6 +58,12 @@ int main(int argvc, char **argv) {
 	 dyn_bb->get_nma()/M_PI*180,
 	 dyn_bb->get_fma()/M_PI*180,
 	 dyn_bb->get_fba()/M_PI*180);
+
+  printf("Starting coords: nmx: %g, tx: %g, nmy: %g, ty: %g\n",
+	 dyn_bb->get_nmx(),
+	 dyn_bb->get_tx(),
+	 dyn_bb->get_nmy(),
+	 dyn_bb->get_ty());
 
   double t = 0;
 
@@ -70,6 +76,8 @@ int main(int argvc, char **argv) {
   FILE* config_file = fopen("config.txt", "w+");
 
   resetLogs(data_file, config_file);
+  dyn_bb->log(t, data_file);
+  t += dt;
 
   while( t < runtime ) {
     if (dyn_ob != NULL)
