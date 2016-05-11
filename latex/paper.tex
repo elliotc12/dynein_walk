@@ -145,10 +145,10 @@ we derived above:
 \onecolumn
 
 \begin{align}
-  \dot{X}_{nm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{bs}(X_{bm} - X_{bb})
-  + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml}
+  \dot{X}_{nm} &= \frac{1}{\gamma} \Big(F_{xml} + \mn \lambda_{ns}(X_{bm} - X_{bb})
+  + \lambda_{nt}(X_{t } - X_{bm}) \Big) + R_{xml}
   &=& \frac{X_{nm}}{Ln}\dot{L}_n + \frac{X_{nm}}{Lf}\dot{L}_f\\
-  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{bt}(X_{t } - X_{bm})
+  \dot{X}_{t } &= \frac{1}{\gamma} \Big(F_{xt } + \mn \lambda_{nt}(X_{t } - X_{bm})
   + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt }
   &=& \frac{X_{t}}{Ln}\dot{L}_n + \frac{X_{t}}{Lf}\dot{L}_f\\
   \dot{X}_{fm} &= \frac{1}{\gamma} \Big(F_{xmr} + \mn \lambda_{ft}(X_{fm} - X_{t })
@@ -157,10 +157,10 @@ we derived above:
 \end{align}
 
 \begin{align}
-  \dot{Y}_{nm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{bs}(Y_{bm} - Y_{bb})
-  + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml}
+  \dot{Y}_{nm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yml} + \mn \lambda_{ns}(Y_{bm} - Y_{bb})
+  + \lambda_{nt}(Y_{t } - Y_{bm}) \Big) + R_{yml}
   &= \frac{Y_{nm}}{Ln}\dot{L}_n + \frac{Y_{nm}}{Lf}\dot{L}_f\\
-  \dot{Y}_{t}  &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{bt}(Y_{t } - Y_{bm})
+  \dot{Y}_{t}  &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{yt } + \mn \lambda_{nt}(Y_{t } - Y_{bm})
   + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt }
   &= \frac{Y_{t}}{Ln}\dot{L}_n + \frac{Y_{t}}{Lf}\dot{L}_f\\
   \dot{Y}_{fm} &= \hspace{1cm} \frac{1}{\gamma} \Big(F_{ymr} + \mn \lambda_{ft}(Y_{fm} - Y_{t })
@@ -214,8 +214,8 @@ Here we convert the above system into matrix form, solve it in Mathematica and l
 \begin{pmatrix}
   \dot{L}_n\\
   \dot{L}_f\\
-  \lambda_{bs}\\
-  \lambda_{bt}\\
+  \lambda_{ns}\\
+  \lambda_{nt}\\
   \lambda_{ft}\\
   \lambda_{fs}\\
 \end{pmatrix}
