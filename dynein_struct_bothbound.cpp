@@ -343,6 +343,87 @@ void Dynein_bothbound::update_velocities() {
               (dXfm_dLn*dYfm_dLf - dXfm_dLf*dYfm_dLn)*((dYt_dLn*(-get_fmx() + get_tx()))/gm - (dXfm_dLn*(get_fmy() - get_ty()))/gt)))/gt)); // from Mathematica
 }
 
+void Dynein_bothbound::update_velocities() {
+  update_coordinates();
+  update_internal_forces();
+  update_brownian_forces();
+
+  double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
+  double dcosAn_dLf = -(Lf) / (L*Ln);
+  double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
+  double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
+  double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
+  double dcosAns_dLf = 0;
+  double dsinAns_dLn = (nma < M_PI) ?
+     -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
+    : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
+  double dsinAns_dLf = 0;
+
+  double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
+  double dcosAf_dLn = -(Ln) / (L*Lf);
+  double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
+  double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
+  double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
+  double dcosAfs_dLn = 0;
+  double dsinAfs_dLf = (fma < M_PI) ?
+     -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
+    : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
+  double dsinAfs_dLn = 0;
+
+  double dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
+			- sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
+  double dYnm_dLn = Ls*(cosAn * dsinAns_dLn + sinAns * dcosAn_dLn
+			+ sinAn * dcosAns_dLn + cosAns * dsinAn_dLn);
+  double dXnm_dLf = Ls*(cosAn * dcosAns_dLf + cosAns * dcosAn_dLf
+			- sinAn * dsinAns_dLf - sinAns * dsinAn_dLf);
+  double dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
+			+ sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
+
+  double dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
+			- sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
+  double dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
+			+ sinAf * dcosAfs_dLf + cosAfs * dsinAf_dLf);
+  double dXfm_dLn = Ls*(cosAf * dcosAfs_dLn + cosAfs * dcosAf_dLn
+			- sinAf * dsinAfs_dLn - sinAfs * dsinAf_dLn);
+  double dYfm_dLn = Ls*(cosAf * dsinAfs_dLn + sinAfs * dcosAf_dLn
+			+ sinAf * dcosAfs_dLn + cosAfs * dsinAf_dLn);
+
+  double dXt_dLn = cosAn;
+  double dYt_dLn = sinAn;
+  double dXt_dLf = 0;
+  double dYt_dLf = 0;
+
+  double a = -dXnm_dLn;
+  double b = -dXnm_dLf;
+  double c = -(get_nmx() - get_nbx()) / g;
+  double d = (get_tx() - get_nmx()) / g;
+  double e = -dXt_dLn;
+  double f = -dXt_dLf;
+  double g = -(get_tx() - get_nmx()) / g;
+  double h = (get_fmx() - get_tx()) / g;
+  double i = -dXfm_dLn;
+  double j = -dXfm_dLf;
+  double k = -(get_fmx() - get_tx()) / g;
+  double l = (get_fbx() - get_fmx()) / g;
+  double m = -dYnm_dLn;
+  double n = -dYnm_dLf;
+  double p = -(get_nmy() - get_nby()) / g;
+  double q = (double_ty() - double_nmy()) / g;
+  double r = -dYt_dLn;
+  double s = -dYt_dLf;
+  double t = -(get_ty() - get_nmy()) / g;
+  double u = (get_fmy() - get_ty()) / g;
+  double v = -dYfm_dLn;
+  double w = -dYfm_dLf;
+  double x = -(get_fmy() - get_ty()) / g;
+  double y = (get_fby() - get_fmy()) / g;
+
+  d_Ln = ;
+
+  d_Lf = ;
+
+}
+
 double Dynein_bothbound::get_near_unbinding_rate() {
   //printf("bb.f.nby: %g, bb.r.nby: %g, both: %g", f.nby, r.nby, f.nby + r.nby);
   if (f.nby + r.nby >= BOTHBOUND_UNBINDING_FORCE) {
