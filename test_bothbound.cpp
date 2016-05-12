@@ -23,7 +23,10 @@ static int num_tests = 0;
 
 int test(const char *msg, float one, float two) {
   num_tests += 1;
-  if (equal(one, two)) {
+  if (one != one or two != two) {
+    printf("%30s: NaN FAIL!, %g == %g.\n", msg, one, two);
+    return 0;
+  } else if (equal(one, two)) {
     printf("%30s: pass, %g == %g.\n", msg, one, two);
     return 1;
   } else {
@@ -34,7 +37,10 @@ int test(const char *msg, float one, float two) {
 
 int test_noteq(const char *msg, float one, float two) {
   num_tests += 1;
-  if (!equal(one, two)) {
+  if (one != one or two != two) {
+    printf("%30s: NaN FAIL!, %g == %g.\n", msg, one, two);
+    return 0;
+  } else if (!equal(one, two)) {
     printf("%30s: pass, %g != %g.\n", msg, one, two);
     return 1;
   } else {
@@ -61,7 +67,7 @@ int main(int argvc, char **argv) {
 
   { /*** Upwards line conformation ***/
 
-    printf("Testing upwards line conformation\n");
+    printf("**Upwards line conformation with no forces**\n");
 
     bothbound_equilibrium_angles line_eq_angles = {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
@@ -77,17 +83,7 @@ int main(int argvc, char **argv) {
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
 
-    if (!test("f.nbx zero?", dyn_bb.get_internal().nbx, 0)) num_failures++;
-    if (!test("f.nmx zero?", dyn_bb.get_internal().nmx, 0)) num_failures++;
-    if (!test("f.tx  zero?", dyn_bb.get_internal().tx , 0)) num_failures++;
-    if (!test("f.fmx zero?", dyn_bb.get_internal().fmx, 0)) num_failures++;
-    if (!test("f.fbx zero?", dyn_bb.get_internal().fbx, 0)) num_failures++;
-    if (!test("f.nby zero?", dyn_bb.get_internal().nby, 0)) num_failures++;
-    if (!test("f.nmy zero?", dyn_bb.get_internal().nmy, 0)) num_failures++;
-    if (!test("f.ty  zero?", dyn_bb.get_internal().ty , 0)) num_failures++;
-    if (!test("f.fmy zero?", dyn_bb.get_internal().fmy, 0)) num_failures++;
-    if (!test("f.fby zero?", dyn_bb.get_internal().fby, 0)) num_failures++;
-
+    printf("\tTesting coordinate system:\n");
     if (!test("nbx zero?", dyn_bb.get_nbx(), 0)) num_failures++;
     if (!test("nmx zero?", dyn_bb.get_nmx(), 0)) num_failures++;
     if (!test("tx  zero?", dyn_bb.get_tx(), 0)) num_failures++;
@@ -99,11 +95,23 @@ int main(int argvc, char **argv) {
     if (!test_noteq("ty  nonzero?", dyn_bb.get_ty(), 0)) num_failures++;
     if (!test_noteq("fmy nonzero?", dyn_bb.get_fmy(), 0)) num_failures++;
     if (!test("fby zero?", dyn_bb.get_fby(), 0)) num_failures++;
+
+    printf("\tTesting force definitions:\n");
+    if (!test("f.nbx zero?", dyn_bb.get_internal().nbx, 0)) num_failures++;
+    if (!test("f.nmx zero?", dyn_bb.get_internal().nmx, 0)) num_failures++;
+    if (!test("f.tx  zero?", dyn_bb.get_internal().tx , 0)) num_failures++;
+    if (!test("f.fmx zero?", dyn_bb.get_internal().fmx, 0)) num_failures++;
+    if (!test("f.fbx zero?", dyn_bb.get_internal().fbx, 0)) num_failures++;
+    if (!test("f.nby zero?", dyn_bb.get_internal().nby, 0)) num_failures++;
+    if (!test("f.nmy zero?", dyn_bb.get_internal().nmy, 0)) num_failures++;
+    if (!test("f.ty  zero?", dyn_bb.get_internal().ty , 0)) num_failures++;
+    if (!test("f.fmy zero?", dyn_bb.get_internal().fmy, 0)) num_failures++;
+    if (!test("f.fby zero?", dyn_bb.get_internal().fby, 0)) num_failures++;
   }
 
   { /*** Upwards line with +x forces ***/
 
-    printf("Testing upwards line with +x forces\n");
+    printf("\n**Upwards line conformation with +x forces**\n");
 
     bothbound_forces x_forces =    {1,0,1,0,1,0,1,0,1,0}; // bbx, bby, bmx, bmy, ...
 
@@ -121,9 +129,14 @@ int main(int argvc, char **argv) {
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
 
+    printf("\tTesting motor velocities:\n");
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
     if (!test_noteq("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
     if (!test_noteq("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
+
+    if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0)) num_failures++;
+    if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0)) num_failures++;
+    if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0)) num_failures++;
   }
 
   if (num_failures == 0) {

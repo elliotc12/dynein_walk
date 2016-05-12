@@ -218,6 +218,9 @@ public:
   void set_fma(double d);
   void set_L(double d);
 
+  void set_dLn(double d);
+  void set_dLf(double d);
+
   double get_nma(); // actual bothbound coordinates
   double get_fma();
 

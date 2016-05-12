@@ -330,14 +330,35 @@ void Dynein_bothbound::set_L(double d) {
     L = d;
 }
 
+/*** Set velocities (for testing) ***/
+void Dynein_bothbound::set_dLn(double d) {
+    d_Ln = d;
+}
+
+void Dynein_bothbound::set_dLf(double d) {
+    d_Lf = d;
+}
+
 /*** Angular Velocities ***/
 
-double Dynein_bothbound::get_d_nba() { // TODO: make this right
-    return 1.0;
+double Dynein_bothbound::get_d_nba() {
+  float d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
+    * ( (1/L - (L*L+Ln*Ln-Lf*Lf)/(2*L*Ln*Ln) )*d_Ln
+	- (Lf/(L*Ln))*d_Lf );
+  float d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
+    * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
+  if (nma <= M_PI) return d_An + d_Ans;
+  else return d_An - d_Ans;
 }
 
 double Dynein_bothbound::get_d_fba() {
-    return 1.0;
+  float d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
+    * ( (1/L - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf*Lf) )*d_Lf
+	- Ln / (L*Lf) * d_Ln);
+  float d_Afs = -1 / sqrt(1 - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf)*(Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf))
+    * ( 1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf*Lf))*d_Lf;
+  if (fma <= M_PI) return -(d_Af + d_Afs);
+  else return -(d_Af - d_Afs);
 }
 
 double Dynein_bothbound::get_d_nma() {
