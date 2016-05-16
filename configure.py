@@ -8,10 +8,11 @@ for cpp in cppfiles:
     print '> %s.o' % cpp[:-4]
     print
 
-mainfiles = ['dynein_test.cpp', 'dynein_walk.cpp']
+mainfiles = ['dynein_walk.cpp', 'test_bothbound.cpp']
 otherfiles = [f for f in cppfiles if f not in mainfiles]
 ofiles = [f[:-3]+'o' for f in otherfiles]
 
 for main in mainfiles:
-    print '| g++ %s %s -o %s' % (main[:-3]+'o', ' '.join(ofiles), main[7:-4])
+    print '| g++ %s %s -o %s' % (main[:-3]+'o', ' '.join(ofiles), main[:-4])
+    print '>', main[:-4]
     print
