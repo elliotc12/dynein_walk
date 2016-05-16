@@ -181,15 +181,23 @@ void Dynein_bothbound::update_coordinates() {
   fba = atan2(fmy, fmx - (nbx + L));
 }
 
+static const bool am_debugging_nans = true;
+
 void Dynein_bothbound::update_velocities() {
   update_coordinates();
   update_internal_forces();
   update_brownian_forces();
 
+  if (am_debugging_nans) printf("cosAn %g\n", cosAn);
+  if (am_debugging_nans) printf("sinAn %g\n", sinAn);
+  if (am_debugging_nans) printf("cosAns %g\n", cosAns);
+  if (am_debugging_nans) printf("sinAns %g\n", sinAns);
+
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
 
   double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
+  if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
   double dcosAn_dLf = -(Lf) / (L*Ln);
   double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
   double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
@@ -199,6 +207,11 @@ void Dynein_bothbound::update_velocities() {
      -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
     : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
   double dsinAns_dLf = 0;
+
+  if (am_debugging_nans) printf("dcosAn_dLn %g\n", dcosAn_dLn);
+  if (am_debugging_nans) printf("dsinAn_dLn %g\n", dsinAn_dLn);
+  if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
+  if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
   double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
   double dcosAf_dLn = -(Ln) / (L*Lf);
@@ -233,6 +246,10 @@ void Dynein_bothbound::update_velocities() {
   double dYt_dLn = sinAn;
   double dXt_dLf = 0;
   double dYt_dLf = 0;
+  if (am_debugging_nans) printf("dXt_dLn is %g\n", dXt_dLn);
+  if (am_debugging_nans) printf("dYt_dLn is %g\n", dYt_dLn);
+
+  if (am_debugging_nans) printf("gm = %g, gt = %g\n", gm, gt);
 
   double a = -dXnm_dLn;
   double b = -dXnm_dLf;
@@ -258,6 +275,16 @@ void Dynein_bothbound::update_velocities() {
   double w = -dYfm_dLf;
   double x = -(get_fmy() - get_ty()) / gm;
   double y = (get_fby() - get_fmy()) / gm;
+  if (am_debugging_nans) {
+    printf("a=%g\tb=%g\tc=%g\td=%g\te=%g\tf=%g\n",
+           a,b,c,d,e,f);
+    printf("g=%g\th=%g\ti=%g\tj=%g\tk=%g\tl=%g\n",
+           g,h,i,j,k,l);
+    printf("m=%g\tn=%g\tp=%g\tq=%g\tr=%g\ts=%g\n",
+           m,n,p,q,r,s);
+    printf("t=%g\tu=%g\tv=%g\tw=%g\tx=%g\ty=%g\n",
+           t,u,v,w,x,y);
+  }
 
   double x1 = -fforces.nmx / g - rforces.nmx;
   double x2 = -fforces.tx / g  - rforces.tx;
@@ -302,6 +329,8 @@ void Dynein_bothbound::update_velocities() {
      c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y - c*g*j*m*u*y + 
      c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
 
+  if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
+  if (am_debugging_nans) printf("d_Lf is %g\n", d_Lf);
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
