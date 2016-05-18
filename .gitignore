@@ -4,6 +4,8 @@ latex/latexlog.txt
 *.log
 *.pdf
 *.tum
+GIFS/*.gif
+PNGs/*.png
 *~
 *.o
 config.txt

@@ -1,6 +1,6 @@
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 
-all: walk plot
+all: plot
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -27,10 +27,15 @@ figures: figures/*
 	cd figures && make
 
 plot: walk
-	./simulate.py veryfast verylong natural
+	./simulate.py veryfast short natural
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
+
+save: walk
+	mkdir -p GIFs
+	mkdir -p PNGs
+	./simulate.py veryfast normal natural save $(NAME)
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o
 	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound

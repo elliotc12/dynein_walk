@@ -5,6 +5,7 @@ import numpy
 import time
 import signal
 import sys
+import os
 import matplotlib.pyplot as plt
 
 def close_windows(*_):
@@ -12,17 +13,24 @@ def close_windows(*_):
   sys.exit()
 
 if len(sys.argv) < 2:
-  print "Usage: ./plot.py speed=n [loop]"
+  print "Usage: ./plot.py speed=n [loop/step/save'slash'savename]"
   sys.exit(1)
 
 loop = False
 step = False
+savefig = False
+
+print "this is it: %s" % str(sys.argv[2][0:4])
 
 if len(sys.argv) == 3:
   if sys.argv[2] == "loop":
     loop = True
   elif sys.argv[2] == "step":
     step = True
+  elif sys.argv[2][0:4] == "save":
+    savefig = True
+    savename = sys.argv[2][5:]
+    print "Saving to %s, wait until the program exits!" % savename
 
 X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
@@ -69,6 +77,7 @@ ke_text = plt.text(-65, 35, 'KE: ')
 t_text = plt.text(-65, -36, 't=:')
 
 i = 0
+savefigframe = 0
 
 frames = int(config[4] / config[3])
 
@@ -160,6 +169,11 @@ while i < len(data) or loop:
   else:
     i += 10
     plt.pause(0.001)
+  savefigframe += 1
+
+  if savefig:
+    fname = 'PNGs/%s-%03d.png' % (savename, savefigframe)
+    plt.savefig(fname)
 
   plt.draw()
 
@@ -168,3 +182,7 @@ if unbound:
   plt.draw()
   print "Protein unbound!"
   plt.pause(3)
+
+if savefig:
+  os.system("convert -delay 10 PNGs/%s-*.png GIFs/%s.gif" % (savename, savename))
+  os.system("rm PNGs/*")

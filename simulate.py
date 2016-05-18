@@ -35,6 +35,8 @@ if len(sys.argv) >= 5:
         flag = "loop"
     elif sys.argv[4] == "step":
         flag = "step"
+    elif sys.argv[4] == "save":
+        flag = "save" + "/" + sys.argv[5]
 else:
     flag = ""
 

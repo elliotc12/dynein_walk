@@ -181,7 +181,7 @@ void Dynein_bothbound::update_coordinates() {
   fba = atan2(fmy, fmx - (nbx + L));
 }
 
-static const bool am_debugging_nans = true;
+static const bool am_debugging_nans = false;
 
 void Dynein_bothbound::update_velocities() {
   update_coordinates();
