@@ -20,8 +20,6 @@ loop = False
 step = False
 savefig = False
 
-print "this is it: %s" % str(sys.argv[2][0:4])
-
 if len(sys.argv) == 3:
   if sys.argv[2] == "loop":
     loop = True

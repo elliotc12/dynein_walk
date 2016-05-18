@@ -179,6 +179,9 @@ void Dynein_bothbound::update_coordinates() {
   // angle of stalks from horizontal
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
+
+  assert(nma != M_PI);
+  assert(fma != M_PI);
 }
 
 static const bool am_debugging_nans = false;
