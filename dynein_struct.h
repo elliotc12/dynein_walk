@@ -234,11 +234,11 @@ public:
   double get_fmx() { return fmx; }
   double get_fbx() { return nbx + L; }
 
-  double get_nby();
-  double get_nmy();
-  double get_ty();
-  double get_fmy();
-  double get_fby();
+  double get_nby() { return nby; }
+  double get_nmy() { return nmy; }
+  double get_ty() { return ty; }
+  double get_fmy() { return fmy; }
+  double get_fby() { return 0; }
 
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:

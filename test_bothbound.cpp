@@ -139,6 +139,36 @@ int main(int argvc, char **argv) {
     if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
+  { /*** Upwards line with +x forces ***/
+
+    printf("\n**A table conformation conformation with equal and opposite x forces**\n");
+
+    bothbound_forces x_forces =    {0,1,0,1,0,0,0,-1,0,-1}; // bbx, bby, bmx, bmy, ...
+
+    bothbound_equilibrium_angles line_eq_angles = {
+      M_PI/2, M_PI/2, M_PI, 3*M_PI/2, M_PI/2
+    };
+
+    Dynein_bothbound dyn_bb(M_PI/2,      // nma_init
+                            3*M_PI/2,      // fma_init
+                            0,                 // nbx_init
+                            0,                 // nby_init
+                            2*Lt,             // L
+                            &x_forces,         // internal forces
+			    NULL,              // brownian forces
+			    &line_eq_angles,   // equilibrium angles
+			    rand);             // MTRand
+
+    printf("\tTesting motor velocities:\n");
+    if (!test("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
+    if (!test("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
+    if (!test("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
+
+    if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0, 1e-4)) num_failures++;
+    if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0, 1e-4)) num_failures++;
+    if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
+  }
+
   if (num_failures == 0) {
     printf("All %d tests pass!\n\n", num_tests);
   } else {

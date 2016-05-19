@@ -415,32 +415,6 @@ double Dynein_bothbound::get_fma() {
   return fma;
 }
 
-double Dynein_bothbound::get_nby() {
-  return 0;
-}
-
-double Dynein_bothbound::get_nmy() {
-  int pm = (nma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(Ln, 2) - pow(Lf, 2)) / (2*(L*Ln)))
-		+ pm*acos((pow(ls, 2) + pow(Ln, 2) - pow(lt, 2)) / (2*(Ln*ls))));
-}
-
-double Dynein_bothbound::get_ty() {
-  return Ln*sqrt(1 - pow(pow(L, 2) + pow(Ln, 2) - pow(Lf, 2), 2)
-		 / (4*(pow(L, 2)*pow(Ln, 2))));
-}
-
-double Dynein_bothbound::get_fmy() {
-  int pm = (fma > M_PI) ? -1 : 1;
-  return ls*sin(acos((pow(L, 2) + pow(Lf, 2) - pow(Ln, 2)) / (2*(L*Lf)))
-		+ pm*acos((pow(ls, 2) + pow(Lf, 2) - pow(lt, 2)) / (2*(Lf*ls))));
-}
-
-double Dynein_bothbound::get_fby() {
-  return 0;
-}
-
-
 /*** Get Cartesian Velocities ***/
 double Dynein_bothbound::get_d_nmx() {
   return -ls * sin(nba) * get_d_nba();

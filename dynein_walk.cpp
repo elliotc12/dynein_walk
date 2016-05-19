@@ -24,6 +24,7 @@ int main(int argvc, char **argv) {
   }
 
   runtime  = strtod(argv[1], NULL) * dt;
+  runtime /= 100;
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
 
@@ -45,13 +46,22 @@ int main(int argvc, char **argv) {
   // Dynein_bothbound *dyn_bb = 0;
 
   Dynein_onebound* dyn_ob = NULL;
-  Dynein_bothbound* dyn_bb = new Dynein_bothbound(
-						  100 * M_PI / 180,
-						  100 * M_PI / 180,
-						  0,
-						  0,
-						  20,
-						  NULL, NULL, NULL, rand);
+  // Dynein_bothbound* dyn_bb = new Dynein_bothbound(
+  //       					  100 * M_PI / 180,
+  //       					  100 * M_PI / 180,
+  //       					  0,
+  //       					  0,
+  //       					  20,
+  //       					  NULL, NULL, NULL, rand);
+  Dynein_bothbound *dyn_bb = new Dynein_bothbound(M_PI/2,      // nma_init
+                                                 3*M_PI/2,      // fma_init
+                                                 0,                 // nbx_init
+                                                 0,                 // nby_init
+                                                 2*Lt,             // L
+                                                 NULL,         // internal forces
+                                                 NULL,              // brownian forces
+                                                 NULL,   // equilibrium angles
+                                                 rand);             // MTRand
 
   printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
 	 dyn_bb->get_nba()/M_PI*180,
