@@ -73,8 +73,8 @@ int main(int argvc, char **argv) {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
     };
 
-    Dynein_bothbound dyn_bb(M_PI,              // nma_init
-                            M_PI,              // fma_init
+    Dynein_bothbound dyn_bb(M_PI - 1e-15,      // nma_init
+                            M_PI - 1e-15,      // fma_init
                             0,                 // nbx_init
                             0,                 // nby_init
                             1e-25,             // L
@@ -119,8 +119,8 @@ int main(int argvc, char **argv) {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
     };
 
-    Dynein_bothbound dyn_bb(M_PI,              // nma_init
-                            M_PI,              // fma_init
+    Dynein_bothbound dyn_bb(M_PI - 1e-15,      // nma_init
+                            M_PI - 1e-15,      // fma_init
                             0,                 // nbx_init
                             0,                 // nby_init
                             1e-25,             // L

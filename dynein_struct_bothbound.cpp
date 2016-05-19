@@ -184,7 +184,7 @@ void Dynein_bothbound::update_coordinates() {
   assert(fma != M_PI);
 }
 
-static const bool am_debugging_nans = false;
+static const bool am_debugging_nans = true;
 
 void Dynein_bothbound::update_velocities() {
   update_coordinates();
@@ -333,7 +333,7 @@ void Dynein_bothbound::update_velocities() {
      c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
 
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
-  if (am_debugging_nans) printf("d_Lf is %g\n", d_Lf);
+  if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
