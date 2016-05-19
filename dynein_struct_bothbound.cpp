@@ -158,6 +158,7 @@ void Dynein_bothbound::update_internal_forces() {
 void Dynein_bothbound::update_coordinates() {
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
+  assert(Ln + Lf > L); // this geometrically must be true!
 
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   sinAn = sqrt(1 - cosAn*cosAn);
