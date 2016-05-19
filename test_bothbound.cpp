@@ -14,19 +14,19 @@ double runtime = 0; // dynein_struct.h needs this to be defined here
 
 extern const double dt;
 
-int equal(double v1, double v2) {
-  if (fabs(v1) < EPSILON) { return fabs(v2) < EPSILON; }
-  else return fabs(v1 - v2)/fabs(v1) <= EPSILON;
+int equal(double v1, double v2, double epsilon = EPSILON) {
+  if (fabs(v1) < epsilon) { return fabs(v2) < epsilon; }
+  else return fabs(v1 - v2)/fabs(v1) <= epsilon;
 }
 
 static int num_tests = 0;
 
-int test(const char *msg, float one, float two) {
+int test(const char *msg, float one, float two, double epsilon = EPSILON) {
   num_tests += 1;
   if (one != one or two != two) {
     printf("%30s: NaN FAIL!, %g == %g.\n", msg, one, two);
     return 0;
-  } else if (equal(one, two)) {
+  } else if (equal(one, two, epsilon)) {
     printf("%30s: pass, %g == %g.\n", msg, one, two);
     return 1;
   } else {
@@ -111,7 +111,7 @@ int main(int argvc, char **argv) {
 
   { /*** Upwards line with +x forces ***/
 
-    printf("\n**Upwards line conformation with +x forces**\n");
+    printf("\n**'Almost' upwards line conformation with +x forces**\n");
 
     bothbound_forces x_forces =    {1,0,1,0,1,0,1,0,1,0}; // bbx, bby, bmx, bmy, ...
 
@@ -119,8 +119,8 @@ int main(int argvc, char **argv) {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
     };
 
-    Dynein_bothbound dyn_bb(M_PI - 1e-15,      // nma_init
-                            M_PI - 1e-15,      // fma_init
+    Dynein_bothbound dyn_bb(M_PI - 1e-7,      // nma_init
+                            M_PI - 1e-7,      // fma_init
                             0,                 // nbx_init
                             0,                 // nby_init
                             1e-25,             // L
@@ -134,9 +134,9 @@ int main(int argvc, char **argv) {
     if (!test_noteq("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
     if (!test_noteq("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
 
-    if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0)) num_failures++;
-    if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0)) num_failures++;
-    if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0)) num_failures++;
+    if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0, 1e-4)) num_failures++;
+    if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0, 1e-4)) num_failures++;
+    if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
   if (num_failures == 0) {
