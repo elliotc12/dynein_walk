@@ -36,7 +36,7 @@ const double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 const double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
 const double ct = 0.001; // force*distance = energy = nm^2 * kg / s^2
-const double cm = 0.1; // ???
+const double cm = 0.5; // ???
 const double cb = 0.5; // ???
 
 const double ONEBOUND_UNBINDING_FORCE = 8e12;

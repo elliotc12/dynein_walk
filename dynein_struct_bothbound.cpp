@@ -120,9 +120,9 @@ void Dynein_bothbound::update_internal_forces() {
     f2y = f2 * cos(fma + fba - M_PI);
     f.nmx += f1x;
     f.nmy += f1y;
-    f.fmx += -f2x; // flip sign of this to fake correct force
+    f.fmx += f2x; // should be: positive
     // (force is calculated properly, but motion equations don't take it into acct)
-    f.fmy += -f2y; // flip sign of this to fake correct force
+    f.fmy += f2y; // should be: positive
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
 
@@ -137,15 +137,15 @@ void Dynein_bothbound::update_internal_forces() {
     f.ty  += f1y;
     f.fbx += f2x;
     f.fby += f2y;
-    f.fmx += (f1x + f2x); // flip sign of this to fake correct force
-    f.fmy += (f1y + f2y);
+    f.fmx += -(f1x + f2x); // should be: negative
+    f.fmy += -(f1y + f2y); // should be: negative
 
     T = cb*(fba - eq.fba);
     f1 = T / ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);
-    f.fmx += -f1x; // flip sign of this to fake correct force
-    f.fmy += -f1y; // flip sign of this to fake correct force
+    f.fmx += f1x; // should be: positive
+    f.fmy += f1y; // should be: positive
     f.fbx += -f1x;
     f.fby += -f1y;
 
@@ -158,7 +158,6 @@ void Dynein_bothbound::update_internal_forces() {
 void Dynein_bothbound::update_coordinates() {
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
-  assert(Ln + Lf > L); // this geometrically must be true!
 
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   sinAn = sqrt(1 - cosAn*cosAn);
@@ -168,7 +167,7 @@ void Dynein_bothbound::update_coordinates() {
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
-  sinAfs = (fma > M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
+  sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
   nmx = Ls*(cosAn*cosAns - sinAn*sinAns);
   nmy = Ls*(cosAn*sinAns + sinAn*cosAns);
@@ -181,16 +180,17 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
 
+  assert(Ln + Lf > L); // this geometrically must be true!
   assert(nma != M_PI);
   assert(fma != M_PI);
 }
 
-static const bool am_debugging_nans = true;
+static const bool am_debugging_nans = false;
 
 void Dynein_bothbound::update_velocities() {
   update_coordinates();
-  update_internal_forces();
   update_brownian_forces();
+  update_internal_forces();
 
   if (am_debugging_nans) printf("cosAn %g\n", cosAn);
   if (am_debugging_nans) printf("sinAn %g\n", sinAn);
@@ -290,12 +290,12 @@ void Dynein_bothbound::update_velocities() {
            t,u,v,w,x,y);
   }
 
-  double x1 = -fforces.nmx / g - rforces.nmx;
-  double x2 = -fforces.tx / g  - rforces.tx;
-  double x3 = -fforces.fmx / g - rforces.fmx;
-  double x4 = -fforces.nmy / g - rforces.nmy;
-  double x5 = -fforces.ty / g  - rforces.ty;
-  double x6 = -fforces.fmy / g - rforces.fmy;
+  double x1 = -fforces.nmx / gm - rforces.nmx;
+  double x2 = -fforces.tx / gt  - rforces.tx;
+  double x3 = -fforces.fmx / gm - rforces.fmx;
+  double x4 = -fforces.nmy / gm - rforces.nmy;
+  double x5 = -fforces.ty / gt  - rforces.ty;
+  double x6 = -fforces.fmy / gm - rforces.fmy;
 
   d_Ln =
     (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 + d*l*p*u*w*x2 - c*l*q*u*w*x2 - d*l*p*s*x*x2 + 

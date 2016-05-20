@@ -24,7 +24,6 @@ int main(int argvc, char **argv) {
   }
 
   runtime  = strtod(argv[1], NULL) * dt;
-  runtime /= 100;
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
 
