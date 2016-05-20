@@ -169,6 +169,32 @@ int main(int argvc, char **argv) {
     if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
+    { /*** Double table test with near/far domains flipped ***/
+
+    printf("\n**Two tables with near/far domains flipped**\n");
+
+        Dynein_bothbound near_dyn_bb(M_PI/2,            // nma_init
+				     3*M_PI/2,          // fma_init
+				     0,                 // nbx_init
+				     0,                 // nby_init
+				     2*Lt,              // L
+				     NULL,              // internal forces
+				     NULL,              // brownian forces
+				     NULL,              // equilibrium angles
+				     rand);             // MTRand
+
+	Dynein_bothbound  far_dyn_bb(3*M_PI/2,          // nma_init
+				     M_PI/2,            // fma_init
+				     2*Lt,              // nbx_init
+				     0,                 // nby_init
+				     -2*Lt,             // L
+				     NULL,              // internal forces
+				     NULL,              // brownian forces
+				     NULL,              // equilibrium angles
+				     rand);             // MTRand
+
+  }
+
   if (num_failures == 0) {
     printf("All %d tests pass!\n\n", num_tests);
   } else {

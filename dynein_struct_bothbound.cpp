@@ -121,7 +121,6 @@ void Dynein_bothbound::update_internal_forces() {
     f.nmx += f1x;
     f.nmy += f1y;
     f.fmx += f2x; // should be: positive
-    // (force is calculated properly, but motion equations don't take it into acct)
     f.fmy += f2y; // should be: positive
     f.tx  += -(f1x + f2x);
     f.ty  += -(f1y + f2y);
@@ -180,7 +179,8 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
 
-  assert(Ln + Lf > L); // this geometrically must be true!
+  printf("Ln: %g, Lf: %g, fabs(L): %g\n", Ln, Lf, fabs(L));
+  assert(Ln + Lf > fabs(L)); // this geometrically must be true!
   assert(nma != M_PI);
   assert(fma != M_PI);
 }

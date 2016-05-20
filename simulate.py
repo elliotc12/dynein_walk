@@ -26,7 +26,7 @@ elif length == "long":
 elif length == "normal":
     runtime = 5000
 elif length == "short":
-    runtime = 1000
+    runtime = 50
 else:
     runtime = int(sys.argv[2])
 
