@@ -200,30 +200,30 @@ void Dynein_bothbound::update_velocities() {
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
 
-  double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
+  const double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
-  double dcosAn_dLf = -(Lf) / (L*Ln);
-  double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
-  double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
-  double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
-  double dcosAns_dLf = 0;
-  double dsinAns_dLn = (nma < M_PI) ?
+  const double dcosAn_dLf = -(Lf) / (L*Ln);
+  const double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
+  const double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
+  const double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
+  const double dcosAns_dLf = 0;
+  const double dsinAns_dLn = (nma < M_PI) ?
      -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
     : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
-  double dsinAns_dLf = 0;
+  const double dsinAns_dLf = 0;
 
   if (am_debugging_nans) printf("dcosAn_dLn %g\n", dcosAn_dLn);
   if (am_debugging_nans) printf("dsinAn_dLn %g\n", dsinAn_dLn);
   if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
   if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
-  double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
-  double dcosAf_dLn = -(Ln) / (L*Lf);
-  double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
-  double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
-  double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
-  double dcosAfs_dLn = 0;
-  double dsinAfs_dLf = (fma < M_PI) ?
+  const double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
+  const double dcosAf_dLn = -(Ln) / (L*Lf);
+  const double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
+  const double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
+  const double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
+  const double dcosAfs_dLn = 0;
+  const double dsinAfs_dLf = (fma < M_PI) ?
      -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
     : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
   double dsinAfs_dLn = 0;
