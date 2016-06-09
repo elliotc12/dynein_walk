@@ -119,6 +119,9 @@ int main(int argvc, char **argv) {
 
     if (dyn_bb != NULL) {
       while (t < runtime) { // loop as long as it is bothbound
+
+	detect_nans(dyn_bb, "walk");
+
 	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate();
 	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate();
 	if (unbind_near && unbind_far) {
