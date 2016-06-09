@@ -58,7 +58,7 @@ void log_run(FILE* run_file, double runtime, double run_length,
   	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
 }
 
-void detect_nans(Dynein_bothbound* dyn_bb, char* loc) {
+void detect_nans(Dynein_bothbound* dyn_bb, const char* loc) {
   if (dyn_bb->get_nma() != dyn_bb->get_nma()) printf("get_nma returns NaN at  %s\n", loc);
   if (dyn_bb->get_fma() != dyn_bb->get_fma()) printf("get_fma returns NaN at  %s\n", loc);
 
