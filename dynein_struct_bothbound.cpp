@@ -385,10 +385,10 @@ double Dynein_bothbound::get_d_nba() {
 }
 
 double Dynein_bothbound::get_d_fba() {
-  float d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
+  double d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
     * ( (1/L - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf*Lf) )*d_Lf
 	- Ln / (L*Lf) * d_Ln);
-  float d_Afs = -1 / sqrt(1 - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf)*(Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf))
+  double d_Afs = -1 / sqrt(1 - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf)*(Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf))
     * ( 1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf*Lf))*d_Lf;
   if (fma <= M_PI) return -(d_Af + d_Afs);
   else return -(d_Af - d_Afs);
