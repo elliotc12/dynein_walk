@@ -179,7 +179,6 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
 
-  printf("Ln: %g, Lf: %g, fabs(L): %g\n", Ln, Lf, fabs(L));
   assert(Ln + Lf > fabs(L)); // this geometrically must be true!
   assert(nma != M_PI);
   assert(fma != M_PI);
@@ -228,28 +227,28 @@ void Dynein_bothbound::update_velocities() {
     : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
   double dsinAfs_dLn = 0;
 
-  double dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
-			- sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
-  double dYnm_dLn = Ls*(cosAn * dsinAns_dLn + sinAns * dcosAn_dLn
-			+ sinAn * dcosAns_dLn + cosAns * dsinAn_dLn);
-  double dXnm_dLf = Ls*(cosAn * dcosAns_dLf + cosAns * dcosAn_dLf
-			- sinAn * dsinAns_dLf - sinAns * dsinAn_dLf);
-  double dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
-			+ sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
-
-  double dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
-			- sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
-  double dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
-			+ sinAf * dcosAfs_dLf + cosAfs * dsinAf_dLf);
-  double dXfm_dLn = Ls*(cosAf * dcosAfs_dLn + cosAfs * dcosAf_dLn
-			- sinAf * dsinAfs_dLn - sinAfs * dsinAf_dLn);
-  double dYfm_dLn = Ls*(cosAf * dsinAfs_dLn + sinAfs * dcosAf_dLn
-			+ sinAf * dcosAfs_dLn + cosAfs * dsinAf_dLn);
-
-  double dXt_dLn = cosAn;
-  double dYt_dLn = sinAn;
-  double dXt_dLf = 0;
-  double dYt_dLf = 0;
+  dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
+                - sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
+  dYnm_dLn = Ls*(cosAn * dsinAns_dLn + sinAns * dcosAn_dLn
+                + sinAn * dcosAns_dLn + cosAns * dsinAn_dLn);
+  dXnm_dLf = Ls*(cosAn * dcosAns_dLf + cosAns * dcosAn_dLf
+                - sinAn * dsinAns_dLf - sinAns * dsinAn_dLf);
+  dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
+                + sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
+          
+  dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
+                - sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
+  dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
+                + sinAf * dcosAfs_dLf + cosAfs * dsinAf_dLf);
+  dXfm_dLn = Ls*(cosAf * dcosAfs_dLn + cosAfs * dcosAf_dLn
+                - sinAf * dsinAfs_dLn - sinAfs * dsinAf_dLn);
+  dYfm_dLn = Ls*(cosAf * dsinAfs_dLn + sinAfs * dcosAf_dLn
+                + sinAf * dcosAfs_dLn + cosAfs * dsinAf_dLn);
+          
+  dXt_dLn =  Ln/L;
+  dYt_dLn = sinAn + Ln*dsinAn_dLn;
+  dXt_dLf = -Lf/L;
+  dYt_dLf = Ln*dsinAn_dLf;
   if (am_debugging_nans) printf("dXt_dLn is %g\n", dXt_dLn);
   if (am_debugging_nans) printf("dYt_dLn is %g\n", dYt_dLn);
 
@@ -375,11 +374,12 @@ void Dynein_bothbound::set_dLf(double d) {
 /*** Angular Velocities ***/
 
 double Dynein_bothbound::get_d_nba() {
-  float d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
+  double d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
     * ( (1/L - (L*L+Ln*Ln-Lf*Lf)/(2*L*Ln*Ln) )*d_Ln
 	- (Lf/(L*Ln))*d_Lf );
-  float d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
+  double d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
     * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
+  printf("in get_d_nba: d_An = %g  d_Ans = %g\n", d_An, d_Ans);
   if (nma <= M_PI) return d_An + d_Ans;
   else return d_An - d_Ans;
 }
@@ -417,27 +417,27 @@ double Dynein_bothbound::get_fma() {
 
 /*** Get Cartesian Velocities ***/
 double Dynein_bothbound::get_d_nmx() {
-  return -ls * sin(nba) * get_d_nba();
+  return dXnm_dLn*d_Ln + dXnm_dLf*d_Lf;
 }
 
 double Dynein_bothbound::get_d_tx() {
-  return get_d_nmx() + -lt * sin(get_nma()) * get_d_nma();
+  return dXt_dLn*d_Ln + dXt_dLf*d_Lf;
 }
 
 double Dynein_bothbound::get_d_fmx() {
-  return -ls * sin(fba) * get_d_fba();
+  return dXfm_dLn*d_Ln + dXfm_dLf*d_Lf;
 }
 
 double Dynein_bothbound::get_d_nmy() {
-  return ls * cos(nba) * get_d_nba();
+  return dYnm_dLn*d_Ln + dYnm_dLf*d_Lf;
 }
 
 double Dynein_bothbound::get_d_ty() {
-  return get_d_nmy() + lt * cos(nma) * get_d_nma();
+  return dYt_dLn*d_Ln + dYt_dLf*d_Lf;
 }
 
 double Dynein_bothbound::get_d_fmy() {
-  return ls * cos(fba) * get_d_fba();
+  return dYfm_dLn*d_Ln + dYfm_dLf*d_Lf;
 }
 
 /*** Get forces ***/

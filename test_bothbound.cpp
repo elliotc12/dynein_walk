@@ -53,6 +53,8 @@ int test_noteq(const char *msg, float one, float two) {
 
 int main(int argvc, char **argv) {
 
+  const double pN = 1e-12; // a pico-Newton is a reasonable amount of force
+
   printf("****************Starting Bothbound Test****************\n\n");
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
@@ -65,9 +67,7 @@ int main(int argvc, char **argv) {
 
   int num_failures = 0;
 
-  { /*** Upwards line conformation ***/
-
-    printf("**Upwards line conformation with no forces**\n");
+  { printf("**Upwards line conformation with no forces**\n");
 
     bothbound_equilibrium_angles line_eq_angles = {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
@@ -109,11 +109,9 @@ int main(int argvc, char **argv) {
     if (!test("f.fby zero?", dyn_bb.get_internal().fby, 0)) num_failures++;
   }
 
-  { /*** Upwards line with +x forces ***/
+  { printf("\n**'Almost' upwards line conformation with +x forces**\n");
 
-    printf("\n**'Almost' upwards line conformation with +x forces**\n");
-
-    bothbound_forces x_forces =    {1,0,1,0,1,0,1,0,1,0}; // bbx, bby, bmx, bmy, ...
+    bothbound_forces x_forces =    {pN,0,pN,0,pN,0,pN,0,pN,0}; // bbx, bby, bmx, bmy, ...
 
     bothbound_equilibrium_angles line_eq_angles = {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
@@ -124,8 +122,8 @@ int main(int argvc, char **argv) {
                             0,                 // nbx_init
                             0,                 // nby_init
                             1e-25,             // L
-                            &x_forces,         // internal forces
-			    NULL,              // brownian forces
+                            NULL,         // internal forces
+			    &x_forces,              // brownian forces
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
 
@@ -139,11 +137,9 @@ int main(int argvc, char **argv) {
     if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
-  { /*** Upwards line with +x forces ***/
+  { printf("\n**A table conformation conformation with equal and opposite x forces**\n");
 
-    printf("\n**A table conformation conformation with equal and opposite x forces**\n");
-
-    bothbound_forces x_forces =    {0,1,0,1,0,0,0,-1,0,-1}; // bbx, bby, bmx, bmy, ...
+    bothbound_forces x_forces =    {0,pN,0,pN,0,0,0,-pN,0,-pN}; // bbx, bby, bmx, bmy, ...
 
     bothbound_equilibrium_angles line_eq_angles = {
       M_PI/2, M_PI/2, M_PI, 3*M_PI/2, M_PI/2
@@ -154,8 +150,8 @@ int main(int argvc, char **argv) {
                             0,                 // nbx_init
                             0,                 // nby_init
                             2*Lt,             // L
-                            &x_forces,         // internal forces
-			    NULL,              // brownian forces
+                            NULL,         // internal forces
+			    &x_forces,              // brownian forces
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
 
@@ -169,9 +165,7 @@ int main(int argvc, char **argv) {
     if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
-    { /*** Double table test with near/far domains flipped ***/
-
-    printf("\n**Two tables with near/far domains flipped**\n");
+  { printf("\n**Two tables with near/far domains flipped**\n");
 
         Dynein_bothbound near_dyn_bb(M_PI/2,            // nma_init
 				     3*M_PI/2,          // fma_init

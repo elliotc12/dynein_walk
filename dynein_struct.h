@@ -302,6 +302,11 @@ private:
   double nmx, fmx, tx;
   double nmy, fmy, ty;
 
+  // Various interesting derivatives that are used in finding the
+  // velocities (and are set by update_velocities).
+  double dXnm_dLn, dYnm_dLn, dXnm_dLf, dYnm_dLf, dXfm_dLf, dYfm_dLf,
+    dXfm_dLn, dYfm_dLn, dXt_dLn, dYt_dLn, dXt_dLf, dYt_dLf;
+
   // Angles needed for torque computations
   double nba, fba;
 };
