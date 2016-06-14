@@ -137,7 +137,7 @@ int main(int argvc, char **argv) {
     if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
   }
 
-  { printf("\n**A table conformation conformation with equal and opposite x forces**\n");
+  { printf("\n**A table conformation with equal and opposite x forces**\n");
 
     bothbound_forces x_forces =    {0,pN,0,pN,0,0,0,-pN,0,-pN}; // bbx, bby, bmx, bmy, ...
 
@@ -167,25 +167,43 @@ int main(int argvc, char **argv) {
 
   { printf("\n**Two tables with near/far domains flipped**\n");
 
-        Dynein_bothbound near_dyn_bb(M_PI/2,            // nma_init
-				     3*M_PI/2,          // fma_init
-				     0,                 // nbx_init
-				     0,                 // nby_init
-				     2*Lt,              // L
-				     NULL,              // internal forces
-				     NULL,              // brownian forces
-				     NULL,              // equilibrium angles
-				     rand);             // MTRand
+    Dynein_bothbound left_dyn_bb(M_PI/2,            // nma_init
+				 3*M_PI/2,          // fma_init
+				 0,                 // nbx_init
+				 0,                 // nby_init
+				 2*Lt,              // L
+				 NULL,              // internal forces
+				 NULL,              // brownian forces
+				 NULL,              // equilibrium angles
+				 rand);             // MTRand
 
-	Dynein_bothbound  far_dyn_bb(3*M_PI/2,          // nma_init
-				     M_PI/2,            // fma_init
-				     2*Lt,              // nbx_init
-				     0,                 // nby_init
-				     -2*Lt,             // L
-				     NULL,              // internal forces
-				     NULL,              // brownian forces
-				     NULL,              // equilibrium angles
-				     rand);             // MTRand
+    Dynein_bothbound right_dyn_bb(3*M_PI/2,          // nma_init
+				 M_PI/2,            // fma_init
+				 2*Lt,              // nbx_init
+				 0,                 // nby_init
+				 -2*Lt,             // L
+				 NULL,              // internal forces
+				 NULL,              // brownian forces
+				 NULL,              // equilibrium angles
+				 rand);             // MTRand
+
+    if (!test("Are the left binding domain x coords equal?",
+	      left_dyn_bb.get_nbx(), right_dyn_bb.get_fbx())) num_failures++;
+    if (!test("Are the left motor domain x coords equal?",
+	      left_dyn_bb.get_nmx(), right_dyn_bb.get_fmx())) num_failures++;
+    if (!test("Are the tail domain x coords equal?",
+	      left_dyn_bb.get_tx(), right_dyn_bb.get_tx())) num_failures++;
+    if (!test("Are the right motor domain x coords equal?",
+	      left_dyn_bb.get_fmx(), right_dyn_bb.get_nmx())) num_failures++;
+    if (!test("Are the right binding domain x coords equal?",
+	      left_dyn_bb.get_fbx(), right_dyn_bb.get_nbx())) num_failures++;
+
+    if (!test("Are the left motor domain y coords equal?",
+	      left_dyn_bb.get_nmy(), right_dyn_bb.get_fmy())) num_failures++;
+    if (!test("Are the tail domain y coords equal?",
+	      left_dyn_bb.get_ty(), right_dyn_bb.get_ty())) num_failures++;
+    if (!test("Are the right motor domain y coords equal?",
+	      left_dyn_bb.get_fmy(), right_dyn_bb.get_nmy())) num_failures++;
 
   }
 

@@ -235,7 +235,7 @@ void Dynein_bothbound::update_velocities() {
                 - sinAn * dsinAns_dLf - sinAns * dsinAn_dLf);
   dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
                 + sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
-          
+
   dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
                 - sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
   dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
@@ -244,7 +244,7 @@ void Dynein_bothbound::update_velocities() {
                 - sinAf * dsinAfs_dLn - sinAfs * dsinAf_dLn);
   dYfm_dLn = Ls*(cosAf * dsinAfs_dLn + sinAfs * dcosAf_dLn
                 + sinAf * dcosAfs_dLn + cosAfs * dsinAf_dLn);
-          
+
   dXt_dLn =  Ln/L;
   dYt_dLn = sinAn + Ln*dsinAn_dLn;
   dXt_dLf = -Lf/L;
