@@ -189,6 +189,17 @@ $L_n$ and $L_f$ coordinates switched places.
   \end{cases}
 \end{align}
 
+The only change between the near and far coordinates (other than switching $L_n$ and $L_f$) is the
+sign of $\cos\theta_{n/f}$. This is because, for positive L, $\theta_n$ is an internal angle and
+$\theta_f$ is an external angle to the $L-L_n-L_f$ triangle. To properly deal with the $\theta_f$
+angle, we must use its complement: $\pi - \theta_f$. The sign switch is because
+$\cos\left(\pi - \theta_f\right) = -\cos\theta_f$.\\
+
+For negative L values, the only change to the model is that $\theta_n$ becomes an external angle and
+$\theta_f$ becomes internal. As we know, we must introduce a sign shift to account for this.
+However we do not need to do any extra work, since the L in the denominator of $\cos\theta_f$
+provides the necessary sign shift for $\theta_n$ going from internal to external.
+
 \onecolumn
 
 \section{Matrix Solution via Mathematica}
