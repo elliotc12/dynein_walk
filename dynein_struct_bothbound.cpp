@@ -92,10 +92,10 @@ void Dynein_bothbound::update_internal_forces() {
     f2 = T/ls;
     f2x = f2 * sin(nba);
     f2y = f2 * -cos(nba);
-    f.nmx += f2x;
-    f.nmy += f2y;
-    f.nbx += -f2x; // Equal and opposite forces!  :)
-    f.nby += -f2y; // Equal and opposite forces!  :)
+    f.nmx += f2x / gm;
+    f.nmy += f2y / gm;
+    f.nbx += -f2x / gb; // Equal and opposite forces!  :)
+    f.nby += -f2y / gb; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
     f1 = T/ls;
@@ -104,12 +104,12 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(nba);
     f2x = f2 * sin(nma - (M_PI - nba));
     f2y = f2 * -cos(nma - (M_PI - nba));
-    f.nbx += f1x;
-    f.nby += f1y;
-    f.tx  += f2x;
-    f.ty  += f2y;
-    f.nmx += -(f1x + f2x);
-    f.nmy += -(f1y + f2y);
+    f.nbx += f1x / gb;
+    f.nby += f1y / gb;
+    f.tx  += f2x / gt;
+    f.ty  += f2y / gt;
+    f.nmx += -(f1x + f2x) / gm;
+    f.nmy += -(f1y + f2y) / gm;
 
     T = ct*(fma + fba - nma - nba - eq.ta);
     f1 = T / lt;
@@ -118,12 +118,12 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(nma + nba - M_PI);
     f2x = f2 * -sin(fma + fba - M_PI);
     f2y = f2 * cos(fma + fba - M_PI);
-    f.nmx += f1x;
-    f.nmy += f1y;
-    f.fmx += f2x; // should be: positive
-    f.fmy += f2y; // should be: positive
-    f.tx  += -(f1x + f2x);
-    f.ty  += -(f1y + f2y);
+    f.nmx += f1x / gm;
+    f.nmy += f1y / gm;
+    f.fmx += f2x / gm; // should be: positive
+    f.fmy += f2y / gm; // should be: positive
+    f.tx  += -(f1x + f2x) / gt;
+    f.ty  += -(f1y + f2y) / gt;
 
     T = cm*(fma - eq.fma);
     f1 = T / lt;
@@ -132,21 +132,21 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(fma + fba - M_PI);
     f2x = f2 * sin(fba);
     f2y = f2 * -cos(fba);
-    f.tx  += f1x;
-    f.ty  += f1y;
-    f.fbx += f2x;
-    f.fby += f2y;
-    f.fmx += -(f1x + f2x); // should be: negative
-    f.fmy += -(f1y + f2y); // should be: negative
+    f.tx  += f1x / gt;
+    f.ty  += f1y / gt;
+    f.fbx += f2x / gb;
+    f.fby += f2y / gb;
+    f.fmx += -(f1x + f2x) / gm; // should be: negative
+    f.fmy += -(f1y + f2y) / gm; // should be: negative
 
     T = cb*(fba - eq.fba);
     f1 = T / ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);
-    f.fmx += f1x; // should be: positive
-    f.fmy += f1y; // should be: positive
-    f.fbx += -f1x;
-    f.fby += -f1y;
+    f.fmx += f1x / gm; // should be: positive
+    f.fmy += f1y / gm; // should be: positive
+    f.fbx += -f1x / gb;
+    f.fby += -f1y / gb;
 
     if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
@@ -191,8 +191,6 @@ void Dynein_bothbound::update_velocities() {
   update_brownian_forces();
   update_internal_forces();
 
-  printf("d_tx: %g\n", get_d_tx());
-
   if (am_debugging_nans) printf("cosAn %g\n", cosAn);
   if (am_debugging_nans) printf("sinAn %g\n", sinAn);
   if (am_debugging_nans) printf("cosAns %g\n", cosAns);
@@ -201,10 +199,15 @@ void Dynein_bothbound::update_velocities() {
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
 
+  printf("f.nmx: %g\n", fforces.nmx);
+  printf("r.nmx: %g\n", rforces.nmx);
+  printf("d_nmx: %g\n", get_d_nmx()*dt);
+
   const double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
   const double dcosAn_dLf = -(Lf) / (L*Ln);
-  const double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
+  const double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) *
+    (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
   const double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
   const double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
   const double dcosAns_dLf = 0;
@@ -220,7 +223,8 @@ void Dynein_bothbound::update_velocities() {
 
   const double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
   const double dcosAf_dLn = -(Ln) / (L*Lf);
-  const double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
+  const double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) *
+    (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
   const double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
   const double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
   const double dcosAfs_dLn = 0;
@@ -291,12 +295,12 @@ void Dynein_bothbound::update_velocities() {
            t,u,v,w,x,y);
   }
 
-  double x1 = -fforces.nmx / gm - rforces.nmx;
-  double x2 = -fforces.tx / gt  - rforces.tx;
-  double x3 = -fforces.fmx / gm - rforces.fmx;
-  double x4 = -fforces.nmy / gm - rforces.nmy;
-  double x5 = -fforces.ty / gt  - rforces.ty;
-  double x6 = -fforces.fmy / gm - rforces.fmy;
+  double x1 = -fforces.nmx - rforces.nmx;
+  double x2 = -fforces.tx  - rforces.tx;
+  double x3 = -fforces.fmx - rforces.fmx;
+  double x4 = -fforces.nmy - rforces.nmy;
+  double x5 = -fforces.ty  - rforces.ty;
+  double x6 = -fforces.fmy - rforces.fmy;
 
   d_Ln =
     (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 + d*l*p*u*w*x2 - c*l*q*u*w*x2 - d*l*p*s*x*x2 + 
