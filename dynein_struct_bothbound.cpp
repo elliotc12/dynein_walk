@@ -191,6 +191,8 @@ void Dynein_bothbound::update_velocities() {
   update_brownian_forces();
   update_internal_forces();
 
+  printf("d_tx: %g\n", get_d_tx());
+
   if (am_debugging_nans) printf("cosAn %g\n", cosAn);
   if (am_debugging_nans) printf("sinAn %g\n", sinAn);
   if (am_debugging_nans) printf("cosAns %g\n", cosAns);

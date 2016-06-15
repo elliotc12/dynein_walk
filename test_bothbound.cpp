@@ -24,7 +24,7 @@ static int num_tests = 0;
 int test(const char *msg, float one, float two, double epsilon = EPSILON) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g == %g.\n", msg, one, two);
+    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (equal(one, two, epsilon)) {
     printf("%30s: pass, %g == %g.\n", msg, one, two);
@@ -38,13 +38,41 @@ int test(const char *msg, float one, float two, double epsilon = EPSILON) {
 int test_noteq(const char *msg, float one, float two) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g == %g.\n", msg, one, two);
+    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (!equal(one, two)) {
     printf("%30s: pass, %g != %g.\n", msg, one, two);
     return 1;
   } else {
     printf("%30s: FAIL! %g == %g.\n", msg, one, two);
+    return 0;
+  }
+}
+
+int test_greater(const char *msg, float one, float two, double epsilon = EPSILON) {
+  num_tests += 1;
+  if (one != one or two != two) {
+    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    return 0;
+  } else if (one > two) {
+    printf("%30s: pass, %g > %g.\n", msg, one, two);
+    return 1;
+  } else {
+    printf("%30s: FAIL! %g <= %g.\n", msg, one, two);
+    return 0;
+  }
+}
+
+int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
+  num_tests += 1;
+  if (one != one or two != two) {
+    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    return 0;
+  } else if (one < two) {
+    printf("%30s: pass, %g < %g.\n", msg, one, two);
+    return 1;
+  } else {
+    printf("%30s: FAIL! %g >= %g.\n", msg, one, two);
     return 0;
   }
 }
@@ -58,12 +86,6 @@ int main(int argvc, char **argv) {
   printf("****************Starting Bothbound Test****************\n\n");
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
-
-  // double nba_eq  = bothbound_post_powerstroke_internal_angles.nba;
-  // double nma_eq  = bothbound_post_powerstroke_internal_angles.nma;
-  // double ta_eq   = bothbound_post_powerstroke_internal_angles.ta;
-  // double fma_eq  = bothbound_post_powerstroke_internal_angles.fma;
-  // double fba_eq  = bothbound_post_powerstroke_internal_angles.fba;
 
   int num_failures = 0;
 
@@ -111,13 +133,40 @@ int main(int argvc, char **argv) {
     if (!test("f.fby zero?", dyn_bb.get_internal().fby, 0)) num_failures++;
   }
 
-  { printf("\n**'Almost' upwards line conformation with +x forces**\n");
+   { printf("\n**House conformation with equilateral roof, outwards forces**\n");
 
-    bothbound_forces x_forces =    {pN,0,pN,0,pN,0,pN,0,pN,0}; // bbx, bby, bmx, bmy, ...
+     bothbound_forces out_forces = {-pN*1000,0,-pN*1000,0,0,0,pN*1000,0,pN*1000,0};
+
+     Dynein_bothbound dyn_bb(5*M_PI/6,     // nma_init
+                            7*M_PI/6,      // fma_init
+                            0,             // nbx_init
+                            0,             // nby_init
+                            Lt,            // L -- equilateral roof
+                            &no_forces,    // internal forces
+  			    &out_forces,   // brownian forces
+  			    NULL,          // equilibrium angles
+  			    rand);         // MTRand
+
+     if (!test("nmx zero?", dyn_bb.get_nmx(), 0)) num_failures++;
+     if (!test("fmx Lt?", dyn_bb.get_fmx(), Ls)) num_failures++;
+     if (!test("nmy Ls?", dyn_bb.get_nmy(), Ls)) num_failures++;
+     if (!test("fmy Ls?", dyn_bb.get_fmy(), Ls)) num_failures++;
+     if (!test("tx Lt/2?", dyn_bb.get_tx(), Lt/2)) num_failures++;
+     if (!test("ty Ls + sqrt(3)/2*Lt?", dyn_bb.get_ty(), Ls + sqrt(3)/2*Lt)) num_failures++;
+
+     if (!test_less("d_nmx < 0?", dyn_bb.get_d_nmx(), 0)) num_failures++;
+     if (!test("d_tx zero?", dyn_bb.get_d_tx(), 0)) num_failures++;
+     if (!test_less("d_ty < 0?", dyn_bb.get_d_ty(), 0)) num_failures++;
+     if (!test_greater("d_fmx > 0?", dyn_bb.get_d_fmx(), 0)) num_failures++;
+  }
+
+  { printf("\n**'Almost' upwards line conformation with +x forces**\n");
 
     bothbound_equilibrium_angles line_eq_angles = {
       M_PI/2, M_PI, 0, M_PI, M_PI/2
     };
+
+    bothbound_forces x_forces =    {pN,0,pN,0,0,0,pN,0,pN,0}; // bbx, bby, bmx, bmy, ...
 
     Dynein_bothbound dyn_bb(M_PI - 1e-7,      // nma_init
                             M_PI - 1e-7,      // fma_init
@@ -133,34 +182,6 @@ int main(int argvc, char **argv) {
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
     if (!test_noteq("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
     if (!test_noteq("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
-
-    if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0, 1e-4)) num_failures++;
-    if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0, 1e-4)) num_failures++;
-    if (!test("d_fmy_dt almost zero?", dyn_bb.get_d_fmy(), 0, 1e-4)) num_failures++;
-  }
-
-  { printf("\n**A table conformation with equal and opposite x forces**\n");
-
-    bothbound_forces x_forces =    {0,pN,0,pN,0,0,0,-pN,0,-pN}; // bbx, bby, bmx, bmy, ...
-
-    bothbound_equilibrium_angles line_eq_angles = {
-      M_PI/2, M_PI/2, M_PI, 3*M_PI/2, M_PI/2
-    };
-
-    Dynein_bothbound dyn_bb(M_PI/2,          // nma_init
-                            3*M_PI/2,        // fma_init
-                            0,               // nbx_init
-                            0,               // nby_init
-                            2*Lt,            // L
-                            NULL,            // internal forces
-			    &x_forces,       // brownian forces
-			    &line_eq_angles, // equilibrium angles
-			    rand);           // MTRand
-
-    printf("\tTesting motor velocities:\n");
-    if (!test("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
-    if (!test("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
-    if (!test("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
 
     if (!test("d_nmy_dt almost zero?", dyn_bb.get_d_nmy(), 0, 1e-4)) num_failures++;
     if (!test("d_ty_dt  almost zero?", dyn_bb.get_d_ty(), 0, 1e-4)) num_failures++;
@@ -214,8 +235,6 @@ int main(int argvc, char **argv) {
 	      left_dyn_bb.get_ty(), right_dyn_bb.get_ty())) num_failures++;
     if (!test("right my coords equal?",
 	      left_dyn_bb.get_fmy(), right_dyn_bb.get_nmy())) num_failures++;
-
-    // also test forces here?
 
     if (!test("left angle velocities equal?",
 	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma())) num_failures++;

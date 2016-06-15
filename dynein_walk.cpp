@@ -45,21 +45,19 @@ int main(int argvc, char **argv) {
   // Dynein_bothbound *dyn_bb = 0;
 
   Dynein_onebound* dyn_ob = NULL;
-
-  bothbound_equilibrium_angles left_table_eq_angles = {
-    M_PI/2, 3*M_PI/2, -M_PI, M_PI/2, M_PI/2
-  };
-
-  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0}; // to eliminate brownian/equilibrium forces
   
-  Dynein_bothbound *dyn_bb = new Dynein_bothbound(3*M_PI/2,   // nma_init
-                                                 M_PI/2,      // fma_init
-                                                 2*Lt,        // nbx_init
+  //  const double pN = 1e-12; // a pico-Newton is a reasonable amount of force
+  bothbound_forces out_forces = {-1,0,-1,0,0,0,1,0,1,0};
+  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0};
+  
+  Dynein_bothbound *dyn_bb = new Dynein_bothbound(5*M_PI/6,   // nma_init
+                                                 7*M_PI/6,      // fma_init
+                                                 0,        // nbx_init
                                                  0,           // nby_init
-                                                 -2*Lt,       // L
-                                                 NULL,        // internal forces
-						 &no_forces,        // brownian forces
-                                                 &left_table_eq_angles,        // equilibrium angles
+                                                 Lt,       // L
+                                                 &no_forces,        // internal forces
+						 &out_forces,        // brownian forces
+                                                 NULL,        // equilibrium angles
                                                  rand);       // MTRand
 
 
