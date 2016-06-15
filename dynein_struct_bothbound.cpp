@@ -202,7 +202,6 @@ void Dynein_bothbound::update_velocities() {
   bothbound_forces fforces = f;
 
   const double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
-  if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
   const double dcosAn_dLf = -(Lf) / (L*Ln);
   const double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
   const double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
@@ -211,12 +210,7 @@ void Dynein_bothbound::update_velocities() {
   const double dsinAns_dLn = (nma < M_PI) ?
      -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
     : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
-  const double dsinAns_dLf = 0;
-
-  if (am_debugging_nans) printf("dcosAn_dLn %g\n", dcosAn_dLn);
-  if (am_debugging_nans) printf("dsinAn_dLn %g\n", dsinAn_dLn);
-  if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
-  if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
+  const double  dsinAns_dLf = 0;
 
   const double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
   const double dcosAf_dLn = -(Ln) / (L*Lf);
@@ -227,7 +221,13 @@ void Dynein_bothbound::update_velocities() {
   const double dsinAfs_dLf = (fma < M_PI) ?
      -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
     : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
-  double dsinAfs_dLn = 0;
+  const double dsinAfs_dLn = 0;
+
+  if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
+  if (am_debugging_nans) printf("dcosAn_dLn %g\n", dcosAn_dLn);
+  if (am_debugging_nans) printf("dsinAn_dLn %g\n", dsinAn_dLn);
+  if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
+  if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
   dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
                 - sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
@@ -376,17 +376,21 @@ void Dynein_bothbound::set_dLf(double d) {
 /*** Angular Velocities ***/
 
 double Dynein_bothbound::get_d_nba() {
+  // double guess_d_An  = -1 / sinAn  * (dcosAn_dLn*d_Ln + dcosAn_dLf*d_Lf);
+  // double guess_d_Ans = -1 / sinAns * (dcosAns_dLn*d_Ln + dcosAns_dLf*d_Lf);
   double d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
     * ( (1/L - (L*L+Ln*Ln-Lf*Lf)/(2*L*Ln*Ln) )*d_Ln
 	- (Lf/(L*Ln))*d_Lf );
   double d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
     * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
-  //printf("in get_d_nba: d_An = %g  d_Ans = %g\n", d_An, d_Ans);
-  if (nma <= M_PI) return d_An + d_Ans;
-  else return d_An - d_Ans;
+  double d_A = (nma <= M_PI) ? d_An + d_Ans : d_An - d_Ans;
+  //double guess_d_A = (nma <= M_PI) ? d_An + d_Ans : d_An - d_Ans; // does this take into acct nma sign?
+  return d_A;
 }
 
 double Dynein_bothbound::get_d_fba() {
+  // double guess_d_Af  = -1 / sinAf  * (dcosAf_dLn*d_Ln + dcosAf_dLf*d_Lf);
+  // double guess_d_Afs = -1 / sinAfs * (dcosAfs_dLn*d_Ln + dcosAfs_dLf*d_Lf);
   double d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
     * ( (1/L - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf*Lf) )*d_Lf
 	- Ln / (L*Lf) * d_Ln);
@@ -397,6 +401,7 @@ double Dynein_bothbound::get_d_fba() {
 }
 
 double Dynein_bothbound::get_d_nma() {
+  /** Of course this is wrong, you solved it for An, which is a binding angle! **/
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
   return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
     * (Ln / (lt*ls)) * d_Ln;
