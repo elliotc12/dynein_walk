@@ -67,6 +67,8 @@ int main(int argvc, char **argv) {
 
   int num_failures = 0;
 
+  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0}; // to eliminate brownian/equilibrium forces
+
   { printf("**Upwards line conformation with no forces**\n");
 
     bothbound_equilibrium_angles line_eq_angles = {
@@ -79,7 +81,7 @@ int main(int argvc, char **argv) {
                             0,                 // nby_init
                             1e-25,             // L
                             NULL,              // internal forces
-			    NULL,              // brownian forces
+			    &no_forces,        // brownian forces
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
 
@@ -119,13 +121,13 @@ int main(int argvc, char **argv) {
 
     Dynein_bothbound dyn_bb(M_PI - 1e-7,      // nma_init
                             M_PI - 1e-7,      // fma_init
-                            0,                 // nbx_init
-                            0,                 // nby_init
-                            1e-25,             // L
-                            NULL,         // internal forces
-			    &x_forces,              // brownian forces
-			    &line_eq_angles,   // equilibrium angles
-			    rand);             // MTRand
+                            0,                // nbx_init
+                            0,                // nby_init
+                            1e-25,            // L
+                            NULL,             // internal forces
+			    &x_forces,        // brownian forces
+			    &line_eq_angles,  // equilibrium angles
+			    rand);            // MTRand
 
     printf("\tTesting motor velocities:\n");
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
@@ -145,15 +147,15 @@ int main(int argvc, char **argv) {
       M_PI/2, M_PI/2, M_PI, 3*M_PI/2, M_PI/2
     };
 
-    Dynein_bothbound dyn_bb(M_PI/2,      // nma_init
-                            3*M_PI/2,      // fma_init
-                            0,                 // nbx_init
-                            0,                 // nby_init
-                            2*Lt,             // L
-                            NULL,         // internal forces
-			    &x_forces,              // brownian forces
-			    &line_eq_angles,   // equilibrium angles
-			    rand);             // MTRand
+    Dynein_bothbound dyn_bb(M_PI/2,          // nma_init
+                            3*M_PI/2,        // fma_init
+                            0,               // nbx_init
+                            0,               // nby_init
+                            2*Lt,            // L
+                            NULL,            // internal forces
+			    &x_forces,       // brownian forces
+			    &line_eq_angles, // equilibrium angles
+			    rand);           // MTRand
 
     printf("\tTesting motor velocities:\n");
     if (!test("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
@@ -167,44 +169,72 @@ int main(int argvc, char **argv) {
 
   { printf("\n**Two tables with near/far domains flipped**\n");
 
-    Dynein_bothbound left_dyn_bb(M_PI/2,            // nma_init
-				 3*M_PI/2,          // fma_init
-				 0,                 // nbx_init
-				 0,                 // nby_init
-				 2*Lt,              // L
-				 NULL,              // internal forces
-				 NULL,              // brownian forces
-				 NULL,              // equilibrium angles
-				 rand);             // MTRand
+    bothbound_equilibrium_angles left_table_eq_angles = {
+      M_PI/2, M_PI/2, M_PI, 3*M_PI/2, M_PI/2
+    };
 
-    Dynein_bothbound right_dyn_bb(3*M_PI/2,          // nma_init
-				 M_PI/2,            // fma_init
-				 2*Lt,              // nbx_init
-				 0,                 // nby_init
-				 -2*Lt,             // L
-				 NULL,              // internal forces
-				 NULL,              // brownian forces
-				 NULL,              // equilibrium angles
-				 rand);             // MTRand
+    bothbound_equilibrium_angles right_table_eq_angles = {
+      M_PI/2, 3*M_PI/2, -M_PI, M_PI/2, M_PI/2
+    };
 
-    if (!test("Are the left binding domain x coords equal?",
+    Dynein_bothbound left_dyn_bb(M_PI/2,                 // nma_init
+				 3*M_PI/2,               // fma_init
+				 0,                      // nbx_init
+				 0,                      // nby_init
+				 2*Lt,                   // L
+				 NULL,                   // internal forces
+				 &no_forces,             // brownian forces
+				 &left_table_eq_angles,  // equilibrium angles
+				 rand);                  // MTRand
+
+    Dynein_bothbound right_dyn_bb(3*M_PI/2,               // nma_init
+				 M_PI/2,                  // fma_init
+				 2*Lt,                    // nbx_init
+				 0,                       // nby_init
+				 -2*Lt,                   // L
+				 NULL,                    // internal forces
+				 &no_forces,              // brownian forces
+				 &right_table_eq_angles,  // equilibrium angles
+				 rand);                   // MTRand
+
+    if (!test("left bx coords equal?",
 	      left_dyn_bb.get_nbx(), right_dyn_bb.get_fbx())) num_failures++;
-    if (!test("Are the left motor domain x coords equal?",
+    if (!test("left mx coords equal?",
 	      left_dyn_bb.get_nmx(), right_dyn_bb.get_fmx())) num_failures++;
-    if (!test("Are the tail domain x coords equal?",
+    if (!test("tx coords equal?",
 	      left_dyn_bb.get_tx(), right_dyn_bb.get_tx())) num_failures++;
-    if (!test("Are the right motor domain x coords equal?",
+    if (!test("right mx coords equal?",
 	      left_dyn_bb.get_fmx(), right_dyn_bb.get_nmx())) num_failures++;
-    if (!test("Are the right binding domain x coords equal?",
+    if (!test("right bx coords equal?",
 	      left_dyn_bb.get_fbx(), right_dyn_bb.get_nbx())) num_failures++;
 
-    if (!test("Are the left motor domain y coords equal?",
+    if (!test("left my coords equal?",
 	      left_dyn_bb.get_nmy(), right_dyn_bb.get_fmy())) num_failures++;
-    if (!test("Are the tail domain y coords equal?",
+    if (!test("ty coords equal?",
 	      left_dyn_bb.get_ty(), right_dyn_bb.get_ty())) num_failures++;
-    if (!test("Are the right motor domain y coords equal?",
+    if (!test("right my coords equal?",
 	      left_dyn_bb.get_fmy(), right_dyn_bb.get_nmy())) num_failures++;
 
+    // also test forces here?
+
+    if (!test("left angle velocities equal?",
+	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma())) num_failures++;
+    if (!test("right angle velocities equal?",
+	      left_dyn_bb.get_d_fma(), right_dyn_bb.get_d_nma())) num_failures++;
+
+    if (!test("left mx velocities equal?",
+	      left_dyn_bb.get_d_nmx(), right_dyn_bb.get_d_fmx())) num_failures++;
+    if (!test("tx velocities equal?",
+	      left_dyn_bb.get_d_tx(), right_dyn_bb.get_d_tx())) num_failures++;
+    if (!test("right mx velocities equal?",
+	      left_dyn_bb.get_d_fmx(), right_dyn_bb.get_d_nmx())) num_failures++;
+
+    if (!test("left my velocities equal?",
+	      left_dyn_bb.get_d_nmy(), right_dyn_bb.get_d_fmy())) num_failures++;
+    if (!test("ty velocities equal?",
+	      left_dyn_bb.get_d_ty(), right_dyn_bb.get_d_ty())) num_failures++;
+    if (!test("right my velocities equal?",
+	      left_dyn_bb.get_d_fmy(), right_dyn_bb.get_d_nmy())) num_failures++;
   }
 
   if (num_failures == 0) {

@@ -379,7 +379,7 @@ double Dynein_bothbound::get_d_nba() {
 	- (Lf/(L*Ln))*d_Lf );
   double d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
     * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
-  printf("in get_d_nba: d_An = %g  d_Ans = %g\n", d_An, d_Ans);
+  //printf("in get_d_nba: d_An = %g  d_Ans = %g\n", d_An, d_Ans);
   if (nma <= M_PI) return d_An + d_Ans;
   else return d_An - d_Ans;
 }

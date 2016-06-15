@@ -46,27 +46,34 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
 
-  Dynein_bothbound *dyn_bb = new Dynein_bothbound(3*M_PI/2,      // nma_init
+  bothbound_equilibrium_angles left_table_eq_angles = {
+    M_PI/2, 3*M_PI/2, -M_PI, M_PI/2, M_PI/2
+  };
+
+  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0}; // to eliminate brownian/equilibrium forces
+  
+  Dynein_bothbound *dyn_bb = new Dynein_bothbound(3*M_PI/2,   // nma_init
                                                  M_PI/2,      // fma_init
-                                                 2*Lt,                 // nbx_init
-                                                 0,                 // nby_init
-                                                 -2*Lt,             // L
-                                                 NULL,         // internal forces
-                                                 NULL,              // brownian forces
-                                                 NULL,   // equilibrium angles
-                                                 rand);             // MTRand
+                                                 2*Lt,        // nbx_init
+                                                 0,           // nby_init
+                                                 -2*Lt,       // L
+                                                 NULL,        // internal forces
+						 &no_forces,        // brownian forces
+                                                 &left_table_eq_angles,        // equilibrium angles
+                                                 rand);       // MTRand
 
-  printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
-	 dyn_bb->get_nba()/M_PI*180,
-	 dyn_bb->get_nma()/M_PI*180,
-	 dyn_bb->get_fma()/M_PI*180,
-	 dyn_bb->get_fba()/M_PI*180);
 
-  printf("Starting coords: nmx: %g, tx: %g, nmy: %g, ty: %g\n",
-	 dyn_bb->get_nmx(),
-	 dyn_bb->get_tx(),
-	 dyn_bb->get_nmy(),
-	 dyn_bb->get_ty());
+  // printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
+  // 	 dyn_bb->get_nba()/M_PI*180,
+  // 	 dyn_bb->get_nma()/M_PI*180,
+  // 	 dyn_bb->get_fma()/M_PI*180,
+  // 	 dyn_bb->get_fba()/M_PI*180);
+
+  // printf("Starting coords: nmx: %g, tx: %g, nmy: %g, ty: %g\n",
+  // 	 dyn_bb->get_nmx(),
+  // 	 dyn_bb->get_tx(),
+  // 	 dyn_bb->get_nmy(),
+  // 	 dyn_bb->get_ty());
 
   double t = 0;
 
@@ -119,9 +126,6 @@ int main(int argvc, char **argv) {
 
     if (dyn_bb != NULL) {
       while (t < runtime) { // loop as long as it is bothbound
-
-	detect_nans(dyn_bb, "walk");
-
 	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate();
 	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate();
 	if (unbind_near && unbind_far) {
