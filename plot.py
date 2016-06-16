@@ -116,7 +116,7 @@ while i < len(data) or loop:
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
   stalk2.set_data([ X[3], X[4] ], [ Y[3], Y[4] ])
 
-  force_scaling = 100
+  force_scaling = 1e-9
   for j in range(5):
     force_line[j].set_data([X[j], X[j]+force_scaling*Fx[j]],
                            [Y[j], Y[j]+force_scaling*Fy[j]])

@@ -135,7 +135,8 @@ int main(int argvc, char **argv) {
 
    { printf("\n**House conformation with equilateral roof, outwards forces**\n");
 
-     bothbound_forces out_forces = {-pN*1000,0,-pN*1000,0,0,0,pN*1000,0,pN*1000,0};
+     double R = sqrt(2*kb*T/(gm*dt)); // Brownian standard deviation
+     bothbound_forces out_forces = {-R,0,-R,0,0,0,R,0,R,0};
 
      Dynein_bothbound dyn_bb(5*M_PI/6,     // nma_init
                             7*M_PI/6,      // fma_init
@@ -147,17 +148,20 @@ int main(int argvc, char **argv) {
   			    NULL,          // equilibrium angles
   			    rand);         // MTRand
 
-     if (!test("nmx zero?", dyn_bb.get_nmx(), 0)) num_failures++;
-     if (!test("fmx Lt?", dyn_bb.get_fmx(), Ls)) num_failures++;
-     if (!test("nmy Ls?", dyn_bb.get_nmy(), Ls)) num_failures++;
-     if (!test("fmy Ls?", dyn_bb.get_fmy(), Ls)) num_failures++;
-     if (!test("tx Lt/2?", dyn_bb.get_tx(), Lt/2)) num_failures++;
-     if (!test("ty Ls + sqrt(3)/2*Lt?", dyn_bb.get_ty(), Ls + sqrt(3)/2*Lt)) num_failures++;
+     if (!test("nmx = zero?", dyn_bb.get_nmx(), 0)) num_failures++;
+     if (!test("fmx = Lt?", dyn_bb.get_fmx(), Ls)) num_failures++;
+     if (!test("nmy = Ls?", dyn_bb.get_nmy(), Ls)) num_failures++;
+     if (!test("fmy = Ls?", dyn_bb.get_fmy(), Ls)) num_failures++;
+     if (!test("tx = Lt/2?", dyn_bb.get_tx(), Lt/2)) num_failures++;
+     if (!test("ty = Ls + sqrt(3)/2*Lt?", dyn_bb.get_ty(), Ls + sqrt(3)/2*Lt)) num_failures++;
 
      if (!test_less("d_nmx < 0?", dyn_bb.get_d_nmx(), 0)) num_failures++;
-     if (!test("d_tx zero?", dyn_bb.get_d_tx(), 0)) num_failures++;
+     if (!test("d_tx = zero?", dyn_bb.get_d_tx(), 0)) num_failures++;
      if (!test_less("d_ty < 0?", dyn_bb.get_d_ty(), 0)) num_failures++;
      if (!test_greater("d_fmx > 0?", dyn_bb.get_d_fmx(), 0)) num_failures++;
+     if (!test("d_nmx = -d_fmx?", dyn_bb.get_d_nmx(), -dyn_bb.get_d_fmx())) num_failures++;
+     if (!test("d_nmy = d_fmy?", dyn_bb.get_d_nmy(), dyn_bb.get_d_fmy())) num_failures++;
+     if (!test("d_Ln = d_Lf?", dyn_bb.get_d_Ln(), dyn_bb.get_d_Lf())) num_failures++;
   }
 
   { printf("\n**'Almost' upwards line conformation with +x forces**\n");

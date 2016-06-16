@@ -199,39 +199,41 @@ void Dynein_bothbound::update_velocities() {
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
 
-  printf("f.nmx: %g\n", fforces.nmx);
-  printf("r.nmx: %g\n", rforces.nmx);
-  printf("d_nmx: %g\n", get_d_nmx()*dt);
+  // printf("f.nbx: %g \nf.nmx: %g \nf.tx: %g \nf.fmx: %g \nf.fbx: %g \n\n",
+  // 	 f.nbx, f.nmx, f.tx, f.fmx, f.fbx);
 
-  const double dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
-  if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
-  const double dcosAn_dLf = -(Lf) / (L*Ln);
-  const double dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) *
+  printf("d_nbx: %g \nd_nmx: %g \nd_tx: %g \nd_fmx: %g \nd_fbx: %g \n\n",
+	 0.0, get_d_nmx(), get_d_tx(), get_d_fmx(), 0.0);
+
+  dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
+  dcosAn_dLf = -(Lf) / (L*Ln);
+  dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) *
     (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
-  const double dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
-  const double dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
-  const double dcosAns_dLf = 0;
-  const double dsinAns_dLn = (nma < M_PI) ?
+  dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
+  dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
+  dcosAns_dLf = 0;
+  dsinAns_dLn = (nma < M_PI) ?
      -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
     : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
-  const double dsinAns_dLf = 0;
+  dsinAns_dLf = 0;
 
+  if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
   if (am_debugging_nans) printf("dcosAn_dLn %g\n", dcosAn_dLn);
   if (am_debugging_nans) printf("dsinAn_dLn %g\n", dsinAn_dLn);
   if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
   if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
-  const double dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
-  const double dcosAf_dLn = -(Ln) / (L*Lf);
-  const double dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) *
+  dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
+  dcosAf_dLn = -(Ln) / (L*Lf);
+  dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) *
     (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
-  const double dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
-  const double dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
-  const double dcosAfs_dLn = 0;
-  const double dsinAfs_dLf = (fma < M_PI) ?
+  dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
+  dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
+  dcosAfs_dLn = 0;
+  dsinAfs_dLf = (fma < M_PI) ?
      -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
     : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
-  double dsinAfs_dLn = 0;
+  dsinAfs_dLn = 0;
 
   dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
                 - sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
@@ -255,9 +257,9 @@ void Dynein_bothbound::update_velocities() {
   dYt_dLn = sinAn + Ln*dsinAn_dLn;
   dXt_dLf = -Lf/L;
   dYt_dLf = Ln*dsinAn_dLf;
+  
   if (am_debugging_nans) printf("dXt_dLn is %g\n", dXt_dLn);
   if (am_debugging_nans) printf("dYt_dLn is %g\n", dYt_dLn);
-
   if (am_debugging_nans) printf("gm = %g, gt = %g\n", gm, gt);
 
   double a = -dXnm_dLn;
@@ -402,14 +404,20 @@ double Dynein_bothbound::get_d_fba() {
 
 double Dynein_bothbound::get_d_nma() {
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
+  double guess_d_nma = -pm / sinAn * (dcosAn_dLn*d_Ln + dcosAn_dLf*d_Lf);
+  double d_nma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
     * (Ln / (lt*ls)) * d_Ln;
+  printf("guess_d_nma: %g, d_nma: %g\n", guess_d_nma, d_nma);
+  return guess_d_nma;
 }
 
 double Dynein_bothbound::get_d_fma() {
   int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
-  return pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
+  double guess_d_fma = -pm / sinAf * (dcosAf_dLn*d_Ln + dcosAf_dLf*d_Lf);
+  double  d_fma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
     * (Lf / (lt*ls)) * d_Lf;
+  printf("guess_d_fma: %g, d_fma: %g\n", guess_d_fma, d_fma);
+  return guess_d_fma;
 }
 
 /*** Get coordinates ***/

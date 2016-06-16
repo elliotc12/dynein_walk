@@ -30,7 +30,7 @@ plot: walk
 	./simulate.py veryfast verylong natural
 
 plot-step: walk
-	./simulate.py veryfast short natural step
+	./simulate.py veryfast normal natural step
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..

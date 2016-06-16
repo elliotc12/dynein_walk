@@ -261,6 +261,9 @@ public:
   double get_d_fmy();
   double get_d_fby();
 
+  double get_d_Ln() { return d_Ln; };
+  double get_d_Lf() { return d_Lf; };
+
   bothbound_forces get_internal();
   bothbound_forces get_brownian();
 
@@ -301,6 +304,12 @@ private:
   double cosAf, sinAf, cosAfs, sinAfs;
   double nmx, fmx, tx;
   double nmy, fmy, ty;
+
+  double dcosAn_dLn, dsinAn_dLn, dcosAns_dLn, dsinAns_dLn;
+  double dcosAf_dLn, dsinAf_dLn, dcosAfs_dLn, dsinAfs_dLn;
+
+  double dcosAn_dLf, dsinAn_dLf, dcosAns_dLf, dsinAns_dLf;
+  double dcosAf_dLf, dsinAf_dLf, dcosAfs_dLf, dsinAfs_dLf;
 
   // Various interesting derivatives that are used in finding the
   // velocities (and are set by update_velocities).
