@@ -80,8 +80,8 @@ void detect_nans(Dynein_bothbound* dyn_bb, const char* loc) {
   if (dyn_bb->get_d_nma() != dyn_bb->get_d_nma()) printf("get_d_nma returns NaN at  %s\n", loc);
   if (dyn_bb->get_d_fma() != dyn_bb->get_d_fma()) printf("get_d_fma returns NaN at  %s\n", loc);
 
-  if (dyn_bb->get_d_nba() != dyn_bb->get_d_nba()) printf("get_d_nba returns NaN at  %s\n", loc);
-  if (dyn_bb->get_d_fba() != dyn_bb->get_d_fba()) printf("get_d_fba returns NaN at  %s\n", loc);
+  // if (dyn_bb->get_d_nba() != dyn_bb->get_d_nba()) printf("get_d_nba returns NaN at  %s\n", loc);
+  // if (dyn_bb->get_d_fba() != dyn_bb->get_d_fba()) printf("get_d_fba returns NaN at  %s\n", loc);
 
   // if (dyn_bb->get_d_nbx() != dyn_bb->get_d_nbx()) printf("get_d_nbx returns NaN at  %s\n", loc);
   // if (dyn_bb->get_d_nmx() != dyn_bb->get_d_nmx()) printf("get_d_nmx returns NaN at  %s\n", loc);

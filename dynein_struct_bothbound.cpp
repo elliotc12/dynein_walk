@@ -199,6 +199,9 @@ void Dynein_bothbound::update_velocities() {
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
 
+  // printf("f.nbx: %g \nf.nmx: %g \nf.tx: %g \nf.fmx: %g \nf.fbx: %g \n\n",
+  // 	 f.nbx, f.nmx, f.tx, f.fmx, f.fbx);
+
   // printf("d_nbx: %g \nd_nmx: %g \nd_tx: %g \nd_fmx: %g \nd_fbx: %g \n\n",
   // 	 0.0, get_d_nmx(), get_d_tx(), get_d_fmx(), 0.0);
 
@@ -378,48 +381,48 @@ void Dynein_bothbound::set_dLf(double d) {
 
 /*** Angular Velocities ***/
 
-double Dynein_bothbound::get_d_nba() {
-  // double guess_d_An  = -1 / sinAn  * (dcosAn_dLn*d_Ln + dcosAn_dLf*d_Lf);
-  // double guess_d_Ans = -1 / sinAns * (dcosAns_dLn*d_Ln + dcosAns_dLf*d_Lf);
-  double d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
-    * ( (1/L - (L*L+Ln*Ln-Lf*Lf)/(2*L*Ln*Ln) )*d_Ln
-	- (Lf/(L*Ln))*d_Lf );
-  double d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
-    * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
-  double d_A = (nma <= M_PI) ? d_An + d_Ans : d_An - d_Ans;
-  //double guess_d_A = (nma <= M_PI) ? d_An + d_Ans : d_An - d_Ans; // does this take into acct nma sign?
-  return d_A;
-}
+/*** Not actually sure how to compute d_nba from d_An and d_Ans, leaving it alone for now ***/
+// double Dynein_bothbound::get_d_nba() {
+//   //dcosAn_dt = dcosAn_dLf*dLf_dt + dcosAn_dLn*dLn_dt = -sinAn*dAn_dt, total differential!
+//   // double guess_d_An = -1 / sinAn * (dcosAn_dLn*d_Ln + dcosAn_dLf*d_Lf);
+//   // double guess_d_Ans = -1 / sinAns * (dcosAns_dLn*d_Ln + dcosAns_dLf*d_Lf);
+//   double d_An = -1 / sqrt(1 - (L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln)*(L*L+Ln*Ln-Lf*Lf)/(2*Ls*Ln))
+//     * ( (1/L - (L*L+Ln*Ln-Lf*Lf)/(2*L*Ln*Ln) )*d_Ln
+// 	- (Lf/(L*Ln))*d_Lf );
+//   double d_Ans = -1 / sqrt(1 - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln)*(Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln))
+//     * ( 1/Ls - (Ln*Ln+Ls*Ls-Lt*Lt)/(2*Ls*Ln*Ls))*d_Ln;
+//   //printf("guess: %g, current: %g\n", guess_d_An + guess_d_Ans, d_An + d_Ans);
+//   if (nma <= M_PI) return d_An + d_Ans;
+//   else return d_An - d_Ans;
+// }
 
-double Dynein_bothbound::get_d_fba() {
-  // double guess_d_Af  = -1 / sinAf  * (dcosAf_dLn*d_Ln + dcosAf_dLf*d_Lf);
-  // double guess_d_Afs = -1 / sinAfs * (dcosAfs_dLn*d_Ln + dcosAfs_dLf*d_Lf);
-  double d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
-    * ( (1/L - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf*Lf) )*d_Lf
-	- Ln / (L*Lf) * d_Ln);
-  double d_Afs = -1 / sqrt(1 - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf)*(Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf))
-    * ( 1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf*Lf))*d_Lf;
-  if (fma <= M_PI) return -(d_Af + d_Afs);
-  else return -(d_Af - d_Afs);
-}
+// double Dynein_bothbound::get_d_fba() {
+//   // double guess_d_Af = -1 / sinAf * (dcosAf_dLn*d_Ln + dcosAf_dLf*d_Lf);
+//   // double guess_d_Afs = -1 / sinAfs * (dcosAfs_dLn*d_Ln + dcosAfs_dLf*d_Lf);
+//   double d_Af = -1 / sqrt(1 - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf)*(Lf*Lf+L*L-Ln*Ln)/(2*L*Lf))
+//     * ( (1/L - (Lf*Lf+L*L-Ln*Ln)/(2*L*Lf*Lf) )*d_Lf
+// 	- Ln / (L*Lf) * d_Ln);
+//   double d_Afs = -1 / sqrt(1 - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf)*(Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf))
+//     * ( 1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*Ls*Lf*Lf))*d_Lf;
+//   //printf("fba: guess: %g, current: %g\n", guess_d_Af + guess_d_Afs, d_Af + d_Afs);
+//   // if (fma <= M_PI) return -d_Af - d_Afs;
+//   // else return -d_Af + d_Afs;
+//   if (fma <= M_PI) return -d_Af + d_Afs;
+//   else return -d_Af -d_Afs; // which one is right??
+// }
 
 double Dynein_bothbound::get_d_nma() {
-  /** Of course this is wrong, you solved it for An, which is a binding angle! **/
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
-  double guess_d_nma = -pm / sinAn * (dcosAn_dLn*d_Ln + dcosAn_dLf*d_Lf);
   double d_nma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
     * (Ln / (lt*ls)) * d_Ln;
-  printf("guess_d_nma: %g, d_nma: %g\n", guess_d_nma, d_nma);
-  return guess_d_nma;
+  return d_nma;
 }
 
 double Dynein_bothbound::get_d_fma() {
   int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
-  double guess_d_fma = -pm / sinAf * (dcosAf_dLn*d_Ln + dcosAf_dLf*d_Lf);
   double  d_fma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
     * (Lf / (lt*ls)) * d_Lf;
-  printf("guess_d_fma: %g, d_fma: %g\n", guess_d_fma, d_fma);
-  return guess_d_fma;
+  return d_fma;
 }
 
 /*** Get coordinates ***/

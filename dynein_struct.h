@@ -246,8 +246,8 @@ public:
   double get_d_nma();
   double get_d_fma();
 
-  double get_d_nba(); // computed values
-  double get_d_fba();
+  /* double get_d_nba(); // computed values */
+  /* double get_d_fba(); */
 
   double get_d_nbx();
   double get_d_nmx();
