@@ -24,13 +24,13 @@ static int num_tests = 0;
 int test(const char *msg, float one, float two, double epsilon = EPSILON) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    printf("%45s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (equal(one, two, epsilon)) {
-    printf("%30s: pass, %g == %g.\n", msg, one, two);
+    printf("%45s: pass, %g == %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%30s: FAIL! %g != %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g != %g.\n", msg, one, two);
     return 0;
   }
 }
@@ -38,13 +38,13 @@ int test(const char *msg, float one, float two, double epsilon = EPSILON) {
 int test_noteq(const char *msg, float one, float two) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    printf("%45s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (!equal(one, two)) {
-    printf("%30s: pass, %g != %g.\n", msg, one, two);
+    printf("%45s: pass, %g != %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%30s: FAIL! %g == %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g == %g.\n", msg, one, two);
     return 0;
   }
 }
@@ -52,13 +52,13 @@ int test_noteq(const char *msg, float one, float two) {
 int test_greater(const char *msg, float one, float two, double epsilon = EPSILON) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    printf("%45s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (one > two) {
-    printf("%30s: pass, %g > %g.\n", msg, one, two);
+    printf("%45s: pass, %g > %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%30s: FAIL! %g <= %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g <= %g.\n", msg, one, two);
     return 0;
   }
 }
@@ -66,13 +66,13 @@ int test_greater(const char *msg, float one, float two, double epsilon = EPSILON
 int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
   num_tests += 1;
   if (one != one or two != two) {
-    printf("%30s: NaN FAIL!, %g %g.\n", msg, one, two);
+    printf("%45s: NaN FAIL!, %g %g.\n", msg, one, two);
     return 0;
   } else if (one < two) {
-    printf("%30s: pass, %g < %g.\n", msg, one, two);
+    printf("%45s: pass, %g < %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%30s: FAIL! %g >= %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g >= %g.\n", msg, one, two);
     return 0;
   }
 }
@@ -98,7 +98,7 @@ int main(int argvc, char **argv) {
     };
 
     Dynein_bothbound dyn_bb(M_PI - 1e-15,      // nma_init
-                            M_PI - 1e-15,      // fma_init
+                            M_PI + 1e-15,      // fma_init
                             0,                 // nbx_init
                             0,                 // nby_init
                             1e-25,             // L
@@ -240,24 +240,24 @@ int main(int argvc, char **argv) {
     if (!test("right my coords equal?",
 	      left_dyn_bb.get_fmy(), right_dyn_bb.get_nmy())) num_failures++;
 
-    if (!test("left angle velocities equal?",
-	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma())) num_failures++;
-    if (!test("right angle velocities equal?",
-	      left_dyn_bb.get_d_fma(), right_dyn_bb.get_d_nma())) num_failures++;
+    if (!test("left angle velocities exactly equal?",
+	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma(), 0)) num_failures++;
+    if (!test("right angle velocities exactly equal?",
+	      left_dyn_bb.get_d_fma(), right_dyn_bb.get_d_nma(), 0)) num_failures++;
 
-    if (!test("left mx velocities equal?",
-	      left_dyn_bb.get_d_nmx(), right_dyn_bb.get_d_fmx())) num_failures++;
-    if (!test("tx velocities equal?",
-	      left_dyn_bb.get_d_tx(), right_dyn_bb.get_d_tx())) num_failures++;
-    if (!test("right mx velocities equal?",
-	      left_dyn_bb.get_d_fmx(), right_dyn_bb.get_d_nmx())) num_failures++;
+    if (!test("left mx velocities exactly equal?",
+	      left_dyn_bb.get_d_nmx(), right_dyn_bb.get_d_fmx(), 0)) num_failures++;
+    if (!test("tx velocities exactly equal?",
+	      left_dyn_bb.get_d_tx(), right_dyn_bb.get_d_tx(), 0)) num_failures++;
+    if (!test("right mx velocities exactly equal?",
+	      left_dyn_bb.get_d_fmx(), right_dyn_bb.get_d_nmx(), 0)) num_failures++;
 
-    if (!test("left my velocities equal?",
-	      left_dyn_bb.get_d_nmy(), right_dyn_bb.get_d_fmy())) num_failures++;
-    if (!test("ty velocities equal?",
-	      left_dyn_bb.get_d_ty(), right_dyn_bb.get_d_ty())) num_failures++;
-    if (!test("right my velocities equal?",
-	      left_dyn_bb.get_d_fmy(), right_dyn_bb.get_d_nmy())) num_failures++;
+    if (!test("left my velocities exactly equal?",
+	      left_dyn_bb.get_d_nmy(), right_dyn_bb.get_d_fmy(), 0)) num_failures++;
+    if (!test("ty velocities exactly equal?",
+	      left_dyn_bb.get_d_ty(), right_dyn_bb.get_d_ty(), 0)) num_failures++;
+    if (!test("right my velocities exactly equal?",
+	      left_dyn_bb.get_d_fmy(), right_dyn_bb.get_d_nmy(), 0)) num_failures++;
   }
 
   if (num_failures == 0) {
