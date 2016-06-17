@@ -40,7 +40,7 @@ save: walk
 	mkdir -p PNGs
 	./simulate.py veryfast verylong natural save $(NAME)
 
-test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o
+test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o FORCE
 	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound
 	./test_bothbound
 
@@ -65,3 +65,5 @@ clean:
 	rm -f latex/*.log
 	rm -f latex/*.pdf
 	rm -f latex/latexlog.txt
+
+FORCE:

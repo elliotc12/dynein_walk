@@ -207,26 +207,24 @@ void Dynein_bothbound::update_velocities() {
 
   dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   dcosAn_dLf = -(Lf) / (L*Ln);
-  dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) *
-    (1/L - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln));
-  dsinAn_dLf = cosAn / sqrt(1 - cosAn*cosAn) * Lf / (L*Ln);
+  dsinAn_dLn = -cosAn / sqrt(1 - cosAn*cosAn) * dcosAn_dLn;
+  dsinAn_dLf = -cosAn / sqrt(1 - cosAn*cosAn) * dcosAn_dLf;
   dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
   dcosAns_dLf = 0;
   dsinAns_dLn = (nma < M_PI) ?
-     -cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln))
-    : cosAns/sqrt(1-cosAns*cosAns) * (1/Ls - (Ls*Ls+Ln*Ln-Lt*Lt)/(2*L*Ln*Ln));
+     -cosAns / sqrt(1-cosAns*cosAns) * dcosAns_dLn
+    : cosAns / sqrt(1-cosAns*cosAns) * dcosAns_dLn;
   dsinAns_dLf = 0;
 
-  dcosAf_dLf = (1/L) - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
-  dcosAf_dLn = -(Ln) / (L*Lf);
-  dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) *
-    (1/L - (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf));
-  dsinAf_dLn = cosAf / sqrt(1 - cosAf*cosAf) * Ln / (L*Lf);
+  dcosAf_dLf = -(1/L) + (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf); // should this be -?
+  dcosAf_dLn = (Ln) / (L*Lf); // should this be +?
+  dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * dcosAf_dLf;
+  dsinAf_dLn = -cosAf / sqrt(1 - cosAf*cosAf) * dcosAf_dLn;
   dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
   dcosAfs_dLn = 0;
   dsinAfs_dLf = (fma < M_PI) ?
-     -cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf))
-    : cosAfs/sqrt(1-cosAfs*cosAfs) * (1/Ls - (Ls*Ls+Lf*Lf-Lt*Lt)/(2*L*Lf*Lf));
+     -cosAfs / sqrt(1-cosAfs*cosAfs) * dcosAfs_dLf
+    : cosAfs / sqrt(1-cosAfs*cosAfs) * dcosAfs_dLf;
   dsinAfs_dLn = 0;
 
   if (am_debugging_nans) printf("dcosAn_dLn is %g\n", dcosAn_dLn);
@@ -423,15 +421,6 @@ double Dynein_bothbound::get_d_fma() {
   double  d_fma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
     * (Lf / (lt*ls)) * d_Lf;
   return d_fma;
-}
-
-/*** Get coordinates ***/
-double Dynein_bothbound::get_nma() {
-  return nma;
-}
-
-double Dynein_bothbound::get_fma() {
-  return fma;
 }
 
 /*** Get Cartesian Velocities ***/

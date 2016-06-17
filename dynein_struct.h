@@ -222,8 +222,8 @@ public:
   void set_dLn(double d);
   void set_dLf(double d);
 
-  double get_nma(); // actual bothbound coordinates
-  double get_fma();
+  double get_nma() { return nma; }   // actual bothbound coordinates
+  double get_fma() { return fma; }
 
   double get_nba() { return nba; }
   double get_fba() { return fba; }
@@ -238,7 +238,10 @@ public:
   double get_nmy() { return nmy; }
   double get_ty() { return ty; }
   double get_fmy() { return fmy; }
-  double get_fby() { return 0; }
+  double get_fby() { return nby; }
+
+  double get_ln() { return Ln; }
+  double get_lf() { return Lf; }
 
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
