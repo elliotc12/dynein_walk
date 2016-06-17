@@ -47,29 +47,16 @@ int main(int argvc, char **argv) {
   Dynein_onebound* dyn_ob = NULL;
   
   double R = sqrt(2*kb*T/(gm*dt)); // random scaling factor
-  // bothbound_forces out_forces = {-R,0,-R,0,0,0,R,0,R,0};
-  // bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0};
+  bothbound_forces out_forces = {-R,0,-R,0,0,0,R,0,R,0};
+  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0};
   
-  // Dynein_bothbound *dyn_bb = new Dynein_bothbound(5*M_PI/6,   // nma_init
-  //                                                7*M_PI/6,    // fma_init
-  //                                                0,           // nbx_init
-  //                                                0,           // nby_init
-  //                                                Lt,          // L
-  // 						 &out_forces, // internal forces
-  // 						 &no_forces,  // brownian forces
-  //                                                NULL,        // equilibrium angles
-  //                                                rand);       // MTRand
-
-  bothbound_forces x_forces =    {R,0,R,0,R,0,R,0,R,0}; // bbx, bby, bmx, bmy, ...
-  bothbound_forces no_forces =    {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
-  
-  Dynein_bothbound *dyn_bb = new Dynein_bothbound(3/5*M_PI,   // nma_init
-                                                 3/2*M_PI,    // fma_init
+  Dynein_bothbound *dyn_bb = new Dynein_bothbound(5*M_PI/6,   // nma_init
+                                                 7*M_PI/6,    // fma_init
                                                  0,           // nbx_init
                                                  0,           // nby_init
-                                                 1e-25,          // L
-						 NULL, // internal forces
-						 &x_forces,  // brownian forces
+                                                 Lt,          // L
+  						 &out_forces, // internal forces
+  						 &no_forces,  // brownian forces
                                                  NULL,        // equilibrium angles
                                                  rand);       // MTRand
   

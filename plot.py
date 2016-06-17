@@ -13,7 +13,7 @@ def close_windows(*_):
   sys.exit()
 
 if len(sys.argv) < 2:
-  print "Usage: ./plot.py speed=n [loop/step/save'slash'savename]"
+  print "Usage: ./plot.py speed=n [loop / step / save'/'savename]"
   sys.exit(1)
 
 loop = False
@@ -182,5 +182,7 @@ if unbound:
   plt.pause(3)
 
 if savefig:
-  os.system("convert -delay 10 PNGs/%s-*.png GIFs/%s.gif" % (savename, savename))
+  os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (savename, savename))
+  os.system("mencoder PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
+            " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (savename, savename))
   os.system("rm PNGs/*")

@@ -36,9 +36,9 @@ paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
 
 save: walk
-	mkdir -p GIFs
+	mkdir -p movies
 	mkdir -p PNGs
-	./simulate.py veryfast verylong natural save $(NAME)
+	./simulate.py veryfast normal natural save $(NAME)
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o FORCE
 	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound

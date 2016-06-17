@@ -36,6 +36,9 @@ if len(sys.argv) >= 5:
     elif sys.argv[4] == "step":
         flag = "step"
     elif sys.argv[4] == "save":
+        if len(sys.argv) < 6:
+            print "Usage: make save NAME=savename"
+            exit(-1)
         flag = "save" + "/" + sys.argv[5]
 else:
     flag = ""
