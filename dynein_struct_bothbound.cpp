@@ -216,8 +216,8 @@ void Dynein_bothbound::update_velocities() {
     : cosAns / sqrt(1-cosAns*cosAns) * dcosAns_dLn;
   dsinAns_dLf = 0;
 
-  dcosAf_dLf = -(1/L) + (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf); // this should def be negative?!
-  dcosAf_dLn =  (Ln) / (L*Lf); // this should def be positive?!
+  dcosAf_dLf = -(1/L) + (L*L + Lf*Lf - Ln*Ln) / (2*L*Lf*Lf);
+  dcosAf_dLn =  (Ln) / (L*Lf);
   dsinAf_dLf = -cosAf / sqrt(1 - cosAf*cosAf) * dcosAf_dLf;
   dsinAf_dLn = -cosAf / sqrt(1 - cosAf*cosAf) * dcosAf_dLn;
   dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
