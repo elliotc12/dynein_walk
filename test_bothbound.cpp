@@ -120,7 +120,7 @@ int main(int argvc, char **argv) {
     if (!test_noteq("fmy nonzero?", dyn_bb.get_fmy(), 0)) num_failures++;
     if (!test("fby zero?", dyn_bb.get_fby(), 0)) num_failures++;
 
-    printf("\tTesting force definitions:\n");
+    printf("\n\tTesting force definitions:\n");
     if (!test("f.nbx zero?", dyn_bb.get_internal().nbx, 0)) num_failures++;
     if (!test("f.nmx zero?", dyn_bb.get_internal().nmx, 0)) num_failures++;
     if (!test("f.tx  zero?", dyn_bb.get_internal().tx , 0)) num_failures++;
@@ -135,7 +135,7 @@ int main(int argvc, char **argv) {
 
    { printf("\n**House conformation with equilateral roof, outwards forces**\n");
 
-     bothbound_forces out_forces = {-R,0,-R,0,0,0,R,0,R,0};
+     bothbound_forces out_forces = {0,0,-R,0,0,0,R,0,0,0};
 
      Dynein_bothbound dyn_bb(5*M_PI/6,     // nma_init
                             7*M_PI/6,      // fma_init
@@ -147,6 +147,7 @@ int main(int argvc, char **argv) {
   			    NULL,          // equilibrium angles
   			    rand);         // MTRand
 
+     printf("\tTesting coordinate definitions:\n");
      if (!test("nmx = zero?", dyn_bb.get_nmx(), 0)) num_failures++;
      if (!test("fmx = Lt?", dyn_bb.get_fmx(), Ls)) num_failures++;
      if (!test("nmy = Ls?", dyn_bb.get_nmy(), Ls)) num_failures++;
@@ -156,6 +157,36 @@ int main(int argvc, char **argv) {
      if (!test("nba = M_PI - fba?", dyn_bb.get_nba(), M_PI - dyn_bb.get_fba())) num_failures++;
      if (!test("Ln = Lf?", dyn_bb.get_ln(), dyn_bb.get_lf())) num_failures++;
 
+     printf("\n\tTesting intermediate variable spacial derivatives:\n");
+     if (!test_greater("dcosAn_dLn > 0?", dyn_bb.dcosAn_dLn, 0)) num_failures++;
+     if (!test_less("dsinAn_dLn > 0?", dyn_bb.dsinAn_dLn, 0)) num_failures++;
+     if (!test_less("dcosAn_dLf > 0?", dyn_bb.dcosAn_dLf, 0)) num_failures++;
+     if (!test_greater("dsinAn_dLf > 0?", dyn_bb.dsinAn_dLf, 0)) num_failures++;
+
+     if (!test_greater("dcosAns_dLn > 0?", dyn_bb.dcosAns_dLn, 0)) num_failures++;
+     if (!test_less("dsinAns_dLn > 0?", dyn_bb.dsinAns_dLn, 0)) num_failures++;
+
+     if (!test("dcosAn_dLn = -dcosAf_dLf?", dyn_bb.dcosAn_dLn, -dyn_bb.dcosAf_dLf)) num_failures++;
+     if (!test("dcosAn_dLf = -dcosAf_dLn?", dyn_bb.dcosAn_dLf, -dyn_bb.dcosAf_dLn)) num_failures++;
+     if (!test("dcosAns_dLn = dcosAfs_dLf?", dyn_bb.dcosAns_dLn, dyn_bb.dcosAfs_dLf)) num_failures++;
+     if (!test("dcosAns_dLf = dcosAfs_dLn?", dyn_bb.dcosAns_dLf, dyn_bb.dcosAfs_dLn)) num_failures++;
+
+     if (!test("dsinAn_dLn = dsinAf_dLf?", dyn_bb.dsinAn_dLn, dyn_bb.dsinAf_dLf)) num_failures++;
+     if (!test("dsinAn_dLf = dsinAf_dLn?", dyn_bb.dsinAn_dLf, dyn_bb.dsinAf_dLn)) num_failures++;
+     if (!test("dsinAns_dLn = -dsinAfs_dLf?", dyn_bb.dsinAns_dLn, -dyn_bb.dsinAfs_dLf)) num_failures++;
+     if (!test("dsinAns_dLf = -dsinAfs_dLn?", dyn_bb.dsinAns_dLf, -dyn_bb.dsinAfs_dLn)) num_failures++;
+
+     printf("\n\tTesting cartesian spacial derivatives:\n");
+     if (!test("dXnm_dLn = -dXfm_dLf?", dyn_bb.dXnm_dLn, -dyn_bb.dXfm_dLf)) num_failures++;
+     if (!test("dXnm_dLf = -dXfm_dLn?", dyn_bb.dXnm_dLf, -dyn_bb.dXfm_dLn)) num_failures++;
+     if (!test("dYnm_dLn = dYfm_dLf?", dyn_bb.dYnm_dLn, dyn_bb.dYfm_dLf)) num_failures++;
+     if (!test("dYnm_dLf = dYfm_dLn?", dyn_bb.dYnm_dLf, dyn_bb.dYfm_dLn)) num_failures++;
+
+     if (!test("dXt_dLn = -dXt_dLf?", dyn_bb.dXt_dLn, -dyn_bb.dXt_dLf)) num_failures++;
+     if (!test("dYt_dLn = dYt_dLf?", dyn_bb.dYt_dLn, dyn_bb.dYt_dLf)) num_failures++;
+
+     printf("\n\tTesting time derivatives:\n");
+     if (!test("d_Ln = d_Lf?", dyn_bb.get_d_Ln(), dyn_bb.get_d_Lf())) num_failures++;
      if (!test("d_nma = -d_fma?", dyn_bb.get_d_nma(), -dyn_bb.get_d_fma())) num_failures++;
      if (!test_less("d_nmx < 0?", dyn_bb.get_d_nmx(), 0)) num_failures++;
      if (!test("d_tx = zero?", dyn_bb.get_d_tx(), 0)) num_failures++;
@@ -163,7 +194,6 @@ int main(int argvc, char **argv) {
      if (!test_greater("d_fmx > 0?", dyn_bb.get_d_fmx(), 0)) num_failures++;
      if (!test("d_nmx = -d_fmx?", dyn_bb.get_d_nmx(), -dyn_bb.get_d_fmx())) num_failures++;
      if (!test("d_nmy = d_fmy?", dyn_bb.get_d_nmy(), dyn_bb.get_d_fmy())) num_failures++;
-     if (!test("d_Ln = d_Lf?", dyn_bb.get_d_Ln(), dyn_bb.get_d_Lf())) num_failures++;
   }
 
   { printf("\n**'Almost' upwards line conformation with +x forces**\n");
@@ -184,7 +214,7 @@ int main(int argvc, char **argv) {
 			    NULL,             // equilibrium angles
 			    rand);            // MTRand
 
-    printf("\tTesting motor velocities:\n");
+    printf("\tTesting time derivatives:\n");
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
     if (!test_noteq("d_tx_dt  nonzero?", dyn_bb.get_d_tx(), 0)) num_failures++;
     if (!test_noteq("d_fmx_dt nonzero?", dyn_bb.get_d_fmx(), 0)) num_failures++;
@@ -224,6 +254,7 @@ int main(int argvc, char **argv) {
 				 &right_table_eq_angles,  // equilibrium angles
 				 rand);                   // MTRand
 
+    printf("\tTesting coordinate definitions:\n");
     if (!test("left bx coords equal?",
 	      left_dyn_bb.get_nbx(), right_dyn_bb.get_fbx())) num_failures++;
     if (!test("left mx coords equal?",
@@ -256,7 +287,7 @@ int main(int argvc, char **argv) {
     if (!test("Right binding angle equal?",
 	      left_dyn_bb.get_fba(), right_dyn_bb.get_nba())) num_failures++;
     
-
+    printf("\n\tTesting time derivatives:\n");
     if (!test("left angle velocities exactly equal?",
 	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma(), 0)) num_failures++;
     if (!test("right angle velocities exactly equal?",

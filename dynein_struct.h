@@ -252,17 +252,17 @@ public:
   /* double get_d_nba(); // computed values */
   /* double get_d_fba(); */
 
-  double get_d_nbx();
-  double get_d_nmx();
-  double get_d_tx();
-  double get_d_fmx();
-  double get_d_fbx();
+  double get_d_nbx() {return 0;}
+  double get_d_nmx() {return dXnm_dLn*d_Ln + dXnm_dLf*d_Lf;}
+  double get_d_tx()  {return dXt_dLn*d_Ln + dXt_dLf*d_Lf;}
+  double get_d_fmx() {return dXfm_dLn*d_Ln + dXfm_dLf*d_Lf;}
+  double get_d_fbx() {return 0;}
 
-  double get_d_nby();
-  double get_d_nmy();
-  double get_d_ty();
-  double get_d_fmy();
-  double get_d_fby();
+  double get_d_nby() {return 0;}
+  double get_d_nmy() {return dYnm_dLn*d_Ln + dYnm_dLf*d_Lf;}
+  double get_d_ty()  {return dYt_dLn*d_Ln + dYt_dLf*d_Lf;}
+  double get_d_fmy() {return dYfm_dLn*d_Ln + dYfm_dLf*d_Lf;}
+  double get_d_fby() {return 0;}
 
   double get_d_Ln() { return d_Ln; };
   double get_d_Lf() { return d_Lf; };
@@ -280,6 +280,25 @@ public:
 
   void update_coordinates();
   void update_velocities();
+
+  //Variables which should be internal, but we need them public for test_bothbound
+     // Various distances and angles useful in computations (see paper)
+  double Ln, Lf;
+  double cosAn, sinAn, cosAns, sinAns;
+  double cosAf, sinAf, cosAfs, sinAfs;
+  double nmx, fmx, tx;
+  double nmy, fmy, ty;
+
+  double dcosAn_dLn, dsinAn_dLn, dcosAns_dLn, dsinAns_dLn;
+  double dcosAf_dLn, dsinAf_dLn, dcosAfs_dLn, dsinAfs_dLn;
+
+  double dcosAn_dLf, dsinAn_dLf, dcosAns_dLf, dsinAns_dLf;
+  double dcosAf_dLf, dsinAf_dLf, dcosAfs_dLf, dsinAfs_dLf;
+  
+     // Various interesting derivatives that are used in finding the
+     // velocities (and are set by update_velocities).
+  double dXnm_dLn, dYnm_dLn, dXnm_dLf, dYnm_dLf, dXfm_dLf, dYfm_dLf,
+    dXfm_dLn, dYfm_dLn, dXt_dLn, dYt_dLn, dXt_dLf, dYt_dLf;
 
 private:
   void update_brownian_forces();
@@ -301,25 +320,6 @@ private:
   bothbound_forces *brownian_testcase;
   bothbound_forces *internal_testcase;
 
-  // Various distances and angles useful in computations (see paper)
-  double Ln, Lf;
-  double cosAn, sinAn, cosAns, sinAns;
-  double cosAf, sinAf, cosAfs, sinAfs;
-  double nmx, fmx, tx;
-  double nmy, fmy, ty;
-
-  double dcosAn_dLn, dsinAn_dLn, dcosAns_dLn, dsinAns_dLn;
-  double dcosAf_dLn, dsinAf_dLn, dcosAfs_dLn, dsinAfs_dLn;
-
-  double dcosAn_dLf, dsinAn_dLf, dcosAns_dLf, dsinAns_dLf;
-  double dcosAf_dLf, dsinAf_dLf, dcosAfs_dLf, dsinAfs_dLf;
-
-  // Various interesting derivatives that are used in finding the
-  // velocities (and are set by update_velocities).
-  double dXnm_dLn, dYnm_dLn, dXnm_dLf, dYnm_dLf, dXfm_dLf, dYfm_dLf,
-    dXfm_dLn, dYfm_dLn, dXt_dLn, dYt_dLn, dXt_dLf, dYt_dLf;
-
-  // Angles needed for torque computations
   double nba, fba;
 };
 

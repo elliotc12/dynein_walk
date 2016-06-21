@@ -233,7 +233,7 @@ void Dynein_bothbound::update_velocities() {
   if (am_debugging_nans) printf("dcosAns_dLn %g\n", dcosAns_dLn);
   if (am_debugging_nans) printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
-  dXnm_dLn = Ls*(cosAn * dcosAn_dLn + cosAns * dcosAn_dLn
+  dXnm_dLn = Ls*(cosAn * dcosAns_dLn + cosAns * dcosAn_dLn
                 - sinAn * dsinAns_dLn - sinAns * dsinAn_dLn);
   dYnm_dLn = Ls*(cosAn * dsinAns_dLn + sinAns * dcosAn_dLn
                 + sinAn * dcosAns_dLn + cosAns * dsinAn_dLn);
@@ -242,7 +242,7 @@ void Dynein_bothbound::update_velocities() {
   dYnm_dLf = Ls*(cosAn * dsinAns_dLf + sinAns * dcosAn_dLf
                 + sinAn * dcosAns_dLf + cosAns * dsinAn_dLf);
 
-  dXfm_dLf = Ls*(cosAf * dcosAf_dLf + cosAfs * dcosAf_dLf
+  dXfm_dLf = Ls*(cosAf * dcosAfs_dLf + cosAfs * dcosAf_dLf
                 - sinAf * dsinAfs_dLf - sinAfs * dsinAf_dLf);
   dYfm_dLf = Ls*(cosAf * dsinAfs_dLf + sinAfs * dcosAf_dLf
                 + sinAf * dcosAfs_dLf + cosAfs * dsinAf_dLf);
@@ -423,31 +423,6 @@ double Dynein_bothbound::get_d_fma() {
   return d_fma;
 }
 
-/*** Get Cartesian Velocities ***/
-double Dynein_bothbound::get_d_nmx() {
-  return dXnm_dLn*d_Ln + dXnm_dLf*d_Lf;
-}
-
-double Dynein_bothbound::get_d_tx() {
-  return dXt_dLn*d_Ln + dXt_dLf*d_Lf;
-}
-
-double Dynein_bothbound::get_d_fmx() {
-  return dXfm_dLn*d_Ln + dXfm_dLf*d_Lf;
-}
-
-double Dynein_bothbound::get_d_nmy() {
-  return dYnm_dLn*d_Ln + dYnm_dLf*d_Lf;
-}
-
-double Dynein_bothbound::get_d_ty() {
-  return dYt_dLn*d_Ln + dYt_dLf*d_Lf;
-}
-
-double Dynein_bothbound::get_d_fmy() {
-  return dYfm_dLn*d_Ln + dYfm_dLf*d_Lf;
-}
-
 /*** Get forces ***/
 bothbound_forces Dynein_bothbound::get_internal() {
   return f;
@@ -473,8 +448,9 @@ void Dynein_bothbound::log(double t, FILE* data_file) {
 	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d"
           "\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g"
           "\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), t,
-          nbx, get_nby(), get_nmx(), get_nmy(), get_tx(), get_ty(), get_fmx(), get_fmy(), get_fbx(), get_fby(), BOTHBOUND,
-          f.nbx, f.nby, f.nmx, f.nmy, f.tx, f.ty, f.fmx, f.fmy, f.fbx, f.fby);
+          get_KE(), get_PE(), get_KE() + get_PE(), t, nbx, get_nby(),
+          get_nmx(), get_nmy(), get_tx(), get_ty(), get_fmx(),
+          get_fmy(), get_fbx(), get_fby(), BOTHBOUND, f.nbx, f.nby,
+          f.nmx, f.nmy, f.tx, f.ty, f.fmx, f.fmy, f.fbx, f.fby);
   fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
 }
