@@ -46,19 +46,58 @@ int main(int argvc, char **argv) {
 
   Dynein_onebound* dyn_ob = NULL;
   
-  double R = sqrt(2*kb*T/(gm*dt)); // random scaling factor
-  bothbound_forces out_forces = {-R,0,-R,0,0,0,R,0,R,0};
+  //double R = sqrt(2*kb*T/(gm*dt)); // random scaling factor
   bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0};
+
+  double t_nma = acos(Lt/(2*Ls));
+
+  // bothbound_equilibrium_angles left_table_eq_angles = {
+  //   M_PI - 2*t_nma + M_PI/3,
+  //   t_nma,
+  //   2*t_nma + M_PI/3,
+  //   2*M_PI - t_nma,
+  //   2*t_nma - M_PI/3
+  // };
   
-  Dynein_bothbound *dyn_bb = new Dynein_bothbound(5*M_PI/6,   // nma_init
-                                                 7*M_PI/6,    // fma_init
-                                                 0,           // nbx_init
-                                                 0,           // nby_init
-                                                 Lt,          // L
-  						 &out_forces, // internal forces
-  						 &no_forces,  // brownian forces
-                                                 NULL,        // equilibrium angles
-                                                 rand);       // MTRand
+  // Dynein_bothbound *dyn_bb = new Dynein_bothbound(t_nma,                  // nma_init	       
+  // 						  2*M_PI - t_nma,         // fma_init	       
+  // 						  0,                      // nbx_init	       
+  // 						  0,                      // nby_init	       
+  // 						  Ls,                     // L		       
+  // 						  NULL,                   // internal forces    
+  // 						  &no_forces,             // brownian forces    
+  // 						  &left_table_eq_angles,  // equilibrium angles 
+  //   						  rand);                  // MTRand             
+
+  bothbound_equilibrium_angles right_table_eq_angles = {
+    2*t_nma - M_PI/3,
+    2*M_PI - t_nma,
+    2*t_nma + M_PI/3,
+    t_nma,
+    M_PI - 2*t_nma + M_PI/3
+  };
+  
+  Dynein_bothbound *dyn_bb = new Dynein_bothbound(2*M_PI - t_nma,         // nma_init	       
+  						  t_nma,                  // fma_init	       
+  						  Ls,                      // nbx_init	       
+  						  0,                      // nby_init	       
+  						  -Ls,                     // L		       
+  						  NULL,                   // internal forces    
+  						  &no_forces,             // brownian forces    
+  						  &right_table_eq_angles,  // equilibrium angles 
+    						  rand);                  // MTRand             
+
+    
+  printf("nba/pi: %g\n", dyn_bb->get_nba()/M_PI);
+  printf("nma/pi: %g\n", dyn_bb->get_nma()/M_PI);
+  printf("ta/pi:  %g\n", (dyn_bb->get_fma() + dyn_bb->get_fba() - dyn_bb->get_nma()
+			  - dyn_bb->get_nba())/M_PI);
+  printf("fma/pi: %g\n", dyn_bb->get_fma()/M_PI);
+  printf("fba/pi: %g\n", dyn_bb->get_fba()/M_PI);
+
+  printf("Ln/Lt: %g\n", dyn_bb->Ln / Lt);
+  printf("Lf/Lt: %g\n", dyn_bb->Lf / Lt);
+			    
   
   // printf("Starting coords:\n nba: %f\n nma: %f\n fma: %f\n fba: %f\n",
   // 	 dyn_bb->get_nba()/M_PI*180,

@@ -120,8 +120,8 @@ void Dynein_bothbound::update_internal_forces() {
     f2y = f2 * cos(fma + fba - M_PI);
     f.nmx += f1x / gm;
     f.nmy += f1y / gm;
-    f.fmx += f2x / gm; // should be: positive
-    f.fmy += f2y / gm; // should be: positive
+    f.fmx += f2x / gm;
+    f.fmy += f2y / gm;
     f.tx  += -(f1x + f2x) / gt;
     f.ty  += -(f1y + f2y) / gt;
 
@@ -136,15 +136,15 @@ void Dynein_bothbound::update_internal_forces() {
     f.ty  += f1y / gt;
     f.fbx += f2x / gb;
     f.fby += f2y / gb;
-    f.fmx += -(f1x + f2x) / gm; // should be: negative
-    f.fmy += -(f1y + f2y) / gm; // should be: negative
+    f.fmx += -(f1x + f2x) / gm;
+    f.fmy += -(f1y + f2y) / gm;
 
     T = cb*(fba - eq.fba);
     f1 = T / ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);
-    f.fmx += f1x / gm; // should be: positive
-    f.fmy += f1y / gm; // should be: positive
+    f.fmx += f1x / gm;
+    f.fmy += f1y / gm;
     f.fbx += -f1x / gb;
     f.fby += -f1y / gb;
 
@@ -303,41 +303,65 @@ void Dynein_bothbound::update_velocities() {
   double x6 = -fforces.fmy - rforces.fmy;
 
   d_Ln =
-    (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 + d*l*p*u*w*x2 - c*l*q*u*w*x2 - d*l*p*s*x*x2 + 
-     c*l*q*s*x*x2 - c*l*n*t*x*x2 + b*l*p*t*x*x2 - c*h*l*t*w*x4 + c*g*l*u*w*x4 - c*g*l*s*x*x4 + c*f*l*t*x*x4 - 
-     d*h*l*p*w*x5 + c*h*l*q*w*x5 + c*g*l*n*x*x5 + d*f*l*p*x*x5 - b*g*l*p*x*x5 - c*f*l*q*x*x5 + d*h*l*p*s*x6 - 
-     c*h*l*q*s*x6 + c*h*l*n*t*x6 - b*h*l*p*t*x6 - c*g*l*n*u*x6 - d*f*l*p*u*x6 + b*g*l*p*u*x6 + c*f*l*q*u*x6 - 
-     g*k*p*s*x1*y - h*j*p*t*x1*y + f*k*p*t*x1*y + g*j*p*u*x1*y + d*k*p*s*x2*y - c*k*q*s*x2*y + c*k*n*t*x2*y - 
-     b*k*p*t*x2*y - d*j*p*u*x2*y + c*j*q*u*x2*y - d*h*p*s*x3*y + c*h*q*s*x3*y - c*h*n*t*x3*y + b*h*p*t*x3*y + 
-     c*g*n*u*x3*y + d*f*p*u*x3*y - b*g*p*u*x3*y - c*f*q*u*x3*y + c*g*k*s*x4*y + c*h*j*t*x4*y - c*f*k*t*x4*y - 
-     c*g*j*u*x4*y - c*g*k*n*x5*y + d*h*j*p*x5*y - d*f*k*p*x5*y + b*g*k*p*x5*y - c*h*j*q*x5*y + c*f*k*q*x5*y)/
-   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + 
-     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + c*g*l*m*u*w + d*e*l*p*u*w - 
-     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x - c*g*l*m*s*x - 
-     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x - 
-     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - 
-     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + c*h*j*m*t*y - c*f*k*m*t*y - 
-     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y - c*g*j*m*u*y + 
-     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
+    (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 +
+     d*l*p*u*w*x2 - c*l*q*u*w*x2 - d*l*p*s*x*x2 + c*l*q*s*x*x2 -
+     c*l*n*t*x*x2 + b*l*p*t*x*x2 - c*h*l*t*w*x4 + c*g*l*u*w*x4 -
+     c*g*l*s*x*x4 + c*f*l*t*x*x4 - d*h*l*p*w*x5 + c*h*l*q*w*x5 +
+     c*g*l*n*x*x5 + d*f*l*p*x*x5 - b*g*l*p*x*x5 - c*f*l*q*x*x5 +
+     d*h*l*p*s*x6 - c*h*l*q*s*x6 + c*h*l*n*t*x6 - b*h*l*p*t*x6 -
+     c*g*l*n*u*x6 - d*f*l*p*u*x6 + b*g*l*p*u*x6 + c*f*l*q*u*x6 -
+     g*k*p*s*x1*y - h*j*p*t*x1*y + f*k*p*t*x1*y + g*j*p*u*x1*y +
+     d*k*p*s*x2*y - c*k*q*s*x2*y + c*k*n*t*x2*y - b*k*p*t*x2*y -
+     d*j*p*u*x2*y + c*j*q*u*x2*y - d*h*p*s*x3*y + c*h*q*s*x3*y -
+     c*h*n*t*x3*y + b*h*p*t*x3*y + c*g*n*u*x3*y + d*f*p*u*x3*y -
+     b*g*p*u*x3*y - c*f*q*u*x3*y + c*g*k*s*x4*y + c*h*j*t*x4*y -
+     c*f*k*t*x4*y - c*g*j*u*x4*y - c*g*k*n*x5*y + d*h*j*p*x5*y -
+     d*f*k*p*x5*y + b*g*k*p*x5*y - c*h*j*q*x5*y + c*f*k*q*x5*y)/
+     (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v -
+     c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + c*f*l*q*u*v -
+     d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w +
+     c*g*l*m*u*w + d*e*l*p*u*w - a*g*l*p*u*w - c*e*l*q*u*w +
+     c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x -
+     c*g*l*m*s*x - d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x +
+     c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x -
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y -
+     c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - d*h*i*p*s*y +
+     d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y +
+     c*h*j*m*t*y - c*f*k*m*t*y - c*h*i*n*t*y + c*e*k*n*t*y +
+     b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
+     c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
+     d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
 
   d_Lf =
-    (-(h*l*p*t*v*x1) + g*l*p*u*v*x1 - g*l*p*r*x*x1 + e*l*p*t*x*x1 - d*l*p*u*v*x2 + c*l*q*u*v*x2 + d*l*p*r*x*x2 - 
-     c*l*q*r*x*x2 + c*l*m*t*x*x2 - a*l*p*t*x*x2 + c*h*l*t*v*x4 - c*g*l*u*v*x4 + c*g*l*r*x*x4 - c*e*l*t*x*x4 + 
-     d*h*l*p*v*x5 - c*h*l*q*v*x5 - c*g*l*m*x*x5 - d*e*l*p*x*x5 + a*g*l*p*x*x5 + c*e*l*q*x*x5 - d*h*l*p*r*x6 + 
-     c*h*l*q*r*x6 - c*h*l*m*t*x6 + a*h*l*p*t*x6 + c*g*l*m*u*x6 + d*e*l*p*u*x6 - a*g*l*p*u*x6 - c*e*l*q*u*x6 + 
-     g*k*p*r*x1*y + h*i*p*t*x1*y - e*k*p*t*x1*y - g*i*p*u*x1*y - d*k*p*r*x2*y + c*k*q*r*x2*y - c*k*m*t*x2*y + 
-     a*k*p*t*x2*y + d*i*p*u*x2*y - c*i*q*u*x2*y + d*h*p*r*x3*y - c*h*q*r*x3*y + c*h*m*t*x3*y - a*h*p*t*x3*y - 
-     c*g*m*u*x3*y - d*e*p*u*x3*y + a*g*p*u*x3*y + c*e*q*u*x3*y - c*g*k*r*x4*y - c*h*i*t*x4*y + c*e*k*t*x4*y + 
-     c*g*i*u*x4*y + c*g*k*m*x5*y - d*h*i*p*x5*y + d*e*k*p*x5*y - a*g*k*p*x5*y + c*h*i*q*x5*y - c*e*k*q*x5*y)/
-   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + 
-     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + c*g*l*m*u*w + d*e*l*p*u*w - 
-     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x - c*g*l*m*s*x - 
-     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x - 
-     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - 
-     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + c*h*j*m*t*y - c*f*k*m*t*y - 
-     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y - c*g*j*m*u*y + 
-     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
-
+    (-(h*l*p*t*v*x1) + g*l*p*u*v*x1 - g*l*p*r*x*x1 + e*l*p*t*x*x1 -
+     d*l*p*u*v*x2 + c*l*q*u*v*x2 + d*l*p*r*x*x2 - c*l*q*r*x*x2 +
+     c*l*m*t*x*x2 - a*l*p*t*x*x2 + c*h*l*t*v*x4 - c*g*l*u*v*x4 +
+     c*g*l*r*x*x4 - c*e*l*t*x*x4 + d*h*l*p*v*x5 - c*h*l*q*v*x5 -
+     c*g*l*m*x*x5 - d*e*l*p*x*x5 + a*g*l*p*x*x5 + c*e*l*q*x*x5 -
+     d*h*l*p*r*x6 + c*h*l*q*r*x6 - c*h*l*m*t*x6 + a*h*l*p*t*x6 +
+     c*g*l*m*u*x6 + d*e*l*p*u*x6 - a*g*l*p*u*x6 - c*e*l*q*u*x6 +
+     g*k*p*r*x1*y + h*i*p*t*x1*y - e*k*p*t*x1*y - g*i*p*u*x1*y -
+     d*k*p*r*x2*y + c*k*q*r*x2*y - c*k*m*t*x2*y + a*k*p*t*x2*y +
+     d*i*p*u*x2*y - c*i*q*u*x2*y + d*h*p*r*x3*y - c*h*q*r*x3*y +
+     c*h*m*t*x3*y - a*h*p*t*x3*y - c*g*m*u*x3*y - d*e*p*u*x3*y +
+     a*g*p*u*x3*y + c*e*q*u*x3*y - c*g*k*r*x4*y - c*h*i*t*x4*y +
+     c*e*k*t*x4*y + c*g*i*u*x4*y + c*g*k*m*x5*y - d*h*i*p*x5*y +
+     d*e*k*p*x5*y - a*g*k*p*x5*y + c*h*i*q*x5*y - c*e*k*q*x5*y)/
+     (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v -
+     c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + c*f*l*q*u*v -
+     d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w +
+     c*g*l*m*u*w + d*e*l*p*u*w - a*g*l*p*u*w - c*e*l*q*u*w +
+     c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x -
+     c*g*l*m*s*x - d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x +
+     c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x -
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y -
+     c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - d*h*i*p*s*y +
+     d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y +
+     c*h*j*m*t*y - c*f*k*m*t*y - c*h*i*n*t*y + c*e*k*n*t*y +
+     b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
+     c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
+     d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
+  
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
 }

@@ -9,8 +9,7 @@ const double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 const double T = 293.0; // K
 
 const double lt = 10.0;   // nm, guess - not sure how DNA tail-bridge works
-const double ls = 10.0;
-//const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
+const double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 const double Lt = lt;
 const double Ls = ls; // FIXME remove ls and lt in favor of Ls and Lt
 
