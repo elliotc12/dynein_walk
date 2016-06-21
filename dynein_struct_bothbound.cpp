@@ -76,6 +76,8 @@ void Dynein_bothbound::update_brownian_forces() {
   }
 }
 
+const bool am_debugging_torques = false;
+
 void Dynein_bothbound::update_internal_forces() {
   if (internal_testcase) {
     f = *internal_testcase;
@@ -89,6 +91,7 @@ void Dynein_bothbound::update_internal_forces() {
     double T, f1, f2, f1x, f2x, f1y, f2y;
 
     T = cb*(nba - eq.nba);
+    if (am_debugging_torques) printf("T_nba = %g\n", T);
     f2 = T/ls;
     f2x = f2 * sin(nba);
     f2y = f2 * -cos(nba);
@@ -98,6 +101,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.nby += -f2y / gb; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
+    if (am_debugging_torques) printf("T_nma = %g\n", T);
     f1 = T/ls;
     f2 = T/lt;
     f1x = f1 * sin(nba);
@@ -111,7 +115,9 @@ void Dynein_bothbound::update_internal_forces() {
     f.nmx += -(f1x + f2x) / gm;
     f.nmy += -(f1y + f2y) / gm;
 
-    T = ct*(fma + fba - nma - nba - eq.ta);
+    T = ct*((fma - nma) + (fba - nba) - eq.ta);
+    if (am_debugging_torques) printf("T_ta = %g from %.16g vs %.16g\n", T,
+                                     fma + fba - nma - nba, eq.ta);
     f1 = T / lt;
     f2 = T / lt;
     f1x = f1 * sin(nma + nba - M_PI);
@@ -126,6 +132,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.ty  += -(f1y + f2y) / gt;
 
     T = cm*(fma - eq.fma);
+    if (am_debugging_torques) printf("T_fma = %g\n", T);
     f1 = T / lt;
     f2 = T / ls;
     f1x = f1 * sin(fma + fba - M_PI);
@@ -140,6 +147,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.fmy += -(f1y + f2y) / gm;
 
     T = cb*(fba - eq.fba);
+    if (am_debugging_torques) printf("T_fba = %g\n", T);
     f1 = T / ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);

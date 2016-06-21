@@ -238,7 +238,7 @@ int main(int argvc, char **argv) {
     bothbound_equilibrium_angles right_table_eq_angles = {
       2*t_nma - M_PI/3,
       2*M_PI - t_nma,
-      2*t_nma + M_PI/3,
+      -(2*t_nma + M_PI/3),
       t_nma,
       M_PI - 2*t_nma + M_PI/3
     };
