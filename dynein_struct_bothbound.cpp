@@ -91,6 +91,7 @@ void Dynein_bothbound::update_internal_forces() {
     double T, f1, f2, f1x, f2x, f1y, f2y;
 
     T = cb*(nba - eq.nba);
+    PE_nba = 0.5*cb*(nba - eq.nba)*(nba - eq.nba);
     if (am_debugging_torques) printf("T_nba = %g\n", T);
     f2 = T/ls;
     f2x = f2 * sin(nba);
@@ -101,6 +102,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.nby += -f2y / gb; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
+    PE_nma = 0.5*cm*(nma - eq.nma)*(nma - eq.nma);
     if (am_debugging_torques) printf("T_nma = %g\n", T);
     f1 = T/ls;
     f2 = T/lt;
@@ -116,8 +118,9 @@ void Dynein_bothbound::update_internal_forces() {
     f.nmy += -(f1y + f2y) / gm;
 
     T = ct*((fma - nma) + (fba - nba) - eq.ta);
+    PE_ta = 0.5*ct*((fma - nma) + (fba - nba) - eq.ta)*((fma - nma) + (fba - nba) - eq.ta);
     if (am_debugging_torques) printf("T_ta = %g from %.16g vs %.16g\n", T,
-                                     fma + fba - nma - nba, eq.ta);
+                                     (fma - nma) + (fba - nba), eq.ta);
     f1 = T / lt;
     f2 = T / lt;
     f1x = f1 * sin(nma + nba - M_PI);
@@ -132,6 +135,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.ty  += -(f1y + f2y) / gt;
 
     T = cm*(fma - eq.fma);
+    PE_fma = 0.5*cm*(fma - eq.fma)*(fma - eq.fma);
     if (am_debugging_torques) printf("T_fma = %g\n", T);
     f1 = T / lt;
     f2 = T / ls;
@@ -147,6 +151,7 @@ void Dynein_bothbound::update_internal_forces() {
     f.fmy += -(f1y + f2y) / gm;
 
     T = cb*(fba - eq.fba);
+    PE_fba = 0.5*cb*(fba - eq.fba)*(fba - eq.fba);
     if (am_debugging_torques) printf("T_fba = %g\n", T);
     f1 = T / ls;
     f1x = f1 * sin(fba);
@@ -159,6 +164,7 @@ void Dynein_bothbound::update_internal_forces() {
     if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
     if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+
   }
 }
 
@@ -464,23 +470,13 @@ bothbound_forces Dynein_bothbound::get_brownian() {
   return r;
 }
 
-/*** Get energies ***/
-
-double Dynein_bothbound::get_PE() {
-  return 0.5*cb*square(nba - eq.nba) + 0.5*cb*square(nma - eq.nma)
-    + 0.5*cb*square(fma - eq.fma) + 0.5*cb*square(fba - eq.fba);
-}
-
-double Dynein_bothbound::get_KE() {
-  return 0;
-}
-
 void Dynein_bothbound::log(double t, FILE* data_file) {
   fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
 	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d"
           "\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g"
           "\n",
-          get_KE(), get_PE(), get_KE() + get_PE(), t, nbx, get_nby(),
+          0.0, PE_nba + PE_nma + PE_ta + PE_fma + PE_fba, PE_nba +
+          PE_nma + PE_ta + PE_fma + PE_fba, t, nbx, get_nby(),
           get_nmx(), get_nmy(), get_tx(), get_ty(), get_fmx(),
           get_fmy(), get_fbx(), get_fby(), BOTHBOUND, f.nbx, f.nby,
           f.nmx, f.nmy, f.tx, f.ty, f.fmx, f.fmy, f.fbx, f.fby);
