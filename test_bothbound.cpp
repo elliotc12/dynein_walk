@@ -81,15 +81,15 @@ int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
 
 int main(int argvc, char **argv) {
 
-  double R = sqrt(2*kb*T/(gm*dt)); // Variance of Brownian force
+  double R = sqrt(2*kb*T/(gm*dt)); // Brownian force constant
+  MTRand* rand = new MTRand(RAND_INIT_SEED);
+  int num_failures = 0;
+  
+  bothbound_forces no_forces  = {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
+  bothbound_forces out_forces = {0,0,-R,0,0,0,R,0,0,0};
+  bothbound_forces x_forces   = {0,0,R,0,R,0,R,0,0,0};
 
   printf("****************Starting Bothbound Test****************\n\n");
-
-  MTRand* rand = new MTRand(RAND_INIT_SEED);
-
-  int num_failures = 0;
-
-  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0}; // to eliminate brownian/equilibrium forces
 
   { printf("**Upwards line conformation with no forces**\n");
 
@@ -141,8 +141,6 @@ int main(int argvc, char **argv) {
   }
 
    { printf("\n**House conformation with equilateral roof, outwards forces**\n");
-
-     bothbound_forces out_forces = {0,0,-R,0,0,0,R,0,0,0};
 
      Dynein_bothbound dyn_bb(5*M_PI/6,     // nma_init
 			     7*M_PI/6,      // fma_init
@@ -204,8 +202,6 @@ int main(int argvc, char **argv) {
   }
 
   { printf("\n**'Almost' upwards line conformation with +x forces**\n");
-
-    bothbound_forces x_forces =    {0,0,R,0,R,0,R,0,0,0}; // bbx, bby, bmx, bmy, ...
 
     Dynein_bothbound dyn_bb(M_PI - 1e-7,      // nma_init
                             M_PI + 1e-7,      // fma_init

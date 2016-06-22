@@ -45,11 +45,12 @@ test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_oneboun
 	./test_bothbound
 
 test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test
+	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test_onebound
 	./test_onebound
 
 walk: dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-#	./test
+#	./test_onebound
+#	./test_bothbound
 	g++ dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o walk
 
 utilities.o: utilities.cpp dynein_struct.h
