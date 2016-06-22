@@ -71,8 +71,6 @@ bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
 
 double EPSILON = 1e-12;
 
-extern const double dt;
-
 int equal(double v1, double v2, double epsilon = EPSILON) {
   if (fabs(v1) <= epsilon) { return fabs(v2) <= epsilon; }
   else return fabs(v1 - v2)/fabs(v1) <= epsilon;
