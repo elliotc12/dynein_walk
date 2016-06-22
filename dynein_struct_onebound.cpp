@@ -91,7 +91,7 @@ void Dynein_onebound::update_internal_forces() {
     double T, f1, f2, f1x, f1y, f2x, f2y;
 
     T = cb*(bba - eq.bba);
-    f2 = T/ls;
+    f2 = T/Ls;
     f2x = f2 * sin(bba);
     f2y = f2 * -cos(bba);
     f.bmx += f2x;
@@ -100,8 +100,8 @@ void Dynein_onebound::update_internal_forces() {
     f.bby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*((bma + M_PI - bba) - eq.bba);
-    f1 = T/ls;
-    f2 = T/lt;
+    f1 = T/Ls;
+    f2 = T/Lt;
     f1x = f1 * sin(bba);
     f1y = f1 * -cos(bba);
     f2x = f2 * sin(bma);
@@ -114,8 +114,8 @@ void Dynein_onebound::update_internal_forces() {
     f.bmy += -(f1y + f2y);
 
     T = ct*(uma - bma - eq.ta);  //-- this used to be the negation, this is right?
-    f1 = T / lt;
-    f2 = T / lt;
+    f1 = T / Lt;
+    f2 = T / Lt;
     f1x = f1 * sin(bma);
     f1y = f1 * -cos(bma);
     f2x = f2 * -sin(uma);  // not sure if these angles are right?
@@ -128,8 +128,8 @@ void Dynein_onebound::update_internal_forces() {
     f.ty  += -(f1y + f2y);
 
     T = cm*((uma + M_PI - uba) - eq.uma);
-    f1 = T / lt;
-    f2 = T / ls;
+    f1 = T / Lt;
+    f2 = T / Ls;
     f1x = f1 * sin(uma);
     f1y = f1 * -cos(uma);
     f2x = f2 * sin(uba);
@@ -220,22 +220,22 @@ void Dynein_onebound::update_velocities() {
   float Nbb, Nml, Nmr, Nbr;
   float D;
 
-  A1 = -4*ls;
-  A2 = -3*lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
-  A3 = 2*lt*(sin(uma)*sin(bba) + cos(uma)*cos(bba));
-  A4 = ls*(sin(uba)*sin(bba) + cos(uba)*cos(bba));
-  B1 = -3*ls*(sin(bba)*sin(bma) + cos(bba)*cos(bma));
-  B2 = -3*lt;
-  B3 = +2*lt*(sin(uma)*sin(bma) + cos(uma)*cos(bma));
-  B4 = +ls*(sin(uba)*sin(bma) + cos(uba)*cos(bma));
-  C1 = -2*ls*(sin(bba)*sin(uma) + cos(bba)*cos(uma));
-  C2 = -2*lt*(sin(bma)*sin(uma) + cos(bma)*cos(uma));
-  C3 = 2*lt;
-  C4 = ls*(sin(uba)*sin(uma) + cos(uba)*cos(uma));
-  D1 = ls*(cos(uba)*cos(bba) + sin(uba)*sin(bba));
-  D2 = lt*(cos(uba)*cos(bma) + sin(uba)*sin(bma));
-  D3 = -lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
-  D4 = -ls;
+  A1 = -4*Ls;
+  A2 = -3*Lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
+  A3 = 2*Lt*(sin(uma)*sin(bba) + cos(uma)*cos(bba));
+  A4 = Ls*(sin(uba)*sin(bba) + cos(uba)*cos(bba));
+  B1 = -3*Ls*(sin(bba)*sin(bma) + cos(bba)*cos(bma));
+  B2 = -3*Lt;
+  B3 = +2*Lt*(sin(uma)*sin(bma) + cos(uma)*cos(bma));
+  B4 = +Ls*(sin(uba)*sin(bma) + cos(uba)*cos(bma));
+  C1 = -2*Ls*(sin(bba)*sin(uma) + cos(bba)*cos(uma));
+  C2 = -2*Lt*(sin(bma)*sin(uma) + cos(bma)*cos(uma));
+  C3 = 2*Lt;
+  C4 = Ls*(sin(uba)*sin(uma) + cos(uba)*cos(uma));
+  D1 = Ls*(cos(uba)*cos(bba) + sin(uba)*sin(bba));
+  D2 = Lt*(cos(uba)*cos(bma) + sin(uba)*sin(bma));
+  D3 = -Lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
+  D4 = -Ls;
 
   X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy - r.ty - r.umy - r.uby)*cos(bba)
       +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx + r.tx + r.umx + r.ubx )*sin(bba);
@@ -350,37 +350,37 @@ double Dynein_onebound::get_bby(){
 }
 
 double Dynein_onebound::get_bmx() {
-  return ls * cos(get_bba()) + bbx;
+  return Ls * cos(get_bba()) + bbx;
 }
 
 double Dynein_onebound::get_bmy(){
-  return ls * sin(get_bba()) + bby;
+  return Ls * sin(get_bba()) + bby;
 }
 
 double Dynein_onebound::get_tx() {
-  return ls * cos(get_bba()) + lt * cos(get_bma()) + bbx;
+  return Ls * cos(get_bba()) + Lt * cos(get_bma()) + bbx;
 }
 
 double Dynein_onebound::get_ty(){
-  return ls * sin(get_bba()) + lt * sin(get_bma()) + bby;
+  return Ls * sin(get_bba()) + Lt * sin(get_bma()) + bby;
 }
 
 double Dynein_onebound::get_umx() {
-  return ls * cos(get_bba()) + lt * cos(get_bma()) - lt * cos(get_uma()) + bbx;
+  return Ls * cos(get_bba()) + Lt * cos(get_bma()) - Lt * cos(get_uma()) + bbx;
 }
 
 double Dynein_onebound::get_umy(){
-  return ls * sin(get_bba()) + lt * sin(get_bma()) - lt * sin(get_uma()) + bby;
+  return Ls * sin(get_bba()) + Lt * sin(get_bma()) - Lt * sin(get_uma()) + bby;
 }
 
 double Dynein_onebound::get_ubx() {
-  return ls * cos(get_bba()) + lt * cos(get_bma())
-    - lt * cos(get_uma()) - ls * cos(get_uba()) + bbx;
+  return Ls * cos(get_bba()) + Lt * cos(get_bma())
+    - Lt * cos(get_uma()) - Ls * cos(get_uba()) + bbx;
 }
 
 double Dynein_onebound::get_uby(){
-  return ls * sin(get_bba()) + lt * sin(get_bma())
-    - lt * sin(get_uma()) - ls * sin(get_uba()) + bby;
+  return Ls * sin(get_bba()) + Lt * sin(get_bma())
+    - Lt * sin(get_uma()) - Ls * sin(get_uba()) + bby;
 }
 
 /*** Get Cartesian Velocities ***/
@@ -390,19 +390,19 @@ double Dynein_onebound::get_d_bbx() {
 }
 
 double Dynein_onebound::get_d_bmx() {
-  return ls * d_bba * -sin(bba);
+  return Ls * d_bba * -sin(bba);
 }
 
 double Dynein_onebound::get_d_tx() {
-  return lt * d_bma * -sin(bma) + get_d_bmx();
+  return Lt * d_bma * -sin(bma) + get_d_bmx();
 }
 
 double Dynein_onebound::get_d_umx() {
-  return lt * d_uma * sin(uma) + get_d_tx();
+  return Lt * d_uma * sin(uma) + get_d_tx();
 }
 
 double Dynein_onebound::get_d_ubx() {
-  return ls * d_uba * sin(uba) + get_d_umx();
+  return Ls * d_uba * sin(uba) + get_d_umx();
 }
 
 double Dynein_onebound::get_d_bby() {
@@ -410,19 +410,19 @@ double Dynein_onebound::get_d_bby() {
 }
 
 double Dynein_onebound::get_d_bmy() {
-    return ls * d_bba * cos(bba);
+    return Ls * d_bba * cos(bba);
 }
 
 double Dynein_onebound::get_d_ty() {
-    return lt * d_bma * cos(bma) + get_d_bmy();
+    return Lt * d_bma * cos(bma) + get_d_bmy();
 }
 
 double Dynein_onebound::get_d_umy() {
-    return lt * d_uma * -cos(uma) + get_d_ty();
+    return Lt * d_uma * -cos(uma) + get_d_ty();
 }
 
 double Dynein_onebound::get_d_uby() {
-  return ls * d_uba * -cos(uba) + get_d_umy();
+  return Ls * d_uba * -cos(uba) + get_d_umy();
 }
 
 /*** Get forces, state ***/

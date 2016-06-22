@@ -93,7 +93,7 @@ void Dynein_bothbound::update_internal_forces() {
     T = cb*(nba - eq.nba);
     PE_nba = 0.5*cb*(nba - eq.nba)*(nba - eq.nba);
     if (am_debugging_torques) printf("T_nba = %g\n", T);
-    f2 = T/ls;
+    f2 = T/Ls;
     f2x = f2 * sin(nba);
     f2y = f2 * -cos(nba);
     f.nmx += f2x / gm;
@@ -104,8 +104,8 @@ void Dynein_bothbound::update_internal_forces() {
     T = cm*(nma - eq.nma);
     PE_nma = 0.5*cm*(nma - eq.nma)*(nma - eq.nma);
     if (am_debugging_torques) printf("T_nma = %g\n", T);
-    f1 = T/ls;
-    f2 = T/lt;
+    f1 = T/Ls;
+    f2 = T/Lt;
     f1x = f1 * sin(nba);
     f1y = f1 * -cos(nba);
     f2x = f2 * sin(nma - (M_PI - nba));
@@ -121,8 +121,8 @@ void Dynein_bothbound::update_internal_forces() {
     PE_ta = 0.5*ct*((fma - nma) + (fba - nba) - eq.ta)*((fma - nma) + (fba - nba) - eq.ta);
     if (am_debugging_torques) printf("T_ta = %g from %.16g vs %.16g\n", T,
                                      (fma - nma) + (fba - nba), eq.ta);
-    f1 = T / lt;
-    f2 = T / lt;
+    f1 = T / Lt;
+    f2 = T / Lt;
     f1x = f1 * sin(nma + nba - M_PI);
     f1y = f1 * -cos(nma + nba - M_PI);
     f2x = f2 * -sin(fma + fba - M_PI);
@@ -137,8 +137,8 @@ void Dynein_bothbound::update_internal_forces() {
     T = cm*(fma - eq.fma);
     PE_fma = 0.5*cm*(fma - eq.fma)*(fma - eq.fma);
     if (am_debugging_torques) printf("T_fma = %g\n", T);
-    f1 = T / lt;
-    f2 = T / ls;
+    f1 = T / Lt;
+    f2 = T / Ls;
     f1x = f1 * sin(fma + fba - M_PI);
     f1y = f1 * -cos(fma + fba - M_PI);
     f2x = f2 * sin(fba);
@@ -153,7 +153,7 @@ void Dynein_bothbound::update_internal_forces() {
     T = cb*(fba - eq.fba);
     PE_fba = 0.5*cb*(fba - eq.fba)*(fba - eq.fba);
     if (am_debugging_torques) printf("T_fba = %g\n", T);
-    f1 = T / ls;
+    f1 = T / Ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);
     f.fmx += f1x / gm;
@@ -449,15 +449,15 @@ void Dynein_bothbound::set_dLf(double d) {
 
 double Dynein_bothbound::get_d_nma() {
   int pm = (nma > M_PI) ? -1 : 1; // sign of d_nma depends on value of nma
-  double d_nma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Ln*Ln) / (2*lt*ls),2))
-    * (Ln / (lt*ls)) * d_Ln;
+  double d_nma = pm * 1 / sqrt(1 - pow((Lt*Lt + Ls*Ls - Ln*Ln) / (2*Lt*Ls),2))
+    * (Ln / (Lt*Ls)) * d_Ln;
   return d_nma;
 }
 
 double Dynein_bothbound::get_d_fma() {
   int pm = (fma > M_PI) ? -1 : 1; // sign of d_fma depends on value of fma
-  double  d_fma = pm * 1 / sqrt(1 - pow((lt*lt + ls*ls - Lf*Lf) / (2*lt*ls),2))
-    * (Lf / (lt*ls)) * d_Lf;
+  double  d_fma = pm * 1 / sqrt(1 - pow((Lt*Lt + Ls*Ls - Lf*Lf) / (2*Lt*Ls),2))
+    * (Lf / (Lt*Ls)) * d_Lf;
   return d_fma;
 }
 
