@@ -276,7 +276,7 @@ double square(double num);
 double cube(double num);
 double fourth(double num);
 double fifth(double num);
-void   resetLogs(FILE* data_file, FILE* config_file);
+void   resetLogs(FILE* data_file, FILE* config_file, double runtime);
 void   log_run(FILE* run_file, double runtime,
 	       double run_length, double distance_traveled, int steps);
 void   detect_nans(Dynein_bothbound* dyn_bb, const char* loc);

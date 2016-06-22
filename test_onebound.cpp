@@ -4,7 +4,7 @@
 #include "dynein_struct.h"
 
 /*
- * Test dynein_bothobund state for errors in positions and force calculations.
+ * Test dynein_onebound state for errors in position, velocity and force calculations.
  */
 
 double dt = 1e-12; // s
