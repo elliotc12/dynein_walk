@@ -70,7 +70,7 @@ int main(int argvc, char **argv) {
   FILE* run_file = fopen("run.txt", "w+");
   FILE* config_file = fopen("config.txt", "w+");
 
-  resetLogs(data_file, config_file);
+  resetLogs(data_file, config_file, runtime);
   dyn_bb->log(t, data_file);
   t += dt;
 

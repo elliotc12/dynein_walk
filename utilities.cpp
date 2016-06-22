@@ -33,7 +33,7 @@ double fifth(double num) {
 	return num * num * num * num * num;
 }
 
-void resetLogs(FILE* data_file, FILE* config_file) {
+void resetLogs(FILE* data_file, FILE* config_file, double runtime) {
   fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\n",
           (double) gb, (double) gm, (double) gt, dt, runtime);

@@ -40,7 +40,7 @@ save: walk
 	mkdir -p PNGs
 	./simulate.py veryfast normal natural save $(NAME)
 
-test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o FORCE
+test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o
 	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound
 	./test_bothbound
 
@@ -48,9 +48,7 @@ test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.
 	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test_onebound
 	./test_onebound
 
-walk: dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-#	./test_onebound
-#	./test_bothbound
+walk: dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound test_bothbound
 	g++ dynein_walk.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o walk
 
 utilities.o: utilities.cpp dynein_struct.h

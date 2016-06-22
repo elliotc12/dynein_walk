@@ -6,7 +6,7 @@
 #include "dynein_struct.h"
 
 /*
- * Test dynein_bothobund state for errors in positions and force calculations.
+ * Test dynein_bothbound state for errors in position, velocity and force calculations.
  */
 
 double EPSILON = 1e-12;
