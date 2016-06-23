@@ -68,5 +68,7 @@ clean:
 	rm -f latex/*.log
 	rm -f latex/*.pdf
 	rm -f latex/latexlog.txt
+	rm -f *~
+	rm -f *#
 
 FORCE:

@@ -125,6 +125,8 @@ public:
 
   void update_velocities();
 
+  double PE_bba, PE_bma, PE_ta, PE_uma;
+
 private:
   void update_brownian_forces();
   void update_internal_forces();
@@ -283,5 +285,7 @@ void   detect_nans(Dynein_bothbound* dyn_bb, const char* loc);
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void* job_msg, void* job_data, int iteration),
 	      void* job_msg, void* job_data);
+
+double get_average(double* data, int len);
 
 #endif

@@ -91,6 +91,7 @@ void Dynein_onebound::update_internal_forces() {
     double T, f1, f2, f1x, f1y, f2x, f2y;
 
     T = cb*(bba - eq.bba);
+    PE_bba = 0.5*cb*(bba - eq.bba)*(bba - eq.bba);
     f2 = T/Ls;
     f2x = f2 * sin(bba);
     f2y = f2 * -cos(bba);
@@ -100,6 +101,7 @@ void Dynein_onebound::update_internal_forces() {
     f.bby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*((bma + M_PI - bba) - eq.bba);
+    PE_bma = 0.5*cm*((bma + M_PI - bba) - eq.bba)*((bma + M_PI - bba) - eq.bba);
     f1 = T/Ls;
     f2 = T/Lt;
     f1x = f1 * sin(bba);
@@ -114,6 +116,7 @@ void Dynein_onebound::update_internal_forces() {
     f.bmy += -(f1y + f2y);
 
     T = ct*(uma - bma - eq.ta);  //-- this used to be the negation, this is right?
+    PE_ta = 0.5*ct*(uma - bma - eq.ta)*(uma - bma - eq.ta);
     f1 = T / Lt;
     f2 = T / Lt;
     f1x = f1 * sin(bma);
@@ -128,6 +131,7 @@ void Dynein_onebound::update_internal_forces() {
     f.ty  += -(f1y + f2y);
 
     T = cm*((uma + M_PI - uba) - eq.uma);
+    PE_uma = 0.5*cm*((uma + M_PI - uba) - eq.uma)*((uma + M_PI - uba) - eq.uma);
     f1 = T / Lt;
     f2 = T / Ls;
     f1x = f1 * sin(uma);

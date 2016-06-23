@@ -1,4 +1,4 @@
-#include "default_parameters.h"
+#include "../default_parameters.h"
 #include "../dynein_struct.h"
 
 void plot_log(void* dyn, State s, void* job_msg, void* job_data, int iteration) {

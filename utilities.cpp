@@ -33,6 +33,14 @@ double fifth(double num) {
 	return num * num * num * num * num;
 }
 
+double get_average(double* data, int len) {
+  double sum = 0;
+  for (int i = 0; i < len; i++) {
+    sum += data[i];
+  }
+  return sum / len;
+}
+
 // void log_run(FILE* run_file, double runtime, double run_length,
 // 			      double distance_traveled, int steps) {
 

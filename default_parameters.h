@@ -1,4 +1,4 @@
-#include "../dynein_struct.h"
+#include "dynein_struct.h"
 
 double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 double T = 293.0; // K
