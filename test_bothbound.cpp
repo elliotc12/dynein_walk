@@ -10,15 +10,14 @@
  */
 
 double dt = 1e-12; // s
-double runtime;
 
 double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 double T = 293.0; // K
 
-double lt = 15.0;   // nm, guess - not sure how DNA tail-bridge works
-double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
-double Lt = lt;
-double Ls = ls; // FIXME remove ls and lt in favor of Ls and Lt
+double lt = 15.0;
+double ls = 21.22;
+double Lt = 15.0;  // nm, guess - not sure how DNA tail-bridge works
+double Ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
 // tail domain radius, not sure how to get since no info on DNA
 // tail-bridge

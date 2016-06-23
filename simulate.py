@@ -45,14 +45,14 @@ else:
 
 def verbose_run(command):
     print ' '.join(command)
-    subprocess.check_call(["./walk", str(runtime), "0", "0", "0", "0"])
+    subprocess.check_call(["./plot", str(runtime), "0", "0", "0", "0"])
 
 if (plot == "natural"):
-    verbose_run(["./walk", str(runtime), "0", "0", "0", "0"])
+    verbose_run(["./plot", str(runtime), "0", "0", "0", "0"])
     subprocess.call(["./plot.py", "speed=" + str(rate), flag])
 
 if (plot == "random"):
     random.seed()
-    subprocess.check_call(["./walk", str(runtime), str(2*random.random()), \
+    subprocess.check_call(["./plot", str(runtime), str(2*random.random()), \
         str(2*random.random()), str(2*random.random()), str(2*random.random())])
     subprocess.call(["./plot.py", "speed=" + str(rate), flag])

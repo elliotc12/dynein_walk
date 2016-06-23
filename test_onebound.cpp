@@ -8,15 +8,12 @@
  */
 
 double dt = 1e-12; // s
-double runtime;
 
 double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 double T = 293.0; // K
 
-double lt = 15.0;   // nm, guess - not sure how DNA tail-bridge works
-double ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
-double Lt = lt;
-double Ls = ls; // FIXME remove ls and lt in favor of Ls and Lt
+double Lt = 15.0;   // nm, guess - not sure how DNA tail-bridge works			
+double Ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
 // tail domain radius, not sure how to get since no info on DNA
 // tail-bridge
@@ -202,10 +199,10 @@ int main() {
     if (!test("Is bmx zero", dyn_ob->get_bmx(), 0)) num_failures++;
     if (!test("Is bbx zero", dyn_ob->get_bbx(), 0)) num_failures++;
     
-    if (!test("Is uby fully extended", dyn_ob->get_uby(), 2*ls + 2*lt)) num_failures++;
-    if (!test("Is umy fully extended", dyn_ob->get_umy(), 1*ls + 2*lt)) num_failures++;
-    if (!test("Is ty fully extended", dyn_ob->get_ty(), 1*ls + 1*lt)) num_failures++;
-    if (!test("Is bmy fully extended", dyn_ob->get_bmy(), 1*ls)) num_failures++;
+    if (!test("Is uby fully extended", dyn_ob->get_uby(), 2*Ls + 2*Lt)) num_failures++;
+    if (!test("Is umy fully extended", dyn_ob->get_umy(), 1*Ls + 2*Lt)) num_failures++;
+    if (!test("Is ty fully extended", dyn_ob->get_ty(), 1*Ls + 1*Lt)) num_failures++;
+    if (!test("Is bmy fully extended", dyn_ob->get_bmy(), 1*Ls)) num_failures++;
     if (!test("Is bby fully extended", dyn_ob->get_bby(), 0)) num_failures++;
     
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
@@ -244,10 +241,10 @@ int main() {
     if (!test("Is bmy zero", dyn_ob->get_bmy(), 0)) num_failures++;
     if (!test("Is bby zero", dyn_ob->get_bby(), 0)) num_failures++;
 
-    if (!test("Is ubx fully extended", dyn_ob->get_ubx(), 2*ls + 2*lt)) num_failures++;
-    if (!test("Is umx fully extended", dyn_ob->get_umx(), 1*ls + 2*lt)) num_failures++;
-    if (!test("Is tx fully extended", dyn_ob->get_tx(), 1*ls + 1*lt)) num_failures++;
-    if (!test("Is bmx fully extended", dyn_ob->get_bmx(), 1*ls)) num_failures++;
+    if (!test("Is ubx fully extended", dyn_ob->get_ubx(), 2*Ls + 2*Lt)) num_failures++;
+    if (!test("Is umx fully extended", dyn_ob->get_umx(), 1*Ls + 2*Lt)) num_failures++;
+    if (!test("Is tx fully extended", dyn_ob->get_tx(), 1*Ls + 1*Lt)) num_failures++;
+    if (!test("Is bmx fully extended", dyn_ob->get_bmx(), 1*Ls)) num_failures++;
     if (!test("Is bbx fully extended", dyn_ob->get_bbx(), 0)) num_failures++;
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;

@@ -60,7 +60,7 @@ double RAND_INIT_SEED = 0;
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI,
   0.6 * M_PI,
-  0.0 * M_PI,
+  0.4 * M_PI,
   0.6 * M_PI
 };
 
@@ -84,38 +84,22 @@ int main(int argvc, char **argv) {
 
   MTRand* rand = new MTRand(RAND_INIT_SEED);
 
-  //onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
 
-  // double bba_init = strtod(argv[2], NULL) * M_PI + eq.bba;
-  // double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.bma - M_PI;
-  // double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
-  // double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
+  double bba_init = strtod(argv[2], NULL) * M_PI + eq.bba;
+  double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.bma - M_PI;
+  double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
+  double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
 
-  // Dynein_onebound* dyn_ob = new Dynein_onebound(
-  // 				    bba_init, bma_init, uma_init, uba_init, // Initial angles
-  // 				    0, 0,                // Starting coordinates
-  // 				    FARBOUND,            // Initial state
-  // 				    NULL,                // Optional custom internal forces
-  // 				    NULL,                // Optional custom brownian forces
-  // 				    NULL,                // Optional custom equilibrium angles
-  //                                rand);
-  // Dynein_bothbound *dyn_bb = 0;
-
-  Dynein_onebound* dyn_ob = NULL;
-  
-  double R = sqrt(2*kb*T/(gm*dt)); // random scaling factor
-  bothbound_forces no_forces = {0,0,0,0,0,0,0,0,0,0};
-  bothbound_forces out_forces = {0,0,-R,0,0,0,R,0,0,0};
-  
-  Dynein_bothbound* dyn_bb = new Dynein_bothbound(5*M_PI/6,     // nma_init		      
-						  7*M_PI/6,      // fma_init		      
-						  0,             // nbx_init		      
-						  0,             // nby_init		      
-						  Lt,            // L -- equilateral roof  
-						  &no_forces,    // internal forces	      
-						  &out_forces,   // brownian forces	      
-						  NULL,          // equilibrium angles     
-						  rand);         // MTRand                 
+  Dynein_onebound* dyn_ob = new Dynein_onebound(
+  				    bba_init, bma_init, uma_init, uba_init, // Initial angles
+  				    0, 0,                // Starting coordinates
+  				    FARBOUND,            // Initial state
+  				    NULL,                // Optional custom internal forces
+  				    NULL,                // Optional custom brownian forces
+  				    NULL,                // Optional custom equilibrium angles
+				    rand);
+  Dynein_bothbound *dyn_bb = NULL;
 
   double t = 0;
 
@@ -128,7 +112,7 @@ int main(int argvc, char **argv) {
   FILE* config_file = fopen("config.txt", "w+");
 
   resetLogs(data_file, config_file, runtime);
-  dyn_bb->log(t, data_file);
+  //dyn_ob->log(t, data_file);
   t += dt;
 
   while( t < runtime ) {
@@ -137,10 +121,10 @@ int main(int argvc, char **argv) {
 	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) {
 	  // this is the case where we fall off and become zerobound!
 	  printf("unbinding.");
-	  dyn_ob->log(t, data_file);
+	  //dyn_ob->log(t, data_file);
 	  goto end_simulation;
 	  return EXIT_SUCCESS;
-	} else if (rand->rand() < dyn_ob->get_binding_rate()*dt*1e40) { // testing, bind rate huge
+	} else if (rand->rand() < dyn_ob->get_binding_rate()*dt) { // testing, bind rate huge
 	  // switch to bothbound
 	  steps++;
 	  distance_traveled += fabs(dyn_ob->get_ubx() - dyn_ob->get_bbx());
@@ -148,7 +132,7 @@ int main(int argvc, char **argv) {
 
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  delete dyn_ob;
-	  printf("switch to bothbound!\n");
+	  printf("switch to bothbound at %.1f%%!\n", t/runtime*100);
 	  break;
 	} else { // move like normal
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
@@ -162,7 +146,7 @@ int main(int argvc, char **argv) {
 	  dyn_ob->set_uba(temp_uba);
 	}
 	dyn_ob->update_velocities();
-	dyn_ob->log(t, data_file);
+	//dyn_ob->log(t, data_file);
 	t += dt;
       }
 
@@ -197,7 +181,7 @@ int main(int argvc, char **argv) {
 	}
 
 	dyn_bb->update_velocities();
-	dyn_bb->log(t, data_file);
+	//dyn_bb->log(t, data_file);
 	t += dt;
       }
     }

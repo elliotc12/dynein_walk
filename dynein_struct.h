@@ -1,6 +1,9 @@
 #include <math.h>
 #include "MersenneTwister.h"
 
+#ifndef DYNEIN_STRUCT_H
+#define DYNEIN_STRUCT_H
+
 typedef enum
 {
   NEARBOUND,
@@ -120,8 +123,6 @@ public:
 
   State get_state();
 
-  void log(double t, FILE* data_file);
-
   void update_velocities();
 
 private:
@@ -222,8 +223,6 @@ public:
 
   double PE_nba, PE_nma, PE_ta, PE_fma, PE_fba;
 
-  void log(double t, FILE* data_file);
-
   void update_coordinates();
   void update_velocities();
 
@@ -280,3 +279,9 @@ void   resetLogs(FILE* data_file, FILE* config_file, double runtime);
 void   log_run(FILE* run_file, double runtime,
 	       double run_length, double distance_traveled, int steps);
 void   detect_nans(Dynein_bothbound* dyn_bb, const char* loc);
+
+void simulate(double runtime, double rand_seed, State init_state, double* init_position,
+	      void (*job)(void* dyn, State s, void* job_msg, void* job_data, int iteration),
+	      void* job_msg, void* job_data);
+
+#endif

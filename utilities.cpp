@@ -33,30 +33,22 @@ double fifth(double num) {
 	return num * num * num * num * num;
 }
 
-void resetLogs(FILE* data_file, FILE* config_file, double runtime) {
-  fprintf(config_file, "#gb\tgm\tgt\tdt\truntime?\tstate\n");
-  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\n",
-          (double) gb, (double) gm, (double) gt, dt, runtime);
-  fprintf(data_file,
-	  "#KE\tPE\tEnergy\t%10s\tb1x\tb1y\tm1x\tm1y\ttx\tty\tm2x\tm2y\tb2x\tb2y\tS\n", "t");
-}
+// void log_run(FILE* run_file, double runtime, double run_length,
+// 			      double distance_traveled, int steps) {
 
-void log_run(FILE* run_file, double runtime, double run_length,
-			      double distance_traveled, int steps) {
+//   float ave_step_dist = distance_traveled / steps;
+//   float ave_step_time = runtime / steps;
 
-  float ave_step_dist = distance_traveled / steps;
-  float ave_step_time = runtime / steps;
-
-  printf("\n\n***********Run data**********\n");
-  printf("Run length: %g nm\n", run_length);
-  printf("Distance traveled: %g nm\n", distance_traveled);
-  printf("Steps: %d\n", steps);
-  printf("Average step length: %g nm\n", ave_step_dist);
-  printf("Average step time: %g s\n\n\n", ave_step_time);
-  fprintf(run_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
-  fprintf(run_file, "%f\t%f\t%d\t%f\t%g\n",
-  	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
-}
+//   printf("\n\n***********Run data**********\n");
+//   printf("Run length: %g nm\n", run_length);
+//   printf("Distance traveled: %g nm\n", distance_traveled);
+//   printf("Steps: %d\n", steps);
+//   printf("Average step length: %g nm\n", ave_step_dist);
+//   printf("Average step time: %g s\n\n\n", ave_step_time);
+//   fprintf(run_file, "Run length \tDistance traveled \tSteps \tAve step length \tAve step time\n");
+//   fprintf(run_file, "%f\t%f\t%d\t%f\t%g\n",
+//   	  run_length, distance_traveled, steps, ave_step_dist, ave_step_time);
+// }
 
 void detect_nans(Dynein_bothbound* dyn_bb, const char* loc) {
   if (dyn_bb->get_nma() != dyn_bb->get_nma()) printf("get_nma returns NaN at  %s\n", loc);

@@ -469,16 +469,3 @@ bothbound_forces Dynein_bothbound::get_internal() {
 bothbound_forces Dynein_bothbound::get_brownian() {
   return r;
 }
-
-void Dynein_bothbound::log(double t, FILE* data_file) {
-  fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	  "\t%.4f\t%.4f\t%.4f\t%.4f\t%d"
-          "\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g"
-          "\n",
-          0.0, PE_nba + PE_nma + PE_ta + PE_fma + PE_fba, PE_nba +
-          PE_nma + PE_ta + PE_fma + PE_fba, t, nbx, get_nby(),
-          get_nmx(), get_nmy(), get_tx(), get_ty(), get_fmx(),
-          get_fmy(), get_fbx(), get_fby(), BOTHBOUND, f.nbx, f.nby,
-          f.nmx, f.nmy, f.tx, f.ty, f.fmx, f.fmy, f.fbx, f.fby);
-  fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
-}
