@@ -227,6 +227,7 @@ public:
   double get_near_unbinding_rate();
   double get_far_unbinding_rate();
 
+  double get_PE();
   double PE_nba, PE_nma, PE_ta, PE_fma, PE_fba;
 
   void update_coordinates();

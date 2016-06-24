@@ -461,6 +461,10 @@ double Dynein_bothbound::get_d_fma() {
   return d_fma;
 }
 
+double Dynein_bothbound::get_PE() {
+  return PE_nba + PE_nma + PE_ta + PE_fma + PE_fba;
+}
+
 /*** Get forces ***/
 bothbound_forces Dynein_bothbound::get_internal() {
   return f;

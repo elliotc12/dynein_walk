@@ -389,6 +389,57 @@ int main(int argvc, char **argv) {
 	      left_dyn_bb.get_d_fmy(), right_dyn_bb.get_d_nmy(), 0)) num_failures++;
   }
 
+  {
+
+    double poke = 0.01;
+    Dynein_bothbound bb_1(5*M_PI/6,      // nma_init
+			  7*M_PI/6,      // fma_init
+			  0,             // nbx_init
+			  0,             // nby_init
+			  Lt,            // L -- equilateral roof
+			  NULL,          // internal forces
+			  &no_forces,    // brownian forces
+			  NULL,          // equilibrium angles
+			  rand);         // MTRand                 
+
+    Dynein_bothbound bb_2(5*M_PI/6 + poke, // nma_init
+			  7*M_PI/6 + poke, // fma_init
+			  0,               // nbx_init
+			  0,               // nby_init
+			  Lt,              // L -- equilateral roof
+			  NULL,            // internal forces
+			  &no_forces,      // brownian forces
+			  NULL,            // equilibrium angles
+			  rand);           // MTRand                 
+
+    double d_PE = bb_2.get_PE() - bb_1.get_PE();
+
+    double d_nb = sqrt((bb_2.get_nbx() - bb_1.get_nbx())*(bb_2.get_nbx() - bb_1.get_nbx())
+		       + (bb_2.get_nby() - bb_1.get_nby())*(bb_2.get_nby() - bb_1.get_nby()));
+    double d_nm = sqrt((bb_2.get_nmx() - bb_1.get_nmx())*(bb_2.get_nmx() - bb_1.get_nmx())
+		       + (bb_2.get_nmy() - bb_1.get_nmy())*(bb_2.get_nmy() - bb_1.get_nmy()));
+    double d_t = sqrt((bb_2.get_tx() - bb_1.get_tx())*(bb_2.get_tx() - bb_1.get_tx())
+		       + (bb_2.get_ty() - bb_1.get_ty())*(bb_2.get_ty() - bb_1.get_ty()));
+    double d_fm = sqrt((bb_2.get_fmx() - bb_1.get_fmx())*(bb_2.get_fmx() - bb_1.get_fmx())
+		       + (bb_2.get_fmy() - bb_1.get_fmy())*(bb_2.get_fmy() - bb_1.get_fmy()));
+    double d_fb = sqrt((bb_2.get_fbx() - bb_1.get_fbx())*(bb_2.get_fbx() - bb_1.get_fbx())
+		       + (bb_2.get_fby() - bb_1.get_fby())*(bb_2.get_fby() - bb_1.get_fby()));
+
+    double f_nb = sqrt(bb_1.get_internal().nbx*bb_1.get_internal().nbx
+		       + bb_1.get_internal().nby*bb_1.get_internal().nby);
+    double f_nm = sqrt(bb_1.get_internal().nmx*bb_1.get_internal().nmx
+		       + bb_1.get_internal().nmy*bb_1.get_internal().nmy);
+    double f_t = sqrt(bb_1.get_internal().tx*bb_1.get_internal().tx
+		       + bb_1.get_internal().ty*bb_1.get_internal().ty);
+    double f_fm = sqrt(bb_1.get_internal().fmx*bb_1.get_internal().fmx
+		       + bb_1.get_internal().fmy*bb_1.get_internal().fmy);
+    double f_fb = sqrt(bb_1.get_internal().fbx*bb_1.get_internal().fbx
+		       + bb_1.get_internal().fby*bb_1.get_internal().fby);
+
+    if (!test("d_PE = sum F*dx?",
+	      d_PE, d_nb*f_nb + d_nm*f_nm + d_t*f_t + d_fm*f_fm + d_fb*f_fb)) num_failures++;
+  }
+
   if (num_failures == 0) {
     printf("All %d tests pass!\n\n", num_tests);
   } else {
