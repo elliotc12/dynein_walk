@@ -6,45 +6,72 @@ void plot_log(void* dyn, State s, void* job_msg, void* job_data, int iteration) 
   if (s == NEARBOUND or s == FARBOUND) {
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
     onebound_forces f = dyn_ob->get_internal();
-    fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	    "\t%.4f\t%.4f\t%d\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\n",
-	    dyn_ob->get_KE(),
-	    dyn_ob->get_PE(),
-	    dyn_ob->get_KE() + dyn_ob->get_PE(),
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	    "\n",
+	    dyn_ob->get_state(),
 	    iteration*dt,
+	    dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
 	    dyn_ob->get_bbx(), dyn_ob->get_bby(),
 	    dyn_ob->get_bmx(), dyn_ob->get_bmy(),
 	    dyn_ob->get_tx(), dyn_ob->get_ty(),
 	    dyn_ob->get_umx(), dyn_ob->get_umy(),
 	    dyn_ob->get_ubx(), dyn_ob->get_uby(),
-	    dyn_ob->get_state(),
-	    f.bbx, f.bby, f.bmx, f.bmy, f.tx, f.ty,
-	    f.umx, f.umy, f.ubx, f.uby);
+	    f.bbx, f.bby, f.bmx, f.bmy, f.tx, f.ty, f.umx, f.umy, f.ubx, f.uby);
   }
   else if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     bothbound_forces f = dyn_bb->get_internal();
-    fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	    "\t%.4f\t%.4f\t%d\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\n",
-	    0.0,
-	    dyn_bb->PE_nba + dyn_bb->PE_nma + dyn_bb->PE_ta + dyn_bb->PE_fma + dyn_bb->PE_fba,
-	    dyn_bb->PE_nba + dyn_bb->PE_nma + dyn_bb->PE_ta + dyn_bb->PE_fma + dyn_bb->PE_fba,
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	    "\n",
+	    BOTHBOUND,
 	    iteration*dt,
+	    dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
 	    dyn_bb->get_nbx(), dyn_bb->get_nby(),
 	    dyn_bb->get_nmx(), dyn_bb->get_nmy(),
 	    dyn_bb->get_tx(), dyn_bb->get_ty(),
 	    dyn_bb->get_fmx(), dyn_bb->get_fmy(),
 	    dyn_bb->get_fbx(), dyn_bb->get_fby(),
-	    BOTHBOUND,
-	    f.nbx, f.nby, f.nmx, f.nmy, f.tx, f.ty,
-	    f.fmx, f.fmy, f.fbx, f.fby);
-    //fprintf(data_file, "# theta_nm = %g\ttheta_fm = %g\tL = %g\n", nma, fma, L);
-  }
+	    f.nbx, f.nby, f.nmx, f.nmy, f.tx, f.ty,f.fmx, f.fmy, f.fbx, f.fby);
+  } 
   else { // must be unbound
-    fprintf(data_file, "%.2g\t%.2g\t%.2g\t%10g\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	    "\t%.4f\t%.4f\t%d\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\t%.4g\n",
-	    0.0, 0.0, 0.0, iteration*dt, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-	    UNBOUND, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t"
+	    "%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	    "\n",
+	    UNBOUND,
+	    iteration*dt,
+	    0.0, 0.0, 0.0, 0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
   }
 }
 
@@ -53,7 +80,16 @@ void reset_logs(FILE* data_file, FILE* config_file, double runtime) {
   fprintf(config_file, "%g\t%g\t%g\t%g\t%g\n",
           (double) gb, (double) gm, (double) gt, dt, runtime);
   fprintf(data_file,
-	  "#KE\tPE\tEnergy\t%10s\tb1x\tb1y\tm1x\tm1y\ttx\tty\tm2x\tm2y\tb2x\tb2y\tS\n", "t");
+  	  "#State\t"
+  	  "%10s\t"
+  	  "PE.b1\tPE.m1\tPE.t\tPE.m2\tPE.b2\t"
+  	  "b1x\tb1y\t"
+  	  "m1x\tm1y\t"
+  	  "tx\tty\t"
+  	  "m2x\tm2y\t"
+  	  "b2x\tb2y\t"
+  	  "f.b1x\tf.b1y\tf.m1x\tf.m1y\tf.tx\tf.ty\tf.m2x\tf.m2y\tf.b2x\tf.b2y"
+  	  "\n", "t");
 }
 
 int main(int argvc, char **argv) {

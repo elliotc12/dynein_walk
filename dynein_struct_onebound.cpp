@@ -462,11 +462,11 @@ double Dynein_onebound::get_uba() {
 
 /*** Get energies ***/
 
-double Dynein_onebound::get_PE() {
-  return 0.5*cb*square(bba - eq.bba) + 0.5*cm*square(bma - eq.bma)
-    + 0.5*ct*square(M_PI - bma - uma - eq.ta) + 0.5*cm*square(uma - eq.uma);
-}
+// double Dynein_onebound::get_PE() {
+//   return 0.5*cb*square(bba - eq.bba) + 0.5*cm*square(bma - eq.bma)
+//     + 0.5*ct*square(M_PI - bma - uma - eq.ta) + 0.5*cm*square(uma - eq.uma);
+// }
 
-double Dynein_onebound::get_KE() {
-  return 0;
-}
+// double Dynein_onebound::get_KE() {
+//   return 0;
+// }

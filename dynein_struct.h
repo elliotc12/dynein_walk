@@ -122,9 +122,6 @@ public:
   double get_binding_rate();
   double get_unbinding_rate();
 
-  double get_PE();
-  double get_KE();
-
   State get_state();
 
   void update_velocities();

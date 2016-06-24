@@ -104,10 +104,10 @@ while i < len(data) or loop:
       stalk2.set_color('black')
     i = 0
 
-  X[:] = data[i][4:13:2]
-  Y[:] = data[i][5:14:2]
-  Fx = data[i][15:24:2]
-  Fy = data[i][16:25:2]
+  X[:] = data[i][7:16:2]
+  Y[:] = data[i][8:17:2]
+  Fx = data[i][17:27:2]
+  Fy = data[i][18:28:2]
   # print 'Fx', Fx
   # print 'Fy', Fy
 
@@ -127,31 +127,30 @@ while i < len(data) or loop:
   motor2.set_data(X[3], Y[3])
   binding2.set_data(X[4], Y[4])
 
-  if (data[i][14] == 0):
+  if (data[i][0] == 0):
     title_text.set_text('State: Nearbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
 
-  elif (data[i][14] == 1):
+  elif (data[i][0] == 1):
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
     tail1.set_linestyle('--')
     tail2.set_linestyle('-')
     stalk2.set_linestyle('-')
 
-  elif (data[i][14] == 2):
+  elif (data[i][0] == 2):
     title_text.set_text('State: Bothbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
 
-  pe_text.set_text('PE: ' + str(data[i][1]))
-  ke_text.set_text('KE: ' + str(data[i][0]))
+  pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
 
-  t_text.set_text("Progress: {:3.1f}%".format(data[i][3]/config[4]*100))
+  t_text.set_text("Progress: {:3.1f}%".format(data[i][1]/config[4]*100))
 
   if step:
       k = raw_input("Hit enter to step. [b=back,s=small]")
