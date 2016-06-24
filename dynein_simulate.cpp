@@ -1,8 +1,16 @@
+#include <fenv.h>
+#include <csignal>
+
 #include "dynein_struct.h"
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void* job_msg, void* job_data, int iteration),
 	      void* job_msg, void* job_data) {
+
+  if (FP_EXCEPTION_FATAL) {
+    feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
+    signal(SIGFPE, FPE_signal_handler);
+  }
   
   MTRand* rand = new MTRand(rand_seed);
 
@@ -36,9 +44,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 				 rand);
     dyn_bb = NULL;
   }
-
+  
   double t = 0;
-
   State current_state = init_state; 
 
   while( t < runtime ) {

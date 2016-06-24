@@ -62,6 +62,7 @@ int main(int argvc, char **argv) {
     return EXIT_FAILURE;
   }
 
+  T = 100;
   double runtime = strtod(argv[1], NULL) * dt;
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   

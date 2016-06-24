@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fenv.h>
+#include <csignal>
 
 #include "dynein_struct.h"
 
@@ -136,6 +138,10 @@ int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
 /* ******************************** MAIN **************************************** */
 
 int main(int argvc, char **argv) {
+  if (FP_EXCEPTION_FATAL) {
+    feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
+    signal(SIGFPE, FPE_signal_handler);
+  }
 
   double R = sqrt(2*kb*T/(gm*dt)); // Brownian force constant
   MTRand* rand = new MTRand(RAND_INIT_SEED);

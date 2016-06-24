@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fenv.h>
+#include <csignal>
 
 #include "dynein_struct.h"
 
@@ -132,6 +134,11 @@ int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
 /* ******************************** MAIN **************************************** */
 
 int main() {
+  if (FP_EXCEPTION_FATAL) {
+    feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
+    signal(SIGFPE, FPE_signal_handler);
+  }
+  
   double bba_eq = onebound_post_powerstroke_internal_angles.bba;
   double bma_eq = onebound_post_powerstroke_internal_angles.bma;
   double ta_eq  = onebound_post_powerstroke_internal_angles.ta;
