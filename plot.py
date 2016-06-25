@@ -63,11 +63,11 @@ force_line = [i for i in range(5)]
 for i in range(5):
   force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
 
-binding1, = plt.plot([X[0]], [Y[0]], 'ro')
-motor1,   = plt.plot([X[1]], [Y[1]], 'bo')
-tail,     = plt.plot([X[2]], [Y[2]], 'go')
-motor2,   = plt.plot([X[3]], [Y[3]], 'bo')
-binding2, = plt.plot([X[4]], [Y[4]], 'ro')
+binding1, = plt.plot([X[0]], [Y[0]], marker='o', color=(data[i][2],0,0), markersize=10)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color=(data[i][3],0,0), markersize=20)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', color=(data[i][4],0,0), markersize=5)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color=(data[i][5],0,0), markersize=20)
+binding2, = plt.plot([X[4]], [Y[4]], marker='o', color=(data[i][6],0,0), markersize=10)
 
 title_text = plt.text(-65, 45, 'State:')
 pe_text = plt.text(-65, 40, 'PE: ')
@@ -103,6 +103,14 @@ while i < len(data) or loop:
       tail2.set_color('black')
       stalk2.set_color('black')
     i = 0
+
+  total_PE = data[i][2] + data[i][3] + data[i][4] + data[i][5] + data[i][6]
+
+  binding1.set_color((1, 1 - data[i][2]/total_PE, 1 - data[i][2]/total_PE))
+  motor1.set_color((1, 1 - data[i][3]/total_PE, 1 - data[i][3]/total_PE))
+  tail.set_color((1, 1 - data[i][4]/total_PE, 1 - data[i][4]/total_PE))
+  motor2.set_color((1, 1 - data[i][5]/total_PE, 1 - data[i][5]/total_PE))
+  binding2.set_color((1, 1 - data[i][6]/total_PE, 1 - data[i][6]/total_PE))
 
   X[:] = data[i][7:16:2]
   Y[:] = data[i][8:17:2]
