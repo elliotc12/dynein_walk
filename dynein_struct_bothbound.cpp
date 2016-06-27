@@ -68,7 +68,7 @@ void Dynein_bothbound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby);
+    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby); // FIXME multiply by appropriate gammas
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy);
     rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
     rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
@@ -96,7 +96,7 @@ void Dynein_bothbound::update_internal_forces() {
     f2 = T/Ls;
     f2x = f2 * sin(nba);
     f2y = f2 * -cos(nba);
-    f.nmx += f2x / gm;
+    f.nmx += f2x / gm; // FIXME don't divide by gamma
     f.nmy += f2y / gm;
     f.nbx += -f2x / gb; // Equal and opposite forces!  :)
     f.nby += -f2y / gb; // Equal and opposite forces!  :)
@@ -309,7 +309,7 @@ void Dynein_bothbound::update_velocities() {
            t,u,v,w,x,y);
   }
 
-  double x1 = -fforces.nmx - rforces.nmx;
+  double x1 = -fforces.nmx - rforces.nmx; // FIXME divide by appropriate gammas
   double x2 = -fforces.tx  - rforces.tx;
   double x3 = -fforces.fmx - rforces.fmx;
   double x4 = -fforces.nmy - rforces.nmy;
