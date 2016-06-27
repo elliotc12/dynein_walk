@@ -104,13 +104,17 @@ while i < len(data) or loop:
       stalk2.set_color('black')
     i = 0
 
-  total_PE = data[i][2] + data[i][3] + data[i][4] + data[i][5] + data[i][6]
+  nba_scaling = min(max(1 - (data[i][2]) / (0.5*config[5]), 0), 1) # scale based on PE/kbT ratio forced between 0-1
+  nma_scaling = min(max(1 - (data[i][3]) / (0.5*config[5]), 0), 1)
+  ta_scaling  = min(max(1 - (data[i][4]) / (0.5*config[5]), 0), 1)
+  fma_scaling = min(max(1 - (data[i][5]) / (0.5*config[5]), 0), 1)
+  fba_scaling = min(max(1 - (data[i][6]) / (0.5*config[5]), 0), 1)
 
-  binding1.set_color((1, 1 - data[i][2]/total_PE, 1 - data[i][2]/total_PE))
-  motor1.set_color((1, 1 - data[i][3]/total_PE, 1 - data[i][3]/total_PE))
-  tail.set_color((1, 1 - data[i][4]/total_PE, 1 - data[i][4]/total_PE))
-  motor2.set_color((1, 1 - data[i][5]/total_PE, 1 - data[i][5]/total_PE))
-  binding2.set_color((1, 1 - data[i][6]/total_PE, 1 - data[i][6]/total_PE))
+  binding1.set_color((1, nba_scaling, nba_scaling))
+  motor1.set_color((1, nma_scaling, nma_scaling))
+  tail.set_color((1, ta_scaling, ta_scaling))
+  motor2.set_color((1, fma_scaling, fma_scaling))
+  binding2.set_color((1, fba_scaling, fba_scaling))
 
   X[:] = data[i][7:16:2]
   Y[:] = data[i][8:17:2]

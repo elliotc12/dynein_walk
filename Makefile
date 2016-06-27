@@ -1,6 +1,6 @@
-.PHONY: test_bothbound test_onebound clean plot
-
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
+
+.PHONY: test_bothbound test_onebound clean plot
 
 all: plot test_onebound test_bothbound
 
@@ -22,7 +22,7 @@ dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h
 dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
-equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound test_bothbound simulations/equipartition_test.cpp
+equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/equipartition_test.cpp
 	g++ -c simulations/equipartition_test.cpp $(CPPFLAGS)
 	g++ equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o equipartition_test
 	./equipartition_test
@@ -33,15 +33,15 @@ test_onebound.o: test_onebound.cpp dynein_struct.h
 figures: figures/*
 	cd figures && make
 
-plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp FORCE
+plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp
 	g++ -c simulations/plot.cpp $(CPPFLAGS) -o plot.o
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o plot.o -o plot
-	./simulate.py veryfast verylong natural $(OPT)
+	./simulate.py veryfast verylong pretty $(OPT)
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
 
-save: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp test_onebound test_bothbound
+save: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp
 	mkdir -p movies
 	mkdir -p PNGs
 	g++ -c simulations/plot.cpp $(CPPFLAGS) -o plot.o
@@ -72,5 +72,3 @@ clean:
 	rm -f latex/latexlog.txt
 	rm -f *~
 	rm -f *#
-
-FORCE:

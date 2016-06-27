@@ -44,11 +44,15 @@ else:
     flag = ""
 
 def verbose_run(command):
-    print ' '.join(command)
-    subprocess.check_call(["./plot", str(runtime), "0", "0", "0", "0"])
+    cmd = ' '.join(command)
+    subprocess.check_call(command)
 
 if (plot == "natural"):
     verbose_run(["./plot", str(runtime), "0", "0", "0", "0"])
+    subprocess.call(["./plot.py", "speed=" + str(rate), flag])
+
+if (plot == "pretty"):
+    verbose_run(["./plot", str(runtime), "0", "0", "0.5", "0"])
     subprocess.call(["./plot.py", "speed=" + str(rate), flag])
 
 if (plot == "random"):
