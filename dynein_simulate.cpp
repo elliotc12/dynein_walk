@@ -1,4 +1,3 @@
-#include <fenv.h>
 #include <csignal>
 
 #include "dynein_struct.h"
@@ -8,7 +7,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	      void* job_msg, void* job_data) {
 
   if (FP_EXCEPTION_FATAL) {
-    feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
+    feenableexcept(FE_ALL_EXCEPT);      // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
   

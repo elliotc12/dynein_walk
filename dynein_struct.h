@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdbool.h>
+#include <fenv.h>
 
 #include "MersenneTwister.h"
 
@@ -7,6 +8,10 @@
 #define DYNEIN_STRUCT_H
 
 const bool FP_EXCEPTION_FATAL = false;
+
+#ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
+void feenableexcept(int x);
+#endif
 
 typedef enum
 {

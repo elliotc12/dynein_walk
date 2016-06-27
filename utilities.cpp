@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <fstream>
-#include <cfenv>
+#include <fenv.h>
 
 #include "dynein_struct.h"
 
@@ -53,3 +53,7 @@ void FPE_signal_handler(int signum) {
   printf("FE_OVERFLOW | flag: %d\n", FE_OVERFLOW & flag);
   exit(EXIT_FAILURE);
 }
+
+#ifdef __APPLE__
+void feenableexcept(int x) { printf("fake feenableexcept for mac.\n"); }
+#endif
