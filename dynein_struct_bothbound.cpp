@@ -68,11 +68,11 @@ void Dynein_bothbound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby); // FIXME multiply by appropriate gammas
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy);
-    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
+    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.nbx, &r.nby);
+    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.nmx, &r.nmy);
+    rand->gauss2(gt*sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
+    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
+    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
   }
 }
 
@@ -96,10 +96,10 @@ void Dynein_bothbound::update_internal_forces() {
     f2 = T/Ls;
     f2x = f2 * sin(nba);
     f2y = f2 * -cos(nba);
-    f.nmx += f2x / gm; // FIXME don't divide by gamma
-    f.nmy += f2y / gm;
-    f.nbx += -f2x / gb; // Equal and opposite forces!  :)
-    f.nby += -f2y / gb; // Equal and opposite forces!  :)
+    f.nmx += f2x;
+    f.nmy += f2y;
+    f.nbx += -f2x; // Equal and opposite forces!  :)
+    f.nby += -f2y; // Equal and opposite forces!  :)
 
     T = cm*(nma - eq.nma);
     PE_nma = 0.5*cm*(nma - eq.nma)*(nma - eq.nma);
@@ -110,12 +110,12 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(nba);
     f2x = f2 * sin(nma - (M_PI - nba));
     f2y = f2 * -cos(nma - (M_PI - nba));
-    f.nbx += f1x / gb;
-    f.nby += f1y / gb;
-    f.tx  += f2x / gt;
-    f.ty  += f2y / gt;
-    f.nmx += -(f1x + f2x) / gm;
-    f.nmy += -(f1y + f2y) / gm;
+    f.nbx += f1x;
+    f.nby += f1y;
+    f.tx  += f2x;
+    f.ty  += f2y;
+    f.nmx += -(f1x + f2x);
+    f.nmy += -(f1y + f2y);
 
     T = ct*((fma - nma) + (fba - nba) - eq.ta);
     PE_ta = 0.5*ct*((fma - nma) + (fba - nba) - eq.ta)*((fma - nma) + (fba - nba) - eq.ta);
@@ -127,12 +127,12 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(nma + nba - M_PI);
     f2x = f2 * -sin(fma + fba - M_PI);
     f2y = f2 * cos(fma + fba - M_PI);
-    f.nmx += f1x / gm;
-    f.nmy += f1y / gm;
-    f.fmx += f2x / gm;
-    f.fmy += f2y / gm;
-    f.tx  += -(f1x + f2x) / gt;
-    f.ty  += -(f1y + f2y) / gt;
+    f.nmx += f1x;
+    f.nmy += f1y;
+    f.fmx += f2x;
+    f.fmy += f2y;
+    f.tx  += -(f1x + f2x);
+    f.ty  += -(f1y + f2y);
 
     T = cm*(fma - eq.fma);
     PE_fma = 0.5*cm*(fma - eq.fma)*(fma - eq.fma);
@@ -143,12 +143,12 @@ void Dynein_bothbound::update_internal_forces() {
     f1y = f1 * -cos(fma + fba - M_PI);
     f2x = f2 * sin(fba);
     f2y = f2 * -cos(fba);
-    f.tx  += f1x / gt;
-    f.ty  += f1y / gt;
-    f.fbx += f2x / gb;
-    f.fby += f2y / gb;
-    f.fmx += -(f1x + f2x) / gm;
-    f.fmy += -(f1y + f2y) / gm;
+    f.tx  += f1x;
+    f.ty  += f1y;
+    f.fbx += f2x;
+    f.fby += f2y;
+    f.fmx += -(f1x + f2x);
+    f.fmy += -(f1y + f2y);
 
     T = cb*(fba - eq.fba);
     PE_fba = 0.5*cb*(fba - eq.fba)*(fba - eq.fba);
@@ -156,10 +156,10 @@ void Dynein_bothbound::update_internal_forces() {
     f1 = T / Ls;
     f1x = f1 * sin(fba);
     f1y = f1 * -cos(fba);
-    f.fmx += f1x / gm;
-    f.fmy += f1y / gm;
-    f.fbx += -f1x / gb;
-    f.fby += -f1y / gb;
+    f.fmx += f1x;
+    f.fmy += f1y;
+    f.fbx += -f1x;
+    f.fby += -f1y;
 
     if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
@@ -212,12 +212,6 @@ void Dynein_bothbound::update_velocities() {
 
   bothbound_forces rforces = r;
   bothbound_forces fforces = f;
-
-  // printf("f.nbx: %g \nf.nmx: %g \nf.tx: %g \nf.fmx: %g \nf.fbx: %g \n\n",
-  // 	 f.nbx, f.nmx, f.tx, f.fmx, f.fbx);
-
-  // printf("d_nbx: %g \nd_nmx: %g \nd_tx: %g \nd_fmx: %g \nd_fbx: %g \n\n",
-  // 	 0.0, get_d_nmx(), get_d_tx(), get_d_fmx(), 0.0);
 
   dcosAn_dLn = (1/L) - (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln*Ln);
   dcosAn_dLf = -(Lf) / (L*Ln);
@@ -309,12 +303,12 @@ void Dynein_bothbound::update_velocities() {
            t,u,v,w,x,y);
   }
 
-  double x1 = -fforces.nmx - rforces.nmx; // FIXME divide by appropriate gammas
-  double x2 = -fforces.tx  - rforces.tx;
-  double x3 = -fforces.fmx - rforces.fmx;
-  double x4 = -fforces.nmy - rforces.nmy;
-  double x5 = -fforces.ty  - rforces.ty;
-  double x6 = -fforces.fmy - rforces.fmy;
+  double x1 = -(fforces.nmx + rforces.nmx) / gm;
+  double x2 = -(fforces.tx  + rforces.tx) / gt;
+  double x3 = -(fforces.fmx + rforces.fmx) / gm;
+  double x4 = -(fforces.nmy + rforces.nmy) / gm;
+  double x5 = -(fforces.ty  + rforces.ty) / gt;
+  double x6 = -(fforces.fmy + rforces.fmy) / gm;
 
   d_Ln =
     (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 +

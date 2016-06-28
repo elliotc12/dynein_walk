@@ -113,9 +113,6 @@ int main(int argvc, char **argv) {
   double bma_init = strtod(argv[3], NULL) * M_PI + bba_init + eq.bma - M_PI;
   double uma_init = strtod(argv[4], NULL) * M_PI + bma_init + eq.ta;
   double uba_init = strtod(argv[5], NULL) * M_PI + uma_init + M_PI - eq.uma;
-
-  printf("%s %s %s %s %s %s\n", argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
-  printf("bba: %g, bma: %g, uma: %g, uba: %g\n", bba_init, bma_init, uma_init, uba_init);
   
   double init_position[] = {bba_init, bma_init, uma_init, uba_init, 0, 0};
 

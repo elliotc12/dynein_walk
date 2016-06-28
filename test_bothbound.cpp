@@ -84,7 +84,7 @@ int main(int argvc, char **argv) {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  double R = sqrt(2*kb*T/(gm*dt)); // Brownian force constant
+  double R = gm*sqrt(2*kb*T/(gm*dt)); // Brownian force constant
   MTRand* rand = new MTRand(RAND_INIT_SEED);
   int num_failures = 0;
   
@@ -356,17 +356,9 @@ int main(int argvc, char **argv) {
     double d_PE = bb_2.get_PE() - bb_1.get_PE();
 
     double F_dot_dx = 0;
-    printf("d_PE: dnbx = %g\n", (bb_2.get_nbx() - bb_1.get_nbx()));
-    printf("d_PE: dnby = %g\n", (bb_2.get_nby() - bb_1.get_nby()));
     F_dot_dx += (bb_2.get_nbx() - bb_1.get_nbx())*(bb_1.get_internal().nbx + bb_2.get_internal().nbx)/2;
     F_dot_dx += (bb_2.get_nby() - bb_1.get_nby())*(bb_1.get_internal().nby + bb_2.get_internal().nby)/2;
 
-    printf("d_PE: dnmx = %g F = %g vs %g vs %g\n", (bb_2.get_nmx() - bb_1.get_nmx()),
-      (bb_1.get_internal().nmx + bb_2.get_internal().nmx)/2,
-      bb_1.get_internal().nmx, bb_2.get_internal().nmx);
-    printf("d_PE: dnmy = %g F = %g vs %g vs %g\n", (bb_2.get_nmy() - bb_1.get_nmy()),
-      (bb_1.get_internal().nmy + bb_2.get_internal().nmy)/2,
-      bb_1.get_internal().nmy, bb_2.get_internal().nmy);
     F_dot_dx += (bb_2.get_nmx() - bb_1.get_nmx())*(bb_1.get_internal().nmx + bb_2.get_internal().nmx)/2;
     F_dot_dx += (bb_2.get_nmy() - bb_1.get_nmy())*(bb_1.get_internal().nmy + bb_2.get_internal().nmy)/2;
 
@@ -379,7 +371,7 @@ int main(int argvc, char **argv) {
     F_dot_dx += (bb_2.get_fbx() - bb_1.get_fbx())*(bb_1.get_internal().fbx + bb_2.get_internal().fbx)/2;
     F_dot_dx += (bb_2.get_fby() - bb_1.get_fby())*(bb_1.get_internal().fby + bb_2.get_internal().fby)/2;
 
-    if (!test("d_PE = sum F*dx?", d_PE, F_dot_dx)) num_failures++;
+    if (!test("d_PE = -sum F*dx?", d_PE, -F_dot_dx)) num_failures++;
   }
 
   if (num_failures == 0) {

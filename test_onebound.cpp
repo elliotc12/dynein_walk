@@ -92,9 +92,9 @@ int main() {
   int num_failures = 0;
 
   onebound_forces no_forces    = {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
-  onebound_forces right_forces = {R,0,R,0,R,0,R,0,R,0};
-  onebound_forces left_forces  = {-R,0,-R,0,-R,0,-R,0,-R,0};
-  onebound_forces up_forces    = {0,R,0,R,0,R,0,R,0,R};
+  onebound_forces right_forces = {gb*R,0,gm*R,0,gt*R,0,gm*R,0,gb*R,0};
+  onebound_forces left_forces  = {-gb*R,0,-gm*R,0,-gt*R,0,-gm*R,0,-gb*R,0};
+  onebound_forces up_forces    = {0,gb*R,0,gm*R,0,gt*R,0,gm*R,0,gb*R};
 
   printf("****************starting Bothbound Test****************\n\n");
 

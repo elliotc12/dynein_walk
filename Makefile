@@ -2,7 +2,7 @@ CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 
 .PHONY: test_bothbound test_onebound clean plot
 
-all: plot test_onebound test_bothbound
+all: test_onebound test_bothbound plot
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -34,9 +34,10 @@ figures: figures/*
 	cd figures && make
 
 plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp
+	@echo "CONF = natural / pretty"
 	g++ -c simulations/plot.cpp $(CPPFLAGS) -o plot.o
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o plot.o -o plot
-	./simulate.py veryfast verylong pretty $(OPT)
+	./simulate.py veryfast verylong $(CONF) $(OPT)
 
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
@@ -72,3 +73,5 @@ clean:
 	rm -f latex/latexlog.txt
 	rm -f *~
 	rm -f *#
+
+FORCE:

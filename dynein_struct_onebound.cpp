@@ -37,7 +37,6 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 }
 
 Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
-
   if (s == State::NEARBOUND) {
     bbx = old_dynein->get_nbx();
     bby = 0;
@@ -70,11 +69,11 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
-    rand->gauss2(sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
-    rand->gauss2(sqrt(2*kb*T/(gm*dt)), &r.umx, &r.umy);
-    rand->gauss2(sqrt(2*kb*T/(gb*dt)), &r.ubx, &r.uby);
+    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
+    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
+    rand->gauss2(gt*sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
+    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.umx, &r.umy);
+    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.ubx, &r.uby);
   }
 }
 
@@ -241,16 +240,16 @@ void Dynein_onebound::update_velocities() {
   D3 = -Lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
   D4 = -Ls;
 
-  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy - r.ty - r.umy - r.uby)*cos(bba)
-      +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx + r.tx + r.umx + r.ubx )*sin(bba);
+  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bba)
+      +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm + r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
 
-  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty - r.umy - r.uby)*cos(bma)
-    + (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx + r.umx + r.ubx)*sin(bma);
+  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma)
+    + (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
 
-  X3 = (-r.umy -r.uby - 1/gm*f.umy - 1/gb*f.uby)*cos(uma)
-    + (r.umx + r.ubx + 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+  X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma)
+    + (r.umx/gm + r.ubx/gb + 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
 
-  X4 = (r.uby + 1/gb*f.uby)*cos(uba) - (r.ubx + 1/gb*f.ubx)*sin(uba);
+  X4 = (r.uby/gb + 1/gb*f.uby)*cos(uba) - (r.ubx/gb + 1/gb*f.ubx)*sin(uba);
 
   Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2
 	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4

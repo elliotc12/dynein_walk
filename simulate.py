@@ -6,7 +6,11 @@ import sys
 
 speed = sys.argv[1]
 length = sys.argv[2]
-plot = sys.argv[3]
+
+if len(sys.argv) > 3:
+    plot = sys.argv[3]
+else:
+    plot = "natural"
 
 if speed == "veryfast":
     rate = 150
