@@ -53,7 +53,8 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   fake_radius_m, fake_radius_b, water_viscosity_mu, gt, gm, gb, ct, cm,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
   MICROTUBULE_REPULSION_FORCE, MICROTUBULE_BINDING_DISTANCE,
-  RAND_INIT_SEED;
+  RAND_INIT_SEED, binding_preexponential_factor,
+  unbinding_preexponential_factor;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
@@ -132,6 +133,7 @@ public:
   void update_velocities();
 
   double PE_bba, PE_bma, PE_ta, PE_uma;
+  double get_PE() { return PE_bba + PE_bma + PE_ta + PE_uma; }
 
 private:
   void update_brownian_forces();

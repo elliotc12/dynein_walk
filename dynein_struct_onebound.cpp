@@ -286,8 +286,9 @@ void Dynein_onebound::update_velocities() {
 
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
-    double bound_energy = 0.5*cb*square(bba - eq.bba);
-    return 1e10*exp(-bound_energy/kb/T); // per second
+    double U_bb = Dynein_bothbound(this, rand).get_PE();
+    double U_ob = get_PE();
+    return binding_preexponential_factor*exp(-(U_bb - U_ob)/kb/T); // per second
   } else {
     return 0;
   }
@@ -458,14 +459,3 @@ double Dynein_onebound::get_uma() {
 double Dynein_onebound::get_uba() {
   return uba;
 }
-
-/*** Get energies ***/
-
-// double Dynein_onebound::get_PE() {
-//   return 0.5*cb*square(bba - eq.bba) + 0.5*cm*square(bma - eq.bma)
-//     + 0.5*ct*square(M_PI - bma - uma - eq.ta) + 0.5*cm*square(uma - eq.uma);
-// }
-
-// double Dynein_onebound::get_KE() {
-//   return 0;
-// }

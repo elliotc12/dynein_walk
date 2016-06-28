@@ -59,6 +59,9 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     L = old_dynein->get_bbx() - old_dynein->get_ubx();
   }
 
+  internal_testcase = NULL;
+  brownian_testcase = NULL;
+  
   rand = mtrand;
 
   update_velocities();
@@ -375,16 +378,15 @@ void Dynein_bothbound::update_velocities() {
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
-  //printf("bb.f.nby: %g, bb.r.nby: %g, both: %g", f.nby, r.nby, f.nby + r.nby);
-  if (f.nby + r.nby >= BOTHBOUND_UNBINDING_FORCE) {
-    return 1.0;
-  } else return 0.0;
+  double U_bb = get_PE();
+  double U_ob = Dynein_onebound(this, rand, NEARBOUND).get_PE(); // no f.fby dep?
+  return binding_preexponential_factor*exp(-(U_ob - U_bb)/kb/T); // per second
 }
 
 double Dynein_bothbound::get_far_unbinding_rate() {
-  if (f.fby + r.fby >= BOTHBOUND_UNBINDING_FORCE) {
-    return 1.0;
-  } else return 0.0;
+  double U_bb = get_PE();
+  double U_ob = Dynein_onebound(this, rand, FARBOUND).get_PE(); // no f.fby dep?
+  return binding_preexponential_factor*exp(-(U_ob - U_bb)/kb/T); // per second
 }
 
 /*** Set positions, velocities and forces ***/

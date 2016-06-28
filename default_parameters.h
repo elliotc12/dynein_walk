@@ -30,6 +30,9 @@ double ct = 0.001; // force*distance = energy = nm^2 * kg / s^2
 double cm = 0.5; // ???
 double cb = 0.5; // ???
 
+double binding_preexponential_factor = 1e10;
+double unbinding_preexponential_factor = 1e5;
+
 double ONEBOUND_UNBINDING_FORCE = 8e12;
 double BOTHBOUND_UNBINDING_FORCE = 2e12;
 
