@@ -368,6 +368,51 @@ int main() {
     free(dyn_ob);
   }
 
+  { printf("\n**Conservation of Energy**\n");
+
+    double poke = 0.00001;
+    Dynein_onebound ob_1(bba_eq + 0.5,
+			 bba_eq + bma_eq - M_PI + 0.5,
+			 bba_eq + bma_eq - M_PI + ta_eq + 0.5,
+			 bba_eq + bma_eq - M_PI + ta_eq + M_PI - uma_eq + 0.5,
+			 0,
+			 0,
+			 NEARBOUND,
+			 NULL,
+			 &no_forces,
+			 NULL,
+			 rand);
+
+    Dynein_onebound ob_2(bba_eq + 0.5 + poke,
+			 bba_eq + bma_eq - M_PI + 0.5 + poke,
+			 bba_eq + bma_eq - M_PI + ta_eq + 0.5 + poke,
+			 bba_eq + bma_eq - M_PI + ta_eq + M_PI - uma_eq + 0.5 + poke,
+			 0,
+			 0,
+			 NEARBOUND,
+			 NULL,
+			 &no_forces,
+			 NULL,
+			 rand);
+
+    double d_PE = ob_2.get_PE() - ob_1.get_PE();
+
+    double F_dot_dx = 0;
+    F_dot_dx += (ob_2.get_bmx() - ob_1.get_bmx())*(ob_1.get_internal().bmx + ob_2.get_internal().bmx)/2;
+    F_dot_dx += (ob_2.get_bmy() - ob_1.get_bmy())*(ob_1.get_internal().bmy + ob_2.get_internal().bmy)/2;
+
+    F_dot_dx += (ob_2.get_tx() - ob_1.get_tx())*(ob_1.get_internal().tx + ob_2.get_internal().tx)/2;
+    F_dot_dx += (ob_2.get_ty() - ob_1.get_ty())*(ob_1.get_internal().ty + ob_2.get_internal().ty)/2;
+
+    F_dot_dx += (ob_2.get_umx() - ob_1.get_umx())*(ob_1.get_internal().umx + ob_2.get_internal().umx)/2;
+    F_dot_dx += (ob_2.get_umy() - ob_1.get_umy())*(ob_1.get_internal().umy + ob_2.get_internal().umy)/2;
+
+    F_dot_dx += (ob_2.get_ubx() - ob_1.get_ubx())*(ob_1.get_internal().ubx + ob_2.get_internal().ubx)/2;
+    F_dot_dx += (ob_2.get_uby() - ob_1.get_uby())*(ob_1.get_internal().uby + ob_2.get_internal().uby)/2;
+
+    if (!test("d_PE = -sum F*dx?", d_PE, -F_dot_dx)) num_failures++;
+  }
+
   { printf("\n**Do domain internal PEs obey equipartition?**\n");
 
     T = 100;
