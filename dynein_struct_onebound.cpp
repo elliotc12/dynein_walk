@@ -60,6 +60,9 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
     uba = old_dynein->get_nba();
   }
 
+  internal_testcase = NULL;
+  brownian_testcase = NULL;
+
   rand = mtrand;
 
   update_velocities();

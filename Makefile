@@ -22,10 +22,15 @@ dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h
 dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
-equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/equipartition_test.cpp
-	g++ -c simulations/equipartition_test.cpp $(CPPFLAGS)
-	g++ equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o equipartition_test
-	./equipartition_test
+bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/bothbound_equipartition_test.cpp
+	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)
+	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o bothbound_equipartition_test
+#	./bothbound_equipartition_test
+
+onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_equipartition_test.cpp
+	g++ -c simulations/onebound_equipartition_test.cpp $(CPPFLAGS)
+	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_equipartition_test
+#	./onebound_equipartition_test
 
 test_onebound.o: test_onebound.cpp dynein_struct.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
@@ -49,12 +54,12 @@ save: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utili
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o plot.o -o plot
 	./simulate.py veryfast verylong natural save $(NAME)
 
-test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o
-	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o -o test_bothbound
+test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
+	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o dynein_simulate.o utilities.o -o test_bothbound
 	./test_bothbound
 
-test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o test_onebound
+test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o dynein_simulate.o
+	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o dynein_simulate.o utilities.o -o test_onebound
 	./test_onebound
 
 utilities.o: utilities.cpp dynein_struct.h

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <csignal>
+#include <cassert>
+#include <limits>
 
 #include "dynein_struct.h"
 #include "default_parameters.h"
@@ -74,6 +76,16 @@ int test_less(const char *msg, float one, float two, double epsilon = EPSILON) {
     printf("%45s: FAIL! %g >= %g.\n", msg, one, two);
     return 0;
   }
+}
+
+void store_bothbound_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
+  assert(s == BOTHBOUND);
+  Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+  ((double*) job_data)[5*iteration + 0] = dyn_bb->PE_nba;
+  ((double*) job_data)[5*iteration + 1] = dyn_bb->PE_nma;
+  ((double*) job_data)[5*iteration + 2] = dyn_bb->PE_ta;
+  ((double*) job_data)[5*iteration + 3] = dyn_bb->PE_fma;
+  ((double*) job_data)[5*iteration + 4] = dyn_bb->PE_fba;
 }
 
 /* ******************************** MAIN **************************************** */
@@ -330,7 +342,7 @@ int main(int argvc, char **argv) {
 	      left_dyn_bb.get_d_fmy(), right_dyn_bb.get_d_nmy(), 0)) num_failures++;
   }
 
-  {
+  { printf("\n**Conservation of Energy**\n");
 
     double poke = 0.00001;
     Dynein_bothbound bb_1(4.6*M_PI/6,      // nma_init
@@ -372,6 +384,50 @@ int main(int argvc, char **argv) {
     F_dot_dx += (bb_2.get_fby() - bb_1.get_fby())*(bb_1.get_internal().fby + bb_2.get_internal().fby)/2;
 
     if (!test("d_PE = -sum F*dx?", d_PE, -F_dot_dx)) num_failures++;
+  }
+
+  { printf("\n**Do internal PEs obey equipartition?**\n");
+    T = 100;
+    BOTHBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
+  
+    int iterations = 1e6;
+    double runtime = dt*iterations;
+    bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
+    double test_position[] = {eq.nma, eq.fma, 0.0, 0.0, Ls};
+    void* data = malloc(iterations * sizeof(double) * 5);
+  
+    simulate(runtime, RAND_INIT_SEED, BOTHBOUND, test_position, store_bothbound_PEs, NULL, data);
+
+    double* nba_PEs = (double*) malloc(iterations * sizeof(double));
+    double* nma_PEs = (double*) malloc(iterations * sizeof(double));
+    double*  ta_PEs = (double*) malloc(iterations * sizeof(double));
+    double* fma_PEs = (double*) malloc(iterations * sizeof(double));
+    double* fba_PEs = (double*) malloc(iterations * sizeof(double));
+  
+    for (int i = 0; i < iterations; i++) {
+      nba_PEs[i] = ((double*) data)[5*i + 0];
+      nma_PEs[i] = ((double*) data)[5*i + 1];
+      ta_PEs[i]  = ((double*) data)[5*i + 2];
+      fma_PEs[i] = ((double*) data)[5*i + 3];
+      fba_PEs[i] = ((double*) data)[5*i + 4];
+    }
+
+    if (!test("nba_ave_PE = 0.5*kb*T?",
+	      get_average(nba_PEs, iterations), 0.5*kb*T)) num_failures++;
+    if (!test("nma_ave_PE = 0.5*kb*T?",
+	      get_average(nma_PEs, iterations), 0.5*kb*T)) num_failures++;
+    if (!test("ta_ave_PE = 0.5*kb*T?",
+	      get_average(ta_PEs, iterations), 0.5*kb*T)) num_failures++;
+    if (!test("fma_ave_PE = 0.5*kb*T?",
+	      get_average(fma_PEs, iterations), 0.5*kb*T)) num_failures++;
+    if (!test("fba_ave_PE = 0.5*kb*T?",
+	      get_average(fba_PEs, iterations), 0.5*kb*T)) num_failures++;
+    if (!test("total PE = 5*0.5*kb*T?",
+	      get_average(nba_PEs, iterations) +
+	      get_average(fma_PEs, iterations) +
+	      get_average(ta_PEs, iterations) +
+	      get_average(fma_PEs, iterations) +
+	      get_average(fba_PEs, iterations), 0.5*kb*T)) num_failures++;
   }
 
   if (num_failures == 0) {
