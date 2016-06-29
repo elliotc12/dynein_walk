@@ -65,6 +65,9 @@ test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.
 utilities.o: utilities.cpp dynein_struct.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
+thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex
+	cd thesis_stuff && xelatex thesis_stuff.tex
+
 clean:
 	rm -f *.o
 	rm -f plot

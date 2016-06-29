@@ -1,0 +1,79 @@
+\documentclass[10pt]{article} % Font size - 10pt, 11pt or 12pt
+
+\usepackage[hmargin=1.25cm, vmargin=1.5cm]{geometry} % Document margins
+
+\usepackage{marvosym} % Required for symbols in the colored box
+
+\usepackage[usenames,dvipsnames]{xcolor} % Allows the definition of hex colors
+
+% Fonts and tweaks for XeLaTeX
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+% Colors for links, text and headings
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{506266} % Blue-gray color for links
+\definecolor{shade}{HTML}{F5DD9D} % Peach color for the contact information box
+\definecolor{text1}{HTML}{2b2b2b} % Main document font color, off-black
+\definecolor{headings}{HTML}{701112} % Dark red color for headings
+% Other color palettes: shade=B9D7D9 and linkcolor=A40000; shade=D4D7FE and linkcolor=FF0080
+
+\hypersetup{colorlinks,breaklinks, urlcolor=linkcolor, linkcolor=linkcolor} % Set up links and colors
+
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\pagestyle{fancy}
+\fancyhf{}
+% Headers and footers can be added with the \lhead{} \rhead{} \lfoot{} \rfoot{} commands
+% Example footer:
+%\rfoot{\color{headings} {\sffamily Last update: \today}. Typeset with Xe\LaTeX}
+
+\renewcommand{\headrulewidth}{0pt} % Get rid of the default rule in the header
+
+\usepackage{titlesec} % Allows creating custom \section's
+
+% Format of the section titles
+\titleformat{\section}{\color{headings}
+\scshape\Large\raggedright}{}{0em}{}[\color{black}\titlerule]
+
+\title{Cool thesis-related derivations, papers}
+\author{Elliott Capek}
+\titlespacing{\section}{0pt}{0pt}{5pt} % Spacing around titles
+
+\begin{document}
+
+\maketitle{}
+
+\section{Brownian motion via Langevin Equation and Equipartition Theorem}
+
+\begin{align*}
+  \frac{d\vec{v}}{dt} &= \frac{1}{m}\left(\frac{-mv}{\tau} + R\right)\\
+  \frac{d\vec{v}}{dt} &= \frac{-v}{\tau} + \frac{R}{m}\\
+  <\vec{r} \cdot \frac{d\vec{v}}{dt} > + \frac{1}{\tau}<\vec{R} \cdot \vec{v}> &= 0\\
+  \frac{1}{2}\frac{d^2}{dt^2}(r^2) + \frac{1}{2\tau}\frac{d}{dt}(r^2) - v^2 &= 0 \hspace{2cm} \Bigg(
+  \frac{d}{dt}\left(\vec{r} \cdot \vec{v}\right) = v^2 + \left(\vec{r} \cdot \frac{d\vec{v}}{dt}\right)
+  \mbox{ and }
+  \frac{d^2}{dt^2}\left(\vec{r} \cdot \vec{r}\right) = 2\left(\vec{r} \cdot \vec{v}\right) \Bigg)\\
+  \frac{d^2}{dt^2}(r^2) + \frac{1}{\tau}\frac{d}{dt}(r^2) &= 2<v^2> = \frac{6k_BT}{m}\\
+  <r^2> &= \frac{6k_BT\tau^2}{m}\left(e^{-t/\tau}-1+\frac{t}{\tau}\right)\\
+\end{align*}
+
+so...
+
+\begin{align*}
+  \left(t << \tau \right) \rightarrow <r^2> = \frac{3k_BT}{m}t^2 \hspace{2cm}\mbox{free particle motion}\\
+  \left(t >> \tau \right) \rightarrow <r^2> = \frac{6k_BT\tau}{m}t \hspace{2cm}\mbox{motion proportional to }\sqrt{t}\\
+\end{align*}
+
+\section{Equipartition Theorem for quadratic energies}
+
+\begin{align*}
+  Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
+  <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
+  &= \frac{k_BT}{2}\\
+\end{align*}
+
+\end{document}
