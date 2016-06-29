@@ -135,18 +135,72 @@ while i < len(data) or loop:
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
+    
+    binding1.set_zorder(19)
+    motor1.set_zorder(17)
+    tail.set_zorder(15)
+    motor2.set_zorder(13)
+    binding2.set_zorder(11)
+
+    force_line[0].set_zorder(20)
+    force_line[1].set_zorder(18)
+    force_line[2].set_zorder(16)
+    force_line[3].set_zorder(14)
+    force_line[4].set_zorder(12)
+
+    stalk1.set_zorder(4)
+    tail1.set_zorder(3)
+    tail2.set_zorder(2)
+    stalk2.set_zorder(1)
+    
   elif (data[i][0] == 1):
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
     tail1.set_linestyle('--')
     tail2.set_linestyle('-')
     stalk2.set_linestyle('-')
+
+    binding1.set_zorder(11)
+    motor1.set_zorder(13)
+    tail.set_zorder(15)
+    motor2.set_zorder(17)
+    binding2.set_zorder(19)
+
+    force_line[0].set_zorder(12)
+    force_line[1].set_zorder(14)
+    force_line[2].set_zorder(16)
+    force_line[3].set_zorder(18)
+    force_line[4].set_zorder(20)
+
+    stalk1.set_zorder(1)
+    tail1.set_zorder(2)
+    tail2.set_zorder(3)
+    stalk2.set_zorder(4)
+    
   elif (data[i][0] == 2):
     title_text.set_text('State: Bothbound')
     stalk1.set_linestyle('-')
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
+
+    binding1.set_zorder(19)
+    motor1.set_zorder(17)
+    tail.set_zorder(15)
+    motor2.set_zorder(13)
+    binding2.set_zorder(11)
+
+    force_line[0].set_zorder(20)
+    force_line[1].set_zorder(18)
+    force_line[2].set_zorder(16)
+    force_line[3].set_zorder(14)
+    force_line[4].set_zorder(12)
+
+    stalk1.set_zorder(4)
+    tail1.set_zorder(3)
+    tail2.set_zorder(2)
+    stalk2.set_zorder(1)
+    
   elif (data[i][0] == 3):
     title_text.set_text('State: Unbound')
 
