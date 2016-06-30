@@ -36,7 +36,7 @@ PE_correlation_function_plot: dynein_simulate.o dynein_struct_onebound.o dynein_
 	g++ -c simulations/PE_correlation_function.cpp $(CPPFLAGS)
 	g++ PE_correlation_function.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o PE_correlation_function
 	./PE_correlation_function
-	./make_plot.py --figtitle="Correlation function for PE" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt
+	./make_plot.py --figtitle="Correlation function for PE" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt pe_bma_correlation_function.txt pe_ta_correlation_function.txt pe_uma_correlation_function.txt
 
 test_onebound.o: test_onebound.cpp dynein_struct.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
