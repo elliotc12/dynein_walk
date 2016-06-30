@@ -36,6 +36,7 @@ onebound_correlation_equipartition_test: dynein_simulate.o dynein_struct_oneboun
 	g++ -c simulations/onebound_correlation_equipartition_test.cpp $(CPPFLAGS)
 	g++ onebound_correlation_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_correlation_equipartition_test
 	./onebound_correlation_equipartition_test
+	./make_plot.py --figtitle="Correlation function for PE_nma" --xlabel="Tau (s)" --ylabel="Correlation" pe_nma_correlation_function.txt
 
 test_onebound.o: test_onebound.cpp dynein_struct.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
