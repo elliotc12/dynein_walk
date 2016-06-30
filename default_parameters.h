@@ -26,7 +26,7 @@ double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-double ct = 0.001; // force*distance = energy = nm^2 * kg / s^2
+double ct = 0.5; // force*distance = energy = nm^2 * kg / s^2
 double cm = 0.5; // ???
 double cb = 0.5; // ???
 

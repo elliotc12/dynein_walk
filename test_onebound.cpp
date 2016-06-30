@@ -29,7 +29,7 @@ int test(const char *msg, float one, float two, double epsilon = EPSILON) {
     printf("%45s: pass, %g == %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%45s: FAIL! %g != %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g != %g\tratio = %g.\n", msg, one, two, one/two);
     return 0;
   }
 }
@@ -418,7 +418,7 @@ int main() {
     T = 100;
     MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   
-    int iterations = 1e6;
+    int iterations = 1e8;
     double runtime = dt*iterations;
     onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
     double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -450,7 +450,7 @@ int main() {
 	      get_average(bba_PEs, iterations) +
 	      get_average(bma_PEs, iterations) +
 	      get_average(ta_PEs, iterations) +
-	      get_average(uma_PEs, iterations), (2*kb*T))) num_failures++;
+	      get_average(uma_PEs, iterations), (4*0.5*kb*T))) num_failures++;
   }
   
   if (num_failures == 0) {

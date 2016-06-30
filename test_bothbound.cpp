@@ -31,7 +31,7 @@ int test(const char *msg, float one, float two, double epsilon = EPSILON) {
     printf("%45s: pass, %g == %g.\n", msg, one, two);
     return 1;
   } else {
-    printf("%45s: FAIL! %g != %g.\n", msg, one, two);
+    printf("%45s: FAIL! %g != %g ratio = %g.\n", msg, one, two, one/two);
     return 0;
   }
 }
@@ -422,12 +422,12 @@ int main(int argvc, char **argv) {
 	      get_average(fma_PEs, iterations), 0.5*kb*T)) num_failures++;
     if (!test("fba_ave_PE = 0.5*kb*T?",
 	      get_average(fba_PEs, iterations), 0.5*kb*T)) num_failures++;
-    if (!test("total PE = 5*0.5*kb*T?",
+    if (!test("total PE = 2*0.5*kb*T?",
 	      get_average(nba_PEs, iterations) +
 	      get_average(fma_PEs, iterations) +
 	      get_average(ta_PEs, iterations) +
 	      get_average(fma_PEs, iterations) +
-	      get_average(fba_PEs, iterations), 0.5*kb*T)) num_failures++;
+	      get_average(fba_PEs, iterations), 2*0.5*kb*T)) num_failures++;
   }
 
   if (num_failures == 0) {
