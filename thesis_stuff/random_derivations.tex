@@ -47,9 +47,33 @@
 
 \maketitle{}
 
-\section{Equipartition Theorem Test}
-To test whether our model behaves physically, we verify that its conformational energy (energy due to the orientation of its domains) obeys the Equipartition Theorem. This is valid because we model the protein as feeling spring return forces to the lowest-energy conformation, and equipartition is obeyed for spring-like forces.\\
+\section{Brownian motion via Langevin Equation and Equipartition Theorem}
 
-More to come...
+\begin{align*}
+  \frac{d\vec{v}}{dt} &= \frac{1}{m}\left(\frac{-mv}{\tau} + R\right)\\
+  \frac{d\vec{v}}{dt} &= \frac{-v}{\tau} + \frac{R}{m}\\
+  <\vec{r} \cdot \frac{d\vec{v}}{dt} > + \frac{1}{\tau}<\vec{R} \cdot \vec{v}> &= 0\\
+  \frac{1}{2}\frac{d^2}{dt^2}(r^2) + \frac{1}{2\tau}\frac{d}{dt}(r^2) - v^2 &= 0 \hspace{2cm} \Bigg(
+  \frac{d}{dt}\left(\vec{r} \cdot \vec{v}\right) = v^2 + \left(\vec{r} \cdot \frac{d\vec{v}}{dt}\right)
+  \mbox{ and }
+  \frac{d^2}{dt^2}\left(\vec{r} \cdot \vec{r}\right) = 2\left(\vec{r} \cdot \vec{v}\right) \Bigg)\\
+  \frac{d^2}{dt^2}(r^2) + \frac{1}{\tau}\frac{d}{dt}(r^2) &= 2<v^2> = \frac{6k_BT}{m}\\
+  <r^2> &= \frac{6k_BT\tau^2}{m}\left(e^{-t/\tau}-1+\frac{t}{\tau}\right)\\
+\end{align*}
+
+so...
+
+\begin{align*}
+  \left(t << \tau \right) \rightarrow <r^2> = \frac{3k_BT}{m}t^2 \hspace{2cm}\mbox{free particle motion}\\
+  \left(t >> \tau \right) \rightarrow <r^2> = \frac{6k_BT\tau}{m}t \hspace{2cm}\mbox{motion proportional to }\sqrt{t}\\
+\end{align*}
+
+\section{Equipartition Theorem for quadratic energies}
+
+\begin{align*}
+  Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
+  <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
+  &= \frac{k_BT}{2}\\
+\end{align*}
 
 \end{document}

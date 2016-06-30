@@ -22,15 +22,20 @@ dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h
 dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
-bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/bothbound_equipartition_test.cpp
+bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)
 	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o bothbound_equipartition_test
-#	./bothbound_equipartition_test
+	./bothbound_equipartition_test
 
-onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_equipartition_test.cpp
+onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_equipartition_test.cpp FORCE
 	g++ -c simulations/onebound_equipartition_test.cpp $(CPPFLAGS)
 	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_equipartition_test
-#	./onebound_equipartition_test
+	./onebound_equipartition_test
+
+onebound_correlation_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_correlation_equipartition_test.cpp FORCE
+	g++ -c simulations/onebound_correlation_equipartition_test.cpp $(CPPFLAGS)
+	g++ onebound_correlation_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_correlation_equipartition_test
+	./onebound_correlation_equipartition_test
 
 test_onebound.o: test_onebound.cpp dynein_struct.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
@@ -67,6 +72,9 @@ utilities.o: utilities.cpp dynein_struct.h
 
 thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex
 	cd thesis_stuff && xelatex thesis_stuff.tex
+
+thesis_stuff/log.pdf: thesis_stuff/random_derivations.tex
+	cd random_derivations && xelatex random_derivations.tex
 
 clean:
 	rm -f *.o

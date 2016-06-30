@@ -1,6 +1,7 @@
+#include <csignal>
+#include <fenv.h>
 #include <math.h>
 #include <stdbool.h>
-#include <fenv.h>
 
 #include "MersenneTwister.h"
 
@@ -289,7 +290,8 @@ double fifth(double num);
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void* job_msg, void* job_data, int iteration),
 	      void* job_msg, void* job_data);
-double get_average(double* data, int len);
+double get_average(double* data,  int len);
+double get_variance(double* data, int len);
 void FPE_signal_handler(int signum);
 
 #endif

@@ -42,6 +42,15 @@ double get_average(double* data, int len) {
   return sum / len;
 }
 
+double get_variance(double* data, int len) {
+  double sum = 0;
+  double ave = get_average(data, len);
+  for (int i = 0; i < len; i++) {
+    sum += (data[i] - ave)*(data[i] - ave);
+  }
+  return sum / len;
+}
+
 void FPE_signal_handler(int signum) {
   fexcept_t flag;
   fegetexceptflag(&flag, FE_ALL_EXCEPT);

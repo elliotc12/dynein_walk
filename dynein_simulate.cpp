@@ -1,5 +1,3 @@
-#include <csignal>
-
 #include "dynein_struct.h"
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
