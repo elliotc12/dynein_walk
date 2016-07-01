@@ -32,11 +32,11 @@ onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_s
 	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_equipartition_test
 	./onebound_equipartition_test
 
-onebound_correlation_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_correlation_equipartition_test.cpp FORCE
-	g++ -c simulations/onebound_correlation_equipartition_test.cpp $(CPPFLAGS)
-	g++ onebound_correlation_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_correlation_equipartition_test
-	./onebound_correlation_equipartition_test
-	./make_plot.py --figtitle="Correlation function for PE_nma" --xlabel="Tau (s)" --ylabel="Correlation" pe_nma_correlation_function.txt
+PE_correlation_function_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/PE_correlation_function.cpp FORCE
+	g++ -c simulations/PE_correlation_function.cpp $(CPPFLAGS)
+	g++ PE_correlation_function.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o PE_correlation_function
+	./PE_correlation_function
+	./make_plot.py --figtitle="Correlation function for PE" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt
 
 test_onebound.o: test_onebound.cpp dynein_struct.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
@@ -78,10 +78,12 @@ thesis_stuff/log.pdf: thesis_stuff/random_derivations.tex
 	cd random_derivations && xelatex random_derivations.tex
 
 clean:
+	rm -f *.txt
 	rm -f *.o
 	rm -f plot
 	rm -f test_onebound
 	rm -f test_bothbound
+	rm -f PE_correlation_function
 	rm -f data.txt
 	rm -f config.txt
 	rm -f latex/*.aux
