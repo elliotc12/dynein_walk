@@ -145,7 +145,7 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
   fclose(uma_correlation_data_file);
 }
 
-void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int max_tau_iter) {
+void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int min_tau_iter, int max_tau_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   
   double runtime = dt*iterations;
@@ -198,7 +198,7 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
   ta_eq_ratio_buf_offset += strlen(ta_eq_ratio_legend) + 1;
   uma_eq_ratio_buf_offset += strlen(uma_eq_ratio_legend) + 1;
 
-  for (int tau_iter=d_iter; tau_iter < max_tau_iter; tau_iter += d_iter) {
+  for (int tau_iter=min_tau_iter; tau_iter < max_tau_iter; tau_iter += d_iter) {
     double bba_eq_ratio = get_average(bba_PEs, tau_iter) / (0.5*kb*T);
     double bma_eq_ratio = get_average(bma_PEs, tau_iter) / (0.5*kb*T);
     double  ta_eq_ratio = get_average( ta_PEs, tau_iter) / (0.5*kb*T);

@@ -40,7 +40,7 @@ onebound_PE_equipartition_correlation_plot: dynein_simulate.o dynein_struct_oneb
 	g++ -c simulations/onebound_PE_equipartition_correlation.cpp $(CPPFLAGS)
 	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation_plot
 	./onebound_PE_equipartition_correlation_plot
-	./make_plot.py --figtitle="Equipartition ratio for conformational PEs" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" bba_equipartition_ratio.txt bma_equipartition_ratio.txt ta_equipartition_ratio.txt uma_equipartition_ratio.txt
+	./make_plot.py --figtitle="Equipartition ratio for conformational PEs" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_equipartition_ratio.txt bma_equipartition_ratio.txt ta_equipartition_ratio.txt uma_equipartition_ratio.txt
 	./make_plot.py --figtitle="Correlation function for conformational PEs" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt pe_bma_correlation_function.txt pe_ta_correlation_function.txt pe_uma_correlation_function.txt
 
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
