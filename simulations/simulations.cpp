@@ -5,11 +5,10 @@
 #include <string.h>
 
 #include "../dynein_struct.h"
-#include "../default_parameters.h"
 
 /** Library for simulation code **/
 
-void store_PE(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
+void store_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
   assert(s == NEARBOUND);
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
   ((double*) job_data)[4*iteration + 0] = dyn_ob->PE_bba;
@@ -26,6 +25,7 @@ void store_PE(void* dyn, State s, void* job_msg, void* job_data, int iteration) 
   if (iteration == max_iteration) printf("\n");
 }
 
+
 void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_tau_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   
@@ -34,7 +34,7 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
   void* data = malloc(4 * iterations * sizeof(double));
   
-  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_PE, (void*) &iterations, data);
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_PEs, (void*) &iterations, data);
 
   double* PE_bbas = (double*) malloc(iterations * sizeof(double));
   double* PE_bmas = (double*) malloc(iterations * sizeof(double));
@@ -143,7 +143,7 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
   fclose(uma_correlation_data_file);
 }
 
-int write_onebound_equipartition_ratio_tau_dependent(int iterations, d_iter, max_tau_iter) {
+void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int max_tau_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   
   double runtime = dt*iterations;
@@ -151,7 +151,8 @@ int write_onebound_equipartition_ratio_tau_dependent(int iterations, d_iter, max
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
   void* data = malloc(iterations * sizeof(double) * 4);
   
-  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_onebound_PEs, NULL, data);
+  
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_PEs, (void*) &iterations, data);
 
   double* bba_PEs = (double*) malloc(iterations * sizeof(double));
   double* bma_PEs = (double*) malloc(iterations * sizeof(double));
@@ -165,57 +166,74 @@ int write_onebound_equipartition_ratio_tau_dependent(int iterations, d_iter, max
     uma_PEs[i] = ((double*) data)[4*i + 3];
   }
 
-  const char* bba_equipartition_legend = "PE_nba / 0.5*kb*T ratio";
-  const char* bma_equipartition_legend = "PE_nma / 0.5*kb*T ratio";
-  const char* ta_equipartition_legend = "PE_ta / 0.5*kb*T ratio";
-  const char* uma_equipartition_legend = "PE_uma / 0.5*kb*T ratio";
-  
-  char* bba_equipartition_buf = (char*)
-    malloc((num_equipartitions * (12+5+12+1)+1+1) * sizeof(char) + strlen(bba_equipartition_legend));
-  char* bma_equipartition_buf = (char*)
-    malloc((num_equipartitions * (12+5+12+1)+1+1) * sizeof(char) + strlen(bma_equipartition_legend));
-  char* ta_equipartition_buf = (char*)
-    malloc((num_equipartitions * (12+5+12+1)+1+1) * sizeof(char) + strlen(ta_equipartition_legend));
-  char* uma_equipartition_buf = (char*)
-    malloc((num_equipartitions * (12+5+12+1)+1+1) * sizeof(char) + strlen(uma_equipartition_legend));
+  const char* bba_eq_ratio_legend = "PE_nba / 0.5*kb*T ratio";
+  const char* bma_eq_ratio_legend = "PE_nma / 0.5*kb*T ratio";
+  const char* ta_eq_ratio_legend = "PE_ta / 0.5*kb*T ratio";
+  const char* uma_eq_ratio_legend = "PE_uma / 0.5*kb*T ratio";
 
-  int bba_equipartition_buf_offset = 0;
-  int bma_equipartition_buf_offset = 0;
-  int ta_equipartition_buf_offset = 0;
-  int uma_equipartition_buf_offset = 0;
+  int num_iterations = floor(max_tau_iter/d_iter);
   
-  sprintf(bba_equipartition_buf, "%s\n", bba_equipartition_legend);
-  sprintf(bma_equipartition_buf, "%s\n", bma_equipartition_legend);
-  sprintf(ta_equipartition_buf, "%s\n", ta_equipartition_legend);
-  sprintf(uma_equipartition_buf, "%s\n", uma_equipartition_legend);
+  char* bba_eq_ratio_buf = (char*)
+    malloc((num_iterations * 30 + 1 + 1) * sizeof(char) + strlen(bba_eq_ratio_legend));
+  char* bma_eq_ratio_buf = (char*)
+    malloc((num_iterations * 30 + 1 + 1) * sizeof(char) + strlen(bma_eq_ratio_legend));
+  char* ta_eq_ratio_buf = (char*)
+    malloc((num_iterations * 30 + 1 + 1) * sizeof(char) + strlen(ta_eq_ratio_legend));
+  char* uma_eq_ratio_buf = (char*)
+    malloc((num_iterations * 30 + 1 + 1) * sizeof(char) + strlen(uma_eq_ratio_legend));
+
+  int bba_eq_ratio_buf_offset = 0;
+  int bma_eq_ratio_buf_offset = 0;
+  int ta_eq_ratio_buf_offset = 0;
+  int uma_eq_ratio_buf_offset = 0;
   
-  bba_equipartition_buf_offset += strlen(bba_equipartition_legend) + 1;
-  bma_equipartition_buf_offset += strlen(bma_equipartition_legend) + 1;
-  ta_equipartition_buf_offset += strlen(ta_equipartition_legend) + 1;
-  uma_equipartition_buf_offset += strlen(uma_equipartition_legend) + 1;
+  sprintf(bba_eq_ratio_buf, "%s\n", bba_eq_ratio_legend);
+  sprintf(bma_eq_ratio_buf, "%s\n", bma_eq_ratio_legend);
+  sprintf(ta_eq_ratio_buf, "%s\n", ta_eq_ratio_legend);
+  sprintf(uma_eq_ratio_buf, "%s\n", uma_eq_ratio_legend);
+  
+  bba_eq_ratio_buf_offset += strlen(bba_eq_ratio_legend) + 1;
+  bma_eq_ratio_buf_offset += strlen(bma_eq_ratio_legend) + 1;
+  ta_eq_ratio_buf_offset += strlen(ta_eq_ratio_legend) + 1;
+  uma_eq_ratio_buf_offset += strlen(uma_eq_ratio_legend) + 1;
 
   for (int tau_iter=0; tau_iter < max_tau_iter; tau_iter += d_iter) {
-    double bba_equipartition_ratio = get_average(bba_PEs, tau_iter);
-    double bma_equipartition_ratio = get_average(bma_PEs, tau_iter);
-    double  ta_equipartition_ratio = get_average( ta_PEs, tau_iter);
-    double uma_equipartition_ratio = get_average(uma_PEs, tau_iter);
+    double bba_eq_ratio_ratio = get_average(bba_PEs, tau_iter);
+    double bma_eq_ratio_ratio = get_average(bma_PEs, tau_iter);
+    double  ta_eq_ratio_ratio = get_average( ta_PEs, tau_iter);
+    double uma_eq_ratio_ratio = get_average(uma_PEs, tau_iter);
     
-    sprintf(&bba_equipartition_buf[bba_equipartition_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, bba_equipartition_ratio);
-    sprintf(&bma_equipartition_buf[bma_equipartition_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, bma_equipartition_ratio);
-    sprintf(&ta_equipartition_buf[ta_equipartition_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, ta_equipartition_ratio);
-    sprintf(&uma_equipartition_buf[uma_equipartition_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, uma_equipartition_ratio);
+    sprintf(&bba_eq_ratio_buf[bba_eq_ratio_buf_offset],
+	    "%+.5e     %+.5e\n", tau_iter*dt, bba_eq_ratio_ratio);
+    sprintf(&bma_eq_ratio_buf[bma_eq_ratio_buf_offset],
+	    "%+.5e     %+.5e\n", tau_iter*dt, bma_eq_ratio_ratio);
+    sprintf(&ta_eq_ratio_buf[ta_eq_ratio_buf_offset],
+	    "%+.5e     %+.5e\n", tau_iter*dt, ta_eq_ratio_ratio);
+    sprintf(&uma_eq_ratio_buf[uma_eq_ratio_buf_offset],
+	    "%+.5e     %+.5e\n", tau_iter*dt, uma_eq_ratio_ratio);
     
-    bba_equipartition_buf_offset += 30;
-    bma_equipartition_buf_offset += 30;
-    ta_equipartition_buf_offset += 30;
-    uma_equipartition_buf_offset += 30;
+    bba_eq_ratio_buf_offset += 30;
+    bma_eq_ratio_buf_offset += 30;
+    ta_eq_ratio_buf_offset += 30;
+    uma_eq_ratio_buf_offset += 30;
     
     printf("equipartition ratio progress: %d / %d, %g%%\r",
 	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
     fflush(NULL);
   }
+
+  FILE* bba_eq_ratio_data_file = fopen("bba_equipartition_ratio.txt", "w");
+  FILE* bma_eq_ratio_data_file = fopen("bma_equipartition_ratio.txt", "w");
+  FILE* ta_eq_ratio_data_file = fopen("ta_equipartition_ratio.txt", "w");
+  FILE* uma_eq_ratio_data_file = fopen("uma_equipartition_ratio.txt", "w");
+  
+  fputs(bba_eq_ratio_buf, bba_eq_ratio_data_file);
+  fputs(bma_eq_ratio_buf, bma_eq_ratio_data_file);
+  fputs(ta_eq_ratio_buf, ta_eq_ratio_data_file);
+  fputs(uma_eq_ratio_buf, uma_eq_ratio_data_file);
+  
+  fclose(bba_eq_ratio_data_file);
+  fclose(bma_eq_ratio_data_file);
+  fclose(ta_eq_ratio_data_file);
+  fclose(uma_eq_ratio_data_file);
 }

@@ -10,17 +10,20 @@ derivation.pdf: latex/derivation.tex
 derivation_confirmation.pdf: latex/derivation_confirmation.tex
 	cd latex && pdflatex derivation_confirmation.tex && mv derivation_confirmation.pdf ..
 
-test_bothbound.o: test_bothbound.cpp dynein_struct.h
+test_bothbound.o: test_bothbound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_bothbound.cpp $(CPPFLAGS)
 
-dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h
+dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c dynein_struct_onebound.cpp $(CPPFLAGS)
 
-dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h
+dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h default_parameters.h
 	g++ -c dynein_struct_bothbound.cpp $(CPPFLAGS)
 
-dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp
+dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
+
+simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
+	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
 
 bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)
@@ -32,13 +35,14 @@ onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_s
 	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_equipartition_test
 	./onebound_equipartition_test
 
-PE_correlation_function_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/PE_correlation_function.cpp FORCE
-	g++ -c simulations/PE_correlation_function.cpp $(CPPFLAGS)
-	g++ PE_correlation_function.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o PE_correlation_function
-	./PE_correlation_function
-	./make_plot.py --figtitle="Correlation function for PE" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt pe_bma_correlation_function.txt pe_ta_correlation_function.txt pe_uma_correlation_function.txt
+onebound_PE_equipartition_correlation_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp simulations/simulations.h FORCE
+	g++ -c simulations/onebound_PE_equipartition_correlation.cpp $(CPPFLAGS)
+	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation_plot
+	./onebound_PE_equipartition_correlation_plot
+#	./make_plot.py --figtitle="Correlation function for PE" --xlabel="Tau (s)" --ylabel="Correlation" pe_bba_correlation_function.txt pe_bma_correlation_function.txt pe_ta_correlation_function.txt pe_uma_correlation_function.txt
+	./make_plot.py --figtitle="Equipartition ratio for PE_bma" --xlabel="Tau (s)" --ylabel="Correlation" bba_equipartition_ratio.txt
 
-test_onebound.o: test_onebound.cpp dynein_struct.h
+test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
 
 figures: figures/*
@@ -68,7 +72,7 @@ test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.
 	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o dynein_simulate.o utilities.o -o test_onebound
 	./test_onebound
 
-utilities.o: utilities.cpp dynein_struct.h
+utilities.o: utilities.cpp dynein_struct.h default_parameters.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
 thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex
