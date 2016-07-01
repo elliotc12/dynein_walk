@@ -11,10 +11,10 @@ int main() {
   }
 
   T = 100;
-  int iterations = 1e6;
+  int iterations = 1e8;
 
-  int d_iter = 1e3;
-  int max_tau_iter = floor(iterations * 0.2);
+  int d_iter = 1e6;
+  int max_tau_iter = floor(iterations * 0.5);
   
   write_onebound_PE_correlation_function(iterations, d_iter, max_tau_iter);
   write_onebound_equipartition_ratio_per_tau(10*iterations, 10*d_iter, 10*max_tau_iter);

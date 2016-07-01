@@ -122,7 +122,7 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
     ta_correlation_buf_offset += 30;
     uma_correlation_buf_offset += 30;
 
-    if (tau_iter/d_iter % 100 == 0) {
+    if (tau_iter/d_iter % 5 == 0) {
     printf("correlation function progress: %d / %d, %g%%                \r",
 	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
     fflush(NULL);
@@ -217,10 +217,12 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
     bma_eq_ratio_buf_offset += 30;
     ta_eq_ratio_buf_offset += 30;
     uma_eq_ratio_buf_offset += 30;
-    
-    printf("equipartition ratio progress: %d / %d, %g%%                \r",
-    	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
-    fflush(NULL);
+
+    if (tau_iter/d_iter % 5 == 0) {
+      printf("equipartition ratio progress: %d / %d, %g%%                \r",
+	     tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
+      fflush(NULL);
+    }
   }
 
   FILE* bba_eq_ratio_data_file = fopen("bba_equipartition_ratio.txt", "w");

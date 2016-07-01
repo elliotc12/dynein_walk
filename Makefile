@@ -36,6 +36,7 @@ onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_s
 	./onebound_equipartition_test
 
 onebound_PE_equipartition_correlation_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp simulations/simulations.h FORCE
+	mkdir -p movies
 	g++ -c simulations/onebound_PE_equipartition_correlation.cpp $(CPPFLAGS)
 	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation_plot
 	./onebound_PE_equipartition_correlation_plot
