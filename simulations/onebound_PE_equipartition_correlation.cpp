@@ -13,7 +13,7 @@ int main() {
   T = 100;
   int iterations = 1e6;
 
-  int d_iter = 1e2;
+  int d_iter = 1e3;
   int max_tau_iter = floor(iterations * 0.2);
   
   write_onebound_PE_correlation_function(iterations, d_iter, max_tau_iter);

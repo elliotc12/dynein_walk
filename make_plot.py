@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:", ["figtitle=", "xlabel=", "ylabel="])
+plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:s", ["figtitle=", "xlabel=", "ylabel=", "showplot"])
+
+showplot = False
 
 for param, value in plot_params:
     if (param == "--figtitle"):
@@ -14,6 +16,8 @@ for param, value in plot_params:
         xlabel = value
     elif (param == "--ylabel"):
         ylabel = value
+    elif (param == "--showplot"):
+        showplot = True
 
 for data_file in data_files:
     f = open(data_file, 'r')
@@ -30,4 +34,8 @@ plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 
 plt.legend()
-plt.show()
+
+if showplot:
+    plt.show()
+else:
+    plt.savefig("plots/" + title.replace(" ", "_"))
