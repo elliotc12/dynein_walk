@@ -1,6 +1,7 @@
-#include <stdlib.h>
-#include <fstream>
+#include <cassert>
 #include <fenv.h>
+#include <fstream>
+#include <stdlib.h>
 
 #include "dynein_struct.h"
 
@@ -35,6 +36,7 @@ double fifth(double num) {
 }
 
 double get_average(double* data, int len) {
+  assert(len != 0);
   double sum = 0;
   for (int i = 0; i < len; i++) {
     sum += data[i];
@@ -43,6 +45,7 @@ double get_average(double* data, int len) {
 }
 
 double get_variance(double* data, int len) {
+  assert(len != 0);
   double sum = 0;
   double ave = get_average(data, len);
   for (int i = 0; i < len; i++) {

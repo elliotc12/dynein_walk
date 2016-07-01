@@ -18,8 +18,8 @@ void store_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration)
 
   int max_iteration = *((int*) job_msg);
 
-  if (iteration % 1000000 == 0) {
-    printf("correlation function progress: %d / %d, %g%%\r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+  if (iteration % 100000 == 0) {
+    printf("PE calculation progress: %d / %d, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
   if (iteration == max_iteration) printf("\n");
@@ -107,7 +107,7 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
     double bma_correlation = bma_correlation_sum / PE_bma_var / num_iterations;
     double ta_correlation  = ta_correlation_sum / PE_ta_var / num_iterations;
     double uma_correlation = uma_correlation_sum / PE_uma_var / num_iterations;
-    
+
     sprintf(&bba_correlation_buf[bba_correlation_buf_offset],
 	    "%+.5e     %+.5e\n", tau_iter*dt, bba_correlation);
     sprintf(&bma_correlation_buf[bma_correlation_buf_offset],
@@ -116,15 +116,17 @@ void write_onebound_PE_correlation_function(int iterations, int d_iter, int max_
 	    "%+.5e     %+.5e\n", tau_iter*dt, ta_correlation);
     sprintf(&uma_correlation_buf[uma_correlation_buf_offset],
 	    "%+.5e     %+.5e\n", tau_iter*dt, uma_correlation);
-    
+
     bba_correlation_buf_offset += 30;
     bma_correlation_buf_offset += 30;
     ta_correlation_buf_offset += 30;
     uma_correlation_buf_offset += 30;
-    
-    printf("correlation function progress: %d / %d, %g%%\r",
+
+    if (tau_iter/d_iter % 100 == 0) {
+    printf("correlation function progress: %d / %d, %g%%                \r",
 	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
     fflush(NULL);
+    }
   }
   
   FILE* bba_correlation_data_file = fopen("pe_bba_correlation_function.txt", "w");
@@ -150,15 +152,14 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
   void* data = malloc(iterations * sizeof(double) * 4);
-  
-  
+    
   simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_PEs, (void*) &iterations, data);
 
   double* bba_PEs = (double*) malloc(iterations * sizeof(double));
   double* bma_PEs = (double*) malloc(iterations * sizeof(double));
   double*  ta_PEs = (double*) malloc(iterations * sizeof(double));
   double* uma_PEs = (double*) malloc(iterations * sizeof(double));
-  
+
   for (int i = 0; i < iterations; i++) {
     bba_PEs[i] = ((double*) data)[4*i + 0];
     bma_PEs[i] = ((double*) data)[4*i + 1];
@@ -172,7 +173,7 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
   const char* uma_eq_ratio_legend = "PE_uma / 0.5*kb*T ratio";
 
   int num_iterations = floor(max_tau_iter/d_iter);
-  
+
   char* bba_eq_ratio_buf = (char*)
     malloc((num_iterations * 30 + 1 + 1) * sizeof(char) + strlen(bba_eq_ratio_legend));
   char* bma_eq_ratio_buf = (char*)
@@ -186,7 +187,7 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
   int bma_eq_ratio_buf_offset = 0;
   int ta_eq_ratio_buf_offset = 0;
   int uma_eq_ratio_buf_offset = 0;
-  
+
   sprintf(bba_eq_ratio_buf, "%s\n", bba_eq_ratio_legend);
   sprintf(bma_eq_ratio_buf, "%s\n", bma_eq_ratio_legend);
   sprintf(ta_eq_ratio_buf, "%s\n", ta_eq_ratio_legend);
@@ -197,28 +198,28 @@ void write_onebound_equipartition_ratio_per_tau(int iterations, int d_iter, int 
   ta_eq_ratio_buf_offset += strlen(ta_eq_ratio_legend) + 1;
   uma_eq_ratio_buf_offset += strlen(uma_eq_ratio_legend) + 1;
 
-  for (int tau_iter=0; tau_iter < max_tau_iter; tau_iter += d_iter) {
-    double bba_eq_ratio_ratio = get_average(bba_PEs, tau_iter);
-    double bma_eq_ratio_ratio = get_average(bma_PEs, tau_iter);
-    double  ta_eq_ratio_ratio = get_average( ta_PEs, tau_iter);
-    double uma_eq_ratio_ratio = get_average(uma_PEs, tau_iter);
+  for (int tau_iter=d_iter; tau_iter < max_tau_iter; tau_iter += d_iter) {
+    double bba_eq_ratio = get_average(bba_PEs, tau_iter) / (0.5*kb*T);
+    double bma_eq_ratio = get_average(bma_PEs, tau_iter) / (0.5*kb*T);
+    double  ta_eq_ratio = get_average( ta_PEs, tau_iter) / (0.5*kb*T);
+    double uma_eq_ratio = get_average(uma_PEs, tau_iter) / (0.5*kb*T);
     
     sprintf(&bba_eq_ratio_buf[bba_eq_ratio_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, bba_eq_ratio_ratio);
+	    "%+.5e     %+.5e\n", tau_iter*dt, bba_eq_ratio);
     sprintf(&bma_eq_ratio_buf[bma_eq_ratio_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, bma_eq_ratio_ratio);
+	    "%+.5e     %+.5e\n", tau_iter*dt, bma_eq_ratio);
     sprintf(&ta_eq_ratio_buf[ta_eq_ratio_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, ta_eq_ratio_ratio);
+	    "%+.5e     %+.5e\n", tau_iter*dt, ta_eq_ratio);
     sprintf(&uma_eq_ratio_buf[uma_eq_ratio_buf_offset],
-	    "%+.5e     %+.5e\n", tau_iter*dt, uma_eq_ratio_ratio);
+	    "%+.5e     %+.5e\n", tau_iter*dt, uma_eq_ratio);
     
     bba_eq_ratio_buf_offset += 30;
     bma_eq_ratio_buf_offset += 30;
     ta_eq_ratio_buf_offset += 30;
     uma_eq_ratio_buf_offset += 30;
     
-    printf("equipartition ratio progress: %d / %d, %g%%\r",
-	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
+    printf("equipartition ratio progress: %d / %d, %g%%                \r",
+    	   tau_iter, max_tau_iter, ((double) tau_iter) / max_tau_iter * 100);
     fflush(NULL);
   }
 
