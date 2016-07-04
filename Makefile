@@ -25,14 +25,14 @@ dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_
 simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
 	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
 
-bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/bothbound_equipartition_test.cpp FORCE
+bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o  simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)
-	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o bothbound_equipartition_test
+	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o bothbound_equipartition_test
 	./bothbound_equipartition_test
 
-onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/onebound_equipartition_test.cpp FORCE
+onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_equipartition_test.cpp FORCE
 	g++ -c simulations/onebound_equipartition_test.cpp $(CPPFLAGS)
-	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o onebound_equipartition_test
+	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_equipartition_test
 	./onebound_equipartition_test
 
 onebound_PE_equipartition_correlation_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp simulations/simulations.h FORCE

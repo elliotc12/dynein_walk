@@ -10,7 +10,7 @@
 
 
 // David -- naming convention for callback fn-ish things like this?
-void store_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
+void store_onebound_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
   assert(s == NEARBOUND);
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
   ((double*) job_data)[4*iteration + 0] = dyn_ob->PE_bba;
@@ -21,8 +21,7 @@ void store_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration)
   int max_iteration = *((int*) job_msg);
 
   if (iteration % 100000 == 0) {
-    //printf("PE calculation progress: %d / %d, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
-    printf("PE calculation progress: %d / %d, %g%% rand: %p         \n", iteration, max_iteration, ((double) iteration) / max_iteration * 100, dyn_ob->rand);
+    printf("PE calculation progress: %d / %d, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
   if (iteration == max_iteration) printf("\n");
@@ -53,7 +52,7 @@ void get_onebound_PE_correlation_function(double* time_data, double* corr_data, 
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
   void* data = malloc(4 * iterations * sizeof(double));
   
-  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_PEs, (void*) &iterations, data);
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, test_position, store_onebound_PEs, (void*) &iterations, data);
 
   double* PE_bbas = (double*) malloc(iterations * sizeof(double));
   double* PE_bmas = (double*) malloc(iterations * sizeof(double));
@@ -118,7 +117,7 @@ void get_onebound_equipartition_ratio_per_runtime(double* runtime_data, double* 
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
   void* data = malloc(ceil(max_runtime_iter/d_runtime_iter) * sizeof(double) * 4);
     
-  simulate(runtime, RAND_INIT_SEED, NEARBOUND, init_position, store_PEs, (void*) &max_runtime_iter, data);
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs, (void*) &max_runtime_iter, data);
 
   int num_PE_datapoints = floor((max_runtime_iter - min_runtime_iter) / d_runtime_iter);
 
