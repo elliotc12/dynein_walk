@@ -9,6 +9,17 @@
 /** Library for simulation code **/
 
 
+struct data_1D {
+  int size;
+  double data[];
+};
+
+data_1D *alloc_data_1D(int size) {
+  data_1D *out = (data_1D *) malloc(sizeof(data_1D) + size*sizeof(double));
+  out->size = size;
+  return out;
+}
+
 // David -- naming convention for callback fn-ish things like this?
 void store_onebound_PEs(void* dyn, State s, void* job_msg, void* job_data, int iteration) {
   assert(s == NEARBOUND);

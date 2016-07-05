@@ -13,7 +13,7 @@ int main() {
   T = 100;
   int iterations = 1e6;
   int d_iter = 1e4;
-  int min_tau_iter = floor(iterations * 0.1);
+  int min_tau_iter = 0*floor(iterations * 0.1);
   int max_tau_iter = floor(iterations * 0.5);
 
   int min_runtime_iter = 10*min_tau_iter;
