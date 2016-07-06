@@ -2,7 +2,6 @@
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
-#include "simulations.h"
 
 int main() {
   if (FP_EXCEPTION_FATAL) {
@@ -12,15 +11,14 @@ int main() {
 
   T = 100;
   int iterations = 1e6;
-  int d_iter = 1e4;
-  int min_tau_iter = 0*floor(iterations * 0.1);
-  int max_tau_iter = floor(iterations * 0.5);
+
+  int min_tau_iter = iterations * 0.1;
+  int max_tau_iter = iterations * 0.5;
+  int num_corr_datapoints = 50;
 
   int min_runtime_iter = 10*min_tau_iter;
   int max_runtime_iter = 10*max_tau_iter;
-  int d_runtime_iter = 10*d_iter;
-  int num_eq_datapoints = ceil((max_runtime_iter - min_runtime_iter) / d_runtime_iter);
-  int num_correlations = ceil((max_tau_iter - min_tau_iter) / d_iter);
+  int num_eq_datapoints = 100;
 
   const char* bba_corr_title = "Bound binding domain (bba)";
   const char* bma_corr_title = "Bound motor domain (bma)";
@@ -42,34 +40,44 @@ int main() {
   const char* ta_eq_fname =  "ta_pe_equipartition_ratio.txt";
   const char* uma_eq_fname = "uma_pe_equipartition_ratio.txt";
 
-  double* tau_data = (double*) malloc(num_correlations * sizeof(double));
-  double* corr_data = (double*) malloc(4 * num_correlations * sizeof(double));
+  generic_data tau_data, runtime_data;
+  onebound_data corr_data, eq_data, eq_ratio_ave, corr_ave;
+
+  tau_data.data = (double*) malloc(num_corr_datapoints * sizeof(double));
+  runtime_data.data = (double*) malloc(num_eq_datapoints * sizeof(double));
   
-  double* runtime_data = (double*) malloc(num_eq_datapoints * sizeof(double));
-  double* eq_data = (double*) malloc(4 * num_eq_datapoints * sizeof(double));
+  corr_data.bb = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_data.bm = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_data.t  = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_data.um = (double*) malloc(num_corr_datapoints * sizeof(double));
+  
+  eq_data.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_data.bm = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_data.t  = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_data.um = (double*) malloc(num_eq_datapoints * sizeof(double));
 
-  double* bba_eq_ratio_ave = (double*) malloc(num_eq_datapoints * sizeof(double));
-  double* bma_eq_ratio_ave = (double*) malloc(num_eq_datapoints * sizeof(double));
-  double* ta_eq_ratio_ave =  (double*) malloc(num_eq_datapoints * sizeof(double));
-  double* uma_eq_ratio_ave = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_ratio_ave.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_ratio_ave.bm = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_ratio_ave.t  = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_ratio_ave.um = (double*) malloc(num_eq_datapoints * sizeof(double));
 
-  double* bba_corr_ave = (double*) malloc(num_correlations * sizeof(double));
-  double* bma_corr_ave = (double*) malloc(num_correlations * sizeof(double));
-  double* ta_corr_ave =  (double*) malloc(num_correlations * sizeof(double));
-  double* uma_corr_ave = (double*) malloc(num_correlations * sizeof(double));
+  corr_ave.bb = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_ave.bm = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_ave.t  = (double*) malloc(num_corr_datapoints * sizeof(double));
+  corr_ave.um = (double*) malloc(num_corr_datapoints * sizeof(double));
 
   for (int i = 0; i < num_eq_datapoints; i++) {
-    bba_eq_ratio_ave[i] = 0;
-    bma_eq_ratio_ave[i] = 0;
-    ta_eq_ratio_ave[i] = 0;
-    uma_eq_ratio_ave[i] = 0;
+    eq_ratio_ave.bb[i] = 0;
+    eq_ratio_ave.bm[i] = 0;
+    eq_ratio_ave.t[i] = 0;
+    eq_ratio_ave.um[i] = 0;
   }
 
-  for (int i = 0; i < num_correlations; i++) {
-    bba_corr_ave[i] = 0;
-    bma_corr_ave[i] = 0;
-    ta_corr_ave[i] = 0;
-    uma_corr_ave[i] = 0;
+  for (int i = 0; i < num_corr_datapoints; i++) {
+    corr_ave.bb[i] = 0;
+    corr_ave.bm[i] = 0;
+    corr_ave.t[i] = 0;
+    corr_ave.um[i] = 0;
   }
 
   const int seeds[] = {0, 1, 2, 3, 4};
@@ -78,47 +86,46 @@ int main() {
   for (int r = 0; r < seed_len; r++) {
     RAND_INIT_SEED = seeds[r];
 
-    get_onebound_PE_correlation_function(tau_data, corr_data, iterations, d_iter, max_tau_iter);
-    get_onebound_equipartition_ratio_per_runtime(runtime_data, eq_data, d_runtime_iter, min_runtime_iter, max_runtime_iter);
+    get_onebound_PE_correlation_function(&tau_data, &corr_data, num_corr_datapoints, min_tau_iter, max_tau_iter);
+    get_onebound_equipartition_ratio_per_runtime(&runtime_data, &eq_data, num_eq_datapoints, min_runtime_iter, max_runtime_iter);
 
-    for (int i = 0; i < num_correlations; i++) {          // unpack correlation data
-      bba_corr_ave[i] += ((double*) corr_data)[4*i + 0];
-      bma_corr_ave[i] += ((double*) corr_data)[4*i + 1];
-      ta_corr_ave[i]  += ((double*) corr_data)[4*i + 2];
-      uma_corr_ave[i] += ((double*) corr_data)[4*i + 3];
+    for (int i = 0; i < num_corr_datapoints; i++) {          // unpack correlation data
+      corr_ave.bb[i] += corr_data.bb[i];
+      corr_ave.bm[i] += corr_data.bm[i];
+      corr_ave.t[i]  += corr_data.t[i];
+      corr_ave.um[i] += corr_data.um[i];
     }
 
-    for (int i = 0; i < num_eq_datapoints; i++) {          // unpack equipartition data
-      bba_eq_ratio_ave[i] += ((double*) eq_data)[4*i + 0];
-      bma_eq_ratio_ave[i] += ((double*) eq_data)[4*i + 1];
-      ta_eq_ratio_ave[i]  += ((double*) eq_data)[4*i + 2];
-      uma_eq_ratio_ave[i] += ((double*) eq_data)[4*i + 3];
+    for (int i = 0; i < num_eq_datapoints; i++) {         // unpack equipartition data
+      eq_ratio_ave.bb[i] += eq_data.bb[i];
+      eq_ratio_ave.bm[i] += eq_data.bm[i];
+      eq_ratio_ave.t[i]  += eq_data.t[i];
+      eq_ratio_ave.um[i] += eq_data.um[i];
     }
   }
 
   for (int i = 0; i < num_eq_datapoints; i++) {
-    bba_eq_ratio_ave[i] /= seed_len;
-    bma_eq_ratio_ave[i] /= seed_len;
-    ta_eq_ratio_ave[i] /= seed_len;
-    uma_eq_ratio_ave[i] /= seed_len;
+    eq_ratio_ave.bb[i] /= seed_len;
+    eq_ratio_ave.bm[i] /= seed_len;
+    eq_ratio_ave.t[i]  /= seed_len;
+    eq_ratio_ave.um[i] /= seed_len;
   }
   
-  for (int i = 0; i < num_correlations; i++) {
-    bba_corr_ave[i] /= seed_len;
-    bma_corr_ave[i] /= seed_len;
-    ta_corr_ave[i] /= seed_len;
-    uma_corr_ave[i] /= seed_len;
+  for (int i = 0; i < num_corr_datapoints; i++) {
+    corr_ave.bb[i] /= seed_len;
+    corr_ave.bm[i] /= seed_len;
+    corr_ave.t[i]  /= seed_len;
+    corr_ave.um[i] /= seed_len;
   }
-  
 
-  print_data_to_file(tau_data, bba_corr_ave, num_correlations, bba_corr_title, bba_corr_fname);
-  print_data_to_file(tau_data, bma_corr_ave, num_correlations, bma_corr_title, bma_corr_fname);
-  print_data_to_file(tau_data, ta_corr_ave, num_correlations, ta_corr_title, ta_corr_fname);
-  print_data_to_file(tau_data, uma_corr_ave, num_correlations, uma_corr_title, uma_corr_fname);
+  print_data_to_file(tau_data.data, corr_ave.bb, num_corr_datapoints, bba_corr_title, bba_corr_fname);
+  print_data_to_file(tau_data.data, corr_ave.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
+  print_data_to_file(tau_data.data, corr_ave.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
+  print_data_to_file(tau_data.data, corr_ave.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
 
-  print_data_to_file(runtime_data, bba_eq_ratio_ave, num_eq_datapoints, bba_eq_title, bba_eq_fname);
-  print_data_to_file(runtime_data, bma_eq_ratio_ave, num_eq_datapoints, bma_eq_title, bma_eq_fname);
-  print_data_to_file(runtime_data, ta_eq_ratio_ave, num_eq_datapoints, ta_eq_title, ta_eq_fname);
-  print_data_to_file(runtime_data, uma_eq_ratio_ave, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+  print_data_to_file(runtime_data.data, eq_ratio_ave.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
+  print_data_to_file(runtime_data.data, eq_ratio_ave.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
+  print_data_to_file(runtime_data.data, eq_ratio_ave.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
+  print_data_to_file(runtime_data.data, eq_ratio_ave.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
   return 0;
 }

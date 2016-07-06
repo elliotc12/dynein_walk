@@ -35,13 +35,15 @@ onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_s
 	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_equipartition_test
 	./onebound_equipartition_test
 
-onebound_PE_equipartition_correlation_plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp simulations/simulations.h FORCE
+onebound_PE_equipartition_correlation: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp FORCE
 	mkdir -p movies
 	g++ -c simulations/onebound_PE_equipartition_correlation.cpp $(CPPFLAGS)
-	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation_plot
-	#./onebound_PE_equipartition_correlation_plot
-	#./make_plot.py --figtitle="Equipartition ratio for conformational PEs" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
-	#./make_plot.py --figtitle="Correlation function for conformational PEs" --xlabel="Tau (s)" --ylabel="Correlation" bba_pe_correlation.txt bma_pe_correlation.txt ta_pe_correlation.txt uma_pe_correlation.txt
+	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation
+
+onebound_PE_equipartition_correlation_plot: FORCE
+	./onebound_PE_equipartition_correlation_plot
+	./make_plot.py --figtitle="Equipartition ratio for conformational PEs" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
+	./make_plot.py --figtitle="Correlation function for conformational PEs" --xlabel="Tau (s)" --ylabel="Correlation" bba_pe_correlation.txt bma_pe_correlation.txt ta_pe_correlation.txt uma_pe_correlation.txt
 
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)

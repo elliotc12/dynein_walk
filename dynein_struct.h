@@ -8,12 +8,6 @@
 #ifndef DYNEIN_STRUCT_H
 #define DYNEIN_STRUCT_H
 
-const bool FP_EXCEPTION_FATAL = false;
-
-#ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
-void feenableexcept(int x);
-#endif
-
 typedef enum
 {
   NEARBOUND,
@@ -59,6 +53,12 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
+
+const bool FP_EXCEPTION_FATAL = false;
+
+#ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
+void feenableexcept(int x);
+#endif
 
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */
 
@@ -287,11 +287,51 @@ double square(double num);
 double cube(double num);
 double fourth(double num);
 double fifth(double num);
-void simulate(double runtime, double rand_seed, State init_state, double* init_position,
-	      void (*job)(void* dyn, State s, void* job_msg, void* job_data, int iteration),
-	      void* job_msg, void* job_data);
 double get_average(double* data,  int len);
 double get_variance(double* data, int len);
 void FPE_signal_handler(int signum);
+
+/* ***************************** SIMULATION PROTOTYPES ****************************** */
+
+typedef struct {
+  int len;
+  double* bb;
+  double* bm;
+  double* t;
+  double* um;
+  double* ub;
+} onebound_data;
+
+typedef struct {
+  int len;
+  double* nb;
+  double* nm;
+  double* t;
+  double* fm;
+  double* fb;
+} bothbound_data;
+
+typedef struct {
+  int len;
+  double* data;
+} generic_data;
+
+typedef union {
+  onebound_data ob_data;
+  bothbound_data bb_data;
+  generic_data g_data;
+} data_union;
+
+void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union* job_data, int iteration);
+
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int num_corr_datapoints, int min_tau_iter, int max_tau_iter);
+
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int num_eq_datapoints, int min_runtime_iter, int max_runtime_iter);
+
+void print_data_to_file(double* data1, double* data2, int iterations, const char* legend, const char* fname);
+
+void simulate(double runtime, double rand_seed, State init_state, double* init_position,
+	      void (*job)(void* dyn, State s, void* job_msg, data_union* job_data, int iteration),
+	      void* job_msg, data_union* job_data);
 
 #endif
