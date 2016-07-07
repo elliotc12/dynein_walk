@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
@@ -10,14 +11,10 @@ int main() {
   }
 
   T = 100;
-  int iterations = 1e8;
+  int iterations = 1e7;
 
   int max_tau_iter = iterations * 0.4;
   int num_corr_datapoints = 50;
-
-  int min_eq_iter = iterations;
-  int max_eq_iter = 10*iterations;
-  int num_eq_datapoints = 100;
 
   const char* bba_corr_title = "Bound binding domain (bba)";
   const char* bma_corr_title = "Bound motor domain (bma)";
@@ -29,54 +26,23 @@ int main() {
   const char* ta_corr_fname = "ta_pe_correlation.txt";
   const char* uma_corr_fname = "uma_pe_correlation.txt";
 
-  const char* bba_eq_title = "Bound binding domain (bba)";
-  const char* bma_eq_title = "Bound motor domain (bma)";
-  const char* ta_eq_title =  "Tail domain (ta)";
-  const char* uma_eq_title = "Unbound motor domain (uma)";
-
-  const char* bba_eq_fname = "bba_pe_equipartition_ratio.txt";
-  const char* bma_eq_fname = "bma_pe_equipartition_ratio.txt";
-  const char* ta_eq_fname =  "ta_pe_equipartition_ratio.txt";
-  const char* uma_eq_fname = "uma_pe_equipartition_ratio.txt";
-
-  generic_data corr_time_data, eq_time_data;
-  onebound_data corr_data, eq_data, eq_ratio_ave, corr_ave;
+  generic_data corr_time_data;
+  onebound_data corr_data, corr_ave;
 
   corr_time_data.data = (double*) malloc(num_corr_datapoints * sizeof(double));
-  eq_time_data.data = (double*) malloc(num_eq_datapoints * sizeof(double));
   corr_time_data.len = num_corr_datapoints;
-  eq_time_data.len = num_eq_datapoints;
   
   corr_data.bb = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.bm = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.t  = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.um = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.len = num_corr_datapoints;
-  
-  eq_data.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_data.bm = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_data.t  = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_data.um = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_data.len = num_eq_datapoints;
 
   corr_ave.bb = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_ave.bm = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_ave.t  = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_ave.um = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_ave.len = num_corr_datapoints;
-
-  eq_ratio_ave.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.bm = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.t  = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.um = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.len = num_eq_datapoints;
-
-  for (int i = 0; i < num_eq_datapoints; i++) {
-    eq_ratio_ave.bb[i] = 0;
-    eq_ratio_ave.bm[i] = 0;
-    eq_ratio_ave.t[i] = 0;
-    eq_ratio_ave.um[i] = 0;
-  }
 
   for (int i = 0; i < num_corr_datapoints; i++) {
     corr_ave.bb[i] = 0;
@@ -85,35 +51,21 @@ int main() {
     corr_ave.um[i] = 0;
   }
 
-  const int seeds[] = {0, 1, 2, 3, 4};
+  //const int seeds[] = {0, 1, 2, 3, 4};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
   for (int r = 0; r < seed_len; r++) {
     RAND_INIT_SEED = seeds[r];
 
     get_onebound_PE_correlation_function(&corr_time_data, &corr_data, num_corr_datapoints, iterations, max_tau_iter);
-    get_onebound_equipartition_ratio_per_runtime(&eq_time_data, &eq_data, num_eq_datapoints, min_eq_iter, max_eq_iter);
 
-    for (int i = 0; i < num_corr_datapoints; i++) {          // unpack correlation data
+    for (int i = 0; i < num_corr_datapoints; i++) {
       corr_ave.bb[i] += corr_data.bb[i];
       corr_ave.bm[i] += corr_data.bm[i];
       corr_ave.t[i]  += corr_data.t[i];
       corr_ave.um[i] += corr_data.um[i];
     }
-
-    for (int i = 0; i < num_eq_datapoints; i++) {         // unpack equipartition data
-      eq_ratio_ave.bb[i] += eq_data.bb[i];
-      eq_ratio_ave.bm[i] += eq_data.bm[i];
-      eq_ratio_ave.t[i]  += eq_data.t[i];
-      eq_ratio_ave.um[i] += eq_data.um[i];
-    }
-  }
-
-  for (int i = 0; i < num_eq_datapoints; i++) {
-    eq_ratio_ave.bb[i] /= seed_len;
-    eq_ratio_ave.bm[i] /= seed_len;
-    eq_ratio_ave.t[i]  /= seed_len;
-    eq_ratio_ave.um[i] /= seed_len;
   }
   
   for (int i = 0; i < num_corr_datapoints; i++) {
@@ -127,10 +79,5 @@ int main() {
   print_data_to_file(corr_time_data.data, corr_ave.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
   print_data_to_file(corr_time_data.data, corr_ave.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
   print_data_to_file(corr_time_data.data, corr_ave.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
-
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
   return 0;
 }
