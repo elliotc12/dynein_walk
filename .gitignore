@@ -22,3 +22,5 @@ test_onebound
 plot
 *_equipartition_correlation
 dynein_walk
+GIFs/
+plots/
