@@ -36,12 +36,12 @@ onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_s
 	./onebound_equipartition_test
 
 onebound_PE_equipartition_correlation: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_PE_equipartition_correlation.cpp FORCE
-	mkdir -p movies
 	g++ -c simulations/onebound_PE_equipartition_correlation.cpp $(CPPFLAGS)
 	g++ onebound_PE_equipartition_correlation.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_PE_equipartition_correlation
 
-onebound_PE_equipartition_correlation_plot: FORCE
-	./onebound_PE_equipartition_correlation_plot
+onebound_PE_equipartition_correlation_plot: onebound_PE_equipartition_correlation FORCE
+	mkdir -p plots
+	./onebound_PE_equipartition_correlation
 	./make_plot.py --figtitle="Equipartition ratio for conformational PEs" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
 	./make_plot.py --figtitle="Correlation function for conformational PEs" --xlabel="Tau (s)" --ylabel="Correlation" bba_pe_correlation.txt bma_pe_correlation.txt ta_pe_correlation.txt uma_pe_correlation.txt
 

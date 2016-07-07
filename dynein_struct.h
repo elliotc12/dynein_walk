@@ -324,7 +324,7 @@ typedef union {
 
 void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union* job_data, int iteration);
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int num_corr_datapoints, int min_tau_iter, int max_tau_iter);
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int num_corr_datapoints, int iterations, int max_tau_iter);
 
 void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int num_eq_datapoints, int min_runtime_iter, int max_runtime_iter);
 
