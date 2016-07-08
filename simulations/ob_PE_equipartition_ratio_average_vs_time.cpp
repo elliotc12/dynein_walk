@@ -11,9 +11,9 @@ int main() {
 
   T = 100;
 
-  int max_eq_iter = 1e6;
+  int max_eq_iter = 1e7;
   int min_eq_iter = 0.1*max_eq_iter;
-  int d_runtime_iter = 1e4;
+  int d_runtime_iter = 1e5;
   
   int num_eq_datapoints = (max_eq_iter - min_eq_iter) / d_runtime_iter;
 

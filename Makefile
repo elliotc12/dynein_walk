@@ -66,10 +66,10 @@ bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_
 	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o bothbound_equipartition_test
 	./bothbound_equipartition_test
 
-onebound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/onebound_equipartition_test.cpp FORCE
-	g++ -c simulations/onebound_equipartition_test.cpp $(CPPFLAGS)
-	g++ onebound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o onebound_equipartition_test
-	./onebound_equipartition_test
+ob_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_equipartition_test.cpp FORCE
+	g++ -c simulations/ob_equipartition_test.cpp $(CPPFLAGS)
+	g++ ob_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_equipartition_test
+	./ob_equipartition_test
 
 ob_PE_correlation_vs_time: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_correlation_vs_time.cpp FORCE
 	g++ -c simulations/ob_PE_correlation_vs_time.cpp $(CPPFLAGS)

@@ -114,7 +114,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
     corr_data->t[iteration] = ta_correlation;
     corr_data->um[iteration] = uma_correlation;
 
-    if (iteration % 5 == 0) {
+    if (iteration % 1 == 0) {
       printf("correlation function progress: %g%%                \r", ((double) iteration)  / num_corr_datapoints * 100);
       fflush(NULL);
     }
