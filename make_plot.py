@@ -52,4 +52,4 @@ plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 if showplot:
     plt.show()
 else:
-    plt.savefig("plots/" + title.replace(" ", "_"))
+    plt.savefig("plots/" + title.replace(" ", "_") + ".pdf", format="pdf")
