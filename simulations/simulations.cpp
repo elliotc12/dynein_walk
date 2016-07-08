@@ -46,8 +46,10 @@ void print_data_to_file(double* data1, double* data2, int iterations, const char
   fclose(data_file);
 }
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int num_corr_datapoints, int iterations, int max_tau_iter) {
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int d_tau_iter, int iterations, int max_tau_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+
+  int num_corr_datapoints = max_tau_iter / d_tau_iter;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -80,9 +82,6 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   double PE_ta_var = get_variance(PE_tas, iterations);
   double PE_uma_ave = get_average(PE_umas, iterations);
   double PE_uma_var = get_variance(PE_umas, iterations);
-
-  int d_tau_iter = max_tau_iter / num_corr_datapoints;
-  assert(d_tau_iter > 0);
 
   double start_time = (double) clock();
 
@@ -124,8 +123,14 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   }
 }
 
-void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int num_eq_datapoints, int min_runtime_iter, int max_runtime_iter) {
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int d_runtime_iter, int min_runtime_iter, int max_runtime_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+
+  int num_eq_datapoints;
+  if (min_runtime_iter == max_runtime_iter)
+    num_eq_datapoints = 1;
+  else
+     num_eq_datapoints = (max_runtime_iter - min_runtime_iter) / d_runtime_iter;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -151,9 +156,6 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   double* ta_PE_data =  data_holder.ob_data.t; 
   double* uma_PE_data = data_holder.ob_data.um;
 
-  int d_runtime_iter = (max_runtime_iter - min_runtime_iter) / num_eq_datapoints;
-  assert(d_runtime_iter > 0);
-
   double start_time = (double) clock();
 
   for (int runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
@@ -175,8 +177,14 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   }
 }
 
-void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int num_eq_datapoints, int min_runtime_iter, int max_runtime_iter) {
+void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int d_runtime_iter, int min_runtime_iter, int max_runtime_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+
+  int num_eq_datapoints;
+  if (min_runtime_iter == max_runtime_iter)
+    num_eq_datapoints = 1;
+  else
+     num_eq_datapoints = (max_runtime_iter - min_runtime_iter) / d_runtime_iter;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -201,9 +209,6 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
   double* bma_PE_data = data_holder.ob_data.bm;
   double* ta_PE_data =  data_holder.ob_data.t; 
   double* uma_PE_data = data_holder.ob_data.um;
-
-  int d_runtime_iter = (max_runtime_iter - min_runtime_iter) / num_eq_datapoints;
-  assert(d_runtime_iter > 0);
 
   double start_time = (double) clock();
 

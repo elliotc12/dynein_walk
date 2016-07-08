@@ -59,7 +59,7 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
 ######################### SIMULATION STUFF ###############################
-TITLE = "A plot"
+TITLE = A plot
 
 bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o  simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)

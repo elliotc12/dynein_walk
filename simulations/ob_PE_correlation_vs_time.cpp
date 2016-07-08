@@ -11,10 +11,12 @@ int main() {
   }
 
   T = 100;
-  int iterations = 1e7;
+  int iterations = 1e6;
 
   int max_tau_iter = iterations * 0.4;
-  int num_corr_datapoints = 50;
+  int d_tau_iter = 5e4;
+
+  int num_corr_datapoints = max_tau_iter / d_tau_iter;
 
   const char* bba_corr_title = "Bound binding domain (bba)";
   const char* bma_corr_title = "Bound motor domain (bma)";
@@ -51,14 +53,13 @@ int main() {
     corr_ave.um[i] = 0;
   }
 
-  //const int seeds[] = {0, 1, 2, 3, 4};
-  const int seeds[] = {0};
+  const int seeds[] = {0, 1, 2};
   int seed_len = sizeof(seeds) / sizeof(int);
 
   for (int r = 0; r < seed_len; r++) {
     RAND_INIT_SEED = seeds[r];
 
-    get_onebound_PE_correlation_function(&corr_time_data, &corr_data, num_corr_datapoints, iterations, max_tau_iter);
+    get_onebound_PE_correlation_function(&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter);
 
     for (int i = 0; i < num_corr_datapoints; i++) {
       corr_ave.bb[i] += corr_data.bb[i];

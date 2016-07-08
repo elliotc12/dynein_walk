@@ -10,9 +10,11 @@ int main() {
   }
 
   T = 100;
-  int max_eq_iter = 1e7;
+  int max_eq_iter = 1e6;
   int min_eq_iter = 0.1*max_eq_iter;
-  int num_eq_datapoints = 100;
+  int d_runtime_iter = 1e5;
+  
+  int num_eq_datapoints = (max_eq_iter - min_eq_iter) / d_runtime_iter;
 
   const char* bba_eq_title = "Bound binding domain (bba)";
   const char* bma_eq_title = "Bound motor domain (bma)";
@@ -56,7 +58,7 @@ int main() {
   for (int r = 0; r < seed_len; r++) {
     RAND_INIT_SEED = seeds[r];
 
-    get_onebound_equipartition_ratio_per_runtime(&eq_time_data, &eq_data, num_eq_datapoints, min_eq_iter, max_eq_iter);
+    get_onebound_equipartition_ratio_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter);
 
     for (int i = 0; i < num_eq_datapoints; i++) {
       eq_ratio_ave.bb[i] += eq_data.bb[i];

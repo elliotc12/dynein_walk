@@ -30,6 +30,8 @@ double ct = 0.5; // force*distance = energy = nm^2 * kg / s^2
 double cm = 0.5; // ???
 double cb = 0.5; // ???
 
+double bba_correlation_time = 999; // found by eyeballing the ob_PE_correlation_vs_time plot for bba
+
 double binding_preexponential_factor = 1e10;
 double unbinding_preexponential_factor = 1e5;
 
