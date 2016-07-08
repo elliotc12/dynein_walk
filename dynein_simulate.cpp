@@ -1,7 +1,7 @@
 #include "dynein_struct.h"
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
-	      void (*job)(void* dyn, State s, void* job_msg, data_union* job_data, int iteration),
+	      void (*job)(void* dyn, State s, void* job_msg, data_union* job_data, long long iteration),
 	      void* job_msg, data_union* job_data) {
 
   if (FP_EXCEPTION_FATAL) {
@@ -72,7 +72,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
 
-	  job(dyn_ob, current_state, job_msg, job_data, (int) floor(t/dt));
+	  job(dyn_ob, current_state, job_msg, job_data, (long long) t/dt);
 	  t += dt;
 	  dyn_ob->update_velocities();
 	}
@@ -104,7 +104,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_bb->set_nma(temp_nma);
 	  dyn_bb->set_fma(temp_fma);
 
-	  job(dyn_bb, BOTHBOUND, job_msg, job_data, (int) floor(t/dt));
+	  job(dyn_bb, BOTHBOUND, job_msg, job_data, (long long) t/dt);
 	  t += dt;
 	  dyn_bb->update_velocities();
 	}
@@ -112,7 +112,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
     }
     if (current_state == UNBOUND) {
       while (t < runtime) {
-	job(NULL, UNBOUND, job_msg, job_data, (int) floor(t/dt));
+	job(NULL, UNBOUND, job_msg, job_data, (long long) t/dt);
 	t += dt;
       }
     }

@@ -9,10 +9,10 @@
 
 /** Library for simulation code **/
 
-void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *job_data, int iteration) {
+void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
   assert(s == NEARBOUND);
   assert(iteration < job_data->ob_data.len);
-  int max_iteration = (int) ((double*) job_msg)[0];
+  long long max_iteration = (long long) ((double*) job_msg)[0];
   double start_time= ((double*) job_msg)[1];
   
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
@@ -21,8 +21,8 @@ void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *
   job_data->ob_data.t[iteration] = dyn_ob->PE_ta;
   job_data->ob_data.um[iteration] = dyn_ob->PE_uma;
 
-  if (iteration % 100000 == 0) {
-    printf("PE calculation progress: %d / %d, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+  if (iteration % 1000 == 0) {
+    printf("PE calculation progress: %lld / %lld, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
   if (iteration == job_data->ob_data.len - 1) printf("Finished generating PE data for seed %f, process took %g seconds                \n", RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
@@ -46,10 +46,10 @@ void print_data_to_file(double* data1, double* data2, int iterations, const char
   fclose(data_file);
 }
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, int d_tau_iter, int iterations, int max_tau_iter) {
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long d_tau_iter, long long iterations, long long max_tau_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
 
-  int num_corr_datapoints = max_tau_iter / d_tau_iter;
+  long long num_corr_datapoints = max_tau_iter / d_tau_iter;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -85,27 +85,27 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
 
   double start_time = (double) clock();
 
-  for (int tau_iter = 0; tau_iter < max_tau_iter; tau_iter += d_tau_iter) {
+  for (long long tau_iter = 0; tau_iter < max_tau_iter; tau_iter += d_tau_iter) {
     double bba_correlation_sum = 0;
     double bma_correlation_sum = 0;
     double ta_correlation_sum = 0;
     double uma_correlation_sum = 0;
     
-    for (int i = 0; i < iterations - tau_iter; i++) {
+    for (long long i = 0; i < iterations - tau_iter; i++) {
       bba_correlation_sum += (PE_bbas[i] - PE_bba_ave) * (PE_bbas[i+tau_iter] - PE_bba_ave);
       bma_correlation_sum += (PE_bmas[i] - PE_bma_ave) * (PE_bmas[i+tau_iter] - PE_bma_ave);
       ta_correlation_sum += (PE_tas[i] - PE_ta_ave) * (PE_tas[i+tau_iter] - PE_ta_ave);
       uma_correlation_sum += (PE_umas[i] - PE_uma_ave) * (PE_umas[i+tau_iter] - PE_uma_ave);
     }
 
-    int num_iters = iterations - tau_iter;
+    long long num_iters = iterations - tau_iter;
 
     double bba_correlation = bba_correlation_sum / PE_bba_var / num_iters;
     double bma_correlation = bma_correlation_sum / PE_bma_var / num_iters;
     double ta_correlation  = ta_correlation_sum / PE_ta_var / num_iters;
     double uma_correlation = uma_correlation_sum / PE_uma_var / num_iters;
 
-    int iteration = tau_iter / d_tau_iter;
+    long long iteration = tau_iter / d_tau_iter;
     assert(iteration < corr_data->len);
 
     tau_data->data[iteration] = tau_iter*dt;
@@ -123,10 +123,10 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   }
 }
 
-void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int d_runtime_iter, int min_runtime_iter, int max_runtime_iter) {
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
 
-  int num_eq_datapoints;
+  long long num_eq_datapoints;
   if (min_runtime_iter == max_runtime_iter)
     num_eq_datapoints = 1;
   else
@@ -158,8 +158,8 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
 
   double start_time = (double) clock();
 
-  for (int runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
-    int iteration = (runtime_iter - min_runtime_iter) / d_runtime_iter;
+  for (long long runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
+    long long iteration = (runtime_iter - min_runtime_iter) / d_runtime_iter;
     assert(iteration < eq_data->len);
 
     eq_data->bb[iteration] = bba_PE_data[runtime_iter] / (0.5*kb*T);
@@ -177,10 +177,10 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   }
 }
 
-void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, int d_runtime_iter, int min_runtime_iter, int max_runtime_iter) {
+void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
 
-  int num_eq_datapoints;
+  long long num_eq_datapoints;
   if (min_runtime_iter == max_runtime_iter)
     num_eq_datapoints = 1;
   else
@@ -212,13 +212,13 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
 
   double start_time = (double) clock();
 
-  for (int runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
+  for (long long runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
     double bba_eq_ratio = get_average(bba_PE_data, runtime_iter) / (0.5*kb*T);
     double bma_eq_ratio = get_average(bma_PE_data, runtime_iter) / (0.5*kb*T);
     double  ta_eq_ratio = get_average( ta_PE_data, runtime_iter) / (0.5*kb*T);
     double uma_eq_ratio = get_average(uma_PE_data, runtime_iter) / (0.5*kb*T);
 
-    int iteration = (runtime_iter - min_runtime_iter) / d_runtime_iter;
+    long long iteration = (runtime_iter - min_runtime_iter) / d_runtime_iter;
     assert(iteration < eq_data->len);
 
     eq_data->bb[iteration] = bba_eq_ratio;

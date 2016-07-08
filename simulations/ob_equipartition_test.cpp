@@ -7,7 +7,7 @@
 int main() {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
 
-  int iterations = 1e7;
+  long long iterations = 1e6;
 
   onebound_data low_T_PE_ratios;
   onebound_data high_T_PE_ratios;
