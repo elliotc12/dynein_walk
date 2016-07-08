@@ -72,7 +72,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
 
-	  job(dyn_ob, current_state, job_msg, job_data, (long long) t/dt);
+	  long long iter = t/dt;
+	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  dyn_ob->update_velocities();
 	}

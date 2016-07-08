@@ -21,7 +21,7 @@ void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *
   job_data->ob_data.t[iteration] = dyn_ob->PE_ta;
   job_data->ob_data.um[iteration] = dyn_ob->PE_uma;
 
-  if (iteration % 1000 == 0) {
+  if (iteration % 10000 == 0) {
     printf("PE calculation progress: %lld / %lld, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }

@@ -294,7 +294,7 @@ void FPE_signal_handler(int signum);
 /* ***************************** SIMULATION PROTOTYPES ****************************** */
 
 typedef struct {
-  int len;
+  long long len;
   double* bb;
   double* bm;
   double* t;
@@ -303,7 +303,7 @@ typedef struct {
 } onebound_data;
 
 typedef struct {
-  int len;
+  long long len;
   double* nb;
   double* nm;
   double* t;
@@ -312,7 +312,7 @@ typedef struct {
 } bothbound_data;
 
 typedef struct {
-  int len;
+  long long len;
   double* data;
 } generic_data;
 
