@@ -44,6 +44,7 @@ void print_data_to_file(double* data1, double* data2, int iterations, const char
   FILE* data_file = fopen(fname, "w");
   fputs(buf, data_file);
   fclose(data_file);
+  free(buf);
 }
 
 void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long d_tau_iter, long long iterations, long long max_tau_iter) {
@@ -121,6 +122,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
     if (iteration == corr_data->len - 1) printf("Finished correlation calculations for seed %f, process took %g seconds                \n",
 						RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
+  free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
 void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter) {
@@ -175,6 +177,7 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
     if (iteration == eq_data->len - 1) printf("Finished equipartition calculations for seed %f, process took %g seconds                \n",
 					      RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
+  free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
 void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter) {
@@ -234,4 +237,5 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
     if (iteration == eq_data->len - 1) printf("Finished equipartition calculations for seed %f, process took %g seconds                \n",
 					      RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
+  free(data.bb); free(data.bm); free(data.t); free(data.um);
 }

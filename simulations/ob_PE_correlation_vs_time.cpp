@@ -80,5 +80,10 @@ int main() {
   print_data_to_file(corr_time_data.data, corr_ave.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
   print_data_to_file(corr_time_data.data, corr_ave.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
   print_data_to_file(corr_time_data.data, corr_ave.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
+
+  free (corr_time_data.data);
+  free(corr_data.bb); free(corr_data.bm); free(corr_data.t); free(corr_data.um);
+  free(corr_ave.bb); free(corr_ave.bm); free(corr_ave.t); free(corr_ave.um);
+  
   return 0;
 }

@@ -11,7 +11,7 @@ int main() {
 
   T = 100;
 
-  int max_eq_iter = 1e7;
+  int max_eq_iter = 1e6;
   int min_eq_iter = 0.1*max_eq_iter;
   int d_runtime_iter = 1e5;
   
@@ -80,5 +80,10 @@ int main() {
   print_data_to_file(eq_time_data.data, eq_ratio_ave.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
   print_data_to_file(eq_time_data.data, eq_ratio_ave.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
   print_data_to_file(eq_time_data.data, eq_ratio_ave.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+
+  free (eq_time_data.data);
+  free(eq_data.bb); free(eq_data.bm); free(eq_data.t); free(eq_data.um);
+  free(eq_ratio_ave.bb); free(eq_ratio_ave.bm); free(eq_ratio_ave.t); free(eq_ratio_ave.um);
+  
   return 0;
 }
