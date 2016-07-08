@@ -101,12 +101,22 @@ ob_PE_equipartition_ratio_vs_time_plot: ob_PE_equipartition_ratio_vs_time FORCE
 	./ob_PE_equipartition_ratio_vs_time
 	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
 
+ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp FORCE
+	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
+	g++ ob_PE_equipartition_ratio_average_vs_spring_constant.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_spring_constant
+
+ob_PE_equipartition_ratio_average_vs_spring_constant_plot: ob_PE_equipartition_ratio_average_vs_spring_constant FORCE
+	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+	mkdir -p plots
+	./ob_PE_equipartition_ratio_average_vs_spring_constant
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Spring constant (nm^2*kg/s^2)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_c.txt bma_pe_equipartition_ratio_vs_c.txt ta_pe_equipartition_ratio_vs_c.txt uma_pe_equipartition_ratio_vs_c.txt
+
 ########################### THESIS STUFF #################################
 
-thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex
+thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE
 	cd thesis_stuff && xelatex thesis_stuff.tex
 
-thesis_stuff/log.pdf: thesis_stuff/random_derivations.tex
+thesis_stuff/log.pdf: thesis_stuff/random_derivations.tex FORCE
 	cd random_derivations && xelatex random_derivations.tex
 
 clean:

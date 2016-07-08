@@ -39,7 +39,7 @@
 \titleformat{\section}{\color{headings}
 \scshape\Large\raggedright}{}{0em}{}[\color{black}\titlerule]
 
-\title{Cool thesis-related derivations, papers}
+\title{Dynein project log}
 \author{Elliott Capek}
 \titlespacing{\section}{0pt}{0pt}{5pt} % Spacing around titles
 
@@ -47,9 +47,69 @@
 
 \maketitle{}
 
-\section{Equipartition Theorem Test}
-To test whether our model behaves physically, we verify that its conformational energy (energy due to the orientation of its domains) obeys the Equipartition Theorem. This is valid because we model the protein as feeling spring return forces to the lowest-energy conformation, and equipartition is obeyed for spring-like forces.\\
+\section{Equipartition Theorem}
+The Equipartition Theorem (ET) predicts the average energy per degree of freedom of a system with energy which depends on the square of each degree of freedom. Mathematically is is expressed as:
 
-More to come...
+\begin{align*}
+  Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
+  <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
+  &= \frac{1}{2}k_BT\\
+\end{align*}
+
+where Z is the partition function and x a degree of freedom.\\
+
+For our model, each domain feels three separate forces:
+
+\textbf{Brownian forces}: Random forces due to water particle collisions. Gaussian-sampled with a
+variance $\sqrt{\frac{\gamma k_BT}{dt}}$. Brownian forces are somehow necessary for the ET energy
+to be realized.\\
+
+\textbf{Conformational forces}: Spring forces from the molecule deviating from its lowest-energy
+conformation. The energy from these forces is quadratic with respect to angle, and so each free
+angle should contribute to the average energy by ET.\\
+
+\textbf{Internal forces}. Tension forces (constraint forces) felt between domains which keep
+the protein rigid. These are not quadratic, so it is unclear how they contribute to energy!\\
+
+\subsection{Onebound case}
+The conformational forces are:\\
+\begin{align*}
+  |\vec{F_{ub}}| &\approx \frac{c_m\theta_{um}}{L_s}\\
+  |\vec{F_{um}}| &\approx \frac{c_m\theta_{um}}{L_s} + \frac{c_m\theta_{um}}{L_t} + \frac{c_t\theta_{t}}{L_t}\\
+  |\vec{F_{t}}| &\approx \frac{c_m\theta_{um}}{L_t} + 2\frac{c_t\theta_t}{L_t} + \frac{c_m\theta_{bm}}{L_t}\\
+  |\vec{F_{bm}}| &\approx \frac{c_t\theta_t}{L_t} + \frac{c_m\theta_{bm}}{L_t} + \frac{c_m\theta_{bm}}{L_s} + \frac{c_b\theta_{bb}}{L_s}\\
+  |\vec{F_{bb}}| &\approx \frac{c_m\theta_{bm}}{L_s} + \frac{c_b\theta_{bb}}{L_s}\\
+\end{align*}
+
+From this we can come up with rough order-of-magnitude estimates of the energy of each domain is:
+
+\begin{align*}
+  PE_{ub} &\approx \frac{c_m}{L_s}\theta_{um}^2 + \frac{c_m}{L_t}\theta_{um}^2\\
+  PE_{t} &\approx \frac{c_t}{L_t}\theta_{t}^2\\
+  PE_{bm} &\approx \frac{c_m}{L_s}\theta_{bm}^2 + \frac{c_m}{L_t}\theta_{bm}^2\\
+  PE_{bb} &\approx \frac{c_m}{L_s}\theta_{um}^2\\
+\end{align*}
+
+From this we can see that the conformational PE of each domain depends on different combinations of
+stalk/tail length and spring constants.
+
+\textbf{When is equipartition behaved?}
+It seems like ET should be behaved when we have an even balance of Brownian and conformational forces:
+
+\begin{align*}
+  F_{conf} &\approx F_{Brownian}\\
+  \frac{c}{L}\theta &\approx \sqrt{\frac{k_BT\gamma}{dt}}\\
+\end{align*}
+
+Is this reflected in our simulation? Well take a look at %% Fig ($\ref{fig:latent-heat}$)
+...
+
+%% \begin{figure}[h!]
+%%   \centering
+%%   \includegraphics[width=0.5\textwidth]{../figures/ob_equipartition_vs_force_ratio.pdf}
+%%   \caption{Onebound conformational energy follows equipartition best when the ratio of conformational
+%%   forces to Brownian forces is one.}
+%%   \label{fig:equipartition_vs_force_ratio}
+%% \end{figure}
 
 \end{document}
