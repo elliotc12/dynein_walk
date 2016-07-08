@@ -48,16 +48,16 @@ int main() {
   // cm = 0.5;
   // cb = 0.5;
 
-  //const int seeds[] = {0, 1, 2, 3, 4};
-  //int seed_len = sizeof(seeds) / sizeof(int);
+  const int seeds[] = {0, 1, 3, 4, 5, 6, 7, 8};
+  int seed_len = sizeof(seeds) / sizeof(int);
   
   T = low_T;
   get_onebound_equipartition_ratio_average_per_runtime
-    (&time_data, &low_T_PE_ratios, 1, iterations, iterations+1);
+    (&time_data, &low_T_PE_ratios, 1, iterations, iterations+1, seeds, seed_len);
   
   T = high_T;
   get_onebound_equipartition_ratio_average_per_runtime
-    (&time_data, &high_T_PE_ratios, 1, iterations, iterations+1);
+    (&time_data, &high_T_PE_ratios, 1, iterations, iterations+1, seeds, seed_len);
 
   double d_bba_PE = high_T_bb_PE_ratio*(0.5*kb*high_T) - low_T_bb_PE_ratio*(0.5*kb*low_T);
   double d_bma_PE = high_T_bm_PE_ratio*(0.5*kb*high_T) - low_T_bm_PE_ratio*(0.5*kb*low_T);

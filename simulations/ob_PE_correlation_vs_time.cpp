@@ -29,7 +29,7 @@ int main() {
   const char* uma_corr_fname = "uma_pe_correlation.txt";
 
   generic_data corr_time_data;
-  onebound_data corr_data, corr_ave;
+  onebound_data corr_data;
 
   corr_time_data.data = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_time_data.len = num_corr_datapoints;
@@ -40,45 +40,14 @@ int main() {
   corr_data.um = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.len = num_corr_datapoints;
 
-  corr_ave.bb = (double*) malloc(num_corr_datapoints * sizeof(double));
-  corr_ave.bm = (double*) malloc(num_corr_datapoints * sizeof(double));
-  corr_ave.t  = (double*) malloc(num_corr_datapoints * sizeof(double));
-  corr_ave.um = (double*) malloc(num_corr_datapoints * sizeof(double));
-  corr_ave.len = num_corr_datapoints;
-
-  for (int i = 0; i < num_corr_datapoints; i++) {
-    corr_ave.bb[i] = 0;
-    corr_ave.bm[i] = 0;
-    corr_ave.t[i] = 0;
-    corr_ave.um[i] = 0;
-  }
-
-  const int seeds[] = {0, 1, 2};
+  const int seeds[] = {0, 1, 2, 3, 4, 5, 6};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  for (int r = 0; r < seed_len; r++) {
-    RAND_INIT_SEED = seeds[r];
+  get_onebound_PE_correlation_function(&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter, seeds, seed_len);
 
-    get_onebound_PE_correlation_function(&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter);
-
-    for (int i = 0; i < num_corr_datapoints; i++) {
-      corr_ave.bb[i] += corr_data.bb[i];
-      corr_ave.bm[i] += corr_data.bm[i];
-      corr_ave.t[i]  += corr_data.t[i];
-      corr_ave.um[i] += corr_data.um[i];
-    }
-  }
-  
-  for (int i = 0; i < num_corr_datapoints; i++) {
-    corr_ave.bb[i] /= seed_len;
-    corr_ave.bm[i] /= seed_len;
-    corr_ave.t[i]  /= seed_len;
-    corr_ave.um[i] /= seed_len;
-  }
-
-  print_data_to_file(corr_time_data.data, corr_ave.bb, num_corr_datapoints, bba_corr_title, bba_corr_fname);
-  print_data_to_file(corr_time_data.data, corr_ave.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
-  print_data_to_file(corr_time_data.data, corr_ave.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
-  print_data_to_file(corr_time_data.data, corr_ave.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
+  print_data_to_file(corr_time_data.data, corr_data.bb, num_corr_datapoints, bba_corr_title, bba_corr_fname);
+  print_data_to_file(corr_time_data.data, corr_data.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
+  print_data_to_file(corr_time_data.data, corr_data.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
+  print_data_to_file(corr_time_data.data, corr_data.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
   return 0;
 }

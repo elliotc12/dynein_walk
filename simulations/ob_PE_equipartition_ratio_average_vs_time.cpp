@@ -28,7 +28,7 @@ int main() {
   const char* uma_eq_fname = "uma_pe_equipartition_ratio.txt";
 
   generic_data eq_time_data;
-  onebound_data eq_data, eq_ratio_ave;
+  onebound_data eq_data;
 
   eq_time_data.data = (double*) malloc(num_eq_datapoints * sizeof(double));
   eq_time_data.len = num_eq_datapoints;
@@ -39,46 +39,14 @@ int main() {
   eq_data.um = (double*) malloc(num_eq_datapoints * sizeof(double));
   eq_data.len = num_eq_datapoints;
 
-  eq_ratio_ave.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.bm = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.t  = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.um = (double*) malloc(num_eq_datapoints * sizeof(double));
-  eq_ratio_ave.len = num_eq_datapoints;
-
-  for (int i = 0; i < num_eq_datapoints; i++) {
-    eq_ratio_ave.bb[i] = 0;
-    eq_ratio_ave.bm[i] = 0;
-    eq_ratio_ave.t[i] = 0;
-    eq_ratio_ave.um[i] = 0;
-  }
-
-  //const int seeds[] = {0, 1, 2, 3, 4};
-  const int seeds[] = {0};
+  const int seeds[] = {0, 1, 2, 3, 4, 5};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  for (int r = 0; r < seed_len; r++) {
-    RAND_INIT_SEED = seeds[r];
+  get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len);
 
-    get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter);
-
-    for (int i = 0; i < num_eq_datapoints; i++) {
-      eq_ratio_ave.bb[i] += eq_data.bb[i];
-      eq_ratio_ave.bm[i] += eq_data.bm[i];
-      eq_ratio_ave.t[i]  += eq_data.t[i];
-      eq_ratio_ave.um[i] += eq_data.um[i];
-    }
-  }
-
-  for (int i = 0; i < num_eq_datapoints; i++) {
-    eq_ratio_ave.bb[i] /= seed_len;
-    eq_ratio_ave.bm[i] /= seed_len;
-    eq_ratio_ave.t[i]  /= seed_len;
-    eq_ratio_ave.um[i] /= seed_len;
-  }
-
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_ratio_ave.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+  print_data_to_file(eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
+  print_data_to_file(eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
+  print_data_to_file(eq_time_data.data, eq_data.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
+  print_data_to_file(eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
   return 0;
 }
