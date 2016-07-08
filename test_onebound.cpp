@@ -129,7 +129,7 @@ int main() {
     if (!test("Is d_uma zero", dyn_ob->get_d_uma(), 0)) num_failures++;
     if (!test("Is d_uba zero", dyn_ob->get_d_uba(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Upwards line conformation with no forces**\n");
@@ -171,7 +171,7 @@ int main() {
     if (!test("Is d_uma zero", dyn_ob->get_d_uma(), 0)) num_failures++;
     if (!test("Is d_uba zero", dyn_ob->get_d_uba(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Horizontal line conformation with no forces**\n");
@@ -212,7 +212,7 @@ int main() {
     if (!test("Is d_uma zero", dyn_ob->get_d_uma(), 0)) num_failures++;
     if (!test("Is d_uba zero", dyn_ob->get_d_uba(), 0)) num_failures++;
     
-    free(dyn_ob);
+    delete dyn_ob;
   }
   
   { printf("\n**Upwards line conformation with +x forces**\n");
@@ -237,7 +237,7 @@ int main() {
     if (!test("Is d_umy zero", dyn_ob->get_d_umy(), 0)) num_failures++;
     if (!test("Is d_uby zero", dyn_ob->get_d_uby(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Upwards line conformation with +y forces**\n");
@@ -262,7 +262,7 @@ int main() {
     if (!test("Is d_umy zero", dyn_ob->get_d_umy(), 0)) num_failures++;
     if (!test("Is d_uby zero", dyn_ob->get_d_uby(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Horizontal line conformation with +x forces**\n");
@@ -288,7 +288,7 @@ int main() {
     if (!test("Is d_umy zero", dyn_ob->get_d_umy(), 0)) num_failures++;
     if (!test("Is d_uby zero", dyn_ob->get_d_uby(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
 
@@ -314,7 +314,7 @@ int main() {
     if (!test_noteq("Is d_umy nonzero", dyn_ob->get_d_umy(), 0)) num_failures++;
     if (!test_noteq("Is d_uby nonzero", dyn_ob->get_d_uby(), 0)) num_failures++;
 
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Prepowerstroke conformation with +x forces**\n");
@@ -335,7 +335,7 @@ int main() {
     if (!test_noteq("Is d_umx nonzero", dyn_ob->get_d_umx(), 0)) num_failures++;
     if (!test_noteq("Is d_ubx nonzero", dyn_ob->get_d_ubx(), 0)) num_failures++;
     
-    free(dyn_ob);
+    delete dyn_ob;
   }
   
   { printf("\n**Prepowerstroke conformation with -x internal forces**\n");
@@ -356,7 +356,7 @@ int main() {
     if (!test_noteq("Is d_umx nonzero", dyn_ob->get_d_umx(), 0)) num_failures++;
     if (!test_noteq("Is d_ubx nonzero", dyn_ob->get_d_ubx(), 0)) num_failures++;
     
-    free(dyn_ob);
+    delete dyn_ob;
   }
 
   { printf("\n**Conservation of Energy**\n");
@@ -409,5 +409,6 @@ int main() {
   } else {
     printf("%d/%d tests fail!\n\n", num_failures, num_tests);
   }
+  delete rand;
   exit(num_failures);
 }

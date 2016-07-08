@@ -40,7 +40,7 @@ int main() {
   corr_data.um = (double*) malloc(num_corr_datapoints * sizeof(double));
   corr_data.len = num_corr_datapoints;
 
-  const int seeds[] = {0, 1, 2, 3, 4, 5, 6};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
   get_onebound_PE_correlation_function(&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter, seeds, seed_len);
@@ -49,5 +49,9 @@ int main() {
   print_data_to_file(corr_time_data.data, corr_data.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);
   print_data_to_file(corr_time_data.data, corr_data.t,  num_corr_datapoints, ta_corr_title, ta_corr_fname);
   print_data_to_file(corr_time_data.data, corr_data.um, num_corr_datapoints, uma_corr_title, uma_corr_fname);
+
+  free (corr_time_data.data);
+  free(corr_data.bb); free(corr_data.bm); free(corr_data.t); free(corr_data.um);
+  
   return 0;
 }

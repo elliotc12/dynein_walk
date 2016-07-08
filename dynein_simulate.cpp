@@ -118,4 +118,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
       }
     }
   }
+  delete rand;
+  if (dyn_bb == NULL) delete dyn_ob;
+  else delete dyn_bb;
 }

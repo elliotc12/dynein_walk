@@ -11,7 +11,7 @@ int main() {
 
   T = 100;
 
-  int max_eq_iter = 1e7;
+  int max_eq_iter = 1e6;
   int min_eq_iter = 0.1*max_eq_iter;
   int d_runtime_iter = 1e5;
   
@@ -39,7 +39,7 @@ int main() {
   eq_data.um = (double*) malloc(num_eq_datapoints * sizeof(double));
   eq_data.len = num_eq_datapoints;
 
-  const int seeds[] = {0, 1, 2, 3, 4, 5};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
   get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len);
@@ -48,5 +48,9 @@ int main() {
   print_data_to_file(eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
   print_data_to_file(eq_time_data.data, eq_data.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
   print_data_to_file(eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+
+  free (eq_time_data.data);
+  free(eq_data.bb); free(eq_data.bm); free(eq_data.t); free(eq_data.um);
+  
   return 0;
 }
