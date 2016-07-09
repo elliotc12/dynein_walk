@@ -313,7 +313,7 @@ typedef struct {
 
 typedef struct {
   long long len;
-  double* data;
+  void* data;
 } generic_data;
 
 typedef union {

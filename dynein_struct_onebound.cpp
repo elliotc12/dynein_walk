@@ -243,14 +243,15 @@ void Dynein_onebound::update_velocities() {
   D3 = -Lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
   D4 = -Ls;
 
-  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bba)
-      +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm + r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
+  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm -
+	r.uby/gb)*cos(bba) +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm +
+	r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
 
-  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma)
-    + (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
+  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma) +
+    (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
 
-  X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma)
-    + (r.umx/gm + r.ubx/gb + 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+  X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma) + (r.umx/gm + r.ubx/gb +
+	 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
 
   X4 = (r.uby/gb + 1/gb*f.uby)*cos(uba) - (r.ubx/gb + 1/gb*f.ubx)*sin(uba);
 

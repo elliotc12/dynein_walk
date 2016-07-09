@@ -44,11 +44,11 @@ int main() {
   gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
   gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-  // ct = 0.5;
-  // cm = 0.5;
-  // cb = 0.5;
+  ct = 2.5;
+  cm = 2.5;
+  cb = 2.5;
 
-  const int seeds[] = {0, 1, 3, 4, 5, 6, 7, 8};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
   
   T = low_T;

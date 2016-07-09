@@ -29,7 +29,7 @@ int main() {
   generic_data eq_time_data;
   onebound_data eq_data;
 
-  eq_time_data.data = (double*) malloc(num_eq_datapoints * sizeof(double));
+  eq_time_data.data = (void*) malloc(num_eq_datapoints * sizeof(double));
   eq_time_data.len = num_eq_datapoints;
 
   eq_data.bb = (double*) malloc(num_eq_datapoints * sizeof(double));
@@ -43,10 +43,10 @@ int main() {
 
   get_onebound_equipartition_ratio_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len);
 
-  print_data_to_file(eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_data.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
-  print_data_to_file(eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+  print_data_to_file((double*) eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
+  print_data_to_file((double*) eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
+  print_data_to_file((double*) eq_time_data.data, eq_data.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
+  print_data_to_file((double*) eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
 
   free (eq_time_data.data);
   free(eq_data.bb); free(eq_data.bm); free(eq_data.t); free(eq_data.um);
