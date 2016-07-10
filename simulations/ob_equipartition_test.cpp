@@ -48,7 +48,7 @@ int main() {
   cm = 2.5;
   cb = 2.5;
 
-  const int seeds[] = {0};
+  const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);
   
   T = low_T;
@@ -70,7 +70,12 @@ int main() {
   printf("ta PE/0.5KBT ratio: %g\n", d_ta_PE / (0.5*kb*d_T));
   printf("uma PE/0.5KBT ratio: %g\n", d_uma_PE / (0.5*kb*d_T));
   printf("total PE/0.5KBT ratio: %g\n",
-	 (d_bba_PE + d_bma_PE + d_ta_PE + d_uma_PE) / (4*0.5*kb*d_T));
+  	 (d_bba_PE + d_bma_PE + d_ta_PE + d_uma_PE) / (4*0.5*kb*d_T));
+
+  printf("bba PE/0.5KBT ratio: %g\n", low_T_bb_PE_ratio);
+  printf("bma PE/0.5KBT ratio: %g\n", low_T_bm_PE_ratio);
+  printf("ta PE/0.5KBT ratio: %g\n", low_T_t_PE_ratio);
+  printf("uma PE/0.5KBT ratio: %g\n", low_T_um_PE_ratio);
   
   return EXIT_SUCCESS;
 }

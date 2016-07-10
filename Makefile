@@ -111,6 +111,19 @@ ob_PE_equipartition_ratio_average_vs_spring_constant_plot: ob_PE_equipartition_r
 	./ob_PE_equipartition_ratio_average_vs_spring_constant
 	./make_plot.py --figtitle="$(TITLE)" --xlabel="Spring constant (nm^2*kg/s^2)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_c.txt bma_pe_equipartition_ratio_vs_c.txt ta_pe_equipartition_ratio_vs_c.txt uma_pe_equipartition_ratio_vs_c.txt
 
+ob_PE_equipartition_ratio_average_vs_force_ratio: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp FORCE
+	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp $(CPPFLAGS)
+	g++ ob_PE_equipartition_ratio_average_vs_force_ratio.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_force_ratio
+
+ob_PE_equipartition_ratio_average_vs_force_ratio_plot: ob_PE_equipartition_ratio_average_vs_force_ratio FORCE
+	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+	mkdir -p plots
+	./ob_PE_equipartition_ratio_average_vs_force_ratio
+	./make_plot.py --figtitle="$(TITLE) bb" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter bba_pe_equipartition_ratio_vs_f_ratio.txt
+	./make_plot.py --figtitle="$(TITLE) bm" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter bma_pe_equipartition_ratio_vs_f_ratio.txt 
+	./make_plot.py --figtitle="$(TITLE) t" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter ta_pe_equipartition_ratio_vs_f_ratio.txt 
+	./make_plot.py --figtitle="$(TITLE) um" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter uma_pe_equipartition_ratio_vs_f_ratio.txt
+
 ########################### THESIS STUFF #################################
 
 thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE

@@ -25,40 +25,61 @@ void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *
     printf("PE calculation progress: %lld / %lld, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
-  if (iteration == job_data->ob_data.len - 1) printf("Finished generating PE data for seed %f, process took %g seconds                \n", RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+  if (iteration == job_data->ob_data.len - 1)
+    printf("Finished generating PE data for seed %f, process took %g seconds                \n",
+	   RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
+
+typedef struct {
+  double* bb;
+  double* bm;
+  double* t;
+  double* um;
+  double* f_bbx;   double* f_bby;
+  double* f_bmx;   double* f_bmy;
+  double* f_tx;    double* f_ty; 
+  double* f_umx;   double* f_umy;
+  double* f_ubx;   double* f_uby;
+} eq_forces_ptr;
+
 
 void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
   assert(s == NEARBOUND);
-  assert(iteration < job_data->ob_data.len);
 
-  double* utility_ptr = (double*) job_msg;
-
-  double start_time = *(utility_ptr[0]);
-  long long max_iteration = *((long long*) utility_ptr[1]);
-  
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
-  job_data->ob_data.bb[iteration] = dyn_ob->PE_bba;
-  job_data->ob_data.bm[iteration] = dyn_ob->PE_bma;
-  job_data->ob_data.t[iteration] = dyn_ob->PE_ta;
-  job_data->ob_data.um[iteration] = dyn_ob->PE_uma;
+  long long max_iteration = *((long long**) job_msg)[0];
+  double start_time = ((double*) job_msg)[1];
 
-  utility_ptr[2][iteration] = f.bbx;
-  utility_ptr[3][iteration] = f.bby;
-  utility_ptr[4][iteration] = f.bmx;
-  utility_ptr[5][iteration] = f.bmy;
-  utility_ptr[6][iteration] = f.tx;
-  utility_ptr[7][iteration] = f.ty;
-  utility_ptr[8][iteration] = f.umx;
-  utility_ptr[9][iteration] = f.umy;
-  utility_ptr[10][iteration] = f.ubx;
-  utility_ptr[11][iteration] = f.uby;
+  eq_forces_ptr data = *((eq_forces_ptr*) job_data->g_data.data);
+  assert(iteration < job_data->g_data.len);
 
+  data.bb[iteration] = dyn_ob->PE_bba;
+  data.bm[iteration] = dyn_ob->PE_bma;
+  data.t[iteration]  = dyn_ob->PE_ta;
+  data.um[iteration] = dyn_ob->PE_uma;
+
+  onebound_forces f = dyn_ob->get_internal();
+
+  if (data.f_bbx != NULL) {
+    data.f_bbx[iteration] = f.bbx;
+    data.f_bby[iteration] = f.bby;
+    data.f_bmx[iteration] = f.bmx;
+    data.f_bmy[iteration] = f.bmy;
+    data.f_tx [iteration] = f.tx;
+    data.f_ty [iteration] = f.ty;
+    data.f_umx[iteration] = f.umx;
+    data.f_umy[iteration] = f.umy;
+    data.f_ubx[iteration] = f.ubx;
+    data.f_uby[iteration] = f.uby;
+  }
   if (iteration % 10000 == 0) {
-    printf("PE calculation progress: %lld / %lld, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+    printf("PE calculation progress: %lld / %lld, %g%%                \r",
+	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
-  if (iteration == job_data->ob_data.len - 1) printf("Finished generating PE data for seed %f, process took %g seconds                \n", RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+  if (iteration == job_data->g_data.len - 1)
+    printf("Finished generating PE data for seed %f, process took %g seconds                \n",
+       RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
 void print_data_to_file(double* data1, double* data2, int iterations, const char* legend, const char* fname) {
@@ -295,106 +316,100 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
       eq_data->um[iteration] += uma_eq_ratio / seed_len;
 
       if (runtime_iter/d_runtime_iter % 1 == 0) {
-	printf("equipartition ratio progress: %g%%                \r", ((double) iteration) / num_eq_datapoints * 100);
+	printf("equipartition ratio progress: %g%%                \r",
+	     ((double) iteration) / num_eq_datapoints * 100);
 	fflush(NULL);
       }
-      if (iteration == eq_data->len - 1) printf("Finished equipartition calculations for seed %f, process took %g seconds                \n",
-						RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+      if (iteration == eq_data->len - 1) printf("Finished equipartition calculations for seed %f,"
+	"process took %g seconds                \n",
+        RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }
   }
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio_and_average_force(generic_data* force_data, onebound_data* eq_data, long long runtime_iter, const int* seeds, int seed_len) {
+void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
 
-  onebound_data data;
-  data.bb = (double*) malloc(runtime_iter * sizeof(double));
-  data.bm = (double*) malloc(runtime_iter * sizeof(double));
-  data.t  = (double*) malloc(runtime_iter * sizeof(double));
-  data.um = (double*) malloc(runtime_iter * sizeof(double));
-  data.len = max_runtime_iter;
+  eq_forces_ptr data_ptr;
+  generic_data data_struct;
+  data_struct.data = &data_ptr;
+  data_struct.len = runtime_iter;
 
   data_union data_holder;
-  data_holder.ob_data = data;
+  data_holder.g_data = data_struct;
 
-  eq_data->bb = 0;
-  eq_data->bm = 0;
-  eq_data->t  = 0;
-  eq_data->um = 0;
-  
-  ((onebound_forces*) force_data->data)->bbx = 0;
-  ((onebound_forces*) force_data->data)->bby = 0;
-  ((onebound_forces*) force_data->data)->bmx = 0;
-  ((onebound_forces*) force_data->data)->bmy = 0;
-  ((onebound_forces*) force_data->data)->tx  = 0;
-  ((onebound_forces*) force_data->data)->ty  = 0;
-  ((onebound_forces*) force_data->data)->umx = 0;
-  ((onebound_forces*) force_data->data)->umy = 0;
-  ((onebound_forces*) force_data->data)->ubx = 0;
-  ((onebound_forces*) force_data->data)->uby = 0;
+  data_ptr.bb = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.bm = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.t  = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.um = (double*) malloc(runtime_iter * sizeof(double));
 
-  double job_msg[12];
-  job_msg[0] = (double*) &max_runtime_iter;
-  job_msg[2] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[3] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[4] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[5] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[6] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[7] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[8] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[9] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[10] = (double*) malloc(runtime_iter * sizeof(double));
-  job_msg[11] = (double*) malloc(runtime_iter * sizeof(double));
+  eq_data->bb[0] = 0;    eq_data->t[0]  = 0;
+  eq_data->bm[0] = 0;    eq_data->um[0] = 0;
+
+  data_ptr.f_bbx = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_bby = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_bmx = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_bmy = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_tx  = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_ty  = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_umx = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_umy = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_ubx = (double*) malloc(runtime_iter * sizeof(double));
+  data_ptr.f_uby = (double*) malloc(runtime_iter * sizeof(double));
+
+  double* f_bbx_var = &((onebound_forces*) force_data->data)->bbx;
+  double* f_bby_var = &((onebound_forces*) force_data->data)->bby;
+  double* f_bmx_var = &((onebound_forces*) force_data->data)->bmx;
+  double* f_bmy_var = &((onebound_forces*) force_data->data)->bmy;
+  double* f_tx_var  = &((onebound_forces*) force_data->data)->tx; 
+  double* f_ty_var  = &((onebound_forces*) force_data->data)->ty; 
+  double* f_umx_var = &((onebound_forces*) force_data->data)->umx;
+  double* f_umy_var = &((onebound_forces*) force_data->data)->umy;
+  double* f_ubx_var = &((onebound_forces*) force_data->data)->ubx;
+  double* f_uby_var = &((onebound_forces*) force_data->data)->uby;
+
+  *f_bbx_var = 0;   *f_bby_var = 0;   *f_bmx_var = 0;   *f_bmy_var = 0;
+  *f_tx_var = 0;    *f_ty_var = 0;    *f_umx_var = 0;   *f_umy_var = 0;
+  *f_ubx_var = 0;   *f_uby_var = 0;
+
+  double* job_msg[2];
+  job_msg[0] = (double*) &runtime_iter;
   
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
     double current_time = clock();
-    job_msg[1] = (double*) &current_time;
+    job_msg[1] = &current_time;
     
-    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position,
+    simulate(runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position,
 	store_onebound_PEs_and_forces_callback, (void*) job_msg, &data_holder);
     
-    double bba_eq_ratio = get_average(data.bb, runtime_iter) / (0.5*kb*T);
-    double bma_eq_ratio = get_average(data.bm, runtime_iter) / (0.5*kb*T);
-    double  ta_eq_ratio = get_average(data.t,  runtime_iter) / (0.5*kb*T);
-    double uma_eq_ratio = get_average(data.um, runtime_iter) / (0.5*kb*T);
+    eq_data->bb[0] += get_average(data_ptr.bb, runtime_iter) / (0.5*kb*T) / seed_len;
+    eq_data->bm[0] += get_average(data_ptr.bm, runtime_iter) / (0.5*kb*T) / seed_len;
+    eq_data->t [0] += get_average(data_ptr.t,  runtime_iter) / (0.5*kb*T) / seed_len;
+    eq_data->um[0] += get_average(data_ptr.um, runtime_iter) / (0.5*kb*T) / seed_len;
 
-    eq_data->bb += bba_eq_ratio / seed_len;
-    eq_data->bm += bma_eq_ratio / seed_len;
-    eq_data->t  += ta_eq_ratio  / seed_len;
-    eq_data->um += uma_eq_ratio / seed_len;
+    *f_bbx_var += get_variance(data_ptr.f_bbx, runtime_iter) / seed_len;
+    *f_bby_var += get_variance(data_ptr.f_bby, runtime_iter) / seed_len;
+    *f_bmx_var += get_variance(data_ptr.f_bmx, runtime_iter) / seed_len;
+    *f_bmy_var += get_variance(data_ptr.f_bmy, runtime_iter) / seed_len;
+    *f_tx_var  += get_variance(data_ptr.f_tx , runtime_iter) / seed_len;
+    *f_ty_var  += get_variance(data_ptr.f_ty , runtime_iter) / seed_len;
+    *f_umx_var += get_variance(data_ptr.f_umx, runtime_iter) / seed_len;
+    *f_umy_var += get_variance(data_ptr.f_umy, runtime_iter) / seed_len;
+    *f_ubx_var += get_variance(data_ptr.f_ubx, runtime_iter) / seed_len;
+    *f_uby_var += get_variance(data_ptr.f_uby, runtime_iter) / seed_len;
 
-    double f_bbx_variance = get_variance(job_msg[2], runtime_iter);
-    double f_bby_variance = get_variance(job_msg[3], runtime_iter);
-    double f_bmx_variance = get_variance(job_msg[4], runtime_iter);
-    double f_bmy_variance = get_variance(job_msg[5], runtime_iter);
-    double f_tx_variance  = get_variance(job_msg[6], runtime_iter);
-    double f_ty_variance  = get_variance(job_msg[7], runtime_iter);
-    double f_umx_variance = get_variance(job_msg[8], runtime_iter);
-    double f_umy_variance = get_variance(job_msg[9], runtime_iter);
-    double f_ubx_variance = get_variance(job_msg[10], runtime_iter);
-    double f_uby_variance = get_variance(job_msg[11], runtime_iter);
-
-    ((onebound_forces*) force_data->data)->bbx += f_bbx_variance / seed_len;
-    ((onebound_forces*) force_data->data)->bby += f_bby_variance / seed_len;
-    ((onebound_forces*) force_data->data)->bmx += f_bmx_variance / seed_len;
-    ((onebound_forces*) force_data->data)->bmy += f_bmy_variance / seed_len;
-    ((onebound_forces*) force_data->data)->tx  += f_tx_variance / seed_len;
-    ((onebound_forces*) force_data->data)->ty  += f_ty_variance / seed_len;
-    ((onebound_forces*) force_data->data)->umx += f_umx_variance / seed_len;
-    ((onebound_forces*) force_data->data)->umy += f_umy_variance / seed_len;
-    ((onebound_forces*) force_data->data)->ubx += f_ubx_variance / seed_len;
-    ((onebound_forces*) force_data->data)->uby += f_uby_variance / seed_len;
   }
 
-  free(data.bb); free(data.bm); free(data.t); free(data.um);
-  free(job_msg[2]); free(job_msg[3]); free(job_msg[4]);
-  free(job_msg[5]); free(job_msg[6]); free(job_msg[7]);
-  free(job_msg[8]); free(job_msg[9]); free(job_msg[10]);
-  free(job_msg[11]);
+  free(data_ptr.bb);  free(data_ptr.bm);  free(data_ptr.t);  free(data_ptr.um);
+  free(data_ptr.f_bbx);  free(data_ptr.f_bby);  free(data_ptr.f_bmx);
+  free(data_ptr.f_bmy);  free(data_ptr.f_tx );  free(data_ptr.f_ty );
+  free(data_ptr.f_umx);  free(data_ptr.f_umy);  free(data_ptr.f_ubx);
+  free(data_ptr.f_uby);
+  
 }
