@@ -9,11 +9,12 @@
 
 /** Library for simulation code **/
 
-void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
   assert(s == NEARBOUND);
   assert(iteration < job_data->ob_data.len);
-  long long max_iteration = (long long) ((double*) job_msg)[0];
-  double start_time= ((double*) job_msg)[1];
+  long long max_iteration = *((long long**) job_msg)[0];
+  double start_time = *((double**) job_msg)[1];
+  char* run_msg = ((char**) job_msg)[2];
   
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
   job_data->ob_data.bb[iteration] = dyn_ob->PE_bba;
@@ -22,12 +23,13 @@ void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *
   job_data->ob_data.um[iteration] = dyn_ob->PE_uma;
 
   if (iteration % 10000 == 0) {
-    printf("PE calculation progress: %lld / %lld, %g%%                \r", iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+    printf("PE calculation progress for %s: %lld / %lld, %g%%                \r",
+	   run_msg, iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
   if (iteration == job_data->ob_data.len - 1)
-    printf("Finished generating PE data for seed %f, process took %g seconds                \n",
-	   RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+    printf("Finished generating PE data for %s, which took %g seconds                \n",
+	   run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
 typedef struct {
@@ -43,12 +45,13 @@ typedef struct {
 } eq_forces_ptr;
 
 
-void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
   assert(s == NEARBOUND);
 
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
   long long max_iteration = *((long long**) job_msg)[0];
-  double start_time = ((double*) job_msg)[1];
+  double start_time = *((double**) job_msg)[1];
+  char* run_msg = ((char**) job_msg)[2];
 
   eq_forces_ptr data = *((eq_forces_ptr*) job_data->g_data.data);
   assert(iteration < job_data->g_data.len);
@@ -73,13 +76,13 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, d
     data.f_uby[iteration] = f.uby;
   }
   if (iteration % 10000 == 0) {
-    printf("PE calculation progress: %lld / %lld, %g%%                \r",
-	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+    printf("PE calculation progress for %s: %lld / %lld, %g%%                \r",
+	   run_msg, iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
   if (iteration == job_data->g_data.len - 1)
-    printf("Finished generating PE data for seed %f, process took %g seconds                \n",
-       RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+    printf("Finished generating PE data for %s, which took %g seconds                \n",
+       run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
 void print_data_to_file(double* data1, double* data2, int iterations, const char* legend, const char* fname) {
@@ -101,8 +104,9 @@ void print_data_to_file(double* data1, double* data2, int iterations, const char
   free(buf);
 }
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long d_tau_iter, long long iterations, long long max_tau_iter, const int* seeds, int seed_len) {
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long d_tau_iter, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+  MICROTUBULE_REPULSION_FORCE = 0.0;
 
   long long num_corr_datapoints = max_tau_iter / d_tau_iter;
 
@@ -118,9 +122,18 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
 
   data_union data_holder;
   data_holder.ob_data = data;
-  double job_msg[2];
-  job_msg[0] = (double) iterations;
-  job_msg[1] = (double) clock();
+
+  void* job_msg[3];
+    job_msg[0] = (double*) &iterations;
+    double current_time = clock();
+    job_msg[1] = &current_time;
+    
+    char run_msg[512];
+    strcpy(run_msg, run_msg_base);
+    char seedbuf[50];
+    sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
+    strcat(run_msg, seedbuf);
+    job_msg[2] = run_msg;
 
   for (int i=0; i<num_corr_datapoints; i++) {
     corr_data->bb[i] = 0;
@@ -131,7 +144,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
-    simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position, store_onebound_PEs_callback, (void*) job_msg, &data_holder);
+    simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position, store_onebound_PEs_callback, job_msg, &data_holder);
 
     double* PE_bbas = data.bb;
     double* PE_bmas = data.bm;
@@ -189,8 +202,9 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len) {
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+  MICROTUBULE_REPULSION_FORCE = 0.0;
 
   long long num_eq_datapoints;
   if (min_runtime_iter == max_runtime_iter)
@@ -217,15 +231,23 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
     eq_data->t[i]  = 0;
     eq_data->um[i] = 0;
   }
-  
+
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
-    double job_msg[2];
-    job_msg[0] = (double) max_runtime_iter;
-    job_msg[1] = (double) clock();
+    void* job_msg[3];
+    job_msg[0] = (double*) &max_runtime_iter;
+    double current_time = clock();
+    job_msg[1] = &current_time;
     
-    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, (void*) job_msg, &data_holder);
+    char run_msg[512];
+    strcpy(run_msg, run_msg_base);
+    char seedbuf[50];
+    sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
+    strcat(run_msg, seedbuf);
+    job_msg[2] = run_msg;
+
+    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, job_msg, &data_holder);
 
     double* bba_PE_data = data_holder.ob_data.bb;
     double* bma_PE_data = data_holder.ob_data.bm;
@@ -255,8 +277,9 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len) {
+void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+  MICROTUBULE_REPULSION_FORCE = 0.0;
 
   long long num_eq_datapoints;
   if (min_runtime_iter == max_runtime_iter)
@@ -287,11 +310,19 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
-    double job_msg[2];
-    job_msg[0] = (double) max_runtime_iter;
-    job_msg[1] = (double) clock();
+    void* job_msg[3];
+    job_msg[0] = (double*) &max_runtime_iter;
+    double current_time = clock();
+    job_msg[1] = &current_time;
+    
+    char run_msg[512];
+    strcpy(run_msg, run_msg_base);
+    char seedbuf[50];
+    sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
+    strcat(run_msg, seedbuf);
+    job_msg[2] = run_msg;
 
-    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, (void*) job_msg, &data_holder);
+    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, job_msg, &data_holder);
 
     double* bba_PE_data = data_holder.ob_data.bb;
     double* bma_PE_data = data_holder.ob_data.bm;
@@ -328,8 +359,9 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len) {
+void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
+  MICROTUBULE_REPULSION_FORCE = 0.0;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -376,17 +408,25 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
   *f_tx_var = 0;    *f_ty_var = 0;    *f_umx_var = 0;   *f_umy_var = 0;
   *f_ubx_var = 0;   *f_uby_var = 0;
 
-  double* job_msg[2];
+  void* job_msg[3];
   job_msg[0] = (double*) &runtime_iter;
-  
+
+  char run_msg[512];
+
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
     double current_time = clock();
     job_msg[1] = &current_time;
+
+    strcpy(run_msg, run_msg_base);
+    char seedbuf[50];
+    sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
+    strcat(run_msg, seedbuf);
+    job_msg[2] = run_msg;
     
     simulate(runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position,
-	store_onebound_PEs_and_forces_callback, (void*) job_msg, &data_holder);
+	store_onebound_PEs_and_forces_callback, job_msg, &data_holder);
     
     eq_data->bb[0] += get_average(data_ptr.bb, runtime_iter) / (0.5*kb*T) / seed_len;
     eq_data->bm[0] += get_average(data_ptr.bm, runtime_iter) / (0.5*kb*T) / seed_len;
@@ -410,5 +450,4 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
   free(data_ptr.f_bmy);  free(data_ptr.f_tx );  free(data_ptr.f_ty );
   free(data_ptr.f_umx);  free(data_ptr.f_umy);  free(data_ptr.f_ubx);
   free(data_ptr.f_uby);
-  
 }

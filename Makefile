@@ -89,7 +89,7 @@ ob_PE_equipartition_ratio_average_vs_time_plot: ob_PE_equipartition_ratio_averag
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
 	./ob_PE_equipartition_ratio_average_vs_time
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_v_time.txt bma_pe_equipartition_ratio_v_time.txt ta_pe_equipartition_ratio_v_time.txt uma_pe_equipartition_ratio_v_time.txt
 
 ob_PE_equipartition_ratio_vs_time: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_vs_time.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_vs_time.cpp $(CPPFLAGS)

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
@@ -8,7 +9,7 @@ int main() {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e8;
+  int iterations = 1e5;
 
   int low_T  = 1000;
   int high_T = 10000;
@@ -56,6 +57,9 @@ int main() {
   double eq_ratios_t[spring_len];
   double eq_ratios_um[spring_len];
 
+  char run_msg[512];
+  const char* run_msg_base = "springconst calc (";
+
   for (int i = 0; i < spring_len; i++) {
     ct = spring_constants[i];
     cm = spring_constants[i];
@@ -79,12 +83,22 @@ int main() {
 
     onebound_forces unused_forces;
     generic_data unused_data;
-    unused_data.data = &unused_forces;    
+    unused_data.data = &unused_forces;
 
     T = low_T;
-    get_onebound_equipartition_ratio(&low_eq_data, &unused_data, iterations, seeds, seed_len);
+    char buf[50];
+    strcpy(run_msg, run_msg_base);
+    sprintf(buf, "c = %.1f, temp = %.1f, ", spring_constants[i], T);
+    strcat(run_msg, buf);
+    get_onebound_equipartition_ratio
+      (&low_eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
+
     T = high_T;
-    get_onebound_equipartition_ratio(&high_eq_data, &unused_data, iterations, seeds, seed_len);
+    strcpy(run_msg, run_msg_base);
+    sprintf(buf, "c = %.1f, temp = %.1f, ", spring_constants[i], T);
+    strcat(run_msg, buf);
+    get_onebound_equipartition_ratio
+      (&high_eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
 
     double low_ET = (0.5*kb*low_T);
     double high_ET = (0.5*kb*high_T);

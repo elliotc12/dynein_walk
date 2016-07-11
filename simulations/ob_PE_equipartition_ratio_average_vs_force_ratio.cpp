@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
@@ -8,7 +9,7 @@ int main() {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e8;
+  int iterations = 1e5;
   T = 1000;
   Lt = 15;
   Ls = 15;
@@ -35,10 +36,10 @@ int main() {
 
   double spring_constants[] = {50};
 
-  int num_gammas = 100;
+  int num_gammas = 50;
   double gamma_modifiers[num_gammas];
   double min_gamma = 0.1;
-  double max_gamma = 3.0;
+  double max_gamma = 5.0;
   double d_gamma = (max_gamma - min_gamma) / num_gammas;
   double gamma = min_gamma;
   int i = 0;
@@ -60,6 +61,9 @@ int main() {
   double force_ratios_bm[num_springs*num_gammas];
   double force_ratios_t [num_springs*num_gammas];
   double force_ratios_um[num_springs*num_gammas];
+
+  char run_msg[512];
+  const char* run_msg_base = "force variance calc (";
 
   for (int i = 0; i < num_springs; i++) {
     ct = spring_constants[i];
@@ -83,7 +87,13 @@ int main() {
       force_var_data.len = 1;
       force_var_data.data = &force_var_data_struct;
 
-      get_onebound_equipartition_ratio(&eq_data, &force_var_data, iterations, seeds, seed_len);
+      strcpy(run_msg, run_msg_base);
+      char buf[50];
+      sprintf(buf, "c = %.1f, g_mod = %.1f ", spring_constants[i], gamma_modifiers[j]);
+      strcat(run_msg, buf);
+
+      get_onebound_equipartition_ratio(
+		       &eq_data, &force_var_data, iterations, seeds, seed_len, run_msg);
 
       eq_ratios_bb[i*num_gammas + j] = eq_data.bb[0];
       eq_ratios_bm[i*num_gammas + j] = eq_data.bm[0];

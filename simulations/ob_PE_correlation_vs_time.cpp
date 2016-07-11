@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 #include "../dynein_struct.h"
@@ -43,7 +44,12 @@ int main() {
   const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  get_onebound_PE_correlation_function(&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter, seeds, seed_len);
+  char run_msg[512];
+  const char* run_msg_base = "correlation calc (";
+  strcpy(run_msg, run_msg_base);
+
+  get_onebound_PE_correlation_function
+    (&corr_time_data, &corr_data, d_tau_iter, iterations, max_tau_iter, seeds, seed_len, run_msg);
 
   print_data_to_file((double*) corr_time_data.data, corr_data.bb, num_corr_datapoints, bba_corr_title, bba_corr_fname);
   print_data_to_file((double*) corr_time_data.data, corr_data.bm, num_corr_datapoints, bma_corr_title, bma_corr_fname);

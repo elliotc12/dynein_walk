@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
@@ -8,7 +9,7 @@ int main() {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e8;
+  int iterations = 1e5;
   Lt = 15;
   Ls = 15;
   fake_radius_t = 1.5;
@@ -50,6 +51,9 @@ int main() {
   double eq_ratios_t [num_Ts];
   double eq_ratios_um[num_Ts];
 
+  char run_msg[512];
+  const char* run_msg_base = "tempcalc (";
+
   for (int i = 0; i < num_Ts; i++) {
     T = temps[i];
 
@@ -65,7 +69,13 @@ int main() {
     unused_force_var_data.len = 1;
     unused_force_var_data.data = &force_var_data_struct;
 
-    get_onebound_equipartition_ratio(&eq_data, &unused_force_var_data, iterations, seeds, seed_len);
+    strcpy(run_msg, run_msg_base);
+    char buf[50];
+    sprintf(buf, "temp = %.1f, ", T);
+    strcat(run_msg, buf);
+
+    get_onebound_equipartition_ratio(
+	  &eq_data, &unused_force_var_data, iterations, seeds, seed_len, run_msg);
 
     eq_ratios_bb[i] = eq_data.bb[0];
     eq_ratios_bm[i] = eq_data.bm[0];

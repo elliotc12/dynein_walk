@@ -3,6 +3,7 @@ latex/latexlog.txt
 *.aux
 *.log
 *.pdf
+*.out
 *.tum
 GIFS/*.gif
 PNGs/*.png
@@ -25,3 +26,6 @@ dynein_walk
 GIFs/
 plots/
 ob_equipartition_test
+ob_PE_equipartition_ratio_average_vs_force_ratio
+ob_PE_equipartition_ratio_average_vs_spring_constant
+ob_PE_equipartition_ratio_average_vs_temperature

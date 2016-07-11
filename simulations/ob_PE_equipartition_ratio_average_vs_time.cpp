@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
@@ -9,23 +10,22 @@ int main() {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  T = 100;
-
+  T = 1000;
   int max_eq_iter = 1e6;
   int min_eq_iter = 0.1*max_eq_iter;
   int d_runtime_iter = 1e5;
   
   int num_eq_datapoints = (max_eq_iter - min_eq_iter) / d_runtime_iter;
 
-  const char* bba_eq_title = "Bound binding domain (bba)";
-  const char* bma_eq_title = "Bound motor domain (bma)";
-  const char* ta_eq_title =  "Tail domain (ta)";
-  const char* uma_eq_title = "Unbound motor domain (uma)";
+  const char* bba_eq_title = "Bound binding";
+  const char* bma_eq_title = "Bound motor";
+  const char* ta_eq_title =  "Tail domain";
+  const char* uma_eq_title = "Unbound motor";
 
-  const char* bba_eq_fname = "bba_pe_equipartition_ratio.txt";
-  const char* bma_eq_fname = "bma_pe_equipartition_ratio.txt";
-  const char* ta_eq_fname =  "ta_pe_equipartition_ratio.txt";
-  const char* uma_eq_fname = "uma_pe_equipartition_ratio.txt";
+  const char* bba_eq_fname = "bba_pe_equipartition_ratio_v_time.txt";
+  const char* bma_eq_fname = "bma_pe_equipartition_ratio_v_time.txt";
+  const char* ta_eq_fname =  "ta_pe_equipartition_ratio_v_time.txt";
+  const char* uma_eq_fname = "uma_pe_equipartition_ratio_v_time.txt";
 
   generic_data eq_time_data;
   onebound_data eq_data;
@@ -42,7 +42,11 @@ int main() {
   const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len);
+  char run_msg[512];
+  const char* run_msg_base = "timecalc (";
+  strcpy(run_msg, run_msg_base);
+
+  get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len, run_msg);
 
   print_data_to_file((double*) eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
   print_data_to_file((double*) eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
