@@ -119,10 +119,17 @@ ob_PE_equipartition_ratio_average_vs_force_ratio_plot: ob_PE_equipartition_ratio
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
 	./ob_PE_equipartition_ratio_average_vs_force_ratio
-	./make_plot.py --figtitle="$(TITLE) bb" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter bba_pe_equipartition_ratio_vs_f_ratio.txt
-	./make_plot.py --figtitle="$(TITLE) bm" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter bma_pe_equipartition_ratio_vs_f_ratio.txt 
-	./make_plot.py --figtitle="$(TITLE) t" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter ta_pe_equipartition_ratio_vs_f_ratio.txt 
-	./make_plot.py --figtitle="$(TITLE) um" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 --scatter uma_pe_equipartition_ratio_vs_f_ratio.txt
+	./make_plot.py --scatter --figtitle="$(TITLE)" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_f_ratio.txt bma_pe_equipartition_ratio_vs_f_ratio.txt ta_pe_equipartition_ratio_vs_f_ratio.txt uma_pe_equipartition_ratio_vs_f_ratio.txt
+
+ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp FORCE
+	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp $(CPPFLAGS)
+	g++ ob_PE_equipartition_ratio_average_vs_temperature.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_temperature
+
+ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio_average_vs_temperature FORCE
+	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+	mkdir -p plots
+	./ob_PE_equipartition_ratio_average_vs_temperature
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_T.txt bma_pe_equipartition_ratio_vs_T.txt ta_pe_equipartition_ratio_vs_T.txt uma_pe_equipartition_ratio_vs_T.txt
 
 ########################### THESIS STUFF #################################
 

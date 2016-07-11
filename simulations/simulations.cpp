@@ -403,7 +403,6 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
     *f_umy_var += get_variance(data_ptr.f_umy, runtime_iter) / seed_len;
     *f_ubx_var += get_variance(data_ptr.f_ubx, runtime_iter) / seed_len;
     *f_uby_var += get_variance(data_ptr.f_uby, runtime_iter) / seed_len;
-
   }
 
   free(data_ptr.bb);  free(data_ptr.bm);  free(data_ptr.t);  free(data_ptr.um);

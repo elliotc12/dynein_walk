@@ -8,13 +8,11 @@ int main() {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e5;
-  
+  int iterations = 1e8;
   T = 1000;
-  
   Lt = 15;
   Ls = 15;
-  
+
   fake_radius_t = 1.5;
   fake_radius_m = 1.5;
   fake_radius_b = 1.5;
@@ -32,13 +30,26 @@ int main() {
   const char* ta_eq_fname =  "ta_pe_equipartition_ratio_vs_f_ratio.txt";
   const char* uma_eq_fname = "uma_pe_equipartition_ratio_vs_f_ratio.txt";
 
-  const int seeds[] = {0};
+  const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  double spring_constants[] = {50, 60, 70, 80, 90, 100, 200, 300, 400};
-  double gamma_modifiers[] = {0.5, 0.7, 1.0, 1.3, 1.5, 2.0, 2.5};
+  double spring_constants[] = {50};
+
+  int num_gammas = 100;
+  double gamma_modifiers[num_gammas];
+  double min_gamma = 0.1;
+  double max_gamma = 3.0;
+  double d_gamma = (max_gamma - min_gamma) / num_gammas;
+  double gamma = min_gamma;
+  int i = 0;
+
+  while(gamma < max_gamma) {
+    gamma_modifiers[i] = gamma;
+    gamma += d_gamma;
+    i++;
+  }
+
   int num_springs = sizeof(spring_constants) / sizeof(double);
-  int num_gammas = sizeof(gamma_modifiers) / sizeof(double);
 
   double eq_ratios_bb[num_springs*num_gammas];
   double eq_ratios_bm[num_springs*num_gammas];
@@ -84,9 +95,9 @@ int main() {
       double t_force_var_ave = (force_var_data_struct.tx + force_var_data_struct.ty) / 2;
       double um_force_var_ave = (force_var_data_struct.umx + force_var_data_struct.umy) / 2;
 
-      double brownian_b_variance = sqrt(gb*sqrt(2*kb*T/(gb*dt))); // should this be sqrt?? var or std?
-      double brownian_m_variance = sqrt(gm*sqrt(2*kb*T/(gm*dt)));
-      double brownian_t_variance = sqrt(gt*sqrt(2*kb*T/(gt*dt)));
+      double brownian_b_variance = gb*sqrt(2*kb*T/(gb*dt)); // should this val be sqrt'd?? var or std?
+      double brownian_m_variance = gm*sqrt(2*kb*T/(gm*dt));
+      double brownian_t_variance = gt*sqrt(2*kb*T/(gt*dt));
 
       force_ratios_bb[i*num_gammas + j] = brownian_b_variance / bb_force_var_ave;
       force_ratios_bm[i*num_gammas + j] = brownian_m_variance / bm_force_var_ave;
