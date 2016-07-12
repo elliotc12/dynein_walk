@@ -85,30 +85,35 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, 
        run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
-void print_data_to_file(double* data1, double* data2, int iterations, const char* legend, const char* fname) {
-  char* buf = (char*)
-    malloc((iterations * (12+5+12+1) + 1 + 1) * sizeof(char) + strlen(legend)); // 5 spaced, each double 12 chars, newline, legend
-  int buf_offset = 0;
+void prepare_data_file(const char* legend, const char* fname) {
+  char buf[(strlen(legend) + 1) * sizeof(char)];
   sprintf(buf, "%s\n", legend);
-  buf_offset += strlen(legend) + 1;
-
-  for (int i = 0; i < iterations; i++) {
-    assert(data2[i] == data2[i]);
-    sprintf(&buf[buf_offset], "%+.5e     %+.5e\n", data1[i], data2[i]);
-    buf_offset += 30;
-  }
 
   FILE* data_file = fopen(fname, "w");
   fputs(buf, data_file);
   fclose(data_file);
-  free(buf);
 }
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long d_tau_iter, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base) {
+void append_data_to_file(double* data1, double* data2, int len, const char* fname) {
+  char buf[(12+5+12+1)*len*sizeof(char)]; // 5 spaces, each double 12 chars, newline, legend
+  int buf_offset = 0;
+
+  for (int i = 0; i < len; i++) {
+    assert(data2[i] == data2[i]); // check for NaNs
+    sprintf(&buf[buf_offset], "%+.5e     %+.5e\n", data1[i], data2[i]);
+    buf_offset += 30;
+  }
+  
+  FILE* data_file = fopen(fname, "a");
+  fputs(buf, data_file);
+  fclose(data_file);
+}
+
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long num_correlations, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  long long num_corr_datapoints = max_tau_iter / d_tau_iter;
+  long long d_tau_iter = max_tau_iter / num_correlations;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double test_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -124,18 +129,18 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   data_holder.ob_data = data;
 
   void* job_msg[3];
-    job_msg[0] = (double*) &iterations;
-    double current_time = clock();
-    job_msg[1] = &current_time;
-    
-    char run_msg[512];
-    strcpy(run_msg, run_msg_base);
-    char seedbuf[50];
-    sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
-    strcat(run_msg, seedbuf);
-    job_msg[2] = run_msg;
+  job_msg[0] = (double*) &iterations;
+  double current_time = clock();
+  job_msg[1] = &current_time;
 
-  for (int i=0; i<num_corr_datapoints; i++) {
+  char run_msg[512];
+  strcpy(run_msg, run_msg_base);
+  char seedbuf[50];
+  sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
+  strcat(run_msg, seedbuf);
+  job_msg[2] = run_msg;
+
+  for (int i=0; i<num_correlations; i++) {
     corr_data->bb[i] = 0;
     corr_data->bm[i] = 0;
     corr_data->t[i]  = 0;
@@ -144,7 +149,8 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
-    simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position, store_onebound_PEs_callback, job_msg, &data_holder);
+    simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position,
+	     store_onebound_PEs_callback, job_msg, &data_holder);
 
     double* PE_bbas = data.bb;
     double* PE_bmas = data.bm;
@@ -192,7 +198,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
       corr_data->um[iteration] += uma_correlation / seed_len;
 
       if (iteration % 1 == 0) {
-	printf("correlation function progress: %g%%                \r", ((double) iteration)  / num_corr_datapoints * 100);
+	printf("correlation function progress: %g%%                \r", ((double) iteration)  / num_correlations * 100);
 	fflush(NULL);
       }
       if (iteration == corr_data->len - 1) printf("Finished correlation calculations for seed %f, process took %g seconds                \n",

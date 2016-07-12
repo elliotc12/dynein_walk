@@ -27,6 +27,11 @@ int main() {
   const char* ta_eq_fname =  "ta_pe_equipartition_ratio_v_time.txt";
   const char* uma_eq_fname = "uma_pe_equipartition_ratio_v_time.txt";
 
+  prepare_data_file(bba_eq_title, bba_eq_fname);
+  prepare_data_file(bma_eq_title, bma_eq_fname);
+  prepare_data_file(ta_eq_title,  ta_eq_fname);
+  prepare_data_file(uma_eq_title, uma_eq_fname);
+
   generic_data eq_time_data;
   onebound_data eq_data;
 
@@ -48,10 +53,10 @@ int main() {
 
   get_onebound_equipartition_ratio_average_per_runtime(&eq_time_data, &eq_data, d_runtime_iter, min_eq_iter, max_eq_iter, seeds, seed_len, run_msg);
 
-  print_data_to_file((double*) eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_title, bba_eq_fname);
-  print_data_to_file((double*) eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_title, bma_eq_fname);
-  print_data_to_file((double*) eq_time_data.data, eq_data.t, num_eq_datapoints, ta_eq_title, ta_eq_fname);
-  print_data_to_file((double*) eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_title, uma_eq_fname);
+  append_data_to_file((double*) eq_time_data.data,eq_data.bb,num_eq_datapoints, bba_eq_fname);
+  append_data_to_file((double*) eq_time_data.data,eq_data.bm,num_eq_datapoints, bma_eq_fname);
+  append_data_to_file((double*) eq_time_data.data,eq_data.t ,num_eq_datapoints, ta_eq_fname);
+  append_data_to_file((double*) eq_time_data.data,eq_data.um,num_eq_datapoints, uma_eq_fname);
 
   free (eq_time_data.data);
   free(eq_data.bb); free(eq_data.bm); free(eq_data.t); free(eq_data.um);

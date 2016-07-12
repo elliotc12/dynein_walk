@@ -35,6 +35,11 @@ int main() {
   const char* ta_eq_fname =  "ta_pe_equipartition_ratio_vs_c.txt";
   const char* uma_eq_fname = "uma_pe_equipartition_ratio_vs_c.txt";
 
+  prepare_data_file(bba_eq_title, bba_eq_fname);
+  prepare_data_file(bma_eq_title, bma_eq_fname);
+  prepare_data_file(ta_eq_title,  ta_eq_fname);
+  prepare_data_file(uma_eq_title, uma_eq_fname);
+
   const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);
 
@@ -51,11 +56,6 @@ int main() {
     spring += d_spring;
     i++;
   }
-
-  double eq_ratios_bb[spring_len];
-  double eq_ratios_bm[spring_len];
-  double eq_ratios_t[spring_len];
-  double eq_ratios_um[spring_len];
 
   char run_msg[512];
   const char* run_msg_base = "springconst calc (";
@@ -103,16 +103,15 @@ int main() {
     double low_ET = (0.5*kb*low_T);
     double high_ET = (0.5*kb*high_T);
     
-    eq_ratios_bb[i] = (high_T_bb*high_ET - low_T_bb*low_ET) / (0.5*kb*(high_T-low_T));
-    eq_ratios_bm[i] = (high_T_bm*high_ET - low_T_bm*low_ET) / (0.5*kb*(high_T-low_T));
-    eq_ratios_t[i]  = (high_T_t* high_ET - low_T_t* low_ET) / (0.5*kb*(high_T-low_T));
-    eq_ratios_um[i] = (high_T_um*high_ET - low_T_um*low_ET) / (0.5*kb*(high_T-low_T));
-  }
+    double eq_ratios_bb = (high_T_bb*high_ET - low_T_bb*low_ET) / (0.5*kb*(high_T-low_T));
+    double eq_ratios_bm = (high_T_bm*high_ET - low_T_bm*low_ET) / (0.5*kb*(high_T-low_T));
+    double eq_ratios_t  = (high_T_t* high_ET - low_T_t* low_ET) / (0.5*kb*(high_T-low_T));
+    double eq_ratios_um = (high_T_um*high_ET - low_T_um*low_ET) / (0.5*kb*(high_T-low_T));
 
-  print_data_to_file(spring_constants, eq_ratios_bb, spring_len, bba_eq_title, bba_eq_fname);
-  print_data_to_file(spring_constants, eq_ratios_bm, spring_len, bma_eq_title, bma_eq_fname);
-  print_data_to_file(spring_constants, eq_ratios_t,  spring_len, ta_eq_title,  ta_eq_fname);
-  print_data_to_file(spring_constants, eq_ratios_um, spring_len, uma_eq_title, uma_eq_fname);
-  
+    append_data_to_file(&spring_constants[i], &eq_ratios_bb, 1, bba_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_ratios_bm, 1, bma_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_ratios_t , 1, ta_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_ratios_um, 1, uma_eq_fname);
+  }
   return 0;
 }

@@ -46,23 +46,24 @@ int main() {
     i++;
   }
 
-  double eq_ratios_bb[num_Ts];
-  double eq_ratios_bm[num_Ts];
-  double eq_ratios_t [num_Ts];
-  double eq_ratios_um[num_Ts];
-
   char run_msg[512];
   const char* run_msg_base = "tempcalc (";
+
+  prepare_data_file(bba_eq_title, bba_eq_fname);
+  prepare_data_file(bma_eq_title, bma_eq_fname);
+  prepare_data_file(ta_eq_title,  ta_eq_fname);
+  prepare_data_file(uma_eq_title, uma_eq_fname);
 
   for (int i = 0; i < num_Ts; i++) {
     T = temps[i];
 
     onebound_data eq_data;
+    double bb_double, bm_double, t_double, um_double;
     eq_data.len = 1;
-    eq_data.bb = &eq_ratios_bb[i];
-    eq_data.bm = &eq_ratios_bm[i];
-    eq_data.t =  &eq_ratios_t[i];
-    eq_data.um = &eq_ratios_um[i];
+    eq_data.bb = &bb_double;
+    eq_data.bm = &bm_double;
+    eq_data.t =  &t_double;
+    eq_data.um = &um_double;
 
     onebound_forces force_var_data_struct;
     generic_data unused_force_var_data;
@@ -77,16 +78,11 @@ int main() {
     get_onebound_equipartition_ratio(
 	  &eq_data, &unused_force_var_data, iterations, seeds, seed_len, run_msg);
 
-    eq_ratios_bb[i] = eq_data.bb[0];
-    eq_ratios_bm[i] = eq_data.bm[0];
-    eq_ratios_t [i] = eq_data.t[0];
-    eq_ratios_um[i] = eq_data.um[0];
+    append_data_to_file(&T, eq_data.bb, 1, bba_eq_fname);
+    append_data_to_file(&T, eq_data.bm, 1, bma_eq_fname);
+    append_data_to_file(&T, eq_data.t , 1, ta_eq_fname);
+    append_data_to_file(&T, eq_data.um, 1, uma_eq_fname);
   }
-
-  print_data_to_file(temps, eq_ratios_bb, num_Ts, bba_eq_title, bba_eq_fname);
-  print_data_to_file(temps, eq_ratios_bm, num_Ts, bma_eq_title, bma_eq_fname);
-  print_data_to_file(temps, eq_ratios_t,  num_Ts, ta_eq_title,  ta_eq_fname);
-  print_data_to_file(temps, eq_ratios_um, num_Ts, uma_eq_title, uma_eq_fname);
 
   return 0;
 }
