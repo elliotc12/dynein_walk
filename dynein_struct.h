@@ -329,8 +329,8 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
 void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
 void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
 
-void prepare_data_file(const char* legend, const char* fname);
-void append_data_to_file(double* data1, double* data2, int len, const char* fname);
+void prepare_data_file(const char* legend, char* fname);
+void append_data_to_file(double* data1, double* data2, int len, char* fname);
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
       void (*job)(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration),

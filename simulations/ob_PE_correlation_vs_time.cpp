@@ -1,3 +1,4 @@
+#include <cassert>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -5,7 +6,7 @@
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 
-int main() {
+int main(int argc, char** argv) {
   if (FP_EXCEPTION_FATAL) {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
@@ -22,15 +23,34 @@ int main() {
   const char* ta_corr_title =  "Tail domain";
   const char* uma_corr_title = "Unbound motor";
 
-  const char* bba_corr_fname = "bba_pe_correlation.txt";
-  const char* bma_corr_fname = "bma_pe_correlation.txt";
-  const char* ta_corr_fname = "ta_pe_correlation.txt";
-  const char* uma_corr_fname = "uma_pe_correlation.txt";
+  assert(argc == 2);
+  char* f_appended_name = argv[1];
+  char bba_corr_fname[200];
+  char bma_corr_fname[200];
+  char ta_corr_fname[200];
+  char uma_corr_fname[200];
+
+  strcpy(bba_corr_fname, "data/bba_pe_correlation_");
+  strcpy(bma_corr_fname, "data/bma_pe_correlation_");
+  strcpy(ta_corr_fname,  "data/ta_pe_correlation_");
+  strcpy(uma_corr_fname, "data/uma_pe_correlation_");
+
+  strcat(bba_corr_fname, f_appended_name);
+  strcat(bma_corr_fname, f_appended_name);
+  strcat(ta_corr_fname, f_appended_name);
+  strcat(uma_corr_fname, f_appended_name);
+
+  strcat(bba_corr_fname, ".txt");
+  strcat(bma_corr_fname, ".txt");
+  strcat(ta_corr_fname, ".txt");
+  strcat(uma_corr_fname, ".txt");
 
   prepare_data_file(bba_corr_title, bba_corr_fname);
   prepare_data_file(bma_corr_title, bma_corr_fname);
   prepare_data_file(ta_corr_title,  ta_corr_fname);
   prepare_data_file(uma_corr_title, uma_corr_fname);
+
+  printf("title: %s\n", bba_corr_fname);
 
   generic_data corr_time_data;
   onebound_data corr_data;

@@ -59,7 +59,7 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
 ######################### SIMULATION STUFF ###############################
-TITLE = A plot
+TITLE = defaultplot
 
 bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o  simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)
@@ -78,8 +78,9 @@ ob_PE_correlation_vs_time: dynein_simulate.o dynein_struct_onebound.o dynein_str
 ob_PE_correlation_vs_time_plot: ob_PE_correlation_vs_time FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_correlation_vs_time
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" bba_pe_correlation.txt bma_pe_correlation.txt ta_pe_correlation.txt uma_pe_correlation.txt
+	mkdir -p data
+	./ob_PE_correlation_vs_time $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bba_pe_correlation_$(TITLE).txt data/bma_pe_correlation_$(TITLE).txt data/ta_pe_correlation_$(TITLE).txt data/uma_pe_correlation_$(TITLE).txt
 
 ob_PE_equipartition_ratio_average_vs_time: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_time.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_time.cpp $(CPPFLAGS)
@@ -88,8 +89,9 @@ ob_PE_equipartition_ratio_average_vs_time: dynein_simulate.o dynein_struct_onebo
 ob_PE_equipartition_ratio_average_vs_time_plot: ob_PE_equipartition_ratio_average_vs_time FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_equipartition_ratio_average_vs_time
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_v_time.txt bma_pe_equipartition_ratio_v_time.txt ta_pe_equipartition_ratio_v_time.txt uma_pe_equipartition_ratio_v_time.txt
+	mkdir -p data
+	./ob_PE_equipartition_ratio_average_vs_time $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_v_time_$(TITLE).txt data/bma_pe_equipartition_ratio_v_time_$(TITLE).txt data/ta_pe_equipartition_ratio_v_time_$(TITLE).txt data/uma_pe_equipartition_ratio_v_time_$(TITLE).txt
 
 ob_PE_equipartition_ratio_vs_time: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_vs_time.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_vs_time.cpp $(CPPFLAGS)
@@ -98,8 +100,9 @@ ob_PE_equipartition_ratio_vs_time: dynein_simulate.o dynein_struct_onebound.o dy
 ob_PE_equipartition_ratio_vs_time_plot: ob_PE_equipartition_ratio_vs_time FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_equipartition_ratio_vs_time
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio.txt bma_pe_equipartition_ratio.txt ta_pe_equipartition_ratio.txt uma_pe_equipartition_ratio.txt
+	mkdir -p data
+	./ob_PE_equipartition_ratio_vs_time $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_$(TITLE).txt data/bma_pe_equipartition_ratio_$(TITLE).txt data/ta_pe_equipartition_ratio_$(TITLE).txt data/uma_pe_equipartition_ratio_$(TITLE).txt
 
 ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
@@ -108,8 +111,9 @@ ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_s
 ob_PE_equipartition_ratio_average_vs_spring_constant_plot: ob_PE_equipartition_ratio_average_vs_spring_constant FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_equipartition_ratio_average_vs_spring_constant
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Spring constant (nm^2*kg/s^2)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_c.txt bma_pe_equipartition_ratio_vs_c.txt ta_pe_equipartition_ratio_vs_c.txt uma_pe_equipartition_ratio_vs_c.txt
+	mkdir -p data
+	./ob_PE_equipartition_ratio_average_vs_spring_constant $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Spring constant (nm^2*kg/s^2)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_c_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_c_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_c_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_c_$(TITLE).txt
 
 ob_PE_equipartition_ratio_average_vs_force_ratio: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp $(CPPFLAGS)
@@ -118,8 +122,9 @@ ob_PE_equipartition_ratio_average_vs_force_ratio: dynein_simulate.o dynein_struc
 ob_PE_equipartition_ratio_average_vs_force_ratio_plot: ob_PE_equipartition_ratio_average_vs_force_ratio FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_equipartition_ratio_average_vs_force_ratio
-	./make_plot.py --scatter --figtitle="$(TITLE)" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_f_ratio.txt bma_pe_equipartition_ratio_vs_f_ratio.txt ta_pe_equipartition_ratio_vs_f_ratio.txt uma_pe_equipartition_ratio_vs_f_ratio.txt
+	mkdir -p data
+	./ob_PE_equipartition_ratio_average_vs_force_ratio $(TITLE)
+	./make_plot.py --scatter --figtitle="$(TITLE)" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt
 
 ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp $(CPPFLAGS)
@@ -128,8 +133,9 @@ ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struc
 ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio_average_vs_temperature FORCE
 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
 	mkdir -p plots
-	./ob_PE_equipartition_ratio_average_vs_temperature
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 bba_pe_equipartition_ratio_vs_T.txt bma_pe_equipartition_ratio_vs_T.txt ta_pe_equipartition_ratio_vs_T.txt uma_pe_equipartition_ratio_vs_T.txt
+	mkdir -p data
+	./ob_PE_equipartition_ratio_average_vs_temperature $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_T_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_T_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_T_$(TITLE).txt
 
 ########################### THESIS STUFF #################################
 
@@ -148,6 +154,11 @@ clean:
 	rm -f ob_PE_correlation_vs_time
 	rm -f ob_PE_equipartition_ratio_vs_time
 	rm -f ob_PE_equipartition_ratio_average_vs_time
+	rm -f ob_PE_equipartition_ratio_average_vs_force_ratio
+	rm -f ob_PE_equipartition_ratio_average_vs_spring_constant
+	rm -f ob_PE_equipartition_ratio_average_vs_temperature
+	rm -f onebound_PE_equipartition_correlation
+	rm -f ob_equipartition_test
 	rm -f data.txt
 	rm -f config.txt
 	rm -f latex/*.aux

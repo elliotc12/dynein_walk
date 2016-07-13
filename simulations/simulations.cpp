@@ -85,7 +85,7 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, 
        run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
-void prepare_data_file(const char* legend, const char* fname) {
+void prepare_data_file(const char* legend, char* fname) {
   char buf[(strlen(legend) + 1) * sizeof(char)];
   sprintf(buf, "%s\n", legend);
 
@@ -94,11 +94,13 @@ void prepare_data_file(const char* legend, const char* fname) {
   fclose(data_file);
 }
 
-void append_data_to_file(double* data1, double* data2, int len, const char* fname) {
-  char buf[(12+5+12+1)*len*sizeof(char)]; // 5 spaces, each double 12 chars, newline, legend
+void append_data_to_file(double* data1, double* data2, int len, char* fname) {
+  char* buf =
+    (char*) malloc((12+5+12+1)*len*sizeof(char)); // 5 spaces, each double 12 chars, newline, legend
   int buf_offset = 0;
 
   for (int i = 0; i < len; i++) {
+    assert(data1[i] == data1[i]);
     assert(data2[i] == data2[i]); // check for NaNs
     sprintf(&buf[buf_offset], "%+.5e     %+.5e\n", data1[i], data2[i]);
     buf_offset += 30;

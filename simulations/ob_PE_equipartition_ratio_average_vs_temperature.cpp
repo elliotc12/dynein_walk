@@ -1,14 +1,16 @@
+#include <cassert>
 #include <stdio.h>
 #include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 
-int main() {
+int main(int argc, char** argv) {
   if (FP_EXCEPTION_FATAL) {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
+  
   int iterations = 1e5;
   Lt = 15;
   Ls = 15;
@@ -24,10 +26,27 @@ int main() {
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  const char* bba_eq_fname = "bba_pe_equipartition_ratio_vs_T.txt";
-  const char* bma_eq_fname = "bma_pe_equipartition_ratio_vs_T.txt";
-  const char* ta_eq_fname =  "ta_pe_equipartition_ratio_vs_T.txt";
-  const char* uma_eq_fname = "uma_pe_equipartition_ratio_vs_T.txt";
+  assert(argc == 2);
+  char* f_appended_name = argv[1];
+  char bba_eq_fname[200];
+  char bma_eq_fname[200];
+  char ta_eq_fname[200];
+  char uma_eq_fname[200];
+
+  strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_vs_T_");
+  strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_T_");
+  strcpy(ta_eq_fname, "data/ta_pe_equipartition_ratio_vs_T_");
+  strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_T_");
+
+  strcat(bba_eq_fname, f_appended_name);
+  strcat(bma_eq_fname, f_appended_name);
+  strcat(ta_eq_fname, f_appended_name);
+  strcat(uma_eq_fname, f_appended_name);
+
+  strcat(bba_eq_fname, ".txt");
+  strcat(bma_eq_fname, ".txt");
+  strcat(ta_eq_fname, ".txt");
+  strcat(uma_eq_fname, ".txt");
 
   const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);

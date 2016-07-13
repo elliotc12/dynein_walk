@@ -1,10 +1,11 @@
+#include <cassert>
 #include <stdio.h>
 #include <string.h>
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 
-int main() {
+int main(int argc, char** argv) {
   if (FP_EXCEPTION_FATAL) {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
@@ -17,15 +18,32 @@ int main() {
   
   int num_eq_datapoints = (max_eq_iter - min_eq_iter) / d_runtime_iter;
 
-  const char* bba_eq_title = "Bound binding domain (bba)";
-  const char* bma_eq_title = "Bound motor domain (bma)";
-  const char* ta_eq_title =  "Tail domain (ta)";
-  const char* uma_eq_title = "Unbound motor domain (uma)";
+  const char* bba_eq_title = "Bound binding";
+  const char* bma_eq_title = "Bound motor";
+  const char* ta_eq_title =  "Tail domain";
+  const char* uma_eq_title = "Unbound motor";
 
-  const char* bba_eq_fname = "bba_pe_equipartition_ratio.txt";
-  const char* bma_eq_fname = "bma_pe_equipartition_ratio.txt";
-  const char* ta_eq_fname =  "ta_pe_equipartition_ratio.txt";
-  const char* uma_eq_fname = "uma_pe_equipartition_ratio.txt";
+  assert(argc == 2);
+  char* f_appended_name = argv[1];
+  char bba_eq_fname[200];
+  char bma_eq_fname[200];
+  char ta_eq_fname[200];
+  char uma_eq_fname[200];
+
+  strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_");
+  strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_");
+  strcpy(ta_eq_fname,  "data/ta_pe_equipartition_ratio_");
+  strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_");
+
+  strcat(bba_eq_fname, f_appended_name);
+  strcat(bma_eq_fname, f_appended_name);
+  strcat(ta_eq_fname, f_appended_name);
+  strcat(uma_eq_fname, f_appended_name);
+
+  strcat(bba_eq_fname, ".txt");
+  strcat(bma_eq_fname, ".txt");
+  strcat(ta_eq_fname, ".txt");
+  strcat(uma_eq_fname, ".txt");
 
   prepare_data_file(bba_eq_title, bba_eq_fname);
   prepare_data_file(bma_eq_title, bma_eq_fname);
