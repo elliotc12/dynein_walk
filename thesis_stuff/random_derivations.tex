@@ -47,17 +47,23 @@
 
 \maketitle{}
 
-\section{Brownian motion via Langevin Equation and Equipartition Theorem}
+\section{Brownian motion}
+\subsection{Derivation} \label{sec:bmotion-derivation}
+We can derive the equation for the position of a particle using the simple Newtonian mechanics. We
+start with the general $2^{nd}$ law equation for a particle with random forces and drag (the
+Langevin equation). We then take the time-averages of all variables (using expectation value signs)
+to eliminate the effect of random Brownian forces. After some algebra we arrive at a differential
+equation for squared position. We solve it and simplify its expression for limits when $t >> \tau$
+and $t << \tau$.\\
 
 \begin{align*}
   \frac{d\vec{v}}{dt} &= \frac{1}{m}\left(\frac{-mv}{\tau} + R\right)\\
   \frac{d\vec{v}}{dt} &= \frac{-v}{\tau} + \frac{R}{m}\\
-  <\vec{r} \cdot \frac{d\vec{v}}{dt} > + \frac{1}{\tau}<\vec{R} \cdot \vec{v}> &= 0\\
-  \frac{1}{2}\frac{d^2}{dt^2}(r^2) + \frac{1}{2\tau}\frac{d}{dt}(r^2) - v^2 &= 0 \hspace{2cm} \Bigg(
-  \frac{d}{dt}\left(\vec{r} \cdot \vec{v}\right) = v^2 + \left(\vec{r} \cdot \frac{d\vec{v}}{dt}\right)
+  <\vec{r} \cdot \frac{d\vec{v}}{dt} > &+ \frac{1}{\tau}<\vec{r} \cdot \vec{v}> = 0\\
+  \frac{1}{2}\frac{d^2}{dt^2}(r^2) &+ \frac{1}{2\tau}\frac{d}{dt}(r^2) - v^2 = 0 \hspace{1cm} \Bigg(\mbox{b/c }\frac{d}{dt}\left(\vec{r} \cdot \vec{v}\right) = v^2 + \left(\vec{r} \cdot \frac{d\vec{v}}{dt}\right)
   \mbox{ and }
-  \frac{d^2}{dt^2}\left(\vec{r} \cdot \vec{r}\right) = 2\left(\vec{r} \cdot \vec{v}\right) \Bigg)\\
-  \frac{d^2}{dt^2}(r^2) + \frac{1}{\tau}\frac{d}{dt}(r^2) &= 2<v^2> = \frac{6k_BT}{m}\\
+  \frac{d}{dt}\left(\vec{r} \cdot \vec{r}\right) = 2\left(\vec{r} \cdot \vec{v}\right) \Bigg)\\
+  \frac{d^2}{dt^2}(<r^2>) + &\frac{1}{\tau}\frac{d}{dt}(<r^2>) = 2<v^2> = \frac{6k_BT}{m} \hspace{1cm}\left(\mbox{Equipartition Theorem}\right)\\
   <r^2> &= \frac{6k_BT\tau^2}{m}\left(e^{-t/\tau}-1+\frac{t}{\tau}\right)\\
 \end{align*}
 
@@ -68,8 +74,50 @@ so...
   \left(t >> \tau \right) \rightarrow <r^2> = \frac{6k_BT\tau}{m}t \hspace{2cm}\mbox{motion proportional to }\sqrt{t}\\
 \end{align*}
 
-\section{Equipartition Theorem for quadratic energies}
+\textbf{Averaging over time?}
+In the above derivation we use time averaging to eliminate the effect of Brownian forces. This is
+essentially just discussing the motion of a particle on a timescale where Brownian forces go to
+zero. The variance of the Brownian force R is:
 
+\begin{align*}
+  \sigma_R^2 &= \sqrt{\frac{2k_BTm}{\tau dt}}\\
+\end{align*}
+
+(TODO: further justify the dt in the variance)\\
+Thus over larger timescales (bigger dt's) the Brownian force is smaller. When time averaging, all
+we are saying is that our dt is large enough that Brownian forces are negligible.\\
+
+An interesting observation is that the motion equation for a particle feeling Brownian forces is
+identical to the equation for a macroscopic object feeling drag forces, which makes sense, since
+to solve the Brownian motion equation we just eliminate R.\\
+
+\section{Brownian dynamics}
+We use Brownian dynamics as our equation of motion. BD is just the special case of Langevin dynamics
+
+\begin{align*}
+  m\frac{d\vec{v}}{dt} &= -\frac{m}{\tau}\vec{v} + \vec{F} + \vec{R}\\
+\end{align*}
+
+where $m\rightarrow0$:
+
+\begin{align*}
+  \vec{v} &= \frac{\tau}{m}\vec{F} + \frac{\tau}{m}\vec{R}\\
+\end{align*}
+
+where m is the mass, $\tau$ the time constant, $\vec{F}$ a generic force and $\vec{R}$ the Brownian
+force. Mass ``going to zero'' means we are discussing particles where $m << $ any other variable.
+Because m is tiny the particle effectively has no net force on it, so the drag force must cancel
+out the other forces. From this we can find velocity.\\
+
+\subsection{What is $\tau$?}
+Tau is a time constant that describes the behavior of a system with respect to time. By looking at
+the motion equations for Brownian systems in Section (\ref{sec:bmotion-derivation}), we see that the
+size of t with respect to $\tau$ decides what type of motion the particle will feel. On the ``small''
+timescale the system displays free particle motion, but on the ``large'' timescale, the system
+displays Brownian motion. $\tau$ can be thought of as the time the system switches from free to
+Brownian motion.\\
+
+\section{Equipartition Theorem for quadratic energies}
 \begin{align*}
   Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
   <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
