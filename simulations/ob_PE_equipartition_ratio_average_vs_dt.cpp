@@ -30,7 +30,10 @@ int main(int argc, char** argv) {
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_eq_fname[200];
   char bma_eq_fname[200];
@@ -52,10 +55,12 @@ int main(int argc, char** argv) {
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
 
-  const int seeds[] = {0, 1, 2, 3};
+  const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  const double dts[] = {1e-12, 5e-12, 1e-11, 5e-11, 1e-10, 5e-10, 1e-9, 5e-9};
+  const double dts[] = {1e-12, 5e-12, 1e-11,
+			1.5e-11, 2.5e-11, 5e-11, 6e-11, 7.5e-11, 9e-11, 1e-10, 2.5e-10,
+			3.5e-10, 5e-10, 5e-10, 7.5e-10, 9e-10, 1e-9, 2.5e-9};
   int num_dts = sizeof(dts) / sizeof(double);
   
   char run_msg[512];

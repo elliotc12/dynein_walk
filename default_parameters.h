@@ -32,9 +32,9 @@ double D = 2*kb*T / ((gt + gm + gb) / 3);
 
 double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
-double dt = 1e-9; // tau/100
+double dt = 2e-11; // from ob_PE_equipartition_average_vs_dt plot
 
-double bba_correlation_time = 1e-5; // found by eyeballing the ob_PE_correlation_vs_time plot for bba
+double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
 
 double binding_preexponential_factor = 1e10;
 double unbinding_preexponential_factor = 1e5;

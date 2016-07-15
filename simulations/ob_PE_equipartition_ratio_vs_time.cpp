@@ -23,7 +23,10 @@ int main(int argc, char** argv) {
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_eq_fname[200];
   char bma_eq_fname[200];

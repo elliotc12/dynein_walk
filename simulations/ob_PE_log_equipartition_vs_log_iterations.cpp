@@ -14,8 +14,8 @@ int main(int argc, char** argv) {
   }
 
   T = 1000;
-  int max_eq_iter = 1e7;
-  int min_eq_iter = 1e2;
+  long long max_eq_iter = 1e10;
+  long long min_eq_iter = 1e2;
   int num_eq_datapoints = 500;
 
   Lt = 15;
@@ -27,12 +27,19 @@ int main(int argc, char** argv) {
   gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
   gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
+  cb = 0.5;
+  cm = 0.5;
+  ct = 0.5;
+
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_eq_fname[200];
   char bma_eq_fname[200];

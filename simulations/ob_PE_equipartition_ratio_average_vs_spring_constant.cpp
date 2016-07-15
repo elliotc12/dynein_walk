@@ -10,28 +10,20 @@ int main(int argc, char** argv) {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e5;
+  int iterations = 1e7;
 
-  int low_T  = 1000;
-  int high_T = 10000;
-
-  Lt = 15;
-  Ls = 15;
-
-  fake_radius_t = 1.5;
-  fake_radius_m = 1.5;
-  fake_radius_b = 1.5;
-
-  gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
-  gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
-  gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
+  int low_T  = 500;
+  int high_T = 2000;
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_eq_fname[200];
   char bma_eq_fname[200];
@@ -58,13 +50,13 @@ int main(int argc, char** argv) {
   prepare_data_file(ta_eq_title,  ta_eq_fname);
   prepare_data_file(uma_eq_title, uma_eq_fname);
 
-  const int seeds[] = {0, 1};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  int spring_len = 100;
+  int spring_len = 10;
   double spring_constants[spring_len];
-  int min_spring = 1;
-  int max_spring = 650;
+  int min_spring = 0.1*kb;
+  int max_spring = 10*kb;
   int d_spring = (max_spring - min_spring) / spring_len;
   int spring = min_spring;
   int i = 0;
@@ -79,10 +71,6 @@ int main(int argc, char** argv) {
   const char* run_msg_base = "springconst calc (";
 
   for (int i = 0; i < spring_len; i++) {
-    ct = spring_constants[i];
-    cm = spring_constants[i];
-    cb = spring_constants[i];
-
     onebound_data low_eq_data;
     double low_T_bb, low_T_bm, low_T_t, low_T_um;
     low_eq_data.len = 1;
@@ -104,14 +92,22 @@ int main(int argc, char** argv) {
     unused_data.data = &unused_forces;
 
     T = low_T;
+    ct = spring_constants[i]*T;
+    cm = spring_constants[i]*T;
+    cb = spring_constants[i]*T;
+    
     char buf[50];
     strcpy(run_msg, run_msg_base);
-    sprintf(buf, "c = %.1f, temp = %.1f, ", spring_constants[i], T);
+    sprintf(buf, "c = %.1g, temp = %.1g, ", spring_constants[i], T);
     strcat(run_msg, buf);
     get_onebound_equipartition_ratio
       (&low_eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
 
     T = high_T;
+    ct = spring_constants[i]*T;
+    cm = spring_constants[i]*T;
+    cb = spring_constants[i]*T;
+    
     strcpy(run_msg, run_msg_base);
     sprintf(buf, "c = %.1f, temp = %.1f, ", spring_constants[i], T);
     strcat(run_msg, buf);

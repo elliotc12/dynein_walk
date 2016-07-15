@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
   }
 
   T = 1000;
-  int iterations = 1e7;
+  int iterations = 1e6;
 
   int max_tau_iter = iterations * 0.4;
   int num_corr_datapoints = 1000;
@@ -23,7 +23,10 @@ int main(int argc, char** argv) {
   const char* ta_corr_title =  "Tail domain";
   const char* uma_corr_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_corr_fname[200];
   char bma_corr_fname[200];

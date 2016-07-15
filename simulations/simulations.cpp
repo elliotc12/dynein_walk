@@ -15,7 +15,7 @@ void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union 
   long long max_iteration = *((long long**) job_msg)[0];
   double start_time = *((double**) job_msg)[1];
   char* run_msg = ((char**) job_msg)[2];
-  
+
   Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
   job_data->ob_data.bb[iteration] = dyn_ob->PE_bba;
   job_data->ob_data.bm[iteration] = dyn_ob->PE_bma;
@@ -306,7 +306,7 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
     eq_data->t[i]  = 0;
     eq_data->um[i] = 0;
   }
-  
+
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 

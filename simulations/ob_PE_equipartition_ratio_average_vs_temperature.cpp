@@ -11,22 +11,17 @@ int main(int argc, char** argv) {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  int iterations = 1e6;
-  // Lt = 15;
-  // Ls = 15;
-  // fake_radius_t = 1.5;
-  // fake_radius_m = 1.5;
-  // fake_radius_b = 1.5;
-  // gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
-  // gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
-  // gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
+  int iterations = 1e8;
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
   const char* ta_eq_title =  "Tail domain";
   const char* uma_eq_title = "Unbound motor";
 
-  assert(argc == 2);
+  if (argc != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
   char* f_appended_name = argv[1];
   char bba_eq_fname[200];
   char bma_eq_fname[200];
