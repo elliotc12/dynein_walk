@@ -3,8 +3,6 @@
 double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
 double T = 293.0; // K
 
-double dt = 1e-12;
-
 double Lt = 15.0; // nm, guess - not sure how DNA tail-bridge works
 double Ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
@@ -26,9 +24,15 @@ double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-double ct = 0.5; // force*distance = energy = nm^2 * kg / s^2
-double cm = 0.5; // ???
-double cb = 0.5; // ???
+double ct = kb*T; // 0.5*c*<theta^2> = 0.5*kb*T
+double cm = kb*T;
+double cb = kb*T;
+
+double D = 2*kb*T / ((gt + gm + gb) / 3);
+
+double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
+
+double dt = 1e-9; // tau/100
 
 double bba_correlation_time = 1e-5; // found by eyeballing the ob_PE_correlation_vs_time plot for bba
 
