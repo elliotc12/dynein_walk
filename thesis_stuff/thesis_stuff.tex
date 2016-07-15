@@ -183,7 +183,105 @@ displays Brownian motion. $\tau$ can be thought of as the time the system switch
 Brownian motion.\\
 
 \section{Finding a reasonable dt}
-The timescale of our simulation 
+TODO: describe the relationship between diffusion constant D, time constant $\tau$ and dt.\\
+
+\subsection{Relating D to $\tau$}
+
+I don't really understand this derivation:
+
+\begin{align*}
+  \sin\left(\delta\theta\right) &\approx \delta\theta = \frac{x}{L}\\
+  \delta\theta^2 &= \frac{x^2}{L^2} = \frac{Dt}{L^2}\\
+\end{align*}
+
+We set our $\tau$ to be the time when $<\delta\theta^2> \approx 1$, so:
+
+\begin{align*}
+  \tau = \frac{L^2}{D}\\
+\end{align*}
+
+\subsection{Finding D}
+For a particle feeling Brownian motion:
+
+\begin{align*}
+  \frac{\delta x}{\delta t} &= \frac{\tau}{m} R\\
+\end{align*}
+
+We say the magnitude of R is the standard deviation of a Gaussian process:
+
+\begin{align*}
+  \frac{\delta x}{\delta t} &= \frac{\tau}{m}\sqrt{\frac{2k_BTm}{\tau \delta t}}\\
+  \delta x &= \sqrt{\frac{2k_BT\tau}{m\delta t}}\\
+  <\delta x^2> &= \frac{2k_BT\tau}{m}\delta t\\
+\end{align*}
+
+We then use the Brownian motion equation for $t >> \tau$ to find D:\\
+
+\begin{align*}
+  <\delta x^2> &= D\delta t = \frac{2k_BT\tau}{m}\delta t\\
+  D = \frac{2k_BT\tau}{m}\\
+\end{align*}
+
+\subsection{Alternative derivation of D (Einstein relation)}
+We can also arrive at an expression for D through an equilibrium argument. There are two forces which cause currents in solutions: drift and diffusion.
+Drift is motion due to a force acting on particles. Diffusion is current due to random, natural motions of particles. Our equilibrium condition is when
+the flux of particles due to both effects is equal, so there is no net particle flow. We first need to describe these fluxes:
+
+\textbf{Drift flux}\\
+Our particles obey Brownian dynamics, so $\gamma\dot{x} = F$, where $\gamma$ is the drag force constant. Flux J, or particles per second-area, can be
+found by multiplying the velocity of particles by the concentration $\rho$:
+
+\begin{align*}
+  J_{drift} &= \frac{1}{\gamma}F(x)\rho(x)\\
+  &= -\frac{1}{\gamma}\rho(x)\nabla U\\
+\end{align*}
+
+\textbf{Diffusion flux}\\
+Flux due to diffusion is proportional to the negative gradient in concentration and D:
+
+\begin{align*}
+  J_{diff} &= -D\nabla \rho(x)\\
+\end{align*}
+
+\textbf{Solving for D}
+The concentration gradient in a solution is proportional to the energy gradient. By the chain rule:
+
+\begin{align*}
+  \nabla \rho &= \frac{\partial\rho}{\partial U} \nabla U\\
+\end{align*}
+
+We then set the sum of our two fluxes to zero and solve for the equilibrium condition:
+
+\begin{align*}
+  J_{diff} + J_{drift} &= 0\\
+  -\frac{1}{\gamma}\rho(x)\nabla U - D\nabla \rho(x) &= 0\\
+  \frac{1}{\gamma}\rho(x)\nabla U + D \frac{\partial\rho}{\partial U} \nabla U&= 0\\
+  \left(\frac{1}{\gamma}\rho(x) + D\frac{\partial\rho}{\partial U}\right)\nabla U &= 0\\
+\end{align*}
+
+because $\nabla U$ is not guarenteed to be zero everywhere, it must be the case that:
+
+\begin{align*}
+  \frac{1}{\gamma}\rho(x) &= -D\frac{\partial\rho}{\partial U}\\
+  \frac{-\rho(x)}{\gamma\frac{\partial\rho}{\partial U}} &= D\\
+\end{align*}
+
+\textbf{Finding d$\rho$/dU}
+To simplify this value, we note that, because the particles do not interact, energy is purely a function of position. Thus, by
+Maxwell-Boltzman statistics, the probability of being at a location x (i.e $\rho(x)$) is proportional to $e^{-\beta U(x)}$.
+From this we can find an expression for concentration and d$\rho(x)/dU(x)$:
+
+\begin{align*}
+  \rho(x) &= Ae^{-\beta U(x)}\\
+  \frac{\partial \rho(x)}{\partial U} &= \frac{-1}{k_BT}Ae^{-\beta U(x)}\\
+\end{align*}
+
+Plugging these expressions into our D equation, in addition to our definition for $\gamma$, we can see that:
+
+\begin{align*}
+  \frac{-1}{\gamma\frac{-1}{k_BT}} &= D\\
+  D &= \frac{k_BT}{\gamma} = \frac{k_BT\tau}{m}\\
+\end{align*}
 
 \section{Equipartition Theorem for quadratic energies}
 \begin{align*}
