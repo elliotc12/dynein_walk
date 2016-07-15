@@ -149,6 +149,17 @@ ob_PE_log_equipartition_vs_log_iterations_plot: ob_PE_log_equipartition_vs_log_i
 	./ob_PE_log_equipartition_vs_log_iterations "$(TITLE)"
 	./make_plot.py --loglog --figtitle="$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET | - 1)" --hline=1.0 data/bba_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/bma_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/ta_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/uma_pe_log_equipartition_vs_log_iterations_$(TITLE).txt
 
+ob_PE_equipartition_ratio_average_vs_dt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp FORCE
+	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp $(CPPFLAGS)
+	g++ ob_PE_equipartition_ratio_average_vs_dt.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_dt
+
+ob_PE_equipartition_ratio_average_vs_dt_plot: ob_PE_equipartition_ratio_average_vs_dt FORCE
+	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+	mkdir -p plots
+	mkdir -p data
+	./ob_PE_equipartition_ratio_average_vs_dt $(TITLE)
+	./make_plot.py --figtitle="$(TITLE)" --xlabel="log(dt)" --ylabel="PE / 0.5*kb*T" --logx data/bba_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_dt_$(TITLE).txt
+
 ########################### THESIS STUFF #################################
 
 thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE
@@ -169,6 +180,7 @@ clean:
 	rm -f ob_PE_equipartition_ratio_average_vs_force_ratio
 	rm -f ob_PE_equipartition_ratio_average_vs_spring_constant
 	rm -f ob_PE_equipartition_ratio_average_vs_temperature
+	rm -f ob_PE_equipartition_ratio_average_vs_dt
 	rm -f ob_PE_log_equipartition_vs_log_iterations
 	rm -f onebound_PE_equipartition_correlation
 	rm -f ob_equipartition_test

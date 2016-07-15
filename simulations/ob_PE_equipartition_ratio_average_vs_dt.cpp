@@ -11,15 +11,19 @@ int main(int argc, char** argv) {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  int iterations = 1e6;
-  // Lt = 15;
-  // Ls = 15;
-  // fake_radius_t = 1.5;
-  // fake_radius_m = 1.5;
-  // fake_radius_b = 1.5;
-  // gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
-  // gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
-  // gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
+  double time = 1e-3;
+  Lt = 15;
+  Ls = 15;
+  fake_radius_t = 1.5;
+  fake_radius_m = 1.5;
+  fake_radius_b = 1.5;
+  gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
+  gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
+  gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
+
+  cb = 1.5;
+  cm = 1.5;
+  ct = 1.5;
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
@@ -33,10 +37,10 @@ int main(int argc, char** argv) {
   char ta_eq_fname[200];
   char uma_eq_fname[200];
 
-  strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_vs_T_");
-  strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_T_");
-  strcpy(ta_eq_fname, "data/ta_pe_equipartition_ratio_vs_T_");
-  strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_T_");
+  strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_vs_dt_");
+  strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_dt_");
+  strcpy(ta_eq_fname, "data/ta_pe_equipartition_ratio_vs_dt_");
+  strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_dt_");
 
   strcat(bba_eq_fname, f_appended_name);
   strcat(bma_eq_fname, f_appended_name);
@@ -48,33 +52,22 @@ int main(int argc, char** argv) {
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
 
-  const int seeds[] = {0, 1};
+  const int seeds[] = {0, 1, 2, 3};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  int num_Ts = 10;
-  double temps[num_Ts];
-  double min_temp = 150;
-  double max_temp = 2000.0;
-  double d_temp = (max_temp - min_temp) / num_Ts;
-  double temp = min_temp;
-  int i = 0;
-
-  while(temp < max_temp) {
-    temps[i] = temp;
-    temp += d_temp;
-    i++;
-  }
-
+  const double dts[] = {1e-12, 5e-12, 1e-11, 5e-11, 1e-10, 5e-10, 1e-9, 5e-9};
+  int num_dts = sizeof(dts) / sizeof(double);
+  
   char run_msg[512];
-  const char* run_msg_base = "tempcalc (";
+  const char* run_msg_base = "dt calc (";
 
   prepare_data_file(bba_eq_title, bba_eq_fname);
   prepare_data_file(bma_eq_title, bma_eq_fname);
   prepare_data_file(ta_eq_title,  ta_eq_fname);
   prepare_data_file(uma_eq_title, uma_eq_fname);
 
-  for (int i = 0; i < num_Ts; i++) {
-    T = temps[i];
+  for (int i = 0; i < num_dts; i++) {
+    dt = dts[i];
 
     onebound_data eq_data;
     double bb_double, bm_double, t_double, um_double;
@@ -91,16 +84,19 @@ int main(int argc, char** argv) {
 
     strcpy(run_msg, run_msg_base);
     char buf[50];
-    sprintf(buf, "temp = %.1f, ", T);
+    sprintf(buf, "dt = %g, ", dt);
     strcat(run_msg, buf);
 
+    int iterations = time / dt;
+    printf("time: %g, dt: %g, iterations: %d\n", time, dt, iterations);
+    
     get_onebound_equipartition_ratio(
 	  &eq_data, &unused_force_var_data, iterations, seeds, seed_len, run_msg);
 
-    append_data_to_file(&T, eq_data.bb, 1, bba_eq_fname);
-    append_data_to_file(&T, eq_data.bm, 1, bma_eq_fname);
-    append_data_to_file(&T, eq_data.t , 1, ta_eq_fname);
-    append_data_to_file(&T, eq_data.um, 1, uma_eq_fname);
+    append_data_to_file(&dt, eq_data.bb, 1, bba_eq_fname);
+    append_data_to_file(&dt, eq_data.bm, 1, bma_eq_fname);
+    append_data_to_file(&dt, eq_data.t , 1, ta_eq_fname);
+    append_data_to_file(&dt, eq_data.um, 1, uma_eq_fname);
   }
 
   return 0;

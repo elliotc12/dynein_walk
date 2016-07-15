@@ -49,7 +49,7 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
   MICROTUBULE_REPULSION_FORCE, MICROTUBULE_BINDING_DISTANCE,
   RAND_INIT_SEED, binding_preexponential_factor,
-  unbinding_preexponential_factor;
+  unbinding_preexponential_factor, D, tau;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
