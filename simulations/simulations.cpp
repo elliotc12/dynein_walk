@@ -96,7 +96,7 @@ void prepare_data_file(const char* legend, char* fname) {
 
 void append_data_to_file(double* data1, double* data2, int len, char* fname) {
   char* buf =
-    (char*) malloc((12+5+12+1)*len*sizeof(char)); // 5 spaces, each double 12 chars, newline, legend
+    (char*) malloc(((12+5+12+1)*len + 1)*sizeof(char)); // 5 spaces, 2x double 12 chars, newline, null
   int buf_offset = 0;
 
   for (int i = 0; i < len; i++) {
@@ -210,15 +210,11 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long num_eq_datapoints, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  long long num_eq_datapoints;
-  if (min_runtime_iter == max_runtime_iter)
-    num_eq_datapoints = 1;
-  else
-     num_eq_datapoints = (max_runtime_iter - min_runtime_iter) / d_runtime_iter;
+  long long d_runtime_iter = (max_runtime_iter - min_runtime_iter) / num_eq_datapoints;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -285,15 +281,11 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   free(data.bb); free(data.bm); free(data.t); free(data.um);
 }
 
-void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
+void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long num_eq_datapoints, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  long long num_eq_datapoints;
-  if (min_runtime_iter == max_runtime_iter)
-    num_eq_datapoints = 1;
-  else
-     num_eq_datapoints = (max_runtime_iter - min_runtime_iter) / d_runtime_iter;
+  long long d_runtime_iter = (max_runtime_iter - min_runtime_iter) / num_eq_datapoints;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
@@ -339,27 +331,27 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
 
     double start_time = (double) clock();
 
-    for (long long runtime_iter = min_runtime_iter; runtime_iter < max_runtime_iter; runtime_iter += d_runtime_iter) {
+    for (long long i = 0; i < num_eq_datapoints; i++) {
+      long long runtime_iter = min_runtime_iter + i*d_runtime_iter;
       double bba_eq_ratio = get_average(bba_PE_data, runtime_iter) / (0.5*kb*T);
       double bma_eq_ratio = get_average(bma_PE_data, runtime_iter) / (0.5*kb*T);
       double  ta_eq_ratio = get_average( ta_PE_data, runtime_iter) / (0.5*kb*T);
       double uma_eq_ratio = get_average(uma_PE_data, runtime_iter) / (0.5*kb*T);
 
-      long long iteration = (runtime_iter - min_runtime_iter) / d_runtime_iter;
-      assert(iteration < eq_data->len);
+      assert(i < eq_data->len);
 
-      if (runtime_data != NULL) ((double*) runtime_data->data)[iteration] = runtime_iter * dt;
-      eq_data->bb[iteration] += bba_eq_ratio / seed_len;
-      eq_data->bm[iteration] += bma_eq_ratio / seed_len;
-      eq_data->t[iteration]  += ta_eq_ratio  / seed_len;
-      eq_data->um[iteration] += uma_eq_ratio / seed_len;
+      if (runtime_data != NULL) ((double*) runtime_data->data)[i] = runtime_iter * dt;
+      eq_data->bb[i] += bba_eq_ratio / seed_len;
+      eq_data->bm[i] += bma_eq_ratio / seed_len;
+      eq_data->t[i]  += ta_eq_ratio  / seed_len;
+      eq_data->um[i] += uma_eq_ratio / seed_len;
 
       if (runtime_iter/d_runtime_iter % 1 == 0) {
 	printf("equipartition ratio progress: %g%%                \r",
-	     ((double) iteration) / num_eq_datapoints * 100);
+	     ((double) i) / num_eq_datapoints * 100);
 	fflush(NULL);
       }
-      if (iteration == eq_data->len - 1) printf("Finished equipartition calculations for seed %f,"
+      if (i == eq_data->len - 1) printf("Finished equipartition calculations for seed %f,"
 	"process took %g seconds                \n",
         RAND_INIT_SEED, ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }

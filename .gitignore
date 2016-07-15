@@ -7,6 +7,7 @@ latex/latexlog.txt
 *.tum
 GIFS/*.gif
 PNGs/*.png
+data/*
 *~
 *.o
 config.txt

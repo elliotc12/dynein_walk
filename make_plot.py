@@ -5,15 +5,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:s", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter"])
+plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sl", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "loglog"])
 
 showplot = False
 hline = False
 scatter = False
+loglog = False
 
 for param, value in plot_params:
     if (param == "--figtitle"):
-        title = value
+        title_list = ([' ' if (a == '_') else a for a in value])
+        title = ''.join(title_list)
     elif (param == "--xlabel"):
         xlabel = value
     elif (param == "--ylabel"):
@@ -25,6 +27,8 @@ for param, value in plot_params:
         hlineval = value
     elif (param == "--scatter"):
         scatter = True
+    elif (param == "--loglog"):
+        loglog = True
 
 max_x_value = 0
 
@@ -61,6 +65,10 @@ plt.legend(fontsize="small", loc="center left", framealpha=0.0,
             bbox_to_anchor=(1, 0.5))
 
 plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if loglog:
+    ax.set_yscale('log')
+    ax.set_xscale('log')
 
 if showplot:
     plt.show()

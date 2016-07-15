@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,9 +14,18 @@ int main(int argc, char** argv) {
   }
 
   T = 1000;
-  int max_eq_iter = 1e8;
-  int min_eq_iter = 0.1*max_eq_iter;
-  int num_eq_datapoints = 50;
+  int max_eq_iter = 1e7;
+  int min_eq_iter = 1e2;
+  int num_eq_datapoints = 500;
+
+  Lt = 15;
+  Ls = 15;
+  fake_radius_t = 1.5;
+  fake_radius_m = 1.5;
+  fake_radius_b = 1.5;
+  gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
+  gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
+  gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
@@ -72,11 +82,11 @@ int main(int argc, char** argv) {
         min_eq_iter, max_eq_iter, seeds, seed_len, run_msg);
 
   for (int i = 0; i < num_eq_datapoints; i++) {
-    eq_data.bb[i] = log(eq_data.bb[i] - 1);
-    eq_data.bm[i] = log(eq_data.bm[i] - 1);
-    eq_data.t[i]  = log(eq_data.t[i] - 1);
-    eq_data.um[i] = log(eq_data.um[i] - 1);
-    ((double*) eq_time_data.data)[i] = log(((double*) eq_time_data.data)[i]);
+    eq_data.bb[i] = std::abs(eq_data.bb[i] - 1);
+    eq_data.bm[i] = std::abs(eq_data.bm[i] - 1);
+    eq_data.t[i]  = std::abs(eq_data.t[i] - 1);
+    eq_data.um[i] = std::abs(eq_data.um[i] - 1);
+    ((double*) eq_time_data.data)[i] = ((double*) eq_time_data.data)[i]/dt;
   }
 
   append_data_to_file((double*) eq_time_data.data, eq_data.bb, num_eq_datapoints, bba_eq_fname);

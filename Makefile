@@ -1,4 +1,5 @@
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
+LIBRARIES = -lm
 
 .PHONY: test_bothbound test_onebound clean plot
 
@@ -137,13 +138,24 @@ ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio
 	./ob_PE_equipartition_ratio_average_vs_temperature $(TITLE)
 	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_T_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_T_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_T_$(TITLE).txt
 
+ob_PE_log_equipartition_vs_log_iterations: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_log_equipartition_vs_log_iterations.cpp FORCE
+	g++ -c simulations/ob_PE_log_equipartition_vs_log_iterations.cpp $(CPPFLAGS)
+	g++ ob_PE_log_equipartition_vs_log_iterations.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_log_equipartition_vs_log_iterations $(LIBRARIES)
+
+ob_PE_log_equipartition_vs_log_iterations_plot: ob_PE_log_equipartition_vs_log_iterations FORCE
+	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+	mkdir -p plots
+	mkdir -p data
+	./ob_PE_log_equipartition_vs_log_iterations "$(TITLE)"
+	./make_plot.py --loglog --figtitle="$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET | - 1)" --hline=1.0 data/bba_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/bma_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/ta_pe_log_equipartition_vs_log_iterations_$(TITLE).txt data/uma_pe_log_equipartition_vs_log_iterations_$(TITLE).txt
+
 ########################### THESIS STUFF #################################
 
 thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE
 	cd thesis_stuff && xelatex thesis_stuff.tex
 
-thesis_stuff/log.pdf: thesis_stuff/random_derivations.tex FORCE
-	cd random_derivations && xelatex random_derivations.tex
+thesis_stuff/random_derivations.pdf: thesis_stuff/random_derivations.tex FORCE
+	cd thesis_stuff && xelatex random_derivations.tex
 
 clean:
 	rm -f *.txt
@@ -157,6 +169,7 @@ clean:
 	rm -f ob_PE_equipartition_ratio_average_vs_force_ratio
 	rm -f ob_PE_equipartition_ratio_average_vs_spring_constant
 	rm -f ob_PE_equipartition_ratio_average_vs_temperature
+	rm -f ob_PE_log_equipartition_vs_log_iterations
 	rm -f onebound_PE_equipartition_correlation
 	rm -f ob_equipartition_test
 	rm -f data.txt
