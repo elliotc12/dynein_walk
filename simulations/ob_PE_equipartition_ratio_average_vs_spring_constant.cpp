@@ -10,10 +10,8 @@ int main(int argc, char** argv) {
     feenableexcept(FE_ALL_EXCEPT); // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  int iterations = 1e7;
-
-  int low_T  = 500;
-  int high_T = 2000;
+  int iterations = 1e8;
+  T = 1000;
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
@@ -50,82 +48,62 @@ int main(int argc, char** argv) {
   prepare_data_file(ta_eq_title,  ta_eq_fname);
   prepare_data_file(uma_eq_title, uma_eq_fname);
 
-  const int seeds[] = {0};
+  const int seeds[] = {0, 1, 2};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  int spring_len = 10;
-  double spring_constants[spring_len];
-  int min_spring = 0.1*kb;
-  int max_spring = 10*kb;
-  int d_spring = (max_spring - min_spring) / spring_len;
-  int spring = min_spring;
-  int i = 0;
+  // int spring_len = 100;
+  // double spring_constants[spring_len];
+  // double min_spring = 0.1*kb*T;
+  // double max_spring = 5;
+  // double d_spring = (max_spring - min_spring) / spring_len;
+  // double spring = min_spring;
+  // int i = 0;
 
-  while(spring < max_spring) {
-    spring_constants[i] = spring;
-    spring += d_spring;
-    i++;
-  }
+  // while(spring < max_spring) {
+  //   spring_constants[i] = spring;
+  //   spring += d_spring;
+  //   i++;
+  // }
+
+  double spring_constants[] = {0.1*kb*T, 0.3*kb*T, 0.7*kb*T,
+			       kb*T, 3*kb*T, 7*kb*T,
+			       10*kb*T, 30*kb*T, 70*kb*T,
+			       100*kb*T, 300*kb*T, 700*kb*T,
+			       1000*kb*T};
+  int spring_len = sizeof(spring_constants) / sizeof(double);
 
   char run_msg[512];
   const char* run_msg_base = "springconst calc (";
 
+  onebound_data eq_data;
+  double eq_bb, eq_bm, eq_t, eq_um;
+  eq_data.len = 1;
+  eq_data.bb = &eq_bb;
+  eq_data.bm = &eq_bm;
+  eq_data.t =  &eq_t;
+  eq_data.um = &eq_um;
+
+  onebound_forces unused_forces;
+  generic_data unused_data;
+  unused_data.data = &unused_forces;
+
   for (int i = 0; i < spring_len; i++) {
-    onebound_data low_eq_data;
-    double low_T_bb, low_T_bm, low_T_t, low_T_um;
-    low_eq_data.len = 1;
-    low_eq_data.bb = &low_T_bb;
-    low_eq_data.bm = &low_T_bm;
-    low_eq_data.t =  &low_T_t;
-    low_eq_data.um = &low_T_um;
+    ct = spring_constants[i];
+    cm = spring_constants[i];
+    cb = spring_constants[i];
 
-    onebound_data high_eq_data;
-    double high_T_bb, high_T_bm, high_T_t, high_T_um;
-    high_eq_data.len = 1;
-    high_eq_data.bb = &high_T_bb;
-    high_eq_data.bm = &high_T_bm;
-    high_eq_data.t =  &high_T_t;
-    high_eq_data.um = &high_T_um;
-
-    onebound_forces unused_forces;
-    generic_data unused_data;
-    unused_data.data = &unused_forces;
-
-    T = low_T;
-    ct = spring_constants[i]*T;
-    cm = spring_constants[i]*T;
-    cb = spring_constants[i]*T;
-    
     char buf[50];
     strcpy(run_msg, run_msg_base);
     sprintf(buf, "c = %.1g, temp = %.1g, ", spring_constants[i], T);
     strcat(run_msg, buf);
+
     get_onebound_equipartition_ratio
-      (&low_eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
+      (&eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
 
-    T = high_T;
-    ct = spring_constants[i]*T;
-    cm = spring_constants[i]*T;
-    cb = spring_constants[i]*T;
-    
-    strcpy(run_msg, run_msg_base);
-    sprintf(buf, "c = %.1f, temp = %.1f, ", spring_constants[i], T);
-    strcat(run_msg, buf);
-    get_onebound_equipartition_ratio
-      (&high_eq_data, &unused_data, iterations, seeds, seed_len, run_msg);
-
-    double low_ET = (0.5*kb*low_T);
-    double high_ET = (0.5*kb*high_T);
-    
-    double eq_ratios_bb = (high_T_bb*high_ET - low_T_bb*low_ET) / (0.5*kb*(high_T-low_T));
-    double eq_ratios_bm = (high_T_bm*high_ET - low_T_bm*low_ET) / (0.5*kb*(high_T-low_T));
-    double eq_ratios_t  = (high_T_t* high_ET - low_T_t* low_ET) / (0.5*kb*(high_T-low_T));
-    double eq_ratios_um = (high_T_um*high_ET - low_T_um*low_ET) / (0.5*kb*(high_T-low_T));
-
-    append_data_to_file(&spring_constants[i], &eq_ratios_bb, 1, bba_eq_fname);
-    append_data_to_file(&spring_constants[i], &eq_ratios_bm, 1, bma_eq_fname);
-    append_data_to_file(&spring_constants[i], &eq_ratios_t , 1, ta_eq_fname);
-    append_data_to_file(&spring_constants[i], &eq_ratios_um, 1, uma_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_bb, 1, bba_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_bm, 1, bma_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_t , 1, ta_eq_fname);
+    append_data_to_file(&spring_constants[i], &eq_um, 1, uma_eq_fname);
   }
   return 0;
 }
