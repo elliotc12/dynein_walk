@@ -332,6 +332,13 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
 void prepare_data_file(const char* legend, char* fname);
 void append_data_to_file(double* data1, double* data2, int len, char* fname);
 
+enum CONFIG_OMIT_FLAGS {
+  CONFIG_OMIT_T = 1,
+  CONFIG_OMIT_C = 2
+};
+
+void write_config_file(char* fname, int omit_flags, char* custom_str);
+
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
       void (*job)(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration),
       void** job_msg, data_union* job_data);

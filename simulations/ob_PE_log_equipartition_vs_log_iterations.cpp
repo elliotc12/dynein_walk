@@ -45,21 +45,25 @@ int main(int argc, char** argv) {
   char bma_eq_fname[200];
   char ta_eq_fname[200];
   char uma_eq_fname[200];
+  char config_eq_fname[200];
 
   strcpy(bba_eq_fname, "data/bba_pe_log_equipartition_vs_log_iterations_");
   strcpy(bma_eq_fname, "data/bma_pe_log_equipartition_vs_log_iterations_");
   strcpy(ta_eq_fname,  "data/ta_pe_log_equipartition_vs_log_iterations_");
-  strcpy(uma_eq_fname, "data/uma_pe_log_equipartition_vs_log_iterations_");
+  strcpy(config_eq_fname, "data/config_pe_log_equipartition_vs_log_iterations_");
+  
 
   strcat(bba_eq_fname, f_appended_name);
   strcat(bma_eq_fname, f_appended_name);
   strcat(ta_eq_fname, f_appended_name);
   strcat(uma_eq_fname, f_appended_name);
+  strcat(config_eq_fname, f_appended_name);
 
   strcat(bba_eq_fname, ".txt");
   strcat(bma_eq_fname, ".txt");
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
+  strcat(config_eq_fname, ".txt");
 
   prepare_data_file(bba_eq_title, bba_eq_fname);
   prepare_data_file(bma_eq_title, bma_eq_fname);
@@ -100,6 +104,7 @@ int main(int argc, char** argv) {
   append_data_to_file((double*) eq_time_data.data, eq_data.bm, num_eq_datapoints, bma_eq_fname);
   append_data_to_file((double*) eq_time_data.data, eq_data.t , num_eq_datapoints, ta_eq_fname);
   append_data_to_file((double*) eq_time_data.data, eq_data.um, num_eq_datapoints, uma_eq_fname);
+  write_config_file(config_eq_fname, NULL, NULL);
 
   free(eq_time_data.data);
   free(eq_data.bb); free(eq_data.bm); free(eq_data.t); free(eq_data.um);

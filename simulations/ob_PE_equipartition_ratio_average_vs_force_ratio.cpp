@@ -13,15 +13,6 @@ int main(int argc, char** argv) {
   
   int iterations = 1e5;
   T = 1000;
-  Lt = 15;
-  Ls = 15;
-
-  fake_radius_t = 1.5;
-  fake_radius_m = 1.5;
-  fake_radius_b = 1.5;
-  gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
-  gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
-  gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
   const char* bba_eq_title = "Bound binding domain (bba)";
   const char* bma_eq_title = "Bound motor domain (bma)";
@@ -37,21 +28,25 @@ int main(int argc, char** argv) {
   char bma_eq_fname[200];
   char ta_eq_fname[200];
   char uma_eq_fname[200];
+  char config_eq_fname[200];
 
   strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_vs_f_ratio_");
   strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_f_ratio_");
   strcpy(ta_eq_fname,  "data/ta_pe_equipartition_ratio_vs_f_ratio_");
   strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_f_ratio_");
+  strcpy(config_eq_fname, "data/config_pe_equipartition_ratio_vs_f_ratio_");
 
   strcat(bba_eq_fname, f_appended_name);
   strcat(bma_eq_fname, f_appended_name);
   strcat(ta_eq_fname, f_appended_name);
   strcat(uma_eq_fname, f_appended_name);
+  strcat(config_eq_fname, f_appended_name);
 
   strcat(bba_eq_fname, ".txt");
   strcat(bma_eq_fname, ".txt");
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
+  strcat(config_eq_fname, ".txt");
 
   prepare_data_file(bba_eq_title, bba_eq_fname);
   prepare_data_file(bma_eq_title, bma_eq_fname);
@@ -133,5 +128,7 @@ int main(int argc, char** argv) {
       append_data_to_file(eq_data.um, &force_ratios_um, 1, uma_eq_fname);
     }
   }
+
+  write_config_file(config_eq_fname, NULL, NULL);
   return 0;
 }

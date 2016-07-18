@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  int iterations = 1e8;
+  int iterations = 1e5;
 
   const char* bba_eq_title = "Bound binding";
   const char* bma_eq_title = "Bound motor";
@@ -27,23 +27,27 @@ int main(int argc, char** argv) {
   char bma_eq_fname[200];
   char ta_eq_fname[200];
   char uma_eq_fname[200];
+  char config_eq_fname[200];
 
   strcpy(bba_eq_fname, "data/bba_pe_equipartition_ratio_vs_T_");
   strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_T_");
   strcpy(ta_eq_fname, "data/ta_pe_equipartition_ratio_vs_T_");
   strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_T_");
+  strcpy(config_eq_fname, "data/config_pe_equipartition_ratio_vs_T_");
 
   strcat(bba_eq_fname, f_appended_name);
   strcat(bma_eq_fname, f_appended_name);
   strcat(ta_eq_fname, f_appended_name);
   strcat(uma_eq_fname, f_appended_name);
+  strcat(config_eq_fname, f_appended_name);
 
   strcat(bba_eq_fname, ".txt");
   strcat(bma_eq_fname, ".txt");
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
+  strcat(config_eq_fname, ".txt");
 
-  const int seeds[] = {0, 1};
+  const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
   int num_Ts = 10;
@@ -98,5 +102,6 @@ int main(int argc, char** argv) {
     append_data_to_file(&T, eq_data.um, 1, uma_eq_fname);
   }
 
+  write_config_file(config_eq_fname, CONFIG_OMIT_T, NULL);
   return 0;
 }

@@ -44,16 +44,18 @@ int main(int argc, char** argv) {
   strcpy(bma_eq_fname, "data/bma_pe_equipartition_ratio_vs_dt_");
   strcpy(ta_eq_fname, "data/ta_pe_equipartition_ratio_vs_dt_");
   strcpy(uma_eq_fname, "data/uma_pe_equipartition_ratio_vs_dt_");
+  strcpy(config_eq_fname, "data/config_pe_equipartition_ratio_vs_dt_");
 
   strcat(bba_eq_fname, f_appended_name);
   strcat(bma_eq_fname, f_appended_name);
   strcat(ta_eq_fname, f_appended_name);
-  strcat(uma_eq_fname, f_appended_name);
+  strcat(config_eq_fname, f_appended_name);
 
   strcat(bba_eq_fname, ".txt");
   strcat(bma_eq_fname, ".txt");
   strcat(ta_eq_fname, ".txt");
   strcat(uma_eq_fname, ".txt");
+  strcat(config_eq_fname, ".txt");
 
   const int seeds[] = {0, 1};
   int seed_len = sizeof(seeds) / sizeof(int);
@@ -104,5 +106,6 @@ int main(int argc, char** argv) {
     append_data_to_file(&dt, eq_data.um, 1, uma_eq_fname);
   }
 
+  write_config_file(config_eq_fname, NULL, NULL);
   return 0;
 }

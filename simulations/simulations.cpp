@@ -111,6 +111,30 @@ void append_data_to_file(double* data1, double* data2, int len, char* fname) {
   fclose(data_file);
 }
 
+void write_config_file(char* fname, int omit_flags, char* custom_str) {
+  char text_buf[2048];
+  char buf[100];
+  text_buf[0] = 0;
+  sprintf(buf, "Lt: %g\n", Lt);
+  strcat(text_buf, buf);
+  sprintf(buf, "Ls: %g\n", Ls);
+  strcat(text_buf, buf);
+  sprintf(buf, "T: %g\n", T);
+  if ((omit_flags & CONFIG_OMIT_T) == 0) strcat(text_buf, buf);
+  sprintf(buf, "ct: %.2e\n", ct);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "cm: %.2e\n", cm);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "cb: %.2e\n", cb);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "dt: %g", dt);
+  strcat(text_buf, buf);
+
+  FILE* data_file = fopen(fname, "w");
+  fputs(text_buf, data_file);
+  fclose(data_file);
+}
+
 void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long num_correlations, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
