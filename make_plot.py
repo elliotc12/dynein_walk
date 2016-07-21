@@ -7,13 +7,15 @@ import sys
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea
 
-plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxy", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "logx", "logy"])
+plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxyk:", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "logx", "logy", "skiprows="])
 
 showplot = False
 hline = False
 scatter = False
 logx = False
 logy = False
+
+skiprows = 1
 
 for param, value in plot_params:
     if (param == "--figtitle"):
@@ -34,6 +36,8 @@ for param, value in plot_params:
         logx = True
     elif (param == "--logy"):
         logy = True
+    elif (param == "--skiprows"):
+        skiprows = int(value)
 
 ax = plt.gca()
 box = ax.get_position()
@@ -51,6 +55,8 @@ for data_file in data_files:
         line = np.loadtxt(data_file, skiprows=1)
         X = line[:,0]
         Y = line[:,1]
+        X = X[::skiprows]
+        Y = Y[::skiprows]
         if (not scatter):
             plt.plot(X, Y, label=legend, color=colors.pop())
         else:
@@ -64,7 +70,6 @@ for data_file in data_files:
         box = TextArea(config_txt, textprops=dict(size=10))
         anchored_box = AnchoredOffsetbox(loc=2, child=box, bbox_to_anchor=(1,1),
                                          bbox_transform=ax.transAxes, frameon=False)
-        print config_txt
 
 if hline:
     plt.plot([0, max_x_value], [hlineval, hlineval])

@@ -32,19 +32,6 @@ void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union 
 	   run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
-typedef struct {
-  double* bb;
-  double* bm;
-  double* t;
-  double* um;
-  double* f_bbx;   double* f_bby;
-  double* f_bmx;   double* f_bmy;
-  double* f_tx;    double* f_ty; 
-  double* f_umx;   double* f_umy;
-  double* f_ubx;   double* f_uby;
-} eq_forces_ptr;
-
-
 void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
   assert(s == NEARBOUND);
 
@@ -53,7 +40,7 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, 
   double start_time = *((double**) job_msg)[1];
   char* run_msg = ((char**) job_msg)[2];
 
-  eq_forces_ptr data = *((eq_forces_ptr*) job_data->g_data.data);
+  eq_forces_callback_data_ptr data = *((eq_forces_callback_data_ptr*) job_data->g_data.data);
   assert(iteration < job_data->g_data.len);
 
   data.bb[iteration] = dyn_ob->PE_bba;
@@ -75,6 +62,7 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, 
     data.f_ubx[iteration] = f.ubx;
     data.f_uby[iteration] = f.uby;
   }
+
   if (iteration % 10000 == 0) {
     printf("PE calculation progress for %s: %lld / %lld, %g%%                \r",
 	   run_msg, iteration, max_iteration, ((double) iteration) / max_iteration * 100);
@@ -85,60 +73,8 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, 
        run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
 }
 
-void prepare_data_file(const char* legend, char* fname) {
-  char buf[(strlen(legend) + 1) * sizeof(char)];
-  sprintf(buf, "%s\n", legend);
-
-  FILE* data_file = fopen(fname, "w");
-  fputs(buf, data_file);
-  fclose(data_file);
-}
-
-void append_data_to_file(double* data1, double* data2, int len, char* fname) {
-  char* buf =
-    (char*) malloc(((12+5+12+1)*len + 1)*sizeof(char)); // 5 spaces, 2x double 12 chars, newline, null
-  int buf_offset = 0;
-
-  for (int i = 0; i < len; i++) {
-    assert(data1[i] == data1[i]);
-    assert(data2[i] == data2[i]); // check for NaNs
-    sprintf(&buf[buf_offset], "%+.5e     %+.5e\n", data1[i], data2[i]);
-    buf_offset += 30;
-  }
-  
-  FILE* data_file = fopen(fname, "a");
-  fputs(buf, data_file);
-  fclose(data_file);
-}
-
-void write_config_file(char* fname, int omit_flags, char* custom_str) {
-  char text_buf[2048];
-  char buf[100];
-  text_buf[0] = 0;
-  sprintf(buf, "Lt: %g\n", Lt);
-  strcat(text_buf, buf);
-  sprintf(buf, "Ls: %g\n", Ls);
-  strcat(text_buf, buf);
-  sprintf(buf, "T: %g\n", T);
-  if ((omit_flags & CONFIG_OMIT_T) == 0) strcat(text_buf, buf);
-  sprintf(buf, "ct: %.2e\n", ct);
-  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
-  sprintf(buf, "cm: %.2e\n", cm);
-  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
-  sprintf(buf, "cb: %.2e\n", cb);
-  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
-  sprintf(buf, "dt: %g", dt);
-  strcat(text_buf, buf);
-
-  FILE* data_file = fopen(fname, "w");
-  fputs(text_buf, data_file);
-  fclose(data_file);
-}
 
 void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long num_correlations, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base) {
-  MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
-  MICROTUBULE_REPULSION_FORCE = 0.0;
-
   long long d_tau_iter = max_tau_iter / num_correlations;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
@@ -172,7 +108,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
     corr_data->t[i]  = 0;
     corr_data->um[i] = 0;
   }
-  
+
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
     simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position,
@@ -390,7 +326,7 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
 
-  eq_forces_ptr data_ptr;
+  eq_forces_callback_data_ptr data_ptr;
   generic_data data_struct;
   data_struct.data = &data_ptr;
   data_struct.len = runtime_iter;

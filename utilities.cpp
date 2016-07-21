@@ -2,6 +2,7 @@
 #include <fenv.h>
 #include <fstream>
 #include <stdlib.h>
+#include <cstring>
 
 #include "dynein_struct.h"
 
@@ -52,6 +53,58 @@ double get_variance(double* data, int len) {
     sum += (data[i] - ave)*(data[i] - ave);
   }
   return sum / len;
+}
+
+void prepare_data_file(const char* legend, char* fname) {
+  char buf[(strlen(legend) + 1) * sizeof(char)];
+  sprintf(buf, "%s\n", legend);
+
+  FILE* data_file = fopen(fname, "w");
+  fputs(buf, data_file);
+  fclose(data_file);
+}
+
+void append_data_to_file(double* data1, double* data2, int len, FILE* file) {
+  if (len == 1) {
+    fprintf(file, "%+.12e     %+.5e\n", data1[0], data2[0]);
+  }
+  else {
+    char* buf =
+      (char*) malloc(((12+12+12+1)*len + 1)*sizeof(char));
+    int buf_offset = 0;
+
+    for (int i = 0; i < len; i++) {
+      assert(data1[i] == data1[i]);
+      assert(data2[i] == data2[i]); // check for NaNs
+      sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], data2[i]);
+      buf_offset += 37;
+    }
+    fputs(buf, file);
+  }
+}
+
+void write_config_file(char* fname, int omit_flags, char* custom_str) {
+  char text_buf[2048];
+  char buf[100];
+  text_buf[0] = 0;
+  sprintf(buf, "Lt: %g\n", Lt);
+  strcat(text_buf, buf);
+  sprintf(buf, "Ls: %g\n", Ls);
+  strcat(text_buf, buf);
+  sprintf(buf, "T: %g\n", T);
+  if ((omit_flags & CONFIG_OMIT_T) == 0) strcat(text_buf, buf);
+  sprintf(buf, "ct: %.2e\n", ct);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "cm: %.2e\n", cm);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "cb: %.2e\n", cb);
+  if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
+  sprintf(buf, "dt: %g", dt);
+  strcat(text_buf, buf);
+
+  FILE* data_file = fopen(fname, "w");
+  fputs(text_buf, data_file);
+  fclose(data_file);
 }
 
 void FPE_signal_handler(int signum) {
