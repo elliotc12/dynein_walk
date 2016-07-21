@@ -15,7 +15,13 @@
 
 
 void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base){
-  int max_tau_iter = iters * 0.4;
+  int max_tau_iter;
+  if (iters*tau_runtime_fraction > num_corr_datapoints) {
+    max_tau_iter = iters*tau_runtime_fraction;
+  }
+  else {
+    max_tau_iter = num_corr_datapoints;
+  }
   int d_tau_iter = max_tau_iter / num_corr_datapoints;
 
   char fname[200];
@@ -56,13 +62,19 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
 
   double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(iters * sizeof(double));
-  printf("is i between %d and %d?\n", pe_averaging_width/2, iters-pe_averaging_width/2-1);
+  printf("averaging width: %d\n", pe_averaging_width);
   for (int i = 0; i < iters; i++) {
-    if (i < pe_averaging_width/2 or i > (iters-pe_averaging_width/2-1)) {
-      pe_local_ave[i] = 1;
+    if (i == 0 or i == iters-1) {
+      pe_local_ave[i] = pe[i] / et;
+    }
+    else if (i < pe_averaging_width/2) {
+      pe_local_ave[i] = get_average(pe, i*2) / et;
+    }
+    else if (i > (iters-pe_averaging_width/2-1)) {
+      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-i)*2], (iters-1-i)*2) / et;
     }
     else {
-      pe_local_ave[i] =  get_average(&pe[i-pe_averaging_width/2], pe_averaging_width) / et;
+      pe_local_ave[i] = get_average(&pe[i-pe_averaging_width/2], pe_averaging_width) / et;
     }
   }
 

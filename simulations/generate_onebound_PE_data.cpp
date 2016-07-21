@@ -88,6 +88,10 @@ int main(int argc, char** argv) {
   strcat(um_fname, ".bin");
   strcat(config_fname, ".txt");
 
+  prepare_data_file(NULL, bb_fname);
+  prepare_data_file(NULL, bm_fname);
+  prepare_data_file(NULL,  t_fname);
+  prepare_data_file(NULL, um_fname);
   write_config_file(config_fname, 0, NULL);
 
   void* job_msg[8];

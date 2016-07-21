@@ -62,7 +62,7 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h
 ######################### SIMULATION STUFF ###############################
 TITLE = defaultplot
 
-create_pe_time_plots: generate_onebound_PE_data simulations/create_pe_time_plots.cpp
+create_pe_time_plots: generate_onebound_PE_data simulations/create_pe_time_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h
 	g++ -c simulations/create_pe_time_plots.cpp $(CPPFLAGS)
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_pe_time_plots.o -o create_pe_time_plots
 
@@ -75,7 +75,7 @@ pe_time_plots: create_pe_time_plots FORCE
 	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_vs_time_$(TITLE)_eq_ave.txt data/bma_pe_vs_time_$(TITLE)_eq_ave.txt data/ta_pe_vs_time_$(TITLE)_eq_ave.txt data/uma_pe_vs_time_$(TITLE)_eq_ave.txt data/config_pe_vs_time_$(TITLE).txt
 	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bba_pe_vs_time_$(TITLE)_log_error.txt data/bma_pe_vs_time_$(TITLE)_log_error.txt data/ta_pe_vs_time_$(TITLE)_log_error.txt data/uma_pe_vs_time_$(TITLE)_log_error.txt data/config_pe_vs_time_$(TITLE).txt
 
-generate_onebound_pe_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_PE_data.cpp FORCE
+generate_onebound_pe_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_PE_data.cpp default_parameters.h dynein_struct.h FORCE
 	mkdir -p data
 	g++ -c simulations/generate_onebound_PE_data.cpp $(CPPFLAGS)
 	g++ generate_onebound_PE_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_PE_data

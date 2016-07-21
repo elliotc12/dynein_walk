@@ -56,12 +56,18 @@ double get_variance(double* data, int len) {
 }
 
 void prepare_data_file(const char* legend, char* fname) {
-  char buf[(strlen(legend) + 1) * sizeof(char)];
-  sprintf(buf, "%s\n", legend);
+  if (legend == NULL) {
+    FILE* data_file = fopen(fname, "w"); // clear the file
+    fclose(data_file);
+  }
+  else {
+    char buf[(strlen(legend) + 1) * sizeof(char)];
+    sprintf(buf, "%s\n", legend);
 
-  FILE* data_file = fopen(fname, "w");
-  fputs(buf, data_file);
-  fclose(data_file);
+    FILE* data_file = fopen(fname, "w");
+    fputs(buf, data_file);
+    fclose(data_file);
+  }
 }
 
 void append_data_to_file(double* data1, double* data2, int len, FILE* file) {
