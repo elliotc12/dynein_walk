@@ -6,6 +6,7 @@
 
 #include "../default_parameters.h"
 #include "../dynein_struct.h"
+#include "simulation_defaults.h"
 
 void append_pe_data_to_file(double time, double pe, FILE* file) {
   pe_data data;
@@ -15,8 +16,7 @@ void append_pe_data_to_file(double time, double pe, FILE* file) {
 }
 
 void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
-  int skip_num = *((int**) job_msg)[7];
-  if (iteration % skip_num != 0)
+  if (iteration % pe_calculation_skip_iterations != 0)
     return;
   else {
     assert(s == NEARBOUND);
@@ -38,14 +38,14 @@ void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union 
     append_pe_data_to_file(time, dyn_ob->PE_ta ,  t_file);
     append_pe_data_to_file(time, dyn_ob->PE_uma, um_file);
 
-    if (iteration % (skip_num*10) == 0) {
-      printf("PE calculation progress for %s: %lld / %lld, %g%%                \r",
-    	     run_msg, iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+    if (iteration % (pe_calculation_skip_iterations*10) == 0) {
+      printf("PE calculation progress (%s): %lld / %lld, %g%%                \r", run_msg,
+    	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
       fflush(NULL);
     }
 
-    if (iteration == (max_iteration-1) - ((max_iteration-1) % skip_num)) { // final iteration
-      printf("Finished generating PE data for %s, which took %g seconds               \n", run_msg,
+    if (iteration == (max_iteration-1) - ((max_iteration-1) % pe_calculation_skip_iterations)) {
+      printf("Finished generating PE data (%s), process took %g seconds               \n", run_msg,
 	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }
   }
@@ -55,8 +55,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  long long iterations = 1e11;
-  int skip_num = 1e4;
+  long long iterations = 1e12;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");
@@ -92,15 +91,15 @@ int main(int argc, char** argv) {
   prepare_data_file(NULL, bm_fname);
   prepare_data_file(NULL,  t_fname);
   prepare_data_file(NULL, um_fname);
-  write_config_file(config_fname, 0, NULL);
+  write_config_file(config_fname, 0, "Initial state: onebound\nInitial conformation: equilibrium\n");
 
-  void* job_msg[8];
+  void* job_msg[7];
   job_msg[0] = (double*) &iterations;
 
   double current_time = clock();
   job_msg[1] = &current_time;
 
-  const char* run_msg_base = "pe gathering (";
+  const char* run_msg_base = "";
   char run_msg[512];
   strcpy(run_msg, run_msg_base);
   char seedbuf[50];
@@ -117,7 +116,6 @@ int main(int argc, char** argv) {
   job_msg[4] = bm_file;
   job_msg[5] = t_file;
   job_msg[6] = um_file;
-  job_msg[7] = &skip_num;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};

@@ -42,7 +42,7 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
       correlation_sum += (pe[i] - pe_ave) * (pe[i+tau_iter] - pe_ave);
     }
     correlations[n] = correlation_sum / pe_var / (iters-tau_iter);
-    taus[n] = tau_iter*dt;
+    taus[n] = tau_iter*dt*pe_calculation_skip_iterations;
     printf("Progress on %s: %.1f%%  \r", fname, n * 100.0 / num_corr_datapoints);
   }
   printf("Finished %s                \n", fname);
@@ -59,10 +59,11 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
   prepare_data_file(legend, fname);
+  int pe_averaging_width = pe_averaging_width_fraction * iters;
+  if (pe_averaging_width < 1) pe_averaging_width = 1;
 
   double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(iters * sizeof(double));
-  printf("averaging width: %d\n", pe_averaging_width);
   for (int i = 0; i < iters; i++) {
     if (i == 0 or i == iters-1) {
       pe_local_ave[i] = pe[i] / et;
@@ -70,13 +71,22 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
     else if (i < pe_averaging_width/2) {
       pe_local_ave[i] = get_average(pe, i*2) / et;
     }
+    else if (i == pe_averaging_width/2) {
+      pe_local_ave[i] = get_average(&pe[i-pe_averaging_width/2], pe_averaging_width) / et;
+    }
+    else if ( i > pe_averaging_width/2 and i <= (iters-pe_averaging_width/2-1)){
+      pe_local_ave[i] = (pe_local_ave[i-1]*i + pe[i]/et) / (i+1);
+    }
     else if (i > (iters-pe_averaging_width/2-1)) {
       pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-i)*2], (iters-1-i)*2) / et;
     }
     else {
-      pe_local_ave[i] = get_average(&pe[i-pe_averaging_width/2], pe_averaging_width) / et;
+      printf("Error in PE local averaging!\n");
+      exit(1);
     }
+    printf("Progress for %s: %.1f%%  \r", fname, i * 100.0 / iters);
   }
+  printf("Finished %s                        \n", fname);
 
   FILE* file = fopen(fname, "a");
   append_data_to_file(times, pe_local_ave, iters, file);

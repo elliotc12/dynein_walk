@@ -297,7 +297,7 @@ double get_variance(double* data, int len);
 void FPE_signal_handler(int signum);
 void prepare_data_file(const char* legend, char* fname);
 void append_data_to_file(double* data1, double* data2, int len, FILE* fd);
-void write_config_file(char* fname, int omit_flags, char* custom_str);
+void write_config_file(char* fname, int omit_flags, const char* custom_str);
 
 /* ***************************** SIMULATION PROTOTYPES ****************************** */
 

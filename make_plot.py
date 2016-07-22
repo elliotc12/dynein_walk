@@ -3,6 +3,7 @@
 import getopt
 import matplotlib.pyplot as plt
 import numpy as np
+#import pandas
 import sys
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea
@@ -53,6 +54,7 @@ for data_file in data_files:
         f.close()
 
         line = np.loadtxt(data_file, skiprows=1)
+        #line = pandas.read_csv(data_file, skiprows=1)
         X = line[:,0]
         Y = line[:,1]
         X = X[::skiprows]

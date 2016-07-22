@@ -1,3 +1,4 @@
 const int num_corr_datapoints = 1000;
-const int pe_averaging_width = 1000; // fixy buggy!
-const double tau_runtime_fraction = 0.5;
+const double pe_averaging_width_fraction = 1e-8;
+const int pe_calculation_skip_iterations = 1e5;
+const double tau_runtime_fraction = 1e-5;

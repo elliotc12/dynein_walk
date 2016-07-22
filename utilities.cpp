@@ -89,10 +89,11 @@ void append_data_to_file(double* data1, double* data2, int len, FILE* file) {
   }
 }
 
-void write_config_file(char* fname, int omit_flags, char* custom_str) {
+void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   char text_buf[2048];
   char buf[100];
   text_buf[0] = 0;
+  strcat(text_buf, custom_str);
   sprintf(buf, "Lt: %g\n", Lt);
   strcat(text_buf, buf);
   sprintf(buf, "Ls: %g\n", Ls);
