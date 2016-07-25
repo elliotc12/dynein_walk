@@ -51,17 +51,16 @@ colors = ['b', 'g', 'r', 'm']
 for data_file in data_files:
     if (data_file.find("config") == -1):
         f = open(data_file, 'r')
-        opt_str = f.readline()
-        opts, _ = getopt.getopt(opt_str, "lh", ["legend=", "hline="])
-        data_hline = False
+        opt_str = f.readline()[0:-1].split(', ')
         print opt_str
+        opts, _ = getopt.getopt(opt_str, "l:h:", ["legend=", "hline="])
+        data_hline = False
         for opt, value in opts:
-            print opt
-            if opt == "legend":
-                legend = value
-            elif opt == "hline":
+            if opt == "--legend":
+                legend = "".join([x if x != "'" else '' for x in value])
+            elif opt == "--hline":
                 data_hline = True
-                data_hline_val = value
+                data_hlineval = float("".join([x if x != "'" else '' for x in value]))
         f.close()
 
         line = np.loadtxt(data_file, skiprows=2)

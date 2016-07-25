@@ -29,7 +29,7 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
   strcat(fname, "_correlation_fn.txt");
 
   char buf[256];
-  sprintf(buf, "legend='%s'", legend);
+  sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname);
 
   double* taus =         (double*) malloc(num_corr_datapoints * sizeof(double));
@@ -63,7 +63,7 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   strcat(fname, ".txt");
 
   char buf[256];
-  sprintf(buf, "legend='%s", legend);
+  sprintf(buf, "--legend='%s", legend);
   prepare_data_file(buf, fname);
 
   double et = 0.5*kb*T;
@@ -110,9 +110,9 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
   strcat(fname_err, "_log_error.txt");
 
   char buf[256];
-  sprintf(buf, "legend='%s'", legend);
+  sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname_ave);
-  sprintf(buf, "legend='%s'", legend);
+  sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname_err);
 
   double* pe_aves = (double*) malloc(iters * sizeof(double));
@@ -148,7 +148,8 @@ void generate_angle_vs_time_data(double* times, double* angle, int iters, const 
   strcat(fname, ".txt");
 
   char buf[256];
-  sprintf(buf, "legend='%s' hline='%g'", legend, eq_angle);
+  sprintf(buf, "--legend='%s', --hline='%g'", legend, eq_angle);
+  printf("%s\n", buf);
   prepare_data_file(buf, fname);
 
   double* angle_local_ave = (double*) malloc(iters * sizeof(double));
