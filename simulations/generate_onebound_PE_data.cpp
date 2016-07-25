@@ -4,6 +4,9 @@
 #include <cstring>
 #include <limits>
 
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include "../default_parameters.h"
 #include "../dynein_struct.h"
 #include "simulation_defaults.h"
@@ -56,6 +59,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
   long long iterations = 1e12;
+  T = 1400;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");
@@ -111,6 +115,17 @@ int main(int argc, char** argv) {
   FILE* bm_file = fopen(bm_fname, "a");
   FILE*  t_file = fopen( t_fname, "a");
   FILE* um_file = fopen(um_fname, "a");
+
+  struct stat bb_stat;
+  if (stat(bb_fname, &bb_stat) == -1) {
+    perror("Error using stat on bb_file");
+    exit(1);
+  }
+
+  if (setvbuf(bb_file, NULL, _IOFBF, bb_stat.st_blksize) == -1) {
+    perror("Error using setvbuf");
+    exit(1);
+  }
 
   job_msg[3] = bb_file;
   job_msg[4] = bm_file;

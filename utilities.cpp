@@ -81,8 +81,13 @@ void append_data_to_file(double* data1, double* data2, int len, FILE* file) {
 
     for (int i = 0; i < len; i++) {
       assert(data1[i] == data1[i]);
-      assert(data2[i] == data2[i]); // check for NaNs
-      sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], data2[i]);
+      //assert(data2[i] == data2[i]); // check for NaNs
+      if (data2[i] == data2[i]) {
+	sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], data2[i]);
+      }
+      else {
+	sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], 0.0);
+      }
       buf_offset += 37;
     }
     fputs(buf, file);

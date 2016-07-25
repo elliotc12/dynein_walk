@@ -59,8 +59,6 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
   prepare_data_file(legend, fname);
-  int pe_averaging_width = pe_averaging_width_fraction * iters;
-  if (pe_averaging_width < 1) pe_averaging_width = 1;
 
   double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(iters * sizeof(double));
