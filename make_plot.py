@@ -74,7 +74,7 @@ for data_file in data_files:
                                          bbox_transform=ax.transAxes, frameon=False)
 
 if hline:
-    plt.plot([0, max_x_value], [hlineval, hlineval])
+    plt.plot([0, max_x_value], [hlineval, hlineval], color='k', linestyle="dashed")
 
 plt.title(title)
 plt.xlabel(xlabel)
