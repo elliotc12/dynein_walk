@@ -27,7 +27,10 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
   char fname[200];
   strcpy(fname, fname_base);
   strcat(fname, "_correlation_fn.txt");
-  prepare_data_file(legend, fname);
+
+  char buf[256];
+  sprintf(buf, "legend='%s'", legend);
+  prepare_data_file(buf, fname);
 
   double* taus =         (double*) malloc(num_corr_datapoints * sizeof(double));
   double* correlations = (double*) malloc(num_corr_datapoints * sizeof(double));
@@ -58,7 +61,10 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   char fname[200];
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
-  prepare_data_file(legend, fname);
+
+  char buf[256];
+  sprintf(buf, "legend='%s", legend);
+  prepare_data_file(buf, fname);
 
   double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(iters * sizeof(double));
@@ -96,13 +102,18 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
 void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, const char* legend, char* fname_base) {
   char fname_ave[200];
   char fname_err[200];
+
   strcpy(fname_ave, fname_base);
   strcpy(fname_err, fname_base);
 
   strcat(fname_ave, "_eq_ave.txt");
   strcat(fname_err, "_log_error.txt");
-  prepare_data_file(legend, fname_ave);
-  prepare_data_file(legend, fname_err);
+
+  char buf[256];
+  sprintf(buf, "legend='%s'", legend);
+  prepare_data_file(buf, fname_ave);
+  sprintf(buf, "legend='%s'", legend);
+  prepare_data_file(buf, fname_err);
 
   double* pe_aves = (double*) malloc(iters * sizeof(double));
   double* log_err = (double*) malloc(iters * sizeof(double));
@@ -131,11 +142,14 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
   free(pe_aves); free(log_err);
 }
 
-void generate_angle_vs_time_data(double* times, double* angle, int iters, const char* legend, char* fname_base) {
+void generate_angle_vs_time_data(double* times, double* angle, int iters, const char* legend, char* fname_base, double eq_angle) {
   char fname[200];
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
-  prepare_data_file(legend, fname);
+
+  char buf[256];
+  sprintf(buf, "legend='%s' hline='%g'", legend, eq_angle);
+  prepare_data_file(buf, fname);
 
   double* angle_local_ave = (double*) malloc(iters * sizeof(double));
   for (int i = 0; i < iters; i++) {
@@ -305,6 +319,11 @@ int main(int argc, char** argv) {
       angle_data[j] = data[j].d;
     }
 
-    generate_angle_vs_time_data(time_data, angle_data, len, f_legends[i], angle_fnames[i]);
+    double eq_angle;
+    if (i == 0) eq_angle = onebound_post_powerstroke_internal_angles.bba;
+    if (i == 1) eq_angle = onebound_post_powerstroke_internal_angles.bma;
+    if (i == 2) eq_angle = onebound_post_powerstroke_internal_angles.ta;
+    if (i == 3) eq_angle = onebound_post_powerstroke_internal_angles.uma;
+    generate_angle_vs_time_data(time_data, angle_data, len, f_legends[i], angle_fnames[i], eq_angle);
   }
 }

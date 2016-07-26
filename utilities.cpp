@@ -55,14 +55,14 @@ double get_variance(double* data, int len) {
   return sum / len;
 }
 
-void prepare_data_file(const char* legend, char* fname) {
-  if (legend == NULL) {
+void prepare_data_file(const char* custom_str, char* fname) {
+  if (custom_str == NULL) {
     FILE* data_file = fopen(fname, "w"); // clear the file
     fclose(data_file);
   }
   else {
-    char buf[(strlen(legend) + 1) * sizeof(char)];
-    sprintf(buf, "%s\n", legend);
+    char buf[(strlen(custom_str) + 1) * sizeof(char)];
+    sprintf(buf, "%s\n", custom_str);
 
     FILE* data_file = fopen(fname, "w");
     fputs(buf, data_file);

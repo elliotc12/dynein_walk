@@ -1,5 +1,6 @@
 #! /usr/bin/env python2.7
 
+import csv
 import getopt
 import matplotlib.pyplot as plt
 import numpy as np
@@ -50,19 +51,34 @@ colors = ['b', 'g', 'r', 'm']
 for data_file in data_files:
     if (data_file.find("config") == -1):
         f = open(data_file, 'r')
-        legend = f.readline()
+        opt_str = f.readline()
+        opts, _ = getopt.getopt(opt_str, "lh", ["legend=", "hline="])
+        data_hline = False
+        print opt_str
+        for opt, value in opts:
+            print opt
+            if opt == "legend":
+                legend = value
+            elif opt == "hline":
+                data_hline = True
+                data_hline_val = value
         f.close()
 
-        line = np.loadtxt(data_file, skiprows=1)
+        line = np.loadtxt(data_file, skiprows=2)
         #line = pandas.read_csv(data_file, skiprows=1)
         X = line[:,0]
         Y = line[:,1]
         X = X[::skiprows]
         Y = Y[::skiprows]
+
+        c = colors.pop()
+        if data_hline:
+            plt.plot([0, max(X)], [data_hlineval, data_hlineval], color=c, linestyle="dashed")
+
         if (not scatter):
-            plt.plot(X, Y, label=legend, color=colors.pop())
+            plt.plot(X, Y, label=legend, color=c)
         else:
-            plt.scatter(X,Y, label=legend, color=colors.pop(), s=1)
+            plt.scatter(X,Y, label=legend, color=c, s=1)
 
         if max(X) > max_x_value:
             max_x_value = max(X)
