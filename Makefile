@@ -70,10 +70,11 @@ pe_time_plots: create_pe_time_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_pe_time_plots $(TITLE)
 	mkdir -p plots
-	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bba_pe_vs_time_$(TITLE)_correlation_fn.txt data/bma_pe_vs_time_$(TITLE)_correlation_fn.txt data/ta_pe_vs_time_$(TITLE)_correlation_fn.txt data/uma_pe_vs_time_$(TITLE)_correlation_fn.txt data/config_pe_vs_time_$(TITLE).txt
-	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --skiprows=100 --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_vs_time_$(TITLE).txt data/bma_pe_vs_time_$(TITLE).txt data/ta_pe_vs_time_$(TITLE).txt data/uma_pe_vs_time_$(TITLE).txt data/config_pe_vs_time_$(TITLE).txt
-	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_vs_time_$(TITLE)_eq_ave.txt data/bma_pe_vs_time_$(TITLE)_eq_ave.txt data/ta_pe_vs_time_$(TITLE)_eq_ave.txt data/uma_pe_vs_time_$(TITLE)_eq_ave.txt data/config_pe_vs_time_$(TITLE).txt
-	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bba_pe_vs_time_$(TITLE)_log_error.txt data/bma_pe_vs_time_$(TITLE)_log_error.txt data/ta_pe_vs_time_$(TITLE)_log_error.txt data/uma_pe_vs_time_$(TITLE)_log_error.txt data/config_pe_vs_time_$(TITLE).txt
+	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bba_pe_data_$(TITLE)_correlation_fn.txt data/bma_pe_data_$(TITLE)_correlation_fn.txt data/ta_pe_data_$(TITLE)_correlation_fn.txt data/uma_pe_data_$(TITLE)_correlation_fn.txt data/config_$(TITLE).txt
+	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --skiprows=100 --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_data_$(TITLE).txt data/bma_pe_data_$(TITLE).txt data/ta_pe_data_$(TITLE).txt data/uma_pe_data_$(TITLE).txt data/config_$(TITLE).txt
+	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_data_$(TITLE)_eq_ave.txt data/bma_pe_data_$(TITLE)_eq_ave.txt data/ta_pe_data_$(TITLE)_eq_ave.txt data/uma_pe_data_$(TITLE)_eq_ave.txt data/config_$(TITLE).txt
+	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bba_pe_data_$(TITLE)_log_error.txt data/bma_pe_data_$(TITLE)_log_error.txt data/ta_pe_data_$(TITLE)_log_error.txt data/uma_pe_data_$(TITLE)_log_error.txt data/config_$(TITLE).txt
+	./make_plot.py --figtitle="Angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bba_angle_data_$(TITLE).txt data/bma_angle_data_$(TITLE).txt data/ta_angle_data_$(TITLE).txt data/uma_angle_data_$(TITLE).txt data/config_$(TITLE).txt
 
 generate_onebound_pe_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_PE_data.cpp default_parameters.h dynein_struct.h FORCE
 	mkdir -p data

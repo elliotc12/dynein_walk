@@ -352,8 +352,8 @@ typedef struct {
 
 typedef struct {
   double time;
-  double pe;
-} pe_data;
+  double d;
+} data_2d;
 
 void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);
 void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);
