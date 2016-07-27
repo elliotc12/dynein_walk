@@ -62,25 +62,25 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h
 ######################### SIMULATION STUFF ###############################
 TITLE = defaultplot
 
-create_pe_time_plots: generate_onebound_PE_data simulations/create_pe_time_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
-	g++ -c simulations/create_pe_time_plots.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_pe_time_plots.o -o create_pe_time_plots
+create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_plots.o -o create_ob_plots
 
-pe_time_plots: create_pe_time_plots FORCE
+ob_plots: create_ob_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_pe_time_plots $(TITLE)
+	./create_ob_plots $(TITLE)
 	mkdir -p plots
-	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bba_pe_data_$(TITLE)_correlation_fn.txt data/bma_pe_data_$(TITLE)_correlation_fn.txt data/ta_pe_data_$(TITLE)_correlation_fn.txt data/uma_pe_data_$(TITLE)_correlation_fn.txt data/config_$(TITLE).txt
-	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --skiprows=100 --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_data_$(TITLE).txt data/bma_pe_data_$(TITLE).txt data/ta_pe_data_$(TITLE).txt data/uma_pe_data_$(TITLE).txt data/config_$(TITLE).txt
-	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_data_$(TITLE)_eq_ave.txt data/bma_pe_data_$(TITLE)_eq_ave.txt data/ta_pe_data_$(TITLE)_eq_ave.txt data/uma_pe_data_$(TITLE)_eq_ave.txt data/config_$(TITLE).txt
-	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bba_pe_data_$(TITLE)_log_error.txt data/bma_pe_data_$(TITLE)_log_error.txt data/ta_pe_data_$(TITLE)_log_error.txt data/uma_pe_data_$(TITLE)_log_error.txt data/config_$(TITLE).txt
-	./make_plot.py --figtitle="Angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bba_angle_data_$(TITLE).txt data/bma_angle_data_$(TITLE).txt data/ta_angle_data_$(TITLE).txt data/uma_angle_data_$(TITLE).txt data/config_$(TITLE).txt
+	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --skiprows=100 --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="Angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
 
-generate_onebound_pe_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_PE_data.cpp default_parameters.h dynein_struct.h FORCE
+generate_onebound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h FORCE
 	mkdir -p data
-	g++ -c simulations/generate_onebound_PE_data.cpp $(CPPFLAGS)
-	g++ generate_onebound_PE_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_PE_data
-	./generate_onebound_PE_data $(TITLE)
+	g++ -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
+	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_data
+	./generate_onebound_data $(TITLE)
 
 bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o  simulations/bothbound_equipartition_test.cpp FORCE
 	g++ -c simulations/bothbound_equipartition_test.cpp $(CPPFLAGS)

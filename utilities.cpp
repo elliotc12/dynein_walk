@@ -58,14 +58,19 @@ double get_variance(double* data, int len) {
 void prepare_data_file(const char* custom_str, char* fname) {
   if (custom_str == NULL) {
     FILE* data_file = fopen(fname, "w"); // clear the file
+    if (errno) {
+      perror("Error preparing data file");
+      exit(errno);
+    }
     fclose(data_file);
   }
   else {
-    char buf[(strlen(custom_str) + 1) * sizeof(char)];
-    sprintf(buf, "%s\n", custom_str);
-
     FILE* data_file = fopen(fname, "w");
-    fputs(buf, data_file);
+    if (errno) {
+      perror("Error preparing data file");
+      exit(errno);
+    }
+    fprintf(data_file, "%s\n", custom_str);
     fclose(data_file);
   }
 }

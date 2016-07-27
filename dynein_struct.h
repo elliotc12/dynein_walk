@@ -352,8 +352,15 @@ typedef struct {
 
 typedef struct {
   double time;
-  double d;
-} data_2d;
+  double bba;
+  double bma;
+  double ta;
+  double uma;
+  double bba_PE;
+  double bma_PE;
+  double ta_PE;
+  double uma_PE;
+} onebound_data_generate_struct;
 
 void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);
 void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);

@@ -52,7 +52,6 @@ for data_file in data_files:
     if (data_file.find("config") == -1):
         f = open(data_file, 'r')
         opt_str = f.readline()[0:-1].split(', ')
-        print opt_str
         opts, _ = getopt.getopt(opt_str, "l:h:", ["legend=", "hline="])
         data_hline = False
         for opt, value in opts:
