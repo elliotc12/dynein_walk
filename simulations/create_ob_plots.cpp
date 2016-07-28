@@ -266,6 +266,7 @@ int main(int argc, char** argv) {
 
   if (errno) {
     perror("Failed opening binary data file");
+    printf("File name: %s\n", data_fname);
     exit(errno);
   }
 

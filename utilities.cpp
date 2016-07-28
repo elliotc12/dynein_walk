@@ -60,6 +60,7 @@ void prepare_data_file(const char* custom_str, char* fname) {
     FILE* data_file = fopen(fname, "w"); // clear the file
     if (errno) {
       perror("Error preparing data file");
+      printf("data file: %s\n", fname);
       exit(errno);
     }
     fclose(data_file);
@@ -68,6 +69,7 @@ void prepare_data_file(const char* custom_str, char* fname) {
     FILE* data_file = fopen(fname, "w");
     if (errno) {
       perror("Error preparing data file");
+      printf("data file: %s\n", fname);
       exit(errno);
     }
     fprintf(data_file, "%s\n", custom_str);

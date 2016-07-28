@@ -51,7 +51,7 @@ double RAND_INIT_SEED = 0;
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI,
   0.6 * M_PI,
-  0.0 * M_PI,
+  0.3 * M_PI,
   0.6 * M_PI
 };
 
