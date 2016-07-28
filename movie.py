@@ -182,7 +182,7 @@ while i < len(data):
 
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
 
-  t_text.set_text("Progress: {:3.1f}%".format(data[i][1]/config[4]*100))
+  t_text.set_text("Progress: {:3.1f}%".format(i/len(data)*100))
 
   i += speed
   plt.pause(0.001)
@@ -190,7 +190,8 @@ while i < len(data):
 
   fname = 'PNGs/%s-%03d.png' % (title, savefigframe)
   plt.savefig(fname)
-  #print "video progress: %f\r" % i/len*100
+  sys.stdout.write("video progress: %f\r" % (i/len(data)*100))
+  sys.stdout.flush()
 
 os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
 os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"

@@ -270,17 +270,17 @@ int main(int argc, char** argv) {
     exit(errno);
   }
 
-  strcat(bba_pe_fname_base, "data/ob_bba_pe_"); strcat(bba_pe_fname_base, f_appended_name);
-  strcat(bma_pe_fname_base, "data/ob_bma_pe_"); strcat(bma_pe_fname_base, f_appended_name);
-  strcat( ta_pe_fname_base, "data/ob_ta_pe_");  strcat( ta_pe_fname_base, f_appended_name);
-  strcat(uma_pe_fname_base, "data/ob_uma_pe_"); strcat(uma_pe_fname_base, f_appended_name);
+  strcpy(bba_pe_fname_base, "data/ob_bba_pe_"); strcat(bba_pe_fname_base, f_appended_name);
+  strcpy(bma_pe_fname_base, "data/ob_bma_pe_"); strcat(bma_pe_fname_base, f_appended_name);
+  strcpy( ta_pe_fname_base, "data/ob_ta_pe_");  strcat( ta_pe_fname_base, f_appended_name);
+  strcpy(uma_pe_fname_base, "data/ob_uma_pe_"); strcat(uma_pe_fname_base, f_appended_name);
 
-  strcat(bba_fname_base, "data/ob_bba_angle_"); strcat(bba_fname_base, f_appended_name);
-  strcat(bma_fname_base, "data/ob_bma_angle_"); strcat(bma_fname_base, f_appended_name);
-  strcat( ta_fname_base, "data/ob_ta_angle_");  strcat( ta_fname_base, f_appended_name);
-  strcat(uma_fname_base, "data/ob_uma_angle_"); strcat(uma_fname_base, f_appended_name);
+  strcpy(bba_fname_base, "data/ob_bba_angle_"); strcat(bba_fname_base, f_appended_name);
+  strcpy(bma_fname_base, "data/ob_bma_angle_"); strcat(bma_fname_base, f_appended_name);
+  strcpy( ta_fname_base, "data/ob_ta_angle_");  strcat( ta_fname_base, f_appended_name);
+  strcpy(uma_fname_base, "data/ob_uma_angle_"); strcat(uma_fname_base, f_appended_name);
 
-  strcat(movie_fname_base, "data/movie_"); strcat(movie_fname_base, f_appended_name);
+  strcpy(movie_fname_base, "data/movie_"); strcat(movie_fname_base, f_appended_name);
 
   struct stat data_fd_stat;
   fstat(data_fd, &data_fd_stat);
