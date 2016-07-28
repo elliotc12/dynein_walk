@@ -9,13 +9,14 @@ import sys
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea
 
-plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxyk:", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "logx", "logy", "skiprows="])
+plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxykm:", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "logx", "logy", "skiprows=", "ymax="])
 
 showplot = False
 hline = False
 scatter = False
 logx = False
 logy = False
+ymax = False
 
 skiprows = 1
 
@@ -40,6 +41,9 @@ for param, value in plot_params:
         logy = True
     elif (param == "--skiprows"):
         skiprows = int(value)
+    elif (param == "--ymax"):
+        ymax = True
+        ymax_val = float(value)
 
 ax = plt.gca()
 box = ax.get_position()
@@ -98,6 +102,11 @@ plt.legend(fontsize="small", loc="lower left", framealpha=0.0, bbox_to_anchor=(1
 ax.add_artist(anchored_box)
 
 plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if ymax:
+    ylims = plt.ylim()
+    if (ylims[1] > ymax_val):
+        plt.ylim([0, ymax_val])
 
 if logx:
     ax.set_xscale('log')
