@@ -925,41 +925,4 @@ Here we convert the above system into matrix form, solve it in Mathematica and l
 \end{pmatrix}
 \]
 
-
-\begin{twocolumn}
-\section{Notes on physical parameters}
-
-Stoke's Law states that the relationship between viscosity, force, and
-velocity for a spherical particle is given by:
-\begin{align}
-  \mathbf{v} &= \frac{\mathbf{F}}{6\pi \mu R}
-\end{align}
-where $\mu$ is the viscosity of the fluid, and $R$ is the radius of
-the particle.  Thus in our terminology:
-\begin{align}
-  \gamma &= 6\pi \mu R.
-\end{align}
-Note that the viscosity of water is temperature-dependent and around
-0.7~mPa~s at body temperature.  However, the viscosity of cytoplasm
-may be rather different, and will of course depend on length scale.
-But for our purposes we can probably get away with this value.
-
-The random force $\mathbf{R}(t)$ should have a Gaussian distribution
-with variance~1, but then be divided by $\sqrt{\Delta t}$.  Thus, the
-smaller the time step, the larger the random force we will apply.  We
-can understand this in the backwards direction.  When we observe a
-larger time step, the ``random force'' results from many smaller
-random forces added together, and these smaller forces often cancel,
-leading to this reduction in the total force over that time period.
-
-Finally, we will need estimates for the radii of each domain (to go
-into the $\gamma$ parameter, the equilibrium angles for each hinge, and
-the spring constants for each hinge.  The first two we can estimate
-from the structure of dynein.  The third will require a rough guess.
-We can get a ball-park guess by deciding how much we want the angle to
-fluctuate (e.g. $\ll \pi$ for each angle!), and then take our spring
-constant to be $kT$ divided by that anglular fluctuation squared.
-
-\end{twocolumn}
-
 \end{document}
