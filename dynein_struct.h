@@ -360,6 +360,16 @@ typedef struct {
   double bma_PE;
   double ta_PE;
   double uma_PE;
+  double f_bbx;   double f_bby;
+  double f_bmx;   double f_bmy;
+  double f_tx;    double f_ty;
+  double f_umx;   double f_umy;
+  double f_ubx;   double f_uby;
+  double bbx;   double bby;
+  double bmx;   double bmy;
+  double tx;    double ty;
+  double umx;   double umy;
+  double ubx;   double uby;
 } onebound_data_generate_struct;
 
 void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);

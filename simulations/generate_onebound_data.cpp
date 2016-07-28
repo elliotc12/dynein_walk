@@ -34,6 +34,19 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
     data.ta  = dyn_ob->get_uma() - dyn_ob->get_bma();
     data.uma = dyn_ob->get_uma() + M_PI - dyn_ob->get_uba();
 
+    onebound_forces f = dyn_ob->get_internal();
+    data.f_bbx = f.bbx;   data.f_bby = f.bby;
+    data.f_bmx = f.bmx;   data.f_bmy = f.bmy;
+    data.f_tx  = f.tx;    data.f_ty  = f.ty;
+    data.f_umx = f.umx;   data.f_umy = f.umy;
+    data.f_ubx = f.ubx;   data.f_uby = f.uby;
+
+    data.bbx = dyn_ob->get_bbx();   data.bby = dyn_ob->get_bby();
+    data.bmx = dyn_ob->get_bmx();   data.bmy = dyn_ob->get_bmy();
+    data.tx  = dyn_ob->get_tx();    data.ty  = dyn_ob->get_ty();
+    data.umx = dyn_ob->get_umx();   data.umy = dyn_ob->get_umy();
+    data.ubx = dyn_ob->get_ubx();   data.uby = dyn_ob->get_uby();
+
     fwrite(&data, sizeof(onebound_data_generate_struct), 1, data_file);
 
     if (iteration % (pe_calculation_skip_iterations*10) == 0) {
@@ -47,6 +60,21 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
 	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }
   }
+}
+
+void write_movie_config(char* movie_config_fname, double runtime) {
+  FILE* config_file = fopen(movie_config_fname, "w");
+  fprintf(config_file,
+	  "#gb\t"
+	  "gm\t"
+	  "gt\t"
+	  "dt\t"
+	  "runtime?\t"
+	  "state\t"
+	  "kbT\n");
+  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%g\n",
+          (double) gb, (double) gm, (double) gt, dt, runtime, kb*T);
+  fclose(config_file);
 }
 
 int main(int argc, char** argv) {
@@ -63,17 +91,22 @@ int main(int argc, char** argv) {
 
   char* f_appended_name = argv[1];
   char config_fname[200];
-
+  char movie_config_fname[200];
   char data_fname[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcpy(config_fname, "data/ob_config_");
+  strcpy(movie_config_fname, "data/movie_config_");
 
   strcat(data_fname, f_appended_name);
   strcat(config_fname, f_appended_name);
+  strcat(movie_config_fname, f_appended_name);
 
   strcat(data_fname, ".bin");
   strcat(config_fname, ".txt");
+  strcat(movie_config_fname, ".txt");
+
+  write_movie_config(movie_config_fname, iterations*dt);
 
   prepare_data_file(NULL, data_fname);
   write_config_file(config_fname, 0, "Initial state: onebound\nInitial conformation: equilibrium\n");
