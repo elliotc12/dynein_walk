@@ -137,7 +137,11 @@ int main(int argc, char** argv) {
   job_msg[3] =  data_file;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
-  double init_position[] = {eq.bba, eq.bma, eq.ta, eq.uma, 0, 0};
+  double init_position[] = {eq.bba,
+			    eq.bma + eq.bba - M_PI,
+			    eq.ta + eq.bma + eq.bba - M_PI,
+			    eq.ta + eq.bma + eq.bba - eq.uma,
+			    0, 0};
 
   simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, init_position,
 	   write_onebound_data_callback, job_msg, NULL);

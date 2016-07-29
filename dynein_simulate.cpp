@@ -1,4 +1,5 @@
 #include "dynein_struct.h"
+#include "simulations/simulation_defaults.h"
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,
@@ -63,6 +64,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else { // move like normal
+	  job(dyn_ob, current_state, job_msg, job_data, iter);
+	  t += dt;
+	  iter++;
+
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
 	  double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
@@ -73,9 +78,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
 
-	  job(dyn_ob, current_state, job_msg, job_data, iter);
-	  t += dt;
-	  iter++;
 	  dyn_ob->update_velocities();
 	}
       }
@@ -101,14 +103,15 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else { // move like normal
+	  job(dyn_bb, BOTHBOUND, job_msg, job_data, iter);
+	  t += dt;
+	  iter++;
+
 	  double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma()*dt;
 	  double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
 	  dyn_bb->set_nma(temp_nma);
 	  dyn_bb->set_fma(temp_fma);
 
-	  job(dyn_bb, BOTHBOUND, job_msg, job_data, iter);
-	  t += dt;
-	  iter++;
 	  dyn_bb->update_velocities();
 	}
       }
