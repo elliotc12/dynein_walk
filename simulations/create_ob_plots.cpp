@@ -99,7 +99,7 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
       correlation_sum += (pe[i] - pe_ave) * (pe[i+tau_iter] - pe_ave);
     }
     correlations[n] = correlation_sum / pe_var / (iters-tau_iter);
-    taus[n] = tau_iter*dt*pe_calculation_skip_iterations;
+    taus[n] = tau_iter*dt*data_generation_skip_iterations;
     printf("Progress on %s: %.1f%%  \r", fname, n * 100.0 / num_corr_datapoints);
   }
   printf("Finished %s                \n", fname);

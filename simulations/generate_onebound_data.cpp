@@ -12,7 +12,7 @@
 #include "simulation_defaults.h"
 
 void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
-  if (iteration % pe_calculation_skip_iterations != 0) return;
+  if (iteration % data_generation_skip_iterations != 0) return;
   else {
     assert(s == NEARBOUND);
     long long max_iteration = *((long long**) job_msg)[0];
@@ -49,13 +49,13 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
 
     fwrite(&data, sizeof(onebound_data_generate_struct), 1, data_file);
 
-    if (iteration % (pe_calculation_skip_iterations*10) == 0) {
+    if (iteration % (data_generation_skip_iterations*10) == 0) {
       printf("PE calculation progress (%s): %lld / %lld, %g%%                \r", run_msg,
     	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
       fflush(NULL);
     }
 
-    if (iteration == (max_iteration-1) - ((max_iteration-1) % pe_calculation_skip_iterations)) {
+    if (iteration == (max_iteration-1) - ((max_iteration-1) % data_generation_skip_iterations)) {
       printf("Finished generating PE data (%s), process took %g seconds               \n", run_msg,
 	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }
