@@ -66,16 +66,24 @@ create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_paramet
 	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_plots.o -o create_ob_plots
 
+create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+	g++ -c simulations/create_ob_movie.cpp $(CPPFLAGS)
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_movie.o -o create_ob_movie
+
 ob_plots: create_ob_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_ob_plots $(TITLE)
 	mkdir -p plots
-	mkdir -p movies
 	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="Angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
+
+ob_movie: create_ob_movie FORCE
+	@echo "Use TITLE='yourtitle' to give plot a title"
+	./create_ob_movie $(TITLE)
+	mkdir -p movies
 	./movie.py $(TITLE) speed=1
 
 generate_onebound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h FORCE
