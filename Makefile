@@ -79,6 +79,7 @@ ob_plots: create_ob_plots FORCE
 	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
 
 ob_movie: create_ob_movie FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
