@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -40,6 +41,7 @@ void generate_movie(double* time, movie_generate_struct* data, int len, char* fn
   strcat(fname, ".txt");
 
   FILE* data_file = fopen(fname, "w");
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   
   int d_iter = len / movie_num_frames;
   if (d_iter < 1) d_iter = 1;
@@ -63,6 +65,8 @@ void generate_movie(double* time, movie_generate_struct* data, int len, char* fn
 	    data->f_bbx[iter], data->f_bby[iter], data->f_bmx[iter], data->f_bmy[iter], data->f_tx[iter],
 	    data->f_ty[iter], data->f_umx[iter], data->f_umy[iter], data->f_ubx[iter], data->f_uby[iter]);
     printf("Progress on %s: %.1f%%  \r", fname, iter * 100.0 / len);
+    // assert(data->ta_PE[iter] ==
+    // 	   0.5 * ct * (data->ta[iter] - eq.ta)*(data->ta[iter] - eq.ta));
   }
   printf("Finished %s                \n", fname);
   fclose(data_file);
