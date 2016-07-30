@@ -78,27 +78,11 @@ void prepare_data_file(const char* custom_str, char* fname) {
 }
 
 void append_data_to_file(double* data1, double* data2, int len, FILE* file) {
-  if (len == 1) {
-    fprintf(file, "%+.12e     %+.5e\n", data1[0], data2[0]);
-  }
-  else {
-    char* buf =
-      (char*) malloc(((12+12+12+1)*len + 1)*sizeof(char));
-    int buf_offset = 0;
-
     for (int i = 0; i < len; i++) {
       assert(data1[i] == data1[i]);
-      //assert(data2[i] == data2[i]); // check for NaNs
-      if (data2[i] == data2[i]) {
-	sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], data2[i]);
-      }
-      else {
-	sprintf(&buf[buf_offset], "%+.12e     %+.5e\n", data1[i], 0.0);
-      }
-      buf_offset += 37;
+      // assert(data2[i] == data2[i]);
+      fprintf(file, "%+.12e     %+.5e\n", data1[i], data2[i]);
     }
-    fputs(buf, file);
-  }
 }
 
 void write_config_file(char* fname, int omit_flags, const char* custom_str) {

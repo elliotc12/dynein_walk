@@ -2,6 +2,8 @@
 
 import csv
 import getopt
+import matplotlib
+matplotlib.use("PDF") # use PDF generating backend bc it can handle bigger datasets
 import matplotlib.pyplot as plt
 import numpy as np
 #import pandas
@@ -9,9 +11,8 @@ import sys
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea
 
-plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxykm:", ["figtitle=", "xlabel=", "ylabel=", "showplot", "hline=", "scatter", "logx", "logy", "skiprows=", "ymax="])
+plot_params, data_files = getopt.getopt(sys.argv[1:], "f:x:y:ph:sxykm:", ["figtitle=", "xlabel=", "ylabel=", "hline=", "scatter", "logx", "logy", "skiprows=", "ymax="])
 
-showplot = False
 hline = False
 scatter = False
 logx = False
@@ -28,8 +29,6 @@ for param, value in plot_params:
         xlabel = value
     elif (param == "--ylabel"):
         ylabel = value
-    elif (param == "--showplot"):
-        showplot = True
     elif (param == "--hline"):
         hline = True
         hlineval = value
@@ -114,7 +113,4 @@ if logx:
 if logy:
     ax.set_yscale('log')
 
-if showplot:
-    plt.show()
-else:
-    plt.savefig("plots/" + title.replace(" ", "_") + ".pdf", format="pdf")
+plt.savefig("plots/" + title.replace(" ", "_") + ".pdf", format="pdf")

@@ -13,61 +13,6 @@
 #include "../default_parameters.h"
 #include "simulation_defaults.h"
 
-typedef struct {
-  double* bba;
-  double* bma;
-  double* ta;
-  double* uma;
-  double* bba_PE;
-  double* bma_PE;
-  double* ta_PE;
-  double* uma_PE;
-  double* bbx;     double* bby;
-  double* bmx;     double* bmy;
-  double* tx;      double* ty;
-  double* umx;     double* umy;
-  double* ubx;     double* uby;
-  double* f_bbx;   double* f_bby;
-  double* f_bmx;   double* f_bmy;
-  double* f_tx;    double* f_ty;
-  double* f_umx;   double* f_umy;
-  double* f_ubx;   double* f_uby;
-} movie_generate_struct;
-
-void generate_movie(double* time, movie_generate_struct* data, int len, char* fname_base) {
-  char fname[200];
-  strcpy(fname, fname_base);
-  strcat(fname, ".txt");
-
-  FILE* data_file = fopen(fname, "w");
-  
-  int d_iter = len / movie_num_frames;
-  if (d_iter < 1) d_iter = 1;
-
-  for (int iter = 0; iter < len; iter += d_iter) {
-    fprintf(data_file,
-	    "%d\t"
-	    "%.2g\t"
-	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
-	    "\n",
-	    NEARBOUND,
-	    time[iter],
-	    data->bba_PE[iter], data->bma_PE[iter], data->ta_PE[iter], data->uma_PE[iter], 0.0,
-	    data->bbx[iter], data->bby[iter], data->bmx[iter], data->bmy[iter],
-	    data->tx[iter], data->ty[iter], data->umx[iter], data->umy[iter],
-	    data->ubx[iter], data->uby[iter],
-	    data->f_bbx[iter], data->f_bby[iter], data->f_bmx[iter], data->f_bmy[iter], data->f_tx[iter],
-	    data->f_ty[iter], data->f_umx[iter], data->f_umy[iter], data->f_ubx[iter], data->f_uby[iter]);
-    printf("Progress on %s: %.1f%%  \r", fname, iter * 100.0 / len);
-  }
-  printf("Finished %s                \n", fname);
-  fclose(data_file);
-}
-
 void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base){
   int max_tau_iter;
   if (iters*tau_runtime_fraction > num_corr_datapoints) {
@@ -121,33 +66,35 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   prepare_data_file(buf, fname);
 
   double et = 0.5*kb*T;
-  double* pe_local_ave = (double*) malloc(iters * sizeof(double));
-  for (int i = 0; i < iters; i++) {
-    if (i == 0 or i == iters-1) {
-      pe_local_ave[i] = pe[i] / et;
+  double* pe_local_ave = (double*) malloc(num_generate_pe_datapoints * sizeof(double));
+  double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
+  int iters_per_i = iters / num_generate_pe_datapoints;
+  for (int i = 0; i < num_generate_pe_datapoints; i++) {
+    int iter = i*iters_per_i;
+    if (iter == 0 or iter == iters-1) {
+      pe_local_ave[i] = pe[iter] / et;
     }
-    else if (i < pe_averaging_width/2) {
-      pe_local_ave[i] = get_average(pe, i*2) / et;
+    else if (iter < generate_averaging_width/2) {
+      pe_local_ave[i] = get_average(pe, iter*2) / et;
     }
-    else if (i == pe_averaging_width/2) {
-      pe_local_ave[i] = get_average(&pe[i-pe_averaging_width/2], pe_averaging_width) / et;
+    else if ( iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)){
+      pe_local_ave[i] = get_average(&pe[iter-generate_averaging_width/2],
+				    generate_averaging_width) / et;
     }
-    else if ( i > pe_averaging_width/2 and i <= (iters-pe_averaging_width/2-1)){
-      pe_local_ave[i] = (pe_local_ave[i-1]*i + pe[i]/et) / (i+1);
-    }
-    else if (i > (iters-pe_averaging_width/2-1)) {
-      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-i)*2], (iters-1-i)*2) / et;
+    else if (iter > (iters-generate_averaging_width/2-1)) {
+      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2) / et;
     }
     else {
       printf("Error in PE local averaging!\n");
       exit(1);
     }
-    printf("Progress for %s: %.1f%%  \r", fname, i * 100.0 / iters);
+    sampled_times[i] = times[iter];
+    printf("Progress for %s: %.1f%%  \r", fname, iter * 100.0 / iters);
   }
   printf("Finished %s                        \n", fname);
 
   FILE* file = fopen(fname, "a");
-  append_data_to_file(times, pe_local_ave, iters, file);
+  append_data_to_file(sampled_times, pe_local_ave, num_generate_pe_datapoints, file);
   fclose(file);
 
   free(pe_local_ave);
@@ -205,33 +152,35 @@ void generate_angle_vs_time_data(double* times, double* angle, int iters, const 
   sprintf(buf, "--legend='%s', --hline='%g'", legend, eq_angle);
   prepare_data_file(buf, fname);
 
-  double* angle_local_ave = (double*) malloc(iters * sizeof(double));
-  for (int i = 0; i < iters; i++) {
-    if (i == 0 or i == iters-1) {
-      angle_local_ave[i] = angle[i];
+  double* angle_local_ave = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
+  double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
+  int iters_per_i = iters / num_generate_angle_datapoints;
+  for (int i = 0; i < num_generate_angle_datapoints; i++) {
+    int iter = i*iters_per_i;
+    if (iter == 0 or iter == iters-1) {
+      angle_local_ave[i] = angle[iter];
     }
-    else if (i < angle_averaging_width/2) {
-      angle_local_ave[i] = get_average(angle, i*2);
+    else if (iter < generate_averaging_width/2) {
+      angle_local_ave[i] = get_average(angle, iter*2);
     }
-    else if (i == angle_averaging_width/2) {
-      angle_local_ave[i] = get_average(&angle[i-angle_averaging_width/2], angle_averaging_width);
+    else if (iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)) {
+      angle_local_ave[i] = get_average(&angle[iter-generate_averaging_width/2],
+				       generate_averaging_width);
     }
-    else if ( i > angle_averaging_width/2 and i <= (iters-angle_averaging_width/2-1)){
-      angle_local_ave[i] = (angle_local_ave[i-1]*i + angle[i]) / (i+1);
-    }
-    else if (i > (iters-angle_averaging_width/2-1)) {
-      angle_local_ave[i] = get_average(&angle[iters-1-(iters-1-i)*2], (iters-1-i)*2);
+    else if (iter > (iters-generate_averaging_width/2-1)) {
+      angle_local_ave[i] = get_average(&angle[iters-1-(iters-1-iter)*2], (iters-1-iter)*2);
     }
     else {
       printf("Error in angle local averaging!\n");
       exit(1);
     }
-    printf("Progress for %s: %.1f%%  \r", fname, i * 100.0 / iters);
+    sampled_times[i] = times[iter];
+    printf("Progress for %s: %.1f%%  \r", fname, iter * 100.0 / iters);
   }
   printf("Finished %s                        \n", fname);
 
   FILE* file = fopen(fname, "a");
-  append_data_to_file(times, angle_local_ave, iters, file);
+  append_data_to_file(sampled_times, angle_local_ave, num_generate_angle_datapoints, file);
   fclose(file);
 
   free(angle_local_ave);
@@ -257,7 +206,6 @@ int main(int argc, char** argv) {
   char bma_fname_base[200];
   char  ta_fname_base[200];
   char uma_fname_base[200];
-  char movie_fname_base[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcat(data_fname, f_appended_name);
@@ -279,8 +227,6 @@ int main(int argc, char** argv) {
   strcpy(bma_fname_base, "data/ob_bma_angle_"); strcat(bma_fname_base, f_appended_name);
   strcpy( ta_fname_base, "data/ob_ta_angle_");  strcat( ta_fname_base, f_appended_name);
   strcpy(uma_fname_base, "data/ob_uma_angle_"); strcat(uma_fname_base, f_appended_name);
-
-  strcpy(movie_fname_base, "data/movie_"); strcat(movie_fname_base, f_appended_name);
 
   struct stat data_fd_stat;
   fstat(data_fd, &data_fd_stat);
@@ -381,33 +327,6 @@ int main(int argc, char** argv) {
   generate_angle_vs_time_data(time, bma_angle, len, "Bound motor", bma_fname_base, onebound_post_powerstroke_internal_angles.bma);
   generate_angle_vs_time_data(time, ta_angle, len, "Tail", ta_fname_base, onebound_post_powerstroke_internal_angles.ta);
   generate_angle_vs_time_data(time, uma_angle, len, "Unbound motor", uma_fname_base, onebound_post_powerstroke_internal_angles.uma);
-
-  movie_generate_struct movie_data;
-  movie_data.bba_PE = bba_pe;
-  movie_data.bma_PE = bma_pe;
-  movie_data.ta_PE  = ta_pe;
-  movie_data.uma_PE = uma_pe;
-  movie_data.bba = bba_angle;
-  movie_data.bma = bma_angle;
-  movie_data.ta  = ta_angle;
-  movie_data.uma = uma_angle;
-  movie_data.bbx = bbx;      movie_data.bby = bby;
-  movie_data.bmx = bmx;      movie_data.bmy = bmy;
-  movie_data.tx  = tx;	      movie_data.ty = ty;
-  movie_data.umx = umx;      movie_data.umy = umy;
-  movie_data.ubx = ubx;      movie_data.uby = uby;
-  movie_data.f_bbx = f_bbx;
-  movie_data.f_bmx = f_bmx;
-  movie_data.f_tx  = f_tx;
-  movie_data.f_umx = f_umx;
-  movie_data.f_ubx = f_ubx;
-  movie_data.f_bby = f_bby;
-  movie_data.f_bmy = f_bmy;
-  movie_data.f_ty  = f_ty;
-  movie_data.f_umy = f_umy;
-  movie_data.f_uby = f_uby;
- 
-  generate_movie(time, &movie_data, len, movie_fname_base);
 
   free(bba_pe); free(bma_pe); free(ta_pe); free(uma_pe);
   free(bba_angle); free(bma_angle); free(ta_angle); free(uma_angle);

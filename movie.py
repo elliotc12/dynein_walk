@@ -194,6 +194,6 @@ while i < len(data):
   sys.stdout.flush()
 
 os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
-os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
-            " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (title, title))
+# os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
+#             " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (title, title))
 os.system("rm PNGs/*")
