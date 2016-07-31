@@ -49,7 +49,7 @@ box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width*0.7, box.height])
 
 max_x_value = 0
-colors = ['b', 'g', 'r', 'm']
+colors = ['y', 'Olive', 'Fuchsia', 'Aqua', 'Teal', 'Lime', 'b', 'g', 'r', 'm']
 
 for data_file in data_files:
     if (data_file.find("config") == -1):

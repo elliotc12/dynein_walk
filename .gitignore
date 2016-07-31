@@ -31,3 +31,9 @@ ob_PE_equipartition_ratio_average_vs_spring_constant
 ob_PE_equipartition_ratio_average_vs_temperature
 *.txt
 *_test
+create_ob_plots
+create_pe_time_plots
+generate_onebound_PE_data
+generate_onebound_data
+movies/
+onebound_PE_equipartition_correlation_plot

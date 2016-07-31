@@ -313,20 +313,20 @@ int main(int argc, char** argv) {
   generate_correlation_fn_data(ta_pe, len, "Tail", ta_pe_fname_base);
   generate_correlation_fn_data(uma_pe, len, "Unbound motor", uma_pe_fname_base);
 
-  generate_pe_vs_time_data(time, bba_pe, len, "Bound binding", bba_pe_fname_base);
-  generate_pe_vs_time_data(time, bma_pe, len, "Bound motor", bma_pe_fname_base);
-  generate_pe_vs_time_data(time, ta_pe, len, "Tail", ta_pe_fname_base);
-  generate_pe_vs_time_data(time, uma_pe, len, "Unbound motor", uma_pe_fname_base);
+  generate_pe_vs_time_data(time, bba_pe, len, "Bound binding PE", bba_pe_fname_base);
+  generate_pe_vs_time_data(time, bma_pe, len, "Bound motor PE", bma_pe_fname_base);
+  generate_pe_vs_time_data(time, ta_pe, len, "Tail PE", ta_pe_fname_base);
+  generate_pe_vs_time_data(time, uma_pe, len, "Unbound motor PE", uma_pe_fname_base);
 
   generate_ave_pe_and_log_error_data(time, bba_pe, len, "Bound binding", bba_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, bma_pe, len, "Bound motor", bma_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, ta_pe, len, "Tail", ta_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, uma_pe, len, "Unbound motor", uma_pe_fname_base);
 
-  generate_angle_vs_time_data(time, bba_angle, len, "Bound binding", bba_fname_base, onebound_post_powerstroke_internal_angles.bba);
-  generate_angle_vs_time_data(time, bma_angle, len, "Bound motor", bma_fname_base, onebound_post_powerstroke_internal_angles.bma);
-  generate_angle_vs_time_data(time, ta_angle, len, "Tail", ta_fname_base, onebound_post_powerstroke_internal_angles.ta);
-  generate_angle_vs_time_data(time, uma_angle, len, "Unbound motor", uma_fname_base, onebound_post_powerstroke_internal_angles.uma);
+  generate_angle_vs_time_data(time, bba_angle, len, "Bound binding angle", bba_fname_base, onebound_post_powerstroke_internal_angles.bba);
+  generate_angle_vs_time_data(time, bma_angle, len, "Bound motor angle", bma_fname_base, onebound_post_powerstroke_internal_angles.bma);
+  generate_angle_vs_time_data(time, ta_angle, len, "Tail angle", ta_fname_base, onebound_post_powerstroke_internal_angles.ta);
+  generate_angle_vs_time_data(time, uma_angle, len, "Unbound motor angle", uma_fname_base, onebound_post_powerstroke_internal_angles.uma);
 
   free(bba_pe); free(bma_pe); free(ta_pe); free(uma_pe);
   free(bba_angle); free(bma_angle); free(ta_angle); free(uma_angle);
