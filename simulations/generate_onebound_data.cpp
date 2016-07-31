@@ -109,7 +109,8 @@ int main(int argc, char** argv) {
   write_movie_config(movie_config_fname, iterations*dt);
 
   prepare_data_file(NULL, data_fname);
-  write_config_file(config_fname, 0, "Initial state: onebound\nInitial conformation: equilibrium\n");
+  write_config_file(config_fname, CONFIG_INCLUDE_SKIPINFO,
+		    "Initial state: onebound\nInitial conformation: equilibrium\n");
 
   void* job_msg[4];
   job_msg[0] = (double*) &iterations;

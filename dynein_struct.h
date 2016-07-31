@@ -283,7 +283,8 @@ private:
 /* ***************************** UTILITY PROTOTYPES ****************************** */
 enum WRITE_CONFIG_OMIT_FLAGS {
   CONFIG_OMIT_T = 1,
-  CONFIG_OMIT_C = 2
+  CONFIG_OMIT_C = 2,
+  CONFIG_INCLUDE_SKIPINFO = 4
 };
 
 double randAngle(double range);

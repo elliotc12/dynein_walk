@@ -104,6 +104,15 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
   sprintf(buf, "dt: %g", dt);
   strcat(text_buf, buf);
+  if ((omit_flags & CONFIG_INCLUDE_SKIPINFO) != 0) {
+    sprintf(buf, "local averaging width: %d", generate_averaging_width);
+    strcat(text_buf, buf);
+    sprintf(buf, "local averaging pe datapoints: %d", num_generate_pe_datapoints);
+    strcat(text_buf, buf);
+    sprintf(buf, "local averaging angle datapoints: %d", num_generate_angle_datapoints);
+    strcat(text_buf, buf);
+  }
+  
 
   FILE* data_file = fopen(fname, "w");
   fputs(text_buf, data_file);
