@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  T = 500;
+  T = 100;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");

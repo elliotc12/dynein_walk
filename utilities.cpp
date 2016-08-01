@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include "dynein_struct.h"
+#include "simulations/simulation_defaults.h"
 
 extern double bla_init;
 extern double mla_init;
@@ -102,14 +103,14 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
   sprintf(buf, "cb: %.2e\n", cb);
   if ((omit_flags & CONFIG_OMIT_C) == 0) strcat(text_buf, buf);
-  sprintf(buf, "dt: %g", dt);
+  sprintf(buf, "dt: %g\n", dt);
   strcat(text_buf, buf);
   if ((omit_flags & CONFIG_INCLUDE_SKIPINFO) != 0) {
-    sprintf(buf, "local averaging width: %d", generate_averaging_width);
+    sprintf(buf, "lavg width: %d\n", generate_averaging_width);
     strcat(text_buf, buf);
-    sprintf(buf, "local averaging pe datapoints: %d", num_generate_pe_datapoints);
+    sprintf(buf, "lavg pe points: %d\n", num_generate_pe_datapoints);
     strcat(text_buf, buf);
-    sprintf(buf, "local averaging angle datapoints: %d", num_generate_angle_datapoints);
+    sprintf(buf, "lavg angle points: %d\n", num_generate_angle_datapoints);
     strcat(text_buf, buf);
   }
   
