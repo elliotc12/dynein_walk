@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <cstring>
 
-#include "simulations/simulation_defaults.h"
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
 

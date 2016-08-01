@@ -1,3 +1,5 @@
+#pragma once
+
 const long long iterations = 1e7;
 const int data_generation_skip_iterations = 1e3;
 
