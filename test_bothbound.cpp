@@ -330,7 +330,7 @@ int main(int argvc, char **argv) {
     if (!test("left mx velocities exactly equal?",
 	      left_dyn_bb.get_d_nmx(), right_dyn_bb.get_d_fmx(), 0)) num_failures++;
     if (!test("tx velocities exactly equal?",
-	      left_dyn_bb.get_d_tx(), right_dyn_bb.get_d_tx(), 0)) num_failures++;
+	      left_dyn_bb.get_d_tx(), right_dyn_bb.get_d_tx(), 1e-24)) num_failures++;
     if (!test("right mx velocities exactly equal?",
 	      left_dyn_bb.get_d_fmx(), right_dyn_bb.get_d_nmx(), 0)) num_failures++;
 
