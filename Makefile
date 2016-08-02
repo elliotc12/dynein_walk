@@ -1,9 +1,9 @@
 CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
 LIBRARIES = -lm
 
-.PHONY: test_bothbound test_onebound clean plot
+.PHONY: test_bothbound test_onebound clean
 
-all: test_onebound test_bothbound plot
+all: test_onebound test_bothbound create_ob_plots create_ob_movie derivation.pdf paper.pdf thesis_stuff.pdf
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -32,21 +32,8 @@ test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 figures: figures/*
 	cd figures && make
 
-plot: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp
-	@echo "CONF = natural / pretty"
-	g++ -c simulations/plot.cpp $(CPPFLAGS) -o plot.o
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o plot.o -o plot
-	./simulate.py veryfast verylong $(CONF) $(OPT)
-
 paper.pdf: latex/paper.tex
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
-
-save: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/plot.cpp
-	mkdir -p movies
-	mkdir -p PNGs
-	g++ -c simulations/plot.cpp $(CPPFLAGS) -o plot.o
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o plot.o -o plot
-	./simulate.py veryfast verylong natural save $(NAME)
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
 	g++ test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o dynein_simulate.o utilities.o -o test_bothbound
@@ -98,11 +85,6 @@ bothbound_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_
 	g++ bothbound_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o bothbound_equipartition_test
 	./bothbound_equipartition_test
 
-ob_equipartition_test: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_equipartition_test.cpp FORCE
-	g++ -c simulations/ob_equipartition_test.cpp $(CPPFLAGS)
-	g++ ob_equipartition_test.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_equipartition_test
-	./ob_equipartition_test
-
 ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp FORCE
 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
 	g++ ob_PE_equipartition_ratio_average_vs_spring_constant.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_spring_constant
@@ -149,11 +131,8 @@ ob_PE_equipartition_ratio_average_vs_dt_plot: ob_PE_equipartition_ratio_average_
 
 ########################### THESIS STUFF #################################
 
-thesis_stuff/thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE
-	cd thesis_stuff && xelatex thesis_stuff.tex
-
-thesis_stuff/random_derivations.pdf: thesis_stuff/random_derivations.tex FORCE
-	cd thesis_stuff && xelatex random_derivations.tex
+thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex FORCE
+	cd thesis_stuff && xelatex thesis_stuff.tex && mv thesis_stuff.pdf ..
 
 clean:
 	rm -f *.txt
