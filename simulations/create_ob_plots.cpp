@@ -65,24 +65,23 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   sprintf(buf, "--legend='%s", legend);
   prepare_data_file(buf, fname);
 
-  double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(num_generate_pe_datapoints * sizeof(double));
   double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
   int iters_per_i = iters / num_generate_pe_datapoints;
   for (int i = 0; i < num_generate_pe_datapoints; i++) {
     int iter = i*iters_per_i;
     if (iter == 0 or iter == iters-1) {
-      pe_local_ave[i] = pe[iter] / et;
+      pe_local_ave[i] = pe[iter];
     }
     else if (iter < generate_averaging_width/2) {
-      pe_local_ave[i] = get_average(pe, iter*2) / et;
+      pe_local_ave[i] = get_average(pe, iter*2);
     }
     else if ( iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)){
       pe_local_ave[i] = get_average(&pe[iter-generate_averaging_width/2],
-				    generate_averaging_width) / et;
+				    generate_averaging_width);
     }
     else if (iter > (iters-generate_averaging_width/2-1)) {
-      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2) / et;
+      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2);
     }
     else {
       printf("Error in PE local averaging!\n");
@@ -119,10 +118,9 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
   double* pe_aves = (double*) malloc(iters * sizeof(double));
   double* log_err = (double*) malloc(iters * sizeof(double));
 
-  double et = 0.5*kb*T;
-  pe_aves[0] = pe[0]/et;
+  pe_aves[0] = pe[0];
   for (int i=1; i<iters; i++) {
-    pe_aves[i] = (pe_aves[i-1]*i + pe[i]/et) / (i+1);
+    pe_aves[i] = (pe_aves[i-1]*i + pe[i]) / (i+1);
     printf("Progress for %s: %.1f%%  \r", fname_ave, i * 100.0 / iters);
   }
   printf("Finished %s                        \n", fname_ave);
