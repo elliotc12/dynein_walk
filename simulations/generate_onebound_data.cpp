@@ -89,9 +89,9 @@ int main(int argc, char** argv) {
   }
 
   char* f_appended_name = argv[1];
-  char config_fname[200];
-  char movie_config_fname[200];
-  char data_fname[200];
+  char *config_fname = new char[200];
+  char *movie_config_fname = new char[200];
+  char *data_fname = new char[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcpy(config_fname, "data/ob_config_");
