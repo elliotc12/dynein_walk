@@ -65,7 +65,7 @@ for data_file in data_files:
                 data_hlineval = float("".join([x if x != "'" else '' for x in value]))
         f.close()
 
-        line = np.loadtxt(data_file, skiprows=2)
+        line = np.loadtxt(data_file, skiprows=1)
         #line = pandas.read_csv(data_file, skiprows=1)
         X = line[:,0]
         Y = line[:,1]

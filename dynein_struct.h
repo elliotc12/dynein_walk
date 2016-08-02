@@ -283,7 +283,8 @@ private:
 /* ***************************** UTILITY PROTOTYPES ****************************** */
 enum WRITE_CONFIG_OMIT_FLAGS {
   CONFIG_OMIT_T = 1,
-  CONFIG_OMIT_C = 2
+  CONFIG_OMIT_C = 2,
+  CONFIG_INCLUDE_SKIPINFO = 4
 };
 
 double randAngle(double range);
@@ -376,10 +377,10 @@ void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union*
 void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);
 void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration);
 
-void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long num_correlations, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base, int skip_num);
-void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long num_runtimes, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base, int skip_num);
-void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base, int skip_num);
-void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len, char* run_msg_base, int skip_num);
+void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data* corr_data, long long num_correlations, long long iterations, long long max_tau_iter, const int* seeds, int seed_len, char* run_msg_base);
+void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long num_runtimes, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
+void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_data, onebound_data* eq_data, long long d_runtime_iter, long long min_runtime_iter, long long max_runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
+void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,	

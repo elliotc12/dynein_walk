@@ -65,24 +65,23 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   sprintf(buf, "--legend='%s", legend);
   prepare_data_file(buf, fname);
 
-  double et = 0.5*kb*T;
   double* pe_local_ave = (double*) malloc(num_generate_pe_datapoints * sizeof(double));
   double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
   int iters_per_i = iters / num_generate_pe_datapoints;
   for (int i = 0; i < num_generate_pe_datapoints; i++) {
     int iter = i*iters_per_i;
     if (iter == 0 or iter == iters-1) {
-      pe_local_ave[i] = pe[iter] / et;
+      pe_local_ave[i] = pe[iter];
     }
     else if (iter < generate_averaging_width/2) {
-      pe_local_ave[i] = get_average(pe, iter*2) / et;
+      pe_local_ave[i] = get_average(pe, iter*2);
     }
     else if ( iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)){
       pe_local_ave[i] = get_average(&pe[iter-generate_averaging_width/2],
-				    generate_averaging_width) / et;
+				    generate_averaging_width);
     }
     else if (iter > (iters-generate_averaging_width/2-1)) {
-      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2) / et;
+      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2);
     }
     else {
       printf("Error in PE local averaging!\n");
@@ -119,10 +118,9 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
   double* pe_aves = (double*) malloc(iters * sizeof(double));
   double* log_err = (double*) malloc(iters * sizeof(double));
 
-  double et = 0.5*kb*T;
-  pe_aves[0] = pe[0]/et;
+  pe_aves[0] = pe[0];
   for (int i=1; i<iters; i++) {
-    pe_aves[i] = (pe_aves[i-1]*i + pe[i]/et) / (i+1);
+    pe_aves[i] = (pe_aves[i-1]*i + pe[i]) / (i+1);
     printf("Progress for %s: %.1f%%  \r", fname_ave, i * 100.0 / iters);
   }
   printf("Finished %s                        \n", fname_ave);
@@ -142,6 +140,7 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
 
   free(pe_aves); free(log_err);
 }
+
 
 void generate_angle_vs_time_data(double* times, double* angle, int iters, const char* legend, char* fname_base, double eq_angle) {
   char fname[200];
@@ -206,6 +205,7 @@ int main(int argc, char** argv) {
   char bma_fname_base[200];
   char  ta_fname_base[200];
   char uma_fname_base[200];
+  char *everything_name = new char[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcat(data_fname, f_appended_name);
@@ -217,6 +217,8 @@ int main(int argc, char** argv) {
     printf("File name: %s\n", data_fname);
     exit(errno);
   }
+
+  sprintf(everything_name, "data/everything_%s.txt", f_appended_name);
 
   strcpy(bba_pe_fname_base, "data/ob_bba_pe_"); strcat(bba_pe_fname_base, f_appended_name);
   strcpy(bma_pe_fname_base, "data/ob_bma_pe_"); strcat(bma_pe_fname_base, f_appended_name);
@@ -234,6 +236,71 @@ int main(int argc, char** argv) {
 
   onebound_data_generate_struct* data_map;
   data_map = (onebound_data_generate_struct*) mmap(NULL, len*sizeof(onebound_data_generate_struct), PROT_READ, MAP_PRIVATE, data_fd, 0);
+
+  {
+    FILE *f = fopen(everything_name, "w");
+    fprintf(f, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "bba_PE",
+            "bma_PE",
+            "ta_PE",
+            "uma_PE",
+            "bba",
+            "bma",
+            "ta",
+            "uma",
+            "bbx",
+            "bmx",
+            "tx",
+            "umx",
+            "ubx",
+            "bby",
+            "bmy",
+            "ty",
+            "umy",
+            "uby",
+            "f_bbx",
+            "f_bmx",
+            "f_tx",
+            "f_umx",
+            "f_ubx",
+            "f_bby",
+            "f_bmy",
+            "f_ty",
+            "f_umy",
+            "f_uby");
+    for (int j=0;j<len;j++) {
+      fprintf(f, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
+              data_map[j].bba_PE,
+              data_map[j].bma_PE,
+              data_map[j].ta_PE,
+              data_map[j].uma_PE,
+              data_map[j].bba,
+              data_map[j].bma,
+              data_map[j].ta,
+              data_map[j].uma,
+              data_map[j].bbx,
+              data_map[j].bmx,
+              data_map[j].tx,
+              data_map[j].umx,
+              data_map[j].ubx,
+              data_map[j].bby,
+              data_map[j].bmy,
+              data_map[j].ty,
+              data_map[j].umy,
+              data_map[j].uby,
+              data_map[j].f_bbx,
+              data_map[j].f_bmx,
+              data_map[j].f_tx,
+              data_map[j].f_umx,
+              data_map[j].f_ubx,
+              data_map[j].f_bby,
+              data_map[j].f_bmy,
+              data_map[j].f_ty,
+              data_map[j].f_umy,
+              data_map[j].f_uby);
+    }
+    fclose(f);
+  }
 
   if (data_map == MAP_FAILED) {
     perror("Error using mmap: ");

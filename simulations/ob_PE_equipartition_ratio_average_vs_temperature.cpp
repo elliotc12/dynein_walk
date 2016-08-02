@@ -4,6 +4,7 @@
 
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
+#include "simulation_defaults.h"
 
 int main(int argc, char** argv) {
   if (FP_EXCEPTION_FATAL) {
@@ -11,12 +12,10 @@ int main(int argc, char** argv) {
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  int iterations = 1e5;
-
-  const char* bba_eq_title = "Bound binding";
-  const char* bma_eq_title = "Bound motor";
-  const char* ta_eq_title =  "Tail domain";
-  const char* uma_eq_title = "Unbound motor";
+  const char* bba_eq_title = "--legend='Bound binding'";
+  const char* bma_eq_title = "--legend='Bound motor'";
+  const char* ta_eq_title =  "--legend='Tail domain'";
+  const char* uma_eq_title = "--legend='Unbound motor'";
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");
@@ -52,8 +51,8 @@ int main(int argc, char** argv) {
 
   int num_Ts = 10;
   double temps[num_Ts];
-  double min_temp = 150;
-  double max_temp = 2000.0;
+  double min_temp = 1;
+  double max_temp = 300.0;
   double d_temp = (max_temp - min_temp) / num_Ts;
   double temp = min_temp;
   int i = 0;
@@ -69,8 +68,13 @@ int main(int argc, char** argv) {
 
   prepare_data_file(bba_eq_title, bba_eq_fname);
   prepare_data_file(bma_eq_title, bma_eq_fname);
-  prepare_data_file(ta_eq_title,  ta_eq_fname);
+  prepare_data_file(ta_eq_title,   ta_eq_fname);
   prepare_data_file(uma_eq_title, uma_eq_fname);
+
+  FILE* bba_file = fopen(bba_eq_fname, "a");
+  FILE* bma_file = fopen(bma_eq_fname, "a");
+  FILE*  ta_file = fopen( ta_eq_fname, "a");
+  FILE* uma_file = fopen(uma_eq_fname, "a");
 
   for (int i = 0; i < num_Ts; i++) {
     T = temps[i];
@@ -93,13 +97,15 @@ int main(int argc, char** argv) {
     sprintf(buf, "temp = %.1f, ", T);
     strcat(run_msg, buf);
 
-    get_onebound_equipartition_ratio(
-	  &eq_data, &unused_force_var_data, iterations, seeds, seed_len, run_msg);
+    long long iters = iterations / data_generation_skip_iterations;
 
-    append_data_to_file(&T, eq_data.bb, 1, bba_eq_fname);
-    append_data_to_file(&T, eq_data.bm, 1, bma_eq_fname);
-    append_data_to_file(&T, eq_data.t , 1, ta_eq_fname);
-    append_data_to_file(&T, eq_data.um, 1, uma_eq_fname);
+    get_onebound_equipartition_ratio(
+	  &eq_data, &unused_force_var_data, iters, seeds, seed_len, run_msg);
+
+    append_data_to_file(&T, eq_data.bb, 1, bba_file);
+    append_data_to_file(&T, eq_data.bm, 1, bma_file);
+    append_data_to_file(&T, eq_data.t , 1,  ta_file);
+    append_data_to_file(&T, eq_data.um, 1, uma_file);
   }
 
   write_config_file(config_eq_fname, CONFIG_OMIT_T, NULL);

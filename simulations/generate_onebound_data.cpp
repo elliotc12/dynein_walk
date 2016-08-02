@@ -23,12 +23,13 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
 
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
 
+    double et = 0.5*kb*T;
     onebound_data_generate_struct data;
     data.time = iteration*dt;
-    data.bba_PE = dyn_ob->PE_bba;
-    data.bma_PE = dyn_ob->PE_bma;
-    data.ta_PE  = dyn_ob->PE_ta;
-    data.uma_PE = dyn_ob->PE_uma;
+    data.bba_PE = dyn_ob->PE_bba / et;
+    data.bma_PE = dyn_ob->PE_bma / et;
+    data.ta_PE  = dyn_ob->PE_ta  / et;
+    data.uma_PE = dyn_ob->PE_uma / et;
     data.bba = dyn_ob->get_bba();
     data.bma = dyn_ob->get_bma() + M_PI - dyn_ob->get_bba();
     data.ta  = dyn_ob->get_uma() - dyn_ob->get_bma();
@@ -81,7 +82,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  T = 500;
+  T = 1;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");
@@ -89,9 +90,9 @@ int main(int argc, char** argv) {
   }
 
   char* f_appended_name = argv[1];
-  char config_fname[200];
-  char movie_config_fname[200];
-  char data_fname[200];
+  char *config_fname = new char[200];
+  char *movie_config_fname = new char[200];
+  char *data_fname = new char[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcpy(config_fname, "data/ob_config_");
@@ -108,7 +109,8 @@ int main(int argc, char** argv) {
   write_movie_config(movie_config_fname, iterations*dt);
 
   prepare_data_file(NULL, data_fname);
-  write_config_file(config_fname, 0, "Initial state: onebound\nInitial conformation: equilibrium\n");
+  write_config_file(config_fname, CONFIG_INCLUDE_SKIPINFO,
+		    "Initial state: onebound\nInitial conformation: equilibrium\n");
 
   void* job_msg[4];
   job_msg[0] = (double*) &iterations;
