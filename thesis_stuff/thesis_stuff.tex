@@ -323,4 +323,54 @@ We can get a ball-park guess by deciding how much we want the angle to
 fluctuate (e.g. $\ll \pi$ for each angle!), and then take our spring
 constant to be $kT$ divided by that anglular fluctuation squared.
 
+\section{Background of Correlation function}
+This is based on the Autocorrelation procedure (see Convolution on Wikipedia).
+In our correlation function code, we take the autocorrelation function of our
+potential and time-translate it to get the time at which there is zero correlation
+between the functions. Flesh this out sometime!\\
+
+\section{CLT (and/or Brownian distribution is Gaussian?) Derivation}
+Here we show that, given an initial PDF as a delta function $P(t_0,x) = \delta(x)$
+and any transition likelihood $W(s)$ for some step size s and 1 timestep, P
+eventually evolves into a Gaussian function.\\
+
+We use a discrete time, continuous position model:\\
+
+\begin{align}
+  P(t_0+1,x') &= \int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx\\
+\end{align}
+
+This matches the form of a convolution integral:
+
+\begin{align*}
+  (P*W)(x') &= \int_{-\infty}^{\infty}P(t_0,x)W(x'-x)dx\\
+\end{align*}
+
+By the Convolution Theorem (prove?) we can simplify the above expression:
+
+\begin{align}
+  F{P(t_0+1,x')} &= F{\int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx}\\
+  \tilde{P(t_0+1,k)} &= N\tilde{W(k)}\tilde{P(t_0,k)}\\
+\end{align}
+
+We now let our initial time $t_0$ be zero and note that, because
+$W_n(\delta x) = W(\delta x)^n$, we can simplify our expression to:
+
+\begin{align}
+  \tilde{P(n,k)} &= N\tilde{W(k)}^n\tilde{P(t_0,k)}\\
+\end{align}
+
+We then take the Inverse Fourier Transform of this expression, yielding:
+
+\begin{align}
+  P(n,x) &= \int_{-\infty}^{\infty}\tilde{P(n,k)}e^{2\pi ikx}dk
+  = N\int_{-\infty}^{\infty}\tilde{W(k)}^n\tilde{P(t_0,k)}e^{2\pi ikx}dk\\
+\end{align}
+
+Since $P(0,x)$ is a delta function, we know that $\tilde{P}(0,x) = 1$, so:
+
+\begin{align}
+  P(n,x) &=  N\int_{-\infty}^{\infty}\tilde{W(k)}^ne^{2\pi ikx}dk\\
+\end{align}
+
 \end{document}
