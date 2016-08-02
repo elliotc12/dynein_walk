@@ -41,7 +41,6 @@ void generate_movie(double* time, movie_generate_struct* data, int len, char* fn
   strcat(fname, ".txt");
 
   FILE* data_file = fopen(fname, "w");
-  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   
   int d_iter = len / movie_num_frames;
   if (d_iter < 1) d_iter = 1;
