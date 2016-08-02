@@ -20,7 +20,7 @@ dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h default_par
 dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h default_parameters.h
 	g++ -c dynein_struct_bothbound.cpp $(CPPFLAGS)
 
-dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h
+dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h simulations/simulation_defaults.h
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
 simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
@@ -56,7 +56,7 @@ test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.
 	g++ test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o dynein_simulate.o utilities.o -o test_onebound
 	./test_onebound
 
-utilities.o: utilities.cpp dynein_struct.h default_parameters.h
+utilities.o: utilities.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h
 	g++ -c utilities.cpp $(CPPFLAGS)
 
 ######################### SIMULATION STUFF ###############################
