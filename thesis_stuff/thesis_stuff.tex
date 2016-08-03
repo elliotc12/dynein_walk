@@ -373,21 +373,26 @@ Since $P(0,x)$ is a delta function, we know that $\widetilde{P}(0,x) = 1$, so:
   P(n,x) &=  \int_{-\infty}^{\infty}\widetilde{W}(k)^ne^{2\pi ikx}dk
 \end{align}
 
-%% The Taylor Series for $\widetilde{W}(k)$ is:
+The Taylor Series for $\widetilde{W}(k)$ is:
 
-%% \begin{align*}
-%%   \widetilde{W}(k) &= \widetilde{W}(0) + k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_2}(0)\\
-%%   &= 1 + \frac{k^2}{2}\widetilde{W_2}(0)\\
-%% \end{align*}
+\begin{align*}
+  \widetilde{W}(k) &= \widetilde{W}(0) + k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) + ...\\
+  &= 1 + k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) ...\\
+\end{align*}
 
-%% \textbf{Because W(k) is an even Gaussian function, $W'(0)$ = 0 and $W(0) = 1$} - is this right?\\
+We define a variable $\widetilde{W}$ such that:
 
-We then make the substitution $\widetilde{W}(k) = \widetilde{C}-1$, so we can use the Binomial Expansion:
+\begin{align*}
+  \widetilde{W}(k) &= 1 - \widetilde{C}\\
+  \widetilde{C} &= -(k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) ...)\\
+\end{align*}
+
+This allows us to substitute in $\widetilde{C}$ and use the Binomial Expansion:
 
 \begin{align}
-  P(n,x) &=  \int_{-\infty}^{\infty}\left(1 + \widetilde{c}\right)^ne^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n {}_nC_\alpha \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n \frac{n!}{(n-\alpha)!\alpha!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
+  P(n,x) &=  \int_{-\infty}^{\infty}\left(1 - \widetilde{C}\right)^ne^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n {}_nC_\alpha\left(-\widetilde{C}\right)^\alpha\right)e^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n \frac{n!(-1)^\alpha}{(n-\alpha)!\alpha!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
 \end{align}
 
 The Taylor Series of our goal, the Gaussian function, is:\\
@@ -400,31 +405,66 @@ We want to make our expression for $P(n,x)$ resemble this. We begin by saying th
 $\alpha$ terms in the sum go to zero due to the $1/\alpha!$. Thus, we can extend our sum to infinity:\\
 
 \begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{n!}{(n-\alpha)!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
+  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n!}{(n-\alpha)!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
 \end{align}
 
 We then apply Sterling's Approximation in the form $Z! = e^{Z\ln(Z)-Z}$:
 
 \begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{e^{n\ln(n)-n}}{e^{(n-\alpha)\ln(n-\alpha)-(n-\alpha)}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{n^ne^{-n}}{(n-\alpha)^{n-\alpha}e^{\alpha-n}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
+  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{e^{n\ln(n)-n}}{e^{(n-\alpha)\ln(n-\alpha)-(n-\alpha)}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^ne^{-n}}{(n-\alpha)^{n-\alpha}e^{\alpha-n}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
 \end{align}
 
 Because n is large, we can get rid of its decaying exponentials and simplify:\\
 
 \begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}e^{\alpha}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{1}{\alpha!}\frac{n^\alpha}{(1-\frac{\alpha}{n})^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
+  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}e^{\alpha}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^\alpha}{(1-\frac{\alpha}{n})^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
 \end{align}
 
-We now use the following simplification, assuming that $\alpha/n < 1$:
+%% We now use the following simplification, assuming that $\alpha/n < 1$:
 
-\begin{align*}
-  \left(1-\frac{\alpha}{n}\right)^{n-\alpha} &= \sigma_{x=0}^{n-\alpha} \frac{(n-\alpha)!}{(n-\alpha-x)!x!} \left(\frac{\alpha}{n}\right)^x\\
-  &= 1 - (n-\alpha)\left(\frac{\alpha}{n}\right) + (n-\alpha)(n-\alpha-1)\left(\frac{\alpha}{n}\right)^2
-\end{align*}
+%% \begin{align*}
+%%   \left(1-\frac{\alpha}{n}\right)^{n-\alpha} &= \sum_{x=0}^{n-\alpha} \frac{(n-\alpha)!}{(n-\alpha-x)!x!} \left(\frac{\alpha}{n}\right)^x\\
+%%   &= 1 - (n-\alpha)\left(\frac{\alpha}{n}\right) + (n-\alpha)(n-\alpha-1)\left(\frac{\alpha}{n}\right)^2\\
+%%   &= 1 - \alpha + \frac{\alpha^2}{n} + \alpha^2 + \frac{-\alpha^3}{n} + \frac{-\alpha^2}{n} + \frac{-\alpha^3}{n} + \frac{\alpha^4}{n^2} + \frac{\alpha^3}{n^2}\\
+%%   &= 1 - \alpha + \alpha^2 + \frac{-2\alpha^3}{n} + \frac{\alpha^4}{n^2} + \frac{\alpha^3}{n^2}\\
+%% \end{align*}
 
-  take further $\alpha/n$ terms out?\\
+We then supply the middle factorial fraction with a name, $m = \frac{1}{(1-\frac{\alpha}{n})^{n-\alpha}}$:
+
+\begin{align}
+  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{m(-1)^\alpha}{\alpha!}\sqrt{\frac{n\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
+\end{align}
+
+\textbf{TODO: figure out why m is there}
+
+We then are \textit{almost} in a form where we can invert the Gaussian Taylor Expansion. We try it anyway, ignoring m. We also make the assumptions
+that our second $\widetilde{W}_1(0)$ Taylor Expansion term in $\widetilde{C}$ is zero and the third term is negative.\\
+
+\begin{align}
+  P(n,x) &= \int_{-\infty}^{\infty}e^{\frac{-k^2}{\sqrt{2}\frac{e}{|nW_2(0)|}}}e^{2\pi ikx}dk\\
+  &= \int_{-\infty}^{\infty}e^{\frac{-k^2}{\sqrt{2}\sigma^2}}e^{2\pi ikx}dk
+\end{align}
+
+We finally use the fact that Gaussians take the same form in real and Fourier space to undo the transform:
+
+\begin{align}
+  P(n,x) &= e^{\frac{-k^2}{\sqrt{2}\sigma^2}}\\
+\end{align}
+
+where
+
+\begin{align}
+  \sigma^2 = \frac{e}{n|W_2(0)|}\\
+\end{align}
+
+%% We then solve for $\widetilde{W}_2(0)$ to find our variance:
+
+%% \begin{align}
+%%   \widetilde{W}_2(0) &= \frac{d^2}{dk^2}\widetilde{W}(0)\\
+%%   &= \left(\frac{d^2}{dk^2}\int_{-\infty}^{\infty}W(x)e^{2\pi ikx}dx\right)_{k=0}\\
+%% \end{align}
 
 \end{document}
