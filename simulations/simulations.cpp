@@ -405,8 +405,6 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
     eq_data->t [0] += get_average(data_ptr.t,  iters) / (0.5*kb*T) / seed_len;
     eq_data->um[0] += get_average(data_ptr.um, iters) / (0.5*kb*T) / seed_len;
 
-    printf("eq_data->t[0]: %g, average: %g\n", eq_data->t[0], get_average(data_ptr.t,  iters));
-
     *f_bbx_var += get_variance(data_ptr.f_bbx, iters) / seed_len;
     *f_bby_var += get_variance(data_ptr.f_bby, iters) / seed_len;
     *f_bmx_var += get_variance(data_ptr.f_bmx, iters) / seed_len;

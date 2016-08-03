@@ -49,9 +49,9 @@ int main(int argc, char** argv) {
   const int seeds[] = {0};
   int seed_len = sizeof(seeds) / sizeof(int);
 
-  int num_Ts = 10;
+  int num_Ts = 15;
   double temps[num_Ts];
-  double min_temp = 1;
+  double min_temp = 0.1;
   double max_temp = 300.0;
   double d_temp = (max_temp - min_temp) / num_Ts;
   double temp = min_temp;
