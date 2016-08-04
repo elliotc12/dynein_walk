@@ -57,8 +57,16 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
 
     if (iteration % (data_generation_skip_iterations*1) == 0) {
       printf("PE calculation progress (%s): %lld / %lld, %g%%                \r", run_msg,
-    	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+      	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
       fflush(NULL);
+    }
+
+    if (iteration == 0) {
+      msync(data_mem, sizeof(onebound_data_generate_struct), MS_ASYNC); // asynchronously write mmap in memory to file
+    }
+    else if (iteration % msync_after_num_writes == 0) {
+      msync(&data_mem[iter-msync_after_num_writes+1],
+	    msync_after_num_writes*sizeof(onebound_data_generate_struct), MS_ASYNC);
     }
 
     if (iteration == (max_iteration-1) - ((max_iteration-1) % data_generation_skip_iterations)) {

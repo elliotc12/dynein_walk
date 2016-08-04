@@ -32,7 +32,7 @@ double D = 2*kb*T / ((gt + gm + gb) / 3);
 
 double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
-double dt = 1e-11; // from ob_PE_equipartition_average_vs_dt plot
+double dt = 1e-12; // from ob_PE_equipartition_average_vs_dt plot
 
 double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
 
