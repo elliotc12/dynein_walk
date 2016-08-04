@@ -235,7 +235,11 @@ int main(int argc, char** argv) {
   int len = data_fd_stat.st_size / sizeof(onebound_data_generate_struct);
 
   onebound_data_generate_struct* data_map;
-  data_map = (onebound_data_generate_struct*) mmap(NULL, len*sizeof(onebound_data_generate_struct), PROT_READ, MAP_PRIVATE, data_fd, 0);
+  data_map = (onebound_data_generate_struct*) mmap(NULL, len*sizeof(onebound_data_generate_struct), PROT_READ, MAP_SHARED, data_fd, 0);
+  if (data_map == MAP_FAILED) {
+    perror("Error using mmap: ");
+    exit(EXIT_FAILURE);
+  }
 
   {
     FILE *f = fopen(everything_name, "w");
@@ -300,11 +304,6 @@ int main(int argc, char** argv) {
               data_map[j].f_uby);
     }
     fclose(f);
-  }
-
-  if (data_map == MAP_FAILED) {
-    perror("Error using mmap: ");
-    exit(EXIT_FAILURE);
   }
 
   double* time = (double*) malloc(len * sizeof(double));

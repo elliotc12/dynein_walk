@@ -4,6 +4,10 @@
 #include <cstring>
 #include <limits>
 
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -18,8 +22,9 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
     long long max_iteration = *((long long**) job_msg)[0];
     double start_time = *((double**) job_msg)[1];
     char* run_msg = ((char**) job_msg)[2];
+    int iter = iteration / data_generation_skip_iterations;
 
-    FILE* data_file = ((FILE**) job_msg)[3];
+    onebound_data_generate_struct* data_mem = ((onebound_data_generate_struct**) job_msg)[3];
 
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
 
@@ -48,9 +53,9 @@ void write_onebound_data_callback(void* dyn, State s, void** job_msg, data_union
     data.umx = dyn_ob->get_umx();   data.umy = dyn_ob->get_umy();
     data.ubx = dyn_ob->get_ubx();   data.uby = dyn_ob->get_uby();
 
-    fwrite(&data, sizeof(onebound_data_generate_struct), 1, data_file);
+    memcpy(&data_mem[iter], &data, sizeof(onebound_data_generate_struct));
 
-    if (iteration % (data_generation_skip_iterations*10) == 0) {
+    if (iteration % (data_generation_skip_iterations*1) == 0) {
       printf("PE calculation progress (%s): %lld / %lld, %g%%                \r", run_msg,
     	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
       fflush(NULL);
@@ -83,6 +88,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
   T = 50;
+  int iters = iterations / data_generation_skip_iterations;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");
@@ -94,21 +100,11 @@ int main(int argc, char** argv) {
   char *movie_config_fname = new char[200];
   char *data_fname = new char[200];
 
-  strcpy(data_fname, "data/onebound_data_");
-  strcpy(config_fname, "data/ob_config_");
-  strcpy(movie_config_fname, "data/movie_config_");
-
-  strcat(data_fname, f_appended_name);
-  strcat(config_fname, f_appended_name);
-  strcat(movie_config_fname, f_appended_name);
-
-  strcat(data_fname, ".bin");
-  strcat(config_fname, ".txt");
-  strcat(movie_config_fname, ".txt");
+  sprintf(data_fname, "data/onebound_data_%s.bin", f_appended_name);
+  sprintf(config_fname, "data/ob_config_%s.txt", f_appended_name);
+  sprintf(movie_config_fname, "data/movie_config_%s.txt", f_appended_name);
 
   write_movie_config(movie_config_fname, iterations*dt);
-
-  prepare_data_file(NULL, data_fname);
   write_config_file(config_fname, CONFIG_INCLUDE_SKIPINFO,
 		    "Initial state: onebound\nInitial conformation: equilibrium\n");
 
@@ -122,20 +118,25 @@ int main(int argc, char** argv) {
   sprintf(run_msg, "seed = %d", (int) RAND_INIT_SEED);
   job_msg[2] = run_msg;
 
-  FILE* data_file = fopen(data_fname, "a");
-
-  struct stat data_stat;
-  if (stat(data_fname, &data_stat) == -1) {
-    perror("Error using stat on data_file.bin");
-    exit(1);
+  int data_fd = open(data_fname, O_RDWR | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
+  if (errno) {
+    perror("Error creating data file");
+    exit(errno);
   }
 
-  if (setvbuf(data_file, NULL, _IOFBF, data_stat.st_blksize) == -1) {
-    perror("Error using setvbuf");
-    exit(1);
+  ftruncate(data_fd, iters*sizeof(onebound_data_generate_struct));
+  if (errno) {
+    perror("Error ftruncating data file");
+    exit(errno);
   }
 
-  job_msg[3] =  data_file;
+  void* data_mem = mmap(NULL, iters*sizeof(onebound_data_generate_struct), PROT_WRITE, MAP_SHARED, data_fd, 0);
+  if (data_mem == MAP_FAILED) {
+    perror("Error using mmap: ");
+    exit(EXIT_FAILURE);
+  }
+
+  job_msg[3] = data_mem;
 
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba,
@@ -147,6 +148,7 @@ int main(int argc, char** argv) {
   simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, init_position,
 	   write_onebound_data_callback, job_msg, NULL);
 
-  fclose(data_file);
+  munmap(data_mem, iters*sizeof(onebound_data_generate_struct));
+  close(data_fd);
   return EXIT_SUCCESS;
 }

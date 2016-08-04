@@ -1,7 +1,7 @@
 #pragma once
 
-const long long iterations = 1e9;
-const int data_generation_skip_iterations = 1e5;
+const long long iterations = 1e12;
+const long long data_generation_skip_iterations = 1e9;
 
 const int num_corr_datapoints = 1000;
 const double tau_runtime_fraction = 1e-5;
