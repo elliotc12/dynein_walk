@@ -467,4 +467,106 @@ where
 %%   &= \left(\frac{d^2}{dk^2}\int_{-\infty}^{\infty}W(x)e^{2\pi ikx}dx\right)_{k=0}\\
 %% \end{align}
 
+\section{Alternative CLT Derivation}
+Here we show that, given an initial PDF as a delta function $P(t_0,x) = \delta(x)$
+and any transition likelihood $W(s)$ for some step size s and 1 timestep, P
+eventually evolves into a Gaussian function.\\
+
+We use a discrete time, continuous position model:\\
+
+\begin{align}
+  P(t_0+1,x') &= \int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx
+\end{align}
+
+This matches the form of a convolution integral:
+
+\begin{align*}
+  (P*W)(x') &= \int_{-\infty}^{\infty}P(t_0,x)W(x'-x)dx
+\end{align*}
+
+By the Convolution Theorem (prove?) we can simplify the above expression:
+
+\begin{align}
+  F\{P(t_0+1,x')\} &= F\left\{\int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx\right\}\\
+  \widetilde{P}(t_0+1,k) &= \widetilde{W}(k)\widetilde{P}(t_0,k)
+\end{align}
+
+We see that in general, the transformed probability distribution after n
+timsteps is given by:\\
+
+\begin{align}
+  \widetilde{P}(t_0+n,k) &= \widetilde{W}(k)\widetilde{P}(t_0+n-1,k)
+\end{align}
+
+Thus our distribution after n timesteps can be expressed as:
+
+\begin{align}
+  \widetilde{P}(t_0+n,k) &= \widetilde{W}^n(k)\widetilde{P}(t_0,k)\\
+\end{align}
+
+We wish to solve for the non-transformed probability distribution, so we
+apply the inverse Fourier Transform:
+
+\begin{align}
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)\widetilde{P}(t_0,k)e^{ikx}dk\\
+\end{align}
+
+We specified our initial probability as a delta function, which Fourier Transforms to unity:
+
+\begin{align}
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)e^{ikx}dk\\
+\end{align}
+
+We now introduce a new definition $\widetilde{W} = e^{\widetilde{L}}$:\\
+
+\begin{align}
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\widetilde{L}}e^{ikx}dk\\
+\end{align}
+
+We now need to expand $\widetilde{L}$. We use a Taylor Series:
+
+\begin{align*}
+  \widetilde{L}(k) &= \ln(\widetilde{W}) = \sum\frac{k^n\frac{d^n}{dk^n}\ln(\widetilde{W})}{n!}\\
+  &= \ln\left(\widetilde{W}(0)\right) + k\frac{\widetilde{W}_1(0)}{\widetilde{W}(0)}
+  + \frac{k^2}{2}\left(\frac{\widetilde{W}_2(0)}{\widetilde{W}(0)} - \frac{\widetilde{W}_1(0)^2}{\widetilde{W}_0(0)^2}\right)
+  + \frac{k^3}{6}\left(\frac{2\widetilde{W}_1(0)^3}{\widetilde{W}_(0)^3} + \frac{\widetilde{W}_3(0)}{\widetilde{W}(0)}
+     - \frac{3\widetilde{W}_1(0)\widetilde{W}_2(0)}{\widetilde{W}(0)^2}\right)
+  + \frac{k^4}{24}\left(\frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} - \frac{6\widetilde{W}_1(0)^4}{\widetilde{W}(0)^4}
+  - \frac{3\widetilde{W}_2(0)^2}{\widetilde{W}(0)^2} - \frac{3\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}
+  + \frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} + \frac{\widetilde{W}_4(0)}{\widetilde{W}(0)}
+  - \frac{\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}\right) + O(5)\\   
+\end{align*}
+
+We then make the following assumption: \textbf{Assume all odd terms in $\widetilde{W}$'s expansion are zero}. We justify this by imposing that
+$\widetilde{W}$ must be symmetric about the y-axis. We also say that $\widetilde{W}_1(0)=1$, which I don't know how to justify -- (just because
+W is normalized to one doesn't mean its maximum point equals one?). These assumptions allow us to simplify $\widetilde{L}$:\\
+
+\begin{align*}
+  \widetilde{L}(k) &= \frac{k^2}{2}\widetilde{W}_2(0) + \frac{k^4}{24}\left(\widetilde{W}_4(0) - 3\widetilde{W}_2(0)\right)\\
+  &\approx \frac{k^2}{2}\widetilde{W}_2(0)
+\end{align*}
+
+We then plug this into our definition for $P(t_0+n,k)$:
+
+\begin{align}
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\frac{k^2}{2}\widetilde{W}_2(0)}e^{ikx}dk\\
+\end{align}
+
+In order to be normalizable, all derivatives of $\widetilde{W}$ must be negative. Thus we rewrite
+$\widetilde{W}_2$:
+
+\begin{align}
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-n\frac{k^2}{2}|\widetilde{W}_2(0)|}e^{ikx}dk\\
+\end{align}
+
+This takes the form of a Gaussian. We know that Gaussians are invariant under Fourier Transsform,
+so:\\
+
+\begin{align}
+  P(t_0+n,k) &= e^{\frac{k^2}{2\sigma^2}}\\
+\end{align}
+
+where $\sigma = \sqrt{\frac{1}{n\widetilde{W}_2(0)}}$. As expected by the CLT, the standard deviation of our
+new probability depends on $\frac{1}{\sqrt{n}}$!\\
+
 \end{document}
