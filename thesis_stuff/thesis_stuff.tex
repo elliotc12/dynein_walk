@@ -501,26 +501,26 @@ timsteps is given by:\\
 Thus our distribution after n timesteps can be expressed as:
 
 \begin{align}
-  \widetilde{P}(t_0+n,k) &= \widetilde{W}^n(k)\widetilde{P}(t_0,k)\\
+  \widetilde{P}(t_0+n,k) &= \widetilde{W}^n(k)\widetilde{P}(t_0,k)
 \end{align}
 
 We wish to solve for the non-transformed probability distribution, so we
 apply the inverse Fourier Transform:
 
 \begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)\widetilde{P}(t_0,k)e^{ikx}dk\\
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)\widetilde{P}(t_0,k)e^{ikx}dk
 \end{align}
 
 We specified our initial probability as a delta function, which Fourier Transforms to unity:
 
 \begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)e^{ikx}dk\\
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)e^{ikx}dk
 \end{align}
 
 We now introduce a new definition $\widetilde{W} = e^{\widetilde{L}}$:\\
 
 \begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\widetilde{L}}e^{ikx}dk\\
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\widetilde{L}}e^{ikx}dk
 \end{align}
 
 We now need to expand $\widetilde{L}$. We use a Taylor Series:
@@ -530,11 +530,11 @@ We now need to expand $\widetilde{L}$. We use a Taylor Series:
   &= \ln\left(\widetilde{W}(0)\right) + k\frac{\widetilde{W}_1(0)}{\widetilde{W}(0)}
   + \frac{k^2}{2}\left(\frac{\widetilde{W}_2(0)}{\widetilde{W}(0)} - \frac{\widetilde{W}_1(0)^2}{\widetilde{W}_0(0)^2}\right)
   + \frac{k^3}{6}\left(\frac{2\widetilde{W}_1(0)^3}{\widetilde{W}_(0)^3} + \frac{\widetilde{W}_3(0)}{\widetilde{W}(0)}
-     - \frac{3\widetilde{W}_1(0)\widetilde{W}_2(0)}{\widetilde{W}(0)^2}\right)
-  + \frac{k^4}{24}\left(\frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} - \frac{6\widetilde{W}_1(0)^4}{\widetilde{W}(0)^4}
+     - \frac{3\widetilde{W}_1(0)\widetilde{W}_2(0)}{\widetilde{W}(0)^2}\right)\\
+  &+ \frac{k^4}{24}\left(\frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} - \frac{6\widetilde{W}_1(0)^4}{\widetilde{W}(0)^4}
   - \frac{3\widetilde{W}_2(0)^2}{\widetilde{W}(0)^2} - \frac{3\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}
   + \frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} + \frac{\widetilde{W}_4(0)}{\widetilde{W}(0)}
-  - \frac{\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}\right) + O(5)\\   
+  - \frac{\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}\right) + O(5)
 \end{align*}
 
 We then make the following assumption: \textbf{Assume all odd terms in $\widetilde{W}$'s expansion are zero}. We justify this by imposing that
@@ -542,31 +542,74 @@ $\widetilde{W}$ must be symmetric about the y-axis. We also say that $\widetilde
 W is normalized to one doesn't mean its maximum point equals one?). These assumptions allow us to simplify $\widetilde{L}$:\\
 
 \begin{align*}
-  \widetilde{L}(k) &= \frac{k^2}{2}\widetilde{W}_2(0) + \frac{k^4}{24}\left(\widetilde{W}_4(0) - 3\widetilde{W}_2(0)\right)\\
-  &\approx \frac{k^2}{2}\widetilde{W}_2(0)
+  \widetilde{L}(k) &= \frac{k^2}{2}\widetilde{W}_2(0) + \frac{k^4}{24}\left(\widetilde{W}_4(0) - 3\widetilde{W}_2(0)\right)
 \end{align*}
+
+I'm not really sure how to justify this part either:
+
+\begin{align}
+  \widetilde{L}(k) &\approx \frac{k^2}{2}\widetilde{W}_2(0)
+\end{align}
 
 We then plug this into our definition for $P(t_0+n,k)$:
 
 \begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\frac{k^2}{2}\widetilde{W}_2(0)}e^{ikx}dk\\
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\frac{k^2}{2}\widetilde{W}_2(0)}e^{ikx}dk
 \end{align}
 
 In order to be normalizable, all derivatives of $\widetilde{W}$ must be negative. Thus we rewrite
 $\widetilde{W}_2$:
 
 \begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-n\frac{k^2}{2}|\widetilde{W}_2(0)|}e^{ikx}dk\\
+  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-n\frac{k^2}{2}|\widetilde{W}_2(0)|}e^{ikx}dk
 \end{align}
 
-This takes the form of a Gaussian. We know that Gaussians are invariant under Fourier Transsform,
+This takes the form of a Gaussian. We know that Gaussians are invariant under Fourier Transform,
 so:\\
 
 \begin{align}
-  P(t_0+n,k) &= e^{\frac{k^2}{2\sigma^2}}\\
+  P(t_0+n,k) &= e^{\frac{k^2}{2\sigma^2}}
 \end{align}
 
 where $\sigma = \sqrt{\frac{1}{n\widetilde{W}_2(0)}}$. As expected by the CLT, the standard deviation of our
 new probability depends on $\frac{1}{\sqrt{n}}$!\\
+
+We now try and find more out about $|\widetilde{W}_2(k)|$:
+
+\begin{align*}
+  \widetilde{W}_2(k) &= \frac{d^2}{dk^2}\widetilde{W}(k)\\
+  &= \frac{d^2}{dk^2}\int_{-\infty}^\infty W(x)e^{-ikx}dx\\
+  &= \frac{d}{dk}\int_{-\infty}^\infty -ixW(x)e^{-ikx}dx\\
+  &= -\int_{-\infty}^\infty x^2W(x)e^{-ikx}dx\\
+\end{align*}
+
+We are specifically interested in the case where $k=0$:
+
+\begin{align*}
+  \widetilde{W}_2(0) &= -\int_{-\infty}^\infty x^2W(x)dx
+\end{align*}
+
+We explicitly denote $\widetilde{W}_2$'s negativity:
+
+\begin{align*}
+  |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx
+\end{align*}
+
+and finally note that, since W is the transition probability per timestep, this looks like the expected squared deviation
+in a single timestep:
+
+\begin{align*}
+  |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx = <\Delta x>
+\end{align*}
+
+We plug this back into our Gaussian to get our final answer:
+
+\begin{align}
+  P(t_0+n,k) &= e^{\frac{k^2}{2\frac{1}{n<\Delta x>}}}
+\end{align}
+
+A $\sigma = \sqrt{\frac{1}{n<W>}}$ does not make sense. For one, $\sqrt{<\Delta x>}$ should be in the numerator, since it is the
+single-timestep standard deviation. Plus it seems like for longer times the distribution would get more spread out, not less, hence
+$\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in the denominator...
 
 \end{document}
