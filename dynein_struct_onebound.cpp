@@ -72,11 +72,11 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
-    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.bbx, &r.bby);
-    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.bmx, &r.bmy);
-    rand->gauss2(gt*sqrt(2*kb*T/(gt*dt)), &r.tx, &r.ty);
-    rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.umx, &r.umy);
-    rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.ubx, &r.uby);
+    rand->gauss2(sqrt(2*kb*T*gb/dt), &r.bbx, &r.bby);
+    rand->gauss2(sqrt(2*kb*T*gm/dt), &r.bmx, &r.bmy);
+    rand->gauss2(sqrt(2*kb*T*gt/dt), &r.tx, &r.ty);
+    rand->gauss2(sqrt(2*kb*T*gm/dt), &r.umx, &r.umy);
+    rand->gauss2(sqrt(2*kb*T*gb/dt), &r.ubx, &r.uby);
   }
 }
 
