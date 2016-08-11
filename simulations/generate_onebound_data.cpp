@@ -103,9 +103,6 @@ int main(int argc, char** argv) {
     exit(1);
   }
 
-  gm = 1e-12;
-  gb = 1e-12;
-
   char* f_appended_name = argv[1];
   char *config_fname = new char[200];
   char *movie_config_fname = new char[200];

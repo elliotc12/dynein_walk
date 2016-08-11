@@ -117,13 +117,13 @@ void Dynein_onebound::update_internal_forces() {
     f.bmx += -(f1x + f2x);
     f.bmy += -(f1y + f2y);
 
-    T = ct*(uma - bma - eq.ta);  //-- this used to be the negation, this is right?
+    T = ct*(uma - bma - eq.ta);
     PE_ta = 0.5*ct*(uma - bma - eq.ta)*(uma - bma - eq.ta);
     f1 = T / Lt;
     f2 = T / Lt;
     f1x = f1 * sin(bma);
     f1y = f1 * -cos(bma);
-    f2x = f2 * -sin(uma);  // not sure if these angles are right?
+    f2x = f2 * -sin(uma);
     f2y = f2 * cos(uma);
     f.bmx += f1x;
     f.bmy += f1y;
