@@ -36,4 +36,6 @@ create_pe_time_plots
 generate_onebound_PE_data
 generate_onebound_data
 movies/
-onebound_PE_equipartition_correlation_plot
+onebound_PE_equipartition_correlation_plotsimulations/simulation_defaults.h
+create_ob_movie
+simulations/make_pe_time_plots

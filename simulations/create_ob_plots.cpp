@@ -241,6 +241,13 @@ int main(int argc, char** argv) {
     exit(EXIT_FAILURE);
   }
 
+  for (int i=0; i<len; i++) { // set the length to data size, in case simulation not complete
+    if (data_map[i].bbx == 0 && data_map[i].bmx == 0 && data_map[i].tx == 0 && data_map[i].umx == 0 && data_map[i].ubx == 0) {
+      len = i;
+      break;
+    }
+  }
+
   {
     FILE *f = fopen(everything_name, "w");
     fprintf(f, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",

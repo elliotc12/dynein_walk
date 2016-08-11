@@ -60,6 +60,8 @@ const bool FP_EXCEPTION_FATAL = false;
 void feenableexcept(int x);
 #endif
 
+const int msync_after_num_writes = 10;
+
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */
 
 class Dynein_bothbound;
