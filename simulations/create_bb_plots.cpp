@@ -402,6 +402,7 @@ int main(int argc, char** argv) {
   generate_correlation_fn_data(ta_pe, len,  "Tail", ta_pe_fname_base);
   generate_correlation_fn_data(fma_pe, len, "Far motor", fma_pe_fname_base);
   generate_correlation_fn_data(fba_pe, len, "Far binding", fba_pe_fname_base);
+  generate_correlation_fn_data(total_pe, len, "Total", total_pe_fname_base);
 
   generate_pe_vs_time_data(time, nba_pe, len, "Near binding PE", nba_pe_fname_base);
   generate_pe_vs_time_data(time, nma_pe, len, "Near motor PE", nma_pe_fname_base);

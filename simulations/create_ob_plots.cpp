@@ -196,16 +196,17 @@ int main(int argc, char** argv) {
   }
 
   char* f_appended_name = argv[1];
-  char data_fname[200];
-  char bba_pe_fname_base[200];
-  char bma_pe_fname_base[200];
-  char  ta_pe_fname_base[200];
-  char uma_pe_fname_base[200];
-  char bba_fname_base[200];
-  char bma_fname_base[200];
-  char  ta_fname_base[200];
-  char uma_fname_base[200];
-  char *everything_name = new char[200];
+  char* data_fname = new char[200];
+  char* bba_pe_fname_base = new char[200];
+  char* bma_pe_fname_base = new char[200];
+  char*  ta_pe_fname_base = new char[200];
+  char* uma_pe_fname_base = new char[200];
+  char* total_pe_fname_base = new char[200];
+  char* bba_fname_base = new char[200];
+  char* bma_fname_base = new char[200];
+  char*  ta_fname_base = new char[200];
+  char* uma_fname_base = new char[200];
+  char* everything_name = new char[200];
 
   strcpy(data_fname, "data/onebound_data_");
   strcat(data_fname, f_appended_name);
@@ -220,15 +221,16 @@ int main(int argc, char** argv) {
 
   sprintf(everything_name, "data/everything_%s.txt", f_appended_name);
 
-  strcpy(bba_pe_fname_base, "data/ob_bba_pe_"); strcat(bba_pe_fname_base, f_appended_name);
-  strcpy(bma_pe_fname_base, "data/ob_bma_pe_"); strcat(bma_pe_fname_base, f_appended_name);
-  strcpy( ta_pe_fname_base, "data/ob_ta_pe_");  strcat( ta_pe_fname_base, f_appended_name);
-  strcpy(uma_pe_fname_base, "data/ob_uma_pe_"); strcat(uma_pe_fname_base, f_appended_name);
+  sprintf(bba_pe_fname_base, "data/ob_bba_pe_%s", f_appended_name);
+  sprintf(bma_pe_fname_base, "data/ob_bma_pe_%s", f_appended_name);
+  sprintf( ta_pe_fname_base, "data/ob_ta_pe_%s",  f_appended_name);
+  sprintf(uma_pe_fname_base, "data/ob_uma_pe_%s", f_appended_name);
+  sprintf(total_pe_fname_base, "data/ob_total_pe_%s", f_appended_name);
 
-  strcpy(bba_fname_base, "data/ob_bba_angle_"); strcat(bba_fname_base, f_appended_name);
-  strcpy(bma_fname_base, "data/ob_bma_angle_"); strcat(bma_fname_base, f_appended_name);
-  strcpy( ta_fname_base, "data/ob_ta_angle_");  strcat( ta_fname_base, f_appended_name);
-  strcpy(uma_fname_base, "data/ob_uma_angle_"); strcat(uma_fname_base, f_appended_name);
+  sprintf(bba_fname_base, "data/ob_bba_pe_%s", f_appended_name);
+  sprintf(bma_fname_base, "data/ob_bma_pe_%s", f_appended_name);
+  sprintf( ta_fname_base, "data/ob_ta_pe_%s",  f_appended_name);
+  sprintf(uma_fname_base, "data/ob_uma_pe_%s", f_appended_name);
 
   struct stat data_fd_stat;
   fstat(data_fd, &data_fd_stat);
@@ -320,6 +322,7 @@ int main(int argc, char** argv) {
   double* bma_pe = (double*) malloc(len * sizeof(double));
   double* ta_pe = (double*) malloc(len * sizeof(double));
   double* uma_pe = (double*) malloc(len * sizeof(double));
+  double* total_pe = (double*) malloc(len * sizeof(double));
 
   double* bba_angle = (double*) malloc(len * sizeof(double));
   double* bma_angle = (double*) malloc(len * sizeof(double));
@@ -355,6 +358,8 @@ int main(int argc, char** argv) {
     bma_pe[j] = data_map[j].bma_PE;
      ta_pe[j] = data_map[j].ta_PE;
     uma_pe[j] = data_map[j].uma_PE;
+    total_pe[j] = bba_pe[j] + bma_pe[j] + ta_pe[j] + uma_pe[j];
+    //printf("bba_pe: %g, bma_pe: %g, ta_pe: %g, uma_pe: %g, total_pe: %g\n", bba_pe[j], bma_pe[j], ta_pe[j], uma_pe[j], total_pe[j]);
     bba_angle[j] = data_map[j].bba;
     bma_angle[j] = data_map[j].bma;
      ta_angle[j] = data_map[j].ta;
@@ -378,23 +383,26 @@ int main(int argc, char** argv) {
     f_bmy[j] = data_map[j].f_bmy;
     f_ty[j]  = data_map[j].f_ty;
     f_umy[j] = data_map[j].f_umy;
-    f_uby[j] = data_map[j].f_uby;  
+    f_uby[j] = data_map[j].f_uby;
   }
 
   generate_correlation_fn_data(bba_pe, len, "Bound binding", bba_pe_fname_base);
   generate_correlation_fn_data(bma_pe, len, "Bound motor", bma_pe_fname_base);
   generate_correlation_fn_data(ta_pe, len, "Tail", ta_pe_fname_base);
   generate_correlation_fn_data(uma_pe, len, "Unbound motor", uma_pe_fname_base);
+  generate_correlation_fn_data(total_pe, len, "Total", total_pe_fname_base);
 
   generate_pe_vs_time_data(time, bba_pe, len, "Bound binding PE", bba_pe_fname_base);
   generate_pe_vs_time_data(time, bma_pe, len, "Bound motor PE", bma_pe_fname_base);
   generate_pe_vs_time_data(time, ta_pe, len, "Tail PE", ta_pe_fname_base);
   generate_pe_vs_time_data(time, uma_pe, len, "Unbound motor PE", uma_pe_fname_base);
+  generate_pe_vs_time_data(time, total_pe, len, "Total PE", total_pe_fname_base);
 
   generate_ave_pe_and_log_error_data(time, bba_pe, len, "Bound binding", bba_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, bma_pe, len, "Bound motor", bma_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, ta_pe, len, "Tail", ta_pe_fname_base);
   generate_ave_pe_and_log_error_data(time, uma_pe, len, "Unbound motor", uma_pe_fname_base);
+  generate_ave_pe_and_log_error_data(time, total_pe, len, "Total", total_pe_fname_base);
 
   generate_angle_vs_time_data(time, bba_angle, len, "Bound binding angle", bba_fname_base, onebound_post_powerstroke_internal_angles.bba);
   generate_angle_vs_time_data(time, bma_angle, len, "Bound motor angle", bma_fname_base, onebound_post_powerstroke_internal_angles.bma);

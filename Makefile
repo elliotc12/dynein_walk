@@ -65,10 +65,10 @@ ob_plots: create_ob_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_ob_plots $(TITLE)
 	mkdir -p plots
-	./make_plot.py --figtitle="OB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="OB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="OB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=4.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
-	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=4.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_total_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=4.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_total_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=4.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_total_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=4.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_total_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="OB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" --ymax=3.0 data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="OB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/ob_uma_angle_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
 
@@ -76,9 +76,9 @@ bb_plots: create_bb_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_bb_plots $(TITLE)
 	mkdir -p plots
-	./make_plot.py --figtitle="BB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bb_nba_pe_$(TITLE)_correlation_fn.txt data/bb_nma_pe_$(TITLE)_correlation_fn.txt data/bb_ta_pe_$(TITLE)_correlation_fn.txt data/bb_fma_pe_$(TITLE)_correlation_fn.txt data/bb_fba_pe_$(TITLE)_correlation_fn.txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE).txt data/bb_nma_pe_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_fba_pe_$(TITLE).txt data/bb_total_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE)_eq_ave.txt data/bb_nma_pe_$(TITLE)_eq_ave.txt data/bb_ta_pe_$(TITLE)_eq_ave.txt data/bb_fma_pe_$(TITLE)_eq_ave.txt data/bb_fba_pe_$(TITLE)_eq_ave.txt data/bb_total_pe_$(TITLE)_eq_ave.txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bb_nba_pe_$(TITLE)_correlation_fn.txt data/bb_nma_pe_$(TITLE)_correlation_fn.txt data/bb_ta_pe_$(TITLE)_correlation_fn.txt data/bb_fma_pe_$(TITLE)_correlation_fn.txt data/bb_fba_pe_$(TITLE)_correlation_fn.txt data/bb_total_pe_$(TITLE)_correlation_fn.txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=2.0 data/bb_nba_pe_$(TITLE).txt data/bb_nma_pe_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_fba_pe_$(TITLE).txt data/bb_total_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=2.0 data/bb_nba_pe_$(TITLE)_eq_ave.txt data/bb_nma_pe_$(TITLE)_eq_ave.txt data/bb_ta_pe_$(TITLE)_eq_ave.txt data/bb_fma_pe_$(TITLE)_eq_ave.txt data/bb_fba_pe_$(TITLE)_eq_ave.txt data/bb_total_pe_$(TITLE)_eq_ave.txt data/bb_config_$(TITLE).txt
 	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=2.0 data/bb_nba_pe_$(TITLE)_log_error.txt data/bb_nma_pe_$(TITLE)_log_error.txt data/bb_ta_pe_$(TITLE)_log_error.txt data/bb_fma_pe_$(TITLE)_log_error.txt data/bb_fba_pe_$(TITLE)_log_error.txt data/bb_total_pe_$(TITLE)_log_error.txt data/bb_config_$(TITLE).txt
 	./make_plot.py --figtitle="BB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bb_nba_angle_$(TITLE).txt data/bb_nma_angle_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_fma_angle_$(TITLE).txt data/bb_fba_angle_$(TITLE).txt data/bb_config_$(TITLE).txt
 	./make_plot.py --figtitle="BB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/bb_fma_angle_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
@@ -179,6 +179,7 @@ clean:
 	rm -f latex/*.pdf
 	rm -f latex/latexlog.txt
 	rm -f *~
+	rm -f simulations/*~
 	rm -f *#
 
 FORCE:
