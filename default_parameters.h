@@ -55,10 +55,11 @@ onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   0.6 * M_PI
 };
 
+double t_nma = acos(Lt/(2*Ls));
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  0.5 * M_PI,
-  0.5 * M_PI,
-  1.0 * M_PI,
-  1.5 * M_PI,
-  0.5 * M_PI
+  M_PI - 2*t_nma + M_PI/3,
+  t_nma,
+  2*t_nma + M_PI/3,
+  2*M_PI - t_nma,
+  2*t_nma - M_PI/3
 };

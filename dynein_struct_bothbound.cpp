@@ -120,8 +120,8 @@ void Dynein_bothbound::update_internal_forces() {
     f.nmx += -(f1x + f2x);
     f.nmy += -(f1y + f2y);
 
-    T = ct*((fma - nma) + (fba - nba) - eq.ta);
-    PE_ta = 0.5*ct*((fma - nma) + (fba - nba) - eq.ta)*((fma - nma) + (fba - nba) - eq.ta);
+    T = ct*(ta - eq.ta);
+    PE_ta = 0.5*ct*(ta - eq.ta)*(ta - eq.ta);
     if (am_debugging_torques) printf("T_ta = %g from %.16g vs %.16g\n", T,
                                      (fma - nma) + (fba - nba), eq.ta);
     f1 = T / Lt;
@@ -194,6 +194,7 @@ void Dynein_bothbound::update_coordinates() {
   // angle of stalks from horizontal
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
+  ta = fma - nma + fba - nba;
   
   assert(Ln + Lf > fabs(L)); // this geometrically must be true!
   assert(nma != M_PI);

@@ -187,6 +187,7 @@ public:
   double get_fma() { return fma; }
 
   double get_nba() { return nba; }
+  double get_ta()  { return ta; }
   double get_fba() { return fba; }
 
   double get_nbx() { return nbx; }
@@ -279,7 +280,7 @@ private:
   bothbound_forces *brownian_testcase;
   bothbound_forces *internal_testcase;
 
-  double nba, fba;
+  double nba, ta, fba;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */
@@ -374,6 +375,30 @@ typedef struct {
   double umx;   double umy;
   double ubx;   double uby;
 } onebound_data_generate_struct;
+
+typedef struct {
+  double time;
+  double nba;
+  double nma;
+  double ta;
+  double fma;
+  double fba;
+  double nba_PE;
+  double nma_PE;
+  double ta_PE;
+  double fma_PE;
+  double fba_PE;
+  double f_nbx;   double f_nby;
+  double f_nmx;   double f_nmy;
+  double f_tx;    double f_ty;
+  double f_fmx;   double f_fmy;
+  double f_fbx;   double f_fby;
+  double nbx;   double nby;
+  double nmx;   double nmy;
+  double tx;    double ty;
+  double fmx;   double fmy;
+  double fbx;   double fby;
+} bothbound_data_generate_struct;
 
 void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);
 void write_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union* job_data, long long iteration);

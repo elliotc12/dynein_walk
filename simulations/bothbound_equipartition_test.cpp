@@ -23,7 +23,7 @@ int main() {
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double test_position[] = {eq.nma, eq.fma, 0.0, 0.0, Ls};
   void* data = malloc(iterations * sizeof(double) * 5);
-  
+
   simulate(runtime, RAND_INIT_SEED, BOTHBOUND, test_position, log_bothbound_PEs, NULL, data);
 
   double* nba_PEs = (double*) malloc(iterations * sizeof(double));

@@ -53,6 +53,10 @@ create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_paramet
 	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_plots.o -o create_ob_plots
 
+create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+	g++ -c simulations/create_bb_plots.cpp $(CPPFLAGS)
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_bb_plots.o -o create_bb_plots
+
 create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
 	g++ -c simulations/create_ob_movie.cpp $(CPPFLAGS)
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_movie.o -o create_ob_movie
@@ -61,12 +65,23 @@ ob_plots: create_ob_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_ob_plots $(TITLE)
 	mkdir -p plots
-	./make_plot.py --figtitle="Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/ob_bba_pe_$(TITLE)_correlation_fn.txt data/ob_bma_pe_$(TITLE)_correlation_fn.txt data/ob_ta_pe_$(TITLE)_correlation_fn.txt data/ob_uma_pe_$(TITLE)_correlation_fn.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE).txt data/ob_bma_pe_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/ob_bba_pe_$(TITLE)_eq_ave.txt data/ob_bma_pe_$(TITLE)_eq_ave.txt data/ob_ta_pe_$(TITLE)_eq_ave.txt data/ob_uma_pe_$(TITLE)_eq_ave.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" --ymax=3.0 data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
-	./make_plot.py --figtitle="Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/ob_uma_angle_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" --ymax=3.0 data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/ob_uma_angle_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+
+bb_plots: create_bb_plots FORCE
+	@echo "Use TITLE='yourtitle' to give plot a title"
+	./create_bb_plots $(TITLE)
+	mkdir -p plots
+	./make_plot.py --figtitle="BB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bb_nba_pe_$(TITLE)_correlation_fn.txt data/bb_nma_pe_$(TITLE)_correlation_fn.txt data/bb_ta_pe_$(TITLE)_correlation_fn.txt data/bb_fma_pe_$(TITLE)_correlation_fn.txt data/bb_fba_pe_$(TITLE)_correlation_fn.txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE).txt data/bb_nma_pe_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_fba_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE)_eq_ave.txt data/bb_nma_pe_$(TITLE)_eq_ave.txt data/bb_ta_pe_$(TITLE)_eq_ave.txt data/bb_fma_pe_$(TITLE)_eq_ave.txt data/bb_fba_pe_$(TITLE)_eq_ave.txt data/bb_config_$(TITLE).txt
+	./make_plot.py --logx --logy --figtitle="Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bb_nba_pe_$(TITLE)_log_error.txt data/bb_nma_pe_$(TITLE)_log_error.txt data/bb_ta_pe_$(TITLE)_log_error.txt data/bb_fma_pe_$(TITLE)_log_error.txt data/bb_fba_pe_$(TITLE)_log_error.txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bb_nba_angle_$(TITLE).txt data/bb_nma_angle_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_fma_angle_$(TITLE).txt data/bb_fba_angle_$(TITLE).txt data/bb_config_$(TITLE).txt
+	./make_plot.py --figtitle="BB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/bb_fma_angle_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
 
 ob_movie: create_ob_movie FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"
@@ -74,11 +89,23 @@ ob_movie: create_ob_movie FORCE
 	mkdir -p movies
 	./movie.py $(TITLE) speed=1
 
+# bb_movie: create_bb_movie FORCE
+# 	@echo "Use TITLE='yourtitle' to give plot a title"
+# 	./create_bb_movie $(TITLE)
+# 	mkdir -p movies
+# 	./movie.py $(TITLE) speed=1
+
 generate_onebound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h FORCE
 	mkdir -p data
 	g++ -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
 	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_data
 	./generate_onebound_data $(TITLE)
+
+generate_bothbound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h FORCE
+	mkdir -p data
+	g++ -c simulations/generate_bothbound_data.cpp $(CPPFLAGS)
+	g++ generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_bothbound_data
+	./generate_bothbound_data $(TITLE)
 
 # ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/simulation_defaults.h simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp FORCE
 # 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
