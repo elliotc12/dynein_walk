@@ -227,10 +227,10 @@ int main(int argc, char** argv) {
   sprintf(uma_pe_fname_base, "data/ob_uma_pe_%s", f_appended_name);
   sprintf(total_pe_fname_base, "data/ob_total_pe_%s", f_appended_name);
 
-  sprintf(bba_fname_base, "data/ob_bba_pe_%s", f_appended_name);
-  sprintf(bma_fname_base, "data/ob_bma_pe_%s", f_appended_name);
-  sprintf( ta_fname_base, "data/ob_ta_pe_%s",  f_appended_name);
-  sprintf(uma_fname_base, "data/ob_uma_pe_%s", f_appended_name);
+  sprintf(bba_fname_base, "data/ob_bba_%s", f_appended_name);
+  sprintf(bma_fname_base, "data/ob_bma_%s", f_appended_name);
+  sprintf( ta_fname_base, "data/ob_ta_%s",  f_appended_name);
+  sprintf(uma_fname_base, "data/ob_uma_%s", f_appended_name);
 
   struct stat data_fd_stat;
   fstat(data_fd, &data_fd_stat);
@@ -358,8 +358,7 @@ int main(int argc, char** argv) {
     bma_pe[j] = data_map[j].bma_PE;
      ta_pe[j] = data_map[j].ta_PE;
     uma_pe[j] = data_map[j].uma_PE;
-    total_pe[j] = bba_pe[j] + bma_pe[j] + ta_pe[j] + uma_pe[j];
-    //printf("bba_pe: %g, bma_pe: %g, ta_pe: %g, uma_pe: %g, total_pe: %g\n", bba_pe[j], bma_pe[j], ta_pe[j], uma_pe[j], total_pe[j]);
+    total_pe[j] = (bba_pe[j] + bma_pe[j] + ta_pe[j] + uma_pe[j]) / 4;
     bba_angle[j] = data_map[j].bba;
     bma_angle[j] = data_map[j].bma;
      ta_angle[j] = data_map[j].ta;

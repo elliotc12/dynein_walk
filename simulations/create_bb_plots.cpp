@@ -394,7 +394,7 @@ int main(int argc, char** argv) {
     f_ty[j]  = data_map[j].f_ty;
     f_fmy[j] = data_map[j].f_fmy;
     f_fby[j] = data_map[j].f_fby;
-    total_pe[j] = nba_pe[j] + nma_pe[j] + ta_pe[j] + fma_pe[j] + fba_pe[j];
+    total_pe[j] = (nba_pe[j] + nma_pe[j] + ta_pe[j] + fma_pe[j] + fba_pe[j]) / 2;
   }
 
   generate_correlation_fn_data(nba_pe, len, "Near binding", nba_pe_fname_base);
