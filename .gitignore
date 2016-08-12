@@ -39,3 +39,5 @@ movies/
 onebound_PE_equipartition_correlation_plotsimulations/simulation_defaults.h
 create_ob_movie
 simulations/make_pe_time_plots
+create_bb_plots
+generate_bothbound_data
