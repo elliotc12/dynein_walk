@@ -96,6 +96,12 @@ int main(int argc, char** argv) {
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
   T = 50;
+
+  gm = gb;
+  gt = gb;
+  Lt = 15;
+  Ls = 15;
+  
   int iters = iterations / data_generation_skip_iterations;
 
   if (argc != 2) {

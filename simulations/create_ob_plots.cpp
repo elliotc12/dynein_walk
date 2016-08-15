@@ -227,10 +227,10 @@ int main(int argc, char** argv) {
   sprintf(uma_pe_fname_base, "data/ob_uma_pe_%s", f_appended_name);
   sprintf(total_pe_fname_base, "data/ob_total_pe_%s", f_appended_name);
 
-  sprintf(bba_fname_base, "data/ob_bba_%s", f_appended_name);
-  sprintf(bma_fname_base, "data/ob_bma_%s", f_appended_name);
-  sprintf( ta_fname_base, "data/ob_ta_%s",  f_appended_name);
-  sprintf(uma_fname_base, "data/ob_uma_%s", f_appended_name);
+  sprintf(bba_fname_base, "data/ob_bba_angle_%s", f_appended_name);
+  sprintf(bma_fname_base, "data/ob_bma_angle_%s", f_appended_name);
+  sprintf( ta_fname_base, "data/ob_ta_angle_%s",  f_appended_name);
+  sprintf(uma_fname_base, "data/ob_uma_angle_%s", f_appended_name);
 
   struct stat data_fd_stat;
   fstat(data_fd, &data_fd_stat);
