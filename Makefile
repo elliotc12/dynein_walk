@@ -1,4 +1,4 @@
-CPPFLAGS = -std=c++11 -g -Wall -Werror -O2
+CPPFLAGS = -std=c++11 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
 .PHONY: test_bothbound test_onebound clean
@@ -48,6 +48,11 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h simulations/simu
 
 ######################### SIMULATION STUFF ###############################
 TITLE = defaultplot
+
+simulations/simulation_defaults.h: simulations/custom_simulation_parameters.h
+
+simulations/custom_simulation_parameters.h:
+	touch simulations/custom_simulation_parameters.h
 
 create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
 	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)

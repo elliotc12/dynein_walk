@@ -41,4 +41,4 @@ create_ob_movie
 simulations/make_pe_time_plots
 create_bb_plots
 generate_bothbound_data
-simulations/*~
+simulations/custom_simulation_parameters.h

@@ -69,7 +69,7 @@ void write_bothbound_data_callback(void* dyn, State s, void** job_msg, data_unio
     }
     else if (iteration % msync_after_num_writes == 0) {
       msync(&data_mem[iter-msync_after_num_writes+1],
-	    msync_after_num_writes*sizeof(bothbound_data_generate_struct), MS_ASYNC);
+      msync_after_num_writes*sizeof(bothbound_data_generate_struct), MS_ASYNC);
     }
 
     if (iteration == (max_iteration-1) - ((max_iteration-1) % data_generation_skip_iterations)) {
