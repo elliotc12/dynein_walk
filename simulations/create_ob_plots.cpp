@@ -91,8 +91,8 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname);
 
-  double* pe_local_ave = (double*) malloc(num_generate_pe_datapoints * sizeof(double));
-  double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
+  double *pe_local_ave = new double[num_generate_pe_datapoints];
+  double *sampled_times = new double[num_generate_pe_datapoints];
   int iters_per_i = iters / num_generate_pe_datapoints;
   for (int i = 0; i < num_generate_pe_datapoints; i++) {
     int iter = i*iters_per_i;
@@ -122,7 +122,8 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   append_data_to_file(sampled_times, pe_local_ave, num_generate_pe_datapoints, file);
   fclose(file);
 
-  free(pe_local_ave);
+  delete[] pe_local_ave;
+  delete[] sampled_times;
 }
 
 void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, const char* legend, char* fname_base) {
