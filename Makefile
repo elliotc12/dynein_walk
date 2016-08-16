@@ -76,6 +76,8 @@ ob_plots: create_ob_plots FORCE
 	./make_plot.py --logx --logy --figtitle="OB_Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/ob_bba_pe_$(TITLE)_log_error.txt data/ob_bma_pe_$(TITLE)_log_error.txt data/ob_ta_pe_$(TITLE)_log_error.txt data/ob_uma_pe_$(TITLE)_log_error.txt data/ob_total_pe_$(TITLE)_log_error.txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="OB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" --ymax=3.0 data/ob_bba_angle_$(TITLE).txt data/ob_bma_angle_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_uma_angle_$(TITLE).txt data/ob_config_$(TITLE).txt
 	./make_plot.py --figtitle="OB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/ob_uma_angle_$(TITLE).txt data/ob_uma_pe_$(TITLE).txt data/ob_ta_angle_$(TITLE).txt data/ob_ta_pe_$(TITLE).txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Force_x_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Internal force" data/ob_bba_force_$(TITLE)_x.txt data/ob_bma_force_$(TITLE)_x.txt data/ob_ta_force_$(TITLE)_x.txt data/ob_uma_force_$(TITLE)_x.txt data/ob_uba_force_$(TITLE)_x.txt data/ob_total_force_$(TITLE)_x.txt data/ob_config_$(TITLE).txt
+	./make_plot.py --figtitle="OB_Force_y_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Internal force" data/ob_bba_force_$(TITLE)_y.txt data/ob_bma_force_$(TITLE)_y.txt data/ob_ta_force_$(TITLE)_y.txt data/ob_uma_force_$(TITLE)_y.txt data/ob_uba_force_$(TITLE)_y.txt data/ob_total_force_$(TITLE)_y.txt data/ob_config_$(TITLE).txt
 
 bb_plots: create_bb_plots FORCE
 	@echo "Use TITLE='yourtitle' to give plot a title"

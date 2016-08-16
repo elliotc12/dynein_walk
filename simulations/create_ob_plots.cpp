@@ -13,6 +13,32 @@
 #include "../default_parameters.h"
 #include "simulation_defaults.h"
 
+void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation) {
+  char fname[200];
+  sprintf(fname, "%s_%s.txt", fname_base, annotation);
+
+  char buf[256];
+  sprintf(buf, "--legend='%s'", legend);
+  prepare_data_file(buf, fname);
+
+  double* f_local_ave = (double*) malloc(num_generate_force_datapoints * sizeof(double));
+  double* sampled_times = (double*) malloc(num_generate_force_datapoints * sizeof(double));
+
+  int avging_width = len / num_generate_force_datapoints;
+  for (int i=0; i < num_generate_force_datapoints; i++) {
+    f_local_ave[i] = get_average(&f[i*avging_width], avging_width);
+    sampled_times[i] = times[i*avging_width];
+  }
+
+  printf("Finished %s                        \n", fname);
+
+  FILE* file = fopen(fname, "a");
+  append_data_to_file(sampled_times, f_local_ave, num_generate_force_datapoints, file);
+  fclose(file);
+
+  free(f_local_ave);
+}
+
 void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base){
   int max_tau_iter;
   if (iters*tau_runtime_fraction > num_corr_datapoints) {
@@ -62,7 +88,7 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   strcat(fname, ".txt");
 
   char buf[256];
-  sprintf(buf, "--legend='%s", legend);
+  sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname);
 
   double* pe_local_ave = (double*) malloc(num_generate_pe_datapoints * sizeof(double));
@@ -202,6 +228,14 @@ int main(int argc, char** argv) {
   char*  ta_pe_fname_base = new char[200];
   char* uma_pe_fname_base = new char[200];
   char* total_pe_fname_base = new char[200];
+
+  char* bba_force_fname_base = new char[200];
+  char* bma_force_fname_base = new char[200];
+  char*  ta_force_fname_base = new char[200];
+  char* uma_force_fname_base = new char[200];
+  char* uba_force_fname_base = new char[200];
+  char* total_force_fname_base = new char[200];
+
   char* bba_fname_base = new char[200];
   char* bma_fname_base = new char[200];
   char*  ta_fname_base = new char[200];
@@ -226,6 +260,13 @@ int main(int argc, char** argv) {
   sprintf( ta_pe_fname_base, "data/ob_ta_pe_%s",  f_appended_name);
   sprintf(uma_pe_fname_base, "data/ob_uma_pe_%s", f_appended_name);
   sprintf(total_pe_fname_base, "data/ob_total_pe_%s", f_appended_name);
+
+  sprintf(bba_force_fname_base, "data/ob_bba_force_%s", f_appended_name);
+  sprintf(bma_force_fname_base, "data/ob_bma_force_%s", f_appended_name);
+  sprintf( ta_force_fname_base, "data/ob_ta_force_%s",  f_appended_name);
+  sprintf(uma_force_fname_base, "data/ob_uma_force_%s", f_appended_name);
+  sprintf(uba_force_fname_base, "data/ob_uba_force_%s", f_appended_name);
+  sprintf(total_force_fname_base, "data/ob_total_force_%s", f_appended_name);
 
   sprintf(bba_fname_base, "data/ob_bba_angle_%s", f_appended_name);
   sprintf(bma_fname_base, "data/ob_bma_angle_%s", f_appended_name);
@@ -353,6 +394,9 @@ int main(int argc, char** argv) {
   double* f_umy = (double*) malloc(len * sizeof(double));
   double* f_uby = (double*) malloc(len * sizeof(double));
 
+  double* f_total_x = (double*) malloc(len * sizeof(double));
+  double* f_total_y = (double*) malloc(len * sizeof(double));
+
   for (int j=0; j < len; j++) {
     bba_pe[j] = data_map[j].bba_PE;
     bma_pe[j] = data_map[j].bma_PE;
@@ -383,6 +427,8 @@ int main(int argc, char** argv) {
     f_ty[j]  = data_map[j].f_ty;
     f_umy[j] = data_map[j].f_umy;
     f_uby[j] = data_map[j].f_uby;
+    f_total_x[j] = f_bbx[j] + f_bmx[j] + f_tx[j] + f_umx[j] + f_ubx[j];
+    f_total_y[j] = f_bby[j] + f_bmy[j] + f_ty[j] + f_umy[j] + f_uby[j];
   }
 
   generate_correlation_fn_data(bba_pe, len, "Bound binding", bba_pe_fname_base);
@@ -407,6 +453,20 @@ int main(int argc, char** argv) {
   generate_angle_vs_time_data(time, bma_angle, len, "Bound motor angle", bma_fname_base, onebound_post_powerstroke_internal_angles.bma);
   generate_angle_vs_time_data(time, ta_angle, len, "Tail angle", ta_fname_base, onebound_post_powerstroke_internal_angles.ta);
   generate_angle_vs_time_data(time, uma_angle, len, "Unbound motor angle", uma_fname_base, onebound_post_powerstroke_internal_angles.uma);
+
+  generate_force_data(time, f_bbx, len, "Bound binding f_x", bba_force_fname_base, "x");
+  generate_force_data(time, f_bmx, len, "Bound motor f_x", bma_force_fname_base, "x");
+  generate_force_data(time, f_tx,  len, "Tail f_x", ta_force_fname_base, "x");
+  generate_force_data(time, f_umx, len, "Unbound motor f_x", uma_force_fname_base, "x");
+  generate_force_data(time, f_ubx, len, "Unbound binding f_x", uba_force_fname_base, "x");
+  generate_force_data(time, f_total_x, len, "Total f_x", total_force_fname_base, "x");
+
+  generate_force_data(time, f_bby, len, "Bound binding f_y", bba_force_fname_base, "y");
+  generate_force_data(time, f_bmy, len, "Bound motor f_y", bma_force_fname_base, "y");
+  generate_force_data(time, f_ty,  len, "Tail f_y", ta_force_fname_base, "y");
+  generate_force_data(time, f_umy, len, "Unbound motor f_y", uma_force_fname_base, "y");
+  generate_force_data(time, f_uby, len, "Unbound binding f_y", uba_force_fname_base, "y");
+  generate_force_data(time, f_total_y, len, "Total f_y", total_force_fname_base, "y");
 
   free(bba_pe); free(bma_pe); free(ta_pe); free(uma_pe);
   free(bba_angle); free(bma_angle); free(ta_angle); free(uma_angle);
