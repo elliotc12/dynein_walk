@@ -218,13 +218,13 @@ void Dynein_onebound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  float A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
-  float B1, B2, B3, B4;
-  float C1, C2, C3, C4;
-  float D1, D2, D3, D4;
-  float X1, X2, X3, X4;
-  float Nbb, Nml, Nmr, Nbr;
-  float D;
+  double A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
+  double B1, B2, B3, B4;
+  double C1, C2, C3, C4;
+  double D1, D2, D3, D4;
+  double X1, X2, X3, X4;
+  double Nbb, Nml, Nmr, Nbr;
+  double D;
 
   A1 = -4*Ls;
   A2 = -3*Lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
