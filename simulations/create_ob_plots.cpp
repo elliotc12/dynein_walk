@@ -279,7 +279,14 @@ int main(int argc, char** argv) {
 
   {
     FILE *f = fopen(everything_name, "w");
-    fprintf(f, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+    fprintf(f, "# T: %g\n", 50.0); // UGH FIXME!!!
+    fprintf(f, "# kT: %g\n", kb*50.0); // UGH FIXME!!!
+    fprintf(f, "# onebound.bba: %g\n", onebound_post_powerstroke_internal_angles.bba);
+    fprintf(f, "# onebound.bma: %g\n", onebound_post_powerstroke_internal_angles.bma);
+    fprintf(f, "# onebound.ta: %g\n", onebound_post_powerstroke_internal_angles.ta);
+    fprintf(f, "# onebound.uma: %g\n", onebound_post_powerstroke_internal_angles.uma);
+    fprintf(f, "# %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "time",
             "bba_PE",
             "bma_PE",
             "ta_PE",
@@ -309,7 +316,8 @@ int main(int argc, char** argv) {
             "f_umy",
             "f_uby");
     for (int j=0;j<len;j++) {
-      fprintf(f, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
+      fprintf(f, "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
+              data_map[j].time,
               data_map[j].bba_PE,
               data_map[j].bma_PE,
               data_map[j].ta_PE,

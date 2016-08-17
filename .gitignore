@@ -42,3 +42,5 @@ simulations/make_pe_time_plots
 create_bb_plots
 generate_bothbound_data
 simulations/custom_simulation_parameters.h
+*.results
+__pycache__
