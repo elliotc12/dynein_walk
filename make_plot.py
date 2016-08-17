@@ -48,7 +48,6 @@ ax = plt.gca()
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width*0.7, box.height])
 
-max_x_value = 0
 colors = ['y', 'Olive', 'Fuchsia', 'Aqua', 'Teal', 'Lime', 'b', 'g', 'r', 'm']
 
 for data_file in data_files:
@@ -79,9 +78,6 @@ for data_file in data_files:
             plt.plot(X, Y, label=legend, color=c)
         else:
             plt.scatter(X,Y, label=legend, color=c, s=1)
-
-        if max(X) > max_x_value:
-            max_x_value = max(X)
     else:
         f = open(data_file, 'r')
         config_txt = f.read()
