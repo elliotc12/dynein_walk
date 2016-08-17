@@ -53,17 +53,16 @@ colors = ['y', 'Olive', 'Fuchsia', 'Aqua', 'Teal', 'Lime', 'b', 'g', 'r', 'm']
 
 for data_file in data_files:
     if (data_file.find("config") == -1):
-        f = open(data_file, 'r')
-        opt_str = f.readline()[0:-1].split(', ')
-        opts, _ = getopt.getopt(opt_str, "l:h:", ["legend=", "hline="])
-        data_hline = False
-        for opt, value in opts:
-            if opt == "--legend":
-                legend = "".join([x if x != "'" else '' for x in value])
-            elif opt == "--hline":
-                data_hline = True
-                data_hlineval = float("".join([x if x != "'" else '' for x in value]))
-        f.close()
+        with open(data_file, 'r') as f:
+            opt_str = f.readline()[0:-1].split(', ')
+            opts, _ = getopt.getopt(opt_str, "l:h:", ["legend=", "hline="])
+            data_hline = False
+            for opt, value in opts:
+                if opt == "--legend":
+                    legend = "".join([x if x != "'" else '' for x in value])
+                elif opt == "--hline":
+                    data_hline = True
+                    data_hlineval = float("".join([x if x != "'" else '' for x in value]))
 
         line = np.loadtxt(data_file, skiprows=1)
         #line = pandas.read_csv(data_file, skiprows=1)
@@ -74,7 +73,7 @@ for data_file in data_files:
 
         c = colors.pop()
         if data_hline:
-            plt.plot([0, max(X)], [data_hlineval, data_hlineval], color=c, linestyle="dashed")
+            plt.axhline(data_hlineval, color=c, linestyle="dashed")
 
         if (not scatter):
             plt.plot(X, Y, label=legend, color=c)
@@ -91,7 +90,7 @@ for data_file in data_files:
                                          bbox_transform=ax.transAxes, frameon=False)
 
 if hline:
-    plt.plot([0, max_x_value], [hlineval, hlineval], color='k', linestyle="dashed")
+    plt.axhline(hlineval, color='k', linestyle="dashed")
 
 plt.title(title)
 plt.xlabel(xlabel)
