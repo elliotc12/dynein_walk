@@ -107,6 +107,9 @@ if ymax:
     if (ylims[1] > ymax_val):
         plt.ylim([0, ymax_val])
 
+if 'PE' in ylabel:
+    plt.ylim(ymin=0)
+
 if logx:
     ax.set_xscale('log')
 
