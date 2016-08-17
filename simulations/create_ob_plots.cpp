@@ -21,13 +21,18 @@ void generate_force_data(double* times, double* f, int len, const char* legend, 
   sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname);
 
-  double* f_local_ave = (double*) malloc(num_generate_force_datapoints * sizeof(double));
-  double* sampled_times = (double*) malloc(num_generate_force_datapoints * sizeof(double));
+  double* f_local_ave = new double[num_generate_force_datapoints];
+  double* sampled_times = new double[num_generate_force_datapoints];
 
-  int avging_width = len / num_generate_force_datapoints;
+  int avging_width;
+  if (custom_generate_averaging_width != 0)
+    avging_width = custom_generate_averaging_width;
+  else
+    avging_width = len / num_generate_force_datapoints;
+  
   for (int i=0; i < num_generate_force_datapoints; i++) {
     f_local_ave[i] = get_average(&f[i*avging_width], avging_width);
-    sampled_times[i] = times[i*avging_width];
+    sampled_times[i] = times[i*avging_width + avging_width/2];
   }
 
   printf("Finished %s                        \n", fname);
@@ -36,7 +41,8 @@ void generate_force_data(double* times, double* f, int len, const char* legend, 
   append_data_to_file(sampled_times, f_local_ave, num_generate_force_datapoints, file);
   fclose(file);
 
-  free(f_local_ave);
+  delete[] f_local_ave;
+  delete[] sampled_times;
 }
 
 void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base){
@@ -82,7 +88,7 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
   free (taus); free(correlations);
 }
 
-void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* legend, char* fname_base) {
+void generate_pe_vs_time_data(double* times, double* pe, int len, const char* legend, char* fname_base) {
   char fname[200];
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
@@ -91,31 +97,20 @@ void generate_pe_vs_time_data(double* times, double* pe, int iters, const char* 
   sprintf(buf, "--legend='%s'", legend);
   prepare_data_file(buf, fname);
 
-  double *pe_local_ave = new double[num_generate_pe_datapoints];
-  double *sampled_times = new double[num_generate_pe_datapoints];
-  int iters_per_i = iters / num_generate_pe_datapoints;
-  for (int i = 0; i < num_generate_pe_datapoints; i++) {
-    int iter = i*iters_per_i;
-    if (iter == 0 or iter == iters-1) {
-      pe_local_ave[i] = pe[iter];
-    }
-    else if (iter < generate_averaging_width/2) {
-      pe_local_ave[i] = get_average(pe, iter*2);
-    }
-    else if ( iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)){
-      pe_local_ave[i] = get_average(&pe[iter-generate_averaging_width/2],
-				    generate_averaging_width);
-    }
-    else if (iter > (iters-generate_averaging_width/2-1)) {
-      pe_local_ave[i] = get_average(&pe[iters-1-(iters-1-iter)*2], (iters-1-iter)*2);
-    }
-    else {
-      printf("Error in PE local averaging!\n");
-      exit(1);
-    }
-    sampled_times[i] = times[iter];
-    printf("Progress for %s: %.1f%%  \r", fname, iter * 100.0 / iters);
+  double* pe_local_ave = new double[num_generate_pe_datapoints];
+  double* sampled_times = new double[num_generate_pe_datapoints];
+
+  int avging_width;
+  if (custom_generate_averaging_width != 0)
+    avging_width = custom_generate_averaging_width;
+  else
+    avging_width = len / num_generate_pe_datapoints;
+
+  for (int i=0; i < num_generate_pe_datapoints; i++) {
+    pe_local_ave[i] = get_average(&pe[i*avging_width], avging_width);
+    sampled_times[i] = times[i*avging_width + avging_width/2];
   }
+
   printf("Finished %s                        \n", fname);
 
   FILE* file = fopen(fname, "a");
@@ -169,7 +164,7 @@ void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, co
 }
 
 
-void generate_angle_vs_time_data(double* times, double* angle, int iters, const char* legend, char* fname_base, double eq_angle) {
+void generate_angle_vs_time_data(double* times, double* angle, int len, const char* legend, char* fname_base, double eq_angle) {
   char fname[200];
   strcpy(fname, fname_base);
   strcat(fname, ".txt");
@@ -178,38 +173,28 @@ void generate_angle_vs_time_data(double* times, double* angle, int iters, const 
   sprintf(buf, "--legend='%s', --hline='%g'", legend, eq_angle);
   prepare_data_file(buf, fname);
 
-  double* angle_local_ave = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
-  double* sampled_times = (double*) malloc(num_generate_angle_datapoints * sizeof(double));
-  int iters_per_i = iters / num_generate_angle_datapoints;
-  for (int i = 0; i < num_generate_angle_datapoints; i++) {
-    int iter = i*iters_per_i;
-    if (iter == 0 or iter == iters-1) {
-      angle_local_ave[i] = angle[iter];
-    }
-    else if (iter < generate_averaging_width/2) {
-      angle_local_ave[i] = get_average(angle, iter*2);
-    }
-    else if (iter >= generate_averaging_width/2 and iter <= (iters-generate_averaging_width/2-1)) {
-      angle_local_ave[i] = get_average(&angle[iter-generate_averaging_width/2],
-				       generate_averaging_width);
-    }
-    else if (iter > (iters-generate_averaging_width/2-1)) {
-      angle_local_ave[i] = get_average(&angle[iters-1-(iters-1-iter)*2], (iters-1-iter)*2);
-    }
-    else {
-      printf("Error in angle local averaging!\n");
-      exit(1);
-    }
-    sampled_times[i] = times[iter];
-    printf("Progress for %s: %.1f%%  \r", fname, iter * 100.0 / iters);
+  double* angle_local_ave = new double[num_generate_angle_datapoints];
+  double* sampled_times = new double[num_generate_angle_datapoints];
+
+  int avging_width;
+  if (custom_generate_averaging_width != 0)
+    avging_width = custom_generate_averaging_width;
+  else
+    avging_width = len / num_generate_angle_datapoints;
+
+  for (int i=0; i < num_generate_angle_datapoints; i++) {
+    angle_local_ave[i] = get_average(&angle[i*avging_width], avging_width);
+    sampled_times[i] = times[i*avging_width + avging_width/2];
   }
+
   printf("Finished %s                        \n", fname);
 
   FILE* file = fopen(fname, "a");
   append_data_to_file(sampled_times, angle_local_ave, num_generate_angle_datapoints, file);
   fclose(file);
 
-  free(angle_local_ave);
+  delete[] angle_local_ave;
+  delete[] sampled_times;
 }
 
 int main(int argc, char** argv) {

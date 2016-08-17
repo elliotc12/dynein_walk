@@ -106,11 +106,17 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   sprintf(buf, "dt: %g\n", dt);
   strcat(text_buf, buf);
   if ((omit_flags & CONFIG_INCLUDE_SKIPINFO) != 0) {
-    sprintf(buf, "lavg width: %d\n", generate_averaging_width);
+    if (custom_generate_averaging_width != 0) {
+      sprintf(buf, "l. avg width: %d\n", custom_generate_averaging_width);
+      strcat(text_buf, buf);
+    }
+    else {
+      sprintf(buf, "l. avg width: between pts\n");
+      strcat(text_buf, buf);
+    }
+    sprintf(buf, "l. avg pe points: %d\n", num_generate_pe_datapoints);
     strcat(text_buf, buf);
-    sprintf(buf, "lavg pe points: %d\n", num_generate_pe_datapoints);
-    strcat(text_buf, buf);
-    sprintf(buf, "lavg angle points: %d\n", num_generate_angle_datapoints);
+    sprintf(buf, "l. avg angle points: %d\n", num_generate_angle_datapoints);
     strcat(text_buf, buf);
   }
 
