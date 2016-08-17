@@ -6,6 +6,7 @@
 
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
+#include "simulations/plotting_defaults.h"
 
 extern double bla_init;
 extern double mla_init;

@@ -12,6 +12,7 @@
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 #include "simulation_defaults.h"
+#include "plotting_defaults.h"
 
 void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base){
   int max_tau_iter;

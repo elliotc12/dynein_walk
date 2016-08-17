@@ -12,6 +12,7 @@
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 #include "simulation_defaults.h"
+#include "plotting_defaults.h"
 
 void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation) {
   char fname[200];

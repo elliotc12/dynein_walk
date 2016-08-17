@@ -13,6 +13,7 @@
 #include "../dynein_struct.h"
 #include "../default_parameters.h"
 #include "simulation_defaults.h"
+#include "plotting_defaults.h"
 
 typedef struct {
   double* bba;
