@@ -44,3 +44,4 @@ generate_bothbound_data
 simulations/custom_simulation_parameters.h
 *.results
 __pycache__
+*.failed
