@@ -132,17 +132,17 @@ This is the system after subtracting equations from each other to eliminate some
 This section creates a system of equations by equating the Cartesian and Brownian velocity definitions from above. \\
 
 \begin{align}  
-  \dot{X}_{bm} &= \dot{X}_{bb} + \mn L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + \mn\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + R_{xml} \\
-  \dot{X}_{t}  &= \dot{X}_{bm} + \mn L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + \mn\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } \\
-  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + \mn\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\
-  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + \mn\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr}
+  \dot{X}_{bm} &= \dot{X}_{bb} + - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{xml} + -\frac{1}{\gamma}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + R_{xml} \\
+  \dot{X}_{t}  &= \dot{X}_{bm} + - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{xt } + -\frac{1}{\gamma}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + R_{xt } \\
+  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{xmr} + -\frac{1}{\gamma}\lambda_{ft}(X_{fm} - X_{t }) + \frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xmr} \\
+  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{xbr} + -\frac{1}{\gamma}\lambda_{fs}(X_{fb} - X_{fm}) + R_{xbr}
 \end{align}
 
 \begin{align}  
-  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + \mn\frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{yml} \\
-  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{yt } + \mn\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } \\
-  \dot{Y}_{fm} &= \dot{Y}_{t } + \mn L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + \mn\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
-  \dot{Y}_{fb} &= \dot{Y}_{fm} + \mn L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + \mn\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr}
+  \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} = \frac{1}{\gamma}F_{yml} + -\frac{1}{\gamma}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{yml} \\
+  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} = \frac{1}{\gamma}F_{yt } + -\frac{1}{\gamma}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + R_{yt } \\
+  \dot{Y}_{fm} &= \dot{Y}_{t } + - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} = \frac{1}{\gamma}F_{ymr} + -\frac{1}{\gamma}\lambda_{ft}(Y_{fm} - Y_{t }) + \frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ymr} \\
+  \dot{Y}_{fb} &= \dot{Y}_{fm} + - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb} = \frac{1}{\gamma}F_{ybr} + -\frac{1}{\gamma}\lambda_{fs}(Y_{fb} - Y_{fm}) + R_{ybr}
 \end{align}
 
 \section{System after Addition}

@@ -154,65 +154,6 @@ void Dynein_onebound::update_internal_forces() {
   }
 }
 
-// void Dynein_onebound::switch_to_bothbound() {
-//   double temp_nma;
-//   double temp_fma;
-
-//   if (state == NEARBOUND) {
-//     temp_nma = M_PI + bma - bba;
-//     temp_fma = M_PI + uma - uba;
-//     nbx = get_bbx();
-//     L = fbx - nbx;
-//   } else {
-//     temp_nma = M_PI + uma - uba;
-//     temp_fma = M_PI + bma - bba;
-//     nbx = get_fbx();
-//     L = bbx - fbx;
-//   }
-
-//   distance_traveled += fabs(get_ubx() - get_bbx());
-//   steps++;
-
-//   state = BOTHBOUND;
-//   nma = temp_nma;
-//   fma = temp_fma;
-// }
-
-// void Dynein_onebound::switch_to_nearbound() {
-//   //nearbound -> bma is nma
-//   double temp_bba = get_nba();
-//   double temp_bma = nma;
-//   double temp_uma = fma;
-//   double temp_uba = get_fba();
-
-//   bbx = get_nbx();
-//   bby = 0;
-
-//   bba = temp_bba;
-//   bma = temp_bma;
-//   uma = temp_uma;
-//   uba = temp_uba;
-
-//   state = NEARBOUND;
-// }
-
-// void Dynein_onebound::switch_to_farbound() {
-//   //nearbound -> bma is fma
-//   double temp_bba = get_fba();
-//   double temp_bma = fma;
-//   double temp_uma = nma;
-//   double temp_uba = get_nba();
-
-//   bbx = get_fbx();
-//   bby = 0;
-
-//   bba = temp_bba;
-//   bma = temp_bma;
-//   uma = temp_uma;
-//   uba = temp_uba;
-
-//   state = FARBOUND;
-// }
 
 void Dynein_onebound::update_velocities() {
   update_internal_forces();

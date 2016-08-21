@@ -195,8 +195,8 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   ta = fma - nma + fba - nba;
-  
-  assert(Ln + Lf > fabs(L)); // this geometrically must be true!
+
+  assert(Ln + Lf > fabs(L)); // Triangle inequality!
   assert(nma != M_PI);
   assert(fma != M_PI);
 }
