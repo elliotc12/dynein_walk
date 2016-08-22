@@ -96,7 +96,32 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
 }
 
 void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
-  
+  printf("num_steps: %d\n", data->num_steps);
+  printf("dwell_time: %g\n", data->dwell_time);
+  for (int i=0; i < data->step_times->get_length(); i++) {
+    printf("step_time: %g\n", data->step_times->get_data()[i]);
+  }
+  char data_fname[200];
+  sprintf(data_fname, "data/stepping_data_%s.txt", fname_base);
+
+  FILE* data_file = fopen(data_fname, "w");
+
+  fprintf(data_file, "#num_steps:\n");
+  fprintf(data_file, "%d\n", data->num_steps);
+
+  fprintf(data_file, "#step_lengths:\n");
+  for (int i=0; i<data->step_lengths->get_length(); i++) {
+    fprintf(data_file, "%g, ", data->step_lengths->get_data()[i]);
+  }
+  fprintf(data_file, "\n");
+
+  fprintf(data_file, "#step_times:\n");
+  for (int i=0; i<data->step_times->get_length(); i++) {
+    fprintf(data_file, "%g, ", data->step_times->get_data()[i]);
+  }
+  fprintf(data_file, "\n");
+
+  fclose(data_file);
 }
 
 int main(int argc, char** argv) {

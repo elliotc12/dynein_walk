@@ -77,7 +77,8 @@ plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_
 	sh ob_plots.sh $*
 
 plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.txt data/stepping_data_%.txt
-	make_stepping_plots.py $*
+	./make_stepping_plots.py $*
+	touch plots/stepping_histogram_%.pdf
 
 data/stepping_config_%.txt data/stepping_data_%.txt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_stepping_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data

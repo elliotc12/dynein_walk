@@ -72,6 +72,7 @@ public:
   ~DynArr();
   void append(double data);
   double* get_data();
+  int get_length() {return current;}
 };
 
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */
