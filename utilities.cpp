@@ -141,3 +141,34 @@ void FPE_signal_handler(int signum) {
 #ifdef __APPLE__
 void feenableexcept(int x) { printf("fake feenableexcept for mac.\n"); }
 #endif
+
+DynArr::DynArr(int init_len) {
+  len = init_len;
+  current = 0;
+  data = (double*)malloc(sizeof(double)*len);
+  if (data == NULL) {
+    perror("error allocating memory for DynArr");
+    exit(errno);
+  }
+}
+
+DynArr::~DynArr() {
+  free(data);
+}
+
+void DynArr::append(double d) {
+  if (current == len) {
+    len *= 2;
+    data = (double*)realloc(data, sizeof(double)*len);
+    if (data == NULL) {
+      perror("error reallocating memory for DynArr");
+      exit(errno);
+    }
+  }
+  data[current] = d;
+  current += 1;
+}
+
+double* DynArr::get_data() {
+  return data;
+}

@@ -76,6 +76,15 @@ create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_paramet
 plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_plot.py data/ob_config_%.txt data/onebound_data_%.bin
 	sh ob_plots.sh $*
 
+plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.txt data/stepping_data_%.txt
+	make_stepping_plots.py $*
+
+data/stepping_config_%.txt data/stepping_data_%.txt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_stepping_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+	mkdir -p data
+	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
+	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_stepping_data
+	./generate_stepping_data $*
+
 bb_plots: create_bb_plots
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_bb_plots $(TITLE)

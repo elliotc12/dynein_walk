@@ -62,6 +62,18 @@ void feenableexcept(int x);
 
 const int msync_after_num_writes = 10;
 
+class DynArr {
+private:
+  int len;
+  int current;
+  double* data;
+public:
+  DynArr(int init_len);
+  ~DynArr();
+  void append(double data);
+  double* get_data();
+};
+
 /* ******************** ONEBOUND DYNEIN CLASS DEFINITION ********************** */
 
 class Dynein_bothbound;
