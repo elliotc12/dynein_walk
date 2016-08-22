@@ -247,7 +247,7 @@ double Dynein_onebound::get_binding_rate() {
 
 double Dynein_onebound::get_unbinding_rate() {
   if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
-    return 1.0;
+    return 1/dt;
   } else return 0.0;
 }
 

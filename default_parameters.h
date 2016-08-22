@@ -36,11 +36,11 @@ double dt = 1e-11;
 
 double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
 
-double binding_preexponential_factor = 1e10;
-double unbinding_preexponential_factor = 1e5;
+double binding_preexponential_factor = 1e15;
+double unbinding_preexponential_factor = 1e15;
 
-double ONEBOUND_UNBINDING_FORCE = 8e12;
-double BOTHBOUND_UNBINDING_FORCE = 2e12;
+double ONEBOUND_UNBINDING_FORCE = 1e12;
+double BOTHBOUND_UNBINDING_FORCE = 1e12;
 
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 
