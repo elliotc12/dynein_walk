@@ -3,7 +3,7 @@ LIBRARIES = -lm
 
 .PHONY: clean
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie derivation.pdf paper.pdf thesis_stuff.pdf plots/OB_Force_x_5e11_equal_legs.pdf
+all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie plots/OB_Force_x_5e11_equal_legs.pdf
 
 derivation.pdf: latex/derivation.tex
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -99,11 +99,11 @@ ob_movie: create_ob_movie
 # 	mkdir -p movies
 # 	./movie.py $(TITLE) speed=1
 
-generate_onebound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
 	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_data
-	./generate_onebound_data $(TITLE)
+	./generate_onebound_data $*
 
 generate_bothbound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
