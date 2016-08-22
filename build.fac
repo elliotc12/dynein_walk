@@ -1,3 +1,5 @@
 | python2 configure.py > .fac
 > .fac
 c .pyc
+
+| touch simulations/custom_simulation_parameters.h
