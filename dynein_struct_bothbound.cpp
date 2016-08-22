@@ -4,6 +4,8 @@
 
 #include "dynein_struct.h"
 
+static bool BB_PHYSICAL = true;
+
 inline double sqr(double x) {
   return x*x;
 }
@@ -196,9 +198,21 @@ void Dynein_bothbound::update_coordinates() {
   fba = atan2(fmy, fmx - (nbx + L));
   ta = fma - nma + fba - nba;
 
-  assert(Ln + Lf > fabs(L)); // Triangle inequality!
-  assert(nma != M_PI);
-  assert(fma != M_PI);
+  //assert(Ln + Lf > fabs(L)); // Triangle inequality!
+  if (Ln + Lf <= fabs(L) and BB_PHYSICAL) {
+    printf("Simulation unphysical, Ln + Lf !> fabs(L)\n");
+    BB_PHYSICAL = false;
+  }
+  //assert(nma != M_PI);
+  if (nma == M_PI and BB_PHYSICAL) {
+    printf("Simulation unphysical, nma == M_PI\n");
+    BB_PHYSICAL = false;
+  }
+  //assert(fma != M_PI);
+  if (fma == M_PI and BB_PHYSICAL) {
+    printf("Simulation unphysical, fma == M_PI\n");
+    BB_PHYSICAL = false;
+  }
 }
 
 static const bool am_debugging_nans = false;

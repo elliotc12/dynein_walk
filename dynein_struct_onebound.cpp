@@ -4,6 +4,8 @@
 
 #include "dynein_struct.h"
 
+static bool OB_PHYSICAL = true;
+
 /* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */
 
 Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
@@ -221,7 +223,11 @@ void Dynein_onebound::update_velocities() {
          -B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4
          +A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
 
-  assert(D != 0);
+  //assert(D != 0);
+  if (D == 0 and OB_PHYSICAL) {
+    printf("Simulation unphysical, D == 0\n");
+    OB_PHYSICAL = false;
+  }
 
   d_bba = Nbb/D;
   d_bma = Nml/D;
