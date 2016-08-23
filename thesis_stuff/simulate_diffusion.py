@@ -5,10 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-runtime = 1
-dt = 1e-3
+runtime = 20
+dt = 1
 
-radius = 1e-8
+#radius = 1e-8
+radius = 10
 cell_viscosity = 7e-4
 gamma = radius * 6.0 * np.pi * cell_viscosity
 
@@ -34,6 +35,7 @@ def simulate_particle(init_position):
     return trajectory
 
 def make_gif(trajectory):
+    os.system("rm PNGs/*")
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     for t in range(len(trajectory)):
@@ -42,9 +44,9 @@ def make_gif(trajectory):
         zs = [point[2] for (n, point) in enumerate(trajectory) if n < t] # = (trajectory[0:t])[2]
         ax.plot(xs, ys, zs)
 
-        ax.set_xlim([-1e-30, 1e-30])
-        ax.set_ylim([-1e-30, 1e-30])
-        ax.set_zlim([-1e-30, 1e-30])
+        # ax.set_xlim([-1e-30, 1e-30])
+        # ax.set_ylim([-1e-30, 1e-30])
+        # ax.set_zlim([-1e-30, 1e-30])
 
         plt.title("Diffusion trajectory")
         plt.savefig('PNGs/diffusion-%03d.png' % t)
