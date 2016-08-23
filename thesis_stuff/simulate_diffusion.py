@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-runtime = 20
+runtime = 50
 dt = 1
 
 #radius = 1e-8
-radius = 10
+radius = 100
 cell_viscosity = 7e-4
 gamma = radius * 6.0 * np.pi * cell_viscosity
 
@@ -38,17 +38,44 @@ def make_gif(trajectory):
     os.system("rm PNGs/*")
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
+    ax.grid(False)
+    ax.set_axis_off()
+
     for t in range(len(trajectory)):
+        u = np.linspace(0, np.pi, 100)
+        v = np.linspace(0, np.pi, 100)
+
+        x = 1e-18 * np.outer(np.cos(u), np.sin(v))
+        y = 1e-18 * np.outer(np.sin(u), np.sin(v))
+        z = 1e-18 * np.outer(np.ones(np.size(u)), np.cos(v))
+        ax.plot_surface(x, y, z, rstride=4, cstride=4, color='b', alpha=0.2, linewidth=0.1)
+        
         xs = [point[0] for (n, point) in enumerate(trajectory) if n < t] # = (trajectory[0:t])[0]
         ys = [point[1] for (n, point) in enumerate(trajectory) if n < t] # = (trajectory[0:t])[1]
         zs = [point[2] for (n, point) in enumerate(trajectory) if n < t] # = (trajectory[0:t])[2]
         ax.plot(xs, ys, zs)
 
-        # ax.set_xlim([-1e-30, 1e-30])
-        # ax.set_ylim([-1e-30, 1e-30])
-        # ax.set_zlim([-1e-30, 1e-30])
+        ax.grid(False)
+        ax.set_axis_off()
 
-        plt.title("Diffusion trajectory")
+        # Get rid of the panes
+        ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+        ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+        ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+
+        # Get rid of the spines
+        ax.w_xaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+        ax.w_yaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+        ax.w_zaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+
+        ax.set_xticks([]) 
+        ax.set_yticks([]) 
+        ax.set_zticks([])
+
+        ax.set_xlim([-1.5e-18, 1.5e-18])
+        ax.set_ylim([-1.5e-18, 1.5e-18])
+        ax.set_zlim([-1.5e-18, 1.5e-18])
+
         plt.savefig('PNGs/diffusion-%03d.png' % t)
         plt.cla()
         print "Making fig: %d of %d" % (t, len(trajectory))
