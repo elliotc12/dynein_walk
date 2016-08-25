@@ -9,8 +9,8 @@ import os
 
 dt = .0001
 
-num_frames = 50
-gif_length = 2000 # cs
+num_frames = 300
+gif_length = 1500 # cs
 
 kb = 1.38e-23 # J / K
 T = 310.15 # K
@@ -176,10 +176,14 @@ def make_gif(trajectory, motor_trajectory):
     os.system("convert -delay " + str(gif_length/num_frames) + " PNGs/diffusion-*.png diffusion.gif")
 
 def main():
-    init_position = np.array([0.0, 0.0, 0.0]).astype(np.longdouble)
-    trajectory = simulate_particle(init_position)
+    init_position = np.array([0.0, 0.0, 0.0])
+    trajectories = [0]*5
+    for n in range(5):
+        trajectories[n] = simulate_particle(init_position)
+    median_len = np.median([len(t) for t in trajectories])
+    median_trajectory = [t for t in trajectories if len(t) == median_len][0]
     motor_trajectory = simulate_motor(init_position)
-    make_gif(trajectory, motor_trajectory)
+    make_gif(median_trajectory, motor_trajectory)
 
 if __name__ == "__main__":
     print "D", D
