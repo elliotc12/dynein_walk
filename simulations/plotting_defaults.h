@@ -9,7 +9,7 @@ const int num_generate_pe_datapoints = 50;
 const int num_generate_angle_datapoints = num_generate_pe_datapoints;
 const int num_generate_force_datapoints = num_generate_pe_datapoints;
 
-const int custom_generate_averaging_width = 1;
+const int custom_generate_averaging_width = 1; // 0 for full-dataset averaging
 
 #include "custom_simulation_parameters.h"
 
