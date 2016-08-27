@@ -45,3 +45,4 @@ simulations/custom_simulation_parameters.h
 *.results
 __pycache__
 *.failed
+generate_stepping_data
