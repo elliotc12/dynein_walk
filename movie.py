@@ -58,11 +58,12 @@ tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red", markersize=10)
 motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=30)
 binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=5)
 
-force_line = [i for i in range(5)]
-ave_force = numpy.mean(numpy.abs(data[:,17:28]))
-force_scaling = 5 / ave_force
-for i in range(5):
-  force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
+if force_vectors:
+  force_line = [i for i in range(5)]
+  ave_force = numpy.mean(numpy.abs(data[:,17:28]))
+  force_scaling = 5 / ave_force
+  for i in range(5):
+    force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
 
 title_text = plt.text(-65, 45, 'State:')
 pe_text = plt.text(-65, 40, 'PE: ')
@@ -95,9 +96,6 @@ while i < len(data):
   Fx = data[i][17:27:2]
   Fy = data[i][18:28:2]
 
-  print "Fxs: ", Fx
-  print "Fys: ", Fy
-
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
   tail2.set_data([ X[2], X[3] ], [ Y[2], Y[3] ])
@@ -126,11 +124,12 @@ while i < len(data):
     motor2.set_zorder(13)
     binding2.set_zorder(11)
 
-    force_line[0].set_zorder(20)
-    force_line[1].set_zorder(18)
-    force_line[2].set_zorder(16)
-    force_line[3].set_zorder(14)
-    force_line[4].set_zorder(12)
+    if force_vectors:
+      force_line[0].set_zorder(20)
+      force_line[1].set_zorder(18)
+      force_line[2].set_zorder(16)
+      force_line[3].set_zorder(14)
+      force_line[4].set_zorder(12)
 
     stalk1.set_zorder(4)
     tail1.set_zorder(3)
@@ -150,11 +149,12 @@ while i < len(data):
     motor2.set_zorder(17)
     binding2.set_zorder(19)
 
-    force_line[0].set_zorder(12)
-    force_line[1].set_zorder(14)
-    force_line[2].set_zorder(16)
-    force_line[3].set_zorder(18)
-    force_line[4].set_zorder(20)
+    if force_vectors:
+      force_line[0].set_zorder(12)
+      force_line[1].set_zorder(14)
+      force_line[2].set_zorder(16)
+      force_line[3].set_zorder(18)
+      force_line[4].set_zorder(20)
 
     stalk1.set_zorder(1)
     tail1.set_zorder(2)
@@ -174,11 +174,12 @@ while i < len(data):
     motor2.set_zorder(13)
     binding2.set_zorder(11)
 
-    force_line[0].set_zorder(20)
-    force_line[1].set_zorder(18)
-    force_line[2].set_zorder(16)
-    force_line[3].set_zorder(14)
-    force_line[4].set_zorder(12)
+    if force_vectors:
+      force_line[0].set_zorder(20)
+      force_line[1].set_zorder(18)
+      force_line[2].set_zorder(16)
+      force_line[3].set_zorder(14)
+      force_line[4].set_zorder(12)
 
     stalk1.set_zorder(4)
     tail1.set_zorder(3)
