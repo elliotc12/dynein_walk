@@ -23,8 +23,8 @@ dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h default_p
 dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h simulations/simulation_defaults.h
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
-simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
-	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
+# simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
+# 	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
 
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
@@ -61,17 +61,21 @@ simulations/simulation_defaults.h: simulations/custom_simulation_parameters.h
 simulations/custom_simulation_parameters.h:
 	touch simulations/custom_simulation_parameters.h
 
-create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_plots.o -o create_ob_plots
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_plots.o -o create_ob_plots
 
-create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/create_bb_plots.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_bb_plots.o -o create_bb_plots
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_plots.o -o create_bb_plots
 
-create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
+create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/create_ob_movie.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o create_ob_movie.o -o create_ob_movie
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_movie.o -o create_ob_movie
+
+create_bb_movie: simulations/create_bb_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+	g++ -c simulations/create_bb_movie.cpp $(CPPFLAGS)
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_movie.o -o create_bb_movie
 
 plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_plot.py data/ob_config_%.txt data/onebound_data_%.bin
 	sh ob_plots.sh $*
@@ -83,7 +87,7 @@ plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.tx
 data/stepping_config_%.txt data/stepping_data_%.txt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_stepping_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
-	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_stepping_data
+	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
 	./generate_stepping_data $*
 
 bb_plots: create_bb_plots
@@ -97,29 +101,29 @@ bb_plots: create_bb_plots
 	./make_plot.py --figtitle="BB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bb_nba_angle_$(TITLE).txt data/bb_nma_angle_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_fma_angle_$(TITLE).txt data/bb_fba_angle_$(TITLE).txt data/bb_config_$(TITLE).txt
 	./make_plot.py --figtitle="BB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/bb_fma_angle_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
 
-ob_movie: create_ob_movie
+movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_ob_movie $(TITLE)
+	./create_ob_movie $*
 	mkdir -p movies
-	./movie.py $(TITLE) speed=1
+	./movie.py $* speed=1
 
-# bb_movie: create_bb_movie
-# 	@echo "Use TITLE='yourtitle' to give plot a title"
-# 	./create_bb_movie $(TITLE)
-# 	mkdir -p movies
-# 	./movie.py $(TITLE) speed=1
+movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
+	@echo "Use TITLE='yourtitle' to give plot a title"
+	./create_bb_movie $*
+	mkdir -p movies
+	./movie.py $* speed=1
 
-data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
-	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_onebound_data
+	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_onebound_data
 	./generate_onebound_data $*
 
-generate_bothbound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/bb_config_%.txt data/bothbound_data_%.bin:: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_bothbound_data.cpp $(CPPFLAGS)
-	g++ generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o generate_bothbound_data
-	./generate_bothbound_data $(TITLE)
+	g++ generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_bothbound_data
+	./generate_bothbound_data $*
 
 # ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/simulation_defaults.h simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp
 # 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
@@ -143,16 +147,16 @@ generate_bothbound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struc
 # 	./ob_PE_equipartition_ratio_average_vs_force_ratio $(TITLE)
 # 	./make_plot.py --scatter --figtitle="$(TITLE)" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/config_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt
 
-ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp simulations/simulation_defaults.h
-	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp $(CPPFLAGS)
-	g++ ob_PE_equipartition_ratio_average_vs_temperature.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_temperature
+# ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp simulations/simulation_defaults.h
+# 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp $(CPPFLAGS)
+# 	g++ ob_PE_equipartition_ratio_average_vs_temperature.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_temperature
 
-ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio_average_vs_temperature
-	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
-	mkdir -p plots
-	mkdir -p data
-	./ob_PE_equipartition_ratio_average_vs_temperature $(TITLE)
-	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_T_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_T_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/config_pe_equipartition_ratio_vs_T_$(TITLE).txt
+# ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio_average_vs_temperature
+# 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
+# 	mkdir -p plots
+# 	mkdir -p data
+# 	./ob_PE_equipartition_ratio_average_vs_temperature $(TITLE)
+# 	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_T_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_T_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/config_pe_equipartition_ratio_vs_T_$(TITLE).txt
 
 # ob_PE_equipartition_ratio_average_vs_dt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp
 # 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp $(CPPFLAGS)

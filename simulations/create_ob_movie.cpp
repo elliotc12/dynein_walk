@@ -51,10 +51,10 @@ void generate_movie(double* time, movie_generate_struct* data, int len, char* fn
 	    "%d\t"
 	    "%.2g\t"
 	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t"
-	    "%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
 	    "\n",
 	    NEARBOUND,
 	    time[iter],
