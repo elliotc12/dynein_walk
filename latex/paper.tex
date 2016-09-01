@@ -9,6 +9,10 @@
 \usepackage{fullpage}
 \usepackage{verbatim}
 
+\newcommand{\gb}{\frac{1}{\gamma_b}}
+\newcommand{\gm}{\frac{1}{\gamma_m}}
+\newcommand{\gt}{\frac{1}{\gamma_t}}
+
 \title{Brownian Dynein Model}
 
 \begin{document}
@@ -239,16 +243,150 @@ Here we convert the above system into matrix form, solve it in Mathematica and l
 \end{pmatrix}
 \]
 
-\twocolumn
-
-\section{One bound}
+\section{Onebound}
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{../figures/code-onebound}
   \caption{Angles used in one-bound case.}\label{fig:onebound}
 \end{figure}
 
-In the one-bound case, we use four angles, as illustrated in
-Fig.~\ref{fig:onebound}.
+First, some definitions...
+\begin{align*}
+F_{bmx} &= \frac{f_{bmx} + R_{bmx}}{\gamma}\\
+F_{xt } &= \frac{f_{xt} + R_{xt}}{\gamma}\\
+...\\
+X_{bs} &= \frac{X_{bm} - X_{bb}}{\gamma}\\
+X_{bt} &= \frac{X_t - X_{bm}}{\gamma}\\
+...\\
+\end{align*}
+
+\subsection{Brownian Dynamics equations}
+\begin{align*}
+  \dot{X}_{bm} &= F_{bmx} - \gm\lambda_{bs}X_{bs} + \gm\lambda_{bt}X_{bt}\\
+  \dot{X}_{t}  &= F_{tx}  - \gt\lambda_{bt}X_{bt} + \gt\lambda_{ut}X_{ut}\\
+  \dot{X}_{um} &= F_{umx} - \gm\lambda_{ut}X_{ut} + \gm\lambda_{us}X_{us}\\
+  \dot{X}_{ub} &= F_{ubx} - \gb\lambda_{us}X_{us}
+\end{align*}
+
+\begin{align*}
+  \dot{Y}_{bm} &= F_{bmx} - \gm\lambda_{bs}Y_{bs} + \gm\lambda_{bt}Y_{bt}\\
+  \dot{Y}_{t}  &= F_{tx}  - \gt\lambda_{bt}Y_{bt} + \gt\lambda_{ut}Y_{ut}\\
+  \dot{Y}_{um} &= F_{umx} - \gm\lambda_{ut}Y_{ut} + \gm\lambda_{us}Y_{us}\\
+  \dot{Y}_{ub} &= F_{ubx} - \gb\lambda_{us}Y_{us}
+\end{align*}
+
+\subsection{Expanded velocities}
+
+\begin{align*}
+\dot{X}_{bm} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb}\\
+\dot{X}_{t } &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm}\\
+\dot{X}_{um} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um}\\
+\dot{X}_{ub} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub}\\
+\end{align*}
+
+\begin{align*}
+\dot{Y}_{bm} &= L_s\cos(\theta_{bb})\dot{\theta}_{bm}\\
+\dot{Y}_{t } &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm}\\
+\dot{Y}_{um} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um}\\
+\dot{Y}_{ub} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub}\\
+\end{align*}
+
+\subsection{System of Equations}
+Now to create our system of equations, we combine the Brownian equations with our expanded velocities. This system of equations takes into account both the dynamics of Brownian Mechanics (from the BD equations) as well as the constraints of our coordinate system (from the velocity expansions).
+
+\begin{align*}
+F_{bmx} - \gm\lambda_{bs}X_{bs} + \gm\lambda_{bt}X_{bt} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb}\\
+F_{tx}  - \gt\lambda_{bt}X_{bt} + \gt\lambda_{ut}X_{ut} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm}\\
+F_{umx} - \gm\lambda_{ut}X_{ut} + \gm\lambda_{us}X_{us} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um}\\
+F_{ubx} - \gb\lambda_{us}X_{us} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub}\\
+\\
+F_{bmy} - \gm\lambda_{bs}Y_{bs} + \gm\lambda_{bt}Y_{bt} &= L_s\cos(\theta_{bb})\dot{\theta}_{bm}\\
+F_{ty}  - \gt\lambda_{bt}Y_{bt} + \gt\lambda_{ut}Y_{ut} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm}\\
+F_{umy} - \gm\lambda_{ut}Y_{ut} + \gm\lambda_{us}Y_{us} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um}\\
+F_{uby} - \gb\lambda_{us}Y_{us} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub}\\
+\end{align*}
+
+
+\subsection{Matrix form}
+
+\[
+\hspace{-2.5cm}
+\begin{pmatrix}
+  L_s\sin\theta_{bb} & 0 & 0 & 0 & -\gm X_{bs} & \gm\lambda_{bt}X_{bt} & 0 & 0\\
+  L_s\sin(\theta_{bb}) & L_t\sin(\theta_{bm}) & 0 & 0 & 0 & -\gt X_{bt} & \gt X_{ut} & 0\\
+  L_s\sin(\theta_{bb}) & L_t\sin(\theta_{bm}) & -L_t\sin(\theta_{um}) & 0 & 0 & 0 & -\gm X_{ut} & \gm X_{us}\\
+  L_s\sin(\theta_{bb}) & L_t\sin(\theta_{bm}) & -L_t\sin(\theta_{um}) & -L_s\sin(\theta_{ub}) & 0 & 0 & 0 & -\gb X_{us}\\
+  -L_s\cos(\theta_{bb}) & 0 & 0 & 0 & -\gm Y_{bs} & \gm Y_{bt} & 0 & 0\\
+  -L_s\cos(\theta_{bb}) & -L_t\cos(\theta_{bm}) & 0 & 0 & 0 & -\gt Y_{bt} & \gt Y_{ut} & 0\\
+  -L_s\cos(\theta_{bb}) & -L_t\cos(\theta_{bm}) & L_t\cos(\theta_{um}) & 0 & 0 & 0 & -\gm Y_{ut} & \gm Y_{us}\\
+  -L_s\cos(\theta_{bb}) & -L_t\cos(\theta_{bm}) & L_t\cos(\theta_{um}) & L_s\cos(\theta_{ub}) & 0 & 0 & 0 & -\gb Y_{us}\\
+\end{pmatrix}
+\begin{pmatrix}
+  \dot{\theta}_{bb}\\
+  \dot{\theta}_{bm}\\
+  \dot{\theta}_{um}\\
+  \dot{\theta}_{ub}\\
+  \lambda_{bs}\\
+  \lambda_{bt}\\
+  \lambda_{ut}\\
+  \lambda_{us}\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+  -F_{bmx}\\
+  -F_{tx}\\
+  -F_{umx}\\
+  -F_{ubx}\\
+  -F_{bmy}\\
+  -F_{ty}\\
+  -F_{umy}\\
+  -F_{uby}\\
+\end{pmatrix}
+\]
+
+\subsection{Mathematica input}
+The above matrix equation can be represented as follows and solved via Mathematica:
+
+\begin{align*}
+AA &= L_s\sin\theta_{bb}      &  LL &= -L_s\cos(\theta_{bb})\\
+BB &= L_t\sin(\theta_{bm})    &	 MM &= -L_t\cos(\theta_{bm})\\
+CC &= -L_t\sin(\theta_{um})   &	 NN &= L_t\cos(\theta_{um})\\
+DD &= -L_s\sin(\theta_{ub})   &	 OO &= L_s\cos(\theta_{ub})\\
+\\
+EE &= -\gm X_{bs}       &    PP &= -\gm Y_{bs}\\
+FF &= \gm X_{bt}	    &	 QQ &= \gm Y_{bt}\\ 
+GG &= -\gt X_{bt}	    &	 RR &= -\gt Y_{bt}\\
+HH &= \gt X_{ut}	    &	 SS &= \gt Y_{ut}\\ 
+II &= -\gm X_{ut}	    &	 TT &= -\gm Y_{ut}\\
+JJ &= \gm X_{us}	    &	 UU &= \gm Y_{us}\\ 
+KK &= -\gb X_{us}       &	 VV &= -\gb Y_{us}\\
+\end{align*}
+
+\[
+\begin{pmatrix}
+  AA & 0 & 0 & 0 & EE & FF & 0 & 0\\
+  AA & BB & 0 & 0 & 0 & GG & HH & 0\\
+  AA & BB & CC & 0 & 0 & 0 & II & JJ\\
+  AA & BB & CC & DD & 0 & 0 & 0 & KK\\
+  LL & 0 & 0 & 0 & PP & QQ & 0 & 0\\
+  LL & MM & 0 & 0 & 0 & RR & SS & 0\\
+  LL & MM & NN & 0 & 0 & 0 & TT & UU\\
+  LL & MM & NN & OO & 0 & 0 & 0 & VV\\
+\end{pmatrix}
+V
+=
+\begin{pmatrix}
+  X1\\
+  X2\\
+  X3\\
+  X4\\
+  X5\\
+  X6\\
+  X7\\
+  X8\\
+\end{pmatrix}
+\]
+
+
 
 \end{document}

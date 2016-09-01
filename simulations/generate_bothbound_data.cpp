@@ -149,9 +149,9 @@ int main(int argc, char** argv) {
 
   job_msg[3] = data_mem;
 
-  bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
-  double init_position[] = {eq.nma,
-			    eq.fma,
+  //bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
+  double init_position[] = {0.6*M_PI,
+			    0.6*M_PI,
 			    0, 0, Ls};
 
   simulate(iterations*dt, RAND_INIT_SEED, BOTHBOUND, init_position,

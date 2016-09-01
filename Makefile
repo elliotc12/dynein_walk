@@ -73,6 +73,10 @@ create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_paramet
 	g++ -c simulations/create_ob_movie.cpp $(CPPFLAGS)
 	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_movie.o -o create_ob_movie
 
+create_bb_movie: simulations/create_bb_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+	g++ -c simulations/create_bb_movie.cpp $(CPPFLAGS)
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_movie.o -o create_bb_movie
+
 plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_plot.py data/ob_config_%.txt data/onebound_data_%.bin
 	sh ob_plots.sh $*
 
@@ -97,17 +101,17 @@ bb_plots: create_bb_plots
 	./make_plot.py --figtitle="BB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bb_nba_angle_$(TITLE).txt data/bb_nma_angle_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_fma_angle_$(TITLE).txt data/bb_fba_angle_$(TITLE).txt data/bb_config_$(TITLE).txt
 	./make_plot.py --figtitle="BB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/bb_fma_angle_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
 
-ob_movie: create_ob_movie
+movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_ob_movie $(TITLE)
+	./create_ob_movie $*
 	mkdir -p movies
-	./movie.py $(TITLE) speed=1
+	./movie.py $* speed=1
 
-# bb_movie: create_bb_movie
-# 	@echo "Use TITLE='yourtitle' to give plot a title"
-# 	./create_bb_movie $(TITLE)
-# 	mkdir -p movies
-# 	./movie.py $(TITLE) speed=1
+movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
+	@echo "Use TITLE='yourtitle' to give plot a title"
+	./create_bb_movie $*
+	mkdir -p movies
+	./movie.py $* speed=1
 
 data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
@@ -115,11 +119,11 @@ data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_o
 	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_onebound_data
 	./generate_onebound_data $*
 
-generate_bothbound_data: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/bb_config_%.txt data/bothbound_data_%.bin:: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_bothbound_data.cpp $(CPPFLAGS)
 	g++ generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_bothbound_data
-	./generate_bothbound_data $(TITLE)
+	./generate_bothbound_data $*
 
 # ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/simulation_defaults.h simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp
 # 	g++ -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
