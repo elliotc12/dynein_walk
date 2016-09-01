@@ -198,6 +198,7 @@ void write_movie_config(char* movie_config_fname, double runtime) {
 int main(int argc, char** argv) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
+  ONEBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
 
   T = 50;
 

@@ -947,6 +947,7 @@ double Dynein_onebound::get_binding_rate() {
 }
 
 double Dynein_onebound::get_unbinding_rate() {
+  printf("f.bby: %g, r.bby: %g\n", f.bby, r.bby);
   if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
     return 1/dt;
   } else return 0.0;
@@ -1009,7 +1010,7 @@ double Dynein_onebound::get_bmx() {
   return Ls * cos(get_bba()) + bbx;
 }
 
-double Dynein_onebound::get_bmy(){
+double Dynein_onebound::get_bmy() {
   return Ls * sin(get_bba()) + bby;
 }
 
