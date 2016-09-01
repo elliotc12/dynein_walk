@@ -243,21 +243,57 @@ Here we convert the above system into matrix form, solve it in Mathematica and l
 \end{pmatrix}
 \]
 
-\section{Onebound}
-
-\begin{figure}
-  \includegraphics[width=\columnwidth]{../figures/code-onebound}
-  \caption{Angles used in one-bound case.}\label{fig:onebound}
-\end{figure}
+\section{Onebound derivation}
 
 First, some definitions...
 \begin{align*}
 F_{bmx} &= \frac{f_{bmx} + R_{bmx}}{\gamma}\\
 F_{xt } &= \frac{f_{xt} + R_{xt}}{\gamma}\\
-...\\
+..\\
+\end{align*}
+
+\begin{align*}
 X_{bs} &= \frac{X_{bm} - X_{bb}}{\gamma}\\
-X_{bt} &= \frac{X_t - X_{bm}}{\gamma}\\
-...\\
+X_{bt} &= \frac{X_{t} - X_{bm}}{\gamma}\\
+X_{ut} &= \frac{X_{um} - X_{t}}{\gamma}\\
+X_{us} &= \frac{X_{ub} - X_{um}}{\gamma}\\
+\end{align*}
+
+\begin{align*}
+Y_{bs} &= \frac{Y_{bm} - Y_{bb}}{\gamma}\\
+Y_{bt} &= \frac{Y_{t} - Y_{bm}}{\gamma}\\
+Y_{ut} &= \frac{Y_{um} - Y_{t}}{\gamma}\\
+Y_{us} &= \frac{Y_{ub} - Y_{um}}{\gamma}\\
+\end{align*}
+
+\subsection{Domain positions}
+\begin{align*}
+X_{bm} &= L_s\cos(\theta_{bb})\\
+X_{t } &= L_s\cos(\theta_{bb}) + L_t\cos(\theta_{bm})\\
+X_{um} &= L_s\cos(\theta_{bb}) + L_t\cos(\theta_{bm}) - L_t\cos(\theta_{um})\\
+X_{ub} &= L_s\cos(\theta_{bb}) + L_t\cos(\theta_{bm}) - L_t\cos(\theta_{um}) - L_s\cos(\theta_{ub})\\
+\end{align*}
+
+\begin{align*}
+Y_{bm} &= L_s\sin(\theta_{bb})\\
+Y_{t } &= L_s\sin(\theta_{bb}) + L_t\sin(\theta_{bm})\\
+Y_{um} &= L_s\sin(\theta_{bb}) + L_t\sin(\theta_{bm}) - L_t\sin(\theta_{um})\\
+Y_{ub} &= L_s\sin(\theta_{bb}) + L_t\sin(\theta_{bm}) - L_t\sin(\theta_{um}) - L_s\sin(\theta_{ub})\\
+\end{align*}
+
+\subsection{Domain velocities}
+\begin{align*}
+\dot{X}_{bm} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb}\\
+\dot{X}_{t } &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm}\\
+\dot{X}_{um} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um}\\
+\dot{X}_{ub} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub}\\
+\end{align*}
+
+\begin{align*}
+\dot{Y}_{bm} &= L_s\cos(\theta_{bb})\dot{\theta}_{bm}\\
+\dot{Y}_{t } &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm}\\
+\dot{Y}_{um} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um}\\
+\dot{Y}_{ub} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub}\\
 \end{align*}
 
 \subsection{Brownian Dynamics equations}
@@ -273,22 +309,6 @@ X_{bt} &= \frac{X_t - X_{bm}}{\gamma}\\
   \dot{Y}_{t}  &= F_{tx}  - \gt\lambda_{bt}Y_{bt} + \gt\lambda_{ut}Y_{ut}\\
   \dot{Y}_{um} &= F_{umx} - \gm\lambda_{ut}Y_{ut} + \gm\lambda_{us}Y_{us}\\
   \dot{Y}_{ub} &= F_{ubx} - \gb\lambda_{us}Y_{us}
-\end{align*}
-
-\subsection{Expanded velocities}
-
-\begin{align*}
-\dot{X}_{bm} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb}\\
-\dot{X}_{t } &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm}\\
-\dot{X}_{um} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um}\\
-\dot{X}_{ub} &= -L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub}\\
-\end{align*}
-
-\begin{align*}
-\dot{Y}_{bm} &= L_s\cos(\theta_{bb})\dot{\theta}_{bm}\\
-\dot{Y}_{t } &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm}\\
-\dot{Y}_{um} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um}\\
-\dot{Y}_{ub} &= L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub}\\
 \end{align*}
 
 \subsection{System of Equations}
@@ -386,7 +406,5 @@ V
   X8\\
 \end{pmatrix}
 \]
-
-
 
 \end{document}
