@@ -78,7 +78,7 @@ void write_onebound_data_callback_no_avging(void* dyn, State s, void** job_msg, 
 
 void write_onebound_data_callback_with_avging(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
   static onebound_data_generate_struct data_sum;
-  assert(s == NEARBOUND);
+  assert(s == NEARBOUND or s == FARBOUND);
   long long max_iteration = *((long long**) job_msg)[0];
   double start_time = *((double**) job_msg)[1];
   char* run_msg = ((char**) job_msg)[2];
