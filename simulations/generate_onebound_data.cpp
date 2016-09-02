@@ -200,7 +200,7 @@ int main(int argc, char** argv) {
   MICROTUBULE_REPULSION_FORCE = 0.0;
   ONEBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
 
-  T = 50;
+  T = 1;
 
   gm = gb;
   gt = gb;

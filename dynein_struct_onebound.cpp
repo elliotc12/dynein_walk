@@ -236,11 +236,18 @@ void Dynein_onebound::update_internal_forces() {
 // }
 
 double Power(double num, int pow) {
-  double result = num;
-  for (int mult = 1; mult < pow; mult++) {
-    result *= num;
+  if (pow == 1) return num;
+  else if (pow == 2) return num*num;
+  else if (pow == 3) return num*num*num;
+  else if (pow == 4) return num*num*num*num;
+  else if (pow == 5) return num*num*num*num*num;
+  else if (pow == 5) return num*num*num*num*num*num;
+  else if (pow == 6) return num*num*num*num*num*num*num;
+  else if (pow == 7) return num*num*num*num*num*num*num*num;
+  else {
+    printf("Need more power!\n");
+    exit(pow);
   }
-  return result;
 }
 
 void Dynein_onebound::update_velocities() {
@@ -264,7 +271,7 @@ void Dynein_onebound::update_velocities() {
   double FF = X_bt / gm;
   double GG = -X_bt / gt;
   double HH = X_ut / gt;
-  double II = -X_ut / gt;
+  double II = -X_ut / gm;
   double JJ = X_us / gm;
   double KK = -X_us / gb;
   double LL = -Ls * cos(bba);
@@ -279,14 +286,14 @@ void Dynein_onebound::update_velocities() {
   double UU = Y_us / gm;
   double VV = -Y_us / gb;
 
-  double X1 = (f.bmx + r.bmx) / gm;
-  double X2 = (f.tx + r.tx) / gt;
-  double X3 = (f.umx + r.umx) / gm;
-  double X4 = (f.ubx + r.ubx) / gb;
-  double X5 = (f.bmy + r.bmy) / gm;
-  double X6 = (f.ty + r.ty) / gt;
-  double X7 = (f.umy + r.umy) / gm;
-  double X8 = (f.uby + r.uby) / gb;
+  double X1 = -(f.bmx + r.bmx) / gm;
+  double X2 = -(f.tx + r.tx) / gt;
+  double X3 = -(f.umx + r.umx) / gm;
+  double X4 = -(f.ubx + r.ubx) / gb;
+  double X5 = -(f.bmy + r.bmy) / gm;
+  double X6 = -(f.ty + r.ty) / gt;
+  double X7 = -(f.umy + r.umy) / gm;
+  double X8 = -(f.uby + r.uby) / gb;
 
   d_bba = (-(GG*II*MM*NN*PP*X1) + CC*HH*MM*PP*RR*X1 -
       BB*HH*NN*PP*RR*X1 + BB*II*NN*PP*RR*X1 - CC*GG*MM*PP*SS*X1 +
@@ -947,7 +954,6 @@ double Dynein_onebound::get_binding_rate() {
 }
 
 double Dynein_onebound::get_unbinding_rate() {
-  printf("f.bby: %g, r.bby: %g\n", f.bby, r.bby);
   if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
     return 1/dt;
   } else return 0.0;
@@ -978,24 +984,6 @@ void Dynein_onebound::set_uba(double d) {   // onebound
   uba = d;
 }
 
-/*** Angular Velocities ***/
-
-double Dynein_onebound::get_d_bba() {
-  return d_bba;
-}
-
-double Dynein_onebound::get_d_bma() {
-  return d_bma;
-}
-
-double Dynein_onebound::get_d_uma() {
-  return d_uma;
-}
-
-double Dynein_onebound::get_d_uba() {
-  return d_uba;
-}
-
 /*** Get coordinates ***/
 
 double Dynein_onebound::get_bbx() {
@@ -1007,37 +995,35 @@ double Dynein_onebound::get_bby(){
 }
 
 double Dynein_onebound::get_bmx() {
-  return Ls * cos(get_bba()) + bbx;
+  return Ls * cos(bba) + bbx;
 }
 
 double Dynein_onebound::get_bmy() {
-  return Ls * sin(get_bba()) + bby;
+  return Ls * sin(bba) + bby;
 }
 
 double Dynein_onebound::get_tx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma()) + bbx;
+  return Lt * cos(bma) + get_bmx();
 }
 
 double Dynein_onebound::get_ty(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma()) + bby;
+  return Lt * sin(bma) + get_bmy();
 }
 
 double Dynein_onebound::get_umx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma()) - Lt * cos(get_uma()) + bbx;
+  return -Lt * cos(uma) + get_tx();
 }
 
 double Dynein_onebound::get_umy(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma()) - Lt * sin(get_uma()) + bby;
+  return -Lt * sin(uma) + get_ty();
 }
 
 double Dynein_onebound::get_ubx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma())
-    - Lt * cos(get_uma()) - Ls * cos(get_uba()) + bbx;
+  return -Ls * cos(uba) + get_umx();
 }
 
 double Dynein_onebound::get_uby(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma())
-    - Lt * sin(get_uma()) - Ls * sin(get_uba()) + bby;
+  return -Ls * sin(uba) + get_umy();
 }
 
 /*** Get Cartesian Velocities ***/
@@ -1080,35 +1066,4 @@ double Dynein_onebound::get_d_umy() {
 
 double Dynein_onebound::get_d_uby() {
   return Ls * d_uba * -cos(uba) + get_d_umy();
-}
-
-/*** Get forces, state ***/
-onebound_forces Dynein_onebound::get_internal() {
-  return f;
-}
-
-onebound_forces Dynein_onebound::get_brownian() {
-  return r;
-}
-
-State Dynein_onebound::get_state() {
-  return state;
-}
-
-/*** Get angles ***/
-
-double Dynein_onebound::get_bba() {
-  return bba;
-}
-
-double Dynein_onebound::get_bma() {
-  return bma;
-}
-
-double Dynein_onebound::get_uma() {
-  return uma;
-}
-
-double Dynein_onebound::get_uba() {
-  return uba;
 }

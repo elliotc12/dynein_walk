@@ -1,7 +1,7 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
 
-static const bool am_debugging_rates = true;
+static const bool am_debugging_rates = false;
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,
