@@ -4,7 +4,7 @@
 
 #include "dynein_struct.h"
 
-static bool OB_PHYSICAL = true;
+// static bool OB_PHYSICAL = true;
 
 /* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */
 
@@ -157,82 +157,790 @@ void Dynein_onebound::update_internal_forces() {
 }
 
 
+// void Dynein_onebound::update_velocities() {
+//   update_internal_forces();
+//   update_brownian_forces();
+
+//   double A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
+//   double B1, B2, B3, B4;
+//   double C1, C2, C3, C4;
+//   double D1, D2, D3, D4;
+//   double X1, X2, X3, X4;
+//   double Nbb, Nml, Nmr, Nbr;
+//   double D;
+
+//   A1 = -4*Ls;
+//   A2 = -3*Lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
+//   A3 = 2*Lt*(sin(uma)*sin(bba) + cos(uma)*cos(bba));
+//   A4 = Ls*(sin(uba)*sin(bba) + cos(uba)*cos(bba));
+//   B1 = -3*Ls*(sin(bba)*sin(bma) + cos(bba)*cos(bma));
+//   B2 = -3*Lt;
+//   B3 = +2*Lt*(sin(uma)*sin(bma) + cos(uma)*cos(bma));
+//   B4 = +Ls*(sin(uba)*sin(bma) + cos(uba)*cos(bma));
+//   C1 = -2*Ls*(sin(bba)*sin(uma) + cos(bba)*cos(uma));
+//   C2 = -2*Lt*(sin(bma)*sin(uma) + cos(bma)*cos(uma));
+//   C3 = 2*Lt;
+//   C4 = Ls*(sin(uba)*sin(uma) + cos(uba)*cos(uma));
+//   D1 = Ls*(cos(uba)*cos(bba) + sin(uba)*sin(bba));
+//   D2 = Lt*(cos(uba)*cos(bma) + sin(uba)*sin(bma));
+//   D3 = -Lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
+//   D4 = -Ls;
+
+//   X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm -
+// 	r.uby/gb)*cos(bba) +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm +
+// 	r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
+
+//   X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma) +
+//     (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
+
+//   X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma) + (r.umx/gm + r.ubx/gb +
+// 	 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+
+//   X4 = (r.uby/gb + 1/gb*f.uby)*cos(uba) - (r.ubx/gb + 1/gb*f.ubx)*sin(uba);
+
+//   Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2
+// 	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
+// 	 +B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4)
+// 	 +B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
+
+//   Nml = (B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2
+// 	 -A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4
+// 	 +B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4)
+// 	 +B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
+
+//   Nmr = (-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2
+// 	 +A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4
+// 	 +B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4)
+// 	 +B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
+
+//   Nbr = (B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2
+// 	 -A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4
+// 	 +B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4)
+// 	 +B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
+
+//   D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3
+//          +A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3
+//          -B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4
+//          +A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
+
+//   //assert(D != 0);
+//   if (D == 0 and OB_PHYSICAL) {
+//     printf("Simulation unphysical, D == 0\n");
+//     OB_PHYSICAL = false;
+//   }
+
+//   d_bba = Nbb/D;
+//   d_bma = Nml/D;
+//   d_uma = Nmr/D;
+//   d_uba = Nbr/D;
+// }
+
+double Power(double num, int pow) {
+  if (pow == 1) return num;
+  else if (pow == 2) return num*num;
+  else if (pow == 3) return num*num*num;
+  else if (pow == 4) return num*num*num*num;
+  else if (pow == 5) return num*num*num*num*num;
+  else if (pow == 5) return num*num*num*num*num*num;
+  else if (pow == 6) return num*num*num*num*num*num*num;
+  else if (pow == 7) return num*num*num*num*num*num*num*num;
+  else {
+    printf("Need more power!\n");
+    exit(pow);
+  }
+}
+
 void Dynein_onebound::update_velocities() {
   update_internal_forces();
   update_brownian_forces();
 
-  double A1, A2, A3, A4;  // Start solving for velocities with matrix solution in derivation.pdf
-  double B1, B2, B3, B4;
-  double C1, C2, C3, C4;
-  double D1, D2, D3, D4;
-  double X1, X2, X3, X4;
-  double Nbb, Nml, Nmr, Nbr;
-  double D;
+  double X_bs = get_bmx() - get_bbx();
+  double X_bt = get_tx() - get_bmx();
+  double X_ut = get_umx() - get_tx();
+  double X_us = get_ubx() - get_umx();
+  double Y_bs = get_bmy() - get_bby();
+  double Y_bt = get_ty() - get_bmy();
+  double Y_ut = get_umy() - get_ty();
+  double Y_us = get_uby() - get_umy();
 
-  A1 = -4*Ls;
-  A2 = -3*Lt*(sin(bma)*sin(bba) + cos(bma)*cos(bba));
-  A3 = 2*Lt*(sin(uma)*sin(bba) + cos(uma)*cos(bba));
-  A4 = Ls*(sin(uba)*sin(bba) + cos(uba)*cos(bba));
-  B1 = -3*Ls*(sin(bba)*sin(bma) + cos(bba)*cos(bma));
-  B2 = -3*Lt;
-  B3 = +2*Lt*(sin(uma)*sin(bma) + cos(uma)*cos(bma));
-  B4 = +Ls*(sin(uba)*sin(bma) + cos(uba)*cos(bma));
-  C1 = -2*Ls*(sin(bba)*sin(uma) + cos(bba)*cos(uma));
-  C2 = -2*Lt*(sin(bma)*sin(uma) + cos(bma)*cos(uma));
-  C3 = 2*Lt;
-  C4 = Ls*(sin(uba)*sin(uma) + cos(uba)*cos(uma));
-  D1 = Ls*(cos(uba)*cos(bba) + sin(uba)*sin(bba));
-  D2 = Lt*(cos(uba)*cos(bma) + sin(uba)*sin(bma));
-  D3 = -Lt*(cos(uba)*cos(uma) + sin(uba)*sin(uma));
-  D4 = -Ls;
+  double AA = Ls * sin(bba);
+  double BB = Lt * sin(bma);
+  double CC = -Lt * sin(uma);
+  double DD = -Ls * sin(uba);
+  double EE = -X_bs / gm;
+  double FF = X_bt / gm;
+  double GG = -X_bt / gt;
+  double HH = X_ut / gt;
+  double II = -X_ut / gm;
+  double JJ = X_us / gm;
+  double KK = -X_us / gb;
+  double LL = -Ls * cos(bba);
+  double MM = -Lt * cos(bma);
+  double NN = Lt * cos(uma);
+  double OO = Ls * cos(uba);
+  double PP = -Y_bs / gm;
+  double QQ = Y_bt / gm;
+  double RR = -Y_bt / gt;
+  double SS = Y_ut / gt;
+  double TT = -Y_ut / gm;
+  double UU = Y_us / gm;
+  double VV = -Y_us / gb;
 
-  X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm -
-	r.uby/gb)*cos(bba) +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm +
-	r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
+  double X1 = -(f.bmx + r.bmx) / gm;
+  double X2 = -(f.tx + r.tx) / gt;
+  double X3 = -(f.umx + r.umx) / gm;
+  double X4 = -(f.ubx + r.ubx) / gb;
+  double X5 = -(f.bmy + r.bmy) / gm;
+  double X6 = -(f.ty + r.ty) / gt;
+  double X7 = -(f.umy + r.umy) / gm;
+  double X8 = -(f.uby + r.uby) / gb;
 
-  X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma) +
-    (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
+  d_bba = (-(GG*II*MM*NN*PP*X1) + CC*HH*MM*PP*RR*X1 -
+      BB*HH*NN*PP*RR*X1 + BB*II*NN*PP*RR*X1 - CC*GG*MM*PP*SS*X1 +
+      BB*GG*NN*PP*SS*X1 + CC*GG*MM*PP*TT*X1 - BB*CC*PP*RR*TT*X1 +
+      FF*II*MM*NN*PP*X2 - EE*II*MM*NN*QQ*X2 + CC*FF*MM*PP*SS*X2 -
+      BB*FF*NN*PP*SS*X2 - CC*EE*MM*QQ*SS*X2 + BB*EE*NN*QQ*SS*X2 -
+      CC*FF*MM*PP*TT*X2 + CC*EE*MM*QQ*TT*X2 - FF*HH*MM*NN*PP*X3 +
+      EE*HH*MM*NN*QQ*X3 + BB*FF*NN*PP*SS*X3 - BB*EE*NN*QQ*SS*X3 +
+      EE*GG*II*MM*NN*X5 - CC*EE*HH*MM*RR*X5 + BB*EE*HH*NN*RR*X5 -
+      BB*EE*II*NN*RR*X5 + CC*EE*GG*MM*SS*X5 - BB*EE*GG*NN*SS*X5 -
+      CC*EE*GG*MM*TT*X5 + BB*CC*EE*RR*TT*X5 - CC*FF*HH*MM*PP*X6 +
+      BB*FF*HH*NN*PP*X6 - BB*FF*II*NN*PP*X6 + CC*EE*HH*MM*QQ*X6 -
+      BB*EE*HH*NN*QQ*X6 + BB*EE*II*NN*QQ*X6 + BB*CC*FF*PP*TT*X6 -
+      BB*CC*EE*QQ*TT*X6 + CC*FF*HH*MM*PP*X7 - CC*EE*HH*MM*QQ*X7 -
+      BB*CC*FF*PP*SS*X7 + BB*CC*EE*QQ*SS*X7)/ (EE*GG*II*LL*MM*NN +
+      BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
+      AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
+      BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
+      CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
+      AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
+      CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
+      AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
+      BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
+      BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
+      BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
+      AA*BB*CC*PP*RR*TT) - ((FF*PP - EE*QQ)*(HH*MM - BB*SS)*(JJ*NN -
+      CC*UU)*(-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+      Power(AA,6)*Power(BB,3)*DD*HH*NN +
+      Power(AA,6)*Power(BB,3)*DD*II*NN -
+      Power(AA,6)*Power(BB,3)*CC*II*OO)* (-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR))) - (-(EE*LL) +
+      AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS))*
+      (-(((Power(AA,3)*Power(BB,2)*CC*FF*LL - Power(AA,4)*BB*CC*FF*MM
+      + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*CC*X6))) +
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*NN*X2 + Power(AA,4)*Power(BB,2)*NN*X3 -
+      Power(AA,4)*Power(BB,2)*CC*X7)))) + (-((-(EE*LL) +
+      AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+      Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+      Power(AA,4)*Power(BB,2)*CC*TT))*
+      (-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*CC*X6))) +
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
+      (-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
+      Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
+      Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
+      Power(AA,6)*Power(BB,3)*DD*NN*X2 +
+      Power(AA,6)*Power(BB,3)*DD*NN*X3 -
+      Power(AA,6)*Power(BB,3)*CC*OO*X3 +
+      Power(AA,6)*Power(BB,3)*CC*OO*X4 -
+      Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ ((-(EE*GG*II*LL*MM*NN) -
+      BB*FF*HH*LL*NN*PP + BB*FF*II*LL*NN*PP + AA*FF*HH*MM*NN*PP -
+      AA*FF*II*MM*NN*PP + AA*GG*II*MM*NN*PP + BB*EE*HH*LL*NN*QQ -
+      BB*EE*II*LL*NN*QQ - AA*EE*HH*MM*NN*QQ + AA*EE*II*MM*NN*QQ +
+      CC*EE*HH*LL*MM*RR - BB*EE*HH*LL*NN*RR + BB*EE*II*LL*NN*RR -
+      AA*CC*HH*MM*PP*RR + AA*BB*HH*NN*PP*RR - AA*BB*II*NN*PP*RR -
+      CC*EE*GG*LL*MM*SS + BB*EE*GG*LL*NN*SS + BB*CC*FF*LL*PP*SS -
+      AA*CC*FF*MM*PP*SS + AA*CC*GG*MM*PP*SS - AA*BB*GG*NN*PP*SS -
+      BB*CC*EE*LL*QQ*SS + AA*CC*EE*MM*QQ*SS + CC*EE*GG*LL*MM*TT -
+      BB*CC*FF*LL*PP*TT + AA*CC*FF*MM*PP*TT - AA*CC*GG*MM*PP*TT +
+      BB*CC*EE*LL*QQ*TT - AA*CC*EE*MM*QQ*TT - BB*CC*EE*LL*RR*TT +
+      AA*BB*CC*PP*RR*TT)* (-((-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+      Power(AA,6)*Power(BB,3)*DD*HH*NN +
+      Power(AA,6)*Power(BB,3)*DD*II*NN -
+      Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR))) - (-(EE*LL) +
+      AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS))* (Power(AA,4)*Power(BB,2)*JJ*NN
+      - Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
+      AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+      Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+      Power(AA,4)*Power(BB,2)*CC*TT))*
+      (Power(AA,6)*Power(BB,3)*DD*JJ*NN -
+      Power(AA,6)*Power(BB,3)*CC*JJ*OO +
+      Power(AA,6)*Power(BB,3)*CC*KK*OO -
+      Power(AA,6)*Power(BB,3)*CC*DD*VV)));
 
-  X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma) + (r.umx/gm + r.ubx/gb +
-	 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+  d_bma = (GG*II*LL*NN*PP*X1 - CC*HH*LL*PP*RR*X1 + AA*HH*NN*PP*RR*X1 -
+      AA*II*NN*PP*RR*X1 + CC*GG*LL*PP*SS*X1 - AA*GG*NN*PP*SS*X1 -
+      CC*GG*LL*PP*TT*X1 + AA*CC*PP*RR*TT*X1 - FF*II*LL*NN*PP*X2 +
+      EE*II*LL*NN*QQ*X2 - EE*II*LL*NN*RR*X2 + AA*II*NN*PP*RR*X2 -
+      CC*FF*LL*PP*SS*X2 + AA*FF*NN*PP*SS*X2 + CC*EE*LL*QQ*SS*X2 -
+      AA*EE*NN*QQ*SS*X2 + CC*FF*LL*PP*TT*X2 - CC*EE*LL*QQ*TT*X2 +
+      CC*EE*LL*RR*TT*X2 - AA*CC*PP*RR*TT*X2 + FF*HH*LL*NN*PP*X3 -
+      EE*HH*LL*NN*QQ*X3 + EE*HH*LL*NN*RR*X3 - AA*HH*NN*PP*RR*X3 -
+      EE*GG*LL*NN*SS*X3 - AA*FF*NN*PP*SS*X3 + AA*GG*NN*PP*SS*X3 +
+      AA*EE*NN*QQ*SS*X3 - EE*GG*II*LL*NN*X5 + CC*EE*HH*LL*RR*X5 -
+      AA*EE*HH*NN*RR*X5 + AA*EE*II*NN*RR*X5 - CC*EE*GG*LL*SS*X5 +
+      AA*EE*GG*NN*SS*X5 + CC*EE*GG*LL*TT*X5 - AA*CC*EE*RR*TT*X5 +
+      EE*GG*II*LL*NN*X6 + CC*FF*HH*LL*PP*X6 - AA*FF*HH*NN*PP*X6 +
+      AA*FF*II*NN*PP*X6 - AA*GG*II*NN*PP*X6 - CC*EE*HH*LL*QQ*X6 +
+      AA*EE*HH*NN*QQ*X6 - AA*EE*II*NN*QQ*X6 - CC*EE*GG*LL*TT*X6 -
+      AA*CC*FF*PP*TT*X6 + AA*CC*GG*PP*TT*X6 + AA*CC*EE*QQ*TT*X6 -
+      CC*FF*HH*LL*PP*X7 + CC*EE*HH*LL*QQ*X7 - CC*EE*HH*LL*RR*X7 +
+      AA*CC*HH*PP*RR*X7 + CC*EE*GG*LL*SS*X7 + AA*CC*FF*PP*SS*X7 -
+      AA*CC*GG*PP*SS*X7 - AA*CC*EE*QQ*SS*X7)/ (EE*GG*II*LL*MM*NN +
+      BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
+      AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
+      BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
+      CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
+      AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
+      CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
+      AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
+      BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
+      BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
+      BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
+      AA*BB*CC*PP*RR*TT) + ((-(FF*HH*LL*PP) + EE*HH*LL*QQ -
+      EE*HH*LL*RR + AA*HH*PP*RR + EE*GG*LL*SS + AA*FF*PP*SS -
+      AA*GG*PP*SS - AA*EE*QQ*SS)*(JJ*NN - CC*UU)*
+      (-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+      Power(AA,6)*Power(BB,3)*DD*HH*NN +
+      Power(AA,6)*Power(BB,3)*DD*II*NN -
+      Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR))) - (-(EE*LL) +
+      AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS))*
+      (-(((Power(AA,3)*Power(BB,2)*CC*FF*LL - Power(AA,4)*BB*CC*FF*MM
+      + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*CC*X6))) +
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*NN*X2 + Power(AA,4)*Power(BB,2)*NN*X3 -
+      Power(AA,4)*Power(BB,2)*CC*X7)))) + (-((-(EE*LL) +
+      AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+      Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+      Power(AA,4)*Power(BB,2)*CC*TT))*
+      (-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+      Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+      Power(AA,4)*Power(BB,2)*CC*X6))) +
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
+      (-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
+      Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
+      Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
+      Power(AA,6)*Power(BB,3)*DD*NN*X2 +
+      Power(AA,6)*Power(BB,3)*DD*NN*X3 -
+      Power(AA,6)*Power(BB,3)*CC*OO*X3 +
+      Power(AA,6)*Power(BB,3)*CC*OO*X4 -
+      Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ ((EE*GG*II*LL*MM*NN +
+      BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
+      AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
+      BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
+      CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
+      AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
+      CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
+      AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
+      BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
+      BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
+      BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
+      AA*BB*CC*PP*RR*TT)* (-((-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+      Power(AA,6)*Power(BB,3)*DD*HH*NN +
+      Power(AA,6)*Power(BB,3)*DD*II*NN -
+      Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR))) - (-(EE*LL) +
+      AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+      Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+      Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+      (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+      Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS))* (Power(AA,4)*Power(BB,2)*JJ*NN
+      - Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
+      (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
+      AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+      Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+      (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+      AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+      AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+      Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+      AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+      Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+      Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+      Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+      Power(AA,4)*Power(BB,2)*CC*TT))*
+      (Power(AA,6)*Power(BB,3)*DD*JJ*NN -
+      Power(AA,6)*Power(BB,3)*CC*JJ*OO +
+      Power(AA,6)*Power(BB,3)*CC*KK*OO -
+      Power(AA,6)*Power(BB,3)*CC*DD*VV)));
 
-  X4 = (r.uby/gb + 1/gb*f.uby)*cos(uba) - (r.ubx/gb + 1/gb*f.ubx)*sin(uba);
+  d_uma = (-X2 + X3)/CC + (GG*(-(BB*LL*PP*X1) + AA*MM*PP*X1 +
+    EE*LL*MM*X2 - AA*MM*PP*X2 + BB*EE*LL*X5 - AA*EE*MM*X5 -
+    BB*EE*LL*X6 + AA*BB*PP*X6))/ (CC*(EE*GG*LL*MM - BB*FF*LL*PP +
+    AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ -
+    BB*EE*LL*RR + AA*BB*PP*RR)) - (((-HH + II)/CC - (GG*(EE*LL -
+    AA*PP)*(-(HH*MM) + BB*SS))/(CC*(EE*GG*LL*MM - BB*FF*LL*PP +
+    AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ -
+    BB*EE*LL*RR + AA*BB*PP*RR)))* (-(BB*GG*LL*NN*PP*X1) +
+    AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 +
+    BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 +
+    AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 +
+    AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 -
+    BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 +
+    BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 +
+    AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 -
+    BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 -
+    BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 -
+    AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 -
+    AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 -
+    AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 +
+    AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/
+    (EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP -
+    AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP -
+    BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ -
+    AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR -
+    BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR +
+    AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS -
+    BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS +
+    AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS -
+    CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT +
+    AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT +
+    BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT) - ((JJ/CC + ((EE*GG*LL*MM -
+    BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ -
+    AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)* ((-HH + II)/CC -
+    (GG*(EE*LL - AA*PP)*(-(HH*MM) + BB*SS))/(CC*(EE*GG*LL*MM -
+    BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ -
+    AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)))* (-(JJ*NN) +
+    CC*UU))/(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP
+    - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP -
+    BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ -
+    AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR -
+    BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR +
+    AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS -
+    BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS +
+    AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS -
+    CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT +
+    AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT +
+    BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT))*
+    (-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+    Power(AA,6)*Power(BB,3)*DD*HH*NN +
+    Power(AA,6)*Power(BB,3)*DD*II*NN -
+    Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR))) - (-(EE*LL) +
+    AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+    Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+    Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+    (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+    AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+    Power(AA,4)*Power(BB,2)*CC*SS))*
+    (-(((Power(AA,3)*Power(BB,2)*CC*FF*LL - Power(AA,4)*BB*CC*FF*MM +
+    Power(AA,4)*BB*CC*GG*MM - Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL)
+    + AA*PP) - (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 - Power(AA,4)*BB*CC*MM*X1
+    + Power(AA,4)*BB*CC*MM*X2 - Power(AA,4)*Power(BB,2)*CC*X6))) +
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 - Power(AA,4)*BB*CC*MM*X1
+    + Power(AA,4)*BB*CC*MM*X2 - Power(AA,4)*Power(BB,2)*NN*X2 +
+    Power(AA,4)*Power(BB,2)*NN*X3 - Power(AA,4)*Power(BB,2)*CC*X7))))
+    + (-((-(EE*LL) + AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+    Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
+    (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+    AA*QQ))*(Power(AA,4)*BB*CC*HH*MM - Power(AA,4)*Power(BB,2)*CC*SS))
+    + (-(EE*LL) + AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+    Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+    Power(AA,4)*Power(BB,2)*CC*TT))*
+    (-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+    Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+    Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
+    (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 - Power(AA,4)*BB*CC*MM*X1
+    + Power(AA,4)*BB*CC*MM*X2 - Power(AA,4)*Power(BB,2)*CC*X6))) +
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
+    (-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
+    Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
+    Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
+    Power(AA,6)*Power(BB,3)*DD*NN*X2 +
+    Power(AA,6)*Power(BB,3)*DD*NN*X3 -
+    Power(AA,6)*Power(BB,3)*CC*OO*X3 +
+    Power(AA,6)*Power(BB,3)*CC*OO*X4 -
+    Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ (-((-(EE*LL) +
+    AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+    Power(AA,6)*Power(BB,3)*DD*HH*NN +
+    Power(AA,6)*Power(BB,3)*DD*II*NN -
+    Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR))) - (-(EE*LL) +
+    AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+    Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+    Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+    (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+    Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+    AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+    Power(AA,4)*Power(BB,2)*CC*SS))* (Power(AA,4)*Power(BB,2)*JJ*NN -
+    Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
+    (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
+    AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+    Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+    (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+    AA*QQ))*(Power(AA,4)*BB*CC*HH*MM - Power(AA,4)*Power(BB,2)*CC*SS))
+    + (-(EE*LL) + AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+    Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+    AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+    Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+    Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+    Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN -
+    Power(AA,4)*Power(BB,2)*CC*TT))* (Power(AA,6)*Power(BB,3)*DD*JJ*NN
+    - Power(AA,6)*Power(BB,3)*CC*JJ*OO +
+    Power(AA,6)*Power(BB,3)*CC*KK*OO -
+    Power(AA,6)*Power(BB,3)*CC*DD*VV));
 
-  Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2
-	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
-	 +B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4)
-	 +B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
-
-  Nml = (B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2
-	 -A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4
-	 +B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4)
-	 +B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
-
-  Nmr = (-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2
-	 +A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4
-	 +B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4)
-	 +B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
-
-  Nbr = (B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2
-	 -A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4
-	 +B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4)
-	 +B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
-
-  D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3
-         +A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3
-         -B1*C2*D3)+ A2*B3*C1*D4 - A1*B3*C2*D4 - A2*B1*C3*D4 + A1*B2*C3*D4
-         +A3*(-B4*C2*D1 + B2*C4*D1 + B4*C1*D2 - B1*C4*D2 - B2*C1*D4 + B1*C2*D4);
-
-  //assert(D != 0);
-  if (D == 0 and OB_PHYSICAL) {
-    printf("Simulation unphysical, D == 0\n");
-    OB_PHYSICAL = false;
-  }
-
-  d_bba = Nbb/D;
-  d_bma = Nml/D;
-  d_uma = Nmr/D;
-  d_uba = Nbr/D;
+  d_uba = (-X3 + X4)/DD + (II*(-(BB*GG*LL*NN*PP*X1) +
+        AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 +
+        BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 +
+        AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 +
+        AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 -
+        BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 +
+        BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 +
+        AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 -
+        BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 -
+        BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 -
+        AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 -
+        AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 -
+        AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 +
+        AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/
+        (DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP
+        - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP -
+        BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ -
+        AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR -
+        BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR +
+        AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS -
+        BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS +
+        AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS -
+        CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT +
+        AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT +
+        BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)) - (((-JJ + KK)/DD -
+        (II*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP +
+        BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR +
+        AA*BB*PP*RR)*(-(JJ*NN) + CC*UU))/ (DD*(EE*GG*II*LL*MM*NN +
+        BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
+        AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
+        BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
+        CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
+        AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
+        CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
+        AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
+        BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
+        BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
+        BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
+        AA*BB*CC*PP*RR*TT)))* (-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM
+        - Power(AA,6)*Power(BB,3)*DD*HH*NN +
+        Power(AA,6)*Power(BB,3)*DD*II*NN -
+        Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR))) - (-(EE*LL) +
+        AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+        Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*CC*SS))*
+        (-(((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+        Power(AA,4)*Power(BB,2)*CC*X6))) +
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+        Power(AA,4)*Power(BB,2)*NN*X2 + Power(AA,4)*Power(BB,2)*NN*X3
+        - Power(AA,4)*Power(BB,2)*CC*X7)))) + (-((-(EE*LL) +
+        AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
+        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
+        - Power(AA,4)*Power(BB,2)*CC*TT))*
+        (-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+        Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
+        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+        Power(AA,4)*Power(BB,2)*CC*X6))) +
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL
+        - Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
+        (-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
+        Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
+        Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
+        Power(AA,6)*Power(BB,3)*DD*NN*X2 +
+        Power(AA,6)*Power(BB,3)*DD*NN*X3 -
+        Power(AA,6)*Power(BB,3)*CC*OO*X3 +
+        Power(AA,6)*Power(BB,3)*CC*OO*X4 -
+        Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ (-((-(EE*LL) +
+        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+        Power(AA,6)*Power(BB,3)*DD*HH*NN +
+        Power(AA,6)*Power(BB,3)*DD*II*NN -
+        Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR))) - (-(EE*LL) +
+        AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+        Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*CC*SS))*
+        (Power(AA,4)*Power(BB,2)*JJ*NN -
+        Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
+        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
+        AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+        Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+        Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
+        - Power(AA,4)*Power(BB,2)*CC*TT))*
+        (Power(AA,6)*Power(BB,3)*DD*JJ*NN -
+        Power(AA,6)*Power(BB,3)*CC*JJ*OO +
+        Power(AA,6)*Power(BB,3)*CC*KK*OO -
+        Power(AA,6)*Power(BB,3)*CC*DD*VV));
 }
 
 double Dynein_onebound::get_binding_rate() {
@@ -276,24 +984,6 @@ void Dynein_onebound::set_uba(double d) {   // onebound
   uba = d;
 }
 
-/*** Angular Velocities ***/
-
-double Dynein_onebound::get_d_bba() {
-  return d_bba;
-}
-
-double Dynein_onebound::get_d_bma() {
-  return d_bma;
-}
-
-double Dynein_onebound::get_d_uma() {
-  return d_uma;
-}
-
-double Dynein_onebound::get_d_uba() {
-  return d_uba;
-}
-
 /*** Get coordinates ***/
 
 double Dynein_onebound::get_bbx() {
@@ -305,37 +995,35 @@ double Dynein_onebound::get_bby(){
 }
 
 double Dynein_onebound::get_bmx() {
-  return Ls * cos(get_bba()) + bbx;
+  return Ls * cos(bba) + bbx;
 }
 
-double Dynein_onebound::get_bmy(){
-  return Ls * sin(get_bba()) + bby;
+double Dynein_onebound::get_bmy() {
+  return Ls * sin(bba) + bby;
 }
 
 double Dynein_onebound::get_tx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma()) + bbx;
+  return Lt * cos(bma) + get_bmx();
 }
 
 double Dynein_onebound::get_ty(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma()) + bby;
+  return Lt * sin(bma) + get_bmy();
 }
 
 double Dynein_onebound::get_umx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma()) - Lt * cos(get_uma()) + bbx;
+  return -Lt * cos(uma) + get_tx();
 }
 
 double Dynein_onebound::get_umy(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma()) - Lt * sin(get_uma()) + bby;
+  return -Lt * sin(uma) + get_ty();
 }
 
 double Dynein_onebound::get_ubx() {
-  return Ls * cos(get_bba()) + Lt * cos(get_bma())
-    - Lt * cos(get_uma()) - Ls * cos(get_uba()) + bbx;
+  return -Ls * cos(uba) + get_umx();
 }
 
 double Dynein_onebound::get_uby(){
-  return Ls * sin(get_bba()) + Lt * sin(get_bma())
-    - Lt * sin(get_uma()) - Ls * sin(get_uba()) + bby;
+  return -Ls * sin(uba) + get_umy();
 }
 
 /*** Get Cartesian Velocities ***/
@@ -378,35 +1066,4 @@ double Dynein_onebound::get_d_umy() {
 
 double Dynein_onebound::get_d_uby() {
   return Ls * d_uba * -cos(uba) + get_d_umy();
-}
-
-/*** Get forces, state ***/
-onebound_forces Dynein_onebound::get_internal() {
-  return f;
-}
-
-onebound_forces Dynein_onebound::get_brownian() {
-  return r;
-}
-
-State Dynein_onebound::get_state() {
-  return state;
-}
-
-/*** Get angles ***/
-
-double Dynein_onebound::get_bba() {
-  return bba;
-}
-
-double Dynein_onebound::get_bma() {
-  return bma;
-}
-
-double Dynein_onebound::get_uma() {
-  return uma;
-}
-
-double Dynein_onebound::get_uba() {
-  return uba;
 }

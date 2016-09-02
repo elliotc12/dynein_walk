@@ -101,10 +101,10 @@ public:
   void set_bbx(double d);
   void set_bby(double d);
 
-  double get_bba();
-  double get_bma();
-  double get_uma();
-  double get_uba();
+  double get_bba() {return bba;}
+  double get_bma() {return bma;}
+  double get_uma() {return uma;}
+  double get_uba() {return uba;}
 
   double get_bbx();
   double get_bmx();
@@ -121,10 +121,10 @@ public:
   // The following are dynamical properties that only exist in an
   // ephemeral per-timestep way:
 
-  double get_d_bba();
-  double get_d_bma();
-  double get_d_uma();
-  double get_d_uba();
+  double get_d_bba() {return d_bba;}
+  double get_d_bma() {return d_bma;}
+  double get_d_uma() {return d_uma;}
+  double get_d_uba() {return d_uba;}
 
   double get_d_bbx();
   double get_d_bmx();
@@ -138,13 +138,13 @@ public:
   double get_d_umy();
   double get_d_uby();
 
-  onebound_forces get_internal();
-  onebound_forces get_brownian();
+  onebound_forces get_internal() {return f;}
+  onebound_forces get_brownian() {return r;}
 
   double get_binding_rate();
   double get_unbinding_rate();
 
-  State get_state();
+  State get_state() {return state;}
 
   void update_velocities();
 

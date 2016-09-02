@@ -9,7 +9,7 @@ import os
 import matplotlib.pyplot as plt
 
 pe_coloring = True
-force_vectors = False
+force_vectors = True
 
 def close_windows(*_):
   plt.close()

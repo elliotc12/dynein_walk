@@ -113,13 +113,13 @@ movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
 	mkdir -p movies
 	./movie.py $* speed=1
 
-data/ob_config_%.txt data/onebound_data_%.bin: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/ob_config_%.txt data/onebound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
 	g++ generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_onebound_data
 	./generate_onebound_data $*
 
-data/bb_config_%.txt data/bothbound_data_%.bin:: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
+data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data
 	g++ -c simulations/generate_bothbound_data.cpp $(CPPFLAGS)
 	g++ generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_bothbound_data
