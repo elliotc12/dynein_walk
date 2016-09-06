@@ -426,4 +426,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,	
               long long iteration), void** job_msg, data_union* job_data);
 
+/** create_ob/bb_plots .txt generation code **/
+void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation);
+void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base);
+void generate_pe_vs_time_data(double* times, double* pe, int len, const char* legend, char* fname_base);
+void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, const char* legend, char* fname_base);
+void generate_angle_vs_time_data(double* times, double* angle, int len, const char* legend, char* fname_base, double eq_angle);
+
 #endif
