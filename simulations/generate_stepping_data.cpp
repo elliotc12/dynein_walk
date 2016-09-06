@@ -125,7 +125,7 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
 }
 
 int main(int argc, char** argv) {
-  //T = 50;
+  T = 100;
 
   if (argc != 2) {
     printf("Error, TITLE variable must have underscores, not spaces.\n");

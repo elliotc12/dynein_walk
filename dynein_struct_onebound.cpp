@@ -65,6 +65,8 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
   internal_testcase = NULL;
   brownian_testcase = NULL;
 
+  eq = onebound_post_powerstroke_internal_angles; // use experimental angles
+
   rand = mtrand;
 
   update_velocities();

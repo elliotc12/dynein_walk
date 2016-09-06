@@ -53,18 +53,18 @@ double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 double RAND_INIT_SEED = 0;
 
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
-  126 * M_PI / 180,
-  164 * M_PI / 180,
-  0   * M_PI / 180,
-  74 * M_PI / 180
+  126.0 * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  0.0   * M_PI / 180.0,
+  74.0 * M_PI / 180.0
 };
 
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  126 * M_PI / 180,
-  164 * M_PI / 180,
-  0   * M_PI / 180,
-  164 * M_PI / 180,
-  126 * M_PI / 180
+  126.0 * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  0.0   * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  126.0 * M_PI / 180.0
 };
 
 /* double t_nma = acos(Lt/(2*Ls)); */
