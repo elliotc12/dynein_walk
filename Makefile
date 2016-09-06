@@ -23,8 +23,8 @@ dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h default_p
 dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h simulations/simulation_defaults.h
 	g++ -c dynein_simulate.cpp $(CPPFLAGS)
 
-# simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
-# 	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
+simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
+	g++ -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
 
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
@@ -61,13 +61,13 @@ simulations/simulation_defaults.h: simulations/custom_simulation_parameters.h
 simulations/custom_simulation_parameters.h:
 	touch simulations/custom_simulation_parameters.h
 
-create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
 	g++ -c simulations/create_ob_plots.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_plots.o -o create_ob_plots
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_plots.o simulations.o -o create_ob_plots
 
-create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
 	g++ -c simulations/create_bb_plots.cpp $(CPPFLAGS)
-	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_plots.o -o create_bb_plots
+	g++ dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_plots.o simulations.o -o create_bb_plots
 
 create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/create_ob_movie.cpp $(CPPFLAGS)
@@ -80,6 +80,9 @@ create_bb_movie: simulations/create_bb_movie.cpp dynein_struct.h default_paramet
 plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_plot.py data/ob_config_%.txt data/onebound_data_%.bin
 	sh ob_plots.sh $*
 
+plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_plot.py data/bb_config_%.txt data/bothbound_data_%.bin
+	sh bb_plots.sh $*
+
 plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.txt data/stepping_data_%.txt
 	./make_stepping_plots.py $*
 	touch plots/stepping_histogram_%.pdf
@@ -89,17 +92,6 @@ data/stepping_config_%.txt data/stepping_data_%.txt: dynein_simulate.o dynein_st
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
 	./generate_stepping_data $*
-
-bb_plots: create_bb_plots
-	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_bb_plots $(TITLE)
-	mkdir -p plots
-	./make_plot.py --figtitle="BB_Correlation_function_$(TITLE)" --xlabel="Tau (s)" --ylabel="Correlation" data/bb_nba_pe_$(TITLE)_correlation_fn.txt data/bb_nma_pe_$(TITLE)_correlation_fn.txt data/bb_ta_pe_$(TITLE)_correlation_fn.txt data/bb_fma_pe_$(TITLE)_correlation_fn.txt data/bb_fba_pe_$(TITLE)_correlation_fn.txt data/bb_total_pe_$(TITLE)_correlation_fn.txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_Locally averaged PE_vs_time_$(TITLE)" --ymax=10  --xlabel="Runtime (s)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE).txt data/bb_nma_pe_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_fba_pe_$(TITLE).txt data/bb_total_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_PE_average_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ymax=10 --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bb_nba_pe_$(TITLE)_eq_ave.txt data/bb_nma_pe_$(TITLE)_eq_ave.txt data/bb_ta_pe_$(TITLE)_eq_ave.txt data/bb_fma_pe_$(TITLE)_eq_ave.txt data/bb_fba_pe_$(TITLE)_eq_ave.txt data/bb_total_pe_$(TITLE)_eq_ave.txt data/bb_config_$(TITLE).txt
-	./make_plot.py --logx --logy --figtitle="BB_Log_error_vs_log_time_$(TITLE)" --xlabel="log(iterations)" --ylabel="log(| PE / ET - 1|)" --hline=1.0 data/bb_nba_pe_$(TITLE)_log_error.txt data/bb_nma_pe_$(TITLE)_log_error.txt data/bb_ta_pe_$(TITLE)_log_error.txt data/bb_fma_pe_$(TITLE)_log_error.txt data/bb_fba_pe_$(TITLE)_log_error.txt data/bb_total_pe_$(TITLE)_log_error.txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_Locally averaged angle_vs_time_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle" data/bb_nba_angle_$(TITLE).txt data/bb_nma_angle_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_fma_angle_$(TITLE).txt data/bb_fba_angle_$(TITLE).txt data/bb_config_$(TITLE).txt
-	./make_plot.py --figtitle="BB_Angle_n_PE_$(TITLE)" --xlabel="Runtime (s)" --ylabel="Angle/PE" data/bb_fma_angle_$(TITLE).txt data/bb_fma_pe_$(TITLE).txt data/bb_ta_angle_$(TITLE).txt data/bb_ta_pe_$(TITLE).txt data/bb_config_$(TITLE).txt
 
 movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"

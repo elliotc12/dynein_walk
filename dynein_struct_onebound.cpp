@@ -945,18 +945,19 @@ void Dynein_onebound::update_velocities() {
 
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
-    double U_bb = Dynein_bothbound(this, rand).get_PE();
-    double U_ob = get_PE();
-    return binding_preexponential_factor*exp(-(U_bb - U_ob)/kb/T); // per second
-  } else {
-    return 0;
+    double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
+    double dG = dG_spring + DELTA_G_FORMATION_BINDING;
+    return low_affinity_binding_preexponential_factor*exp(-dG/kb/T);
   }
+  else return 0.0;
 }
 
 double Dynein_onebound::get_unbinding_rate() {
   if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
-    return 1/dt;
-  } else return 0.0;
+    double dG = -DELTA_G_FORMATION_BINDING;
+    return high_affinity_unbinding_preexponential_factor*exp(-dG/kb/T);
+  }
+  else return 0.0;
 }
 
 /*** Set positions, velocities and forces ***/

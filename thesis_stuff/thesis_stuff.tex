@@ -594,8 +594,7 @@ We explicitly denote $\widetilde{W}_2$'s negativity:
   |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx
 \end{align*}
 
-and finally note that, since W is the transition probability per timestep, this looks like the expected squared deviation
-in a single timestep:
+and finally note that, since W is the transition probability per timestep, this looks like the expected squared deviation in a single timestep:
 
 \begin{align*}
   |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx = <\Delta x>
@@ -611,8 +610,40 @@ A $\sigma = \sqrt{\frac{1}{n<W>}}$ does not make sense. For one, $\sqrt{<\Delta 
 single-timestep standard deviation. Plus it seems like for longer times the distribution would get more spread out, not less, hence
 $\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in the denominator...\\
 \\
-\section{Papers}
 
+\section{Un/binding constants}
+We let our un/binding rates $k_b$ and $k_u$ be, according to the Arrhenius equation:
+
+\begin{align}
+  k_b &= A_be^{\Delta G_{u\rightarrow b}\beta}\\
+  k_u &= A_ue^{\Delta G_{b\rightarrow u}\beta}
+\end{align}
+
+Our Gibb's free energy changes are given as functions of angular state $\theta$:
+
+\begin{align}
+  \Delta G_{u\rightarrow b}(\theta) &= \sum_i \frac{1}{2}c_{bi}\Delta\theta_{bi}^2 - \sum_i \frac{1}{2}c_{ui}\Delta\theta_{ui}^2 + G_{bind}\\
+  \Delta G_{u\rightarrow b}(\theta) &= \sum_i \frac{1}{2}c_{ui}\Delta\theta_{ui}^2 - \sum_i \frac{1}{2}c_{bi}\Delta\theta_{bi}^2 + G_{unbind}\\
+\end{align}
+
+\section{Equipartition Theorem}
+Both bothbound and onebound states show good agreement with the equipartition theorem. Horizontal dashed line represents Equipartition Thorem energy $\frac{1}{2}k_BT$.
+
+\begin{figure}[h!]
+  \centering
+
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{../figures/OB_Average_PE.pdf}
+    \caption{Onebound PE vs time.}
+  \end{minipage}
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{../figures/BB_Average_PE.pdf}
+    \caption{Bothbound PE vs time.}
+  \end{minipage}
+  \label{fig:equipartition_agreement}
+\end{figure}
+
+\section{Papers}
 \subsection{Winch Model (dx.doi.org/10.1016/j.bpj.2014.06.022)}
 -Communication between motors and BDs possible through $\alpha$-helix sliding. Bidirectional communication. [24,25]\\
 -Pre, post-powerstroke states\\
