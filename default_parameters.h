@@ -36,8 +36,10 @@ double dt = 1e-11;
 
 double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
 
-double binding_preexponential_factor = 1e15;
-double unbinding_preexponential_factor = 1e15;
+double binding_preexponential_factor = 1e1;
+double unbinding_preexponential_factor = 1e1;
+
+double DELTA_G_FORMATION_BINDING = 1e-10;
 
 double ONEBOUND_UNBINDING_FORCE = 1e12;
 double BOTHBOUND_UNBINDING_FORCE = 1e12;

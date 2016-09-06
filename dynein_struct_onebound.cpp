@@ -945,17 +945,18 @@ void Dynein_onebound::update_velocities() {
 
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
-    double U_bb = Dynein_bothbound(this, rand).get_PE();
-    double U_ob = get_PE();
-    return binding_preexponential_factor*exp(-(U_bb - U_ob)/kb/T); // per second
+    double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
+    double dG = dG_spring + DELTA_G_FORMATION_BINDING;
+    return binding_preexponential_factor*exp(-dG/kb/T);
   } else {
-    return 0;
+    return 0.0;
   }
 }
 
 double Dynein_onebound::get_unbinding_rate() {
   if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
-    return 1/dt;
+    double dG = -DELTA_G_FORMATION_BINDING;
+    return unbinding_preexponential_factor*exp(-dG/kb/T);
   } else return 0.0;
 }
 
