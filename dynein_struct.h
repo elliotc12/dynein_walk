@@ -48,8 +48,11 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   fake_radius_m, fake_radius_b, water_viscosity_mu, gt, gm, gb, ct, cm,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
   MICROTUBULE_REPULSION_FORCE, MICROTUBULE_BINDING_DISTANCE,
-  RAND_INIT_SEED, binding_preexponential_factor,
-  unbinding_preexponential_factor, D, tau;
+  RAND_INIT_SEED, binding_preexponential_factor, D, tau,
+  low_affinity_binding_preexponential_factor,
+  low_affinity_unbinding_preexponential_factor,
+  high_affinity_unbinding_preexponential_factor,
+  DELTA_G_FORMATION_BINDING;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
