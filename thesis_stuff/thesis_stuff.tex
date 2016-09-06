@@ -23,7 +23,6 @@
 
 \usepackage{fancyhdr}
 \usepackage{amsmath}
-\usepackage{physics}
 \usepackage{amssymb}
 \pagestyle{fancy}
 \fancyhf{}
@@ -610,9 +609,9 @@ We plug this back into our Gaussian to get our final answer:
 
 A $\sigma = \sqrt{\frac{1}{n<W>}}$ does not make sense. For one, $\sqrt{<\Delta x>}$ should be in the numerator, since it is the
 single-timestep standard deviation. Plus it seems like for longer times the distribution would get more spread out, not less, hence
-$\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in the denominator...
-
-\section{Biochemistry Papers}
+$\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in the denominator...\\
+\\
+\section{Papers}
 
 \subsection{Winch Model (dx.doi.org/10.1016/j.bpj.2014.06.022)}
 -Communication between motors and BDs possible through $\alpha$-helix sliding. Bidirectional communication. [24,25]\\
@@ -625,18 +624,28 @@ $\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in 
 -Tail-tail interaction, also motor-motor stacking interaction\\
 -rate constant simulation, does not do dynamics to take into account time spent in a state\\
 
-\subsection{Physical Parameters from Winch Model paper}
+\textbf{Physical Parameters from Winch Model paper}:\\
 Sarlah et al. use the following physical parameters for Dynein: $L_s = 12$nm, $L_t = 14$nm, binding angle: 34 degrees from vertical, motor
 domain radius: 7nm, motor domain angle from vertical: 30 degrees, tail angle: 0 degrees between linkers when poststroke, 40 degrees when prestroke.
 
-\section{Citations}
 \subsection{Annual Review, 8-state Mechanochemical diagram}
 Cianfrocco, M*., DeSantis, M*., Leschziner, A., Reck-Peterson, S. ``Mechanism and Regulation of Cytoplasmic Dynein'' \textit{Annu. Rev. Cell. Dev. Biol.} 2015: 31:83-108.\\
 
-Goes over in detail the various steps of the Dynein chemical cycle. Links to a lot of good papers.\\
+Goes over in detail the various steps of the Dynein chemical cycle. Eight-state model as follows:\\
+
+\begin{enumerate}
+\item Dynein begins cycle with AAA1 binding site open.
+\item ATP then binds to the AAA1 binding site.
+\item ATP binding causes ``ring closure,'' where the AAA1 and AAA2 subdomains shift closer together.
+\item Ring closure (ie ATP binding) causes the buttress to shift, causing the MTBD to lose MT affinity.
+\item Ring closure (ATP binding) also causes the linker to bend 90 degrees, causing the monomer to enter the pre-powerstroke state. The order of states 4. and 5. is unknown, but entering pre-powerstroke \textit{after} unbinding from the MT causes more directional motion. The role of ATP hydrolysis also is not understood as of this paper (2015).
+\item Random walk of the low-MT-affinity MTBD eventually leads to weak rebinding at a new place on the MT.
+\item Rebinding causes a change in the MTBD back to its high affinity state. AAA4 moves to prevent steric clash when the linker straightens. AAA5/6 move away from AAA1 and the linker straightens to its post-powerstroke conformation. NOTE: this is distinct from the conformation in steps 1-4 in that AAA1/2 is still closed.
+\item The linker shifts some more and AAA1/2 opens up, releasing ADP.
+\end{enumerate}
 
 \subsection{Weihong's Dynein stepping data}
-Qiu, W., Derr, N., Goodman, B., Villa, E., Wu, D., Shih, W., Reck-Pterson, S. ``Dynein achieves processive motion using both stochastic and coordinated stepping.'' \textit{Nature Structural & Molecular Biology}. 2012, 19:193-200.\\
+Qiu, W., Derr, N., Goodman, B., Villa, E., Wu, D., Shih, W., Reck-Pterson, S. ``Dynein achieves processive motion using both stochastic and coordinated stepping.'' \textit{Nature Structural \& Molecular Biology}. 2012, 19:193-200.\\
 
 Has the stepping histograms we are trying to reproduce computationally.
 
