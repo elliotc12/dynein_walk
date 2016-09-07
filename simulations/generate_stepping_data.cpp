@@ -80,7 +80,7 @@ void log_stepping_data(stepping_data_struct* data_struct, void* dyn, long long i
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
-  if (s == NEARBOUND) {
+  if (s == NEARBOUND or s == FARBOUND) {
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
     onebound_forces dyn_ob_f = dyn_ob->get_internal();
     fprintf(data_file,
