@@ -396,6 +396,7 @@ void Dynein_bothbound::update_velocities() {
 double Dynein_bothbound::get_near_unbinding_rate() {
   double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
   double dG = dG_spring - DELTA_G_FORMATION_BINDING;
+  //printf("dG_spring: %g, rate: %g\n", dG_spring, low_affinity_unbinding_preexponential_factor*exp(-dG/kb/T)*dt);
   return low_affinity_unbinding_preexponential_factor*exp(-dG/kb/T);
 }
 

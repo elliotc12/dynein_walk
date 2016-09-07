@@ -47,7 +47,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
       data_struct->step_times->append(step_time);
 
       data_struct->num_steps++;
-      printf("Switched to BB!\n");
+      printf("\nSwitched from NB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     else if (last_state == FARBOUND) {
       double step_len = dyn_bb->get_nbx() - last_nbx;
@@ -58,38 +58,38 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
       data_struct->step_times->append(step_time);
 
       data_struct->num_steps++;
-      printf("Switched to BB!\n");
+      printf("\nSwitched from FB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_bothbound_iteration = iteration;
     last_state = BOTHBOUND;
   }
   else if (s == NEARBOUND) {
     if (last_state != NEARBOUND) {
-      printf("Switched to NB!\n");
+      printf("\nSwitched from BB to NB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = NEARBOUND;
   }
   else if (s == FARBOUND) {
     if (last_state != FARBOUND) {
-      printf("Switched to FB!\n");
+      printf("\nSwitched from BB to FB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = FARBOUND;
   }
   else if (s == UNBOUND) {
     if (last_state != UNBOUND) {
       data_struct->dwell_time = iteration*dt;
-      printf("Switched to UB!\n");
+      printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = UNBOUND;
   }
 
-  if (iteration % (data_generation_skip_iterations*1) == 0) {
+  if (iteration % 10 == 0) {
     printf("Stepping data progress (%s): %lld / %lld, %g%%                \r", run_msg,
 	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
 
-  if (iteration == (max_iteration-1) - ((max_iteration-1) % data_generation_skip_iterations)) {
+  if (iteration == max_iteration-1) {
     printf("Finished generating stepping data (%s), process took %g seconds               \n", run_msg,
 	   ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
@@ -170,5 +170,9 @@ int main(int argc, char** argv) {
 	   stepping_data_callback, job_msg, NULL);
 
   make_stepping_data_file(&data, f_appended_name);
+
+  delete data.step_times;
+  delete data.step_lengths;
+
   return EXIT_SUCCESS;
 }

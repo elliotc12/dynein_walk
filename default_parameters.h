@@ -38,8 +38,8 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double low_affinity_binding_preexponential_factor = 1e1;
-double low_affinity_unbinding_preexponential_factor = 1e1;
+double low_affinity_binding_preexponential_factor = 1e10;
+double low_affinity_unbinding_preexponential_factor = 1e10;
 double high_affinity_unbinding_preexponential_factor = 1e-3;
 
 double DELTA_G_FORMATION_BINDING = 1e-10;
