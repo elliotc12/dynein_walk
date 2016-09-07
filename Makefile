@@ -91,7 +91,7 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
 
-data/stepping_config_%.txt data/stepping_data_%.txt:
+data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 	mkdir -p data
 	make generate_stepping_data
 	./generate_stepping_data $*
@@ -105,6 +105,11 @@ movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_bb_movie $*
+	mkdir -p movies
+	./movie.py $* speed=1
+
+movies/stepping_%.gif: data/stepping_data_%.txt
+	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=1
 

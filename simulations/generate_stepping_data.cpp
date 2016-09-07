@@ -16,6 +16,7 @@
 #include "simulation_defaults.h"
 
 const int INIT_DYNARR_LEN = 10;
+const bool logging_movie = true;
 
 typedef struct {
   int num_steps;
@@ -24,17 +25,11 @@ typedef struct {
   double dwell_time;
 } stepping_data_struct;
 
-void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
+void log_stepping_data(stepping_data_struct* data_struct, void* dyn, long long iteration, long long max_iteration, State s) {
   static State last_state = BOTHBOUND;
   static double last_nbx = ((Dynein_bothbound*) dyn)->get_nbx();
   static double last_fbx = ((Dynein_bothbound*) dyn)->get_fbx();
   static double last_bothbound_iteration = 0;
-
-  long long max_iteration = *((long long**) job_msg)[0];
-  double start_time = *((double**) job_msg)[1];
-  char* run_msg = ((char**) job_msg)[2];
-
-  stepping_data_struct* data_struct = ((stepping_data_struct**) job_msg)[3];
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
@@ -82,6 +77,87 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
     }
     last_state = UNBOUND;
   }
+}
+
+void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
+  if (s == NEARBOUND) {
+    Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+    onebound_forces dyn_ob_f = dyn_ob->get_internal();
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	    "\n",
+	    dyn_ob->get_state(),
+	    iteration*dt,
+	    dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
+	    dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+	    dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
+	    dyn_ob->get_ubx(), dyn_ob->get_uby(),
+	    dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
+	    dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+  }
+  else if (s == BOTHBOUND) {
+    Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+    bothbound_forces dyn_bb_f = dyn_bb->get_internal();
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	    "\n",
+	    BOTHBOUND,
+	    iteration*dt,
+	    dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
+	    dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
+	    dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
+	    dyn_bb->get_fbx(), dyn_bb->get_fby(),
+	    dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
+	    dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
+  }
+  else if (s == UNBOUND) {
+    fprintf(data_file,
+	    "%d\t"
+	    "%.2g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	    "\n",
+	    UNBOUND,
+	    iteration*dt,
+	    0.0, 0.0, 0.0, 0.0, 0.0,
+	    0.0, 0.0, 0.0, 0.0,
+	    0.0, 0.0, 0.0, 0.0,
+	    0.0, 0.0,
+	    0.0, 0.0, 0.0, 0.0, 0.0,
+	    0.0, 0.0, 0.0, 0.0, 0.0);
+  }
+  else {
+    printf("Unhandled state in stepping movie data generation!\n");
+    exit(1);
+  }
+}
+
+void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
+  long long max_iteration = *((long long**) job_msg)[0];
+  double start_time = *((double**) job_msg)[1];
+  char* run_msg = ((char**) job_msg)[2];
+
+  stepping_data_struct* data_struct = ((stepping_data_struct**) job_msg)[3];
+  FILE* data_file = ((FILE**) job_msg)[4];
+
+  log_stepping_data(data_struct, dyn, iteration, max_iteration, s);
+  if (logging_movie && iteration % data_generation_skip_iterations == 0)
+    log_stepping_movie_data(data_file, dyn, s, iteration);
 
   if (iteration % 10 == 0) {
     printf("Stepping data progress (%s): %lld / %lld, %g%%                \r", run_msg,
@@ -134,16 +210,19 @@ int main(int argc, char** argv) {
 
   char* f_appended_name = argv[1];
   char *config_fname = new char[200];
+
+  char *movie_data_fname = new char[200];
   char *movie_config_fname = new char[200];
 
   sprintf(config_fname, "data/stepping_config_%s.txt", f_appended_name);
-  sprintf(movie_config_fname, "data/stepping_movie_config_%s.txt", f_appended_name);
+  sprintf(movie_data_fname, "data/movie_%s.txt", f_appended_name);
+  sprintf(movie_config_fname, "data/movie_config_%s.txt", f_appended_name);
 
-  //write_movie_config(movie_config_fname, iterations*dt);
+  write_movie_config(movie_config_fname, iterations*dt);
   write_config_file(config_fname, CONFIG_INCLUDE_SKIPINFO,
 		    "Initial state: onebound\nInitial conformation: equilibrium\n");
 
-  void* job_msg[4];
+  void* job_msg[5];
   job_msg[0] = (double*) &iterations;
 
   double current_time = clock();
@@ -160,6 +239,7 @@ int main(int argc, char** argv) {
   data.step_lengths = new DynArr(INIT_DYNARR_LEN);
 
   job_msg[3] = &data;
+  job_msg[4] = fopen(movie_data_fname, "w");
 
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
@@ -171,6 +251,7 @@ int main(int argc, char** argv) {
 
   make_stepping_data_file(&data, f_appended_name);
 
+  fclose((FILE*) job_msg[4]);
   delete data.step_times;
   delete data.step_lengths;
 

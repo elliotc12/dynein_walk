@@ -126,6 +126,21 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   fclose(data_file);
 }
 
+void write_movie_config(char* movie_config_fname, double runtime) {
+  FILE* config_file = fopen(movie_config_fname, "w");
+  fprintf(config_file,
+	  "#gb\t"
+	  "gm\t"
+	  "gt\t"
+	  "dt\t"
+	  "runtime?\t"
+	  "state\t"
+	  "kbT\n");
+  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%g\n",
+          (double) gb, (double) gm, (double) gt, dt, runtime, kb*T);
+  fclose(config_file);
+}
+
 void FPE_signal_handler(int signum) {
   fexcept_t flag;
   fegetexceptflag(&flag, FE_ALL_EXCEPT);

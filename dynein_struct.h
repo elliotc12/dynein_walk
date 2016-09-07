@@ -318,6 +318,7 @@ void FPE_signal_handler(int signum);
 void prepare_data_file(const char* legend, char* fname);
 void append_data_to_file(double* data1, double* data2, int len, FILE* fd);
 void write_config_file(char* fname, int omit_flags, const char* custom_str);
+void write_movie_config(char* movie_config_fname, double runtime);
 
 /* ***************************** SIMULATION PROTOTYPES ****************************** */
 
