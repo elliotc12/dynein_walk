@@ -98,7 +98,8 @@ int main(int argc, char** argv) {
   BOTHBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  T = 50;
+  T = 100;
+
   int iters = iterations / data_generation_skip_iterations;
 
   if (argc != 2) {
