@@ -87,10 +87,13 @@ plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.tx
 	./make_stepping_plots.py $*
 	touch plots/stepping_histogram_%.pdf
 
-data/stepping_config_%.txt data/stepping_data_%.txt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_stepping_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
-	mkdir -p data
+generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
-	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
+	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
+
+data/stepping_config_%.txt data/stepping_data_%.txt:
+	mkdir -p data
+	make generate_stepping_data
 	./generate_stepping_data $*
 
 movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin

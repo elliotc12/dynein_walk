@@ -34,8 +34,6 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
-
 double low_affinity_binding_preexponential_factor = 1e1;
 double low_affinity_unbinding_preexponential_factor = 1e1;
 double high_affinity_unbinding_preexponential_factor = 1e-3;
