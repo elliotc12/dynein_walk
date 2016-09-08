@@ -6,11 +6,12 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <mutex.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#include <mutex>
 
 #include "../default_parameters.h"
 #include "../dynein_struct.h"
@@ -278,21 +279,35 @@ void prepare_data_files(int num_args, char* f_appended_name) {
   write_config_file(config_fname, 0, "");
 }
 
-void stepping_worker_thread() {
-  printf("I'm a thread!\n");
-  exit(EXIT_SUCCESS);
+void stepping_worker_thread(int* simulations_to_go, std::mutex* simulations_to_go_mutex) {
+ stepping_worker_wait: simulations_to_go_mutex->lock();
+    if (*simulations_to_go <= 0) {
+      printf("I should be exiting...\n");
+      simulations_to_go_mutex->unlock();
+      exit(EXIT_SUCCESS);
+    }
+    else {
+      int simulation_id = *simulations_to_go;
+      (*simulations_to_go)--;
+      simulations_to_go_mutex->unlock();
+      printf("just decremented, i'm thread simid: %d\n", simulation_id);
+      goto stepping_worker_wait;
+    }
 }
 
 int main(int argc, char** argv) {
   T = 100;
 
-  int m = 4;
+  int n = 4;
+  int* simulations_to_go = new int(10);
+  std::mutex simulations_to_go_mutex;
+
   int num_child_threads = 0;
 
-  while (num_child_threads < 4) {
+  while (num_child_threads < n) {
     int fork_return = fork();
     if (fork_return == 0) {
-      stepping_worker_thread();
+      stepping_worker_thread(simulations_to_go, &simulations_to_go_mutex);
     }
     else if (fork_return < 0) {
       perror("error forking");
