@@ -85,9 +85,8 @@ plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_
 plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_plot.py data/bb_config_%.txt data/bothbound_data_%.bin
 	sh bb_plots.sh $*
 
-plots/stepping_histogram_%.pdf: make_stepping_plots.py data/stepping_config_%.txt data/stepping_data_%.txt
+plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
-	touch plots/stepping_histogram_%.pdf
 
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)

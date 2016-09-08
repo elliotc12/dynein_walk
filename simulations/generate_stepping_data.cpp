@@ -175,6 +175,7 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
   printf("num_steps: %d\n", data->num_steps);
   printf("dwell_time: %g\n", data->dwell_time);
   for (int i=0; i < data->step_times->get_length(); i++) {
+    printf("step_length: %g\n", data->step_lengths->get_data()[i]);
     printf("step_time: %g\n", data->step_times->get_data()[i]);
   }
   char data_fname[200];
@@ -187,13 +188,13 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
 
   fprintf(data_file, "#step_lengths:\n");
   for (int i=0; i<data->step_lengths->get_length(); i++) {
-    fprintf(data_file, "%g, ", data->step_lengths->get_data()[i]);
+    fprintf(data_file, "%g\n", data->step_lengths->get_data()[i]);
   }
   fprintf(data_file, "\n");
 
   fprintf(data_file, "#step_times:\n");
   for (int i=0; i<data->step_times->get_length(); i++) {
-    fprintf(data_file, "%g, ", data->step_times->get_data()[i]);
+    fprintf(data_file, "%g\n", data->step_times->get_data()[i]);
   }
   fprintf(data_file, "\n");
 
@@ -219,8 +220,7 @@ int main(int argc, char** argv) {
   sprintf(movie_config_fname, "data/movie_config_%s.txt", f_appended_name);
 
   write_movie_config(movie_config_fname, iterations*dt);
-  write_config_file(config_fname, CONFIG_INCLUDE_SKIPINFO,
-		    "Initial state: onebound\nInitial conformation: equilibrium\n");
+  write_config_file(config_fname, 0, "");
 
   void* job_msg[5];
   job_msg[0] = (double*) &iterations;
