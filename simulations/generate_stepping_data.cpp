@@ -6,6 +6,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <mutex.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -201,7 +202,7 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
   fclose(data_file);
 }
 
-int main(int argc, char** argv) {
+int old_main(int argc, char** argv) {
   T = 100;
 
   if (argc != 2) {
@@ -257,3 +258,83 @@ int main(int argc, char** argv) {
 
   return EXIT_SUCCESS;
 }
+
+void prepare_data_files(int num_args, char* f_appended_name) {
+  if (num_args != 2) {
+    printf("Error, TITLE variable must have underscores, not spaces.\n");
+    exit(1);
+  }
+
+  char *config_fname = new char[200];
+
+  char *movie_data_fname = new char[200];
+  char *movie_config_fname = new char[200];
+
+  sprintf(config_fname, "data/stepping_config_%s.txt", f_appended_name);
+  sprintf(movie_data_fname, "data/movie_%s.txt", f_appended_name);
+  sprintf(movie_config_fname, "data/movie_config_%s.txt", f_appended_name);
+
+  write_movie_config(movie_config_fname, iterations*dt);
+  write_config_file(config_fname, 0, "");
+}
+
+void stepping_worker_thread() {
+  printf("I'm a thread!\n");
+  exit(EXIT_SUCCESS);
+}
+
+int main(int argc, char** argv) {
+  T = 100;
+
+  int m = 4;
+  int num_child_threads = 0;
+
+  while (num_child_threads < 4) {
+    int fork_return = fork();
+    if (fork_return == 0) {
+      stepping_worker_thread();
+    }
+    else if (fork_return < 0) {
+      perror("error forking");
+      exit(errno);
+    }
+    num_child_threads++;
+  }
+  printf("I'm the parent.\n");
+
+  //make_stepping_data_file(&data, f_appended_name);
+
+  // fclose((FILE*) job_msg[4]);
+  // delete data.step_times;
+  // delete data.step_lengths;
+
+  return EXIT_SUCCESS;
+}
+
+
+// void* job_msg[5];
+//   job_msg[0] = (double*) &iterations;
+
+//   double current_time = clock();
+//   job_msg[1] = &current_time;
+
+//   char run_msg[512];
+//   sprintf(run_msg, "seed = %d", (int) RAND_INIT_SEED);
+//   job_msg[2] = run_msg;
+
+//   stepping_data_struct data;
+//   data.num_steps = 0;
+//   data.dwell_time = 0.0;
+//   data.step_times = new DynArr(INIT_DYNARR_LEN);
+//   data.step_lengths = new DynArr(INIT_DYNARR_LEN);
+
+//   job_msg[3] = &data;
+//   job_msg[4] = fopen(movie_data_fname, "w");
+
+//   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
+//   double init_position[] = {eq.nma,
+// 			    eq.fma,
+// 			    0, 0, Ls};
+
+//   simulate(iterations*dt, RAND_INIT_SEED, BOTHBOUND, init_position,
+// 	   stepping_data_callback, job_msg, NULL);

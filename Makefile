@@ -96,6 +96,7 @@ data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.t
 	mkdir -p data
 	make generate_stepping_data
 	./generate_stepping_data $*
+	touch data/stepping_config_$*.txt data/stepping_data_$*.txt data/stepping_movie_data_$*.txt
 
 movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"
