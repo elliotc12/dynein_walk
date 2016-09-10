@@ -6,12 +6,11 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <pthread.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-#include <mutex>
 
 #include "../default_parameters.h"
 #include "../dynein_struct.h"
@@ -279,43 +278,73 @@ void prepare_data_files(int num_args, char* f_appended_name) {
   write_config_file(config_fname, 0, "");
 }
 
-void stepping_worker_thread(int* simulations_to_go, std::mutex* simulations_to_go_mutex) {
- stepping_worker_wait: simulations_to_go_mutex->lock();
-    if (*simulations_to_go <= 0) {
+typedef struct {
+  int data;
+  pthread_mutex_t* lock;
+  pthread_cond_t* condvar;
+} semaphore;
+
+typedef struct {
+  semaphore* sem;
+  int* run_data;
+} stepping_thread_struct;
+
+void* stepping_worker_thread(void* arg) {
+  int* run_data = ((stepping_thread_struct*) arg)->run_data;
+  semaphore* simulations_to_go = ((stepping_thread_struct*) arg)->sem;
+  while(pthread_mutex_lock(simulations_to_go->lock) == 0) {
+    if (simulations_to_go->data <= 0) {
       printf("I should be exiting...\n");
-      simulations_to_go_mutex->unlock();
-      exit(EXIT_SUCCESS);
+      pthread_mutex_unlock(simulations_to_go->lock);
+      pthread_exit(NULL);
     }
     else {
-      int simulation_id = *simulations_to_go;
-      (*simulations_to_go)--;
-      simulations_to_go_mutex->unlock();
-      printf("just decremented, i'm thread simid: %d\n", simulation_id);
-      goto stepping_worker_wait;
+      int simulation_num = simulations_to_go->data;
+      simulations_to_go->data--;
+      pthread_mutex_unlock(simulations_to_go->lock);
+      run_data[simulation_num] = simulation_num;
+      pthread_cond_signal(simulations_to_go->condvar);
     }
+  }
+  return NULL;
 }
 
 int main(int argc, char** argv) {
   T = 100;
 
-  int n = 4;
-  int* simulations_to_go = new int(10);
-  std::mutex simulations_to_go_mutex;
+  int num_threads = 4;
+  semaphore* simulations_to_go = new semaphore;
+  simulations_to_go->data = num_dynein_runs;
+  simulations_to_go->lock = new pthread_mutex_t;
+  simulations_to_go->condvar = new pthread_cond_t;
 
-  int num_child_threads = 0;
+  pthread_mutex_init(simulations_to_go->lock, NULL);
+  pthread_cond_init(simulations_to_go->condvar, NULL);
 
-  while (num_child_threads < n) {
-    int fork_return = fork();
-    if (fork_return == 0) {
-      stepping_worker_thread(simulations_to_go, &simulations_to_go_mutex);
-    }
-    else if (fork_return < 0) {
-      perror("error forking");
-      exit(errno);
-    }
-    num_child_threads++;
+  stepping_thread_struct* stepping_data = new stepping_thread_struct;
+  stepping_data->run_data = new int[num_dynein_runs];
+  stepping_data->sem = simulations_to_go;
+
+  pthread_t* threads = new pthread_t[num_threads];
+
+  pthread_mutex_lock(simulations_to_go->lock);
+
+  for (int n=0; n<num_threads; n++) {
+    pthread_create(&threads[n], NULL, stepping_worker_thread, (void*) stepping_data);
   }
-  printf("I'm the parent.\n");
+
+  while (pthread_cond_wait(simulations_to_go->condvar, simulations_to_go->lock) == 0) {
+    if (simulations_to_go->data <= 0) break;
+  }
+  pthread_mutex_unlock(simulations_to_go->lock);
+
+  for (int n=0; n<num_threads; n++) {
+    pthread_join(threads[n], NULL);
+  }
+
+  for (int m=0; m<num_dynein_runs; m++) {
+    printf("run data %d: %d\n", m, stepping_data->run_data[m]);
+  }
 
   //make_stepping_data_file(&data, f_appended_name);
 
@@ -353,3 +382,4 @@ int main(int argc, char** argv) {
 
 //   simulate(iterations*dt, RAND_INIT_SEED, BOTHBOUND, init_position,
 // 	   stepping_data_callback, job_msg, NULL);
+
