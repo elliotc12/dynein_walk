@@ -18,13 +18,17 @@
 
 const int INIT_DYNARR_LEN = 10;
 const bool logging_movie = true;
+static const bool am_debugging_steps = false;
 
 typedef struct {
   int num_steps;
   DynArr* step_times;
   DynArr* step_lengths;
   double dwell_time;
+  int seed;
 } stepping_data_struct;
+
+
 
 void log_stepping_data(stepping_data_struct* data_struct, void* dyn, long long iteration, long long max_iteration, State s) {
   static State last_state = BOTHBOUND;
@@ -35,46 +39,46 @@ void log_stepping_data(stepping_data_struct* data_struct, void* dyn, long long i
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND) {
-      double step_len = dyn_bb->get_fbx() - last_fbx;
-      data_struct->step_lengths->append(step_len);
+      //double step_len = dyn_bb->get_fbx() - last_fbx;
+      //data_struct->step_lengths->append(step_len);
       last_fbx = dyn_bb->get_fbx();
 
-      double step_time = (iteration - last_bothbound_iteration)*dt;
-      data_struct->step_times->append(step_time);
+      //double step_time = (iteration - last_bothbound_iteration)*dt;
+      //data_struct->step_times->append(step_time);
 
       data_struct->num_steps++;
-      printf("\nSwitched from NB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (am_debugging_steps) printf("\nSwitched from NB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     else if (last_state == FARBOUND) {
-      double step_len = dyn_bb->get_nbx() - last_nbx;
-      data_struct->step_lengths->append(step_len);
+      //double step_len = dyn_bb->get_nbx() - last_nbx;
+      //data_struct->step_lengths->append(step_len);
       last_nbx = dyn_bb->get_nbx();
 
-      double step_time = (iteration - last_bothbound_iteration)*dt;
-      data_struct->step_times->append(step_time);
+      //double step_time = (iteration - last_bothbound_iteration)*dt;
+      //data_struct->step_times->append(step_time);
 
       data_struct->num_steps++;
-      printf("\nSwitched from FB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (am_debugging_steps) printf("\nSwitched from FB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_bothbound_iteration = iteration;
     last_state = BOTHBOUND;
   }
   else if (s == NEARBOUND) {
     if (last_state != NEARBOUND) {
-      printf("\nSwitched from BB to NB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (am_debugging_steps) printf("\nSwitched from BB to NB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = NEARBOUND;
   }
   else if (s == FARBOUND) {
     if (last_state != FARBOUND) {
-      printf("\nSwitched from BB to FB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (am_debugging_steps) printf("\nSwitched from BB to FB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = FARBOUND;
   }
   else if (s == UNBOUND) {
     if (last_state != UNBOUND) {
       data_struct->dwell_time = iteration*dt;
-      printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (am_debugging_steps) printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = UNBOUND;
   }
@@ -170,6 +174,25 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
     printf("Finished generating stepping data (%s), process took %g seconds               \n", run_msg,
 	   ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
+}
+
+void stepping_data_callback_threaded(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
+  long long max_iteration = *((long long**) job_msg)[0];
+  //double start_time = *((double**) job_msg)[1];
+  //char* run_msg = ((char**) job_msg)[2];
+
+  stepping_data_struct* data_struct = ((stepping_data_struct**) job_msg)[3];
+
+  //printf("testing DynArrs in threads\n");
+  for (int i=0; i<10; i++) {
+    //data_struct->step_times->append(1.2);
+  }
+  // printf("data_struct: %p, step_times: %p, len: %d\n", data_struct,
+  // 	 data_struct->step_times, data_struct->step_times->get_length());
+
+  //printf("step time 7: %g, test passes\n", data_struct->step_times->get_data()[7]);
+
+  log_stepping_data(data_struct, dyn, iteration, max_iteration, s);
 }
 
 void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
@@ -286,23 +309,44 @@ typedef struct {
 
 typedef struct {
   semaphore* sem;
-  int* run_data;
+  stepping_data_struct* run_data;
 } stepping_thread_struct;
 
+void run_simulation(stepping_data_struct* run_data, int simid) {
+  void* job_msg[4];
+  job_msg[0] = (double*) &iterations;
+
+  double current_time = clock();
+  job_msg[1] = &current_time;
+
+  char run_msg[512];
+  sprintf(run_msg, "seed = %d", (int) run_data->seed);
+  job_msg[2] = run_msg;
+
+  job_msg[3] = run_data;
+
+  bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
+  double init_position[] = {eq.nma, eq.fma, 0, 0, Ls};
+
+  simulate(iterations*dt, run_data->seed, BOTHBOUND, init_position,
+  	   stepping_data_callback_threaded, job_msg, NULL);
+}
+
 void* stepping_worker_thread(void* arg) {
-  int* run_data = ((stepping_thread_struct*) arg)->run_data;
+  stepping_data_struct* run_data = ((stepping_thread_struct*) arg)->run_data;
   semaphore* simulations_to_go = ((stepping_thread_struct*) arg)->sem;
   while(pthread_mutex_lock(simulations_to_go->lock) == 0) {
-    if (simulations_to_go->data <= 0) {
-      printf("I should be exiting...\n");
+    if (simulations_to_go->data <= 0) {              // simulations all run, time to exit
       pthread_mutex_unlock(simulations_to_go->lock);
       pthread_exit(NULL);
     }
-    else {
+    else {                                           // decrement semaphore and run a simulation
       int simulation_num = simulations_to_go->data;
       simulations_to_go->data--;
       pthread_mutex_unlock(simulations_to_go->lock);
-      run_data[simulation_num] = simulation_num;
+      printf("--Running simulation %d\n", simulation_num);
+      run_simulation(&run_data[simulation_num], simulation_num);
+      printf("--Completed simulation %d\n", simulation_num);
       pthread_cond_signal(simulations_to_go->condvar);
     }
   }
@@ -322,8 +366,16 @@ int main(int argc, char** argv) {
   pthread_cond_init(simulations_to_go->condvar, NULL);
 
   stepping_thread_struct* stepping_data = new stepping_thread_struct;
-  stepping_data->run_data = new int[num_dynein_runs];
+  stepping_data->run_data = new stepping_data_struct[num_dynein_runs];
   stepping_data->sem = simulations_to_go;
+
+  for (int i=0; i<num_dynein_runs; i++) {
+    stepping_data->run_data[i].num_steps = 0;
+    stepping_data->run_data[i].dwell_time = 0.0;
+    stepping_data->run_data[i].step_times = new DynArr(INIT_DYNARR_LEN);
+    stepping_data->run_data[i].step_lengths = new DynArr(INIT_DYNARR_LEN);
+    stepping_data->run_data[i].seed = 0;
+  }
 
   pthread_t* threads = new pthread_t[num_threads];
 
@@ -343,7 +395,7 @@ int main(int argc, char** argv) {
   }
 
   for (int m=0; m<num_dynein_runs; m++) {
-    printf("run data %d: %d\n", m, stepping_data->run_data[m]);
+    printf("num_steps for %d: %d\n", m, stepping_data->run_data[m].num_steps);
   }
 
   //make_stepping_data_file(&data, f_appended_name);

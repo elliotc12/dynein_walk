@@ -168,12 +168,14 @@ DynArr::DynArr(int init_len) {
 }
 
 DynArr::~DynArr() {
+  printf("A DynArr is getting freed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   free(data);
 }
 
 void DynArr::append(double d) {
   if (current == len) {
     len *= 2;
+    printf("reallocing %p\n", data);
     data = (double*)realloc(data, sizeof(double)*len);
     if (data == NULL) {
       perror("error reallocating memory for DynArr");
