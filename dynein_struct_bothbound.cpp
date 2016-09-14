@@ -63,7 +63,9 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
 
   internal_testcase = NULL;
   brownian_testcase = NULL;
-  
+
+  eq = bothbound_pre_powerstroke_internal_angles; // use experimental angles
+
   rand = mtrand;
 
   update_velocities();
@@ -392,15 +394,16 @@ void Dynein_bothbound::update_velocities() {
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
-  double U_bb = get_PE();
-  double U_ob = Dynein_onebound(this, rand, NEARBOUND).get_PE(); // no f.fby dep?
-  return unbinding_preexponential_factor*exp(-(U_ob - U_bb)/kb/T); // per second
+  double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
+  double dG = dG_spring - DELTA_G_FORMATION_BINDING;
+  //printf("dG_spring: %g, rate: %g\n", dG_spring, low_affinity_unbinding_preexponential_factor*exp(-dG/kb/T)*dt);
+  return low_affinity_unbinding_preexponential_factor*exp(-dG/kb/T);
 }
 
 double Dynein_bothbound::get_far_unbinding_rate() {
-  double U_bb = get_PE();
-  double U_ob = Dynein_onebound(this, rand, FARBOUND).get_PE(); // no f.fby dep?
-  return unbinding_preexponential_factor*exp(-(U_ob - U_bb)/kb/T); // per second
+  double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
+  double dG = dG_spring - DELTA_G_FORMATION_BINDING;
+  return low_affinity_unbinding_preexponential_factor*exp(-dG/kb/T);
 }
 
 /*** Set positions, velocities and forces ***/

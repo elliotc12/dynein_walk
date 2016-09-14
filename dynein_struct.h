@@ -48,8 +48,11 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   fake_radius_m, fake_radius_b, water_viscosity_mu, gt, gm, gb, ct, cm,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
   MICROTUBULE_REPULSION_FORCE, MICROTUBULE_BINDING_DISTANCE,
-  RAND_INIT_SEED, binding_preexponential_factor,
-  unbinding_preexponential_factor, D, tau;
+  RAND_INIT_SEED, binding_preexponential_factor, D, tau,
+  low_affinity_binding_preexponential_factor,
+  low_affinity_unbinding_preexponential_factor,
+  high_affinity_unbinding_preexponential_factor,
+  DELTA_G_FORMATION_BINDING;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
@@ -315,6 +318,7 @@ void FPE_signal_handler(int signum);
 void prepare_data_file(const char* legend, char* fname);
 void append_data_to_file(double* data1, double* data2, int len, FILE* fd);
 void write_config_file(char* fname, int omit_flags, const char* custom_str);
+void write_movie_config(char* movie_config_fname, double runtime);
 
 /* ***************************** SIMULATION PROTOTYPES ****************************** */
 
@@ -425,5 +429,12 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,	
               long long iteration), void** job_msg, data_union* job_data);
+
+/** create_ob/bb_plots .txt generation code **/
+void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation);
+void generate_correlation_fn_data(double* pe, int iters, const char* legend, char* fname_base);
+void generate_pe_vs_time_data(double* times, double* pe, int len, const char* legend, char* fname_base);
+void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, const char* legend, char* fname_base);
+void generate_angle_vs_time_data(double* times, double* angle, int len, const char* legend, char* fname_base, double eq_angle);
 
 #endif

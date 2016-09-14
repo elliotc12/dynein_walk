@@ -79,26 +79,12 @@ void write_bothbound_data_callback(void* dyn, State s, void** job_msg, data_unio
   }
 }
 
-void write_movie_config(char* movie_config_fname, double runtime) {
-  FILE* config_file = fopen(movie_config_fname, "w");
-  fprintf(config_file,
-	  "#gb\t"
-	  "gm\t"
-	  "gt\t"
-	  "dt\t"
-	  "runtime?\t"
-	  "state\t"
-	  "kbT\n");
-  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%g\n",
-          (double) gb, (double) gm, (double) gt, dt, runtime, kb*T);
-  fclose(config_file);
-}
-
 int main(int argc, char** argv) {
   BOTHBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
 
-  T = 50;
+  T = 100;
+
   int iters = iterations / data_generation_skip_iterations;
 
   if (argc != 2) {

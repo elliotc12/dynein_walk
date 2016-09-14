@@ -126,6 +126,21 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
   fclose(data_file);
 }
 
+void write_movie_config(char* movie_config_fname, double runtime) {
+  FILE* config_file = fopen(movie_config_fname, "w");
+  fprintf(config_file,
+	  "#gb\t"
+	  "gm\t"
+	  "gt\t"
+	  "dt\t"
+	  "runtime?\t"
+	  "state\t"
+	  "kbT\n");
+  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%g\n",
+          (double) gb, (double) gm, (double) gt, dt, runtime, kb*T);
+  fclose(config_file);
+}
+
 void FPE_signal_handler(int signum) {
   fexcept_t flag;
   fegetexceptflag(&flag, FE_ALL_EXCEPT);
@@ -153,12 +168,14 @@ DynArr::DynArr(int init_len) {
 }
 
 DynArr::~DynArr() {
+  printf("A DynArr is getting freed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   free(data);
 }
 
 void DynArr::append(double d) {
   if (current == len) {
     len *= 2;
+    printf("reallocing %p\n", data);
     data = (double*)realloc(data, sizeof(double)*len);
     if (data == NULL) {
       perror("error reallocating memory for DynArr");

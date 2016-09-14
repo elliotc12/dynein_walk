@@ -24,9 +24,13 @@ double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-double ct = kb*310.15; // 0.5*c*<theta^2> = 0.5*kb*T
-double cm = kb*310.15; // body temperature
-double cb = kb*310.15;
+double d_tail_theta = 1.5;
+double d_motor_theta = 0.75;
+double d_binding_theta = 0.5;
+
+double ct = kb*310.15/d_tail_theta/d_tail_theta;   // 0.5*c*<theta^2> = 0.5*kb*T
+double cm = kb*310.15/d_motor_theta/d_motor_theta; // body temperature
+double cb = kb*310.15/d_binding_theta/d_binding_theta;
 
 double D = 2*kb*T / ((gt + gm + gb) / 3);
 
@@ -34,32 +38,40 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double bba_correlation_time = 1e-5; // from ob_PE_correlation_vs_time for current parameters
+double low_affinity_binding_preexponential_factor = 1e8;
+double low_affinity_unbinding_preexponential_factor = 1e11;
+double high_affinity_unbinding_preexponential_factor = 1e-3;
 
-double binding_preexponential_factor = 1e15;
-double unbinding_preexponential_factor = 1e15;
+double DELTA_G_FORMATION_BINDING = 1e-10;
 
 double ONEBOUND_UNBINDING_FORCE = 1e12;
 double BOTHBOUND_UNBINDING_FORCE = 1e12;
 
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
-
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
 double RAND_INIT_SEED = 0;
 
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
-  0.6 * M_PI,
-  0.6 * M_PI,
-  0.3 * M_PI,
-  0.6 * M_PI
+  126.0 * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  0.0   * M_PI / 180.0,
+  74.0 * M_PI / 180.0
 };
 
-double t_nma = acos(Lt/(2*Ls));
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  M_PI - 2*t_nma + M_PI/3,
-  t_nma,
-  2*t_nma + M_PI/3,
-  2*M_PI - t_nma,
-  2*t_nma - M_PI/3
+  126.0 * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  0.0   * M_PI / 180.0,
+  164.0 * M_PI / 180.0,
+  126.0 * M_PI / 180.0
 };
+
+/* double t_nma = acos(Lt/(2*Ls)); */
+/* bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = { */
+/*   M_PI - 2*t_nma + M_PI/3, */
+/*   t_nma, */
+/*   2*t_nma + M_PI/3, */
+/*   2*M_PI - t_nma, */
+/*   2*t_nma - M_PI/3 */
+/* }; */

@@ -180,33 +180,13 @@ void write_onebound_data_callback_with_avging(void* dyn, State s, void** job_msg
   }
 }
 
-void write_movie_config(char* movie_config_fname, double runtime) {
-  FILE* config_file = fopen(movie_config_fname, "w");
-  fprintf(config_file,
-	  "#gb\t"
-	  "gm\t"
-	  "gt\t"
-	  "dt\t"
-	  "runtime?\t"
-	  "state\t"
-	  "kbT\n");
-  fprintf(config_file, "%g\t%g\t%g\t%g\t%g\t%g\n",
-          (double) gb, (double) gm, (double) gt, dt, runtime, kb*T);
-  fclose(config_file);
-}
-
 int main(int argc, char** argv) {
   MICROTUBULE_BINDING_DISTANCE = -std::numeric_limits<double>::infinity();
   MICROTUBULE_REPULSION_FORCE = 0.0;
   ONEBOUND_UNBINDING_FORCE = std::numeric_limits<double>::infinity();
 
-  T = 1;
+  T = 100;
 
-  gm = gb;
-  gt = gb;
-  Lt = 15;
-  Ls = 15;
-  
   int iters = iterations / data_generation_skip_iterations;
 
   if (argc != 2) {

@@ -2,6 +2,7 @@
 #include "simulations/simulation_defaults.h"
 
 static const bool am_debugging_rates = false;
+static const bool debug_stepping = false;
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,
@@ -55,16 +56,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	if (am_debugging_rates) printf("OB unbinding probability: %g\n", dyn_ob->get_unbinding_rate()*dt);
 	if (am_debugging_rates) printf("OB binding probability: %g\n", dyn_ob->get_binding_rate()*dt);
 	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) { // unbind, switch to unbound
-	  printf("\nunbinding at %.1f%%!\n", t/runtime*100);
+	  if (debug_stepping) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = UNBOUND;
 	  break;
 	}
 	else if (rand->rand() < dyn_ob->get_binding_rate()*dt) { // switch to bothbound
-	  printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
+	  if (debug_stepping) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  delete dyn_ob;
+	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
 	  break;
 	}
@@ -94,20 +96,23 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
 	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate()*dt;
 	if (unbind_near && unbind_far) {
-	  printf("\nTHEY BOTH WANT TO FALL OFF TOGETHER!!!\n");
-	  printf("\nWHAT SHOULD THEY DO????\n");
+	  if (debug_stepping) printf("both MTBDs want to fall off!\n");
+	  if (iter % 2 == 0) unbind_far = false;
+	  else unbind_near = false;
 	}
-	else if (unbind_near) { // switch to farbound
-	  printf("\nswitch to onebound!\n");
+	if (unbind_near) { // switch to farbound
+	  if (debug_stepping) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
 	  delete dyn_bb;
+	  dyn_bb = NULL;
 	  current_state = FARBOUND;
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
-	  printf("\nswitch to onebound!\n");
+	  if (debug_stepping) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
 	  delete dyn_bb;
+	  dyn_bb = NULL;
 	  current_state = NEARBOUND;
 	  break;
 	}
