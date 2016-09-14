@@ -6,6 +6,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <getopt.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -202,15 +203,80 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
   fclose(data_file);
 }
 
-int main(int argc, char** argv) {
-  T = 100;
+void set_input_variables(int argc, char** argv, char* run_name) {
+  run_name = NULL;
+  char c;
 
-  if (argc != 2) {
-    printf("Error, TITLE variable must have underscores, not spaces.\n");
-    exit(1);
+  static struct option long_options[] =
+    {
+      {"Ls",     required_argument,    0, 'a'},
+      {"Lt",     required_argument,    0, 'b'},
+      {"cb",     required_argument,    0, 'c'},
+      {"cm",     required_argument,    0, 'd'},
+      {"ct",     required_argument,    0, 'e'},
+      {"T",      required_argument,    0, 'f'},
+      {"name",   required_argument,    0, 'g'},
+      {0, 0, 0, 0}
+    };
+
+  int option_index = 0;
+
+  while ((c = getopt_long(argc, argv, "a:b:c:d:e:f:", long_options, &option_index)) != -1) {
+    switch (c) {
+    case 0:
+      if (long_options[option_index].flag != 0) // option set a flag
+	break;
+      else {
+	printf ("unknown option %s", long_options[option_index].name);
+	if (optarg)
+	  printf (" with arg %s", optarg);
+	printf ("\n");
+	break;
+      }
+    case 'a':
+      Ls = strtod(optarg, NULL);
+      break;
+    case 'b':
+      Lt = strtod(optarg, NULL);
+      break;
+    case 'c':
+      cb = strtod(optarg, NULL);
+      break;
+    case 'd':
+      cm = strtod(optarg, NULL);
+      break;
+    case 'e':
+      ct = strtod(optarg, NULL);
+      break;
+    case 'f':
+      T = strtod(optarg, NULL);
+      break;
+    case 'g':
+      run_name = optarg;
+      break;
+    case '?':
+      printf("Some other unknown getopt error.\n");
+      exit(EXIT_FAILURE);
+    default:
+      printf("Default case in getopt: uh-oh!\n");
+      exit(EXIT_FAILURE);
+    }
   }
 
-  char* f_appended_name = argv[1];
+  if (optind != argc) {
+    printf("Improper usage, all options need an option name like -ls or -T!\n");
+    exit(EXIT_FAILURE);
+  }
+  if (run_name == NULL) {
+    printf("name must be specified!\n");
+    exit(EXIT_FAILURE);
+  }
+}
+
+int main(int argc, char** argv) {
+
+  char* f_appended_name = NULL;
+  set_input_variables(argc, argv, f_appended_name);  
   char *config_fname = new char[200];
 
   char *movie_data_fname = new char[200];
