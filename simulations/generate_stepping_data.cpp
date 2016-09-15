@@ -19,6 +19,8 @@
 const int INIT_DYNARR_LEN = 10;
 const bool logging_movie = true;
 const bool am_debugging_steps = false;
+const bool display_progress = false;
+const bool display_step_output = false;
 
 typedef struct {
   int num_steps;
@@ -161,7 +163,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   if (logging_movie && iteration % data_generation_skip_iterations == 0)
     log_stepping_movie_data(data_file, dyn, s, iteration);
 
-  if (iteration % 10 == 0 && iteration != max_iteration) {
+  if (iteration % 10 == 0 && iteration != max_iteration && display_progress) {
     printf("Stepping data progress (%s): %lld / %lld, %g%%                \r", run_msg,
 	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
@@ -174,11 +176,11 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
 }
 
 void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
-  printf("num_steps: %d\n", data->num_steps);
-  printf("dwell_time: %g\n", data->dwell_time);
+  if (display_step_output) printf("num_steps: %d\n", data->num_steps);
+  if (display_step_output) printf("dwell_time: %g\n", data->dwell_time);
   for (int i=0; i < data->step_times->get_length(); i++) {
-    printf("step_length: %g\n", data->step_lengths->get_data()[i]);
-    printf("step_time: %g\n", data->step_times->get_data()[i]);
+    if (display_step_output) printf("step_length: %g\n", data->step_lengths->get_data()[i]);
+    if (display_step_output) printf("step_time: %g\n", data->step_times->get_data()[i]);
   }
   char data_fname[200];
   sprintf(data_fname, "data/stepping_data_%s.txt", fname_base);
@@ -204,8 +206,8 @@ void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
 }
 
 void set_input_variables(int argc, char** argv, char* run_name) {
-  run_name = NULL;
   char c;
+  *run_name = 0;
 
   static struct option long_options[] =
     {
@@ -216,6 +218,7 @@ void set_input_variables(int argc, char** argv, char* run_name) {
       {"ct",     required_argument,    0, 'e'},
       {"T",      required_argument,    0, 'f'},
       {"name",   required_argument,    0, 'g'},
+      {"seed",   required_argument,    0, 'h'},
       {0, 0, 0, 0}
     };
 
@@ -252,7 +255,10 @@ void set_input_variables(int argc, char** argv, char* run_name) {
       T = strtod(optarg, NULL);
       break;
     case 'g':
-      run_name = optarg;
+      strcpy(run_name, optarg);
+      break;
+    case 'h':
+      RAND_INIT_SEED = atoi(optarg);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
@@ -267,7 +273,7 @@ void set_input_variables(int argc, char** argv, char* run_name) {
     printf("Improper usage, all options need an option name like -ls or -T!\n");
     exit(EXIT_FAILURE);
   }
-  if (run_name == NULL) {
+  if (run_name[0] == 0) {
     printf("name must be specified!\n");
     exit(EXIT_FAILURE);
   }
@@ -275,8 +281,9 @@ void set_input_variables(int argc, char** argv, char* run_name) {
 
 int main(int argc, char** argv) {
 
-  char* f_appended_name = NULL;
-  set_input_variables(argc, argv, f_appended_name);  
+  char* f_appended_name = new char[100];
+  set_input_variables(argc, argv, f_appended_name);
+
   char *config_fname = new char[200];
 
   char *movie_data_fname = new char[200];
