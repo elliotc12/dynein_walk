@@ -16,68 +16,48 @@
 #include "../dynein_struct.h"
 #include "simulation_defaults.h"
 
-const int INIT_DYNARR_LEN = 10;
 const bool logging_movie = true;
-const bool am_debugging_steps = false;
-const bool display_progress = false;
-const bool display_step_output = false;
+const bool display_step_info = false;
+const bool display_progress = true;
 
-typedef struct {
-  int num_steps;
-  DynArr* step_times;
-  DynArr* step_lengths;
-  double dwell_time;
-} stepping_data_struct;
+// typedef struct {
+//   int num_steps;
+//   DynArr* step_times;
+//   DynArr* step_lengths;
+//   double dwell_time;
+// } stepping_data_struct;
 
-void log_stepping_data(stepping_data_struct* data_struct, void* dyn, long long iteration, long long max_iteration, State s) {
-  static State last_state = BOTHBOUND;
-  static double last_nbx = ((Dynein_bothbound*) dyn)->get_nbx();
-  static double last_fbx = ((Dynein_bothbound*) dyn)->get_fbx();
+void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
+  static State  last_state = BOTHBOUND;
   static double last_bothbound_iteration = 0;
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-    if (last_state == NEARBOUND) {
-      double step_len = dyn_bb->get_fbx() - last_fbx;
-      data_struct->step_lengths->append(step_len);
-      last_fbx = dyn_bb->get_fbx();
+    if (last_state == NEARBOUND or last_state == FARBOUND) {
+      fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
 
-      double step_time = (iteration - last_bothbound_iteration)*dt;
-      data_struct->step_times->append(step_time);
-
-      data_struct->num_steps++;
-      if (am_debugging_steps) printf("\nSwitched from NB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
-    else if (last_state == FARBOUND) {
-      double step_len = dyn_bb->get_nbx() - last_nbx;
-      data_struct->step_lengths->append(step_len);
-      last_nbx = dyn_bb->get_nbx();
 
-      double step_time = (iteration - last_bothbound_iteration)*dt;
-      data_struct->step_times->append(step_time);
-
-      data_struct->num_steps++;
-      if (am_debugging_steps) printf("\nSwitched from FB to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
-    }
     last_bothbound_iteration = iteration;
     last_state = BOTHBOUND;
   }
   else if (s == NEARBOUND) {
     if (last_state != NEARBOUND) {
-      if (am_debugging_steps) printf("\nSwitched from BB to NB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (display_step_info) printf("\nSwitched from BB to NB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = NEARBOUND;
   }
   else if (s == FARBOUND) {
     if (last_state != FARBOUND) {
-      if (am_debugging_steps) printf("\nSwitched from BB to FB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      if (display_step_info) printf("\nSwitched from BB to FB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = FARBOUND;
   }
   else if (s == UNBOUND) {
     if (last_state != UNBOUND) {
-      data_struct->dwell_time = iteration*dt;
-      if (am_debugging_steps) printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+      fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, 0.0, 0.0);
+      if (display_step_info) printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = UNBOUND;
   }
@@ -156,53 +136,23 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   double start_time = *((double**) job_msg)[1];
   char* run_msg = ((char**) job_msg)[2];
 
-  stepping_data_struct* data_struct = ((stepping_data_struct**) job_msg)[3];
-  FILE* data_file = ((FILE**) job_msg)[4];
+  FILE* stepping_data_file = ((FILE**) job_msg)[3];
+  FILE* movie_data_file = ((FILE**) job_msg)[4];
 
-  log_stepping_data(data_struct, dyn, iteration, max_iteration, s);
+  log_stepping_data(stepping_data_file, dyn, iteration, max_iteration, s);
   if (logging_movie && iteration % data_generation_skip_iterations == 0)
-    log_stepping_movie_data(data_file, dyn, s, iteration);
+    log_stepping_movie_data(movie_data_file, dyn, s, iteration);
 
-  if (iteration % 10 == 0 && iteration != max_iteration && display_progress) {
-    printf("Stepping data progress (%s): %lld / %lld, %g%%                \r", run_msg,
-	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+  if (iteration % (int)5e5 == 0 && iteration != max_iteration && display_progress) {
+    printf("Stepping data progress (%s): %lld / %lld, %g%%\n", run_msg,
+  	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     fflush(NULL);
   }
 
   if (iteration == max_iteration) {
     printf("Finished generating stepping data (%s), process took %g seconds               \n", run_msg,
-	   ((double) clock() - start_time) / CLOCKS_PER_SEC);
+  	   ((double) clock() - start_time) / CLOCKS_PER_SEC);
   }
-}
-
-void make_stepping_data_file(stepping_data_struct* data, char* fname_base) {
-  if (display_step_output) printf("num_steps: %d\n", data->num_steps);
-  if (display_step_output) printf("dwell_time: %g\n", data->dwell_time);
-  for (int i=0; i < data->step_times->get_length(); i++) {
-    if (display_step_output) printf("step_length: %g\n", data->step_lengths->get_data()[i]);
-    if (display_step_output) printf("step_time: %g\n", data->step_times->get_data()[i]);
-  }
-  char data_fname[200];
-  sprintf(data_fname, "data/stepping_data_%s.txt", fname_base);
-
-  FILE* data_file = fopen(data_fname, "w");
-
-  fprintf(data_file, "#num_steps:\n");
-  fprintf(data_file, "%d\n", data->num_steps);
-
-  fprintf(data_file, "#step_lengths:\n");
-  for (int i=0; i<data->step_lengths->get_length(); i++) {
-    fprintf(data_file, "%g\n", data->step_lengths->get_data()[i]);
-  }
-  fprintf(data_file, "\n");
-
-  fprintf(data_file, "#step_times:\n");
-  for (int i=0; i<data->step_times->get_length(); i++) {
-    fprintf(data_file, "%g\n", data->step_times->get_data()[i]);
-  }
-  fprintf(data_file, "\n");
-
-  fclose(data_file);
 }
 
 void set_input_variables(int argc, char** argv, char* run_name) {
@@ -219,6 +169,7 @@ void set_input_variables(int argc, char** argv, char* run_name) {
       {"T",      required_argument,    0, 'f'},
       {"name",   required_argument,    0, 'g'},
       {"seed",   required_argument,    0, 'h'},
+      {"dG",     required_argument,    0, 'i'},
       {0, 0, 0, 0}
     };
 
@@ -260,6 +211,9 @@ void set_input_variables(int argc, char** argv, char* run_name) {
     case 'h':
       RAND_INIT_SEED = atoi(optarg);
       break;
+    case 'i':
+      DELTA_G_FORMATION_BINDING = strtod(optarg, NULL);
+      break;
     case '?':
       printf("Some other unknown getopt error.\n");
       exit(EXIT_FAILURE);
@@ -273,47 +227,39 @@ void set_input_variables(int argc, char** argv, char* run_name) {
     printf("Improper usage, all options need an option name like -ls or -T!\n");
     exit(EXIT_FAILURE);
   }
-  if (run_name[0] == 0) {
-    printf("name must be specified!\n");
-    exit(EXIT_FAILURE);
-  }
 }
 
 int main(int argc, char** argv) {
+  char* run_name = new char[100];
+  set_input_variables(argc, argv, run_name);
+  if (*run_name == 0) {
+    sprintf(run_name, "cb-%.3e,cm-%.3e,ct-%.3e,dG-%.3e", cb, cm, ct, DELTA_G_FORMATION_BINDING);
+  }
 
-  char* f_appended_name = new char[100];
-  set_input_variables(argc, argv, f_appended_name);
-
-  char *config_fname = new char[200];
+  char *stepping_data_fname = new char[200];
+  char *stepping_config_fname = new char[200];
 
   char *movie_data_fname = new char[200];
   char *movie_config_fname = new char[200];
 
-  sprintf(config_fname, "data/stepping_config_%s.txt", f_appended_name);
-  sprintf(movie_data_fname, "data/movie_%s.txt", f_appended_name);
-  sprintf(movie_config_fname, "data/movie_config_%s.txt", f_appended_name);
+  sprintf(stepping_data_fname, "data/stepping_data_%s.txt", run_name);
+  sprintf(stepping_config_fname, "data/stepping_config_%s.txt", run_name);
+  sprintf(movie_data_fname, "data/movie_%s.txt", run_name);
+  sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
 
   write_movie_config(movie_config_fname, iterations*dt);
-  write_config_file(config_fname, 0, "");
+  write_config_file(movie_config_fname, 0, "");
+
+  double current_time = clock();
 
   void* job_msg[5];
   job_msg[0] = (double*) &iterations;
-
-  double current_time = clock();
   job_msg[1] = &current_time;
-
-  char run_msg[512];
-  sprintf(run_msg, "seed = %d", (int) RAND_INIT_SEED);
-  job_msg[2] = run_msg;
-
-  stepping_data_struct data;
-  data.num_steps = 0;
-  data.dwell_time = 0.0;
-  data.step_times = new DynArr(INIT_DYNARR_LEN);
-  data.step_lengths = new DynArr(INIT_DYNARR_LEN);
-
-  job_msg[3] = &data;
+  job_msg[2] = run_name;
+  job_msg[3] = fopen(stepping_data_fname, "w");
   job_msg[4] = fopen(movie_data_fname, "w");
+
+  fprintf((FILE*) job_msg[3], "#time_unbind, time_bind, nbx, fbx\n");
 
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
@@ -323,11 +269,8 @@ int main(int argc, char** argv) {
   simulate(iterations*dt, RAND_INIT_SEED, BOTHBOUND, init_position,
 	   stepping_data_callback, job_msg, NULL);
 
-  make_stepping_data_file(&data, f_appended_name);
-
+  fclose((FILE*) job_msg[3]);
   fclose((FILE*) job_msg[4]);
-  delete data.step_times;
-  delete data.step_lengths;
 
   return EXIT_SUCCESS;
 }
