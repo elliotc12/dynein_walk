@@ -8,6 +8,18 @@ import sys
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea
 
+def get_stepping_data(data):
+    bind_times = np.array(data[:,1])
+    step_times = np.array(bind_times[1:] - bind_times[:-1])
+    near_positions = np.array(data[:,2])
+    far_positions = np.array(data[:,3])
+    near_step_idxs = near_positions[1:] != near_positions[:-1]
+    far_step_idxs = far_positions[1:] != far_positions[:-1]
+    near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
+    far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
+    step_lengths = np.concatenate((near_step_lens, far_step_lens))
+    return step_lengths, step_times
+
 def add_config_info(config_txt):
     ax = plt.gca()
     box = ax.get_position()
@@ -19,12 +31,11 @@ def add_config_info(config_txt):
 
 data_name = sys.argv[1]
 
-data_arr = np.loadtxt("data/stepping_data_" + data_name + ".txt", delimiter=",")
+data_arr = np.loadtxt("data/stepping_data_" + data_name + ".txt")
 config_txt = open("data/stepping_config_" + data_name + ".txt", "r").read()
 
-num_steps = data_arr[0]
-step_lengths = data_arr[1:num_steps+1]
-step_times = data_arr[num_steps+1:]
+step_lengths, step_times = get_stepping_data(data_arr)
+num_steps = len(step_lengths)
 
 #step length histogram
 fig = plt.figure()

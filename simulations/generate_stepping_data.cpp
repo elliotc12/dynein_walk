@@ -35,7 +35,6 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND or last_state == FARBOUND) {
       fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
@@ -247,6 +246,8 @@ int main(int argc, char** argv) {
   sprintf(movie_data_fname, "data/movie_%s.txt", run_name);
   sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
 
+  write_config_file(stepping_config_fname, 0, "");
+  
   write_movie_config(movie_config_fname, iterations*dt);
   write_config_file(movie_config_fname, 0, "");
 
