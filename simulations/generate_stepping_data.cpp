@@ -221,7 +221,7 @@ void set_input_variables(int argc, char** argv, char* run_name) {
   }
 
   if (optind != argc) {
-    printf("Improper usage, all options need an option name like -ls or -T!\n");
+    printf("Improper usage, all options need an option name like --Ls or --T!\n");
     exit(EXIT_FAILURE);
   }
 }
@@ -230,7 +230,7 @@ int main(int argc, char** argv) {
   char* run_name = new char[100];
   set_input_variables(argc, argv, run_name);
   if (*run_name == 0) {
-    sprintf(run_name, "cb-%.3e,cm-%.3e,ct-%.3e,dG-%.3e", cb, cm, ct, DELTA_G_FORMATION_BINDING);
+    sprintf(run_name, "cb-%.3e,cm-%.3e,ct-%.3e,dG-%.3e,T-%.3e", cb, cm, ct, DELTA_G_FORMATION_BINDING, T);
   }
 
   char *stepping_data_fname = new char[200];
