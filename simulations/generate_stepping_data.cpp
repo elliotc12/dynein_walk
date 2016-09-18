@@ -20,13 +20,6 @@ const bool logging_movie = true;
 const bool display_step_info = false;
 const bool display_progress = true;
 
-// typedef struct {
-//   int num_steps;
-//   DynArr* step_times;
-//   DynArr* step_lengths;
-//   double dwell_time;
-// } stepping_data_struct;
-
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
   static State  last_state = BOTHBOUND;
   static double last_bothbound_iteration = 0;
@@ -139,18 +132,23 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   FILE* movie_data_file = ((FILE**) job_msg)[4];
 
   log_stepping_data(stepping_data_file, dyn, iteration, max_iteration, s);
+
   if (logging_movie && iteration % data_generation_skip_iterations == 0)
     log_stepping_movie_data(movie_data_file, dyn, s, iteration);
 
-  if (iteration % (int)5e5 == 0 && iteration != max_iteration && display_progress) {
-    printf("Stepping data progress (%s): %lld / %lld, %g%%\n", run_msg,
-  	   iteration, max_iteration, ((double) iteration) / max_iteration * 100);
-    fflush(NULL);
-  }
+  if (max_iteration > 0) {
+    if (iteration % (int)5e5 == 0 && iteration != max_iteration && display_progress) {
+      printf("Stepping data progress (%s): %lld / %lld, %g%%\n", run_msg,
+  	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+    }
 
-  if (iteration == max_iteration) {
-    printf("Finished generating stepping data (%s), process took %g seconds               \n", run_msg,
-  	   ((double) clock() - start_time) / CLOCKS_PER_SEC);
+    if (iteration == max_iteration) {
+      printf("Finished generating stepping data (%s), process took %g seconds\n", run_msg,
+  	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
+    }
+  }
+  else if (max_iteration == 0 and iteration % (int)5e5 == 0) {
+    printf("Stepping data progress (%s): %.2g seconds\n", run_msg, iteration*dt);
   }
 }
 
@@ -243,32 +241,37 @@ int main(int argc, char** argv) {
 
   sprintf(stepping_data_fname, "data/stepping_data_%s.txt", run_name);
   sprintf(stepping_config_fname, "data/stepping_config_%s.txt", run_name);
-  sprintf(movie_data_fname, "data/movie_%s.txt", run_name);
+  sprintf(movie_data_fname, "data/movie_data_%s.txt", run_name);
   sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
 
   write_config_file(stepping_config_fname, 0, "");
   
   write_movie_config(movie_config_fname, iterations*dt);
-  write_config_file(movie_config_fname, 0, "");
 
   double current_time = clock();
+  int indefinite_run = 0;
 
   void* job_msg[5];
-  job_msg[0] = (double*) &iterations;
+  job_msg[0] = &indefinite_run;
   job_msg[1] = &current_time;
   job_msg[2] = run_name;
   job_msg[3] = fopen(stepping_data_fname, "w");
   job_msg[4] = fopen(movie_data_fname, "w");
 
+  printf("fname: %s\n", stepping_data_fname);
   fprintf((FILE*) job_msg[3], "#time_unbind, time_bind, nbx, fbx\n");
+
+  if (errno) {
+    perror("Error opening stepping data or movie file.\n");
+    exit(errno);
+  }
 
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
 			    eq.fma,
 			    0, 0, Ls};
 
-  simulate(iterations*dt, RAND_INIT_SEED, BOTHBOUND, init_position,
-	   stepping_data_callback, job_msg, NULL);
+  simulate(0, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, job_msg, NULL);
 
   fclose((FILE*) job_msg[3]);
   fclose((FILE*) job_msg[4]);
