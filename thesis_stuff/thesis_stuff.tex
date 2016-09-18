@@ -644,6 +644,26 @@ Both bothbound and onebound states show good agreement with the equipartition th
 \end{figure}
 
 \section{Physical Parameters}
+
+\begin{center}
+  \begin{tabular}{| l | l | l | l | l | l |}
+    \hline
+    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7\\\hline
+    Ls & 12nm & & & &\\ \hline
+    Lt &  & & & &\\ \hline
+    $\theta_{m}^{Pre}$ & & & & &\\ \hline
+    $\theta_{m}^{Post}$ & & & & &\\ \hline
+    $\theta_{b}$ & 56 & & & &\\ \hline
+    $\theta_{t}$ & 0 & & & &\\ \hline
+    $k_{ub}$ & $180 s^{-1,a}$ & & & &\\ \hline
+    $k_b$ & $1000 s^{-1,b}$ & & & &\\ \hline
+  \end{tabular}
+\end{center}
+
+a: The transition from post-stroke to prestroke in the Winch paper is given by three transitions: the binding of ATP ($k_{+ATP} = 2.2*10^{6} M^{-1}s^{-1}$), dissociation from the microtubule ($k_{-MT} = 460 s^{-1}$) and ATP hydrolysis/taking on the prestroke conformation ($k_{RS} = 180 s^{-1}$). We take the rate-limiting step $k_{RS}$ as our transition rate from bothbound to onebound.\\
+
+b: The transition from prestroke to poststroke in the Winch paper is given by three transitions: binding to the microtubule ($k_{+MT} = 10^4 s^{-1}$), releasing a phosphate from hydrolysis ($k_{-Pi} = 5000 s^{-1}$), the power stroke itself ($k_{PS} = 5000 s^{-1}$) and ADP release ($k_{-ADP} = 1000 s^{-1}$).\\
+
 \subsection{Stalk and tail length}
 Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and XXXX (pre and post-powerstroke) to find
 these values.
