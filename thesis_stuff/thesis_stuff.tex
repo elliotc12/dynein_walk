@@ -648,6 +648,12 @@ Both bothbound and onebound states show good agreement with the equipartition th
 Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and XXXX (pre and post-powerstroke) to find
 these values.
 
+\section{Interesting Crystal Structures}
+\textbf{3VKH} - 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
+\textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
+\textbf{3J1T/3J1U} 9.7A EM structure of tightly/loosly bound tubulin-MTBD binding from (Structural basis for microtubule binding and release by dynein).\\
+\textbf{4RH7} 2.3A x-ray crystal structure of dynein motor/stalk with ADP.Vi (pre-stroke) from (Structure of human cytoplasmic dynein-2 primed for its power stroke). Could be another good place to get angles for pre-stroke, since 3VKH is post-stroke.\\
+
 \section{Papers}
 \subsection{Winch Model (dx.doi.org/10.1016/j.bpj.2014.06.022)}
 -Communication between motors and BDs possible through $\alpha$-helix sliding. Bidirectional communication. [24,25]\\
@@ -693,19 +699,19 @@ Describes how ATP hydrolysis ``closes the ring,'' sterically interacting with th
 \subsection{3D Pre/Post-PS structures, there are two Pre-PS states!}
 Jianfeng Lin, Kyoko Okada, Milen Raytchev, Maria C. Smith \& Daniela Nicastro. ``Structural mechanism of the dynein power stroke.'' \textit{Nature Cell Biology} 2014. 16:479-485.
 
-This paper finds the 3D structures of both pre (3J68) and post (3J67)-powerstroke dynein. This paper is about \textbf{axonmenal} dynein, which seems to be wildly different from cytoplasmic dynein, but this paper doesn't really mention any differences. The paper claims there are three conformational states: prestroke-1 immediately after MT unbinding, prestroke-2 after MT-binding, then poststroke after the powerstroke. This paper claims that transitioning between the post and pre-powerstroke ``resembled an opening jackknife with an angular amplitude of ~65$^{\circ}$ or ~50$^{\circ}$, depending on which axonemal dynein. It is unclear what this jackknife metaphor is referring to - the linker?. They make the claim that \textit{rotation of the head is the principle mechanism of Dynein powerstroke, not linker remodelling}. They seem to be claiming that the major thing differentiating the three states is the motor domain/head angle. It starts out facing the MT in post-stroke, then rotates away from the MT by 50-70 degrees into pre-1, then rotates towards the MT by 20 degrees to enter pre-2.\\
+This paper finds the 3D structures of both pre (3J68) and post (3J67)-powerstroke dynein. This paper is about \textbf{axonmenal} dynein, which seems to be wildly different from cytoplasmic dynein, but this paper doesn't really mention any differences. The paper claims there are three conformational states: prestroke-1 immediately after MT unbinding, prestroke-2 after MT-binding, then poststroke after the powerstroke. This paper claims that transitioning between the post and pre-powerstroke ``resembled an opening jackknife with an angular amplitude of ~65$^{\circ}$ or ~50$^{\circ}$, depending on which axonemal dynein. It is unclear what this jackknife metaphor is referring to - the linker?. They make the claim that \textit{rotation of the head is the principle mechanism of Dynein powerstroke, not linker remodelling}. They seem to be claiming that the major thing differentiating the three states is the motor domain/head angle. It starts out facing the MT in post-stroke, then rotates away from the MT by 50-70 degrees into pre-1, then rotates towards the MT by 20 degrees to enter pre-2. Not entirely sure if it's all axonemal, since the PDB page for the structures says it's a cytoplasmic gene.\\
 
 These figures show different measurements for equilibrium angles from the data in this paper:\\
 
 \begin{figure}[h!]
   \centering
   \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../figures/OB_Average_PE.pdf}
+    \includegraphics[width=\textwidth]{../figures/Post_powerstroke_tomograph.jpg}
     \caption{Post-powerstroke equilibrium angles from EM tomography.}
   \end{minipage}
   \hspace{5mm}
   \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../figures/BB_Average_PE.pdf}
+    \includegraphics[width=\textwidth]{../figures/Pre_powerstroke_tomograph.jpg}
     \caption{Pre-powerstroke equilibrium angles from EM tomography.}
   \end{minipage}
   \label{fig:em_tomography_eq_angles}
