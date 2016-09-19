@@ -27,7 +27,7 @@ Y = [0, 1, 2, 3, 4]
 speed =  float(sys.argv[2][6:])
 
 config = numpy.loadtxt("data/movie_config_" + title + ".txt")
-data = numpy.loadtxt("data/movie_" + title + ".txt", delimiter="\t", skiprows=1)
+data = numpy.genfromtxt("data/movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
 plt.ion()
 
 if str(type(data[0])) == "<type 'numpy.float64'>":

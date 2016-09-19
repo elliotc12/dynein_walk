@@ -48,11 +48,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   
   double t = 0;
   long long iter = 0;
-  State current_state = init_state; 
+  State current_state = init_state;
 
-  while( t < runtime ) {
+  bool run_indefinite;
+  if (runtime == 0) run_indefinite = true;
+  else run_indefinite = false;
+
+  printf("Running indefinitely.\n");
+
+  while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
-      while (t < runtime) { // loop as long as it is onebound
+      while (t < runtime or run_indefinite) { // loop as long as it is onebound
 	if (am_debugging_rates) printf("OB unbinding probability: %g\n", dyn_ob->get_unbinding_rate()*dt);
 	if (am_debugging_rates) printf("OB binding probability: %g\n", dyn_ob->get_binding_rate()*dt);
 	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) { // unbind, switch to unbound
@@ -90,7 +96,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
       }
 
     if (current_state == BOTHBOUND) {
-      while (t < runtime) { // loop as long as it is bothbound
+      while (t < runtime or run_indefinite) { // loop as long as it is bothbound
 	if (am_debugging_rates) printf("BB near unbinding probability: %g\n", dyn_bb->get_near_unbinding_rate()*dt);
 	if (am_debugging_rates) printf("BB far unbinding probability: %g\n", dyn_bb->get_far_unbinding_rate()*dt);
 	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
@@ -131,13 +137,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
       }
     }
     if (current_state == UNBOUND) {
-      while (t < runtime) {
-	job(NULL, UNBOUND, job_msg, job_data, iter);
-	t += dt;
-	iter++;
-      }
+      job(NULL, UNBOUND, job_msg, job_data, iter);
+      goto end_simulation;
     }
   }
+
+ end_simulation:
   delete rand;
   if (dyn_bb == NULL) delete dyn_ob;
   else delete dyn_bb;

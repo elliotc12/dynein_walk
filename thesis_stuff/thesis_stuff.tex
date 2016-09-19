@@ -643,6 +643,37 @@ Both bothbound and onebound states show good agreement with the equipartition th
   \label{fig:equipartition_agreement}
 \end{figure}
 
+\section{Physical Parameters}
+
+\begin{center}
+  \begin{tabular}{| l | l | l | l | l | l |}
+    \hline
+    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7\\\hline
+    Ls & 12nm & & & &\\ \hline
+    Lt &  & & & &\\ \hline
+    $\theta_{m}^{Pre}$ & & & & &\\ \hline
+    $\theta_{m}^{Post}$ & & & & &\\ \hline
+    $\theta_{b}$ & 56 & & & &\\ \hline
+    $\theta_{t}$ & 0 & & & &\\ \hline
+    $k_{ub}$ & $180 s^{-1,a}$ & & & &\\ \hline
+    $k_b$ & $1000 s^{-1,b}$ & & & &\\ \hline
+  \end{tabular}
+\end{center}
+
+a: The transition from post-stroke to prestroke in the Winch paper is given by three transitions: the binding of ATP ($k_{+ATP} = 2.2*10^{6} M^{-1}s^{-1}$), dissociation from the microtubule ($k_{-MT} = 460 s^{-1}$) and ATP hydrolysis/taking on the prestroke conformation ($k_{RS} = 180 s^{-1}$). We take the rate-limiting step $k_{RS}$ as our transition rate from bothbound to onebound.\\
+
+b: The transition from prestroke to poststroke in the Winch paper is given by three transitions: binding to the microtubule ($k_{+MT} = 10^4 s^{-1}$), releasing a phosphate from hydrolysis ($k_{-Pi} = 5000 s^{-1}$), the power stroke itself ($k_{PS} = 5000 s^{-1}$) and ADP release ($k_{-ADP} = 1000 s^{-1}$).\\
+
+\subsection{Stalk and tail length}
+Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and XXXX (pre and post-powerstroke) to find
+these values.
+
+\section{Interesting Crystal Structures}
+\textbf{3VKH} - 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
+\textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
+\textbf{3J1T/3J1U} 9.7A EM structure of tightly/loosly bound tubulin-MTBD binding from (Structural basis for microtubule binding and release by dynein).\\
+\textbf{4RH7} 2.3A x-ray crystal structure of dynein motor/stalk with ADP.Vi (pre-stroke) from (Structure of human cytoplasmic dynein-2 primed for its power stroke). Could be another good place to get angles for pre-stroke, since 3VKH is post-stroke.\\
+
 \section{Papers}
 \subsection{Winch Model (dx.doi.org/10.1016/j.bpj.2014.06.022)}
 -Communication between motors and BDs possible through $\alpha$-helix sliding. Bidirectional communication. [24,25]\\
@@ -684,5 +715,26 @@ Has the stepping histograms we are trying to reproduce computationally.
 Schmidt, H*., Zalyte, R*., Urnavicius, L., Carter, AP. ``Structure of human cytoplasmic dynein-2 primed for its power stroke.'' \textit{Nature} 2014. 518:435-438.
 
 Describes how ATP hydrolysis ``closes the ring,'' sterically interacting with the linker to cause the pre-powerstroke conformation. Does so by presenting the crystal structure of Dynein AAA1-ADP.Vanadate. Goes over AAs responsible for nucleotide binding. Supplemental video of AAA1L-AAA2L gap closing in response to nucleotide-Vi binding. Supplemental video of linker swinging in response to ring closure. AAA2-4 system acts rigidly during the cycle. Discusses how steric clash is what makes the linker take on a 90-degree bent shape when the ring closes. Figure on Dynein-ADP buttress having no kink, whereas Dynein-ADP.Vi having a kink. The kink presumably changes MTDB binding affinity.
+
+\subsection{3D Pre/Post-PS structures, there are two Pre-PS states!}
+Jianfeng Lin, Kyoko Okada, Milen Raytchev, Maria C. Smith \& Daniela Nicastro. ``Structural mechanism of the dynein power stroke.'' \textit{Nature Cell Biology} 2014. 16:479-485.
+
+This paper finds the 3D structures of both pre (3J68) and post (3J67)-powerstroke dynein. This paper is about \textbf{axonmenal} dynein, which seems to be wildly different from cytoplasmic dynein, but this paper doesn't really mention any differences. The paper claims there are three conformational states: prestroke-1 immediately after MT unbinding, prestroke-2 after MT-binding, then poststroke after the powerstroke. This paper claims that transitioning between the post and pre-powerstroke ``resembled an opening jackknife with an angular amplitude of ~65$^{\circ}$ or ~50$^{\circ}$, depending on which axonemal dynein. It is unclear what this jackknife metaphor is referring to - the linker?. They make the claim that \textit{rotation of the head is the principle mechanism of Dynein powerstroke, not linker remodelling}. They seem to be claiming that the major thing differentiating the three states is the motor domain/head angle. It starts out facing the MT in post-stroke, then rotates away from the MT by 50-70 degrees into pre-1, then rotates towards the MT by 20 degrees to enter pre-2. Not entirely sure if it's all axonemal, since the PDB page for the structures says it's a cytoplasmic gene.\\
+
+These figures show different measurements for equilibrium angles from the data in this paper:\\
+
+\begin{figure}[h!]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../figures/Post_powerstroke_tomography.jpg}
+    \caption{Post-powerstroke equilibrium angles from EM tomography.}
+  \end{minipage}
+  \hspace{5mm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../figures/Pre_powerstroke_tomography.jpg}
+    \caption{Pre-powerstroke equilibrium angles from EM tomography.}
+  \end{minipage}
+  \label{fig:em_tomography_eq_angles}
+\end{figure}
 
 \end{document}

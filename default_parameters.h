@@ -1,7 +1,7 @@
 #include "dynein_struct.h"
 
 double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
-double T = 293.0; // K
+double T = 310.15; // K
 
 double Lt = 15.0; // nm, guess - not sure how DNA tail-bridge works
 double Ls = 21.22; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
