@@ -650,18 +650,20 @@ Both bothbound and onebound states show good agreement with the equipartition th
     \hline
     & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7\\\hline
     $L_s$ & 12nm & & & &\\ \hline
-    $L_t$ &  & & & &\\ \hline
+    $L_t$ &  7nm & & & &\\ \hline
     $R_b$ &  & & & &\\ \hline
-    $R_m$ &  & & & &\\ \hline
+    $R_m$ &  7nm & & & &\\ \hline
     $R_t$ &  & & & &\\ \hline
-    $\theta_{m}^{Pre}$ & & & 171$^{\circ}$ & &\\ \hline
-    $\theta_{m}^{Post}$ & & & 137.5$^{\circ}$ & &\\ \hline
+    $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & &\\ \hline
+    $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & &\\ \hline
     $\theta_{b}$ & 56$^{\circ}$ & & & &\\ \hline
     $\theta_{t}$ & 0$^{\circ}$ & & & &\\ \hline
     $k_{ub}$ & $180 s^{-1,a}$ & & & &\\ \hline
     $k_b$ & $5000 s^{-1,b}$ & & & &\\ \hline
   \end{tabular}
 \end{center}
+
+---- not sure if the Lin angles are right, since measuring the angle that the tail makes is \textit{not} necessarily the angle the angle the linker makes ----\\
 
 a: Sarlah \textit{et al} gives us two different rate constants which could represent the bothbound to onebound transition: motor dissociation from the microtubule ($k_{-MT} = 460 s^{-1}$) and ATP hydrolysis/taking on the prestroke conformation ($k_{RS} = 180 s^{-1}$). We take the rate-limiting step $k_{RS}$ as our transition rate from bothbound to onebound since it is the slower of the two.\\
 
@@ -690,8 +692,9 @@ these values.
 -rate constant simulation, does not do dynamics to take into account time spent in a state\\
 
 \textbf{Physical Parameters from Winch Model paper}:\\
-Sarlah et al. use the following physical parameters for Dynein: $L_s = 12$nm, $L_t = 14$nm, binding angle: 34 degrees from vertical, motor
-domain radius: 7nm, motor domain angle from vertical: 30 degrees, tail angle: 0 degrees between linkers when poststroke, 40 degrees when prestroke.
+Sarlah et al. use the following physical parameters for Dynein: $L_s = 12$nm binding angle: 34 degrees from vertical, motor
+domain radius: 7nm. Their angle scheme is different than ours in that it has the linker/tail facing towards the MT, which looks different
+from our facing-up tail. This might be a confusion on our part in the difference between the linker and the tail, but it may not. By assuming the linker starts at the top of the head and points downwards, we can calculate an estimate for tail length as $L_t = 7nm$.
 
 \subsection{Annual Review, 8-state Mechanochemical diagram}
 Cianfrocco, M*., DeSantis, M*., Leschziner, A., Reck-Peterson, S. ``Mechanism and Regulation of Cytoplasmic Dynein'' \textit{Annu. Rev. Cell. Dev. Biol.} 2015: 31:83-108.\\
@@ -739,6 +742,9 @@ These figures show different measurements for equilibrium angles from the data i
   \end{minipage}
   \label{fig:em_tomography_eq_angles}
 \end{figure}
+
+\subsection{2012 Kon Crystal Structure (3VKH)}
+This paper crystallizes a full-length and MTBD-truncation mutants. 3VKH is the full-length, but one MTBD of the dimer did not come out in the crystal structure.
 
 \section{Todo}
 \begin{itemize}
