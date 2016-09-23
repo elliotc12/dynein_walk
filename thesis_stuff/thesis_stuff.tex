@@ -649,10 +649,10 @@ Both bothbound and onebound states show good agreement with the equipartition th
   \begin{tabular}{| l | l | l | l | l | l |}
     \hline
     & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7\\\hline
-    $L_s$ & 12nm & & & &\\ \hline
-    $L_t$ &  7nm & & & &\\ \hline
-    $R_b$ &  & & & &\\ \hline
-    $R_m$ &  7nm & & & &\\ \hline
+    $L_s$ & 12nm & & 21.0nm & &\\ \hline
+    $L_t$ &  7nm & & 11.15nm & &\\ \hline
+    $R_b$ &  & & 1.57nm & &\\ \hline
+    $R_m$ &  7nm & & 7.36nm & &\\ \hline
     $R_t$ &  & & & &\\ \hline
     $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & &\\ \hline
     $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & &\\ \hline
@@ -670,11 +670,10 @@ a: Sarlah \textit{et al} gives us two different rate constants which could repre
 b: There are several Sarlah \textit{et al} rate constants we could use for the onebound to bothbound rate constant: binding to the microtubule ($k_{+MT} = 10^4 s^{-1}$), releasing a phosphate from hydrolysis ($k_{-Pi} = 5000 s^{-1}$) or the power stroke itself ($k_{PS} = 5000 s^{-1}$). We choose to represent the transition with $k_{-Pi} = 5000 s^{-1}$ because all these rates are fairly similar. We do not want to use the MT-binding rate because it could include both binding kinetics as well as MT-search kinetics, the latter of which we do not want to include in our binding rate.\\
 
 \subsection{Stalk and tail length}
-Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and XXXX (pre and post-powerstroke) to find
-these values.
+Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and 4RH7 (pre and post-powerstroke) to find these values. The linker is roughly residues 1250-1510, calculated by eye.\\
 
 \section{Interesting Crystal Structures}
-\textbf{3VKH} - 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
+\textbf{3VKH} 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
 \textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
 \textbf{3J1T/3J1U} 9.7A EM structure of tightly/loosly bound tubulin-MTBD binding from (Structural basis for microtubule binding and release by dynein).\\
 \textbf{4RH7} 2.3A x-ray crystal structure of dynein motor/stalk with ADP.Vi (pre-stroke) from (Structure of human cytoplasmic dynein-2 primed for its power stroke). Could be another good place to get angles for pre-stroke, since 3VKH is post-stroke.\\
