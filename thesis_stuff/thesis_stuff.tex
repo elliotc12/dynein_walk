@@ -663,9 +663,9 @@ Both bothbound and onebound states show good agreement with the equipartition th
   \end{tabular}
 \end{center}
 
-a: The transition from post-stroke to prestroke in the Winch paper is given by three transitions: the binding of ATP ($k_{+ATP} = 2.2*10^{6} M^{-1}s^{-1}$), dissociation from the microtubule ($k_{-MT} = 460 s^{-1}$) and ATP hydrolysis/taking on the prestroke conformation ($k_{RS} = 180 s^{-1}$). We take the rate-limiting step $k_{RS}$ as our transition rate from bothbound to onebound.\\
+a: Sarlah \textit{et al} gives us two different rate constants which could represent the bothbound to onebound transition: motor dissociation from the microtubule ($k_{-MT} = 460 s^{-1}$) and ATP hydrolysis/taking on the prestroke conformation ($k_{RS} = 180 s^{-1}$). We take the rate-limiting step $k_{RS}$ as our transition rate from bothbound to onebound since it is the slower of the two.\\
 
-b: The transition from prestroke to poststroke in the Winch paper is given by three transitions: binding to the microtubule ($k_{+MT} = 10^4 s^{-1}$), releasing a phosphate from hydrolysis ($k_{-Pi} = 5000 s^{-1}$), the power stroke itself ($k_{PS} = 5000 s^{-1}$) and ADP release ($k_{-ADP} = 1000 s^{-1}$).\\
+b: There are several Sarlah \textit{et al} rate constants we could use for the onebound to bothbound rate constant: binding to the microtubule ($k_{+MT} = 10^4 s^{-1}$), releasing a phosphate from hydrolysis ($k_{-Pi} = 5000 s^{-1}$) or the power stroke itself ($k_{PS} = 5000 s^{-1}$). We choose to represent the transition with $k_{-Pi} = 5000 s^{-1}$ because all these rates are fairly similar. We do not want to use the MT-binding rate because it could include both binding kinetics as well as MT-search kinetics, the latter of which we do not want to include in our binding rate.\\
 
 \subsection{Stalk and tail length}
 Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and XXXX (pre and post-powerstroke) to find
@@ -748,5 +748,6 @@ These figures show different measurements for equilibrium angles from the data i
 \item Generate a figure explaining how our model simplifies the rate constants in the Winch paper / annual review.
 \item Make a figure with PyMol visualizations with and without our model superimposed
 \item Calculate Dynein motor efficiency by finding friction work on cargo and energy of ATP.
+\item Fix generate-stepping-data non-printing bug.
 \end{itemize}
 \end{document}
