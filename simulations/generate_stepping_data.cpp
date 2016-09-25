@@ -149,6 +149,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   }
   else if (max_iteration == 0 and iteration % (int)5e5 == 0) {
     printf("Stepping data progress (%s): %.2g seconds\n", run_msg, iteration*dt);
+    fflush(stepping_data_file);
   }
 }
 
