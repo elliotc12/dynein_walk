@@ -174,7 +174,7 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 ########################### THESIS STUFF #################################
 
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex
-	cd thesis_stuff && xelatex thesis_stuff.tex && mv thesis_stuff.pdf ..
+	cd thesis_stuff && xelatex thesis_stuff.tex && xelatex thesis_stuff.tex && mv thesis_stuff.pdf ..
 
 clean:
 	rm -f *.txt
