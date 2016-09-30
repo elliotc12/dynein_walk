@@ -16,7 +16,6 @@
 #include "../dynein_struct.h"
 #include "simulation_defaults.h"
 
-const bool logging_movie = true;
 const bool display_step_info = false;
 const bool display_progress = true;
 
