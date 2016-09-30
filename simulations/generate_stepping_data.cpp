@@ -131,9 +131,11 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   FILE* stepping_data_file = ((FILE**) job_msg)[3];
   FILE* movie_data_file = ((FILE**) job_msg)[4];
 
+  bool am_making_movie = *((bool**) job_msg)[5];
+
   log_stepping_data(stepping_data_file, dyn, iteration, max_iteration, s);
 
-  if (logging_movie && iteration % data_generation_skip_iterations == 0)
+  if (am_making_movie && iteration % stepping_movie_framerate == 0)
     log_stepping_movie_data(movie_data_file, dyn, s, iteration);
 
   if (max_iteration > 0) {
@@ -153,7 +155,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   }
 }
 
-void set_input_variables(int argc, char** argv, char* run_name) {
+void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie) {
   char c;
   *run_name = 0;
 
@@ -168,6 +170,7 @@ void set_input_variables(int argc, char** argv, char* run_name) {
       {"name",   required_argument,    0, 'g'},
       {"seed",   required_argument,    0, 'h'},
       {"dG",     required_argument,    0, 'i'},
+      {"movie",  no_argument, (int*) am_making_movie, 1},
       {0, 0, 0, 0}
     };
 
@@ -229,7 +232,10 @@ void set_input_variables(int argc, char** argv, char* run_name) {
 
 int main(int argc, char** argv) {
   char* run_name = new char[100];
-  set_input_variables(argc, argv, run_name);
+  bool am_making_movie = 0;
+
+  set_input_variables(argc, argv, run_name, &am_making_movie);
+
   if (*run_name == 0) {
     sprintf(run_name, "cb-%.3e,cm-%.3e,ct-%.3e,dG-%.3e,T-%.3e", cb, cm, ct, DELTA_G_FORMATION_BINDING, T);
   }
@@ -246,18 +252,19 @@ int main(int argc, char** argv) {
   sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
 
   write_config_file(stepping_config_fname, 0, "");
-  
+
   write_movie_config(movie_config_fname, iterations*dt);
 
   double current_time = clock();
   int indefinite_run = 0;
 
-  void* job_msg[5];
+  void* job_msg[6];
   job_msg[0] = &indefinite_run;
   job_msg[1] = &current_time;
   job_msg[2] = run_name;
   job_msg[3] = fopen(stepping_data_fname, "w");
   job_msg[4] = fopen(movie_data_fname, "w");
+  job_msg[5] = &am_making_movie;
 
   printf("fname: %s\n", stepping_data_fname);
   fprintf((FILE*) job_msg[3], "#time_unbind, time_bind, nbx, fbx\n");
