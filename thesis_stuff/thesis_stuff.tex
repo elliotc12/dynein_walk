@@ -672,6 +672,21 @@ b: There are several Sarlah \textit{et al} rate constants we could use for the o
 \subsection{Stalk and tail length}
 Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and 4RH7 (pre and post-powerstroke) to find these values. The linker is roughly residues 1250-1510, calculated by eye.\\
 
+\subsection{Arrhenius Rate}
+Papers often supply rate constants for various transitions. Our model uses Arhennius-type rates which take into account the change in conformational energy from switching equilibrium angles, so we must
+convert between these two systems:
+
+\begin{align*}
+  k_{bind} &= Ae^{-\beta(\Delta G_{bind} + \Delta G_{conf})}\\
+  k_{bind} &= \left(Ae^{-\beta\Delta G_{bind}}\right)e^{-\beta\Delta G_{conf}}\\
+  k_{bind} &= Be^{-\beta\Delta G_{conf})}\hspace{2cm}\mbox{B constant at constant T}\\
+  \left<k_{bind}\right> &= \left<Be^{-\beta\Delta G_{conf}}\right>\\
+  \left<k_{bind}\right> &= Be^{-\beta\Delta \left<G_{conf}\right>}\\
+  \left<\Delta G_{conf}\right> &= \left(4-2\right)\left(\frac{1}{2}k_BT\right) = \beta^{-1}\\
+  \left<k_{bind}\right> &= Be^{-1}\\
+  \rightarrow B &= \frac{k_{bind}}{e}\\
+\end{align*}
+
 \section{Interesting Crystal Structures}
 \textbf{3VKH} 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
 \textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
@@ -746,7 +761,9 @@ These figures show different measurements for equilibrium angles from the data i
 This paper crystallizes a full-length and MTBD-truncation mutants. 3VKH is the full-length, but one MTBD of the dimer did not come out in the crystal structure.
 
 \subsection{Imamula Stepping Model}
-This is an older (2007) paper presenting a chemical model. It gives more MT dissociation constants for several different dyneins, and averages them as: $K_{d,pre} = 0.2uM$, $K_{d,post} > 10uM$. They determine these by adding a known concentration of Dynein apo, ATP, ADP-Pi or ADP, adding microtubules, removing MT-Dynein dimers and remeasuring concentration. These parameters are good in that equilibrium constants (as opposed to rate constants) \textit{don't} take into account kinetics, only free energy change...right?\\
+This is an older (2007) paper presenting a chemical model and giving rate constants for MT un/binding. Averages are: $K_{d,pre} = 0.2uM$, $K_{d,post} > 10uM$. They determine these by adding a known concentration of monomeric Dynein apo, ATP, ADP-Pi or ADP, adding microtubules, removing MT-Dynein dimers and remeasuring concentration. These parameters are good in that equilibrium constants (as opposed to rate constants) \textit{don't} take into account kinetics, only free energy change...right?\\
+
+Also, the paper says that axonemal dyneins have multiple motor domains, i.e aren't dimers, so that changes the results from the Lin paper. The binding angle is probably valid, though.\\
 
 \section{Todo}
 \begin{itemize}
