@@ -1,16 +1,18 @@
 CPPFLAGS = -std=c++11 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-.PHONY: clean figures
+FIGURES=$(patsubst %.svg,%.pdf,$(wildcard figures/*.svg))
+
+.PHONY: clean
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
 all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie plots/OB_Force_x_5e11_equal_legs.pdf thesis_stuff.pdf
 
-derivation.pdf: latex/derivation.tex figures
+derivation.pdf: latex/derivation.tex $(FIGURES)
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
 
-derivation_confirmation.pdf: latex/derivation_confirmation.tex figures
+derivation_confirmation.pdf: latex/derivation_confirmation.tex $(FIGURES)
 	cd latex && pdflatex derivation_confirmation.tex && mv derivation_confirmation.pdf ..
 
 test_bothbound.o: test_bothbound.cpp dynein_struct.h default_parameters.h
@@ -31,10 +33,10 @@ simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
 
-figures: figures/*
+$(FIGURES): $(wildcard figures/*.svg) figures/Makefile
 	cd figures && $(MAKE)
 
-paper.pdf: latex/paper.tex figures
+paper.pdf: latex/paper.tex $(FIGURES)
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
@@ -173,7 +175,7 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 
 ########################### THESIS STUFF #################################
 
-thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex figures
+thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex $(FIGURES)
 	cd thesis_stuff && xelatex thesis_stuff.tex && xelatex thesis_stuff.tex && mv thesis_stuff.pdf ..
 
 clean:
