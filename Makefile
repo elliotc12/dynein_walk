@@ -31,7 +31,7 @@ simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
 
-figures: figures/ *
+figures: figures/*
 	cd figures && $(MAKE)
 
 paper.pdf: latex/paper.tex figures
