@@ -33,8 +33,9 @@ simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
 test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
 	g++ -c test_onebound.cpp $(CPPFLAGS)
 
-$(FIGURES): $(wildcard figures/*.svg) figures/Makefile
-	cd figures && $(MAKE)
+figures/%.pdf: figures/Makefile figures/%.svg
+	rm -f $@
+	cd figures && $(MAKE) $(patsubst figures/%,%,$@)
 
 paper.pdf: latex/paper.tex $(FIGURES)
 	cd latex && pdflatex paper.tex && mv paper.pdf ..
@@ -203,3 +204,4 @@ clean:
 	rm -f *~
 	rm -f simulations/*~
 	rm -f *#
+	cd figures && $(MAKE) clean
