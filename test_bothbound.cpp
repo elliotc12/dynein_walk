@@ -237,7 +237,7 @@ int main(int argvc, char **argv) {
   { printf("\n**Two table-ish conformations with near/far domains flipped**\n");
 
     double t_nma = acos(Lt/(2*Ls));
-    
+
     bothbound_equilibrium_angles left_table_eq_angles = {
       M_PI - 2*t_nma + M_PI/3,
       t_nma,
