@@ -236,42 +236,27 @@ int main(int argvc, char **argv) {
 
   { printf("\n**Two table-ish conformations with near/far domains flipped**\n");
 
-    double t_nma = acos(Lt/(2*Ls));
+    double first_nma = 1.0; // acos(Lt/(2*Ls));
+    double second_nma = .5;
 
-    bothbound_equilibrium_angles left_table_eq_angles = {
-      M_PI - 2*t_nma + M_PI/3,
-      t_nma,
-      2*t_nma + M_PI/3,
-      2*M_PI - t_nma,
-      2*t_nma - M_PI/3
-    };
-
-    bothbound_equilibrium_angles right_table_eq_angles = {
-      2*t_nma - M_PI/3,
-      2*M_PI - t_nma,
-      -(2*t_nma + M_PI/3),
-      t_nma,
-      M_PI - 2*t_nma + M_PI/3
-    };
-
-    Dynein_bothbound left_dyn_bb(t_nma,                  // nma_init	       	
-				 2*M_PI - t_nma,         // fma_init	       	
+    Dynein_bothbound left_dyn_bb(first_nma,              // nma_init
+				 second_nma,             // fma_init
 				 0,                      // nbx_init	       	
 				 0,                      // nby_init	       	
 				 Ls,                     // L		       	
 				 NULL,                   // internal forces    
 				 &no_forces,             // brownian forces    
-				 &left_table_eq_angles,  // equilibrium angles 
+				 NULL,                   // equilibrium angles
 				 rand);                  // MTRand             
 
-    Dynein_bothbound right_dyn_bb(2*M_PI - t_nma,         // nma_init	       	
-				  t_nma,                  // fma_init	       	
+    Dynein_bothbound right_dyn_bb(second_nma,             // nma_init
+				  first_nma,              // fma_init
 				  Ls,                     // nbx_init	       	
 				  0,                      // nby_init	       	
 				  -Ls,                    // L		       	
 				  NULL,                   // internal forces    
 				  &no_forces,             // brownian forces    
-				  &right_table_eq_angles, // equilibrium angles 
+				  NULL,                   // equilibrium angles
 				  rand);                  // MTRand             
 
     printf("\tTesting coordinate definitions:\n");
