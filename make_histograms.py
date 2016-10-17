@@ -28,6 +28,3 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b} for ls in ls_range for lt in 
     ]
     print "Running: ", cmd
     subprocess.Popen(cmd)
-
-
-    download slurm!
