@@ -42,16 +42,16 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double low_affinity_binding_rate_experimental = 180; //s^-1
-//double low_affinity_unbinding_rate_experimental = ; //s^-1
-double low_affinity_unbinding_rate_experimental = 0; //s^-1
-double high_affinity_binding_rate_experimental = 5000; //s^-1
+double low_affinity_binding_rate = 180; //s^-1
+//double low_affinity_unbinding_rate = ; //s^-1
+double low_affinity_unbinding_rate = 0; //s^-1
+double high_affinity_binding_rate = 5000; //s^-1
 
 double e = exp(1.0);
 
-double low_affinity_binding_preexponential_factor = low_affinity_binding_rate_experimental/e;
-double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate_experimental/e;
-double high_affinity_unbinding_preexponential_factor = high_affinity_binding_rate_experimental/e;
+double low_affinity_binding_preexponential_factor = low_affinity_binding_rate/e;
+double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate/e;
+double high_affinity_unbinding_preexponential_factor = high_affinity_binding_rate/e;
 
 double DELTA_G_FORMATION_BINDING = 1e-10;
 

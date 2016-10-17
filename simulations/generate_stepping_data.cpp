@@ -160,15 +160,17 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
   static struct option long_options[] =
     {
-      {"Ls",     required_argument,    0, 'a'},
-      {"Lt",     required_argument,    0, 'b'},
-      {"cb",     required_argument,    0, 'c'},
-      {"cm",     required_argument,    0, 'd'},
-      {"ct",     required_argument,    0, 'e'},
-      {"T",      required_argument,    0, 'f'},
-      {"name",   required_argument,    0, 'g'},
-      {"seed",   required_argument,    0, 'h'},
-      {"dG",     required_argument,    0, 'i'},
+      {"Ls",       required_argument,    0, 'a'},
+      {"Lt",       required_argument,    0, 'b'},
+      {"cb",       required_argument,    0, 'c'},
+      {"cm",       required_argument,    0, 'd'},
+      {"ct",       required_argument,    0, 'e'},
+      {"T",        required_argument,    0, 'f'},
+      {"name",     required_argument,    0, 'g'},
+      {"seed",     required_argument,    0, 'h'},
+      {"k_b",      required_argument,    0, 'i'},
+      {"k_ub",     required_argument,    0, 'j'},
+      {"k_ub_ob",  required_argument,    0, 'k'},
       {"movie",  no_argument, (int*) am_making_movie, 1},
       {0, 0, 0, 0}
     };
@@ -212,7 +214,13 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       RAND_INIT_SEED = atoi(optarg);
       break;
     case 'i':
-      DELTA_G_FORMATION_BINDING = strtod(optarg, NULL);
+      low_affinity_binding_rate = strtod(optarg, NULL);
+      break;
+    case 'j':
+      high_affinity_binding_rate = strtod(optarg, NULL);
+      break;
+    case 'k':
+      low_affinity_unbinding_rate = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
