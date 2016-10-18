@@ -17,7 +17,7 @@
 #include "simulation_defaults.h"
 
 const bool display_step_info = false;
-const bool display_progress = true;
+const bool display_progress = false;
 
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
   static State  last_state = BOTHBOUND;
@@ -143,13 +143,13 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
     }
 
-    if (iteration == max_iteration) {
+    if (iteration == max_iteration and display_progress) {
       printf("Finished generating stepping data (%s), process took %g seconds\n", run_msg,
   	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
     }
   }
   else if (max_iteration == 0 and iteration % (int)5e5 == 0) {
-    printf("Stepping data progress (%s): %.2g seconds\n", run_msg, iteration*dt);
+    //printf("Stepping data progress (%s): %.2g seconds\n", run_msg, iteration*dt);
     fflush(stepping_data_file);
   }
 }
@@ -244,7 +244,7 @@ int main(int argc, char** argv) {
   set_input_variables(argc, argv, run_name, &am_making_movie);
 
   if (*run_name == 0) {
-    sprintf(run_name, "cb-%.3e,cm-%.3e,ct-%.3e,dG-%.3e,T-%.3e", cb, cm, ct, DELTA_G_FORMATION_BINDING, T);
+    sprintf(run_name, "ls-%.3e,lt-%.3e,k_b-%.3e,cb-%.3e,cm-%.3e,ct-%.3e,T-%.3e", Ls, Lt, low_affinity_binding_rate, cb, cm, ct, T);
   }
 
   char *stepping_data_fname = new char[200];
