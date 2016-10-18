@@ -21,6 +21,7 @@ k_b_range = np.linspace(k_b_min, k_b_max, num=k_b_num)
 
 for permutation in [{"ls": ls,"lt": lt,"k_b": k_b} for ls in ls_range for lt in lt_range for k_b in k_b_range]:
     cmd = [
+        "srun",
         "./generate_stepping_data",
         "--Ls", str(permutation["ls"]),
         "--Lt", str(permutation["lt"]),
