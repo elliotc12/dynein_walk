@@ -2,8 +2,10 @@ CPPFLAGS = -std=c++11 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
 FIGURES=$(patsubst %.svg,%.pdf,$(wildcard figures/*.svg))
+STEPPING_LENGTH_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_length_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
+STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_time_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
 
-.PHONY: clean
+.PHONY: clean histograms
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
@@ -88,18 +90,23 @@ plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_
 plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_plot.py data/bb_config_%.txt data/bothbound_data_%.bin
 	sh bb_plots.sh $*
 
+histograms:
+	make $(STEPPING_LENGTH_HISTOGRAMS)
+
 plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
+	./make_stepping_plots.py $*
+
+plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
 
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
 
-data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
-	mkdir -p data
-	make generate_stepping_data
-	./generate_stepping_data $*
-#touch data/stepping_config_$*.txt data/stepping_data_$*.txt data/stepping_movie_data_$*.txt
+#data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
+#	mkdir -p data
+#	make generate_stepping_data
+#	./generate_stepping_data $*
 
 movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
 	@echo "Use TITLE='yourtitle' to give plot a title"
