@@ -9,7 +9,7 @@ STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_tim
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie plots/OB_Force_x_5e11_equal_legs.pdf thesis_stuff.pdf
+all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie plots/OB_Force_x_5e11_equal_legs.pdf thesis_stuff.pdf generate_stepping_data
 
 derivation.pdf: latex/derivation.tex $(FIGURES)
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..

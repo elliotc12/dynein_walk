@@ -238,6 +238,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 }
 
 int main(int argc, char** argv) {
+  setvbuf(stdout, 0, _IONBF, 0);
   char* run_name = new char[100];
   bool am_making_movie = 0;
 
