@@ -954,11 +954,7 @@ double Dynein_onebound::get_binding_rate() {
 }
 
 double Dynein_onebound::get_unbinding_rate() {
-  return high_affinity_unbinding_preexponential_factor;
-  // if (f.bby + r.bby >= ONEBOUND_UNBINDING_FORCE) {
-  //   return high_affinity_unbinding_preexponential_factor*exp(-dG/kb/T);
-  // }
-  // else return 0.0;
+  return high_affinity_unbinding_preexponential_factor*exp(-PE_bba/kb/T);
 }
 
 /*** Set positions, velocities and forces ***/

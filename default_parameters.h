@@ -44,7 +44,7 @@ double dt = 1e-11;
 
 double low_affinity_binding_rate = 180; //s^-1
 //double low_affinity_unbinding_rate = ; //s^-1
-double low_affinity_unbinding_rate = 0; //s^-1
+double high_affinity_unbinding_rate = 0; //s^-1
 double high_affinity_binding_rate = 5000; //s^-1
 
 double e = exp(1.0);
