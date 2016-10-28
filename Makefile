@@ -9,7 +9,9 @@ STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_tim
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie plots/OB_Force_x_5e11_equal_legs.pdf thesis_stuff.pdf generate_stepping_data
+all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data
+
+histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
 derivation.pdf: latex/derivation.tex $(FIGURES)
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -100,6 +102,7 @@ plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%
 	./make_stepping_plots.py $*
 
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+	mkdir -p runlogs
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
 

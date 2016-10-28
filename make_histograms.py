@@ -3,7 +3,7 @@
 import numpy as np
 import subprocess
 
-assert(subprocess.call('make') == 0)
+assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 
 ls_min = 12.0 # nm
 ls_max = 22.1 # nm
@@ -27,11 +27,13 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b} for ls in ls_range for lt in 
         "./generate_stepping_data",
         "--Ls", str(permutation["ls"]),
         "--Lt", str(permutation["lt"]),
-        "--k_b", str(permutation["k_b"]),
+        "--k_b", str(permutation["k_b"])
     ]
     print "Running: ", cmd
-    basename = 'data/ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (permutation['ls'],
-                                                                       permutation['lt'], 'oops',
-                                                                       'cb', 'cm', 'ct', 'T')
-    out = open(basename+'.out', 'w')
+
+    basename = 'ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (permutation['ls'],
+                                                                  permutation['lt'],
+                                                                  permutation["k_b"],
+                                                                  'cb', 'cm', 'ct', 'T')
+    out = open('runlogs/' + basename + '.out', 'w')
     subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
