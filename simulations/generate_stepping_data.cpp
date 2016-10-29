@@ -217,11 +217,11 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       low_affinity_binding_rate = strtod(optarg, NULL);
       break;
     case 'j':
-      high_affinity_binding_rate = strtod(optarg, NULL);
-      break;
-    case 'k':
       low_affinity_unbinding_rate = strtod(optarg, NULL);
       break;
+    // case 'k':
+    //   high_affinity_unbinding_rate = strtod(optarg, NULL);
+    //   break;
     case '?':
       printf("Some other unknown getopt error.\n");
       exit(EXIT_FAILURE);

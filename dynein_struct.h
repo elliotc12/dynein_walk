@@ -49,9 +49,8 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
   MICROTUBULE_REPULSION_FORCE, MICROTUBULE_BINDING_DISTANCE,
   RAND_INIT_SEED, binding_preexponential_factor, D, tau,
-  low_affinity_binding_preexponential_factor,
-  low_affinity_unbinding_preexponential_factor,
-  high_affinity_unbinding_preexponential_factor,
+  low_affinity_unbinding_rate,
+  low_affinity_binding_rate,
   DELTA_G_FORMATION_BINDING;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;

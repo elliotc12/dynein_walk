@@ -62,14 +62,14 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	if (am_debugging_rates) printf("OB unbinding probability: %g\n", dyn_ob->get_unbinding_rate()*dt);
 	if (am_debugging_rates) printf("OB binding probability: %g\n", dyn_ob->get_binding_rate()*dt);
 	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) { // unbind, switch to unbound
-	  if (debug_stepping) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
+	  if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = UNBOUND;
 	  break;
 	}
 	else if (rand->rand() < dyn_ob->get_binding_rate()*dt) { // switch to bothbound
-	  if (debug_stepping) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
+	  if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
@@ -102,12 +102,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
 	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate()*dt;
 	if (unbind_near && unbind_far) {
-	  if (debug_stepping) printf("both MTBDs want to fall off!\n");
+	  if (debug_stepping or am_debugging_rates) printf("both MTBDs want to fall off!\n");
 	  if (iter % 2 == 0) unbind_far = false;
 	  else unbind_near = false;
 	}
 	if (unbind_near) { // switch to farbound
-	  if (debug_stepping) printf("\nswitch to onebound!\n");
+	  if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
 	  delete dyn_bb;
 	  dyn_bb = NULL;
@@ -115,7 +115,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
-	  if (debug_stepping) printf("\nswitch to onebound!\n");
+	  if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
 	  delete dyn_bb;
 	  dyn_bb = NULL;

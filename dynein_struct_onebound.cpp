@@ -948,13 +948,15 @@ void Dynein_onebound::update_velocities() {
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
     double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
+    double low_affinity_binding_preexponential_factor = low_affinity_binding_rate / exp(1.0);
     return low_affinity_binding_preexponential_factor*exp(-dG_spring/kb/T);
   }
   else return 0.0;
 }
 
 double Dynein_onebound::get_unbinding_rate() {
-  return high_affinity_unbinding_preexponential_factor*exp(-PE_bba/kb/T);
+  //return high_affinity_unbinding_preexponential_factor*exp(-PE_bba/kb/T);
+  return 0;
 }
 
 /*** Set positions, velocities and forces ***/
