@@ -40,8 +40,8 @@ gt = float(config[2])
 
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
-ax.set_xlim(-40,40)
-ax.set_ylim(-40,40)
+ax.set_xlim(-240,240)
+ax.set_ylim(-100,100)
 
 microtubule = plt.plot([-400, 400], [-2, -2])
 plt.xlabel('$x$ (nm)')
@@ -52,11 +52,11 @@ tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
 tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
-binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=5)
-motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=30)
-tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red", markersize=10)
-motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=30)
-binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=5)
+binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=3)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red", markersize=6)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18)
+binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=3)
 
 if force_vectors:
   force_line = [i for i in range(5)]
@@ -65,9 +65,9 @@ if force_vectors:
   for i in range(5):
     force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
 
-title_text = plt.text(-65, 45, 'State:')
-pe_text = plt.text(-65, 40, 'PE: ')
-t_text = plt.text(-65, -36, 't=:')
+title_text = plt.text(-280, 135, 'State:')
+pe_text = plt.text(-280, 130, 'PE: ')
+t_text = plt.text(-280, 125, 't=:')
 
 i = 0
 savefigframe = 0

@@ -5,6 +5,8 @@ FIGURES=$(patsubst %.svg,%.pdf,$(wildcard figures/*.svg))
 STEPPING_LENGTH_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_length_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
 STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_time_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
 
+STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/stepping_movie_%.gif, $(wildcard data/stepping_movie_data_*.txt))
+
 .PHONY: clean histograms
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
@@ -123,10 +125,14 @@ movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/stepping_%.gif: data/stepping_data_%.txt
+movies/stepping_movie_%.gif: data/stepping_data_%.txt
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=1
+
+stepping_movies:
+	echo $(STEPPING_MOVIES)
+	make $(STEPPING_MOVIES)
 
 data/ob_config_%.txt data/onebound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
 	mkdir -p data

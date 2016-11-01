@@ -256,7 +256,7 @@ int main(int argc, char** argv) {
 
   sprintf(stepping_data_fname, "data/stepping_data_%s.txt", run_name);
   sprintf(stepping_config_fname, "data/stepping_config_%s.txt", run_name);
-  sprintf(movie_data_fname, "data/movie_data_%s.txt", run_name);
+  sprintf(movie_data_fname, "data/stepping_movie_data_%s.txt", run_name);
   sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
 
   write_config_file(stepping_config_fname, 0, "");
@@ -266,12 +266,15 @@ int main(int argc, char** argv) {
   double current_time = clock();
   int indefinite_run = 0;
 
+  FILE* movie_stream = fopen(movie_data_fname, "w");
+  setvbuf(movie_stream, NULL, _IOLBF, 0); // turn on line-buffering for movie log
+
   void* job_msg[6];
   job_msg[0] = &indefinite_run;
   job_msg[1] = &current_time;
   job_msg[2] = run_name;
   job_msg[3] = fopen(stepping_data_fname, "w");
-  job_msg[4] = fopen(movie_data_fname, "w");
+  job_msg[4] = movie_stream;
   job_msg[5] = &am_making_movie;
 
   printf("fname: %s\n", stepping_data_fname);
