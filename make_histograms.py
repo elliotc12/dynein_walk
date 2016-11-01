@@ -13,13 +13,13 @@ lt_min = 7.0 # nm
 lt_max = 11.15 # nm
 lt_num = 2
 
-k_b_min = 5000 # s^-1
-k_b_max = 50000 # s^-1
-k_b_num = 3
+k_b_min = 180 # s^-1
+k_b_max = 1000 # s^-1
+k_b_num = 2
 
-T_min = 1000 # K
-T_max = 2000 # K
-T_num = 3
+T_min = 310.15 # K
+T_max = 310.15 # K
+T_num = 1
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
@@ -33,7 +33,8 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T} for ls in ls_range fo
         "--Ls", str(permutation["ls"]),
         "--Lt", str(permutation["lt"]),
         "--k_b", str(permutation["k_b"]),
-        "--T", str(permutation["T"])
+        "--T", str(permutation["T"]),
+        "--movie"
     ]
     print "Running: ", cmd
 

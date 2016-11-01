@@ -257,7 +257,7 @@ int main(int argc, char** argv) {
   sprintf(stepping_data_fname, "data/stepping_data_%s.txt", run_name);
   sprintf(stepping_config_fname, "data/stepping_config_%s.txt", run_name);
   sprintf(movie_data_fname, "data/stepping_movie_data_%s.txt", run_name);
-  sprintf(movie_config_fname, "data/movie_config_%s.txt", run_name);
+  sprintf(movie_config_fname, "data/stepping_movie_config_%s.txt", run_name);
 
   write_config_file(stepping_config_fname, 0, "");
 

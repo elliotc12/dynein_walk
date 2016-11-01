@@ -125,13 +125,12 @@ movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/stepping_movie_%.gif: data/stepping_data_%.txt
+movies/stepping_movie_%.gif: data/stepping_movie_data_%.txt
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=1
 
 stepping_movies:
-	echo $(STEPPING_MOVIES)
 	make $(STEPPING_MOVIES)
 
 data/ob_config_%.txt data/onebound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
