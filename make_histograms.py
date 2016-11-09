@@ -5,6 +5,14 @@ import subprocess
 
 assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 
+have_slurm = True
+
+try:
+    subprocess.check_call("slurm", shell=True)
+except (OSError, subprocess.CalledProcessError):
+    print "Not using slurm..."
+    have_slurm = False
+
 ls_min = 12.0 # nm
 ls_max = 22.1 # nm
 ls_num = 2
@@ -27,15 +35,15 @@ k_b_range = np.linspace(k_b_min, k_b_max, num=k_b_num)
 T_range = np.linspace(T_min, T_max, num=T_num)
 
 for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T} for ls in ls_range for lt in lt_range for k_b in k_b_range for T in T_range]:
-    cmd = [
-        "srun",
+    cmd = ["srun"] if have_slurm else []
+    cmd.extend([
         "./generate_stepping_data",
         "--Ls", str(permutation["ls"]),
         "--Lt", str(permutation["lt"]),
         "--k_b", str(permutation["k_b"]),
         "--T", str(permutation["T"]),
         "--movie"
-    ]
+    ])
     print "Running: ", cmd
 
     basename = 'ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (permutation['ls'],
