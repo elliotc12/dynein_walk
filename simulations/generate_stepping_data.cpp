@@ -154,7 +154,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   }
 }
 
-void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie) {
+void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie, int* runtime) {
   char c;
   *run_name = 0;
 
@@ -171,6 +171,13 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"k_b",      required_argument,    0, 'i'},
       {"k_ub",     required_argument,    0, 'j'},
       {"k_ub_ob",  required_argument,    0, 'k'},
+      {"runtime",  required_argument,    0, 'l'},
+      // {"runtime",  required_argument,    0, 'm'},
+      // {"runtime",  required_argument,    0, 'n'},
+      // {"runtime",  required_argument,    0, 'o'},
+      // {"runtime",  required_argument,    0, 'p'},
+      // {"runtime",  required_argument,    0, 'q'},
+      // {"runtime",  required_argument,    0, 'r'},
       {"movie",  no_argument, (int*) am_making_movie, 1},
       {0, 0, 0, 0}
     };
@@ -222,6 +229,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     // case 'k':
     //   high_affinity_unbinding_rate = strtod(optarg, NULL);
     //   break;
+    case 'l':
+      *runtime = (int) strtod(optarg, NULL);
+      break;
     case '?':
       printf("Some other unknown getopt error.\n");
       exit(EXIT_FAILURE);
@@ -242,7 +252,9 @@ int main(int argc, char** argv) {
   char* run_name = new char[100];
   bool am_making_movie = 0;
 
-  set_input_variables(argc, argv, run_name, &am_making_movie);
+  int runtime = 0;
+
+  set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
   if (*run_name == 0) {
     sprintf(run_name, "ls-%.3e,lt-%.3e,k_b-%.3e,cb-%.3e,cm-%.3e,ct-%.3e,T-%.3e", Ls, Lt, low_affinity_binding_rate, cb, cm, ct, T);
@@ -291,7 +303,7 @@ int main(int argc, char** argv) {
 			    eq.fma,
 			    0, 0, Ls};
 
-  simulate(0, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, job_msg, NULL);
+  simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, job_msg, NULL);
 
   fclose((FILE*) job_msg[3]);
   fclose((FILE*) job_msg[4]);
