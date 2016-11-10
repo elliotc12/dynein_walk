@@ -14,16 +14,16 @@ except (OSError, subprocess.CalledProcessError):
     have_slurm = False
 
 ls_min = 12.0 # nm
-ls_max = 22.1 # nm
-ls_num = 2
+ls_max = 12.0 # nm
+ls_num = 1
 
-lt_min = 7.0 # nm
-lt_max = 11.15 # nm
-lt_num = 2
+lt_min = 9.075 # nm
+lt_max = 9.075 # nm
+lt_num = 1
 
 k_b_min = 180 # s^-1
-k_b_max = 1000 # s^-1
-k_b_num = 2
+k_b_max = 180 # s^-1
+k_b_num = 1
 
 T_min = 310.15 # K
 T_max = 310.15 # K

@@ -279,6 +279,7 @@ int main(int argc, char** argv) {
 
   printf("fname: %s\n", stepping_data_fname);
   fprintf((FILE*) job_msg[3], "#time_unbind, time_bind, nbx, fbx\n");
+  fprintf((FILE*) job_msg[3], "#%s", run_name);
 
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
