@@ -34,7 +34,7 @@ lt_range = np.linspace(lt_min, lt_max, num=lt_num)
 k_b_range = np.linspace(k_b_min, k_b_max, num=k_b_num)
 T_range = np.linspace(T_min, T_max, num=T_num)
 
-runtime = 200000 * 10e-11
+runtime = 2000 * 10e-11
 
 for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T} for ls in ls_range for lt in lt_range for k_b in k_b_range for T in T_range]:
     cmd = ["srun"] if have_slurm else []

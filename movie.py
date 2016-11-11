@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 pe_coloring = True
 force_vectors = True
 
+view_width = 15
+
 def close_windows(*_):
   plt.close()
   sys.exit()
@@ -23,7 +25,7 @@ title = sys.argv[1]
 
 X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
-
+ 
 speed =  float(sys.argv[2][6:])
 
 config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
@@ -40,10 +42,10 @@ gt = float(config[2])
 
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
-ax.set_xlim(-240,240)
-ax.set_ylim(-100,100)
+ax.set_xlim(-view_width, view_width)
+ax.set_ylim(-view_width, view_width)
 
-microtubule = plt.plot([-400, 400], [-2, -2])
+microtubule = plt.plot([-view_width, view_width], [-2, -2])
 plt.xlabel('$x$ (nm)')
 plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
 
@@ -52,11 +54,11 @@ tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
 tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
-binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=3)
-motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18)
-tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red", markersize=6)
-motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18)
-binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=3)
+binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=1)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=9)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=6)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=9)
+binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=1)
 
 if force_vectors:
   force_line = [i for i in range(5)]
@@ -65,9 +67,9 @@ if force_vectors:
   for i in range(5):
     force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
 
-title_text = plt.text(-280, 135, 'State:')
-pe_text = plt.text(-280, 130, 'PE: ')
-t_text = plt.text(-280, 125, 't=:')
+title_text = plt.text(-view_width, 50, 'State:')
+pe_text = plt.text(-view_width, 50, 'PE: ')
+t_text = plt.text(-view_width+1, -view_width+1, 't=:')
 
 i = 0
 savefigframe = 0

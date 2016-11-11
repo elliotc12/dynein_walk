@@ -21,7 +21,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   if (init_state == BOTHBOUND) {
     dyn_ob = NULL;
     dyn_bb = new Dynein_bothbound(
-			          init_position[0],      // nma_init
+			      init_position[0],      // nma_init
 				  init_position[1],      // fma_init
 				  init_position[2],      // nbx_init
 				  init_position[3],      // nby_init
@@ -51,10 +51,13 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   State current_state = init_state;
 
   bool run_indefinite;
-  if (runtime == 0) run_indefinite = true;
-  else run_indefinite = false;
-
-  printf("Running indefinitely.\n");
+  if (runtime == 0) {
+	run_indefinite = true;
+    printf("Running indefinitely.\n");
+  } else {
+	run_indefinite = false;
+	printf("Running for %g s\n", runtime);
+  }
 
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)

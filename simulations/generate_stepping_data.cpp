@@ -154,7 +154,7 @@ void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_
   }
 }
 
-void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie, int* runtime) {
+void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie, double* runtime) {
   char c;
   *run_name = 0;
 
@@ -230,7 +230,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     //   high_affinity_unbinding_rate = strtod(optarg, NULL);
     //   break;
     case 'l':
-      *runtime = (int) strtod(optarg, NULL);
+      *runtime = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
@@ -252,7 +252,7 @@ int main(int argc, char** argv) {
   char* run_name = new char[100];
   bool am_making_movie = 0;
 
-  int runtime = 0;
+  double runtime = 0;
 
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
