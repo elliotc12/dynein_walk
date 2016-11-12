@@ -55,18 +55,27 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
+  const char *format = "%d\t"
+                       "%.10g\t"
+                       "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+                       "%g\t%g\t%g\t%g\t"
+                       "%g\t%g\t%g\t%g\t"
+                       "%g\t%g\t"
+                       "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+                        "\n";
   if (s == NEARBOUND or s == FARBOUND) {
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
     onebound_forces dyn_ob_f = dyn_ob->get_internal();
-    fprintf(data_file,
-	    "%d\t"
-	    "%.2g\t"
-	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
-	    "\n",
+    fprintf(data_file, format,
+	    dyn_ob->get_state(),
+	    iteration*dt,
+	    dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
+	    dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+	    dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
+	    dyn_ob->get_ubx(), dyn_ob->get_uby(),
+	    dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
+	    dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+    printf(format,
 	    dyn_ob->get_state(),
 	    iteration*dt,
 	    dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
@@ -79,15 +88,16 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   else if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     bothbound_forces dyn_bb_f = dyn_bb->get_internal();
-    fprintf(data_file,
-	    "%d\t"
-	    "%.2g\t"
-	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
-	    "\n",
+    fprintf(data_file, format,
+	    BOTHBOUND,
+	    iteration*dt,
+	    dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
+	    dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
+	    dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
+	    dyn_bb->get_fbx(), dyn_bb->get_fby(),
+	    dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
+	    dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
+    printf(format,
 	    BOTHBOUND,
 	    iteration*dt,
 	    dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
@@ -98,15 +108,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 	    dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
   }
   else if (s == UNBOUND) {
-    fprintf(data_file,
-	    "%d\t"
-	    "%.2g\t"
-	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t"
-	    "%g\t%g\t"
-	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
-	    "\n",
+    fprintf(data_file, format,
 	    UNBOUND,
 	    iteration*dt,
 	    0.0, 0.0, 0.0, 0.0, 0.0,

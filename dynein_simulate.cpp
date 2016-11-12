@@ -62,16 +62,18 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
-	if (am_debugging_rates) printf("OB unbinding probability: %g\n", dyn_ob->get_unbinding_rate()*dt);
-	if (am_debugging_rates) printf("OB binding probability: %g\n", dyn_ob->get_binding_rate()*dt);
-	if (rand->rand() < dyn_ob->get_unbinding_rate()*dt) { // unbind, switch to unbound
+        double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
+        double binding_prob = dyn_ob->get_binding_rate()*dt;
+	if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
+	if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
+	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
 	  if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = UNBOUND;
 	  break;
 	}
-	else if (rand->rand() < dyn_ob->get_binding_rate()*dt) { // switch to bothbound
+	else if (rand->rand() < binding_prob) { // switch to bothbound
 	  if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  delete dyn_ob;
@@ -80,6 +82,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else { // move like normal
+          printf("I am in a normal case!\n");
 	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  iter++;
@@ -100,10 +103,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
     if (current_state == BOTHBOUND) {
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
-	if (am_debugging_rates) printf("BB near unbinding probability: %g\n", dyn_bb->get_near_unbinding_rate()*dt);
-	if (am_debugging_rates) printf("BB far unbinding probability: %g\n", dyn_bb->get_far_unbinding_rate()*dt);
-	bool unbind_near = rand->rand() < dyn_bb->get_near_unbinding_rate()*dt;
-	bool unbind_far = rand->rand() < dyn_bb->get_far_unbinding_rate()*dt;
+        double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
+        double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
+	if (am_debugging_rates) printf("BB near unbinding probability: %g\n", near_unbinding_prob);
+	if (am_debugging_rates) printf("BB far unbinding probability: %g\n", far_unbinding_prob);
+	bool unbind_near = rand->rand() < near_unbinding_prob;
+	bool unbind_far = rand->rand() < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
 	  if (debug_stepping or am_debugging_rates) printf("both MTBDs want to fall off!\n");
 	  if (iter % 2 == 0) unbind_far = false;

@@ -4,8 +4,6 @@
 
 #include "dynein_struct.h"
 
-static bool BB_PHYSICAL = true;
-
 inline double sqr(double x) {
   return x*x;
 }
@@ -198,7 +196,19 @@ void Dynein_bothbound::update_coordinates() {
   // angle of stalks from horizontal
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
+  if (nba < 0 or nba > M_PI) {
+    printf("crazy nba, I am giving up.  %g. comes from fmy = %g and dx = %g\n",
+           nba, nmy, nmx - nbx);
+    exit(1);
+  }
+  if (fba < 0 or fba > M_PI) {
+    printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+           fba, fmy, fmx - (nbx + L));
+    exit(1);
+  }
   ta = fma - nma + fba - nba;
+
+  static bool BB_PHYSICAL = true;
 
   //assert(Ln + Lf > fabs(L)); // Triangle inequality!
   if (Ln + Lf <= fabs(L) and BB_PHYSICAL) {
@@ -214,6 +224,16 @@ void Dynein_bothbound::update_coordinates() {
   if (fma == M_PI and BB_PHYSICAL) {
     printf("Simulation unphysical, fma == M_PI\n");
     BB_PHYSICAL = false;
+  }
+  if (fma < 0 or fma > 2*M_PI) {
+    printf("fma angle is crazy man! %g\n", fma);
+  } else {
+    printf("fma angle is cool:      %g\n", fma);
+  }
+  if (nma < 0 or nma > 2*M_PI) {
+    printf("nma angle is crazy man! %g\n", nma);
+  } else {
+    printf("nma angle is cool:      %g\n", nma);
   }
 }
 
