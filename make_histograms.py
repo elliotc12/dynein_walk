@@ -8,7 +8,7 @@ assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 have_slurm = True
 
 try:
-    subprocess.check_call("slurm", shell=True)
+    subprocess.check_call("squeue > /dev/null", shell=True)
 except (OSError, subprocess.CalledProcessError):
     print "Not using slurm..."
     have_slurm = False
@@ -47,7 +47,7 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T} for ls in ls_range fo
         "--runtime", str(runtime),
         "--movie"
     ])
-    print "Running: ", cmd
+    print "Running: ", ' '.join(cmd)
 
     basename = 'ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (permutation['ls'],
                                                                   permutation['lt'],
