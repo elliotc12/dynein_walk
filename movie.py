@@ -212,7 +212,7 @@ while i < len(data):
 
   fname = 'PNGs/%s-%06d.png' % (title, savefigframe)
   plt.savefig(fname)
-  sys.stdout.write("video progress: %f\%\r" % (i/len(data)*100))
+  sys.stdout.write("video progress: %f%%\r" % (i/len(data)*100))
   sys.stdout.flush()
 
 # avconv may not be present on non-Debian-related systems, in which
