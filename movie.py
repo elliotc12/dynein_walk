@@ -1,15 +1,14 @@
 #! /usr/bin/env python2.7
 
-import math
-import numpy
-import time
-import signal
-import sys
-import os
+import numpy, time, signal, sys, os, matplotlib
+if 'show' not in sys.argv:
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-pe_coloring = True
-force_vectors = True
+os.system("mkdir -p PNGs") # ensure the PNGs directory exists.
+
+pe_coloring = 'energies' in sys.argv
+force_vectors = 'forces' in sys.argv
 
 view_width = 15
 
@@ -17,15 +16,27 @@ def close_windows(*_):
   plt.close()
   sys.exit()
 
+usage = '''
+Usage: python2 TITLE %s speed=N [show] [forces] [energies]"
+       show: show animation in a window while generating movie
+             omitting show makes %s faster but less exciting to watch
+     forces: plot forces in movie
+   energies: color circles using potential energies
+''' % (sys.argv[0], sys.argv[0])
+
 if len(sys.argv) < 2:
-  print "Usage: ./plot.py speed=n [loop / step / save'/'savename]"
+  print usage
   sys.exit(1)
 
 title = sys.argv[1]
 
 X = [0, 1, 2, 3, 4]
 Y = [0, 1, 2, 3, 4]
- 
+
+if sys.argv[2][:6] != 'speed=':
+  print usage
+  print 'ERROR: second argument must start with speed=!'
+  exit(1)
 speed =  float(sys.argv[2][6:])
 
 config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
@@ -199,12 +210,22 @@ while i < len(data):
   plt.pause(0.001)
   savefigframe += 1
 
-  fname = 'PNGs/%s-%03d.png' % (title, savefigframe)
+  fname = 'PNGs/%s-%06d.png' % (title, savefigframe)
   plt.savefig(fname)
-  sys.stdout.write("video progress: %f\r" % (i/len(data)*100))
+  sys.stdout.write("video progress: %f\%\r" % (i/len(data)*100))
   sys.stdout.flush()
 
-os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
+# avconv may not be present on non-Debian-related systems, in which
+# case you may be able to substitute ffmpeg.
+framerate = 30
+avconv = "avconv -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
+print(avconv)
+os.system(avconv) # make the movie
+
+# using convert to create a gif can be handy for small files
+# os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
+
+
 # os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
 #             " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (title, title))
 os.system("rm PNGs/*")
