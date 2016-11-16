@@ -259,7 +259,7 @@ int main(int argc, char** argv) {
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
   if (*run_name == 0) {
-    sprintf(run_name, "ls-%.3e,lt-%.3e,k_b-%.3e,cb-%.3e,cm-%.3e,ct-%.3e,T-%.3e", Ls, Lt, low_affinity_binding_rate, cb, cm, ct, T);
+    sprintf(run_name, "ls-%g,lt-%g,k_b-%g,cb-%g,cm-%g,ct-%g,T-%g", Ls, Lt, low_affinity_binding_rate, cb, cm, ct, T);
   }
 
   char *stepping_data_fname = new char[200];
