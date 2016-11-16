@@ -67,6 +67,31 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   rand = mtrand;
 
   update_velocities();
+
+  if (am_debugging_conversions) {
+    printf("DEBUG:\nDEBUG: creating bothbound from onebound!\n");
+    if (old_dynein->get_state() == State::NEARBOUND) {
+      printf("DEBUG: nbx/bbx = %8g vs %8g  nby/bby = %8g vs %8g\n",
+             nbx, old_dynein->get_bbx(), nby, old_dynein->get_bby());
+      printf("DEBUG: nmx/bmx = %8g vs %8g  nmy/bmy = %8g vs %8g\n",
+             nmx, old_dynein->get_bmx(), nmy, old_dynein->get_bmy());
+      printf("DEBUG: fmx/umx = %8g vs %8g  fmy/umy = %8g vs %8g\n",
+             get_fmx(), old_dynein->get_umx(), get_fmy(), old_dynein->get_umy());
+      printf("DEBUG: fbx/ubx = %8g vs %8g  fby/uby = %8g vs %8g\n",
+             get_fbx(), old_dynein->get_ubx(), get_fby(), old_dynein->get_uby());
+    } else {
+      printf("DEBUG: nbx/ubx = %8g vs %8g  nby/uby = %8g vs %8g\n",
+             nbx, old_dynein->get_ubx(), nby, old_dynein->get_uby());
+      printf("DEBUG: nmx/umx = %8g vs %8g  nmy/umy = %8g vs %8g\n",
+             nmx, old_dynein->get_umx(), nmy, old_dynein->get_umy());
+      printf("DEBUG: fmx/bmx = %8g vs %8g  fmy/bmy = %8g vs %8g\n",
+             get_fmx(), old_dynein->get_bmx(), get_fmy(), old_dynein->get_bmy());
+      printf("DEBUG: fbx/bbx = %8g vs %8g  fby/bby = %8g vs %8g\n",
+             get_fbx(), old_dynein->get_bbx(), get_fby(), old_dynein->get_bby());
+    }
+    printf("DEBUG:      tx = %8g vs %8g       ty = %8g vs %8g\n",
+           get_tx(), old_dynein->get_tx(), get_ty(), old_dynein->get_ty());
+  }
 }
 
 void Dynein_bothbound::update_brownian_forces() {
@@ -187,6 +212,12 @@ void Dynein_bothbound::update_coordinates() {
   sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
   nmx = nbx + Ls*(cosAn*cosAns - sinAn*sinAns);
+  if (isnan(nmx)) {
+    printf("DEBUG: bad nmx! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+           cosAn, sinAn, cosAns, sinAns);
+    printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
+           L, Ln, Lf, Lf-Ln);
+  }
   nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns);
   tx = nbx + Ln*cosAn;
   ty = nby + Ln*sinAn;
@@ -197,14 +228,20 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
-    printf("crazy nba, I am giving up.  %g. comes from fmy = %g and dx = %g\n",
+    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
            nba, nmy, nmx - nbx);
     exit(1);
+  } else {
+    printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
+           nba, nmy, nmx - nbx);
   }
   if (fba < 0 or fba > M_PI) {
     printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx + L));
     exit(1);
+  } else {
+    printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
+           fba, fmy, fmx - (nbx+L));
   }
   ta = fma - nma + fba - nba;
 

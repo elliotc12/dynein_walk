@@ -82,7 +82,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else { // move like normal
-          printf("I am in a normal case!\n");
 	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  iter++;

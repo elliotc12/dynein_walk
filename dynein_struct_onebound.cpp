@@ -70,6 +70,27 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
   rand = mtrand;
 
   update_velocities();
+
+  if (am_debugging_conversions) {
+    printf("DEBUG:\nDEBUG: creating onebound from bothbound!\n");
+    if (get_state() == State::NEARBOUND) {
+      printf("DEBUG: nbx/bbx = %8g vs %8g  nby/bby = %8g vs %8g\n",
+             old_dynein->get_nbx(), get_bbx(), old_dynein->get_nby(), get_bby());
+      printf("DEBUG: nmx/bmx = %8g vs %8g  nmy/bmy = %8g vs %8g\n",
+             old_dynein->get_nmx(), get_bmx(), old_dynein->get_nmy(), get_bmy());
+      printf("DEBUG: fbx/ubx = %8g vs %8g  fby/uby = %8g vs %8g\n",
+             old_dynein->get_fbx(), get_ubx(), old_dynein->get_fby(), get_uby());
+    } else {
+      printf("DEBUG: nbx/ubx = %8g vs %8g  nby/uby = %8g vs %8g\n",
+             old_dynein->get_nbx(), get_ubx(), old_dynein->get_nby(), get_uby());
+      printf("DEBUG: nmx/umx = %8g vs %8g  nmy/umy = %8g vs %8g\n",
+             old_dynein->get_nmx(), get_umx(), old_dynein->get_nmy(), get_umy());
+      printf("DEBUG: fbx/bbx = %8g vs %8g  fby/bby = %8g vs %8g\n",
+             old_dynein->get_fbx(), get_bbx(), old_dynein->get_fby(), get_bby());
+    }
+    printf("DEBUG:      tx = %8g vs %8g       ty = %8g vs %8g\n",
+           old_dynein->get_tx(), get_tx(), old_dynein->get_ty(), get_ty());
+  }
 }
 
 void Dynein_onebound::update_brownian_forces() {
