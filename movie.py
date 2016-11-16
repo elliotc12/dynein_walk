@@ -78,15 +78,18 @@ if force_vectors:
   for i in range(5):
     force_line[i], = plt.plot([X[i], X[i]], [Y[i],Y[i]], 'r-')
 
-title_text = plt.text(-view_width, 50, 'State:')
+title_text = plt.text(-.9*view_width, 0.9*view_width, 'State:')
+num_steps_text = plt.text(-.9*view_width, 0.8*view_width, '0 steps')
 pe_text = plt.text(-view_width, 50, 'PE: ')
-t_text = plt.text(-view_width+1, -view_width+1, 't=:')
+t_text = plt.text(-view_width+1, -view_width+1, 'Time:')
 
 i = 0
 savefigframe = 0
 
 signal.signal(signal.SIGINT, close_windows)
 
+num_steps = 0
+previous_state = data[0][0]
 while i < len(data):
   if i >= len(data):
     i = 0
@@ -124,6 +127,10 @@ while i < len(data):
   motor2.set_data(X[3], Y[3])
   binding2.set_data(X[4], Y[4])
 
+  if data[i][0] != previous_state:
+    num_steps += 0.5 # we took another half step!
+    previous_state = data[i][0]
+    num_steps_text.set_text('%g steps' % num_steps)
   if (data[i][0] == 0):
     title_text.set_text('State: Nearbound')
     stalk1.set_linestyle('-')
@@ -204,7 +211,8 @@ while i < len(data):
 
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
 
-  t_text.set_text("Progress: {:3.1f}%".format(i/len(data)*100))
+  # t_text.set_text("Progress: {:3.1f}%".format(i/len(data)*100))
+  t_text.set_text("Time: {:g} ns".format(1e9*data[i][1]))
 
   i += speed
   plt.pause(0.001)
