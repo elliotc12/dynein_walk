@@ -5,6 +5,7 @@ if 'show' not in sys.argv:
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+os.system("rm -rf PNGs") # ensure the PNGs directory is empty.
 os.system("mkdir -p PNGs") # ensure the PNGs directory exists.
 
 pe_coloring = 'energies' in sys.argv
@@ -236,4 +237,4 @@ os.system(avconv) # make the movie
 
 # os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
 #             " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (title, title))
-os.system("rm PNGs/*")
+
