@@ -264,9 +264,8 @@ double Power(double num, int pow) {
   else if (pow == 3) return num*num*num;
   else if (pow == 4) return num*num*num*num;
   else if (pow == 5) return num*num*num*num*num;
-  else if (pow == 5) return num*num*num*num*num*num;
-  else if (pow == 6) return num*num*num*num*num*num*num;
-  else if (pow == 7) return num*num*num*num*num*num*num*num;
+  else if (pow == 6) return num*num*num*num*num*num;
+  else if (pow == 7) return num*num*num*num*num*num*num;
   else {
     printf("Need more power!\n");
     exit(pow);
