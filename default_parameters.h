@@ -10,11 +10,11 @@ double T = 310.15; // K
 double Lt = 7.0;  // nm, guess - not sure how DNA tail-bridge works
 double Ls = 12.0; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
-// tail domain radius, not sure how to get since no info on DNA tail-bridge
+// tail domain radius, derived from PyMol, see thesis_stuff
 double fake_radius_t = 2.16;  // nm
-// motor domain radius, derived from PyMol, motor radius 148.6 angstroms
+// motor domain radius, derived from PyMol, see thesis_stuff
 double fake_radius_m = 7.36; // nm
-// binding domain radius, derived from PyMol, binding radius 14.78 angstroms
+// binding domain radius, derived from PyMol, see thesis_stuff
 double fake_radius_b = 1.57; // nm
 
 // water viscosity is about 0.7 mPa s = 7e-4 Pa s = 7e-4 m^2 * kg/s / m^3
