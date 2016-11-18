@@ -274,14 +274,14 @@ double Power(double num, int pow) {
 
 void Dynein_onebound::update_velocities() {
   if (bma < -M_PI or bma > M_PI) {
-    printf("bma angle is crazy man! %g\n", bma);
+    if (am_debugging_angles) printf("bma angle is crazy man! %g\n", bma);
   } else {
-    printf("bma angle is cool:      %g\n", bma);
+    if (am_debugging_angles) printf("bma angle is cool:      %g\n", bma);
   }
   if (uma < -M_PI or uma > M_PI) {
-    printf("uma angle is crazy man! %g\n", uma);
+    if (am_debugging_angles) printf("uma angle is crazy man! %g\n", uma);
   } else {
-    printf("uma angle is cool:      %g\n", uma);
+    if (am_debugging_angles) printf("uma angle is cool:      %g\n", uma);
   }
 
   update_internal_forces();

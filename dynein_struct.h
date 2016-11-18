@@ -58,6 +58,7 @@ extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
 
 const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
+const bool am_debugging_angles = false;
 
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);

@@ -228,19 +228,19 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
-    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
+    if (am_debugging_angles) printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
            nba, nmy, nmx - nbx);
     exit(1);
   } else {
-    printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
+    if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
            nba, nmy, nmx - nbx);
   }
   if (fba < 0 or fba > M_PI) {
-    printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+    if (am_debugging_angles) printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx + L));
     exit(1);
   } else {
-    printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
+    if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx+L));
   }
   ta = fma - nma + fba - nba;
@@ -263,14 +263,14 @@ void Dynein_bothbound::update_coordinates() {
     BB_PHYSICAL = false;
   }
   if (fma < 0 or fma > 2*M_PI) {
-    printf("fma angle is crazy man! %g\n", fma);
+    if (am_debugging_angles) printf("fma angle is crazy man! %g\n", fma);
   } else {
-    printf("fma angle is cool:      %g\n", fma);
+    if (am_debugging_angles) printf("fma angle is cool:      %g\n", fma);
   }
   if (nma < 0 or nma > 2*M_PI) {
-    printf("nma angle is crazy man! %g\n", nma);
+    if (am_debugging_angles) printf("nma angle is crazy man! %g\n", nma);
   } else {
-    printf("nma angle is cool:      %g\n", nma);
+    if (am_debugging_angles) printf("nma angle is cool:      %g\n", nma);
   }
 }
 
