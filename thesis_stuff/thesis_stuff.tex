@@ -769,7 +769,8 @@ Also, the paper says that axonemal dyneins have multiple motor domains, i.e aren
 \section{Notes by David}
 (This stuff can be deleted or edited or moved elsewhere...)
 
-The mean speed of dynein is $134\pm 60$~nm~s$^{-1}$.
+The mean speed of dynein is $134\pm 60$~nm~s$^{-1}$.  It looks like
+perhaps the speed should be more like 80 or 80 nm/s~\cite{reck2006single}.
 
 Its average step 1D displacement is 8~nm. (See page 194 of Weihong's \emph{Nature} paper.)
 
@@ -777,7 +778,9 @@ Together this means that the mean time between steps is about 60~ms.
 Note milliseconds.  Thus we really need to be careful about how small
 our $\Delta t$ is.
 
-\subsection{Program Scaling}
+Note also another paper that is very similar to that of Weihong~\cite{dewitt2012cytoplasmic}.
+
+\section{Program Scaling}
 Program runtimes, as of commit 62c4d:
 
 \begin{verbatim}
@@ -840,4 +843,8 @@ The average time per iteration is ~3.9 microseconds, or 3.9e5 real seconds per s
 \item Make Dynein binding rate diagram showing how our model relates to the Imamula one
 \item Make pretty dynein visualization in PyMol (or some software) showing how dimerization happens AND how docking to the MT happens; ask David what this should look like
 \end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{thesis_stuff}
+
 \end{document}

@@ -1,6 +1,8 @@
 todo.txt
 latex/latexlog.txt
 *.aux
+*.bbl
+*.blg
 *.log
 *.pdf
 *.out
