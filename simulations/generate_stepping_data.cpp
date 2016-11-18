@@ -264,6 +264,12 @@ int main(int argc, char** argv) {
   int indefinite_run = 0;
 
   FILE* movie_stream = fopen(movie_data_fname, "w");
+  if (!movie_stream) {
+    printf("Error opening %s!\n", movie_data_fname);
+    exit(1);
+  } else {
+    printf("created file %s\n", movie_data_fname);
+  }
   setvbuf(movie_stream, NULL, _IOLBF, 0); // turn on line-buffering for movie log
 
   void* job_msg[6];
