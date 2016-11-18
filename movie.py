@@ -67,9 +67,9 @@ tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
 binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=1)
-motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=9)
-tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=6)
-motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=9)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=12)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18)
 binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=1)
 
 if force_vectors:

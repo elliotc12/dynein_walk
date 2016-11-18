@@ -777,6 +777,58 @@ Together this means that the mean time between steps is about 60~ms.
 Note milliseconds.  Thus we really need to be careful about how small
 our $\Delta t$ is.
 
+\subsection{Program Scaling}
+Program runtimes, as of commit 62c4d:
+
+\begin{verbatim}
+elliotc12@bennet:~/dynein_walk$ grep "dt" default_parameters.h 
+double dt = 1e-11;
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-5
+Running for 1e-05 s
+
+real	0m5.001s
+user	0m4.972s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-5
+Running for 1e-05 s
+
+real	0m7.121s
+user	0m7.072s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-4
+Running for 0.0001 s
+
+real	0m26.666s
+user	0m26.608s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-4
+Running for 0.0001 s
+
+real	0m29.479s
+user	0m29.428s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-3
+Running for 0.001 s
+
+real	4m47.224s
+user	4m46.832s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-3
+Running for 0.001 s
+
+real	4m56.207s
+user	4m55.776s
+sys	0m0.000s
+elliotc12@bennet:~/dynein_walk$ time ./generate_stepping_data --runtime=1e-2
+Running for 0.01 s
+
+real	61m44.302s
+user	61m35.264s
+sys	0m0.120s
+\end{verbatim}
+
+The average time per iteration is ~3.9 microseconds, or 3.9e5 real seconds per simulated second at $dt=10^{-11}s$. Thus we can generate one 60-millisecond step in 23,400 seconds, or 6.5 hours. A thousand-step simulation would thus take, very roughly, 8 months.\\
+
 \section{Todo}
 \begin{itemize}
 \item Add dt testing figure to thesis\_stuff.tex.
