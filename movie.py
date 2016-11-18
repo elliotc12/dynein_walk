@@ -41,7 +41,10 @@ if sys.argv[2][:6] != 'speed=':
 speed =  float(sys.argv[2][6:])
 
 config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
-data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
+if sys.stdin.isatty():
+  data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
+else:
+  data = numpy.genfromtxt(sys.stdin, delimiter="\t", invalid_raise=False)
 plt.ion()
 
 if str(type(data[0])) == "<type 'numpy.float64'>":

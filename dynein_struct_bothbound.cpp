@@ -228,7 +228,7 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
-    if (am_debugging_angles) printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
+    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
            nba, nmy, nmx - nbx);
     exit(1);
   } else {
@@ -236,7 +236,7 @@ void Dynein_bothbound::update_coordinates() {
            nba, nmy, nmx - nbx);
   }
   if (fba < 0 or fba > M_PI) {
-    if (am_debugging_angles) printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+    printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx + L));
     exit(1);
   } else {
