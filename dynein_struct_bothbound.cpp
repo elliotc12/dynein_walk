@@ -59,6 +59,55 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     L = old_dynein->get_bbx() - old_dynein->get_ubx();
   }
 
+  if (am_debugging_conversions) {
+    printf("DEBUG:\nDEBUG: creating bothbound from onebound???\n");
+    printf("DEBUG: uma = %8g  uba = %8g    bma = %8g  bba = %8g\n",
+           old_dynein->get_uma(), old_dynein->get_uba(), old_dynein->get_bma(), old_dynein->get_bba());
+    printf("DEBUG: L   = %8g  nma = %8g    fma = %8g\n", L, nma, fma);
+    printf("DEBUG: bbx = %8g  bby = %8g    ubx = %8g  uby = %8g\n",
+           old_dynein->get_bbx(), old_dynein->get_bby(), old_dynein->get_ubx(), old_dynein->get_uby());
+    printf("DEBUG: bmx = %8g  bmy = %8g    umx = %8g  umy = %8g\n",
+           old_dynein->get_bmx(), old_dynein->get_bmy(), old_dynein->get_umx(), old_dynein->get_umy());
+    printf("DEBUG:\n");
+  }
+
+  // The following code uses the tail positions to figure out the
+  // motor angles with greater precision (we hope) in the case where
+  // the binding domain needs to be shifted to lock it onto the
+  // microtubule.
+  tx = old_dynein->get_tx();
+  // tweak the ty to compensate a little bit for the shift to lock the
+  // binding domains onto the microtubule.
+  ty = old_dynein->get_ty() - 0.5*(old_dynein->get_uby() + old_dynein->get_bby());
+  // sqrLn and sqrLf are the squared distances from binding domains to the tail.
+  const double sqrLn = sqr(tx - get_nbx()) + sqr(ty);
+  const double sqrLf = sqr(tx - get_fbx()) + sqr(ty);
+  // Use law of cosines to find the cosines of nma and fma
+  const double cosnma = (sqr(Ls) + sqr(Lt) - sqrLn)/(2*Ls*Lt);
+  const double cosfma = (sqr(Ls) + sqr(Lt) - sqrLf)/(2*Ls*Lt);
+  if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
+    printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
+    printf("     tx/ty = %g/%g fs %g\n", tx, ty, old_dynein->get_ty());
+    printf("     Ln/Lf = %g/%g\n", Ln, Lf);
+    printf("     Ls/Lt = %g/%g\n", Ls, Lt);
+    printf("     compare nma with nma %g vs %g\n", acos(cosnma), nma);
+    printf("     compare fma with fma %g vs %g\n", acos(cosfma), fma);
+    exit(1);
+  }
+  // The following is a bit complicated in order to ensure that the
+  // angles nma and fma can be either positive or negative.  The acos
+  // gives us the magnitude, but not the sign.
+  if (nma < 0) {
+    nma = -acos(cosnma);
+  } else {
+    nma =  acos(cosnma);
+  }
+  if (fma < 0) {
+    fma = -acos(cosfma);
+  } else {
+    fma =  acos(cosfma);
+  }
+
   internal_testcase = NULL;
   brownian_testcase = NULL;
 
@@ -228,8 +277,8 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
-    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g\n",
-           nba, nmy, nmx - nbx);
+    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
+           nba, nmy, nmx - nbx, tx, ty);
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
