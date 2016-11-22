@@ -62,6 +62,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
+        if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
@@ -102,6 +103,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
     if (current_state == BOTHBOUND) {
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
+        if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
 	if (am_debugging_rates) printf("BB near unbinding probability: %g\n", near_unbinding_prob);

@@ -68,6 +68,8 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
            old_dynein->get_bbx(), old_dynein->get_bby(), old_dynein->get_ubx(), old_dynein->get_uby());
     printf("DEBUG: bmx = %8g  bmy = %8g    umx = %8g  umy = %8g\n",
            old_dynein->get_bmx(), old_dynein->get_bmy(), old_dynein->get_umx(), old_dynein->get_umy());
+    printf("DEBUG: tx = %8g  ty = %8g\n",
+           old_dynein->get_tx(), old_dynein->get_ty());
     printf("DEBUG:\n");
   }
 
