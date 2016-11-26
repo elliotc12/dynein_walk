@@ -1,6 +1,6 @@
 #! /usr/bin/env python2.7
 
-import numpy, time, signal, sys, os, matplotlib
+import numpy, time, signal, sys, os, matplotlib, subprocess
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -47,7 +47,6 @@ config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
 
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
-    print "skiplen: %s" % skiplen
 
 if sys.stdin.isatty():
     if tail:
@@ -242,10 +241,21 @@ while i < len(data):
 # case you may be able to substitute ffmpeg.
 framerate = 30
 
-avconv = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+have_avconv = True
 
-print(avconv)
-os.system(avconv) # make the movie
+try:
+    subprocess.check_call("avconv > /dev/null", shell=True)
+except (OSError, subprocess.CalledProcessError):
+    print "Not using avconv..."
+    have_avconv = False
+
+if have_avconv:
+    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+else:
+    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+
+print(movie_cmd)
+os.system(movie_cmd) # make the movie
 
 # using convert to create a gif can be handy for small files
 # os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
