@@ -86,29 +86,35 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   const double sqrLn = sqr(tx - get_nbx()) + sqr(ty);
   const double sqrLf = sqr(tx - get_fbx()) + sqr(ty);
   // Use law of cosines to find the cosines of nma and fma
-  const double cosnma = (sqr(Ls) + sqr(Lt) - sqrLn)/(2*Ls*Lt); // -- shouldn't this be negative?
+  const double cosnma = (sqr(Ls) + sqr(Lt) - sqrLn)/(2*Ls*Lt);
   const double cosfma = (sqr(Ls) + sqr(Lt) - sqrLf)/(2*Ls*Lt);
-  if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
-    printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
-    printf("     tx/ty = %g/%g fs %g\n", tx, ty, old_dynein->get_ty());
-    printf("     Ln/Lf = %g/%g\n", Ln, Lf);
-    printf("     Ls/Lt = %g/%g\n", Ls, Lt);
-    printf("     compare nma with nma %g vs %g\n", acos(cosnma), bad_nma);
-    printf("     compare fma with fma %g vs %g\n", acos(cosfma), bad_fma);
-    exit(1);
-  }
+
   // The following is a bit complicated in order to ensure that the
   // angles nma and fma can be either positive or negative.  The acos
   // gives us the magnitude, but not the sign.
-  if (bad_nma < 0) {
+
+  double bad_nma_mod = fmod(bad_nma, 2*M_PI); // round down to [-2*Pi,2*Pi], just in case?
+  double bad_fma_mod = fmod(bad_fma, 2*M_PI);
+
+  if ((bad_nma_mod < 0 and bad_nma_mod > -M_PI) or (bad_nma_mod > M_PI and bad_nma_mod < 2*M_PI)) {
     nma = -acos(cosnma);
   } else {
     nma =  acos(cosnma);
   }
-  if (bad_fma < 0) {
+  if ((bad_fma_mod < 0 and bad_fma_mod > -M_PI) or (bad_fma_mod > M_PI and bad_fma_mod < 2*M_PI)) {
     fma = -acos(cosfma);
   } else {
     fma =  acos(cosfma);
+  }
+
+  if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
+    printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
+    printf("     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
+    printf("     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
+    printf("     Ls/Lt = %g/%g\n", Ls, Lt);
+    printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
+    printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
+    exit(1);
   }
 
   internal_testcase = NULL;
