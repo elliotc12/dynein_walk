@@ -1,6 +1,7 @@
 #! /usr/bin/env python2.7
 
 import numpy, time, signal, sys, os, matplotlib
+
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -10,6 +11,7 @@ os.system("mkdir -p PNGs") # ensure the PNGs directory exists.
 
 pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
+tail = 'tail' in sys.argv
 
 view_width = 15
 
@@ -41,8 +43,16 @@ if sys.argv[2][:6] != 'speed=':
 speed =  float(sys.argv[2][6:])
 
 config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
+
+if tail and sys.stdin.isatty():
+    skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
+    print "skiplen: %s" % skiplen
+
 if sys.stdin.isatty():
-  data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
+    if tail:
+        data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False, skip_header=skiplen)
+    else:
+        data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
 else:
   data = numpy.genfromtxt(sys.stdin, delimiter="\t", invalid_raise=False)
 plt.ion()
@@ -214,9 +224,9 @@ while i < len(data):
     title_text.set_text('State: Unbound')
 
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
-
-  # t_text.set_text("Progress: {:3.1f}%".format(i/len(data)*100))
   t_text.set_text("Time: {:g} ns".format(1e9*data[i][1]))
+  #print "i=%d, time=%g, %s" % (i, data[i][1]*1e9, "Time: {:g} ns".format(1e9*data[i][1]))
+  
 
   i += speed
   plt.pause(0.001)
@@ -230,14 +240,14 @@ while i < len(data):
 # avconv may not be present on non-Debian-related systems, in which
 # case you may be able to substitute ffmpeg.
 framerate = 30
-avconv = "avconv -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
+
+avconv = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+
 print(avconv)
 os.system(avconv) # make the movie
 
 # using convert to create a gif can be handy for small files
 # os.system("convert -delay 10 PNGs/%s-*.png movies/%s.gif" % (title, title))
 
-
 # os.system("mencoder -quiet PNGs/%s-*.png -mf type=png:fps=10 -ovc lavc"
 #             " -lavcopts vcodec=wmv2 -oac copy -o movies/%s.mpg" % (title, title))
-
