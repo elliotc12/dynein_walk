@@ -40,12 +40,13 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
 
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) {
   // out of old dyn
+  double bad_nma, bad_fma;
   if (old_dynein->get_state() == State::NEARBOUND) {
     nbx = old_dynein->get_bbx();
     nby = 0;
 
-    nma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
-    fma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
+    bad_nma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
+    bad_fma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
 
     L = old_dynein->get_ubx() - old_dynein->get_bbx();
 
@@ -53,8 +54,8 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     nbx = old_dynein->get_ubx();
     nby = 0;
 
-    nma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
-    fma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
+    bad_nma = M_PI + old_dynein->get_uma() - old_dynein->get_uba();
+    bad_fma = M_PI + old_dynein->get_bma() - old_dynein->get_bba();
 
     L = old_dynein->get_bbx() - old_dynein->get_ubx();
   }
@@ -63,7 +64,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     printf("DEBUG:\nDEBUG: creating bothbound from onebound???\n");
     printf("DEBUG: uma = %8g  uba = %8g    bma = %8g  bba = %8g\n",
            old_dynein->get_uma(), old_dynein->get_uba(), old_dynein->get_bma(), old_dynein->get_bba());
-    printf("DEBUG: L   = %8g  nma = %8g    fma = %8g\n", L, nma, fma);
+    printf("DEBUG: L   = %8g  nma = %8g    fma = %8g\n", L, bad_nma, bad_fma);
     printf("DEBUG: bbx = %8g  bby = %8g    ubx = %8g  uby = %8g\n",
            old_dynein->get_bbx(), old_dynein->get_bby(), old_dynein->get_ubx(), old_dynein->get_uby());
     printf("DEBUG: bmx = %8g  bmy = %8g    umx = %8g  umy = %8g\n",
@@ -85,26 +86,26 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   const double sqrLn = sqr(tx - get_nbx()) + sqr(ty);
   const double sqrLf = sqr(tx - get_fbx()) + sqr(ty);
   // Use law of cosines to find the cosines of nma and fma
-  const double cosnma = (sqr(Ls) + sqr(Lt) - sqrLn)/(2*Ls*Lt);
+  const double cosnma = (sqr(Ls) + sqr(Lt) - sqrLn)/(2*Ls*Lt); // -- shouldn't this be negative?
   const double cosfma = (sqr(Ls) + sqr(Lt) - sqrLf)/(2*Ls*Lt);
   if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
     printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
     printf("     tx/ty = %g/%g fs %g\n", tx, ty, old_dynein->get_ty());
     printf("     Ln/Lf = %g/%g\n", Ln, Lf);
     printf("     Ls/Lt = %g/%g\n", Ls, Lt);
-    printf("     compare nma with nma %g vs %g\n", acos(cosnma), nma);
-    printf("     compare fma with fma %g vs %g\n", acos(cosfma), fma);
+    printf("     compare nma with nma %g vs %g\n", acos(cosnma), bad_nma);
+    printf("     compare fma with fma %g vs %g\n", acos(cosfma), bad_fma);
     exit(1);
   }
   // The following is a bit complicated in order to ensure that the
   // angles nma and fma can be either positive or negative.  The acos
   // gives us the magnitude, but not the sign.
-  if (nma < 0) {
+  if (bad_nma < 0) {
     nma = -acos(cosnma);
   } else {
     nma =  acos(cosnma);
   }
-  if (fma < 0) {
+  if (bad_fma < 0) {
     fma = -acos(cosfma);
   } else {
     fma =  acos(cosfma);

@@ -20,11 +20,12 @@ def close_windows(*_):
   sys.exit()
 
 usage = '''
-Usage: python2 TITLE %s speed=N [show] [forces] [energies]"
+Usage: python2 TITLE %s speed=N [show] [forces] [energies] [tail]"
        show: show animation in a window while generating movie
              omitting show makes %s faster but less exciting to watch
      forces: plot forces in movie
    energies: color circles using potential energies
+       tail: only use last 1000 lines of data file
 ''' % (sys.argv[0], sys.argv[0])
 
 if len(sys.argv) < 2:
