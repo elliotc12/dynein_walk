@@ -244,7 +244,7 @@ framerate = 30
 have_avconv = True
 
 try:
-    subprocess.check_call("avconv > /dev/null", shell=True)
+    subprocess.check_call("avconv --help > /dev/null", shell=True)
 except (OSError, subprocess.CalledProcessError):
     print "Not using avconv..."
     have_avconv = False
