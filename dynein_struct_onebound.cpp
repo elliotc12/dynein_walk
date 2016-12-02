@@ -979,6 +979,7 @@ void Dynein_onebound::update_velocities() {
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE and
       get_umy() > MICROTUBULE_BINDING_DISTANCE) {
+    if (am_debugging_state_transitions) printf("Creating bothbound from onebound to test energy\n");
     double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
     double low_affinity_binding_preexponential_factor = low_affinity_binding_rate / exp(1.0);
     return low_affinity_binding_preexponential_factor*exp(-dG_spring/kb/T);

@@ -80,6 +80,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
+	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
 	  break;
 	}
 	else { // move like normal
@@ -121,6 +122,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  delete dyn_bb;
 	  dyn_bb = NULL;
 	  current_state = FARBOUND;
+	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to farbound\n");
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
@@ -129,6 +131,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  delete dyn_bb;
 	  dyn_bb = NULL;
 	  current_state = NEARBOUND;
+	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to nearbound\n");
 	  break;
 	}
 	else { // move like normal
