@@ -90,10 +90,10 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   double cosfma = (sqr(Ls) + sqr(Lt) - sqrLf)/(2*Ls*Lt);
 
   // If Euler's method pushed our Ln/Lfs too far, 'fix' them
-  if (cosnma > 1.0) cosnma = 1.0;
-  if (cosnma < -1.0) cosnma = -1.0;
-  if (cosfma > 1.0) cosfma = 1.0;
-  if (cosfma < -1.0) cosfma = -1.0;
+  if (cosnma > 1.0) cosnma = 1.0 - 1e-10;
+  if (cosnma < -1.0) cosnma = -1.0 + 1e-10;
+  if (cosfma > 1.0) cosfma = 1.0 - 1e-10;
+  if (cosfma < -1.0) cosfma = -1.0 + 1e-10;
 
   // The following is a bit complicated in order to ensure that the
   // angles nma and fma can be either positive or negative.  The acos
