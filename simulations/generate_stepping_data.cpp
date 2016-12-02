@@ -272,6 +272,10 @@ int main(int argc, char** argv) {
   }
   setvbuf(movie_stream, NULL, _IOLBF, 0); // turn on line-buffering for movie log
 
+  fprintf(movie_stream, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+	  "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
+	  "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\t\t");
+
   void* job_msg[6];
   job_msg[0] = &indefinite_run;
   job_msg[1] = &current_time;
