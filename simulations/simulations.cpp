@@ -11,6 +11,12 @@
 
 /** create_ob/bb_plots .txt generation code **/
 
+struct simple_msg {
+  long long max_iteration;
+  double start_time;
+  char* run_msg;
+};
+
 void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation) {
   char fname[200];
   sprintf(fname, "%s_%s.txt", fname_base, annotation);
@@ -196,14 +202,12 @@ void generate_angle_vs_time_data(double* times, double* angle, int len, const ch
 
 /** Library for simulation code **/
 
-void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_callback(void *dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
+  simple_msg job_msg = *(simple_msg *)job_msg_;
   if (iteration % data_generation_skip_iterations != 0) return;
   else {
     assert(s == NEARBOUND);
     assert(iteration < job_data->ob_data.len);
-    long long max_iteration = *((long long**) job_msg)[0];
-    double start_time = *((double**) job_msg)[1];
-    char* run_msg = ((char**) job_msg)[2];
 
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
     job_data->ob_data.bb[iteration] = dyn_ob->PE_bba;
@@ -213,25 +217,24 @@ void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *
 
     if (iteration % 10000 == 0) {
       printf("PE calculation progress for %s: %lld / %lld, %g%%                \r",
-	     run_msg, iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+	     job_msg.run_msg, iteration, job_msg.max_iteration,
+             ((double) iteration) / job_msg.max_iteration * 100);
       fflush(NULL);
     }
     if (iteration == job_data->ob_data.len - 1)
       printf("Finished generating PE data for %s, which took %g seconds                \n",
-	     run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+	     job_msg.run_msg, ((double) clock() - job_msg.start_time) / CLOCKS_PER_SEC);
   }
 }
 
-void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_and_forces_callback(void *dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
+  simple_msg job_msg = *(simple_msg *)job_msg_;
   if (iteration % data_generation_skip_iterations != 0) return;
   else {
     assert(s == NEARBOUND);
     int iter = iteration / data_generation_skip_iterations;
 
     Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
-    long long max_iteration = *((long long**) job_msg)[0];
-    double start_time = *((double**) job_msg)[1];
-    char* run_msg = ((char**) job_msg)[2];
 
     eq_forces_callback_data_ptr data = *((eq_forces_callback_data_ptr*) job_data->g_data.data);
     assert(iter < job_data->g_data.len);
@@ -258,12 +261,13 @@ void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, d
 
     if (iter % 10 == 0) {
       printf("PE calculation progress for %s: %d / %lld, %g%%                \r",
-	     run_msg, iter, max_iteration, ((double) iter) / max_iteration * 100);
+	     job_msg.run_msg, iter, job_msg.max_iteration,
+             ((double) iter) / job_msg.max_iteration * 100);
       fflush(NULL);
     }
     if (iter == job_data->g_data.len - 1)
       printf("Finished generating PE data for %s, which took %g seconds                \n",
-	     run_msg, ((double) clock() - start_time) / CLOCKS_PER_SEC);
+	     job_msg.run_msg, ((double) clock() - job_msg.start_time) / CLOCKS_PER_SEC);
   }
 }
 
@@ -284,17 +288,16 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   data_union data_holder;
   data_holder.ob_data = data;
 
-  void* job_msg[3];
-  job_msg[0] = (double*) &iterations;
-  double current_time = clock();
-  job_msg[1] = &current_time;
+  simple_msg job_msg;
+  job_msg.max_iteration = iterations;
+  job_msg.start_time = clock();
 
   char run_msg[512];
   strcpy(run_msg, run_msg_base);
   char seedbuf[50];
   sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
   strcat(run_msg, seedbuf);
-  job_msg[2] = run_msg;
+  job_msg.run_msg = run_msg;
 
   for (int i=0; i<num_correlations; i++) {
     corr_data->bb[i] = 0;
@@ -306,7 +309,7 @@ void get_onebound_PE_correlation_function(generic_data* tau_data, onebound_data*
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
     simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, test_position,
-	     store_onebound_PEs_callback, job_msg, &data_holder);
+	     store_onebound_PEs_callback, &job_msg, &data_holder);
 
     double* PE_bbas = data.bb;
     double* PE_bmas = data.bm;
@@ -393,19 +396,19 @@ void get_onebound_equipartition_ratio_per_runtime(generic_data* runtime_data, on
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
-    void* job_msg[3];
-    job_msg[0] = (double*) &max_runtime_iter;
-    double current_time = clock();
-    job_msg[1] = &current_time;
-    
+    simple_msg job_msg;
+    job_msg.max_iteration = max_runtime_iter;
+    job_msg.start_time = clock();
+
     char run_msg[512];
     strcpy(run_msg, run_msg_base);
     char seedbuf[50];
     sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
     strcat(run_msg, seedbuf);
-    job_msg[2] = run_msg;
+    job_msg.run_msg = run_msg;
 
-    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, job_msg, &data_holder);
+    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position,
+             store_onebound_PEs_callback, &job_msg, &data_holder);
 
     double* bba_PE_data = data_holder.ob_data.bb;
     double* bma_PE_data = data_holder.ob_data.bm;
@@ -464,19 +467,19 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
-    void* job_msg[3];
-    job_msg[0] = (double*) &max_runtime_iter;
-    double current_time = clock();
-    job_msg[1] = &current_time;
-    
+    simple_msg job_msg;
+    job_msg.max_iteration = max_runtime_iter;
+    job_msg.start_time = clock();
+
     char run_msg[512];
     strcpy(run_msg, run_msg_base);
     char seedbuf[50];
     sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
     strcat(run_msg, seedbuf);
-    job_msg[2] = run_msg;
+    job_msg.run_msg = run_msg;
 
-    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position, store_onebound_PEs_callback, job_msg, &data_holder);
+    simulate(max_runtime_iter*dt, RAND_INIT_SEED, NEARBOUND, init_position,
+             store_onebound_PEs_callback, &job_msg, &data_holder);
 
     double* bba_PE_data = data_holder.ob_data.bb;
     double* bma_PE_data = data_holder.ob_data.bm;
@@ -566,25 +569,23 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
   *f_tx_var = 0;    *f_ty_var = 0;    *f_umx_var = 0;   *f_umy_var = 0;
   *f_ubx_var = 0;   *f_uby_var = 0;
 
-  void* job_msg[3];
-  job_msg[0] = (double*) &iters;
 
-  char run_msg[512];
+  simple_msg job_msg;
+  job_msg.max_iteration = iters;
 
   for (int s = 0; s < seed_len; s++) {
     RAND_INIT_SEED = seeds[s];
 
-    double current_time = clock();
-    job_msg[1] = &current_time;
-
+    job_msg.start_time = clock();
+    char run_msg[512];
     strcpy(run_msg, run_msg_base);
     char seedbuf[50];
     sprintf(seedbuf, "seed = %d)", (int) RAND_INIT_SEED);
     strcat(run_msg, seedbuf);
-    job_msg[2] = run_msg;
+    job_msg.run_msg = run_msg;
 
     simulate(iterations*dt, RAND_INIT_SEED, NEARBOUND, init_position,
-	store_onebound_PEs_and_forces_callback, job_msg, &data_holder);
+	store_onebound_PEs_and_forces_callback, &job_msg, &data_holder);
 
     eq_data->bb[0] += get_average(data_ptr.bb, iters) / (0.5*kb*T) / seed_len;
     eq_data->bm[0] += get_average(data_ptr.bm, iters) / (0.5*kb*T) / seed_len;
