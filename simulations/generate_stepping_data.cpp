@@ -284,6 +284,10 @@ int main(int argc, char** argv) {
   }
 
   printf("fname: %s\n", stepping_data_fname);
+  fprintf(job_msg.stepping_data_file, "# command line:");
+  for (int i=0; i<argc; i++) {
+    fprintf(job_msg.stepping_data_file, " %s", argv[i]);
+  }
   fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
   fprintf(job_msg.stepping_data_file, "#%s\n", run_name);
 
