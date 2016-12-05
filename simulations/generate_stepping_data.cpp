@@ -19,6 +19,15 @@
 const bool display_step_info = false;
 const bool display_progress = false;
 
+struct job_msg_t {
+  long long max_iteration;
+  double start_time;
+  char *run_msg;
+  FILE *stepping_data_file;
+  FILE *movie_data_file;
+  bool am_making_movie; // redundant with movie_data_file
+};
+
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
   static State  last_state = BOTHBOUND;
   static double last_bothbound_iteration = 0;
@@ -106,35 +115,28 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   }
 }
 
-void stepping_data_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
-  long long max_iteration = *((long long**) job_msg)[0];
-  double start_time = *((double**) job_msg)[1];
-  char* run_msg = ((char**) job_msg)[2];
+void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
+  job_msg_t job_msg = *(job_msg_t *)job_msg_;
 
-  FILE* stepping_data_file = ((FILE**) job_msg)[3];
-  FILE* movie_data_file = ((FILE**) job_msg)[4];
+  log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
 
-  bool am_making_movie = *((bool**) job_msg)[5];
+  if (job_msg.am_making_movie && iteration % stepping_movie_framerate == 0)
+    log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
-  log_stepping_data(stepping_data_file, dyn, iteration, max_iteration, s);
-
-  if (am_making_movie && iteration % stepping_movie_framerate == 0)
-    log_stepping_movie_data(movie_data_file, dyn, s, iteration);
-
-  if (max_iteration > 0) {
-    if (iteration % (int)5e5 == 0 && iteration != max_iteration && display_progress) {
-      printf("Stepping data progress (%s): %lld / %lld, %g%%\n", run_msg,
-  	     iteration, max_iteration, ((double) iteration) / max_iteration * 100);
+  if (job_msg.max_iteration > 0) {
+    if (iteration % (int)5e5 == 0 && iteration != job_msg.max_iteration && display_progress) {
+      printf("Stepping data progress (%s): %lld / %lld, %g%%\n", job_msg.run_msg,
+             iteration, job_msg.max_iteration, ((double) iteration) / job_msg.max_iteration * 100);
     }
 
-    if (iteration == max_iteration and display_progress) {
-      printf("Finished generating stepping data (%s), process took %g seconds\n", run_msg,
-  	     ((double) clock() - start_time) / CLOCKS_PER_SEC);
+    if (iteration == job_msg.max_iteration and display_progress) {
+      printf("Finished generating stepping data (%s), process took %g seconds\n", job_msg.run_msg,
+             ((double) clock() - job_msg.start_time) / CLOCKS_PER_SEC);
     }
   }
-  else if (max_iteration == 0 and iteration % (int)5e5 == 0) {
+  else if (job_msg.max_iteration == 0 and iteration % (int)5e5 == 0) {
     //printf("Stepping data progress (%s): %.2g seconds\n", run_msg, iteration*dt);
-    fflush(stepping_data_file);
+    fflush(job_msg.stepping_data_file);
   }
 }
 
@@ -258,35 +260,32 @@ int main(int argc, char** argv) {
 
   write_config_file(stepping_config_fname, 0, "");
 
-  write_movie_config(movie_config_fname, iterations*dt);
+  job_msg_t job_msg;
+  job_msg.max_iteration = 0;
+  job_msg.start_time = clock();
+  job_msg.run_msg = run_name;
+  job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
+  job_msg.am_making_movie = am_making_movie;
+  job_msg.movie_data_file = 0;
+  if (am_making_movie) {
+    write_movie_config(movie_config_fname, iterations*dt);
 
-  double current_time = clock();
-  int indefinite_run = 0;
-
-  FILE* movie_stream = fopen(movie_data_fname, "w");
-  if (!movie_stream) {
-    printf("Error opening %s!\n", movie_data_fname);
-    exit(1);
-  } else {
-    printf("created file %s\n", movie_data_fname);
+    job_msg.movie_data_file = fopen(movie_data_fname, "w");
+    if (!job_msg.movie_data_file) {
+      printf("Error opening %s!\n", movie_data_fname);
+      exit(1);
+    } else {
+      printf("created file %s\n", movie_data_fname);
+    }
+    setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
+    fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+            "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
+            "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\t\t");
   }
-  setvbuf(movie_stream, NULL, _IOLBF, 0); // turn on line-buffering for movie log
-
-  fprintf(movie_stream, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
-	  "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
-	  "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\t\t");
-
-  void* job_msg[6];
-  job_msg[0] = &indefinite_run;
-  job_msg[1] = &current_time;
-  job_msg[2] = run_name;
-  job_msg[3] = fopen(stepping_data_fname, "w");
-  job_msg[4] = movie_stream;
-  job_msg[5] = &am_making_movie;
 
   printf("fname: %s\n", stepping_data_fname);
-  fprintf((FILE*) job_msg[3], "#time_unbind, time_bind, nbx, fbx\n");
-  fprintf((FILE*) job_msg[3], "#%s", run_name);
+  fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
+  fprintf(job_msg.stepping_data_file, "#%s\n", run_name);
 
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
@@ -298,10 +297,10 @@ int main(int argc, char** argv) {
 			    eq.fma,
 			    0, 0, Ls};
 
-  simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, job_msg, NULL);
+  simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
-  fclose((FILE*) job_msg[3]);
-  fclose((FILE*) job_msg[4]);
+  fclose(job_msg.stepping_data_file);
+  fclose(job_msg.movie_data_file);
 
   return EXIT_SUCCESS;
 }

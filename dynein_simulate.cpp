@@ -5,8 +5,8 @@ static const bool am_debugging_rates = false;
 static const bool debug_stepping = false;
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
-	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,
-	      long long iteration), void** job_msg, data_union* job_data) {             
+	      void (*job)(void* dyn, State s, void *job_msg, data_union* job_data,
+	      long long iteration), void *job_msg, data_union* job_data) {
 
   if (FP_EXCEPTION_FATAL) {
     feenableexcept(FE_ALL_EXCEPT);      // NaN generation kills program

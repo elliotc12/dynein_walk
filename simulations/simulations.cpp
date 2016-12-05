@@ -196,7 +196,7 @@ void generate_angle_vs_time_data(double* times, double* angle, int len, const ch
 
 /** Library for simulation code **/
 
-void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
   if (iteration % data_generation_skip_iterations != 0) return;
   else {
     assert(s == NEARBOUND);
@@ -222,7 +222,7 @@ void store_onebound_PEs_callback(void* dyn, State s, void** job_msg, data_union 
   }
 }
 
-void store_onebound_PEs_and_forces_callback(void* dyn, State s, void** job_msg, data_union *job_data, long long iteration) {
+void store_onebound_PEs_and_forces_callback(void* dyn, State s, void* job_msg, data_union *job_data, long long iteration) {
   if (iteration % data_generation_skip_iterations != 0) return;
   else {
     assert(s == NEARBOUND);

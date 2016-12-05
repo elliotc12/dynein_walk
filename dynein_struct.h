@@ -430,8 +430,8 @@ void get_onebound_equipartition_ratio_average_per_runtime(generic_data* runtime_
 void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* force_data, long long runtime_iter, const int* seeds, int seed_len, char* run_msg_base);
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
-	      void (*job)(void* dyn, State s, void** job_msg, data_union* job_data,	
-              long long iteration), void** job_msg, data_union* job_data);
+	      void (*job)(void* dyn, State s, void *job_msg, data_union* job_data,
+              long long iteration), void *job_msg, data_union* job_data);
 
 /** create_ob/bb_plots .txt generation code **/
 void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation);
