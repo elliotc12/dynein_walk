@@ -5,6 +5,7 @@ import numpy, time, signal, sys, os, matplotlib, subprocess
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 os.system("rm -rf PNGs") # ensure the PNGs directory is empty.
 os.system("mkdir -p PNGs") # ensure the PNGs directory exists.
@@ -70,9 +71,9 @@ ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-view_width, view_width)
 ax.set_ylim(-view_width, view_width)
 
-microtubule = plt.plot([-view_width, view_width], [-2, -2])
-plt.xlabel('$x$ (nm)')
-plt.setp(microtubule, color='c', alpha=0.8, linewidth=17.0)
+microtubule_thickness = 2 # nm
+plt.gca().add_patch(Rectangle((-view_width, -microtubule_thickness),
+                              2*view_width, microtubule_thickness, facecolor='c'))
 
 stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ], color="black")
 tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")

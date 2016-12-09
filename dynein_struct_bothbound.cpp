@@ -81,7 +81,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   tx = old_dynein->get_tx();
   // tweak the ty to compensate a little bit for the shift to lock the
   // binding domains onto the microtubule.
-  ty = old_dynein->get_ty() - 0.5*(old_dynein->get_uby() + old_dynein->get_bby());
+  ty = old_dynein->get_ty() - 1.0*(old_dynein->get_uby() + old_dynein->get_bby());
   // sqrLn and sqrLf are the squared distances from binding domains to the tail.
   const double sqrLn = sqr(tx - get_nbx()) + sqr(ty);
   const double sqrLf = sqr(tx - get_fbx()) + sqr(ty);
@@ -99,18 +99,19 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   // angles nma and fma can be either positive or negative.  The acos
   // gives us the magnitude, but not the sign.
 
-  double bad_nma_mod = fmod(bad_nma, 2*M_PI); // round down to [-2*Pi,2*Pi], just in case?
-  double bad_fma_mod = fmod(bad_fma, 2*M_PI);
-
-  if ((bad_nma_mod < 0 and bad_nma_mod > -M_PI) or (bad_nma_mod > M_PI and bad_nma_mod < 2*M_PI)) {
+  if (sin(bad_nma) < 0) {
     nma = -acos(cosnma);
   } else {
     nma =  acos(cosnma);
   }
-  if ((bad_fma_mod < 0 and bad_fma_mod > -M_PI) or (bad_fma_mod > M_PI and bad_fma_mod < 2*M_PI)) {
+  if (sin(bad_fma) < 0) {
     fma = -acos(cosfma);
   } else {
     fma =  acos(cosfma);
+  }
+  if (am_debugging_conversions) {
+    printf("DEBUG:            good nma = %8g    fma = %8g sin(fma) = %g sin(bad_fma) = %g\n",
+           nma, fma, sin(fma), sin(bad_fma));
   }
 
   if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
@@ -268,12 +269,12 @@ void Dynein_bothbound::update_coordinates() {
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   sinAn = sqrt(1 - cosAn*cosAn);
   cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
-  sinAns = (nma < M_PI) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
+  sinAns = (sin(nma) > 0) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
 
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
-  sinAfs = (fma < M_PI) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
+  sinAfs = (sin(fma) > 0) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
   nmx = nbx + Ls*(cosAn*cosAns - sinAn*sinAns);
   if (isnan(nmx)) {
@@ -288,13 +289,21 @@ void Dynein_bothbound::update_coordinates() {
   fmx = nbx + L + Ls*(cosAf*cosAfs - sinAf*sinAfs);
   fmy = nby + Ls*(cosAf*sinAfs + sinAf*cosAfs);
 
+  if (am_debugging_conversions) {
+    printf("DEBUG: sinAn %8g sinAns = %8g  sinAf %8g sinAfs = %8g\n", sinAn, sinAns, sinAf, sinAfs);
+    printf("DEBUG: cosAn %8g cosAns = %8g  cosAf %8g cosAfs = %8g\n", cosAn, cosAns, cosAf, cosAfs);
+    printf("DEBUG: nmx/nmy = %8g/%8g  fmx/fmy = %8g/%8g\n", nmx, nmy, fmx, fmy);
+    printf("DEBUG: tx/ty %8g/%8g\n", tx, ty);
+  }
+
   // angle of stalks from horizontal
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
     printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
            nba, nmy, nmx - nbx, tx, ty);
-    printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n", nby, Ls, cosAn, sinAns, sinAn,cosAns);
+    printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
+           nby, Ls, cosAn, sinAns, sinAn,cosAns);
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -360,7 +369,7 @@ void Dynein_bothbound::update_velocities() {
   dsinAn_dLf = -cosAn / sqrt(1 - cosAn*cosAn) * dcosAn_dLf;
   dcosAns_dLn = 1/Ls - (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln*Ln);
   dcosAns_dLf = 0;
-  dsinAns_dLn = (nma < M_PI) ?
+  dsinAns_dLn = (sin(nma) > 0) ?
      -cosAns / sqrt(1-cosAns*cosAns) * dcosAns_dLn
     : cosAns / sqrt(1-cosAns*cosAns) * dcosAns_dLn;
   dsinAns_dLf = 0;
@@ -371,7 +380,7 @@ void Dynein_bothbound::update_velocities() {
   dsinAf_dLn = -cosAf / sqrt(1 - cosAf*cosAf) * dcosAf_dLn;
   dcosAfs_dLf = 1/Ls - (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf*Lf);
   dcosAfs_dLn = 0;
-  dsinAfs_dLf = (fma < M_PI) ?
+  dsinAfs_dLf = (sin(fma) > 0) ?
      -cosAfs / sqrt(1-cosAfs*cosAfs) * dcosAfs_dLf
     : cosAfs / sqrt(1-cosAfs*cosAfs) * dcosAfs_dLf;
   dsinAfs_dLn = 0;
