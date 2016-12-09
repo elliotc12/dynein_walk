@@ -294,6 +294,7 @@ void Dynein_bothbound::update_coordinates() {
   if (nba < 0 or nba > M_PI) {
     printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
            nba, nmy, nmx - nbx, tx, ty);
+    printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n", nby, Ls, cosAn, sinAns, sinAn,cosAns);
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
