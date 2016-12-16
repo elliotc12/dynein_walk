@@ -2,8 +2,6 @@
 
 \usepackage[hmargin=1.25cm, vmargin=1.5cm]{geometry} % Document margins
 
-\usepackage{marvosym} % Required for symbols in the colored box
-
 \usepackage[usenames,dvipsnames]{xcolor} % Allows the definition of hex colors
 
 % Fonts and tweaks for XeLaTeX
@@ -653,20 +651,25 @@ Both bothbound and onebound states show good agreement with the equipartition th
 \end{figure}
 
 \begin{center}
-  \begin{tabular}{| l | l | l | l | l | l |}
+  \begin{tabular}{| l | l | l | l | l | l | l |}
     \hline
-    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7\\\hline
-    $L_s$ & 12nm & & & 21.0nm & 22.1nm\\ \hline
-    $L_t$ &  7nm & & & & 11.15nm\\ \hline
-    $R_b$ &  & & & 1.57nm & 1.45nm\\ \hline
-    $R_m$ &  7nm & & & 7.36nm & 6.3nm\\ \hline
-    $R_t$ &  & & & & 2.16nm \\ \hline
-    $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & &\\ \hline
-    $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & &\\ \hline
-    $\theta_{b}$ & 56$^{\circ}$ & & 63.5$^{\circ}$ & &\\ \hline
-    $\theta_{t}$ & 0$^{\circ}$ & & & &\\ \hline
-    $k_{ub}$ & $180 s^{-1,a}$ & & & &\\ \hline
-    $k_b$ & $5000 s^{-1,b}$ & & & &\\ \hline
+    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7 & Redwine\\\hline
+    $L_s$ & 12nm & & & 21.0nm & 22.1nm &\\ \hline
+    $L_t$ &  7nm & & & & 11.15nm &\\ \hline
+    $R_b$ &  & & & 1.57nm & 1.45nm &\\ \hline
+    $R_m$ &  7nm & & & 7.36nm & 6.3nm &\\ \hline
+    $R_t$ &  & & & & 2.16nm & \\ \hline
+    $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & & & \\ \hline
+    $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & & &\\ \hline
+    $\theta_{b}$ & 56$^{\circ}$ & & 63.5$^{\circ}$ & & &\\ \hline
+    $\theta_{t}$ & 0$^{\circ}$ & & & & &\\ \hline
+    $k_{ub}$ & $180 s^{-1,a}$ & & & & &\\ \hline
+    $k_b$ & $5000 s^{-1,b}$ & & & & &\\ \hline
+    $\Delta G_{bind, bb}$ & & & & & & -71 kJ/mol\\ \hline
+    $\Delta G_{bind, ob}$ & & & & & & -37 kJ/mol\\ \hline
+    $c_t$ & & & & & & \\ \hline
+    $c_m$ & & & & & & \\ \hline
+    $c_b$ & & & & & & 140 kJ/mol\\ \hline
   \end{tabular}
 \end{center}
 
@@ -679,9 +682,8 @@ b: There are several Sarlah \textit{et al} rate constants we could use for the o
 \subsection{Stalk and tail length}
 Sarlah et. al use stalk and tail lengths of 12 and 14 nm, respectively. We used PyMol to examine the crystal structures 3VKH and 4RH7 (pre and post-powerstroke) to find these values. The linker is roughly residues 1250-1510, calculated by eye.\\
 
-\subsection{Arrhenius Rate}
-Papers often supply rate constants for various transitions. Our model uses Arhennius-type rates which take into account the change in conformational energy from switching equilibrium angles, so we must
-convert between these two systems:
+\subsection{Finding Arrhenius preexpontential from k}
+Papers often supply rate constants for various transitions. Our model uses Arhennius-type rates which take into account the change in conformational energy from switching equilibrium angles, so we must convert between free energy and rates:
 
 \begin{align*}
   k_{bind} &= Ae^{-\beta(\Delta G_{bind} + \Delta G_{conf})}\\
@@ -694,13 +696,114 @@ convert between these two systems:
   \rightarrow B &= \frac{k_{bind}}{\sqrt{e}}
 \end{align*}
 
-\section{Interesting Crystal Structures}
+\subsection{Calculating $\Delta G_{bind}$}
+Based on Van der Spoel \textit{et. al.}, $\Delta H_{HB} = 10.6kJ/mol$ for water molecules forming a single hydrogen bond. Based on another paper (Anderson \textit{et al}), the
+``stabilizing energy'' of a single salt bridge (H-bond between charged molecules) is about 16 kJ/mol.\\
+
+Based on the interpreted bonds from crystal structures of the MTBD-MT complex shown in Redwine \textit{et. al}, there are 5.9 salt bridges in the high-affinity MTBD-MT
+complex and 3.1 in the low-affinity complex. Thus if we guess the free energy of a salt bridge as 12 kJ/mol, we can estimate binding energies as:
+
+\begin{align*}
+  \Delta G_{bind, high-affinity} &= -71 \mbox{ kJ/mol}\\
+  \Delta G_{bind, low-affinity} &= -37 \mbox{ kJ/mol}\\
+\end{align*}
+
+\subsection{Estimating $c_b$ spring constant}
+If the energy of binding of the MTBD foot to the MT is -71 kJ/mol, we can get a rough estimate of the spring constant for the binding domain. We say that
+$\Delta \theta \approx 0$ corresponds to being fully bound and $\Delta \theta \approx 1$ corresponds to breaking all salt bridges and being unbound. Thus:
+
+\begin{align*}
+  \frac 12 c_b \Delta \theta_{ba} = \Delta G_{bind, high} &\rightarrow c_b = 2\Delta G_{bind, high} \approx 140 \mbox{ kJ/mol}\\
+\end{align*}
+
+
+\section{Papers}
+
+\subsection{Interesting Crystal Structures}
 \textbf{3VKH} 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
 \textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
 \textbf{3J1T/3J1U} 9.7A EM structure of tightly/loosly bound tubulin-MTBD binding from (Structural basis for microtubule binding and release by dynein).\\
 \textbf{4RH7} 2.3A x-ray crystal structure of dynein motor/stalk with ADP.Vi (pre-stroke) from (Structure of human cytoplasmic dynein-2 primed for its power stroke). Could be another good place to get angles for pre-stroke, since 3VKH is post-stroke.\\
 
-\section{Papers}
+\subsection{H-bond $\Delta G$ calculation paper}
+van der Spoel, D., J. van Maaren, P., Larsson, P., Timneanu, N. ``Thermodynamics of Hydrogen Bonding in Hydrophilic and Hydrophobic Media'' \textit{J. Phys. Chem. B} 2006: 110, 4393-4398.\\
+
+This paper uses classical simulations of water and alcohols to calculate thermodynamic parameters for the transition state and equilibrium state of water-water and water-alcohol
+hydrogen bonds. It uses H-bond lifetime and the Eyring rate equation to calculate transition state $\Delta G$ and number of H bond pairs / unbonded pairs to find equilibrium
+$\Delta G$. It then uses a Van't Hoff calculation to find enthalpies and entropies. Raman spectroscopy is shown to find a different enthalpy for water-water H-bonds. Findings:
+
+\begin{center}
+  \begin{tabular}{| l | l | l | l | l | l |}
+    \hline
+    & $\Delta G$ & $\Delta H$ & $T\Delta S$ \\\hline
+    Simulation & 5.11 kJ/mol & 9.0 kJ/mol & 4.1 kJ/mol\\ \hline
+    Experimental & 10.6 kJ/mol & & \\ \hline
+  \end{tabular}
+\end{center}
+
+where T = 298.15K.\\
+
+Another study (pH-Induced denaturation of proteins: a single salt bridge contributes 3-5 kcal/mol to the free energy of folding of T4 lysozyme by D. Anderson) found that
+a single salt bridge contributes about 16 kJ/mol to stabilizing a protein. We can use these numbers as estimates of the binding energy of the motor.\\
+
+\subsection{MTBD-Tubulin complex}
+Redwine, W.B. \textit{et. al.} ``Structural basis for microtubule binding and release by dynein. '' Science 2012, 337(6101): 1532–1536.
+
+This is a sub-nanometer MTBD-tubulin complex structure which shows how the complex forms. A cryo-EM structure was acquired, atomic-resolution structures for the high-affinity
+MTBD and tubulin dimers were superimposed.  Rigid body docking and molecular dynamics was then used to optimize this structure. Another technique was used to figure out how
+the low-affinity MTBD would bind, and yet another technique was used to translate between the low and high-affinity MTBDs to make an animation. Also did this with the Kon
+vanadium onebound crystal structure and not much changed.\\
+
+The MTBD-tubulin dimers are on the PDB as 3J1T for the high-affinity and 3J1U for the low-affinity structures.\\
+
+After finding the high- and low-affinity structures for the complexes, the authors guess at what salt bridges form in the two states between MT and MTBD. The reported values are shown in the tables below.\\
+
+\begin{table}
+  \parbox{.45\linewidth}{
+    \centering
+    \begin{tabular}{| l | l |}
+      \hline
+      Residue & Occupancy \\\hline
+      R3382-αE417 & 23\% \\\hline
+      R3382-αE420 & 79\% \\\hline
+      R3382-αG416 & 40\% \\\hline
+      K3299-βE431 & 60\% \\\hline
+      K3299-βD427 & 53\% \\\hline
+      R3342-βE159 & 51\% \\\hline
+      N3310-αG410 & 38\% \\\hline
+      L3385-αE415 & 48\% \\\hline
+      S3384-αG415 & 27\% \\\hline
+      A3383-αE415 & 49\% \\\hline
+      R3306-βE196 & 86\%*\\\hline
+      R3337-βD199 & 2\%* \\\hline
+      R3342-βN197 & 36\%*\\\hline
+    \end{tabular}
+    \caption{High-affinity MTBD-MT complex salt bridges. RH column is bonds between MTBD and MT, respectively.}
+  }
+  \hfill
+  \parbox{.45\linewidth}{
+    \centering
+    \begin{tabular}{| l | l |}
+      \hline
+      Residue & Occupancy \\\hline
+      A3383-αE415  & 45\% \\ \hline
+      R3382-αG416  & 44\% \\ \hline
+      R3382-αE417  & 61\% \\ \hline
+      R3382-αE420  & 79\% \\ \hline
+      K3299-βE196  & 27\% \\ \hline
+      S3307-βR253  & 16\% \\ \hline
+      L3385-αE415  & 34\% \\ \hline
+      N3310-αK112  & 10\% \\ \hline
+    \end{tabular}
+    \caption{Low-affinity MTBD-MT complex salt bridges. RH column is bonds between MTBD and MT, respectively.}
+  }
+\end{table}
+
+From this table we count the number of effective salt bridges in the high/low affinity complexes: 5.9 and 3.1, respectively.\\
+
+Some \textbf{really} cool videos of the MTBD switching from high/low affinity states. If you could get a similar video of the AAA domains binding ATP, these would be really
+cool videos to put in a presentation.\\
+
 \subsection{Winch Model (dx.doi.org/10.1016/j.bpj.2014.06.022)}
 -Communication between motors and BDs possible through $\alpha$-helix sliding. Bidirectional communication. [24,25]\\
 -Pre, post-powerstroke states\\
@@ -765,6 +868,11 @@ This paper crystallizes a full-length and MTBD-truncation mutants. 3VKH is the f
 This is an older (2007) paper presenting a chemical model and giving rate constants for MT un/binding. Averages are: $K_{d,pre} = 0.2uM$, $K_{d,post} > 10uM$. They determine these by adding a known concentration of monomeric Dynein apo, ATP, ADP-Pi or ADP, adding microtubules, removing MT-Dynein dimers and remeasuring concentration. These parameters are good in that equilibrium constants (as opposed to rate constants) \textit{don't} take into account kinetics, only free energy change...right?\\
 
 Also, the paper says that axonemal dyneins have multiple motor domains, i.e aren't dimers, so that changes the results from the Lin paper. The binding angle is probably valid, though.\\
+
+\subsection{Further reading}
+\begin{itemize}
+\item The dynein family at a glance. Höök P, Vallee RB J Cell Sci. 2006 Nov 1; 119(Pt 21):4369-71. The actual differences between axonemal/cytoplasmic dynein.
+\end{itemize}
 
 \section{Notes by David}
 (This stuff can be deleted or edited or moved elsewhere...)
