@@ -219,4 +219,6 @@ clean:
 	rm -f *~
 	rm -f simulations/*~
 	rm -f *#
+	rm -f *.fdb_latexmk
+	rm -f *.fls
 	cd figures && $(MAKE) clean
