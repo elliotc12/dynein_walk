@@ -12,6 +12,11 @@ try:
 except (OSError, subprocess.CalledProcessError):
     print "Not using slurm..."
     have_slurm = False
+
+atp_in_kJ_per_mol = 30.5
+
+binding_energy_high_affinity_kJ_mol = 71;
+binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
     
 ls_min = 7.0 # nm
 ls_max = 7.0 # nm
@@ -22,25 +27,23 @@ lt_max = 7.075 # nm
 lt_num = 1
 
 k_b_min = 2080 # s^-1
-k_b_max = 2080 # s^-1
+k_b_max = 6080 # s^-1
 k_b_num = 1
 
-cb_min = 0.5 # s^-1
-cb_max = 0.5 # s^-1
+cb_min = 1*binding_energy_high_affinity_atp # s^-1
+cb_max = 3*binding_energy_high_affinity_atp # s^-1
 cb_num = 1
 
-cm_min = 0.5 # s^-1
-cm_max = 0.5 # s^-1
+cm_min = 1*binding_energy_high_affinity_atp # s^-1
+cm_max = 5*binding_energy_high_affinity_atp # s^-1
 cm_num = 1
 
-ct_min = 0.5 # s^-1
-ct_max = 0.5 # s^-1
+ct_min = 0.5*binding_energy_high_affinity_atp # s^-1
+ct_max = 2*binding_energy_high_affinity_atp # s^-1
 ct_num = 1
 
-
-
-T_min = 810.15 # K
-T_max = 810.15 # K
+T_min = 310.15 # K
+T_max = 310.15 # K
 T_num = 1
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
