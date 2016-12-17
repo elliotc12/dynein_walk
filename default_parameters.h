@@ -49,8 +49,8 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double low_affinity_binding_rate = 10e5; //180; //s^-1
-double low_affinity_unbinding_rate = 10e5; //5000; //s^-1
+double low_affinity_binding_rate = 180; //s^-1
+double low_affinity_unbinding_rate = 5000; //s^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
 
