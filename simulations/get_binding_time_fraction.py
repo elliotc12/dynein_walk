@@ -50,4 +50,4 @@ subprocess.call(rm2_cmd)
 print "timesteps with uby < %g: %g/%g, fraction: %g" % (MT_BINDING_HEIGHT, num_binding_timesteps, num_timesteps, num_binding_timesteps / num_timesteps)
 
 result_file = open(result_fname, 'w')
-result_file.write("timesteps with uby  <%g: %g/%g, fraction: %g" % (MT_BINDING_HEIGHT, num_binding_timesteps, num_timesteps, num_binding_timesteps / num_timesteps))
+result_file.write("timesteps with uby  <%g: %g/%g, n = %g" % (MT_BINDING_HEIGHT, num_binding_timesteps, num_timesteps, num_binding_timesteps / num_timesteps))

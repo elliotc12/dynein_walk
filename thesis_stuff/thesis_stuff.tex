@@ -22,11 +22,9 @@
 \usepackage{fancyhdr}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{verbatim}
 \pagestyle{fancy}
 \fancyhf{}
-% Headers and footers can be added with the \lhead{} \rhead{} \lfoot{} \rfoot{} commands
-% Example footer:
-%\rfoot{\color{headings} {\sffamily Last update: \today}. Typeset with Xe\LaTeX}
 
 \renewcommand{\headrulewidth}{0pt} % Get rid of the default rule in the header
 
@@ -695,6 +693,36 @@ Papers often supply rate constants for various transitions. Our model uses Arhen
   \left<k_{bind}\right> &= Be^{-1/2}\\
   \rightarrow B &= \frac{k_{bind}}{\sqrt{e}}
 \end{align*}
+
+\subsection{Properly implementing binding rates}
+To determine if it is time to do a state transition, we calculate the per-timestep
+transition probability $k_b/dt$, pick a number between zero and one, and transition
+if our number was the lower of the two.\\
+
+One issue with this is the rate constant $k_b$ is calculated experimentally from an
+ensemble of dynein, and doesn't take into account how transitions are much more likely in some orientations than others. In reality, dynein will only bind to the MT when
+its binding domain is less than 0.2nm away from a binding site.\\
+
+To fix this, we define a parameter $n$, the time fraction onebound dynein is capable
+of binding. Then a weighted average of the bindable and non-bindable rate constants
+looks like:
+
+\begin{equation*}
+  nk_{bindable} + (n-1)k_{nonbindable} = k_b
+\end{equation*}
+
+Since we say $k_{nonbindable} = 0$, $k_{bindable}$, our effective rate constant of
+binding, is $k_b/n$. Thus our preexponential Arrenhius factor is (see above):
+
+\begin{equation*}
+  B = \frac{k_{b}}{n\sqrt{e}}
+\end{equation*}
+
+\subsubsection{Calculating $n$}
+A script, \verb|simulations/get_binding_time_fraction.py|, calculates how often
+a onebound dynein spends in a bindable state:
+
+\verbatiminput{../simulations/simulation_results/binding_time_fraction.txt}
 
 \subsection{Calculating $\Delta G_{bind}$}
 Based on Van der Spoel \textit{et. al.}, $\Delta H_{HB} = 10.6kJ/mol$ for water molecules forming a single hydrogen bond. Based on another paper (Anderson \textit{et al}), the
