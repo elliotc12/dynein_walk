@@ -69,7 +69,7 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "
         "--ct", str(permutation["ct"]),
         "--T", str(permutation["T"]),
         "--runtime", str(runtime),
-        "--movie"
+        #"--movie"
     ])
     print "Running: ", ' '.join(cmd)
 

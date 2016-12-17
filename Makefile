@@ -67,6 +67,10 @@ utilities.o: utilities.cpp dynein_struct.h default_parameters.h simulations/simu
 ######################### SIMULATION STUFF ###############################
 TITLE = defaultplot
 
+simulations/simulation_results/binding_time_fraction.txt: simulations/get_binding_time_fraction.py generate_stepping_data
+	mkdir -p simulations/simulation_results
+	./simulations/get_binding_time_fraction.py
+
 simulations/simulation_defaults.h: simulations/custom_simulation_parameters.h
 
 simulations/custom_simulation_parameters.h:
