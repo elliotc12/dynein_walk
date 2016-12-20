@@ -16,7 +16,7 @@ except (OSError, subprocess.CalledProcessError):
     have_slurm = False
 
 k_b = 0 # s^-1
-runtime = 1e6 * 1e-11
+runtime = 1e9 * 1e-11
 
 data_file_basename = "binding_time_fraction"
 result_fname = 'simulations/simulation_results/binding_time_fraction.txt'
