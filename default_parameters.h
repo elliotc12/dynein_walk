@@ -54,6 +54,8 @@ double low_affinity_unbinding_rate = 5000; //s^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
 
+double binding_fraction = 1e-6;
+
 double e = exp(1.0);
 
 double DELTA_G_FORMATION_BINDING = 1e-10;

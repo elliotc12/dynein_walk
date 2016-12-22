@@ -7,19 +7,29 @@ MT_BINDING_HEIGHT = 0.2
 
 assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 
+have_slurm = True
+
+try:
+    subprocess.check_call("squeue > /dev/null", shell=True)
+except (OSError, subprocess.CalledProcessError):
+    print "Not using slurm..."
+    have_slurm = False
+
 k_b = 0 # s^-1
-runtime = 1e6 * 1e-11
+runtime = 1e9 * 1e-11
 
 data_file_basename = "binding_time_fraction"
 result_fname = 'simulations/simulation_results/binding_time_fraction.txt'
 
-generate_cmd = [
+generate_cmd = ["srun"] if have_slurm else []
+generate_cmd.extend([
     "./generate_stepping_data",
     "--k_b", str(k_b),
     "--name", str(data_file_basename),
     "--runtime", str(runtime),
     "--movie"
-]
+])
+
 print ' '.join(generate_cmd)
 subprocess.call(generate_cmd)
 

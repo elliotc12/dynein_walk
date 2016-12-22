@@ -51,6 +51,7 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   RAND_INIT_SEED, binding_preexponential_factor, D, tau,
   low_affinity_unbinding_rate,
   low_affinity_binding_rate,
+  binding_fraction,
   DELTA_G_FORMATION_BINDING;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;

@@ -689,9 +689,9 @@ Papers often supply rate constants for various transitions. Our model uses Arhen
   k_{bind} &= Be^{-\beta\Delta G_{conf})}\hspace{2cm}\mbox{B constant at constant T}\\
   \left<k_{bind}\right> &= \left<Be^{-\beta\Delta G_{conf}}\right>\\
   \left<k_{bind}\right> &= Be^{-\beta\Delta \left<G_{conf}\right>}\\
-  \left<\Delta G_{conf}\right> &= \frac{1}{2}k_BT = \frac12\beta^{-1}\\
+  \left<\Delta G_{conf}\right> &= \frac{1}{2}k_BT = \frac12\beta^{-1}\hspace{2cm}\mbox{David, what was the justification for this again?}\\
   \left<k_{bind}\right> &= Be^{-1/2}\\
-  \rightarrow B &= \frac{k_{bind}}{\sqrt{e}}
+  \rightarrow B &= k_{bind}\sqrt{e}
 \end{align*}
 
 \subsection{Properly implementing binding rates}
@@ -715,7 +715,7 @@ Since we say $k_{nonbindable} = 0$, $k_{bindable}$, our effective rate constant 
 binding, is $k_b/n$. Thus our preexponential Arrenhius factor is (see above):
 
 \begin{equation*}
-  B = \frac{k_{b}}{n\sqrt{e}}
+  B = \frac{k_{b}\sqrt{e}}{n}
 \end{equation*}
 
 \subsubsection{Calculating $n$}
