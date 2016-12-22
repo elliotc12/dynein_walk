@@ -744,6 +744,18 @@ $\Delta \theta \approx 0$ corresponds to being fully bound and $\Delta \theta \a
   \frac 12 c_b \Delta \theta_{ba} = \Delta G_{bind, high} &\rightarrow c_b = 2\Delta G_{bind, high} \approx 140 \mbox{ kJ/mol}\\
 \end{align*}
 
+\subsection{ATP Concentration from Weihong's Paper}
+Weihong says in the Supplemental Methods section that the ATP concentration of the ``dynein motility buffer'' used to take his videos was 1mM, with no added ADP or Pi. Thus we need to calculate the equilibrium concentration of ATP:\\
+
+\begin{align*}
+  \Delta G^\cdot' &= \Delta G^\cdot + RT\ln Q\\
+  \rightarrow Q &= e^{-\frac{\Delta G^\cdot}{RT}}\\
+  \frac{[ADP][Pi]}{[ATP]} = \frac{n^2}{0.001 - n} &= e^{\frac{30.5}{0.008134*298}} = 2.915 * 10^{5}\\
+  \rightarrow n \approx 0.001
+\end{align*}
+
+Thus we see that $[ADP] = [Pi] \approx 0.001$, $[ATP] = 3.4*10^{-12}$. What's more, we see that, since the [ATP] and [ADP] are at equilibrium, there is no energy to be gained
+from hydrolysing ATP. Thus, dynein can't move. Maybe something is wrong...\\
 
 \section{Papers}
 
