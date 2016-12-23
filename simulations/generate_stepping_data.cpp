@@ -142,7 +142,9 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
 
 void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_movie, double* runtime) {
   char c;
+  char* label;
   *run_name = 0;
+  label = 0;
 
   static struct option long_options[] =
     {
@@ -158,7 +160,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"k_ub",     required_argument,    0, 'j'},
       {"k_ub_ob",  required_argument,    0, 'k'},
       {"runtime",  required_argument,    0, 'l'},
-      // {"runtime",  required_argument,    0, 'm'},
+      {"label",    required_argument,    0, 'm'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
@@ -218,12 +220,26 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     case 'l':
       *runtime = strtod(optarg, NULL);
       break;
+    case 'm':
+      label = optarg;
+      break;
     case '?':
       printf("Some other unknown getopt error.\n");
       exit(EXIT_FAILURE);
     default:
       printf("Default case in getopt: uh-oh!\n");
       exit(EXIT_FAILURE);
+    }
+  }
+
+  if (*run_name == 0) {
+    if (label == 0) {
+      sprintf(run_name, "ls-%g,lt-%g,k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,T-%g", Ls, Lt,
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, T);
+    }
+    else {
+      sprintf(run_name, "%s__ls-%g,lt-%g,k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,T-%g", label, Ls,
+	      Lt, low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, T);
     }
   }
 
@@ -241,11 +257,6 @@ int main(int argc, char** argv) {
   double runtime = 0;
 
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
-
-  if (*run_name == 0) {
-    sprintf(run_name, "ls-%g,lt-%g,k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,T-%g", Ls, Lt,
-            low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, T);
-  }
 
   char *stepping_data_fname = new char[200];
   char *stepping_config_fname = new char[200];

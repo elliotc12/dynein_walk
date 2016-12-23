@@ -18,33 +18,35 @@ atp_in_kJ_per_mol = 30.5
 binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
     
-ls_min = 7.0 # nm
-ls_max = 7.0 # nm
+ls_min = 22.1 # nm
+ls_max = 22.1 # nm
 ls_num = 1
 
-lt_min = 7.075 # nm
-lt_max = 7.075 # nm
+lt_min = 11.15 # nm
+lt_max = 11.15 # nm
 lt_num = 1
 
-k_b_min = 2080 # s^-1
-k_b_max = 6080 # s^-1
+k_b_min = 5000 # s^-1
+k_b_max = 10000 # s^-1
 k_b_num = 1
 
-cb_min = 1*binding_energy_high_affinity_atp # s^-1
+cb_min = 2*binding_energy_high_affinity_atp # s^-1
 cb_max = 3*binding_energy_high_affinity_atp # s^-1
 cb_num = 1
 
-cm_min = 1*binding_energy_high_affinity_atp # s^-1
-cm_max = 5*binding_energy_high_affinity_atp # s^-1
-cm_num = 1
+cm_min = 10*binding_energy_high_affinity_atp # s^-1
+cm_max = 1*binding_energy_high_affinity_atp # s^-1
+cm_num = 5
 
-ct_min = 0.5*binding_energy_high_affinity_atp # s^-1
+ct_min = 1*binding_energy_high_affinity_atp # s^-1
 ct_max = 2*binding_energy_high_affinity_atp # s^-1
 ct_num = 1
 
 T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
+
+label = "findgoodsprings"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
@@ -68,12 +70,13 @@ for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "
         "--cm", str(permutation["cm"]),
         "--ct", str(permutation["ct"]),
         "--T", str(permutation["T"]),
+        "--label", label,
         "--runtime", str(runtime),
-        #"--movie"
+        "--movie"
     ])
     print "Running: ", ' '.join(cmd)
 
-    basename = 'ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (permutation['ls'], permutation['lt'], permutation["k_b"], permutation["cb"],
-                                                                  permutation["cm"], permutation["ct"], permutation['T'])
+    basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, permutation['ls'], permutation['lt'], permutation["k_b"],
+                                                                      permutation["cb"], permutation["cm"], permutation["ct"], permutation['T'])
     out = open('runlogs/' + basename + '.out', 'w')
     subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
