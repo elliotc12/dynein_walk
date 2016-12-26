@@ -41,7 +41,7 @@ double binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / 
 
 double ct = 0.1*binding_energy_high_affinity_atp; // ct = 0.5 cb
 double cm = 0.1*binding_energy_high_affinity_atp; // cm = 3*cb
-double cb = 0.1**binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estimating cb spring constant', then experimental tweaking to get the 0.1s
+double cb = 0.1*binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estimating cb spring constant', then experimental tweaking to get the 0.1s
 
 double D = 2*kb*T / ((gt + gm + gb) / 3);
 
