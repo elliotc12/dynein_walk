@@ -14,7 +14,7 @@ pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
 tail = 'tail' in sys.argv
 
-view_width = 15
+view_width = 50
 
 def close_windows(*_):
   plt.close()
