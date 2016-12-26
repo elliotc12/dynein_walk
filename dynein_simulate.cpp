@@ -97,6 +97,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
 
+	  if (crash_on_nan and (isnan(temp_bba) or isnan(temp_bma) or isnan(temp_uma) or isnan(temp_uba))) {
+	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
+	    exit(1);
+	  }
 	  dyn_ob->update_velocities();
 	}
       }
@@ -142,6 +146,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
 	  dyn_bb->set_nma(temp_nma);
 	  dyn_bb->set_fma(temp_fma);
+
+	  if (crash_on_nan and (isnan(temp_nma) or isnan(temp_fma))) {
+	    printf("Bothbound velocity calculation generated a NaN, exiting.\n");
+	    exit(1);
+	  }
 
 	  dyn_bb->update_velocities();
 	}

@@ -282,6 +282,7 @@ void Dynein_bothbound::update_coordinates() {
            cosAn, sinAn, cosAns, sinAns);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
            L, Ln, Lf, Lf-Ln);
+    exit(1);
   }
   nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns);
   tx = nbx + Ln*cosAn;
