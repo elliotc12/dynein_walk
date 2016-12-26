@@ -62,7 +62,7 @@ const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
 const bool am_debugging_state_transitions = false;
-const bool am_debugging_rates = true;
+const bool am_debugging_rates = false;
 
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);
