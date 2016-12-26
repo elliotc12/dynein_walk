@@ -4,7 +4,7 @@
 const double atp_in_kJ_per_mol = 30.5; // energy stored in 1 ATP in kJ/mol
 const double eV_per_kJ_per_mol = .01036410; // 1 kJ/mol = .01 eV
 const double kb_eV = 8.61733034e-5; // eV/K
-double kb = atp_in_kJ_per_mol*eV_per_kJ_per_mol*kb_eV; // kB in ATP energies per K
+double kb = kb_eV / (atp_in_kJ_per_mol * eV_per_kJ_per_mol); // kB in ATP energies per K
 double T = 310.15; // K
 
 double Lt = 7.0;  // nm, guess - not sure how DNA tail-bridge works
