@@ -25,7 +25,7 @@ custom_runs = []
 #                     "cm": 0.3*binding_energy_high_affinity_atp, "ct": 0.3*binding_energy_high_affinity_atp})
 # custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.6*binding_energy_high_affinity_atp,
 #                     "cm": 0.6*binding_energy_high_affinity_atp, "ct": 0.6*binding_energy_high_affinity_atp})
-    
+
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
 ls_num = 1
