@@ -17,6 +17,14 @@ atp_in_kJ_per_mol = 30.5
 
 binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
+
+custom_runs = []
+# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.1*binding_energy_high_affinity_atp,
+#                     "cm": 0.1*binding_energy_high_affinity_atp, "ct": 0.1*binding_energy_high_affinity_atp})
+# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.3*binding_energy_high_affinity_atp,
+#                     "cm": 0.3*binding_energy_high_affinity_atp, "ct": 0.3*binding_energy_high_affinity_atp})
+# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.6*binding_energy_high_affinity_atp,
+#                     "cm": 0.6*binding_energy_high_affinity_atp, "ct": 0.6*binding_energy_high_affinity_atp})
     
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -58,25 +66,48 @@ ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
 runtime = 0
 
-for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "ct": ct} for ls in ls_range for lt in lt_range
-                    for k_b in k_b_range for T in T_range for cb in cb_range for cm in cm_range for ct in ct_range]:
-    cmd = ["srun"] if have_slurm else []
-    cmd.extend([
-        "./generate_stepping_data",
-        "--Ls", str(permutation["ls"]),
-        "--Lt", str(permutation["lt"]),
-        "--k_b", str(permutation["k_b"]),
-        "--cb", str(permutation["cb"]),
-        "--cm", str(permutation["cm"]),
-        "--ct", str(permutation["ct"]),
-        "--T", str(permutation["T"]),
-        "--label", label,
-        "--runtime", str(runtime),
-        "--movie"
-    ])
-    print "Running: ", ' '.join(cmd)
+if len(custom_runs) != 0:
+    for run in custom_runs:
+        cmd = ["srun"] if have_slurm else []
+        cmd.extend([
+            "./generate_stepping_data",
+            "--Ls",  str(run["ls"]),
+            "--Lt",  str(run["lt"]),
+            "--k_b", str(run["k_b"]),
+            "--cb",  str(run["cb"]),
+            "--cm",  str(run["cm"]),
+            "--ct",  str(run["ct"]),
+            "--T",   str(run["T"]),
+            "--label", label,
+            "--runtime", str(runtime),
+            "--movie"
+        ])
+        print "Running: ", ' '.join(cmd)
 
-    basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, permutation['ls'], permutation['lt'], permutation["k_b"],
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"],
+                                                                      run["cb"], run["cm"], run["ct"], run['T'])
+        out = open('runlogs/' + basename + '.out', 'w')
+        subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+else:
+    for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "ct": ct} for ls in ls_range for lt in lt_range
+                    for k_b in k_b_range for T in T_range for cb in cb_range for cm in cm_range for ct in ct_range]:
+        cmd = ["srun"] if have_slurm else []
+        cmd.extend([
+            "./generate_stepping_data",
+            "--Ls", str(permutation["ls"]),
+            "--Lt", str(permutation["lt"]),
+            "--k_b", str(permutation["k_b"]),
+            "--cb", str(permutation["cb"]),
+            "--cm", str(permutation["cm"]),
+            "--ct", str(permutation["ct"]),
+            "--T", str(permutation["T"]),
+            "--label", label,
+            "--runtime", str(runtime),
+            "--movie"
+        ])
+        print "Running: ", ' '.join(cmd)
+
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, permutation['ls'], permutation['lt'], permutation["k_b"],
                                                                       permutation["cb"], permutation["cm"], permutation["ct"], permutation['T'])
-    out = open('runlogs/' + basename + '.out', 'w')
-    subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+        out = open('runlogs/' + basename + '.out', 'w')
+        subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
