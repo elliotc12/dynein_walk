@@ -30,16 +30,16 @@ k_b_min = 5000 # s^-1
 k_b_max = 10000 # s^-1
 k_b_num = 1
 
-cb_min = 2*binding_energy_high_affinity_atp # s^-1
-cb_max = 3*binding_energy_high_affinity_atp # s^-1
+cb_min = .1*binding_energy_high_affinity_atp # s^-1
+cb_max = .1*binding_energy_high_affinity_atp # s^-1
 cb_num = 1
 
-cm_min = 10*binding_energy_high_affinity_atp # s^-1
-cm_max = 1*binding_energy_high_affinity_atp # s^-1
-cm_num = 5
+cm_min = .1*binding_energy_high_affinity_atp # s^-1
+cm_max = .1*binding_energy_high_affinity_atp # s^-1
+cm_num = 1
 
-ct_min = 1*binding_energy_high_affinity_atp # s^-1
-ct_max = 2*binding_energy_high_affinity_atp # s^-1
+ct_min = .1*binding_energy_high_affinity_atp # s^-1
+ct_max = .1*binding_energy_high_affinity_atp # s^-1
 ct_num = 1
 
 T_min = 310.15 # K
