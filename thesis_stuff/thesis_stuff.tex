@@ -745,7 +745,19 @@ $\Delta \theta \approx 0$ corresponds to being fully bound and $\Delta \theta \a
 \end{align*}
 
 \subsection{ATP Concentration from Weihong's Paper}
-Weihong says in the Supplemental Methods section that the ATP concentration of the ``dynein motility buffer'' used to take his videos was 1mM, with no added ADP or Pi.
+Weihong says in the Supplemental Methods section that the ATP concentration of the ``dynein motility buffer'' used to take his videos was 1mM, with no added ADP or Pi.\\
+
+\subsection{Parameter fitting}
+Lots of different manual simulations and their outcomes.
+
+\begin{center}
+  \begin{tabular}{| l | l | l | l | l | l | l | p{3cm} | p{5cm} |}
+    \hline
+    Ls & Lt & kb & kub & cm & cb & ct & notes & outcome\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 23.0 & 0.23 & 0.23 & trying to find good springs for binding & unbinding probability is about $10^{-150}$, spring constants too high to allow unbinding\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.23 & 0.23 & 0.23 & trying to find good springs for binding & unbinding probability oscillates around $10^{-9}$, seems good will explore more\\\hline
+  \end{tabular}
+\end{center}
 
 \section{Papers}
 
