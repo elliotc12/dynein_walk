@@ -1,7 +1,6 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
 
-static const bool am_debugging_rates = false;
 static const bool debug_stepping = false;
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
@@ -45,7 +44,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 				 rand);
     dyn_bb = NULL;
   }
-  
+
   double t = 0;
   long long iter = 0;
   State current_state = init_state;
