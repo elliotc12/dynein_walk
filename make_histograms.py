@@ -34,9 +34,9 @@ cb_min = .1*binding_energy_high_affinity_atp # s^-1
 cb_max = .1*binding_energy_high_affinity_atp # s^-1
 cb_num = 1
 
-cm_min = .1*binding_energy_high_affinity_atp # s^-1
-cm_max = .1*binding_energy_high_affinity_atp # s^-1
-cm_num = 1
+cm_min = .01*binding_energy_high_affinity_atp # s^-1
+cm_max = 1*binding_energy_high_affinity_atp # s^-1
+cm_num = 5
 
 ct_min = .1*binding_energy_high_affinity_atp # s^-1
 ct_max = .1*binding_energy_high_affinity_atp # s^-1
