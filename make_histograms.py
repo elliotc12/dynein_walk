@@ -19,12 +19,26 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.1*binding_energy_high_affinity_atp,
-#                     "cm": 0.1*binding_energy_high_affinity_atp, "ct": 0.1*binding_energy_high_affinity_atp})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.3*binding_energy_high_affinity_atp,
-#                     "cm": 0.3*binding_energy_high_affinity_atp, "ct": 0.3*binding_energy_high_affinity_atp})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15, "cb": 0.6*binding_energy_high_affinity_atp,
-#                     "cm": 0.6*binding_energy_high_affinity_atp, "ct": 0.6*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.01*binding_energy_high_affinity_atp,
+                    "cm": 0.01*binding_energy_high_affinity_atp,
+                    "ct": 0.01*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.05*binding_energy_high_affinity_atp,
+                    "cm": 0.05*binding_energy_high_affinity_atp,
+                    "ct": 0.05*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.1*binding_energy_high_affinity_atp,
+                    "cm": 0.1*binding_energy_high_affinity_atp,
+                    "ct": 0.1*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.5*binding_energy_high_affinity_atp,
+                    "cm": 0.5*binding_energy_high_affinity_atp,
+                    "ct": 0.5*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 2*binding_energy_high_affinity_atp,
+                    "cm": 2*binding_energy_high_affinity_atp,
+                    "ct": 2*binding_energy_high_affinity_atp})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -54,7 +68,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "findgoodsprings"
+label = "findnotnansprings"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)

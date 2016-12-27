@@ -4,6 +4,6 @@
 const long long iterations = 1e7;
 const long long data_generation_skip_iterations = 1e5;
 
-const int stepping_movie_framerate = 1e5;
+const int stepping_movie_framerate = 1e0;
 
 #endif
