@@ -256,13 +256,18 @@ void Dynein_bothbound::update_internal_forces() {
     f.fbx += -f1x;
     f.fby += -f1y;
 
-    if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+    // currently unused
+    // if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
+    // if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    // if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
   }
 }
 
 void Dynein_bothbound::update_coordinates() {
+  double epsilon = (r.tx > 0) ? 1e-14 : -1e-14; // eps sign based on random seed, so deterministic
+  if (nma == M_PI) nma += epsilon; // nudge if in a NaN-y conformation
+  if (fma == M_PI) fma += epsilon;
+
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
