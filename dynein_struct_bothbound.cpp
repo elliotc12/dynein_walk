@@ -284,6 +284,7 @@ void Dynein_bothbound::update_coordinates() {
            L, Ln, Lf, Lf-Ln);
     exit(1);
   }
+
   nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns);
   tx = nbx + Ln*cosAn;
   ty = nby + Ln*sinAn;
@@ -320,22 +321,17 @@ void Dynein_bothbound::update_coordinates() {
   }
   ta = fma - nma + fba - nba;
 
-  static bool BB_PHYSICAL = true;
-
   //assert(Ln + Lf > fabs(L)); // Triangle inequality!
-  if (Ln + Lf <= fabs(L) and BB_PHYSICAL) {
+  if (Ln + Lf <= fabs(L)) {
     printf("Simulation unphysical, Ln + Lf !> fabs(L)\n");
-    BB_PHYSICAL = false;
   }
   //assert(nma != M_PI);
-  if (nma == M_PI and BB_PHYSICAL) {
+  if (nma == M_PI) {
     printf("Simulation unphysical, nma == M_PI\n");
-    BB_PHYSICAL = false;
   }
   //assert(fma != M_PI);
-  if (fma == M_PI and BB_PHYSICAL) {
+  if (fma == M_PI) {
     printf("Simulation unphysical, fma == M_PI\n");
-    BB_PHYSICAL = false;
   }
   if (fma < 0 or fma > 2*M_PI) {
     if (am_debugging_angles) printf("fma angle is crazy man! %g\n", fma);
@@ -414,7 +410,7 @@ void Dynein_bothbound::update_velocities() {
   dYt_dLn = sinAn + Ln*dsinAn_dLn;
   dXt_dLf = -Lf/L;
   dYt_dLf = Ln*dsinAn_dLf;
-  
+
   if (am_debugging_nans) printf("dXt_dLn is %g\n", dXt_dLn);
   if (am_debugging_nans) printf("dYt_dLn is %g\n", dYt_dLn);
   if (am_debugging_nans) printf("gm = %g, gt = %g\n", gm, gt);
@@ -520,7 +516,27 @@ void Dynein_bothbound::update_velocities() {
      b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
-  
+
+  if (isnan(d_Ln) or (isnan(d_Lf)) {
+      printf("Bothbound velocity created a NaN.\n");
+      printf("cosAn: %g  cosAf: %g\n", cosAn, cosAf);
+      printf("sinAn: %g  sinAf: %g\n", sinAn, sinAf);
+      printf("cosAns: %g  cosAfs: %g\n", cosAns, cosAfs);
+      printf("sinAns: %g  sinAfs: %g\n", sinAns, sinAfs);
+
+      printf("dcosAn_dLn %g\n", dcosAn_dLn);
+      printf("dsinAn_dLn %g\n", dsinAn_dLn);
+      printf("dcosAns_dLn %g\n", dcosAns_dLn);
+      printf("dsinAns_dLn %g\n", dsinAns_dLn);
+
+      printf("dcosAf_dLn %g\n", dcosAf_dLn);
+      printf("dsinAf_dLn %g\n", dsifAf_dLn);
+      printf("dcosAfs_dLn %g\n", dcosAfs_dLn);
+      printf("dsinAfs_dLn %g\n", dsinAfs_dLn);
+
+      exit(1);
+    }
+
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
 }
