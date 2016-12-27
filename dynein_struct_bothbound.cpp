@@ -517,7 +517,7 @@ void Dynein_bothbound::update_velocities() {
      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
 
-  if (isnan(d_Ln) or (isnan(d_Lf)) {
+  if (isnan(d_Ln) or isnan(d_Lf)) {
       printf("Bothbound velocity created a NaN.\n");
       printf("cosAn: %g  cosAf: %g\n", cosAn, cosAf);
       printf("sinAn: %g  sinAf: %g\n", sinAn, sinAf);
@@ -530,11 +530,9 @@ void Dynein_bothbound::update_velocities() {
       printf("dsinAns_dLn %g\n", dsinAns_dLn);
 
       printf("dcosAf_dLn %g\n", dcosAf_dLn);
-      printf("dsinAf_dLn %g\n", dsifAf_dLn);
+      printf("dsinAf_dLn %g\n", dsinAf_dLn);
       printf("dcosAfs_dLn %g\n", dcosAfs_dLn);
       printf("dsinAfs_dLn %g\n", dsinAfs_dLn);
-
-      exit(1);
     }
 
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
