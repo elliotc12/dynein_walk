@@ -129,7 +129,7 @@ movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/stepping_movie_%.gif: data/stepping_movie_data_%.txt
+movies/%.mp4: data/stepping_movie_data_%.txt
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=10 tail
