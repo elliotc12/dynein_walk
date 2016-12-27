@@ -49,7 +49,7 @@ config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
     if skiplen < 0:
-	skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 2
+	skiplen = 1
 
 if sys.stdin.isatty():
     if tail:
@@ -253,9 +253,9 @@ except (OSError, subprocess.CalledProcessError):
     have_avconv = False
 
 if have_avconv:
-    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
 else:
-    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
 
 print(movie_cmd)
 os.system(movie_cmd) # make the movie
