@@ -264,9 +264,15 @@ void Dynein_bothbound::update_internal_forces() {
 }
 
 void Dynein_bothbound::update_coordinates() {
-  double epsilon = (r.tx > 0) ? 1e-14 : -1e-14; // eps sign based on random seed, so deterministic
-  if (nma == M_PI) nma += epsilon; // nudge if in a NaN-y conformation
-  if (fma == M_PI) fma += epsilon;
+  double epsilon = (r.tx > 0) ? 1e-6 : -1e-6; // eps sign based on random seed, so deterministic
+  if (fabs(nma - M_PI) < 1e-7) { // nudge if in a NaN-y conformation
+    printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
+    nma += epsilon;
+  }
+  if (fabs(fma - M_PI) < 1e-7) {
+    printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
+    fma += epsilon;
+  }
 
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
@@ -524,6 +530,10 @@ void Dynein_bothbound::update_velocities() {
 
   if (isnan(d_Ln) or isnan(d_Lf)) {
       printf("Bothbound velocity created a NaN.\n");
+
+      printf("nma: %.15f, fma: %.15f\n", nma, fma);
+      printf("nma - pi: %.15f, fma - pi: %.15f\n", nma - M_PI, fma - M_PI);
+      
       printf("cosAn: %g  cosAf: %g\n", cosAn, cosAf);
       printf("sinAn: %g  sinAf: %g\n", sinAn, sinAf);
       printf("cosAns: %g  cosAfs: %g\n", cosAns, cosAfs);
