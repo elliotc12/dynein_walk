@@ -266,11 +266,11 @@ void Dynein_bothbound::update_internal_forces() {
 void Dynein_bothbound::update_coordinates() {
   double epsilon = (r.tx > 0) ? 1e-6 : -1e-6; // eps sign based on random seed, so deterministic
   if (fabs(nma - M_PI) < 1e-7) { // nudge if in a NaN-y conformation
-    printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
+    if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
     nma += epsilon;
   }
   if (fabs(fma - M_PI) < 1e-7) {
-    printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
+    if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
     fma += epsilon;
   }
 
