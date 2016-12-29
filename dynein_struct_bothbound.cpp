@@ -121,6 +121,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     printf("     Ls/Lt = %g/%g\n", Ls, Lt);
     printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
     printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   }
 
@@ -293,6 +294,7 @@ void Dynein_bothbound::update_coordinates() {
            cosAn, sinAn, cosAns, sinAns);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
            L, Ln, Lf, Lf-Ln);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   }
 
@@ -317,6 +319,7 @@ void Dynein_bothbound::update_coordinates() {
            nba, nmy, nmx - nbx, tx, ty);
     printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
            nby, Ls, cosAn, sinAns, sinAn,cosAns);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -325,6 +328,7 @@ void Dynein_bothbound::update_coordinates() {
   if (fba < 0 or fba > M_PI) {
     printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx + L));
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",

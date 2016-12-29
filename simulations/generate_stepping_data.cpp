@@ -19,6 +19,12 @@
 const bool display_step_info = false;
 const bool display_progress = false;
 
+extern movie_data_struct* on_crash_old_movie_data_global_ptr;
+extern movie_data_struct* on_crash_new_movie_data_global_ptr;
+extern FILE* crash_movie_file_global;
+
+void on_crash_write_movie_buffer();
+
 struct job_msg_t {
   long long max_iteration;
   double start_time;
@@ -27,6 +33,12 @@ struct job_msg_t {
   FILE *movie_data_file;
   bool am_making_movie; // redundant with movie_data_file
 };
+
+void zero_movie_struct(movie_data_struct* data) {
+  for (int i = 0; i < MOVIE_BUFFER_SIZE; i++) {
+    data[i].time = -1.0;
+  }
+}
 
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
   static State  last_state = BOTHBOUND;
@@ -64,54 +76,136 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
-  const char *format = "%d\t"
-                       "%.10g\t"
-                       "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-                       "%g\t%g\t%g\t%g\t"
-                       "%g\t%g\t%g\t%g\t"
-                       "%g\t%g\t"
-                       "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
-                        "\n";
-  if (s == NEARBOUND or s == FARBOUND) {
-    Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
-    onebound_forces dyn_ob_f = dyn_ob->get_internal();
-    fprintf(data_file, format,
-	    dyn_ob->get_state(),
-	    iteration*dt,
-	    dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
-	    dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
-	    dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
-	    dyn_ob->get_ubx(), dyn_ob->get_uby(),
-	    dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
-	    dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+  static int buffer_position = 0;
+  if (!am_only_writing_on_crash) {
+    const char *format = "%d\t"
+      "%.10g\t"
+      "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+      "%g\t%g\t%g\t%g\t"
+      "%g\t%g\t%g\t%g\t"
+      "%g\t%g\t"
+      "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+      "\n";
+    if (s == NEARBOUND or s == FARBOUND) {
+      Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+      onebound_forces dyn_ob_f = dyn_ob->get_internal();
+      fprintf(data_file, format,
+	      dyn_ob->get_state(),
+	      iteration*dt,
+	      dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
+	      dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+	      dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
+	      dyn_ob->get_ubx(), dyn_ob->get_uby(),
+	      dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
+	      dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+    }
+    else if (s == BOTHBOUND) {
+      Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+      bothbound_forces dyn_bb_f = dyn_bb->get_internal();
+      fprintf(data_file, format,
+	      BOTHBOUND,
+	      iteration*dt,
+	      dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
+	      dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
+	      dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
+	      dyn_bb->get_fbx(), dyn_bb->get_fby(),
+	      dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
+	      dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
+    }
+    else if (s == UNBOUND) {
+      fprintf(data_file, format,
+	      UNBOUND,
+	      iteration*dt,
+	      0.0, 0.0, 0.0, 0.0, 0.0,
+	      0.0, 0.0, 0.0, 0.0,
+	      0.0, 0.0, 0.0, 0.0,
+	      0.0, 0.0,
+	      0.0, 0.0, 0.0, 0.0, 0.0,
+	      0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+    else {
+      printf("Unhandled state in stepping movie data generation!\n");
+      exit(1);
+    }
   }
-  else if (s == BOTHBOUND) {
-    Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-    bothbound_forces dyn_bb_f = dyn_bb->get_internal();
-    fprintf(data_file, format,
-	    BOTHBOUND,
-	    iteration*dt,
-	    dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
-	    dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
-	    dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
-	    dyn_bb->get_fbx(), dyn_bb->get_fby(),
-	    dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
-	    dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
-  }
-  else if (s == UNBOUND) {
-    fprintf(data_file, format,
-	    UNBOUND,
-	    iteration*dt,
-	    0.0, 0.0, 0.0, 0.0, 0.0,
-	    0.0, 0.0, 0.0, 0.0,
-	    0.0, 0.0, 0.0, 0.0,
-	    0.0, 0.0,
-	    0.0, 0.0, 0.0, 0.0, 0.0,
-	    0.0, 0.0, 0.0, 0.0, 0.0);
-  }
-  else {
-    printf("Unhandled state in stepping movie data generation!\n");
-    exit(1);
+  else { // else write to on-crash-print buffer structs
+    if (buffer_position == MOVIE_BUFFER_SIZE) {
+      movie_data_struct* temp_ptr;
+      temp_ptr = on_crash_old_movie_data_global_ptr;
+      on_crash_old_movie_data_global_ptr = on_crash_new_movie_data_global_ptr;
+      on_crash_new_movie_data_global_ptr = temp_ptr;
+      zero_movie_struct(on_crash_new_movie_data_global_ptr);
+      buffer_position = 0;
+    }
+
+    movie_data_struct* new_movie_buffer = on_crash_new_movie_data_global_ptr;
+
+    printf("writing to crash data buffer\n");
+    if (s == NEARBOUND or s == FARBOUND) {
+      Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+      onebound_forces dyn_ob_f = dyn_ob->get_internal();
+      new_movie_buffer[buffer_position].state = dyn_ob->get_state();
+      new_movie_buffer[buffer_position].time = iteration*dt;
+      new_movie_buffer[buffer_position].PE_1 = dyn_ob->PE_bba;
+      new_movie_buffer[buffer_position].PE_2 = dyn_ob->PE_bma;
+      new_movie_buffer[buffer_position].PE_3 = dyn_ob->PE_uma;
+      new_movie_buffer[buffer_position].PE_4 = 0.0;
+
+      new_movie_buffer[buffer_position].x_1 = dyn_ob->get_bbx();
+      new_movie_buffer[buffer_position].x_2 = dyn_ob->get_bmx();
+      new_movie_buffer[buffer_position].x_3 = dyn_ob->get_tx();
+      new_movie_buffer[buffer_position].x_4 = dyn_ob->get_umx();
+      new_movie_buffer[buffer_position].x_5 = dyn_ob->get_ubx();
+      new_movie_buffer[buffer_position].y_1 = dyn_ob->get_bby();
+      new_movie_buffer[buffer_position].y_2 = dyn_ob->get_bmy();
+      new_movie_buffer[buffer_position].y_3 = dyn_ob->get_ty();
+      new_movie_buffer[buffer_position].y_4 = dyn_ob->get_umy();
+      new_movie_buffer[buffer_position].y_5 = dyn_ob->get_uby();
+
+      new_movie_buffer[buffer_position].fx_1 = dyn_ob_f.bbx;
+      new_movie_buffer[buffer_position].fx_2 = dyn_ob_f.bmx;
+      new_movie_buffer[buffer_position].fx_3 = dyn_ob_f.tx;	
+      new_movie_buffer[buffer_position].fx_4 = dyn_ob_f.umx;
+      new_movie_buffer[buffer_position].fx_5 = dyn_ob_f.ubx;
+      new_movie_buffer[buffer_position].fy_1 = dyn_ob_f.bby;
+      new_movie_buffer[buffer_position].fy_2 = dyn_ob_f.bmy;
+      new_movie_buffer[buffer_position].fy_3 = dyn_ob_f.ty;	
+      new_movie_buffer[buffer_position].fy_4 = dyn_ob_f.umy;
+      new_movie_buffer[buffer_position].fy_5 = dyn_ob_f.uby;
+    }
+    else if (s == BOTHBOUND) {
+      Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+      bothbound_forces dyn_bb_f = dyn_bb->get_internal();
+      new_movie_buffer[buffer_position].state = BOTHBOUND;
+      new_movie_buffer[buffer_position].time = iteration*dt;
+      new_movie_buffer[buffer_position].PE_1 = dyn_bb->PE_nba;
+      new_movie_buffer[buffer_position].PE_2 = dyn_bb->PE_nma;
+      new_movie_buffer[buffer_position].PE_3 = dyn_bb->PE_fma;
+      new_movie_buffer[buffer_position].PE_4 = dyn_bb->PE_fba;
+
+      new_movie_buffer[buffer_position].x_1 = dyn_bb->get_nbx();
+      new_movie_buffer[buffer_position].x_2 = dyn_bb->get_nmx();
+      new_movie_buffer[buffer_position].x_3 = dyn_bb->get_tx();
+      new_movie_buffer[buffer_position].x_4 = dyn_bb->get_fmx();
+      new_movie_buffer[buffer_position].x_5 = dyn_bb->get_fbx();
+      new_movie_buffer[buffer_position].y_1 = dyn_bb->get_nby();
+      new_movie_buffer[buffer_position].y_2 = dyn_bb->get_nmy();
+      new_movie_buffer[buffer_position].y_3 = dyn_bb->get_ty();
+      new_movie_buffer[buffer_position].y_4 = dyn_bb->get_fmy();
+      new_movie_buffer[buffer_position].y_5 = dyn_bb->get_fby();
+
+      new_movie_buffer[buffer_position].fx_1 = dyn_bb_f.nbx;
+      new_movie_buffer[buffer_position].fx_2 = dyn_bb_f.nmx;
+      new_movie_buffer[buffer_position].fx_3 = dyn_bb_f.tx;	
+      new_movie_buffer[buffer_position].fx_4 = dyn_bb_f.fmx;
+      new_movie_buffer[buffer_position].fx_5 = dyn_bb_f.fbx;
+      new_movie_buffer[buffer_position].fy_1 = dyn_bb_f.nby;
+      new_movie_buffer[buffer_position].fy_2 = dyn_bb_f.nmy;
+      new_movie_buffer[buffer_position].fy_3 = dyn_bb_f.ty;	
+      new_movie_buffer[buffer_position].fy_4 = dyn_bb_f.fmy;
+      new_movie_buffer[buffer_position].fy_5 = dyn_bb_f.fby;
+    }
+    buffer_position++;
   }
 }
 
@@ -269,6 +363,12 @@ int main(int argc, char** argv) {
   sprintf(movie_data_fname, "data/stepping_movie_data_%s.txt", run_name);
   sprintf(movie_config_fname, "data/stepping_movie_config_%s.txt", run_name);
 
+  if (am_only_writing_on_crash) {
+    on_crash_old_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
+    on_crash_new_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
+    zero_movie_struct(on_crash_old_movie_data_global_ptr);
+  }
+
   write_config_file(stepping_config_fname, 0, "");
 
   job_msg_t job_msg;
@@ -278,6 +378,7 @@ int main(int argc, char** argv) {
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
   job_msg.am_making_movie = am_making_movie;
   job_msg.movie_data_file = 0;
+
   if (am_making_movie) {
     write_movie_config(movie_config_fname, iterations*dt);
 
@@ -292,6 +393,8 @@ int main(int argc, char** argv) {
     fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
+
+    crash_movie_file_global = job_msg.movie_data_file;
   }
 
   printf("fname: %s\n", stepping_data_fname);
@@ -316,6 +419,9 @@ int main(int argc, char** argv) {
 
   fclose(job_msg.stepping_data_file);
   fclose(job_msg.movie_data_file);
+
+  delete on_crash_old_movie_data_global_ptr;
+  delete on_crash_new_movie_data_global_ptr;
 
   return EXIT_SUCCESS;
 }

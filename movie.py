@@ -60,7 +60,7 @@ else:
   data = numpy.genfromtxt(sys.stdin, delimiter="\t", invalid_raise=False)
 plt.ion()
 
-if str(type(data[0])) == "<type 'numpy.float64'>":
+if len(data) == 0 or str(type(data[0])) == "<type 'numpy.float64'>":
        print "Very short animation!"
        close_windows()
 
