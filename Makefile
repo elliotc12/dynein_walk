@@ -110,6 +110,7 @@ plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%
 
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	mkdir -p runlogs
+	mkdir -p data
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
 
