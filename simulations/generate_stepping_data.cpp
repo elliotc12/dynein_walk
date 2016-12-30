@@ -216,6 +216,9 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
   if (job_msg.am_making_movie && iteration % stepping_movie_framerate == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
+  if (iteration % (long long) (0.01 / dt) == 0)
+    fprintf(job_msg.stepping_data_file, "#[time: %g]\n", iteration*dt);
+
   if (job_msg.max_iteration > 0) {
     if (iteration % (int)5e5 == 0 && iteration != job_msg.max_iteration && display_progress) {
       printf("Stepping data progress (%s): %lld / %lld, %g%%\n", job_msg.run_msg,
