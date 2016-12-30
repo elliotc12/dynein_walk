@@ -751,24 +751,31 @@ Weihong says in the Supplemental Methods section that the ATP concentration of t
 Lots of different manual simulations and their outcomes.
 
 \begin{center}
-  \begin{tabular}{| l | l | l | l | l | l | l | p{3cm} | p{5cm} |}
+  \begin{tabular}{| l | l | l | l | l | l | l | p{3cm} | p{2cm} | p{5cm} |}
     \hline
-    Ls & Lt & kb & kub & cm & cb & ct & $\Big<P(\mbox{unbind per dt})\Big>$ $ steps / second & errors\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 0.02 & 0.02 & 0.02 & ??      & & keeled over after ns \\\hline
-    22.1 & 11.1 & 5000 & 5000 & 0.11 & 0.11 & 0.11 & $9e-9 $ & & keeled over after ns\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 0.18 & 0.18 & 0.18 & $4e-9 $ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 0.23 & 0.23 & 0.23 & $3e-9 $ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 0.58 & 0.58 & 0.58 & $2e-10$ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 1.16 & 1.16 & 1.16 & $6e-12$ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 1.74 & 1.74 & 1.74 & $1e-13$ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 2.32 & 2.32 & 2.32 & $7e-16$ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 2.90 & 2.90 & 2.90 & $2e-18$ & & no error yet\\\hline
-    22.1 & 11.1 & 5000 & 5000 & 3.49 & 3.49 & 3.49 & $5e-21$ & & no error yet\\\hline
+    Ls & Lt & kb & kub & cm & cb & ct & $\Big<P(\mbox{unbind per dt})\Big>$ & $\Big<\mbox{step time}\Big>$ & errors\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.02 & 0.02 & 0.02 & NA      & NA     & keeled over after ns \\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.11 & 0.11 & 0.11 & $9e-9 $ & 1.7e-4 & keeled over after ns\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.18 & 0.18 & 0.18 & $4e-9 $ & 3.4e-4 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.23 & 0.23 & 0.23 & $3e-9 $ & 2.9e-4 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 0.58 & 0.58 & 0.58 & $2e-10$ & 3.3e-4 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 1.16 & 1.16 & 1.16 & $6e-12$ & 8.4e-4 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 1.74 & 1.74 & 1.74 & $1e-13$ & 3.3e-3 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 2.32 & 2.32 & 2.32 & $7e-16$ & 7.8e-3 & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 2.90 & 2.90 & 2.90 & $2e-18$ & ?? & no error yet\\\hline
+    22.1 & 11.1 & 5000 & 5000 & 3.49 & 3.49 & 3.49 & $5e-21$ & ?? & no error yet\\\hline
+    22.1 & 11.1 & 2500 & 5000 & 2.32 & 2.32 & 2.32 & ?? & ?? & \\\hline
+    22.1 & 11.1 & 1500 & 5000 & 3.32 & 3.32 & 3.32 & ?? & ?? & \\\hline
+    22.1 & 11.1 &  500 & 5000 & 2.32 & 2.32 & 2.32 & ?? & ?? & \\\hline
+    22.1 & 11.1 &  100 & 5000 & 3.32 & 3.32 & 3.32 & ?? & ?? & \\\hline
   \end{tabular}
 \end{center}
 
-If the mean stepping rate from Weihong's paper is ~ 1 step / .1 seconds, then at a dt of $1e-11$s would lead to a desired unbinding
-probability of $1e-11/.1 = 1e-10$.
+If the mean stepping rate from Weihong's paper is about 1 step / .1 seconds, then at a dt of $1e-11$s would lead to a desired unbinding
+probability of $1e-11s/.1s = 1e-10$. The stepping probability was determined by printing out a random subset of unbinding probabilities
+for the bothbound case, then averaging.\\
+
+A more reliable step time determiner is $\Big<\mbox{step time}\Big>$. This number can be determined from the step time histograms.\\
 
 \section{Papers}
 
