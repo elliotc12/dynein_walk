@@ -64,17 +64,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
         double binding_prob = dyn_ob->get_binding_rate()*dt;
-	if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
-	if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
+	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
+	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
-	  if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
+	  // if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = UNBOUND;
 	  break;
 	}
 	else if (rand->rand() < binding_prob) { // switch to bothbound
-	  if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
+	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
@@ -110,8 +110,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
-	if (am_debugging_rates) printf("BB near unbinding probability: %g\n", near_unbinding_prob);
-	if (am_debugging_rates) printf("BB far unbinding probability: %g\n", far_unbinding_prob);
+	if (am_debugging_rates and rand->rand() < 1e-9) printf("BB near unbinding probability: %g\n", near_unbinding_prob);
+	if (am_debugging_rates and rand->rand() < 1e-9) printf("BB far  unbinding probability: %g\n", far_unbinding_prob);
 	bool unbind_near = rand->rand() < near_unbinding_prob;
 	bool unbind_far = rand->rand() < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
@@ -120,7 +120,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  else unbind_near = false;
 	}
 	if (unbind_near) { // switch to farbound
-	  if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
+	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
 	  delete dyn_bb;
 	  dyn_bb = NULL;
@@ -129,7 +129,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
-	  if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
+	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to onebound!\n");
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
 	  delete dyn_bb;
 	  dyn_bb = NULL;

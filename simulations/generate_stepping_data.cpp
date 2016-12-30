@@ -140,7 +140,6 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 
     movie_data_struct* new_movie_buffer = on_crash_new_movie_data_global_ptr;
 
-    printf("writing to crash data buffer\n");
     if (s == NEARBOUND or s == FARBOUND) {
       Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
       onebound_forces dyn_ob_f = dyn_ob->get_internal();
@@ -385,9 +384,9 @@ int main(int argc, char** argv) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
     if (!job_msg.movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
-      exit(1);
+      exit(1); 
     } else {
-      printf("created file %s\n", movie_data_fname);
+      printf("\n\n\n*********%s*********\n", movie_data_fname);
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
     fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
@@ -397,7 +396,6 @@ int main(int argc, char** argv) {
     crash_movie_file_global = job_msg.movie_data_file;
   }
 
-  printf("fname: %s\n", stepping_data_fname);
   fprintf(job_msg.stepping_data_file, "# command line:");
   for (int i=0; i<argc; i++) {
     fprintf(job_msg.stepping_data_file, " %s", argv[i]);
