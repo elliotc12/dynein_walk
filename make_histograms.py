@@ -28,17 +28,37 @@ custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
                     "cm": 0.05*binding_energy_high_affinity_atp,
                     "ct": 0.05*binding_energy_high_affinity_atp})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.08*binding_energy_high_affinity_atp,
+                    "cm": 0.08*binding_energy_high_affinity_atp,
+                    "ct": 0.08*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
                     "cb": 0.1*binding_energy_high_affinity_atp,
                     "cm": 0.1*binding_energy_high_affinity_atp,
                     "ct": 0.1*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 0.25*binding_energy_high_affinity_atp,
+                    "cm": 0.25*binding_energy_high_affinity_atp,
+                    "ct": 0.25*binding_energy_high_affinity_atp})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
                     "cb": 0.5*binding_energy_high_affinity_atp,
                     "cm": 0.5*binding_energy_high_affinity_atp,
                     "ct": 0.5*binding_energy_high_affinity_atp})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 2*binding_energy_high_affinity_atp,
-                    "cm": 2*binding_energy_high_affinity_atp,
-                    "ct": 2*binding_energy_high_affinity_atp})
+                    "cb": 0.75*binding_energy_high_affinity_atp,
+                    "cm": 0.75*binding_energy_high_affinity_atp,
+                    "ct": 0.75*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 1*binding_energy_high_affinity_atp,
+                    "cm": 1*binding_energy_high_affinity_atp,
+                    "ct": 1*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 1.25*binding_energy_high_affinity_atp,
+                    "cm": 1.25*binding_energy_high_affinity_atp,
+                    "ct": 1.25*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+                    "cb": 1.5*binding_energy_high_affinity_atp,
+                    "cm": 1.5*binding_energy_high_affinity_atp,
+                    "ct": 1.5*binding_energy_high_affinity_atp})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
