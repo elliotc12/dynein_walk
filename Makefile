@@ -100,6 +100,7 @@ plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_
 
 histograms:
 	make $(STEPPING_LENGTH_HISTOGRAMS)
+	make $(STEPPING_TIME_HISTOGRAMS)
 
 plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
