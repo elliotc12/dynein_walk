@@ -19,46 +19,30 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.01*binding_energy_high_affinity_atp,
-                    "cm": 0.01*binding_energy_high_affinity_atp,
-                    "ct": 0.01*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.05*binding_energy_high_affinity_atp,
-                    "cm": 0.05*binding_energy_high_affinity_atp,
-                    "ct": 0.05*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.08*binding_energy_high_affinity_atp,
-                    "cm": 0.08*binding_energy_high_affinity_atp,
-                    "ct": 0.08*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.1*binding_energy_high_affinity_atp,
-                    "cm": 0.1*binding_energy_high_affinity_atp,
-                    "ct": 0.1*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.25*binding_energy_high_affinity_atp,
-                    "cm": 0.25*binding_energy_high_affinity_atp,
-                    "ct": 0.25*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.5*binding_energy_high_affinity_atp,
-                    "cm": 0.5*binding_energy_high_affinity_atp,
-                    "ct": 0.5*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 0.75*binding_energy_high_affinity_atp,
-                    "cm": 0.75*binding_energy_high_affinity_atp,
-                    "ct": 0.75*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 1*binding_energy_high_affinity_atp,
-                    "cm": 1*binding_energy_high_affinity_atp,
-                    "ct": 1*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 1.25*binding_energy_high_affinity_atp,
-                    "cm": 1.25*binding_energy_high_affinity_atp,
-                    "ct": 1.25*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-                    "cb": 1.5*binding_energy_high_affinity_atp,
-                    "cm": 1.5*binding_energy_high_affinity_atp,
-                    "ct": 1.5*binding_energy_high_affinity_atp})
+# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
+#                     "cb": 1.5*binding_energy_high_affinity_atp,
+#                     "cm": 1.5*binding_energy_high_affinity_atp,
+#                     "ct": 1.5*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 2500"T": 310.15,
+                    "cb": 2.32,
+                    "cm": 2.32,
+                    "ct": 2.32,
+                    "movie": false})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 1500"T": 310.15,
+                    "cb": 2.32,
+                    "cm": 2.32,
+                    "ct": 2.32,
+                    "movie": false})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 500"T": 310.15,
+                    "cb": 2.32,
+                    "cm": 2.32,
+                    "ct": 2.32,
+                    "movie": false})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 100"T": 310.15,
+                    "cb": 2.32,
+                    "cm": 2.32,
+                    "ct": 2.32,
+                    "movie": false})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -108,13 +92,14 @@ if len(custom_runs) != 0:
             "--Ls",  str(run["ls"]),
             "--Lt",  str(run["lt"]),
             "--k_b", str(run["k_b"]),
+            "--k_ub",str(run["k_ub"]),
             "--cb",  str(run["cb"]),
             "--cm",  str(run["cm"]),
             "--ct",  str(run["ct"]),
             "--T",   str(run["T"]),
             "--label", label,
             "--runtime", str(runtime),
-            "--movie"
+            "--movie" if run["movie"] else ""
         ])
         print "Running: ", ' '.join(cmd)
 
