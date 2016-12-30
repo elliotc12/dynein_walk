@@ -396,12 +396,12 @@ int main(int argc, char** argv) {
     crash_movie_file_global = job_msg.movie_data_file;
   }
 
-  fprintf(job_msg.stepping_data_file, "# command line:");
-  for (int i=0; i<argc; i++) {
-    fprintf(job_msg.stepping_data_file, " %s", argv[i]);
-  }
+  // fprintf(job_msg.stepping_data_file, "# command line:");
+  // for (int i=0; i<argc; i++) {
+  //   fprintf(job_msg.stepping_data_file, " %s", argv[i]);
+  // }
+  fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
   fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
-  fprintf(job_msg.stepping_data_file, "#%s\n", run_name);
 
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
