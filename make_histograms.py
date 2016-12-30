@@ -23,26 +23,16 @@ custom_runs = []
 #                     "cb": 1.5*binding_energy_high_affinity_atp,
 #                     "cm": 1.5*binding_energy_high_affinity_atp,
 #                     "ct": 1.5*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 2500"T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 1500, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": false})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 1500"T": 310.15,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 100, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": false})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 500"T": 310.15,
-                    "cb": 2.32,
-                    "cm": 2.32,
-                    "ct": 2.32,
-                    "movie": false})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 100"T": 310.15,
-                    "cb": 2.32,
-                    "cm": 2.32,
-                    "ct": 2.32,
-                    "movie": false})
+                    "movie": False})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -72,7 +62,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "findnotnansprings"
+label = "findgoodkub"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
@@ -99,14 +89,15 @@ if len(custom_runs) != 0:
             "--T",   str(run["T"]),
             "--label", label,
             "--runtime", str(runtime),
-            "--movie" if run["movie"] else ""
         ])
-        print "Running: ", ' '.join(cmd)
+        if (run["movie"]):
+            cmd.extend(["--movie"])
 
-        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"],
-                                                                      run["cb"], run["cm"], run["ct"], run['T'])
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"],
+                                                                      run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
         out = open('runlogs/' + basename + '.out', 'w')
         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+        print "Running: ", ' '.join(cmd)
 else:
     for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "ct": ct} for ls in ls_range for lt in lt_range
                     for k_b in k_b_range for T in T_range for cb in cb_range for cm in cm_range for ct in ct_range]:

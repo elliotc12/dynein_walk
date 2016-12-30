@@ -388,8 +388,6 @@ int main(int argc, char** argv) {
     if (!job_msg.movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
       exit(1); 
-    } else {
-      printf("\n\n\n*********%s*********\n", movie_data_fname);
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
     fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
@@ -403,6 +401,8 @@ int main(int argc, char** argv) {
   // for (int i=0; i<argc; i++) {
   //   fprintf(job_msg.stepping_data_file, " %s", argv[i]);
   // }
+
+  printf("\n\n\n*********%s*********\n", run_name);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
   fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
 
