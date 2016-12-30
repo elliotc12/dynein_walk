@@ -117,19 +117,19 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 #	make generate_stepping_data
 #	./generate_stepping_data $*
 
-movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
+movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_ob_movie $*
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
+movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_bb_movie $*
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/%.mp4: data/stepping_movie_data_%.txt
+movies/%.mp4: data/stepping_movie_data_%.txt movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=10 tail

@@ -164,10 +164,10 @@ void on_crash_write_movie_buffer() {
 	    old_data[i].state,
 	    old_data[i].time,
 	    old_data[i].PE_1, old_data[i].PE_2, old_data[i].PE_3, old_data[i].PE_4, old_data[i].PE_5,
-	    old_data[i].x_1, old_data[i].x_2, old_data[i].x_3, old_data[i].x_4, old_data[i].x_5,
-	    old_data[i].y_1, old_data[i].y_2, old_data[i].y_3, old_data[i].y_4, old_data[i].y_5,
-	    old_data[i].fx_1, old_data[i].fx_2, old_data[i].fx_3, old_data[i].fx_4, old_data[i].fx_5,
-	    old_data[i].fy_1, old_data[i].fy_2, old_data[i].fy_3, old_data[i].fy_4, old_data[i].fy_5);
+	    old_data[i].x_1, old_data[i].y_1, old_data[i].x_2, old_data[i].y_2, old_data[i].x_3,
+	    old_data[i].y_3, old_data[i].x_4, old_data[i].y_4, old_data[i].x_5, old_data[i].y_5,
+	    old_data[i].fx_1, old_data[i].fy_1, old_data[i].fx_2, old_data[i].fy_2, old_data[i].fx_3,
+	    old_data[i].fy_3, old_data[i].fx_4, old_data[i].fy_4, old_data[i].fx_5, old_data[i].fy_5);
     i++;
   }
   int j = 0;
@@ -184,10 +184,10 @@ void on_crash_write_movie_buffer() {
 	    new_data[j].state,
 	    new_data[j].time,
 	    new_data[j].PE_1, new_data[j].PE_2, new_data[j].PE_3, new_data[j].PE_4, new_data[j].PE_5,
-	    new_data[j].x_1, new_data[j].x_2, new_data[j].x_3, new_data[j].x_4, new_data[j].x_5,
-	    new_data[j].y_1, new_data[j].y_2, new_data[j].y_3, new_data[j].y_4, new_data[j].y_5,
-	    new_data[j].fx_1, new_data[j].fx_2, new_data[j].fx_3, new_data[j].fx_4, new_data[j].fx_5,
-	    new_data[j].fy_1, new_data[j].fy_2, new_data[j].fy_3, new_data[j].fy_4, new_data[j].fy_5);
+	    old_data[j].x_1, old_data[j].y_1, old_data[j].x_2, old_data[j].y_2, old_data[j].x_3,
+	    old_data[j].y_3, old_data[j].x_4, old_data[j].y_4, old_data[j].x_5, old_data[j].y_5,
+	    old_data[j].fx_1, old_data[j].fy_1, old_data[j].fx_2, old_data[j].fy_2, old_data[j].fx_3,
+	    old_data[j].fy_3, old_data[j].fx_4, old_data[j].fy_4, old_data[j].fx_5, old_data[j].fy_5);
     j++;
   }
 }
