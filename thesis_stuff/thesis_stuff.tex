@@ -649,25 +649,25 @@ Both bothbound and onebound states show good agreement with the equipartition th
 \end{figure}
 
 \begin{center}
-  \begin{tabular}{| l | l | l | l | l | l | l |}
+  \begin{tabular}{| l | l | l | l | l | l | l | l |}
     \hline
-    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7 & Redwine\\\hline
-    $L_s$ & 12nm & & & 21.0nm & 22.1nm &\\ \hline
-    $L_t$ &  7nm & & & & 11.15nm &\\ \hline
-    $R_b$ &  & & & 1.57nm & 1.45nm &\\ \hline
-    $R_m$ &  7nm & & & 7.36nm & 6.3nm &\\ \hline
-    $R_t$ &  & & & & 2.16nm & \\ \hline
-    $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & & & \\ \hline
-    $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & & &\\ \hline
-    $\theta_{b}$ & 56$^{\circ}$ & & 63.5$^{\circ}$ & & &\\ \hline
-    $\theta_{t}$ & 0$^{\circ}$ & & & & &\\ \hline
-    $k_{ub}$ & $180 s^{-1,a}$ & & & & &\\ \hline
-    $k_b$ & $5000 s^{-1,b}$ & & & & &\\ \hline
-    $\Delta G_{bind, bb}$ & & & & & & -71 kJ/mol\\ \hline
-    $\Delta G_{bind, ob}$ & & & & & & -37 kJ/mol\\ \hline
-    $c_t$ & & & & & & \\ \hline
-    $c_m$ & & & & & & \\ \hline
-    $c_b$ & & & & & & 140 kJ/mol\\ \hline
+    & Winch (Sarlah) & Schmidt & Lin & PyMol 3VKH & PyMol 4RH7 & Redwine & Kon & Burgess\\\hline
+    $L_s$ & 12nm & & & 21.0nm & 22.1nm & & & \\ \hline
+    $L_t$ &  7nm & & & & 11.15nm & & & \\ \hline
+    $R_b$ &  & & & 1.57nm & 1.45nm & & & \\ \hline
+    $R_m$ &  7nm & & & 7.36nm & 6.3nm & & & \\ \hline
+    $R_t$ &  & & & & 2.16nm & & & \\ \hline
+    $\theta_{m}^{Pre}$ & 250$^{\circ}$ & & 171$^{\circ}$ & & & & & 160\\ \hline
+    $\theta_{m}^{Post}$ & 330$^{\circ}$ & & 137.5$^{\circ}$ & & & & & 136\\ \hline
+    $\theta_{b}$ & 56$^{\circ}$ & & 63.5$^{\circ}$ & & & & & \\ \hline
+    $\theta_{t}$ & 0$^{\circ}$ & & & & & & & \\ \hline
+    $k_{ub}$ & $180 s^{-1,a}$ & & & & & & $90.2 \pm 4.5$& \\ \hline
+    $k_b$ & $5000 s^{-1,b}$ & & & & & & & \\ \hline
+    $\Delta G_{bind, bb}$ & & & & & & -71 kJ/mol & & \\ \hline
+    $\Delta G_{bind, ob}$ & & & & & & -37 kJ/mol & & \\ \hline
+    $c_t$ & & & & & & & & \\ \hline
+    $c_m$ & & & & & & & & \\ \hline
+    $c_b$ & & & & & & 140 kJ/mol & & \\ \hline
   \end{tabular}
 \end{center}
 
@@ -945,6 +945,16 @@ A FRET study on how ATP changes the distance of domains. They label the C-termin
 The interpretation is that the dynein's tail moves from a state where it is near the C-terminus (AAA5) to one where it is near AAA2. 5->2 is prestroke on hydrolysis, 2->5 is poststroke on Pi rejection. ATP binding is what causes the conformation change, since they have trapped ATP-ish bound dyneins in both state I and II. The powerstroke happens during the ADP state, since they have an ADP-dynein in state II and another in state I.\\
 
 They also report an ATPase $k_{cat} = 90.2 \pm 4.5$, meaning roughly 100 ATP are cycled per second.\\
+
+\subsection{Possibly more equilibrium motor angles}
+Dynein structure and power stroke
+Nature 2003, Burgess and Oiwa
+
+EM microscopy of apo/ADP-Vi flagellar dynein shows that the stem and stalk don't change length between two states, only the angle/position changes. The paper claims ``the origin of the movement is a displacement of the stem relative to the head and stalk.''.
+
+Paper claims motor angle is \textbf{160 degrees in pre-stroke and 136 degrees in powerstroke}.\\
+
+There is a difference in standard deviation of angles in pre/post-stroke. Pre-stroke has a stdev of 20 degrees, Post-stroke has a stdev of 11. The authors indicate this is due to stiffening of the stalk/foot domain. This seems like it would indicate changes in the motor spring constants between the pre/post-powerstroke states.
 
 \subsection{2012 Kon Crystal Structure (3VKH)}
 This paper crystallizes a full-length and MTBD-truncation mutants. 3VKH is the full-length, but one MTBD of the dimer did not come out in the crystal structure.
