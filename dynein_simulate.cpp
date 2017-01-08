@@ -58,6 +58,9 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	printf("Running for %g s\n", runtime);
   }
 
+  double near_unbinding_prob_printing_average = 0;
+  int unbinding_prob_printing_n = 0;
+
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
@@ -110,8 +113,13 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
-	if (am_debugging_rates and rand->rand() < 1e-9) printf("BB near unbinding probability: %g\n", near_unbinding_prob);
-	if (am_debugging_rates and rand->rand() < 1e-9) printf("BB far  unbinding probability: %g\n", far_unbinding_prob);
+	if (am_debugging_rates and rand->rand() < 1e-9) {
+	  near_unbinding_prob_printing_average = (near_unbinding_prob_printing_average*unbinding_prob_printing_n + near_unbinding_prob);
+	  near_unbinding_prob_printing_average /= (unbinding_prob_printing_n + 1);
+	  unbinding_prob_printing_n++;
+
+	  printf("BB near unbinding probability: %g\n", near_unbinding_prob_printing_average);
+	}
 	bool unbind_near = rand->rand() < near_unbinding_prob;
 	bool unbind_far = rand->rand() < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
