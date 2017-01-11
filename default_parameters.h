@@ -28,24 +28,12 @@ double gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
 double gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
 double gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
 
-double d_tail_theta = 1.5;
-double d_motor_theta = 0.75;
-double d_binding_theta = 0.5;
-
 const double binding_energy_high_affinity_kJ_mol = 71; // kJ/mol
 double binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
-
-/* double ct = kb*310.15/d_tail_theta/d_tail_theta;   // 0.5*c*<theta^2> = 0.5*kb*T */
-/* double cm = kb*310.15/d_motor_theta/d_motor_theta; // body temperature */
-/* double cb = kb*310.15/d_binding_theta/d_binding_theta; */
 
 double ct = 0.1*binding_energy_high_affinity_atp; // ct = 0.5 cb
 double cm = 0.1*binding_energy_high_affinity_atp; // cm = 3*cb
 double cb = 0.1*binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estimating cb spring constant', then experimental tweaking to get the 0.1s
-
-double D = 2*kb*T / ((gt + gm + gb) / 3);
-
-double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
@@ -56,38 +44,22 @@ double low_affinity_unbinding_rate = 5000; //s^-1
 
 double binding_fraction = 1e-6;
 
-double e = exp(1.0);
-
-double DELTA_G_FORMATION_BINDING = 1e-10;
-
-double ONEBOUND_UNBINDING_FORCE = 1e12;
-double BOTHBOUND_UNBINDING_FORCE = 1e12;
-
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
 double RAND_INIT_SEED = 0;
 
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
-  126.0 * M_PI / 180.0,
-  223.0 * M_PI / 180.0,
-  0.0   * M_PI / 180.0,
-  189.0 * M_PI / 180.0
+   63.5 * M_PI / 180.0,
+  136.0 * M_PI / 180.0,
+    0.0 * M_PI / 180.0,
+  171.0 * M_PI / 180.0
 };
 
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-  126.0 * M_PI / 180.0,
-  223.0 * M_PI / 180.0,
-  0.0   * M_PI / 180.0,
-  223.0 * M_PI / 180.0,
-  126.0 * M_PI / 180.0
+   63.5 * M_PI / 180.0,
+  136.0 * M_PI / 180.0,
+    0.0 * M_PI / 180.0,
+  136.0 * M_PI / 180.0,
+   63.5 * M_PI / 180.0
 };
-
-/* double t_nma = acos(Lt/(2*Ls)); */
-/* bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = { */
-/*   M_PI - 2*t_nma + M_PI/3, */
-/*   t_nma, */
-/*   2*t_nma + M_PI/3, */
-/*   2*M_PI - t_nma, */
-/*   2*t_nma - M_PI/3 */
-/* }; */

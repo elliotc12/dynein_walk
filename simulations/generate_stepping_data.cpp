@@ -419,7 +419,7 @@ int main(int argc, char** argv) {
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
 			    eq.fma,
-			    0, 0, Ls};
+			    0, 0, 0.1};
 
   simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
