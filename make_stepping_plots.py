@@ -34,7 +34,7 @@ data_name = sys.argv[1]
 data_arr = np.loadtxt("data/stepping_data_" + data_name + ".txt")
 config_txt = open("data/stepping_config_" + data_name + ".txt", "r").read()
 
-if len(data_arr) == 0 or str(type(data_arr[0])) == "<type 'numpy.float64'>":
+if len(data_arr) < 3 or str(type(data_arr[0])) == "<type 'numpy.float64'>":
     print "Not enough steps in data file."
     exit(0)
 

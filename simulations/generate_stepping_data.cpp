@@ -354,6 +354,11 @@ int main(int argc, char** argv) {
 
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
+  if (runtime == 0 and am_making_movie and not am_only_writing_on_crash) {
+    printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
+    exit(EXIT_FAILURE);
+  }
+
   char *stepping_data_fname = new char[200];
   char *stepping_config_fname = new char[200];
 
@@ -414,7 +419,7 @@ int main(int argc, char** argv) {
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
 			    eq.fma,
-			    0, 0, Ls};
+			    0, 0, 0.1};
 
   simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 

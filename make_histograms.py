@@ -23,46 +23,96 @@ custom_runs = []
 #                     "cb": 1.5*binding_energy_high_affinity_atp,
 #                     "cm": 1.5*binding_energy_high_affinity_atp,
 #                     "ct": 1.5*binding_energy_high_affinity_atp})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 0.02,
+                    "cm": 0.02,
+                    "ct": 0.02,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 0.11,
+                    "cm": 0.11,
+                    "ct": 0.11,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 0.18,
+                    "cm": 0.18,
+                    "ct": 0.18,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 0.23,
+                    "cm": 0.23,
+                    "ct": 0.23,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 0.58,
+                    "cm": 0.58,
+                    "ct": 0.58,
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 3500, "T": 310.15,
                     "cb": 1.00,
                     "cm": 1.00,
                     "ct": 1.00,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 2000, "T": 310.15,
                     "cb": 1.00,
                     "cm": 1.00,
                     "ct": 1.00,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 1000, "T": 310.15,
                     "cb": 1.00,
                     "cm": 1.00,
                     "ct": 1.00,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 100, "T": 310.15,
                     "cb": 1.00,
                     "cm": 1.00,
                     "ct": 1.00,
-                    "movie": False})
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 1.16,
+                    "cm": 1.16,
+                    "ct": 1.16,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 1.74,
+                    "cm": 1.74,
+                    "ct": 1.74,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 2.32,
+                    "cm": 2.32,
+                    "ct": 2.32,
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 3500, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 2000, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 1000, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": False})
+                    "movie": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 100, "T": 310.15,
                     "cb": 2.32,
                     "cm": 2.32,
                     "ct": 2.32,
-                    "movie": False})
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 2.90,
+                    "cm": 2.90,
+                    "ct": 2.90,
+                    "movie": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+                    "cb": 3.49,
+                    "cm": 3.49,
+                    "ct": 3.49,
+                    "movie": True})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -92,7 +142,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "findgoodkub"
+label = "makemovie"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
