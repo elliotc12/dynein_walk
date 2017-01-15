@@ -216,6 +216,7 @@ clean:
 	rm -f ob_PE_log_equipartition_vs_log_iterations
 	rm -f onebound_PE_equipartition_correlation
 	rm -f ob_equipartition_test
+	rm -f generate_stepping_data
 	rm -f data.txt
 	rm -f config.txt
 	rm -f latex/*.aux

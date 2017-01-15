@@ -372,7 +372,7 @@ int main() {
 			     NULL,
 			     rand);                                  // MTRand
 
-    Dynein_onebound* dyn_ob_minux = new Dynein_onebound(bba_eq,
+    Dynein_onebound* dyn_ob_minus = new Dynein_onebound(bba_eq,
                              bba_eq + bma_eq - M_PI,
                              bba_eq + bma_eq - M_PI + ta_eq,
                              bba_eq + bma_eq - M_PI + ta_eq + M_PI - uma_eq,
@@ -384,11 +384,12 @@ int main() {
 			     NULL,
 			     rand);                                  // MTRand
 
-    if (!test_eq("Are d_bmxs equal^opposite", dyn_ob_plus->get_d_bmx(), -dyn_ob_minus->get_d_bmx())) num_failures++;
-    if (!test_eq("Are d_umxs equal^opposite", dyn_ob_plus->get_d_umx(), -dyn_ob_minus->get_d_umx())) num_failures++;
-    if (!test_eq("Are d_ubxs equal^opposite", dyn_ob_plus->get_d_ubx(), -dyn_ob_minus->get_d_ubx())) num_failures++;
+    if (!test("Are d_bmxs equal^opposite", dyn_ob_plus->get_d_bmx(), -dyn_ob_minus->get_d_bmx())) num_failures++;
+    if (!test("Are d_umxs equal^opposite", dyn_ob_plus->get_d_umx(), -dyn_ob_minus->get_d_umx())) num_failures++;
+    if (!test("Are d_ubxs equal^opposite", dyn_ob_plus->get_d_ubx(), -dyn_ob_minus->get_d_ubx())) num_failures++;
     
-    delete dyn_ob;
+    delete dyn_ob_plus;
+    delete dyn_ob_minus;
   }
 
   { printf("\n**Conservation of Energy**\n");

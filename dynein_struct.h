@@ -71,7 +71,7 @@ const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
-const bool am_debugging_state_transitions = false;
+const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
 
 const bool am_only_writing_on_crash = true;

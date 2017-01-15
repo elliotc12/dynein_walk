@@ -345,6 +345,10 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
   }
 }
 
+void sig_handler_print_movie_buffer(int signum) {
+  on_crash_write_movie_buffer();
+}
+
 int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
   char* run_name = new char[100];
@@ -355,8 +359,19 @@ int main(int argc, char** argv) {
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
   if (runtime == 0 and am_making_movie and not am_only_writing_on_crash) {
-    printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
+    printf("value of am_only_writing: %d\n", (int)am_only_writing_on_crash);
+    //printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
     exit(EXIT_FAILURE);
+  }
+
+  if (am_only_writing_on_crash) {
+    struct sigaction new_action;
+
+    new_action.sa_handler = sig_handler_print_movie_buffer;
+    sigemptyset (&new_action.sa_mask);
+    new_action.sa_flags = 0;
+
+    sigaction(SIGINT, &new_action, NULL);
   }
 
   char *stepping_data_fname = new char[200];
