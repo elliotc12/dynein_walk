@@ -23,7 +23,7 @@ custom_runs = []
 #                     "cb": 1.5*binding_energy_high_affinity_atp,
 #                     "cm": 1.5*binding_energy_high_affinity_atp,
 #                     "ct": 1.5*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 5000, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "k_ub": 50000, "T": 310.15,
                     "cb": 0.8,
                     "cm": 0.8,
                     "ct": 0.8,
@@ -57,7 +57,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "reallyshouldcrash"
+label = "reallyshouldcrash-norepulsionforce"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
