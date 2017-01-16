@@ -62,7 +62,8 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   low_affinity_unbinding_rate,
   low_affinity_binding_rate,
   binding_fraction,
-  DELTA_G_FORMATION_BINDING;
+  DELTA_G_FORMATION_BINDING,
+  REBINDING_IMMUNITY_TIME;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;

@@ -47,6 +47,8 @@ double binding_fraction = 1e-6;
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
+double REBINDING_IMMUNITY_TIME = 1e-9; // s
+
 double RAND_INIT_SEED = 0;
 
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
