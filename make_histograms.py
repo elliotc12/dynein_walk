@@ -88,8 +88,7 @@ if len(custom_runs) != 0:
         if (run["movie"]):
             cmd.extend(["--movie"])
 
-        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"],
-                                                                      run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
         out = open('runlogs/' + basename + '.out', 'w')
         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
         print "Running: ", ' '.join(cmd)

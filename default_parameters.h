@@ -51,6 +51,8 @@ double REBINDING_IMMUNITY_TIME = 1e-9; // s
 
 double RAND_INIT_SEED = 0;
 
+bool am_only_writing_on_crash = true;
+
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
    63.5 * M_PI / 180.0,
   136.0 * M_PI / 180.0,
