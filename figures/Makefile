@@ -1,5 +1,7 @@
 FIGURES = $(wildcard *.svg)
 
+TO_DELETE=$(patsubst %.svg, %.pdf, $(wildcard *.svg))
+
 all: $(patsubst %.svg,%.pdf,$(FIGURES))
 
 %.pdf: %.svg
@@ -7,4 +9,4 @@ all: $(patsubst %.svg,%.pdf,$(FIGURES))
 # doesn't work, fix sometime
 
 clean:
-	rm -f *.pdf
+	rm -f $(TO_DELETE)

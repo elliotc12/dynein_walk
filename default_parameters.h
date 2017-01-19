@@ -32,9 +32,16 @@ double d_tail_theta = 1.5;
 double d_motor_theta = 0.75;
 double d_binding_theta = 0.5;
 
-double ct = kb*310.15/d_tail_theta/d_tail_theta;   // 0.5*c*<theta^2> = 0.5*kb*T
-double cm = kb*310.15/d_motor_theta/d_motor_theta; // body temperature
-double cb = kb*310.15/d_binding_theta/d_binding_theta;
+const double binding_energy_high_affinity_kJ_mol = 71; // kJ/mol
+double binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
+
+/* double ct = kb*310.15/d_tail_theta/d_tail_theta;   // 0.5*c*<theta^2> = 0.5*kb*T */
+/* double cm = kb*310.15/d_motor_theta/d_motor_theta; // body temperature */
+/* double cb = kb*310.15/d_binding_theta/d_binding_theta; */
+
+double ct =  1*binding_energy_high_affinity_atp; // ct = 0.5 cb
+double cm = 6*binding_energy_high_affinity_atp; // cm = 3*cb
+double cb = 2*binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estimating cb spring constant'
 
 double D = 2*kb*T / ((gt + gm + gb) / 3);
 
@@ -42,10 +49,12 @@ double tau = (Lt/2 + Ls/2)*(Lt/2 + Ls/2) / D;
 
 double dt = 1e-11;
 
-double low_affinity_binding_rate = 10e5; //180; //s^-1
-double low_affinity_unbinding_rate = 10e5; //5000; //s^-1
+double low_affinity_binding_rate = 180; //s^-1
+double low_affinity_unbinding_rate = 5000; //s^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
+
+double binding_fraction = 1e-6;
 
 double e = exp(1.0);
 

@@ -49,3 +49,5 @@ __pycache__
 *.failed
 generate_stepping_data
 create_bb_movie
+*.fls
+*.fdb_latexmk
