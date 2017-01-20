@@ -44,6 +44,16 @@ typedef struct
   double nba, nma, ta, fma, fba;
 } bothbound_equilibrium_angles;
 
+typedef struct {
+  State state;
+  double time;
+  double PE_1, PE_2, PE_3, PE_4, PE_5;
+  double x_1, x_2, x_3, x_4, x_5;
+  double y_1, y_2, y_3, y_4, y_5;
+  double fx_1, fx_2, fx_3, fx_4, fx_5;
+  double fy_1, fy_2, fy_3, fy_4, fy_5;
+} movie_data_struct;
+
 extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   fake_radius_m, fake_radius_b, water_viscosity_mu, gt, gm, gb, ct, cm,
   cb, ONEBOUND_UNBINDING_FORCE, BOTHBOUND_UNBINDING_FORCE,
@@ -52,7 +62,10 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   low_affinity_unbinding_rate,
   low_affinity_binding_rate,
   binding_fraction,
-  DELTA_G_FORMATION_BINDING;
+  DELTA_G_FORMATION_BINDING,
+  REBINDING_IMMUNITY_TIME;
+
+extern bool am_only_writing_on_crash;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
@@ -61,7 +74,10 @@ const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
-const bool am_debugging_state_transitions = false;
+const bool am_debugging_state_transitions = true;
+const bool am_debugging_rates = true;
+
+const bool crash_on_nan = true;
 
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);
@@ -440,5 +456,7 @@ void generate_correlation_fn_data(double* pe, int iters, const char* legend, cha
 void generate_pe_vs_time_data(double* times, double* pe, int len, const char* legend, char* fname_base);
 void generate_ave_pe_and_log_error_data(double* times, double* pe, int iters, const char* legend, char* fname_base);
 void generate_angle_vs_time_data(double* times, double* angle, int len, const char* legend, char* fname_base, double eq_angle);
+
+void on_crash_write_movie_buffer();
 
 #endif

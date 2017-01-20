@@ -5,7 +5,7 @@ FIGURES=$(patsubst %.svg,%.pdf,$(wildcard figures/*.svg))
 STEPPING_LENGTH_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_length_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
 STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_time_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
 
-STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/stepping_movie_%.gif, $(wildcard data/stepping_movie_data_*.txt))
+STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/%.mp4, $(wildcard data/stepping_movie_data_*.txt))
 
 .PHONY: clean histograms
 
@@ -100,6 +100,7 @@ plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_
 
 histograms:
 	make $(STEPPING_LENGTH_HISTOGRAMS)
+	make $(STEPPING_TIME_HISTOGRAMS)
 
 plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
@@ -109,6 +110,7 @@ plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%
 
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
 	mkdir -p runlogs
+	mkdir -p data
 	g++ -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	g++ generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data	
 
@@ -117,19 +119,19 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 #	make generate_stepping_data
 #	./generate_stepping_data $*
 
-movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin
+movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_ob_movie $*
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin
+movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	./create_bb_movie $*
 	mkdir -p movies
 	./movie.py $* speed=1
 
-movies/stepping_movie_%.gif: data/stepping_movie_data_%.txt
+movies/%.mp4: data/stepping_movie_data_%.txt movie.py
 	@echo "Use TITLE='yourtitle' to give plot a title"
 	mkdir -p movies
 	./movie.py $* speed=10 tail
@@ -214,6 +216,7 @@ clean:
 	rm -f ob_PE_log_equipartition_vs_log_iterations
 	rm -f onebound_PE_equipartition_correlation
 	rm -f ob_equipartition_test
+	rm -f generate_stepping_data
 	rm -f data.txt
 	rm -f config.txt
 	rm -f latex/*.aux

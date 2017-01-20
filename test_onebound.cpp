@@ -214,7 +214,7 @@ int main() {
     
     delete dyn_ob;
   }
-  
+
   { printf("\n**Upwards line conformation with +x forces**\n");
     Dynein_onebound* dyn_ob = new Dynein_onebound(0.5*M_PI, 0.5*M_PI, 0.5*M_PI, 0.5*M_PI,
 			     0,                                      // nbx_init
@@ -226,10 +226,10 @@ int main() {
 			     rand);                                  // MTRand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
-    if (!test_noteq("Is d_bmx nonzero", dyn_ob->get_d_bmx(), 0)) num_failures++;
-    if (!test_noteq("Is d_tx nonzero", dyn_ob->get_d_tx(), 0)) num_failures++;
-    if (!test_noteq("Is d_umx nonzero", dyn_ob->get_d_umx(), 0)) num_failures++;
-    if (!test_noteq("Is d_ubx nonzero", dyn_ob->get_d_ubx(), 0)) num_failures++;
+    if (!test_greater("Is d_bmx positive", dyn_ob->get_d_bmx(), 0)) num_failures++;
+    if (!test_greater("Is d_tx positive", dyn_ob->get_d_tx(), 0)) num_failures++;
+    if (!test_greater("Is d_umx positive", dyn_ob->get_d_umx(), 0)) num_failures++;
+    if (!test_greater("Is d_ubx positive", dyn_ob->get_d_ubx(), 0)) num_failures++;
 
     if (!test("Is d_bby zero", dyn_ob->get_d_bby(), 0)) num_failures++;
     if (!test("Is d_bmy zero", dyn_ob->get_d_bmy(), 0)) num_failures++;
@@ -357,6 +357,39 @@ int main() {
     if (!test_noteq("Is d_ubx nonzero", dyn_ob->get_d_ubx(), 0)) num_failures++;
     
     delete dyn_ob;
+  }
+
+  { printf("\n**Prepowerstroke conformation opposing internal/brownian forces**\n");
+    Dynein_onebound* dyn_ob_plus = new Dynein_onebound(bba_eq,
+                             bba_eq + bma_eq - M_PI,
+                             bba_eq + bma_eq - M_PI + ta_eq,
+                             bba_eq + bma_eq - M_PI + ta_eq + M_PI - uma_eq,
+			     0,                                      // nbx_init
+			     0,                                      // nby_init
+			     NEARBOUND,
+			     &no_forces,
+			     &right_forces,
+			     NULL,
+			     rand);                                  // MTRand
+
+    Dynein_onebound* dyn_ob_minus = new Dynein_onebound(bba_eq,
+                             bba_eq + bma_eq - M_PI,
+                             bba_eq + bma_eq - M_PI + ta_eq,
+                             bba_eq + bma_eq - M_PI + ta_eq + M_PI - uma_eq,
+			     0,                                      // nbx_init
+			     0,                                      // nby_init
+			     NEARBOUND,
+			     &left_forces,
+			     &no_forces,
+			     NULL,
+			     rand);                                  // MTRand
+
+    if (!test("Are d_bmxs equal^opposite", dyn_ob_plus->get_d_bmx(), -dyn_ob_minus->get_d_bmx())) num_failures++;
+    if (!test("Are d_umxs equal^opposite", dyn_ob_plus->get_d_umx(), -dyn_ob_minus->get_d_umx())) num_failures++;
+    if (!test("Are d_ubxs equal^opposite", dyn_ob_plus->get_d_ubx(), -dyn_ob_minus->get_d_ubx())) num_failures++;
+    
+    delete dyn_ob_plus;
+    delete dyn_ob_minus;
   }
 
   { printf("\n**Conservation of Energy**\n");

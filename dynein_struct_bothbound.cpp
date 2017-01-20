@@ -121,6 +121,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
     printf("     Ls/Lt = %g/%g\n", Ls, Lt);
     printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
     printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   }
 
@@ -256,13 +257,24 @@ void Dynein_bothbound::update_internal_forces() {
     f.fbx += -f1x;
     f.fby += -f1y;
 
-    if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+    // currently unused
+    // if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
+    // if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    // if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
   }
 }
 
 void Dynein_bothbound::update_coordinates() {
+  double epsilon = (r.tx > 0) ? 1e-6 : -1e-6; // eps sign based on random seed, so deterministic
+  if (fabs(nma - M_PI) < 1e-7) { // nudge if in a NaN-y conformation
+    if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
+    nma += epsilon;
+  }
+  if (fabs(fma - M_PI) < 1e-7) {
+    if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
+    fma += epsilon;
+  }
+
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
@@ -282,7 +294,10 @@ void Dynein_bothbound::update_coordinates() {
            cosAn, sinAn, cosAns, sinAns);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
            L, Ln, Lf, Lf-Ln);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+    exit(1);
   }
+
   nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns);
   tx = nbx + Ln*cosAn;
   ty = nby + Ln*sinAn;
@@ -304,6 +319,7 @@ void Dynein_bothbound::update_coordinates() {
            nba, nmy, nmx - nbx, tx, ty);
     printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
            nby, Ls, cosAn, sinAns, sinAn,cosAns);
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -312,6 +328,7 @@ void Dynein_bothbound::update_coordinates() {
   if (fba < 0 or fba > M_PI) {
     printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx + L));
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
@@ -319,22 +336,17 @@ void Dynein_bothbound::update_coordinates() {
   }
   ta = fma - nma + fba - nba;
 
-  static bool BB_PHYSICAL = true;
-
   //assert(Ln + Lf > fabs(L)); // Triangle inequality!
-  if (Ln + Lf <= fabs(L) and BB_PHYSICAL) {
+  if (Ln + Lf <= fabs(L)) {
     printf("Simulation unphysical, Ln + Lf !> fabs(L)\n");
-    BB_PHYSICAL = false;
   }
   //assert(nma != M_PI);
-  if (nma == M_PI and BB_PHYSICAL) {
+  if (nma == M_PI) {
     printf("Simulation unphysical, nma == M_PI\n");
-    BB_PHYSICAL = false;
   }
   //assert(fma != M_PI);
-  if (fma == M_PI and BB_PHYSICAL) {
+  if (fma == M_PI) {
     printf("Simulation unphysical, fma == M_PI\n");
-    BB_PHYSICAL = false;
   }
   if (fma < 0 or fma > 2*M_PI) {
     if (am_debugging_angles) printf("fma angle is crazy man! %g\n", fma);
@@ -413,7 +425,7 @@ void Dynein_bothbound::update_velocities() {
   dYt_dLn = sinAn + Ln*dsinAn_dLn;
   dXt_dLf = -Lf/L;
   dYt_dLf = Ln*dsinAn_dLf;
-  
+
   if (am_debugging_nans) printf("dXt_dLn is %g\n", dXt_dLn);
   if (am_debugging_nans) printf("dYt_dLn is %g\n", dYt_dLn);
   if (am_debugging_nans) printf("gm = %g, gt = %g\n", gm, gt);
@@ -519,20 +531,42 @@ void Dynein_bothbound::update_velocities() {
      b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
-  
+
+  if (isnan(d_Ln) or isnan(d_Lf)) {
+      printf("Bothbound velocity created a NaN.\n");
+
+      printf("nma: %.15f, fma: %.15f\n", nma, fma);
+      printf("nma - pi: %.15f, fma - pi: %.15f\n", nma - M_PI, fma - M_PI);
+      
+      printf("cosAn: %g  cosAf: %g\n", cosAn, cosAf);
+      printf("sinAn: %g  sinAf: %g\n", sinAn, sinAf);
+      printf("cosAns: %g  cosAfs: %g\n", cosAns, cosAfs);
+      printf("sinAns: %g  sinAfs: %g\n", sinAns, sinAfs);
+
+      printf("dcosAn_dLn %g\n", dcosAn_dLn);
+      printf("dsinAn_dLn %g\n", dsinAn_dLn);
+      printf("dcosAns_dLn %g\n", dcosAns_dLn);
+      printf("dsinAns_dLn %g\n", dsinAns_dLn);
+
+      printf("dcosAf_dLn %g\n", dcosAf_dLn);
+      printf("dsinAf_dLn %g\n", dsinAf_dLn);
+      printf("dcosAfs_dLn %g\n", dcosAfs_dLn);
+      printf("dsinAfs_dLn %g\n", dsinAfs_dLn);
+    }
+
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
-  if (am_debugging_state_transitions) printf("Creating a onebound from bothbound to test energy\n");
+  if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
   double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
   double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
   return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
 }
 
 double Dynein_bothbound::get_far_unbinding_rate() {
-  if (am_debugging_state_transitions) printf("Creating a onebound from bothbound to test energy\n");
+  if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
   double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
   double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
   return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);

@@ -13,6 +13,10 @@ extern double mla_init;
 extern double mra_init;
 extern double bra_init;
 
+FILE* crash_movie_file_global;
+movie_data_struct* on_crash_old_movie_data_global_ptr; // ugly, fix sometime
+movie_data_struct* on_crash_new_movie_data_global_ptr;
+
 double dist(double x1, double y1, double x2, double y2) {
 	return sqrt(pow(x2-x1, 2) + pow(y2-y1, 2));
 }
@@ -141,9 +145,56 @@ void write_movie_config(char* movie_config_fname, double runtime) {
   fclose(config_file);
 }
 
+void on_crash_write_movie_buffer() {
+  movie_data_struct* old_data = on_crash_old_movie_data_global_ptr;
+  movie_data_struct* new_data = on_crash_new_movie_data_global_ptr;
+  FILE* data_file = crash_movie_file_global;
+
+  int i = 0;
+  while (old_data[i].time > 0 and i < MOVIE_BUFFER_SIZE) {
+    fprintf(data_file,
+	    "%d\t"
+	    "%.10g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	    "\n",
+	    old_data[i].state,
+	    old_data[i].time,
+	    old_data[i].PE_1, old_data[i].PE_2, old_data[i].PE_3, old_data[i].PE_4, old_data[i].PE_5,
+	    old_data[i].x_1, old_data[i].y_1, old_data[i].x_2, old_data[i].y_2, old_data[i].x_3,
+	    old_data[i].y_3, old_data[i].x_4, old_data[i].y_4, old_data[i].x_5, old_data[i].y_5,
+	    old_data[i].fx_1, old_data[i].fy_1, old_data[i].fx_2, old_data[i].fy_2, old_data[i].fx_3,
+	    old_data[i].fy_3, old_data[i].fx_4, old_data[i].fy_4, old_data[i].fx_5, old_data[i].fy_5);
+    i++;
+  }
+  int j = 0;
+  while (new_data[j].time > 0) {
+    fprintf(data_file,
+	    "%d\t"
+	    "%.10g\t"
+	    "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t"
+	    "%g\t%g\t"
+	    "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	    "\n",
+	    new_data[j].state,
+	    new_data[j].time,
+	    new_data[j].PE_1, new_data[j].PE_2, new_data[j].PE_3, new_data[j].PE_4, new_data[j].PE_5,
+	    old_data[j].x_1, old_data[j].y_1, old_data[j].x_2, old_data[j].y_2, old_data[j].x_3,
+	    old_data[j].y_3, old_data[j].x_4, old_data[j].y_4, old_data[j].x_5, old_data[j].y_5,
+	    old_data[j].fx_1, old_data[j].fy_1, old_data[j].fx_2, old_data[j].fy_2, old_data[j].fx_3,
+	    old_data[j].fy_3, old_data[j].fx_4, old_data[j].fy_4, old_data[j].fx_5, old_data[j].fy_5);
+    j++;
+  }
+}
+
 void FPE_signal_handler(int signum) {
-  fexcept_t flag;
-  fegetexceptflag(&flag, FE_ALL_EXCEPT);
+  fexcept_t flag; 
+ fegetexceptflag(&flag, FE_ALL_EXCEPT);
   printf("FE exception occured.\n");
   printf("FE_INVALID | flag: %d\n", FE_INVALID & flag);
   printf("FE_DIVBYZERO | flag: %d\n", FE_DIVBYZERO & flag);

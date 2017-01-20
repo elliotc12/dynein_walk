@@ -34,6 +34,10 @@ data_name = sys.argv[1]
 data_arr = np.loadtxt("data/stepping_data_" + data_name + ".txt")
 config_txt = open("data/stepping_config_" + data_name + ".txt", "r").read()
 
+if len(data_arr) < 3 or str(type(data_arr[0])) == "<type 'numpy.float64'>":
+    print "Not enough steps in data file."
+    exit(0)
+
 step_lengths, step_times = get_stepping_data(data_arr)
 num_steps = len(step_lengths)
 
@@ -44,7 +48,7 @@ plt.hist(step_lengths,
 plt.title("Stepping length histogram " + data_name)
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
-add_config_info(config_txt)
+add_config_info(config_txt + "\n\n<step length>: %.2e" % np.mean(step_lengths))
 plt.savefig("plots/stepping_length_histogram_" + data_name + ".pdf", format="pdf")
 plt.close(fig)
 
@@ -55,6 +59,6 @@ plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 plt.title("Stepping time histogram " + data_name)
 plt.xlabel("Step time (s)")
 plt.ylabel("Frequency")
-add_config_info(config_txt)
+add_config_info(config_txt + "\n\n<step times>: %.2e" % np.mean(step_times))
 plt.savefig("plots/stepping_time_histogram_" + data_name + ".pdf", format="pdf")
 plt.close(fig)

@@ -172,10 +172,11 @@ void Dynein_onebound::update_internal_forces() {
     f.umx += -(f1x + f2x);
     f.umy += -(f1y + f2y);
 
-    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
+    // currently unused
+    // if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy()); 
+    // if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    // if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
+    // if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
   }
 }
 
@@ -979,7 +980,7 @@ void Dynein_onebound::update_velocities() {
 double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE and
       get_umy() > MICROTUBULE_BINDING_DISTANCE) {
-    if (am_debugging_state_transitions) printf("Creating bothbound from onebound to test energy\n");
+    if (am_debugging_conversions) printf("Creating bothbound from onebound to test energy\n");
     double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
     double low_affinity_binding_preexponential_factor = low_affinity_binding_rate * exp(1.0) / binding_fraction;
     return low_affinity_binding_preexponential_factor*exp(-dG_spring/kb/T);

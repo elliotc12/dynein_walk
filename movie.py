@@ -14,7 +14,7 @@ pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
 tail = 'tail' in sys.argv
 
-view_width = 15
+view_width = 50
 
 def close_windows(*_):
   plt.close()
@@ -23,7 +23,7 @@ def close_windows(*_):
 usage = '''
 Usage: python2 TITLE %s speed=N [show] [forces] [energies] [tail]"
        show: show animation in a window while generating movie
-             omitting show makes %s faster but less exciting to watch
+	     omitting show makes %s faster but less exciting to watch
      forces: plot forces in movie
    energies: color circles using potential energies
        tail: only use last 1000 lines of data file
@@ -48,17 +48,19 @@ config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
 
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
+    if skiplen < 0:
+	skiplen = 1
 
 if sys.stdin.isatty():
     if tail:
-        data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False, skip_header=skiplen)
+	data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False, skip_header=skiplen)
     else:
-        data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
+	data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
 else:
   data = numpy.genfromtxt(sys.stdin, delimiter="\t", invalid_raise=False)
 plt.ion()
 
-if str(type(data[0])) == "<type 'numpy.float64'>":
+if len(data) == 0 or str(type(data[0])) == "<type 'numpy.float64'>":
        print "Very short animation!"
        close_windows()
 
@@ -73,7 +75,7 @@ ax.set_ylim(-view_width, view_width)
 
 microtubule_thickness = 2 # nm
 plt.gca().add_patch(Rectangle((-view_width, -microtubule_thickness),
-                              2*view_width, microtubule_thickness, facecolor='c'))
+			      2*view_width, microtubule_thickness, facecolor='c'))
 
 stalk1, = plt.plot([ X[0], X[1] ], [ Y[0], Y[1] ], color="black")
 tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
@@ -152,7 +154,7 @@ while i < len(data):
     tail1.set_linestyle('-')
     tail2.set_linestyle('--')
     stalk2.set_linestyle('--')
-    
+
     binding1.set_zorder(19)
     motor1.set_zorder(17)
     tail.set_zorder(15)
@@ -170,7 +172,7 @@ while i < len(data):
     tail1.set_zorder(3)
     tail2.set_zorder(2)
     stalk2.set_zorder(1)
-    
+
   elif (data[i][0] == 1):
     title_text.set_text('State: Farbound')
     stalk1.set_linestyle('--')
@@ -195,7 +197,7 @@ while i < len(data):
     tail1.set_zorder(2)
     tail2.set_zorder(3)
     stalk2.set_zorder(4)
-    
+
   elif (data[i][0] == 2):
     title_text.set_text('State: Bothbound')
     stalk1.set_linestyle('-')
@@ -220,14 +222,14 @@ while i < len(data):
     tail1.set_zorder(3)
     tail2.set_zorder(2)
     stalk2.set_zorder(1)
-    
+
   elif (data[i][0] == 3):
     title_text.set_text('State: Unbound')
 
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
   t_text.set_text("Time: {:g} ns".format(1e9*data[i][1]))
   #print "i=%d, time=%g, %s" % (i, data[i][1]*1e9, "Time: {:g} ns".format(1e9*data[i][1]))
-  
+
 
   i += speed
   plt.pause(0.001)
@@ -251,9 +253,9 @@ except (OSError, subprocess.CalledProcessError):
     have_avconv = False
 
 if have_avconv:
-    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
 else:
-    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s,ts-%s.mp4" % (framerate, title, title, time.time())
+    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
 
 print(movie_cmd)
 os.system(movie_cmd) # make the movie
