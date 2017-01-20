@@ -9,6 +9,6 @@ script:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y inkscape
-  - sudo apt-get install -y texlive # for tests
+  - sudo apt-get install -y texlive texlive-xetex # for papers
   - git config --global user.email "testing-on-travis@example.com"
   - git config --global user.name "Travis Builder"
