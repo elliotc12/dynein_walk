@@ -4,7 +4,7 @@ compiler:
   - clang
 
 script:
-  - $CC --version
+  - $CXX --version
   - make
 before_install:
   - sudo apt-get update -qq

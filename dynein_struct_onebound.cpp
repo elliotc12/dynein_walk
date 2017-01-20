@@ -39,11 +39,11 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 }
 
 Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
-  if (s == State::NEARBOUND) {
+  if (s == NEARBOUND) {
     bbx = old_dynein->get_nbx();
     bby = 0;
 
-    state = State::NEARBOUND;
+    state = NEARBOUND;
 
     bba = old_dynein->get_nba();
     bma = old_dynein->get_nma() + old_dynein->get_nba() - M_PI;
@@ -54,7 +54,7 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
     bbx = old_dynein->get_fbx();
     bby = 0;
 
-    state = State::FARBOUND;
+    state = FARBOUND;
 
     bba = old_dynein->get_fba();
     bma = old_dynein->get_fma() + old_dynein->get_fba() - M_PI;
@@ -73,7 +73,7 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
 
   if (am_debugging_conversions) {
     printf("DEBUG:\nDEBUG: creating onebound from bothbound!\n");
-    if (get_state() == State::NEARBOUND) {
+    if (get_state() == NEARBOUND) {
       printf("DEBUG: nbx/bbx = %8g vs %8g  nby/bby = %8g vs %8g\n",
              old_dynein->get_nbx(), get_bbx(), old_dynein->get_nby(), get_bby());
       printf("DEBUG: nmx/bmx = %8g vs %8g  nmy/bmy = %8g vs %8g\n",

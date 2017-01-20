@@ -1,5 +1,6 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
+#include <stdlib.h> // for exit
 
 static const bool debug_stepping = false;
 
