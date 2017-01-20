@@ -14,4 +14,4 @@ To build this project you will need GNU make, inkscape, texlive
 (specifically, bibtex and pdflatex), and a C++ compiler such as g++.
 On a Debian-derived system  you can install these with:
 
-    apt-get install inkscape texlive-full build-essential
+    apt-get install inkscape texlive texlive-xetex texlive-latex-extra build-essential
