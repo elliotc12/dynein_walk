@@ -257,12 +257,14 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"k_ub_ob",  required_argument,    0, 'k'},
       {"runtime",  required_argument,    0, 'l'},
       {"label",    required_argument,    0, 'm'},
+      {"dt",       required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
       // {"runtime",  required_argument,    0, 'q'},
       // {"runtime",  required_argument,    0, 'r'},
       {"movie",  no_argument, (int*) am_making_movie, 1},
+      {"constant-write", no_argument, (int*) &am_only_writing_on_crash, false},
       {0, 0, 0, 0}
     };
 
@@ -318,6 +320,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'm':
       label = optarg;
+      break;
+    case 'n':
+      dt = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
@@ -410,7 +415,7 @@ int main(int argc, char** argv) {
       exit(1); 
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
-    fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+    fprintf(job_msg.movie_data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
 
