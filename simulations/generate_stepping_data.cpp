@@ -48,7 +48,6 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND or last_state == FARBOUND) {
       fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-      printf("---DEBUG: should be printing to stepping data file----\n");
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
