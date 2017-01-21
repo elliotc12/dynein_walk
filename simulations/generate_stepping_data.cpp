@@ -48,6 +48,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND or last_state == FARBOUND) {
       fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      printf("---DEBUG: should be printing to stepping data file----\n");
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
@@ -257,12 +258,14 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"k_ub_ob",  required_argument,    0, 'k'},
       {"runtime",  required_argument,    0, 'l'},
       {"label",    required_argument,    0, 'm'},
+      {"dt",       required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
       // {"runtime",  required_argument,    0, 'q'},
       // {"runtime",  required_argument,    0, 'r'},
       {"movie",  no_argument, (int*) am_making_movie, 1},
+      {"constant-write", no_argument, (int*) &am_only_writing_on_crash, false},
       {0, 0, 0, 0}
     };
 
@@ -319,6 +322,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     case 'm':
       label = optarg;
       break;
+    case 'n':
+      dt = strtod(optarg, NULL);
+      break;
     case '?':
       printf("Some other unknown getopt error.\n");
       exit(EXIT_FAILURE);
@@ -345,6 +351,10 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
   }
 }
 
+void sig_handler_print_movie_buffer(int signum) {
+  on_crash_write_movie_buffer();
+}
+
 int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
   char* run_name = new char[100];
@@ -355,8 +365,19 @@ int main(int argc, char** argv) {
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
   if (runtime == 0 and am_making_movie and not am_only_writing_on_crash) {
-    printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
+    printf("value of am_only_writing: %d\n", (int)am_only_writing_on_crash);
+    //printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
     exit(EXIT_FAILURE);
+  }
+
+  if (am_only_writing_on_crash) {
+    struct sigaction new_action;
+
+    new_action.sa_handler = sig_handler_print_movie_buffer;
+    sigemptyset (&new_action.sa_mask);
+    new_action.sa_flags = 0;
+
+    sigaction(SIGINT, &new_action, NULL);
   }
 
   char *stepping_data_fname = new char[200];
@@ -395,7 +416,7 @@ int main(int argc, char** argv) {
       exit(1); 
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
-    fprintf(job_msg.movie_data_file, "State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+    fprintf(job_msg.movie_data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
 
@@ -419,7 +440,7 @@ int main(int argc, char** argv) {
   bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
   double init_position[] = {eq.nma,
 			    eq.fma,
-			    0, 0, 0.1};
+			    0, 0, 1.0};
 
   simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 

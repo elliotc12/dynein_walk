@@ -62,7 +62,10 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   low_affinity_unbinding_rate,
   low_affinity_binding_rate,
   binding_fraction,
-  DELTA_G_FORMATION_BINDING;
+  DELTA_G_FORMATION_BINDING,
+  REBINDING_IMMUNITY_TIME;
+
+extern bool am_only_writing_on_crash;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
@@ -71,10 +74,8 @@ const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
-const bool am_debugging_state_transitions = false;
+const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
-
-const bool am_only_writing_on_crash = true;
 
 const bool crash_on_nan = true;
 
