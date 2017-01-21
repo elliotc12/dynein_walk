@@ -93,6 +93,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  t += dt;
 	  iter++;
 
+	  // potentially faster to compute velocity here, instead of down there?
+
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
 	  double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
