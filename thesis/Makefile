@@ -1,6 +1,6 @@
 default: thesis.pdf
 
-FIGURES=$(patsubst figures/%.svg, figures/%.pdf, $(wildcard figures/*.svg))
+FIGURES=$(patsubst ../figures/%.svg, ../figures/%.pdf, $(wildcard ../figures/*.svg))
 
 thesis.pdf: latex/thesis.tex $(FIGURES)
 	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
@@ -8,8 +8,8 @@ thesis.pdf: latex/thesis.tex $(FIGURES)
 continuous:
 	cd latex && latexmk -pvc --xelatex thesis.tex
 
-figures/%.pdf: figures/%.svg
-	inkscape -D --export-pdf $@ $<	
+../figures/%.pdf: ../figures/%.svg
+	cd ../figures && make
 
 clean:
 	rm -f latex/*.fdb_latexmk
