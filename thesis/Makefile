@@ -6,6 +6,8 @@ thesis.pdf: latex/thesis.tex $(FIGURES)
 	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
 
 continuous:
+	touch latex/thesis.pdf
+	ln -sf latex/thesis.pdf thesis.pdf
 	cd latex && latexmk -pvc --xelatex thesis.tex
 
 ../figures/%.pdf: ../figures/%.svg

@@ -204,6 +204,8 @@ This single FRET study illustrates how the conformational aspect of the mechanoc
 
 \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
 
+\textit{Add figure somewhere of this cycle superimposed with markings of what states are considered onebound and bothbound}\\
+
 \textbf{more on how ATP actually causes the conformation change, if that's available. The change from an open/closed ATPase is what changes the nucleotide affinity, go into depth on that, but actual info on how ATP binding causes conformation change would be good. Something about going from a planar to nonplanar conformation?}\\
 
 also how crystal structures are in different positions
@@ -787,44 +789,28 @@ To test if the models obey the ET, the total potential energy of each model was 
 
 This test verifies both force and velocity are calculated properly for either model. If either force or velocity was wrong, then the model would not obey the Boltzmann hypothesis $P(s) = e^{-\Delta G_{s}/K_BT}$, where $s$ is a state of the system. The transition rate from $s_1$ to $s_2$ is $P(s_1\rightarrow s_2) = e^{-{\Delta G_2 - \Delta G_1}/K_BT}$. Wrong velocities are those that do not transition the system from $s_1$ to $s_2$ at this rate.\\
 
+\begin{figure}[h!]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/OB_Average_PE.pdf}
+    \caption{Average domain PE of onebound model converging to $\frac12 k_BT$ energy over time.}
+  \end{minipage}
+  \hspace{.2cm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/BB_Average_PE.pdf}
+    \caption{Total domain PE of bothbound model converging to $\frac12 k_BT$ energy over time.}
+  \end{minipage}
+  \label{fig:equipartition_agreement}
+\end{figure}
+
 \textbf{would it be a stronger test to also calculate the standard deviation of <PE>? It seems like <PE> would still equal N/2KbT as long as the forces/velocities were symmetrically wrong. Calculating the stdev would require the state occupation to actually the ET. Or, maybe just plot the angle occupation and show that it is what it should be?}
 
-%% \begin{figure}[h!]
-%%   \centering
-%%   \begin{minipage}[b]{0.49\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/OB_Average_PE.pdf}
-%%     \caption{Onebound PE vs time.}
-%%   \end{minipage}
-%%   \begin{minipage}[b]{0.49\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/BB_Average_PE.pdf}
-%%     \caption{Bothbound PE vs time.}
-%%   \end{minipage}
-%%   \label{equipartition_agreement}
-%% \end{figure}
-
-
 \textbf{Possibly do mutations on motion equations to show that tests are no longer behaved}
-\subsubsection{Finding proper $dt$}
-
-
-\subsubsection{Equipartition theorem obeyed}
-%% \begin{figure}[h!]
-%%   \centering
-%%   \begin{minipage}[b]{0.49\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/OB_Average_PE.pdf}
-%%     \caption{Onebound PE vs time.}
-%%   \end{minipage}
-%%   \begin{minipage}[b]{0.49\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/BB_Average_PE.pdf}
-%%     \caption{Bothbound PE vs time.}
-%%   \end{minipage}
-%%   \label{fig:equipartition_agreement}
-%% \end{figure}
 
 \subsection{Parameter fitting}
 There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\Theta_{m,eq}^{Pre}$, $\Theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}. Others are more difficult to find.\\
 
-What's more, using exact literature values for each parameter does not necessarily create the simulation most similar to \textit{in vivo} dynein. Defects and simplifications in the model may cause slightly less physical values for individual parameters to lead to a more physical simulation. For this reason, fitting model parameters to experiment is necessary. This process is chronicled below.
+What's more, using exact literature values for each parameter does not necessarily create the simulation most similar to \textit{in vivo} dynein. Defects and simplifications in the model may cause slightly less physical values for individual parameters to lead to a more physical simulation. For this reason, fitting model parameters to experiment is necessary. This process is chronicled below. Table \ref{table:parameter-table} concisely lists literature values for various parameters.
 
 \begin{figure}[h]
   \centering
@@ -842,37 +828,69 @@ What's more, using exact literature values for each parameter does not necessari
     $\theta_{t}$ & 0$^{\circ}$ & & & & & & & \\ \hline
     $k_{ub}$ & $180 s^{-1,a}$ & & & & & & $90.2 \pm 4.5$& \\ \hline
     $k_b$ & $5000 s^{-1,b}$ & & & & & & & \\ \hline
-    $\Delta G_{bind, bb}$ & & & & & & -71 kJ/mol & & \\ \hline
-    $\Delta G_{bind, ob}$ & & & & & & -37 kJ/mol & & \\ \hline
     $c_t$ & & & & & & & & \\ \hline
     $c_m$ & & & & & & & & \\ \hline
     $c_b$ & & & & & & 140 kJ/mol & & \\ \hline
   \end{tabular}
   \caption{Table of literature values for various free parameters in dynein model.}
-  \label{parameter-table}
+  \label{table:parameter-table}
+\end{figure}
+
+In addition, the physical conditions the simulations were run at are shown in Table \ref{table:simulation-conditions}. These conditions are meant to reflect the conditions found inside a typical cell. \textbf{of what species?}\\
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    T & [ATP] \\ \hline
+    310.15 K & $1.54*10^{-3}$ M \cite{cellular-atp}\\ \hline
+  \end{tabular}
+  \caption{Table of physical constants used in simulation.}
+  \label{table:parameter-table}
 \end{figure}
 
 \subsubsection{Fitting rate constants}
-Rate constants $k_b$ and $k_{ub}$ govern the probability of transitioning from onebound to bothbound and vice-versa, respectively. As shown in Section \ref{sec:transitioning-states}, these values can be calculated using the Arrhenius equation:
+\paragraph{Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}
+Rate constants $k_b$ and $k_{ub}$ govern the probability of transitioning from onebound to bothbound and vice-versa, respectively. One issue is that when these parameters are measured experimentally, the values represent the average rate for an ensemble of dynein in many different conformations. In contrast, the rates the model uses represent the probability of unbinding of a specific conformation. Thus, it is necessary to find a way to convert between experimental rates $k_b^{exp}$ and $k_{ub}^{exp}$ and conformation-specific rates $k_b$ and $k_{ub}$. As shown in Section \ref{sec:transitioning-states}, rates can be expressed using the Arrhenius equation:
 
-\begin{equation*}
-  k_b = Ae^{\frac{-\Delta G}{k_BT}} = Ae^{\frac{-\Delta G_{conf}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}}
-\end{equation*}
+\begin{align*}
+  k_b &= A_b'e^{\frac{-\Delta G_{bind}}{k_BT}} = A_b'e^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}} = A_be^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}\\
+  k_{ub} &= A_{ub}'e^{\frac{-\Delta G_{unbind}}{k_BT}} = A_{ub}'e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}e^{\frac{\Delta G_{bind}}{k_BT}} = A_{ub}e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}
+\end{align*}
 
-One issue is that $\Delta G_{conf}$ is based on the current conformation of the model, whereas $k_b$ is a macroscopic parameter representative of all conformations of dynein. This is resolved by replacing $\Delta G_{conf}$ with $\left<\Delta G_{conf}\right>$, the expectation value of energy change in going from onebound to bothbound states. This expected energy, by the equipartition theorem, is $2k_BT$ for onebound and $k_BT$ for bothbound. Conversely $\Delta G_{bind}$ is a constant. Thus the rates can be rewritten:
+where the constant Boltzmann factor for binding energy are hidden inside the unprimed preexponential factors. The experimental values are calculated the same way, with the free energy changes replaced with expectation values. Since by the equipartition theorem $\left<G_{conf}^{ob}\right> = 2k_BT$ and $\left<G_{conf}^{bb}\right> = k_BT$, the equations can be simplified:
 
-\begin{equation*}
-  k_b = Ae^{\frac{-\Delta G_{conf}}{k_BT}}e^{\frac{-k_BT\left(1-2\right)}{k_BT}} = \frac{A_b}{e}
-\end{equation*}
+\begin{align*}
+  k_b^{exp} &= A_be^{\frac{-\left(2k_BT - k_BT\right)}{k_BT}} = \frac{A_b}{e}\\
+  k_{ub}^{exp} &= A_{ub}e^{\frac{-\left(k_BT-2k_BT\right)}{k_BT}} = A_{ub}e
+\end{align*}
 
-where $A_b = Ae^{\frac{-\Delta G_{bind}}{k_BT}}$. Thus literature values on MT binding rate can be used in our model to calculate $A_b$.
+Thus experimental rates can be converted easily into the model parameters $A_b$ and $A_{ub}$.
 
-\textbf{now explain what literature values were used, and why those are reasonable guesses.}
+\paragraph{Literature values for experimental binding rates}
+Sarlah \textit{et. al.} \cite{sarlahmodel} perform a similar simulation of dynein and provide the reaction rates shown in Figure \ref{fig:sarlah-rate-table}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/SarlahParameterTable.png}
+  \caption{Kinetic rates used in Sarlah \textit{et. al.}'s model \cite{sarlahmodel}.}
+  \label{fig:sarlah-rate-table}
+\end{figure}
+
+The assumption of this project is that many of the states in this table can be combined into a single state without loss of predictive power of dynein behavior. Specifically, the assumption is that ejecting phosphate, conducting the powerstroke, releasing ADP, binding ATP and dissociating from the microtubule and all occur during the bothbound state, and hydrolyzing ATP, conducting the prestroke and rebinding the MT occur during onebound. These states are roughly grouped as MT-bound and MT-unbound states in the Cianfrocco mechanochemical cycle \cite{cianfroccoreview}.\\
+
+The rate-limiting transitions in the Cianfrocco model are used as the guess $k_b$ and $k_{ub}$ values. That means that, since ATP hydrolysis has the slowest rate constant in onebound and MT release has the slowest rate in bothbound, $k_b^{exp} = 180 s^{-1}$ and $k_{ub} = 460 s^{-1}$ serve as good initial guesses.\\
+
+\paragraph{Fitting rate constants by simulation}
+\textit{Add in a plot of the binding rate fitting search}
 
 \subsubsection{Fitting spring constants}
+\paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
+\paragraph{Using $\Theta_m$ standard deviation to guess $c_m$}
+\paragraph{Fitting rate constants by simulation}
+
 \subsubsection{Finding parameters from PyMol}
-\subsubsection{Finding values from literature}
-\subsubsection{Final parameter guess table}
+
 \subsubsection{Finding the right timestep}
 
 \subsection{Data collection}
@@ -880,12 +898,6 @@ where $A_b = Ae^{\frac{-\Delta G_{bind}}{k_BT}}$. Thus literature values on MT b
 \subsubsection{Outputting positions, step locations}
 \subsubsection{Reconstructing steps from step locations}
 \subsubsection{Job management}
-
-
-
-
-------------------------------------------
-
 
 \section{Chapter: Results}
 
@@ -904,8 +916,21 @@ The ideal set of parameters used to generate data were found to be:
 \end{figure}
 
 \subsection{Histograms}
-\subsubsection{Step length histograms}
-\subsubsection{Step time histograms}
+
+\begin{figure}[h!]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/length_histogram_sample.pdf}
+    \caption{Histogram of simulated stepping lengths using ideal dynein parameters. Todo: superimpose Weihong's histogram of the same.}
+  \end{minipage}
+  \hspace{.1cm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/time_histogram_sample.pdf}
+    \caption{Histogram of simulated stepping times using ideal dynein parameters. Todo: superimpose Weihong's histogram of the same.}
+  \end{minipage}
+  \label{fig:equipartition_agreement}
+\end{figure}
+
 \subsection{Other ways to represent data?}
 
 \section{Chapter: Discussion}

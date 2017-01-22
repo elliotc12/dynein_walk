@@ -51,34 +51,34 @@
 \contentsline {subsubsection}{\numberline {2.3.1}Conformational tests}{18}{subsubsection.2.3.1}
 \contentsline {subsubsection}{\numberline {2.3.2}Energy conservation}{19}{subsubsection.2.3.2}
 \contentsline {subsubsection}{\numberline {2.3.3}Equipartition theorem}{19}{subsubsection.2.3.3}
-\contentsline {subsubsection}{\numberline {2.3.4}Finding proper $dt$}{19}{subsubsection.2.3.4}
-\contentsline {subsubsection}{\numberline {2.3.5}Equipartition theorem obeyed}{19}{subsubsection.2.3.5}
-\contentsline {subsection}{\numberline {2.4}Parameter fitting}{19}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.4}Parameter fitting}{20}{subsection.2.4}
 \contentsline {subsubsection}{\numberline {2.4.1}Fitting rate constants}{20}{subsubsection.2.4.1}
-\contentsline {subsubsection}{\numberline {2.4.2}Fitting spring constants}{20}{subsubsection.2.4.2}
-\contentsline {subsubsection}{\numberline {2.4.3}Finding parameters from PyMol}{20}{subsubsection.2.4.3}
-\contentsline {subsubsection}{\numberline {2.4.4}Finding values from literature}{20}{subsubsection.2.4.4}
-\contentsline {subsubsection}{\numberline {2.4.5}Final parameter guess table}{20}{subsubsection.2.4.5}
-\contentsline {subsubsection}{\numberline {2.4.6}Finding the right timestep}{20}{subsubsection.2.4.6}
-\contentsline {subsection}{\numberline {2.5}Data collection}{20}{subsection.2.5}
-\contentsline {subsubsection}{\numberline {2.5.1}Outputting positions, step locations}{20}{subsubsection.2.5.1}
-\contentsline {subsubsection}{\numberline {2.5.2}Reconstructing steps from step locations}{20}{subsubsection.2.5.2}
-\contentsline {subsubsection}{\numberline {2.5.3}Job management}{20}{subsubsection.2.5.3}
-\contentsline {section}{\numberline {3}Chapter: Results}{20}{section.3}
-\contentsline {subsection}{\numberline {3.1}Simulation parameters}{20}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Histograms}{21}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Step length histograms}{21}{subsubsection.3.2.1}
-\contentsline {subsubsection}{\numberline {3.2.2}Step time histograms}{21}{subsubsection.3.2.2}
-\contentsline {subsection}{\numberline {3.3}Other ways to represent data?}{21}{subsection.3.3}
-\contentsline {section}{\numberline {4}Chapter: Discussion}{21}{section.4}
-\contentsline {subsection}{\numberline {4.1}Why our model worked, didn’t work}{21}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Future work on this project}{21}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Experiments to verify our model}{21}{subsubsection.4.2.1}
-\contentsline {subsection}{\numberline {4.3}Possible further projects}{21}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Difference between dynein and kinesin}{21}{subsection.4.4}
-\contentsline {section}{\numberline {5}Appendix}{22}{section.5}
-\contentsline {subsection}{\numberline {5.1}Motion equations}{22}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Onebound equations}{22}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Bothbound equations}{22}{subsubsection.5.1.2}
-\contentsline {section}{\numberline {6}Questions for Tate/Nicole}{23}{section.6}
-\contentsline {section}{\numberline {7}Questions for David}{23}{section.7}
+\contentsline {paragraph}{\numberline {2.4.1.1}Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}{20}{paragraph.2.4.1.1}
+\contentsline {paragraph}{\numberline {2.4.1.2}Literature values for experimental binding rates}{21}{paragraph.2.4.1.2}
+\contentsline {paragraph}{\numberline {2.4.1.3}Fitting rate constants by simulation}{21}{paragraph.2.4.1.3}
+\contentsline {subsubsection}{\numberline {2.4.2}Fitting spring constants}{22}{subsubsection.2.4.2}
+\contentsline {paragraph}{\numberline {2.4.2.1}Using $\Delta G_{bind}$ to guess $c_b$}{22}{paragraph.2.4.2.1}
+\contentsline {paragraph}{\numberline {2.4.2.2}Using $\Theta _m$ standard deviation to guess $c_m$}{22}{paragraph.2.4.2.2}
+\contentsline {paragraph}{\numberline {2.4.2.3}Fitting rate constants by simulation}{22}{paragraph.2.4.2.3}
+\contentsline {subsubsection}{\numberline {2.4.3}Finding parameters from PyMol}{22}{subsubsection.2.4.3}
+\contentsline {subsubsection}{\numberline {2.4.4}Finding the right timestep}{22}{subsubsection.2.4.4}
+\contentsline {subsection}{\numberline {2.5}Data collection}{22}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}Outputting positions, step locations}{22}{subsubsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.2}Reconstructing steps from step locations}{22}{subsubsection.2.5.2}
+\contentsline {subsubsection}{\numberline {2.5.3}Job management}{22}{subsubsection.2.5.3}
+\contentsline {section}{\numberline {3}Chapter: Results}{22}{section.3}
+\contentsline {subsection}{\numberline {3.1}Simulation parameters}{22}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Histograms}{22}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Other ways to represent data?}{22}{subsection.3.3}
+\contentsline {section}{\numberline {4}Chapter: Discussion}{22}{section.4}
+\contentsline {subsection}{\numberline {4.1}Why our model worked, didn’t work}{22}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Future work on this project}{23}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Experiments to verify our model}{23}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.3}Possible further projects}{23}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Difference between dynein and kinesin}{23}{subsection.4.4}
+\contentsline {section}{\numberline {5}Appendix}{23}{section.5}
+\contentsline {subsection}{\numberline {5.1}Motion equations}{23}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}Onebound equations}{23}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Bothbound equations}{24}{subsubsection.5.1.2}
+\contentsline {section}{\numberline {6}Questions for Tate/Nicole}{25}{section.6}
+\contentsline {section}{\numberline {7}Questions for David}{25}{section.7}
