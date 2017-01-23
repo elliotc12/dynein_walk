@@ -41,7 +41,7 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) {
   // out of old dyn
   double bad_nma, bad_fma;
-  if (old_dynein->get_state() == State::NEARBOUND) {
+  if (old_dynein->get_state() == NEARBOUND) {
     nbx = old_dynein->get_bbx();
     nby = 0;
 
@@ -136,7 +136,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
 
   if (am_debugging_conversions) {
     printf("DEBUG:\nDEBUG: creating bothbound from onebound!\n");
-    if (old_dynein->get_state() == State::NEARBOUND) {
+    if (old_dynein->get_state() == NEARBOUND) {
       printf("DEBUG: nbx/bbx = %8g vs %8g  nby/bby = %8g vs %8g\n",
              nbx, old_dynein->get_bbx(), nby, old_dynein->get_bby());
       printf("DEBUG: nmx/bmx = %8g vs %8g  nmy/bmy = %8g vs %8g\n",

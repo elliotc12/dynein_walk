@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+
+import os
+
+students = ['droundy', 'erichkramer', 'elliotc12']
+
+for student in students:
+    os.system('git pull git@github.com:%s/dynein_walk.git :' % student)
+

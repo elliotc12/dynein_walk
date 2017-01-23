@@ -1,5 +1,6 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
+#include <stdlib.h> // for exit
 
 static const bool debug_stepping = false;
 
@@ -92,6 +93,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  iter++;
+
+	  // potentially faster to compute velocity here, instead of down there?
 
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;

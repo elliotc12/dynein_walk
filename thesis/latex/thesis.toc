@@ -1,0 +1,84 @@
+\contentsline {section}{\numberline {1}Chapter: Introduction}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}What is dynein?}{3}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}Basics}{3}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}Glossary}{3}{subsubsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.3}Why do cells need motor transport?}{4}{subsubsection.1.1.3}
+\contentsline {subsubsection}{\numberline {1.1.4}What role does it play in the cell?}{4}{subsubsection.1.1.4}
+\contentsline {subsubsection}{\numberline {1.1.5}Dynein structure}{5}{subsubsection.1.1.5}
+\contentsline {subsubsection}{\numberline {1.1.6}How does it behave?}{6}{subsubsection.1.1.6}
+\contentsline {subsubsection}{\numberline {1.1.7}Why is dynein special and interesting?}{6}{subsubsection.1.1.7}
+\contentsline {subsection}{\numberline {1.2}How does dynein walk?}{6}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}ATP binding / unbinding effects}{7}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}Microtubule un/rebinding}{7}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.3}Conformation change of motor (``priming stroke'')}{7}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.4}Experimental results on dynein’s step}{8}{subsubsection.1.2.4}
+\contentsline {subsubsection}{\numberline {1.2.5}c What is still needed to support theory}{8}{subsubsection.1.2.5}
+\contentsline {subsubsection}{\numberline {1.2.6}Other theories?}{8}{subsubsection.1.2.6}
+\contentsline {subsection}{\numberline {1.3}Past Simulations}{9}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}Sarlah Winch Model}{9}{subsubsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.2}-x Other models}{9}{subsubsection.1.3.2}
+\contentsline {subsection}{\numberline {1.4}Brownian motion}{9}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}Introduction/derivation}{9}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}Justification}{9}{subsubsection.1.4.2}
+\contentsline {subsection}{\numberline {1.5}Simulation}{9}{subsection.1.5}
+\contentsline {subsection}{\numberline {1.6}Our model}{9}{subsection.1.6}
+\contentsline {subsubsection}{\numberline {1.6.1}Rigid point model}{9}{subsubsection.1.6.1}
+\contentsline {subsubsection}{\numberline {1.6.2}Harmonic energies}{9}{subsubsection.1.6.2}
+\contentsline {subsubsection}{\numberline {1.6.3}Two-state model}{9}{subsubsection.1.6.3}
+\contentsline {subsubsection}{\numberline {1.6.4}Limitations}{9}{subsubsection.1.6.4}
+\contentsline {paragraph}{\numberline {1.6.4.1}Euler’s method}{9}{paragraph.1.6.4.1}
+\contentsline {paragraph}{\numberline {1.6.4.2}Vs other methods (Runge Kutta, etc)}{9}{paragraph.1.6.4.2}
+\contentsline {paragraph}{\numberline {1.6.4.3}Gibbs energy of transition}{10}{paragraph.1.6.4.3}
+\contentsline {section}{\numberline {2}Chapter: Methods}{10}{section.2}
+\contentsline {subsection}{\numberline {2.1}Dynein Models}{10}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Prestroke onebound model}{10}{subsubsection.2.1.1}
+\contentsline {paragraph}{\numberline {2.1.1.1}Angular and Cartesian coordinates}{10}{paragraph.2.1.1.1}
+\contentsline {paragraph}{\numberline {2.1.1.2}$\mathaccentV {dot}65F{\Theta }_{ub}, \mathaccentV {dot}65F{\Theta }_{um}, \mathaccentV {dot}65F{\Theta }_{bm}, \mathaccentV {dot}65F{\Theta }_{bb}$ calculation}{11}{paragraph.2.1.1.2}
+\contentsline {paragraph}{\numberline {2.1.1.3}Angular and Cartesian velocities}{11}{paragraph.2.1.1.3}
+\contentsline {subsubsection}{\numberline {2.1.2}Poststroke bothbound model}{12}{subsubsection.2.1.2}
+\contentsline {paragraph}{\numberline {2.1.2.1}$\mathaccentV {dot}65F{\Theta }_{nm}, \mathaccentV {dot}65F{\Theta }_{fm}$ calculation}{13}{paragraph.2.1.2.1}
+\contentsline {subsection}{\numberline {2.2}Simulation}{15}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Time evolution}{15}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Transitioning between states}{15}{subsubsection.2.2.2}
+\contentsline {paragraph}{\numberline {2.2.2.1}Transition rate}{15}{paragraph.2.2.2.1}
+\contentsline {paragraph}{\numberline {2.2.2.2}OB $\rightarrow $ BB Transition calculation}{16}{paragraph.2.2.2.2}
+\contentsline {paragraph}{\numberline {2.2.2.3}BB $\rightarrow $ OB Transition calculation}{17}{paragraph.2.2.2.3}
+\contentsline {subsubsection}{\numberline {2.2.3}Corrections}{17}{subsubsection.2.2.3}
+\contentsline {subsubsection}{\numberline {2.2.4}Forces}{17}{subsubsection.2.2.4}
+\contentsline {paragraph}{\numberline {2.2.4.1}Brownian forces}{17}{paragraph.2.2.4.1}
+\contentsline {paragraph}{\numberline {2.2.4.2}Spring forces}{17}{paragraph.2.2.4.2}
+\contentsline {subsection}{\numberline {2.3}Verifying the model}{17}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Conformational tests}{18}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Energy conservation}{19}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Equipartition theorem}{19}{subsubsection.2.3.3}
+\contentsline {subsection}{\numberline {2.4}Parameter fitting}{20}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Fitting rate constants}{20}{subsubsection.2.4.1}
+\contentsline {paragraph}{\numberline {2.4.1.1}Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}{20}{paragraph.2.4.1.1}
+\contentsline {paragraph}{\numberline {2.4.1.2}Literature values for experimental binding rates}{21}{paragraph.2.4.1.2}
+\contentsline {paragraph}{\numberline {2.4.1.3}Fitting rate constants by simulation}{21}{paragraph.2.4.1.3}
+\contentsline {subsubsection}{\numberline {2.4.2}Fitting spring constants}{22}{subsubsection.2.4.2}
+\contentsline {paragraph}{\numberline {2.4.2.1}Using $\Delta G_{bind}$ to guess $c_b$}{22}{paragraph.2.4.2.1}
+\contentsline {paragraph}{\numberline {2.4.2.2}Using $\Theta _m$ standard deviation to guess $c_m$}{22}{paragraph.2.4.2.2}
+\contentsline {paragraph}{\numberline {2.4.2.3}Fitting rate constants by simulation}{22}{paragraph.2.4.2.3}
+\contentsline {subsubsection}{\numberline {2.4.3}Finding parameters from PyMol}{22}{subsubsection.2.4.3}
+\contentsline {subsubsection}{\numberline {2.4.4}Finding the right timestep}{22}{subsubsection.2.4.4}
+\contentsline {subsection}{\numberline {2.5}Data collection}{22}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}Outputting positions, step locations}{22}{subsubsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.2}Reconstructing steps from step locations}{22}{subsubsection.2.5.2}
+\contentsline {subsubsection}{\numberline {2.5.3}Job management}{22}{subsubsection.2.5.3}
+\contentsline {section}{\numberline {3}Chapter: Results}{22}{section.3}
+\contentsline {subsection}{\numberline {3.1}Simulation parameters}{22}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Histograms}{22}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Other ways to represent data?}{22}{subsection.3.3}
+\contentsline {section}{\numberline {4}Chapter: Discussion}{22}{section.4}
+\contentsline {subsection}{\numberline {4.1}Why our model worked, didn’t work}{22}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Future work on this project}{23}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Experiments to verify our model}{23}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.3}Possible further projects}{23}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Difference between dynein and kinesin}{23}{subsection.4.4}
+\contentsline {section}{\numberline {5}Appendix}{23}{section.5}
+\contentsline {subsection}{\numberline {5.1}Motion equations}{23}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}Onebound equations}{23}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Bothbound equations}{24}{subsubsection.5.1.2}
+\contentsline {section}{\numberline {6}Questions for Tate/Nicole}{25}{section.6}
+\contentsline {section}{\numberline {7}Questions for David}{25}{section.7}

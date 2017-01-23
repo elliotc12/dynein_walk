@@ -3,6 +3,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <cstring>
+#include <errno.h>
 
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
