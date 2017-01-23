@@ -85,6 +85,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
+	  printf("just bound b/c binding probability was: %.15f\n", binding_prob);
 	  break;
 	}
 	else { // move like normal

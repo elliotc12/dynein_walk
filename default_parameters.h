@@ -47,7 +47,7 @@ double binding_fraction = 1e-6;
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
-double REBINDING_IMMUNITY_TIME = 2e-11; // s
+double REBINDING_IMMUNITY_TIME = 2*dt; // s
 
 double RAND_INIT_SEED = 0;
 
