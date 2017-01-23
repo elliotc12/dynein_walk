@@ -13,7 +13,7 @@
 \contentsline {subsubsection}{\numberline {1.2.3}Conformation change of motor (``priming stroke'')}{7}{subsubsection.1.2.3}
 \contentsline {subsubsection}{\numberline {1.2.4}Experimental results on dynein’s step}{8}{subsubsection.1.2.4}
 \contentsline {subsubsection}{\numberline {1.2.5}c What is still needed to support theory}{8}{subsubsection.1.2.5}
-\contentsline {subsubsection}{\numberline {1.2.6}Other theories?}{8}{subsubsection.1.2.6}
+\contentsline {subsubsection}{\numberline {1.2.6}Other theories?}{9}{subsubsection.1.2.6}
 \contentsline {subsection}{\numberline {1.3}Past Simulations}{9}{subsection.1.3}
 \contentsline {subsubsection}{\numberline {1.3.1}Sarlah Winch Model}{9}{subsubsection.1.3.1}
 \contentsline {subsubsection}{\numberline {1.3.2}-x Other models}{9}{subsubsection.1.3.2}
@@ -27,7 +27,7 @@
 \contentsline {subsubsection}{\numberline {1.6.3}Two-state model}{9}{subsubsection.1.6.3}
 \contentsline {subsubsection}{\numberline {1.6.4}Limitations}{9}{subsubsection.1.6.4}
 \contentsline {paragraph}{\numberline {1.6.4.1}Euler’s method}{9}{paragraph.1.6.4.1}
-\contentsline {paragraph}{\numberline {1.6.4.2}Vs other methods (Runge Kutta, etc)}{9}{paragraph.1.6.4.2}
+\contentsline {paragraph}{\numberline {1.6.4.2}Vs other methods (Runge Kutta, etc)}{10}{paragraph.1.6.4.2}
 \contentsline {paragraph}{\numberline {1.6.4.3}Gibbs energy of transition}{10}{paragraph.1.6.4.3}
 \contentsline {section}{\numberline {2}Chapter: Methods}{10}{section.2}
 \contentsline {subsection}{\numberline {2.1}Dynein Models}{10}{subsection.2.1}
@@ -72,13 +72,13 @@
 \contentsline {subsection}{\numberline {3.3}Other ways to represent data?}{22}{subsection.3.3}
 \contentsline {section}{\numberline {4}Chapter: Discussion}{22}{section.4}
 \contentsline {subsection}{\numberline {4.1}Why our model worked, didn’t work}{22}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Future work on this project}{23}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Experiments to verify our model}{23}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2}Future work on this project}{22}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Experiments to verify our model}{22}{subsubsection.4.2.1}
 \contentsline {subsection}{\numberline {4.3}Possible further projects}{23}{subsection.4.3}
 \contentsline {subsection}{\numberline {4.4}Difference between dynein and kinesin}{23}{subsection.4.4}
 \contentsline {section}{\numberline {5}Appendix}{23}{section.5}
 \contentsline {subsection}{\numberline {5.1}Motion equations}{23}{subsection.5.1}
 \contentsline {subsubsection}{\numberline {5.1.1}Onebound equations}{23}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Bothbound equations}{24}{subsubsection.5.1.2}
-\contentsline {section}{\numberline {6}Questions for Tate/Nicole}{25}{section.6}
-\contentsline {section}{\numberline {7}Questions for David}{25}{section.7}
+\contentsline {subsubsection}{\numberline {5.1.2}Bothbound equations}{28}{subsubsection.5.1.2}
+\contentsline {section}{\numberline {6}Questions for Tate/Nicole}{29}{section.6}
+\contentsline {section}{\numberline {7}Questions for David}{29}{section.7}
