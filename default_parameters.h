@@ -38,11 +38,11 @@ double cb = 0.1*binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estim
 double dt = 1e-11;
 
 double low_affinity_binding_rate = 180; //s^-1
-double low_affinity_unbinding_rate = 5000; //s^-1
+double low_affinity_unbinding_rate = 460; //s^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
 
-double binding_fraction = 1e-6;
+/* double binding_fraction = 1e-6; */
 
 double MICROTUBULE_REPULSION_FORCE = 30.0; // N/nm
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
