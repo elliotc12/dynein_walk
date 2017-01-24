@@ -11,7 +11,7 @@ STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/%.mp4, $(wildc
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data
+all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data thesis/thesis.pdf
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
@@ -200,6 +200,9 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
 	cd thesis_stuff && xelatex -interaction batchmode thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction batchmode thesis_stuff.tex && xelatex -interaction batchmode thesis_stuff.tex && mv thesis_stuff.pdf ..
 
+thesis/thesis.pdf:
+	cd thesis && $(MAKE)
+
 clean:
 	rm -f *.txt
 	rm -f *.o
@@ -229,3 +232,4 @@ clean:
 	rm -f *.fdb_latexmk
 	rm -f *.fls
 	cd figures && $(MAKE) clean
+	cd thesis && $(MAKE) clean
