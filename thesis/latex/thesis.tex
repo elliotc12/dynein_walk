@@ -185,6 +185,63 @@ Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you 
 \begin{figure}[h]
   \centering
   \includegraphics[width=.85\textwidth,keepaspectratio]{../../figures/mechanochemical-cycle.jpeg}
+  \newcommand\bothbound{\textcolor{blue}{BOTHBOUND}}
+  \newcommand\onebound{\textcolor{red}{ONEBOUND}}
+  \newcommand\transition{\textcolor{green}{transition?}}
+  \begin{tabular}{rll}
+    \bothbound &
+    1 & \begin{minipage}{5in}
+      Bound to microtubule and waiting for ATP to arrive.  The
+      conformation is ``post-powerstroke''.
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    2 & \begin{minipage}{5in}
+      ATP has bound to the motor at AAA1, but nothing else has changed.
+    \end{minipage}\vspace{0.5em}\\
+    \transition &
+    3 & \begin{minipage}{5in}
+      ``The ring has closed'' in the motor, whatever that means.
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    4 & \begin{minipage}{5in}
+      The affinity to the microtubule is dropped, so it is likely to pop off soon.
+    \end{minipage}\vspace{0.5em}\\
+    \onebound &
+    5 & \begin{minipage}{5in} It has popped off of the microtubule!
+      Onebound! The equilibrium angle is also changed.  The ATP has
+      been hydrolized, but the phosphate is still bound to the motor.
+      ``Priming stroke?''
+    \end{minipage}\vspace{0.5em}\\
+    \onebound &
+    6 & \begin{minipage}{5in} It is now bound to the microtubule, but
+      with low affinity, and without any loss of phosphate. Question:
+      does this happen many times? If so it may still be onebound.
+      Otherwise it is probably bothbound.
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    7 & \begin{minipage}{5in}
+      Now it is seriously bound to the microtubule, and the motor
+      domain has changed conformation.  This is now ``high affinity.''
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    8 & \begin{minipage}{5in}
+      Phosphate has been released, and our equilibrium angles have
+      been changed.  This is the ``power stroke.''
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    1 & \begin{minipage}{5in}
+      The ADP has been released from the motor domain, so it can now
+      bind ATP.  Still ``high affinity,'' and still in the
+      ``power-stroke'' conformation.
+    \end{minipage}\vspace{0.5em}\\
+    \bothbound &
+    9 & \begin{minipage}{5in}
+      While stuck in this ``normal bound'' state, another site on the
+      motor AAA3 can lose its ADP, which leaves the motor in a state
+      where it cannot directly move on to step 2 (until after
+      reversing this).  Controversial?
+    \end{minipage}
+  \end{tabular}
   \caption{Cycle of states the dynein motor goes through during motion in the Cianfrocco model \cite{cianfroccoreview}.}
   \label{mech-cycle}
 \end{figure}
