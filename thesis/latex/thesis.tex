@@ -51,6 +51,7 @@ Begin with a paper-like introduction which talks about:
 
 \begin{itemize}
 \item How dynein is a structure which turns chemical energy into motion
+\item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
 \item How it's weird that a cellular structure can generate directed motion
 \item Other cool stuff - make dynein mysterious and cool.
 \end{itemize}
@@ -874,10 +875,11 @@ This test verifies both force and velocity are calculated properly for either mo
 
 \begin{figure}[h]
   \centering
-  \begin{tabular}{| c | c | c |}
+  \begin{tabular}{| c | c | c | c |}
     \hline
-    Author & Conditions & $<T_{step}>$\\\hline
-    Weihong & 1mM [ATP] & 1.0\\ \hline
+    Author & Conditions & Velocity & Run length\\\hline
+    Qiu \cite{weihongpaper} & 1mM [ATP] & $134 \pm 60.4$ nm & $1.06 \pm 0.044 \mu m$\\ \hline
+    Reck-Peterson \cite{reck2006single} & 1mM [ATP] & $85 \pm 30 nm/s$  & $1.9 \pm 0.2 \mu m$\\ \hline
   \end{tabular}
   \caption{Table of literature values for dynein behavior}
   \label{table:parameter-table}
