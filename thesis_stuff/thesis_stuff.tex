@@ -824,6 +824,17 @@ A more reliable step time determiner is $\Big<\mbox{step time}\Big>$, which shou
 
 \section{Papers}
 
+\subsection{A Simple Theoretical Model Explains Dynein’s Response to Load}
+Yi Qin Gao 2006
+
+Two reaction coordinates. First is where it is in the ATP, ADP-Pi, ADP, Apo cycle. Second is domain orientation and MT binding status position.\\
+
+Stalling force increases by 4-fold when [ATP] goes from 0.1 to 1mM, a much more dramatic change than seen in kinesin. (they cite this claim). Dynein's step size also varies a lot with load -- we could easily test if our model behaves this way, as well.\\
+
+ATP binding rate to apo dynein: $7*1-^5/m/s$
+
+This seems like a good paper to finish eventually. It would be something to compare our results to.\\
+
 \subsection{Interesting Crystal Structures}
 \textbf{3VKH} 2.8A x-ray resolution full dynein motor, from Kon 2012 (2.8A crystal structure of the dynein motor domain). Probably what we'll use to get some equilibrium angles and lengths, though not sure if crystal structures are identical to in vivo structures. Discusses amino acid chemistry of the powerstroke and long-distance MTBD/ATPase communication.\\
 \textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
@@ -944,7 +955,19 @@ Goes over in detail the various steps of the Dynein chemical cycle. Eight-state 
 \subsection{Weihong's Dynein stepping data}
 Qiu, W., Derr, N., Goodman, B., Villa, E., Wu, D., Shih, W., Reck-Pterson, S. ``Dynein achieves processive motion using both stochastic and coordinated stepping.'' \textit{Nature Structural \& Molecular Biology}. 2012, 19:193-200.\\
 
-Has the stepping histograms we are trying to reproduce computationally.
+Has the stepping histograms we are trying to reproduce computationally.\\
+
+Velocities reported here are probably bad, but the step lengths are good. Step length not influenced by [ATP].\\
+
+At Weihong's 1mM [ATP], the stepping rate for their dynein is $k = 1.78 ± 0.13 s−1$. Thus dynein takes a step roughly every $0.58s$ when in low-ATP conditions. Average velocity at this concentration si $134 ± 60.4 nm s−1$. Run length of $1.06 ± 0.044 µm$.\\
+
+Seems to be a difference between different types of steps: tail steps are a single motion of the tail, and Weihong says are about 10nm (2d). Motions of each motor are 14-16nm. 77\% are forward steps.\\
+
+Head moves half as fast as either motor, suggesting motors move every other step, tail moves each step.\\
+
+It's potentially important to note the dynein species used, though probably not since Weihong didn't mention it much in the paper.\\
+
+\subsection{}
 
 \subsection{Pre-powerstroke structure, linker remodel details}
 Schmidt, H*., Zalyte, R*., Urnavicius, L., Carter, AP. ``Structure of human cytoplasmic dynein-2 primed for its power stroke.'' \textit{Nature} 2014. 518:435-438.
