@@ -43,9 +43,7 @@ num_steps = len(step_lengths)
 
 #step length histogram
 fig = plt.figure()
-max_step = max(step_lengths)
-min_step = min(step_lengths)
-plt.hist(step_lengths, bins=np.linspace(min_step, max_step, 10))
+plt.hist(step_lengths, bins=12)
 plt.title("Stepping length histogram " + data_name)
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
