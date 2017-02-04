@@ -967,8 +967,67 @@ The assumption of this project is that many of the states in this table can be c
 
 The rate-limiting transitions in the Cianfrocco model are used as the guess $k_b$ and $k_{ub}$ values. That means that, since ATP hydrolysis has the slowest rate constant in onebound and MT release has the slowest rate in bothbound, $k_b^{exp} = 180 s^{-1}$ and $k_{ub} = 460 s^{-1}$ serve as good initial guesses.\\
 
-%% \paragraph{Fitting rate constants by simulation}
+\paragraph{Fitting rate constants to processivity and step times}
+Rate constants can be fit to experimentally measurable values, such as velocity and the time dynein is bound to the microtubule (processivity time). We define the following values:
+
+\newcommand\tbb{\left<t_{bb}\right>}
+\newcommand\tob{\left<t_{ob}\right>}
+\newcommand\tstep{\left<t_{step}\right>}
+\newcommand\tproc{\left<t_{processivity}\right>}
+\newcommand\kub{k_{ub}}
+\newcommand\kb{k_{b}}
+\newcommand\ko{k_{dis}}
+
+\begin{itemize}
+\item $\tbb$: Time in bothbound per step
+\item $\tob$: Time in onebound per step
+\item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
+\item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
+\item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
+\item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
+\item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
+\item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
+\item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
+\end{itemize}
+
+$\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
+
+\begin{align*}
+  \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  \tbb &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+  \tob &= \tstep-\tbb\\
+  &= \tstep - \frac{\tstep\tbb}{\tstep-\tbb}\\
+  &= \frac{\left(\tstep-\tbb\right)\tstep\tbb}{\tstep-\tbb}\\
+  &= \frac{\tstep\left(\tstep-\tbb\right) - \tstep\tbb}{\tstep-\tbb}\\
+  &= \frac{\tstep^2}{\tstep-\tbb}\\
+\end{align*}
+
+Thus, by the above equations and using data from (put right paper here), values for $\tbb$ and $\tob$ can be found:
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{| c | c | c | c | c | c |}
+    \hline
+    Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
+    100nm/s & 8nm & 0.08 & 3s & 0.08 & 0.002 \\ \hline
+  \end{tabular}
+  \caption{Table calculating estimates for $\tbb$ and $\tob$.}
+  \label{table:parameter-table}
+\end{figure}
+
+Todo: get real values for above velocity/steplenght/steptime/processivity based on \textit{in vivo} ATP concentration.\\
+
 %% \textit{Add in a plot of the binding rate fitting search}
+
+\paragraph{Fitting rate constants by simulation}
+\textit{Add in a plot of the binding rate fitting search}
+
+\subsubsection{Fitting spring constants}
+\paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
+\paragraph{Using $\Theta_m$ standard deviation to guess $c_m$}
+\paragraph{Fitting rate constants by simulation}
 
 %% \subsubsection{Fitting spring constants}
 %% \paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
