@@ -249,6 +249,11 @@ Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you 
 
 \subsubsection{ATP binding / unbinding effects}
 \subsubsection{Microtubule un/rebinding}
+\subsubsection{Domain movement}
+Dynein domains have been shown to move in an alternating fashion, with motor domains moving twice the distance of head domains. This indicates an alternate shuffling-type movement.\\
+
+Flesh this out? Make a table of lots of different experiments and what they indicate?\\
+
 \subsubsection{Conformation change of motor (``priming stroke'')}
 A FRET (fluorescent resonance energy transfer) study, which probes the closeness of different labeled domains on a protein, showed that dynein is found in two different major conformations, depending on the nucleotide bound to its AAA1 ATPase site \cite{FRETstatepaper}. When no nucleotide, ATP or ADP is bound, the authors label the protein ``state I.'' When ADP-Pi bound, the motor is said to be in ``state II,'' as shown in Fig \ref{nucleotide-state}. In addition, motors in the presence of the unhydrolyzable ATP analog were found in state II, indicating the transition from state I to II occurs during ATP binding. Similar reasoning shows that the state II to I transition occurs when the protein is ADP bound. This allows the authors to create the state diagram shown in Fig \ref{nucleotide-state-diagram}.\\
 
@@ -929,7 +934,7 @@ In addition, the physical conditions the simulations were run at are shown in Ta
   \begin{tabular}{| l | l |}
     \hline
     T & [ATP] \\ \hline
-    310.15 K & $1.54*10^{-3}$ M \cite{cellular-atp}\\ \hline
+    310.15 K & $1mM$\\ \hline
   \end{tabular}
   \caption{Table of physical constants used in simulation.}
   \label{table:parameter-table}
@@ -996,28 +1001,25 @@ $\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tpr
   \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
   &= \frac{\tstep-\tbb}{\tstep\tbb}\\
   &= \frac{\tstep-\tbb}{\tstep\tbb}\\
-  \tbb &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+  \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+  \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
   \tob &= \tstep-\tbb\\
-  &= \tstep - \frac{\tstep\tbb}{\tstep-\tbb}\\
-  &= \frac{\left(\tstep-\tbb\right)\tstep\tbb}{\tstep-\tbb}\\
-  &= \frac{\tstep\left(\tstep-\tbb\right) - \tstep\tbb}{\tstep-\tbb}\\
-  &= \frac{\tstep^2}{\tstep-\tbb}\\
+  &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
+  &= \frac{\tstep^2}{\tstep+\tproc}\\
 \end{align*}
 
-Thus, by the above equations and using data from (put right paper here), values for $\tbb$ and $\tob$ can be found:
+Thus, by the above equations and using data from \cite{weihongpaper}, values for $\tbb$ and $\tob$ can be found:
 
 \begin{figure}[h]
   \centering
   \begin{tabular}{| c | c | c | c | c | c |}
     \hline
     Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
-    100nm/s & 8nm & 0.08 & 3s & 0.08 & 0.002 \\ \hline
+    134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
   \end{tabular}
   \caption{Table calculating estimates for $\tbb$ and $\tob$.}
   \label{table:parameter-table}
 \end{figure}
-
-Todo: get real values for above velocity/steplenght/steptime/processivity based on \textit{in vivo} ATP concentration.\\
 
 %% \textit{Add in a plot of the binding rate fitting search}
 
