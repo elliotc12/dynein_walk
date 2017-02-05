@@ -823,7 +823,6 @@ for the bothbound case, then averaging.\\
 A more reliable step time determiner is $\Big<\mbox{step time}\Big>$, which should be around 0.1. This number can be determined from our step time histograms.\\
 
 \section{Papers}
-
 \subsection{A Simple Theoretical Model Explains Dynein’s Response to Load}
 Yi Qin Gao 2006
 
@@ -840,6 +839,54 @@ This seems like a good paper to finish eventually. It would be something to comp
 \textbf{3J67/3J68} 34A EM structure of pre/post motor (from Structural Mechanism of dynein power stroke 2014). Shows in-depth changes to motor, but appears to only be the six ATPases and possibly buttress.
 \textbf{3J1T/3J1U} 9.7A EM structure of tightly/loosly bound tubulin-MTBD binding from (Structural basis for microtubule binding and release by dynein).\\
 \textbf{4RH7} 2.3A x-ray crystal structure of dynein motor/stalk with ADP.Vi (pre-stroke) from (Structure of human cytoplasmic dynein-2 primed for its power stroke). Could be another good place to get angles for pre-stroke, since 3VKH is post-stroke.\\
+
+\subsection{Single-Molecule Analysis of Dynein processivity and Stepping Behavior}
+2006 paper on single-molecule analysis of step sizes of dynein. Might have in-vivo velocity information.
+
+Cool asside: Dynein can be dissociated from microtubules by adding 5mM ATP. This makes sense, since unbinding rate is proportional to ATP concentration.\\
+
+Report a velocity of $85\pm30$ nm/s. Run length of $1.9\pm0.2\mu m$. Measurements done at $1mM ATP$.\\
+
+Required for walking: two motor domains, but not cargo binding or associated chains.\\
+
+Step length assay conducted at $4 \mu M$ ATP, roughly three orders of magnitude less than \textit{in vivo} ATP concentration.\\ 
+
+Head steps are roughly 8nm, but motor movements per step are 0 for nonmoving and 16-18 for moving motor. This means that our average step size should be about 16nm.\\
+
+Dwell time: probably the average time a domain is bound to the MT? IE the total step time? Although perhaps they only measure dwell times when they are especially long, since the average looks to be around 2s, or ten dynein steps.\\
+
+Stepping rate of 0.13 per second per $\mu M$ ATP. Ten steps per second, consistent with velocity.\\
+
+Forward stepping probability: 0.8\\
+
+Propose the original ``alternate shuffling''/''hand-over-hand'' mechanism, where each head moves past the other, and the tail/centroid moves a half of each motor domain's movement.\\
+
+\subsection{ATP concentration papers}
+\paragraph{The Contents of Adenine Nucleotides, Phsphagens and some Glycolytic Intermediates in Resting Muscles from Vertebrates and Invertebrates -- 1975}
+
+Found the following:
+
+\begin{center}
+  \begin{tabular}{| l | l |}
+    \hline
+    Organism & ATP\\ \hline
+    Locust flight muscle & 5.8mM\\ \hline
+    Rosechafer flight muscle & 8.5mM\\ \hline
+    Dogfish white muscle & 4.18mM\\ \hline
+    Lab rat thigh & 6.23mM\\ \hline
+    Lab rat kidney & 1.71mM\\ \hline
+  \end{tabular}
+\end{center}
+
+\paragraph{Diversity in ATP concentrations in a single bacterial cell population revealed b quantitate single-cell imaging}
+
+Report $1.54\pm1.22$ mM\\
+
+\paragraph{Bionumbers: http://bionumbers.hms.harvard.edu/search.aspx?log=y&task=searchbytrmorg&trm=atp+concentration&org=}
+
+Growing E. coli: 9.6 mM\\
+human blood cell: 1.61 mM\\
+Maize: 0.5-1.2 mM\\
 
 \subsection{H-bond $\Delta G$ calculation paper}
 van der Spoel, D., J. van Maaren, P., Larsson, P., Timneanu, N. ``Thermodynamics of Hydrogen Bonding in Hydrophilic and Hydrophobic Media'' \textit{J. Phys. Chem. B} 2006: 110, 4393-4398.\\
