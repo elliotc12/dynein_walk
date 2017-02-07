@@ -14,7 +14,8 @@ extern double mla_init;
 extern double mra_init;
 extern double bra_init;
 
-FILE* crash_movie_file_global;
+extern char* crash_movie_file_name_global;
+
 movie_data_struct* on_crash_old_movie_data_global_ptr; // ugly, fix sometime
 movie_data_struct* on_crash_new_movie_data_global_ptr;
 
@@ -149,7 +150,11 @@ void write_movie_config(char* movie_config_fname, double runtime) {
 void on_crash_write_movie_buffer() {
   movie_data_struct* old_data = on_crash_old_movie_data_global_ptr;
   movie_data_struct* new_data = on_crash_new_movie_data_global_ptr;
-  FILE* data_file = crash_movie_file_global;
+  FILE* data_file = fopen(crash_movie_file_name_global, "w");
+
+  fprintf(data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+	  "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
+	  "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
 
   int i = 0;
   while (old_data[i].time > 0 and i < MOVIE_BUFFER_SIZE) {
