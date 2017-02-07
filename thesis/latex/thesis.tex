@@ -47,14 +47,14 @@
 \newpage
 
 \section{Chapter: Introduction}
-Begin with a paper-like introduction which talks about:
+%% Begin with a paper-like introduction which talks about:
 
-\begin{itemize}
-\item How dynein is a structure which turns chemical energy into motion
-\item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
-\item How it's weird that a cellular structure can generate directed motion
-\item Other cool stuff - make dynein mysterious and cool.
-\end{itemize}
+%% \begin{itemize}
+%% \item How dynein is a structure which turns chemical energy into motion
+%% \item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
+%% \item How it's weird that a cellular structure can generate directed motion
+%% \item Other cool stuff - make dynein mysterious and cool.
+%% \end{itemize}
 
 \subsection{What is dynein?}
 \subsubsection{Basics}
@@ -71,10 +71,6 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 \end{figure}
 
 Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule can end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
-
-\subsubsection{Glossary}
-\textbf{ATP} Adenosine triphosphate is a small organic molecule which very spontaneously breaks apart into ADP and a phosphate. This reaction is used to power many energy-requiring mechanisms within the cell. This reaction has a $\Delta G^\circ \approx -36 kJ/mol$ at physiological conditions \ref{ATPenergy}.\\\\
-\textbf{Protein} Dynein is a protein, or long chain of amino acids linked together and folded into a particular shape.\\
 
 \subsubsection{Why do cells need motor transport?}
 Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2) \textbf{((is this the best way to cite this?))}, a $10^3$ factor difference in size.\\
@@ -133,13 +129,6 @@ As shown in \ref{dynein-artist-rendition-2}, a dynein motor is a fusion of to id
 
 \textbf{Binding domain}
 Microtubule binding domains (MTBDs) allow dynein to bind to the microtubule. 
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/mtbd-complex.png}
-  \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}.}
-  \label{dynein-artist-rendition-2}
-\end{figure}
 
 \subsubsection{How does it behave?}
 Talk about its stepping behavior using Weihong's figures (as well as the new paper David found?)\\
@@ -249,6 +238,16 @@ Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you 
 
 \subsubsection{ATP binding / unbinding effects}
 \subsubsection{Microtubule un/rebinding}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/mtbd-complex.png}
+  \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}.}
+  \label{dynein-artist-rendition-2}
+\end{figure}
+
+
 \subsubsection{Conformation change of motor (``priming stroke'')}
 A FRET (fluorescent resonance energy transfer) study, which probes the closeness of different labeled domains on a protein, showed that dynein is found in two different major conformations, depending on the nucleotide bound to its AAA1 ATPase site \cite{FRETstatepaper}. When no nucleotide, ATP or ADP is bound, the authors label the protein ``state I.'' When ADP-Pi bound, the motor is said to be in ``state II,'' as shown in Fig \ref{nucleotide-state}. In addition, motors in the presence of the unhydrolyzable ATP analog were found in state II, indicating the transition from state I to II occurs during ATP binding. Similar reasoning shows that the state II to I transition occurs when the protein is ADP bound. This allows the authors to create the state diagram shown in Fig \ref{nucleotide-state-diagram}.\\
 
@@ -336,8 +335,7 @@ efficient -- is there a way to show how our differential equation is smooth, not
 \paragraph{Gibbs energy of transition}
 Do some stuff with Gibb's here? Why our energies are Gibb's and not internal energy?\\
 
-\section{Chapter: Methods}
-
+\section{Chapter: Theory}
 \subsection{Dynein Models}
 In order to simulate a protein's passage through the above mechanochemical cycle, two mathematical models are needed: one for the prestroke, MTBD-detached state, and one for the poststroke, MTBD-bound state. The purpose of each model is to calculate the position and velocity of each domain at an arbitrary time.\\
 
@@ -810,6 +808,9 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
   \label{transition-rate-snippet}
 \end{figure}
 
+\section{Chapter: Methods}
+This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
+
 \subsection{Verifying the model}
 The models were verified to follow physical laws by checking their behavior in various tests: general conformational tests, energy conservation and obeying the equipartition theorem. The purpose of these tests was to verify that equations had been entered properly (primarily the conformational and energy conservation tests), and that the model obeyed the laws of physics (all tests).
 
@@ -1092,6 +1093,10 @@ and get its crystal structure to do some comparisons.
 %% \bibliography{thesis-webpages}
 
 \section{Appendix}
+
+\subsubsection{Glossary}
+\textbf{ATP} Adenosine triphosphate is a small organic molecule which very spontaneously breaks apart into ADP and a phosphate. This reaction is used to power many energy-requiring mechanisms within the cell. This reaction has a $\Delta G^\circ \approx -36 kJ/mol$ at physiological conditions \ref{ATPenergy}.\\\\
+\textbf{Protein} Dynein is a protein, or long chain of amino acids linked together and folded into a particular shape.\\
 
 \subsection{Motion equations}
 
