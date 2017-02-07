@@ -285,6 +285,13 @@ void Dynein_onebound::update_velocities() {
     if (am_debugging_angles) printf("uma angle is cool:      %g\n", uma);
   }
 
+  //******* Checking for sub-MT dynein ********
+  if (get_bmy() < 0 or get_ty() < 0 or get_umy() < 0 or get_uby() < 0) {
+    printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
+    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+    exit(1);
+  }
+
   update_internal_forces();
   update_brownian_forces();
 
