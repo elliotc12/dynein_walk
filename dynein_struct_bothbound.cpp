@@ -257,10 +257,9 @@ void Dynein_bothbound::update_internal_forces() {
     f.fbx += -f1x;
     f.fby += -f1y;
 
-    // currently unused
-    // if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
-    // if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    // if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
+    if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
+    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    if (get_fmy() < 0) f.fmy += MICROTUBULE_REPULSION_FORCE * fabs(get_fmy());
   }
 }
 
@@ -360,7 +359,7 @@ void Dynein_bothbound::update_coordinates() {
   }
 
   // ******* Checking for sub-MT dynein ********
-  if (nmy < -1e-3 or ty < -1e-3 or fmy < -1e-3) {
+  if (nmy < -0.5 or ty < -0.5 or fmy < -0.5) {
     printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);

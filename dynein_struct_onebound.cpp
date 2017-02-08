@@ -172,11 +172,10 @@ void Dynein_onebound::update_internal_forces() {
     f.umx += -(f1x + f2x);
     f.umy += -(f1y + f2y);
 
-    // currently unused
-    // if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy()); 
-    // if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    // if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    // if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
+    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy()); 
+    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+    if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
+    if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
   }
 }
 
@@ -286,7 +285,7 @@ void Dynein_onebound::update_velocities() {
   }
 
   //******* Checking for sub-MT dynein ********
-  if (get_bmy() < -1e-3 or get_ty() < -1e-3 or get_umy() < -1e-3) {
+  if (get_bmy() < -0.5 or get_ty() < -0.5 or get_umy() < -0.5 or get_uby() < -0.5) {
     printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);

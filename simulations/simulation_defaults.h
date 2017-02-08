@@ -6,6 +6,6 @@ const long long data_generation_skip_iterations = 1e5;
 
 const int MOVIE_BUFFER_SIZE = 1000;
 
-const int stepping_movie_framerate = 1;
+const int stepping_movie_framerate = 100;
 
 #endif
