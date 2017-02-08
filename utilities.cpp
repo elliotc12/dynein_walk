@@ -14,7 +14,7 @@ extern double mla_init;
 extern double mra_init;
 extern double bra_init;
 
-extern char* crash_movie_file_name_global;
+char* crash_movie_file_name_global;
 
 movie_data_struct* on_crash_old_movie_data_global_ptr; // ugly, fix sometime
 movie_data_struct* on_crash_new_movie_data_global_ptr;

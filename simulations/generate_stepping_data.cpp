@@ -21,7 +21,7 @@ const bool display_progress = false;
 
 extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;
-char* crash_movie_file_name_global;
+extern char* crash_movie_file_name_global;
 
 bool am_making_movie;
 
