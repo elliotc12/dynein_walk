@@ -47,6 +47,7 @@
 \newpage
 
 \section{Chapter: Introduction}
+
 %% Begin with a paper-like introduction which talks about:
 
 %% \begin{itemize}
@@ -245,11 +246,13 @@ Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you 
 
 \subsubsection{ATP binding / unbinding effects}
 \subsubsection{Microtubule un/rebinding}
+Microtubule binding and unbinding play an important role in the dynein mechanochemical cycle. The MTBD/stalk system has two conformational states: a high-MT-affinity state where MT binding occurs at a fast rate, and a low-affinity state with a slower binding rate \. The MTBD/stalk alternates between these two states as the motor progresses through the mechanochemical cycle
+
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/mtbd-complex.png}
-  \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}.}
+  \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}. Is this figure actually useful, or would a diagram be better?}
   \label{dynein-artist-rendition-2}
 \end{figure}
 
@@ -297,12 +300,9 @@ There are many different things which might be important for dynein's walk which
 Imamula model: how it is different from Cianfrocco model, and why we chose the Cianfrocco model.\\
 	\subsection{Past Simulations}
 		\subsubsection{Sarlah Winch Model}
-		\subsubsection{-x Other models}
-	\subsection{Brownian motion}
-                \subsubsection{Introduction/derivation}
-                \subsubsection{Justification}
+		\subsubsection{Other models}
 
-\subsection{Simulation}
+\subsection{Moving forward}
 Talk about why simulation is the only way to verify the mechanochemical cycle, since experiments
 aren't high resolution enough to make good videos of the walk, and even if they were, in some sense
 knowing that dynein behaves identically to a simple mathematical model is more informative than
@@ -313,7 +313,8 @@ understand how dynein works. We can know this if we can come up with the minimum
 ``how dynein walks.'' We don't need to know all the complex dynamics of every single amino acid in
 dynein, we only need to know our rough model.\\
 
-\subsection{Our model}
+\section{Chapter: Theory}
+\subsection{Model features}
 Talk about what the important parts of the mechanochemical cycle from the introduction are, and how
 we take those and model them.\\
 \subsubsection{Rigid point model}
@@ -328,26 +329,12 @@ oscillator. Why this is valid. Also other approaches...what else could we have m
 The mechanochemical cycle has eight states. We choose two as representative because \textbf{a.)}
 many of the states are identically conformationally or \textbf{b.)} the transitions happen so fast
 the intermediate states don't matter. Talk about rate constants here.
-\subsubsection{Limitations}
-Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information,
-other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into
-account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be
-springy...
 
-Mention the Burgess paper, which says spring constants might change between apo/ADP states.
+\subsection{Brownian motion}
+\subsubsection{Introduction/derivation}
+\subsubsection{Justification}
 
-\paragraph{Euler’s method}
-Show how Euler's method is arrived at, how its error scales, why we use it.
-
-\paragraph{Vs other methods (Runge Kutta, etc)}
-Talk about why our differential equation is most conducive to Euler's method. Euler's is more
-efficient -- is there a way to show how our differential equation is smooth, not jagged?
-
-\paragraph{Gibbs energy of transition}
-Do some stuff with Gibb's here? Why our energies are Gibb's and not internal energy?\\
-
-\section{Chapter: Theory}
-\subsection{Dynein Models}
+\subsection{Mathematical models}
 In order to simulate a protein's passage through the above mechanochemical cycle, two mathematical models are needed: one for the prestroke, MTBD-detached state, and one for the poststroke, MTBD-bound state. The purpose of each model is to calculate the position and velocity of each domain at an arbitrary time.\\
 
 \subsubsection{Prestroke onebound model}
@@ -679,6 +666,13 @@ To generate stepping data, the models were coded in \verb|C++| and time-evolved 
 
 Code is available at \verb|https://github.com/elliotc12/dynein_walk.git|.
 
+\paragraph{Euler’s method}
+Show how Euler's method is arrived at, how its error scales, why we use it.
+
+\paragraph{Vs other methods (Runge Kutta, etc)}
+Talk about why our differential equation is most conducive to Euler's method. Euler's is more
+efficient -- is there a way to show how our differential equation is smooth, not jagged?
+
 \textit{todo: come up with a better word than ``model'' to describe the state of the system at any time}
 \subsubsection{Time evolution}
 Euler's method for solving differential equations was used to calculate domain positions through time. Because each model is a set of multiple coupled differential equations, care was taken to update each domain position at the same time, and not in a cascade. A code snippet is shown in Figure (\ref{euler-code-snippet}) for the onebound updating scheme.
@@ -824,6 +818,7 @@ This section will go into detail on how the model was implemented in code, verif
 
 \subsection{Verifying the model}
 The models were verified to follow physical laws by checking their behavior in various tests: general conformational tests, energy conservation and obeying the equipartition theorem. The purpose of these tests was to verify that equations had been entered properly (primarily the conformational and energy conservation tests), and that the model obeyed the laws of physics (all tests).
+
 
 \subsubsection{Conformational tests}
 The models were tested in the following different conformations to verify they behaved as expected:\\
@@ -1079,11 +1074,14 @@ The ideal set of parameters used to generate data were found to be:
 %%   \label{fig:final-histograms}
 %% \end{figure}
 
-\subsection{Other ways to represent data?}
-
 \section{Chapter: Discussion}
-\subsection{Why our model worked, didn’t work}
-Fill this out over winter when you know more.\\
+\subsubsection{Limitations}
+Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information,
+other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into
+account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be
+springy...
+
+Mention the Burgess paper, which says spring constants might change between apo/ADP states.
 \subsection{Future work on this project}
 If setbacks happen, this'll be a big section. Or, further simulations which could be done.
 

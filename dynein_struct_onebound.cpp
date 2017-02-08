@@ -286,7 +286,7 @@ void Dynein_onebound::update_velocities() {
   }
 
   //******* Checking for sub-MT dynein ********
-  if (get_bmy() < -1e-3 or get_ty() < -1e-3 or get_umy() < -1e-3 or get_uby() < -1e-3) {
+  if (get_bmy() < -1e-3 or get_ty() < -1e-3 or get_umy() < -1e-3) {
     printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);

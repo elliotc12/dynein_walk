@@ -27,103 +27,103 @@ custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1000, "k_ub": 80, "T": 310.1
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 100, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.01, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.001, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.0001, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1000, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 100, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.01, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.001, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.0001, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-5, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-5, "k_ub": 80, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-6, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-6, "k_ub": 80, "T": 310.15,
                     "cb": 1.8,
                     "cm": 1.8,
                     "ct": 1.8,
-                    "movie": True})
+                    "movie": True, "onebound-debugging": True})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -183,6 +183,8 @@ if len(custom_runs) != 0:
         ])
         if (run["movie"]):
             cmd.extend(["--movie"])
+        if (run["onebound-debugging"]):
+            cmd.extend(["--onebound-debugging"])
 
         basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
         out = open('runlogs/' + basename + '.out', 'w')

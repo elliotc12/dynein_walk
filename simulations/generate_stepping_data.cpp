@@ -24,6 +24,10 @@ extern movie_data_struct* on_crash_new_movie_data_global_ptr;
 extern char* crash_movie_file_name_global;
 
 bool am_making_movie;
+bool am_debugging_onebound;
+
+int num_movie_writes = 1e5;
+// bytes per movie write: 213, 2e7 bytes max movie size
 
 void on_crash_write_movie_buffer();
 
@@ -78,55 +82,58 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
   static int buffer_position = 0;
-  if (!am_only_writing_on_crash) {
-    const char *format = "%d\t"
-      "%.10g\t"
-      "%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-      "%g\t%g\t%g\t%g\t"
-      "%g\t%g\t%g\t%g\t"
-      "%g\t%g\t"
-      "%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
-      "\n";
-    if (s == NEARBOUND or s == FARBOUND) {
-      Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
-      onebound_forces dyn_ob_f = dyn_ob->get_internal();
-      fprintf(data_file, format,
-	      dyn_ob->get_state(),
-	      iteration*dt,
-	      dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
-	      dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
-	      dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
-	      dyn_ob->get_ubx(), dyn_ob->get_uby(),
-	      dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
-	      dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
-    }
-    else if (s == BOTHBOUND) {
-      Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-      bothbound_forces dyn_bb_f = dyn_bb->get_internal();
-      fprintf(data_file, format,
-	      BOTHBOUND,
-	      iteration*dt,
-	      dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
-	      dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
-	      dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
-	      dyn_bb->get_fbx(), dyn_bb->get_fby(),
-	      dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
-	      dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
-    }
-    else if (s == UNBOUND) {
-      fprintf(data_file, format,
-	      UNBOUND,
-	      iteration*dt,
-	      0.0, 0.0, 0.0, 0.0, 0.0,
-	      0.0, 0.0, 0.0, 0.0,
-	      0.0, 0.0, 0.0, 0.0,
-	      0.0, 0.0,
-	      0.0, 0.0, 0.0, 0.0, 0.0,
-	      0.0, 0.0, 0.0, 0.0, 0.0);
-    }
-    else {
-      printf("Unhandled state in stepping movie data generation!\n");
-      exit(1);
+  if (!am_only_writing_on_crash or (am_debugging_onebound and s != BOTHBOUND)) {
+    if (--num_movie_writes > 0) {
+      if (num_movie_writes == 1) printf("about to exceed movie printing line #\n");
+      const char *format = "%d\t"
+	"%.10g\t"
+	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+	"%g\t%g\t%g\t%g\t"
+	"%g\t%g\t%g\t%g\t"
+	"%g\t%g\t"
+	"%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+	"\n";
+      if (s == NEARBOUND or s == FARBOUND) {
+	Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+	onebound_forces dyn_ob_f = dyn_ob->get_internal();
+	fprintf(data_file, format,
+		dyn_ob->get_state(),
+		iteration*dt,
+		dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
+		dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+		dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
+		dyn_ob->get_ubx(), dyn_ob->get_uby(),
+		dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
+		dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+      }
+      else if (s == BOTHBOUND) {
+	Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+	bothbound_forces dyn_bb_f = dyn_bb->get_internal();
+	fprintf(data_file, format,
+		BOTHBOUND,
+		iteration*dt,
+		dyn_bb->PE_nba, dyn_bb->PE_nma, dyn_bb->PE_ta, dyn_bb->PE_fma, dyn_bb->PE_fba,
+		dyn_bb->get_nbx(), dyn_bb->get_nby(), dyn_bb->get_nmx(), dyn_bb->get_nmy(),
+		dyn_bb->get_tx(), dyn_bb->get_ty(), dyn_bb->get_fmx(), dyn_bb->get_fmy(),
+		dyn_bb->get_fbx(), dyn_bb->get_fby(),
+		dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
+		dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
+      }
+      else if (s == UNBOUND) {
+	fprintf(data_file, format,
+		UNBOUND,
+		iteration*dt,
+		0.0, 0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0, 0.0);
+      }
+      else {
+	printf("Unhandled state in stepping movie data generation!\n");
+	exit(1);
+      }
     }
   }
   else { // else write to on-crash-print buffer structs
@@ -214,7 +221,7 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
 
   log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
 
-  if (am_making_movie && iteration % stepping_movie_framerate == 0)
+  if ((am_making_movie && iteration % stepping_movie_framerate == 0) or am_debugging_onebound)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
   if (iteration % (long long) (0.01 / dt) == 0)
@@ -266,6 +273,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       // {"runtime",  required_argument,    0, 'r'},
       {"movie",  no_argument, (int*) am_making_movie, 1},
       {"constant-write", no_argument, (int*) &am_only_writing_on_crash, false},
+      {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {0, 0, 0, 0}
     };
 
