@@ -21,7 +21,9 @@ const bool display_progress = false;
 
 extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;
-extern FILE* crash_movie_file_global;
+char* crash_movie_file_name_global;
+
+bool am_making_movie;
 
 void on_crash_write_movie_buffer();
 
@@ -31,7 +33,6 @@ struct job_msg_t {
   char *run_msg;
   FILE *stepping_data_file;
   FILE *movie_data_file;
-  bool am_making_movie; // redundant with movie_data_file
 };
 
 void zero_movie_struct(movie_data_struct* data) {
@@ -213,7 +214,7 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
 
   log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
 
-  if (job_msg.am_making_movie && iteration % stepping_movie_framerate == 0)
+  if (am_making_movie && iteration % stepping_movie_framerate == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
   if (iteration % (long long) (0.01 / dt) == 0)
@@ -351,13 +352,25 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 }
 
 void sig_handler_print_movie_buffer(int signum) {
-  on_crash_write_movie_buffer();
+  if (am_making_movie) {
+    printf("Received sigint, writing to data file and turning of printing.\n");
+    on_crash_write_movie_buffer();
+    am_making_movie = false;
+    am_only_writing_on_crash = false;
+  }
+  else {
+    printf("Turning on printing mode.\n");
+    am_making_movie = true;
+    am_only_writing_on_crash = true;
+  }
 }
 
 int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
   char* run_name = new char[100];
-  bool am_making_movie = 0;
+  am_making_movie = 0;
+
+  crash_movie_file_name_global = new char[200];
 
   double runtime = 0;
 
@@ -390,11 +403,12 @@ int main(int argc, char** argv) {
   sprintf(movie_data_fname, "data/stepping_movie_data_%s.txt", run_name);
   sprintf(movie_config_fname, "data/stepping_movie_config_%s.txt", run_name);
 
-  if (am_only_writing_on_crash) {
-    on_crash_old_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
-    on_crash_new_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
-    zero_movie_struct(on_crash_old_movie_data_global_ptr);
-  }
+  //technically only need this if am_only_writing_on_crash is on, but do it just in case we turn it on later
+  on_crash_old_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
+  on_crash_new_movie_data_global_ptr = new movie_data_struct[MOVIE_BUFFER_SIZE];
+  zero_movie_struct(on_crash_old_movie_data_global_ptr);
+  sprintf(crash_movie_file_name_global, "data/stepping_movie_data_%s.txt", run_name);
+  write_movie_config(movie_config_fname, iterations*dt);
 
   write_config_file(stepping_config_fname, 0, "");
 
@@ -403,12 +417,9 @@ int main(int argc, char** argv) {
   job_msg.start_time = clock();
   job_msg.run_msg = run_name;
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
-  job_msg.am_making_movie = am_making_movie;
   job_msg.movie_data_file = 0;
 
   if (am_making_movie) {
-    write_movie_config(movie_config_fname, iterations*dt);
-
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
     if (!job_msg.movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
@@ -419,7 +430,7 @@ int main(int argc, char** argv) {
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
 
-    crash_movie_file_global = job_msg.movie_data_file;
+    sprintf(crash_movie_file_name_global, "data/stepping_movie_data_%s.txt", run_name);
   }
 
   // fprintf(job_msg.stepping_data_file, "# command line:");
