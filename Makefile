@@ -44,7 +44,7 @@ figures/%.pdf: figures/Makefile figures/%.svg
 	cd figures && $(MAKE) $(patsubst figures/%,%,$@)
 
 paper.pdf: latex/paper.tex $(FIGURES)
-	cd latex && pdflatex -interaction batchmode paper.tex && mv paper.pdf ..
+	cd latex && pdflatex -interaction nonstopmode -halt-on-error paper.tex && mv paper.pdf ..
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
 	$(CXX) test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o dynein_simulate.o utilities.o -o test_bothbound
@@ -198,7 +198,7 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 ########################### THESIS STUFF #################################
 
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
-	cd thesis_stuff && xelatex -interaction batchmode thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction batchmode thesis_stuff.tex && xelatex -interaction batchmode thesis_stuff.tex && mv thesis_stuff.pdf ..
+	cd thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && mv thesis_stuff.pdf ..
 
 thesis:
 	cd thesis && $(MAKE)
