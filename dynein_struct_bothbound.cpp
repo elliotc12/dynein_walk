@@ -359,7 +359,7 @@ void Dynein_bothbound::update_coordinates() {
   }
 
   // ******* Checking for sub-MT dynein ********
-  if (nmy < -0.5 or ty < -0.5 or fmy < -0.5) {
+  if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
     printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
