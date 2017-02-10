@@ -26,8 +26,8 @@ extern char* crash_movie_file_name_global;
 bool am_making_movie;
 bool am_debugging_onebound;
 
-int num_movie_writes = 1e5;
-// bytes per movie write: 213, 2e7 bytes max movie size
+int num_movie_writes = 1e6;
+// bytes per movie write: 213, 200mb bytes max movie size
 
 void on_crash_write_movie_buffer();
 
@@ -119,18 +119,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 		dyn_bb_f.nbx, dyn_bb_f.nby, dyn_bb_f.nmx, dyn_bb_f.nmy, dyn_bb_f.tx,
 		dyn_bb_f.ty, dyn_bb_f.fmx, dyn_bb_f.fmy, dyn_bb_f.fbx, dyn_bb_f.fby);
       }
-      else if (s == UNBOUND) {
-	fprintf(data_file, format,
-		UNBOUND,
-		iteration*dt,
-		0.0, 0.0, 0.0, 0.0, 0.0,
-		0.0, 0.0, 0.0, 0.0,
-		0.0, 0.0, 0.0, 0.0,
-		0.0, 0.0,
-		0.0, 0.0, 0.0, 0.0, 0.0,
-		0.0, 0.0, 0.0, 0.0, 0.0);
-      }
-      else {
+      else if (s != UNBOUND){
 	printf("Unhandled state in stepping movie data generation!\n");
 	exit(1);
       }
@@ -378,9 +367,14 @@ int main(int argc, char** argv) {
   char* run_name = new char[100];
   am_making_movie = 0;
 
-  crash_movie_file_name_global = new char[200];
+  crash_movie_file_name_global = new char[1000];
 
   double runtime = 0;
+
+  if (am_debugging_onebound) {
+    printf("turning off am_only_writing_on_crash for onebound-debugging mode\n");
+    am_only_writing_on_crash = false;
+  }
 
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
@@ -427,7 +421,7 @@ int main(int argc, char** argv) {
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
   job_msg.movie_data_file = 0;
 
-  if (am_making_movie) {
+  if (am_making_movie or am_debugging_onebound) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
     if (!job_msg.movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
@@ -437,14 +431,12 @@ int main(int argc, char** argv) {
     fprintf(job_msg.movie_data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
-
-    sprintf(crash_movie_file_name_global, "data/stepping_movie_data_%s.txt", run_name);
   }
 
-  // fprintf(job_msg.stepping_data_file, "# command line:");
-  // for (int i=0; i<argc; i++) {
-  //   fprintf(job_msg.stepping_data_file, " %s", argv[i]);
-  // }
+  fprintf(job_msg.stepping_data_file, "# command line:");
+  for (int i=0; i<argc; i++) {
+    fprintf(job_msg.stepping_data_file, " %s", argv[i]);
+  }
 
   printf("\n\n\n*********%s*********\n", run_name);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);

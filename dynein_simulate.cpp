@@ -82,11 +82,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	else if (rand->rand() < binding_prob and t > rebinding_immune_until) { // switch to bothbound
 	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
+	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
+	  printf("just bound b/c binding probability was: %.15f, boltzmann factor: %f\n", binding_prob, exp((-Dynein_bothbound(dyn_ob, rand).get_PE() - dyn_ob->get_PE())/kb/T));
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
-	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
-	  printf("just bound b/c binding probability was: %.15f\n", binding_prob);
 	  break;
 	}
 	else { // move like normal
