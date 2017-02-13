@@ -23,11 +23,13 @@ extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;
 extern char* crash_movie_file_name_global;
 
-bool am_making_movie;
-bool am_debugging_onebound;
+bool am_making_movie = false;
+bool am_debugging_onebound = false;
 
 int num_movie_writes = 1e6;
 // bytes per movie write: 213, 200mb bytes max movie size
+
+static const long MAX_FILESIZE_PERMITTED = 1<<30;
 
 void on_crash_write_movie_buffer();
 
@@ -208,6 +210,17 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
   job_msg_t job_msg = *(job_msg_t *)job_msg_;
 
+  if (iteration % 1000 == 0) {
+    if (ftell(stdout) > MAX_FILESIZE_PERMITTED) {
+      printf("ERROR: stdout has gotten too big.  Exiting!\n");
+      exit(1);
+    }
+    if (job_msg.movie_data_file && ftell(job_msg.movie_data_file) > MAX_FILESIZE_PERMITTED) {
+      printf("ERROR: movie_data_file has gotten too big.  Exiting!\n");
+      exit(1);
+    }
+  }
+
   log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
 
   if ((am_making_movie or am_debugging_onebound) && iteration % stepping_movie_framerate == 0)
@@ -350,7 +363,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
 void sig_handler_print_movie_buffer(int signum) {
   if (am_making_movie) {
-    printf("Received sigint, writing to data file and turning of printing.\n");
+    printf("Received sigint, writing to data file and turning off printing.\n");
     on_crash_write_movie_buffer();
     am_making_movie = false;
     am_only_writing_on_crash = false;
@@ -364,6 +377,7 @@ void sig_handler_print_movie_buffer(int signum) {
 
 int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
+
   char* run_name = new char[100];
   am_making_movie = 0;
 
