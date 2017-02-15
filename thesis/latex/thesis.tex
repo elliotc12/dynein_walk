@@ -317,24 +317,70 @@ dynein, we only need to know our rough model.\\
 
 \section{Chapter: Theory}
 \subsection{Model features}
-Talk about what the important parts of the mechanochemical cycle from the introduction are, and how
-we take those and model them.\\
-\subsubsection{Rigid point model}
-Talk about two things: reducing bulky circular domains to points (is this the same as unified atom
-model?) with a certain drag constant based on radius, and acting like the domains are rigid in
-distance from each other. Talk about why this is valid (is it? it's an assumption, David may know
-more).
-\subsubsection{Harmonic energies}
-How we're modeling the complicated folding and adjusting of a massive protein as a harmonic
-oscillator. Why this is valid. Also other approaches...what else could we have modelled it as?
+The purpose of this project is to find if a minimal set of features is capable of reproducing dynein's stepping behavior. To test this hypothesis, these features are put into a model and simulated. The features are as follows:
+
+\begin{itemize}
+\item Dynein is a collection of spherical domains joined together by massless rods
+\item These rods are rigid
+\item Each joint in the motor feels a spring force about some equilibrium joint angle
+\item Dynein can be in two states: onebound and bothbound
+\item Onebound has one domain bound to the floor and takes on onebound equilibrium angles
+\item Bothbound has two domains bound to the floor and takes on bothbound equilibrium angles
+\item Transitions between the two states are based solely on spring energies between the two models
+\item Brownian dynamics describes the behavior of the domains in time
+\item Binding at $\alpha-\beta$ tubulin binding sites is not necessary for stepping
+\item Stepping can be described by a 2D model; forces in the MT-perpendicular direction are not necessary for stepping
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/onebound-model}
+  \caption{}
+  \label{fig:model-intro}
+\end{figure}
+
+\subsubsection{Spherical domains connected by massless rods}
+A key feature of the model is that each domain of the protein (two feet, twp motors and a tail) is treated as a sphere. Each sphere is connected to one or two other spheres, as shown in Figure (\ref{fig:model-intro}). This simplification is made to make the math easier and allow a simple definition of dynein's conformation.\\
+
+One quickly notices by glancing at Figure (\ref{fig:crystal-structure-model-imposed}), a visualization of actual dynein, that modelling the tail and feet domains as spheres is a stretch. The main point of the simplification is not to capture the shape of dynein, but the conformation. It is undefined to discuss the distance between the two motor domains in real dynein, because the motors are made up of hundreds of amino acids, and the average inter-domain distance between amino acids is comparable to the intra-domain distance. However it is very easy to describe the difference between two spheres.\\
+
+Each sphere has an associated drag factor $\gamma$, which describes the resistance it feels to motion. This drag factor is calculated based on the radius $R$ of the spheres, and is given by Stoke's Law:
+
+\begin{equation}
+  \gamma = 6\pi\nu R
+\end{equation}
+
+Thus R becomes a parameter input to the model.\\
+
+\subsubsection{Rigid rods}
+The model assumes connected domains are rigidly attached to one another by rods. This assumption makes the math easier, and is not necessarily based on biology. One study found that the standard deviation of stalk and stem lengths in \textit{in vitro} dynein was roughly $1nm$ \ref{burgess-paper}. However a contrasting piece of evidence showed the coiled coil, a common protein structure which links the MTBD and motor domains in dynein, can stretch in myosin, another motor protein, by 2.5x \ref{myosin-cc-elasticity}.
+
+\subsubsection{Angular springs}
+Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tail, which decides the energy associated with that domain's angle. For example, the tail domain's energy is given by
+
+\begin{equation}
+  \Delta G_t = \frac12c_t\left(\theta_t - \theta_t^{eq}\right)^2
+\end{equation}
+
 \subsubsection{Two-state model}
+The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. The states are also differentiated by different motor equilibrium angles and different transition rates.
+
+
 The mechanochemical cycle has eight states. We choose two as representative because \textbf{a.)}
 many of the states are identically conformationally or \textbf{b.)} the transitions happen so fast
 the intermediate states don't matter. Talk about rate constants here.
 
-\subsection{Brownian motion}
-\subsubsection{Introduction/derivation}
-\subsubsection{Justification}
+\subsubection{Onebound state}
+
+\subsubsection{Bothbound state}
+
+\subsubsection{Transitioning between states}
+
+\subsubsection{Brownian dynamics}
+
+\subsubsection{$\alpha-\beta$ binding unnecessary}
+
+\subsubsection{2D model}
 
 \subsection{Mathematical models}
 In order to simulate a protein's passage through the above mechanochemical cycle, two mathematical models are needed: one for the prestroke, MTBD-detached state, and one for the poststroke, MTBD-bound state. The purpose of each model is to calculate the position and velocity of each domain at an arbitrary time.\\
