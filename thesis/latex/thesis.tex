@@ -334,7 +334,7 @@ The purpose of this project is to find if a minimal set of features is capable o
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/onebound-model}
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/ob_fig}
   \caption{}
   \label{fig:model-intro}
 \end{figure}
@@ -363,24 +363,66 @@ Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tai
 \end{equation}
 
 \subsubsection{Two-state model}
-The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. The states are also differentiated by different motor equilibrium angles and different transition rates.
+The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. These states are also differentiated by different motor equilibrium angles, $\Theta_{m}^{bb}$ and $\Theta_{m}^{ob}$, and different transition rates. Biological dynein likely passes through a series of permutations of nucleotide, MT affinity and conformational states as it travels through its mechanochemical cycle. This model makes the assumption that the mechanochemical cycle can be broken down into a cycle of prestroking to move the unbound foot forward, brownian walking to place the foot on the microtubule, then powerstroking to move the other domains forward.\\
 
-
-The mechanochemical cycle has eight states. We choose two as representative because \textbf{a.)}
-many of the states are identically conformationally or \textbf{b.)} the transitions happen so fast
-the intermediate states don't matter. Talk about rate constants here.
-
-\subsubection{Onebound state}
-
-\subsubsection{Bothbound state}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/code-onebound}
+  \includegraphics[width=.45\textwidth]{../../figures/code-bothbound}
+  \caption{Representations of onebound (left) and bothbound (right) dynein models.}
+  \label{ob_fig}
+\end{figure}
 
 \subsubsection{Transitioning between states}
+The model transitions between states with a probability dependent on both the energy difference between the two states and the physical separation between the MT and binding MTBD. Energy difference between states A and B is given by:
+
+\begin{equation}
+  \Delta G_{A\rightarrow B} = \sum_{i=0...N_B}^{B} \frac{1}{2}c_i\left(\theta_i-\Theta_i^B\right)^2 - \sum_{j=0...N_A}^{A} \frac{1}{2}c_j\left(\theta_j-\Theta_j^A\right)^2
+\end{equation}
+
+Transition energies are used to calculate transition rates, as given by the Arhennius equation $k=Ae^{-\beta\Delta G}$, where $\beta = (k_BT)^{-1}$. In this equation $\Delta G$ is the total energy of transition between states and A is a constant known as the preexponential factor with units of $s^{-1}$.\\
+
+\begin{equation}
+  k_b = Ae^{\frac{-\Delta G}{k_BT}} = Ae^{\frac{-\Delta G_{conf}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}}
+\end{equation}
+
+where $\Delta G_{conf}$ is the change in spring energy in going from bothbound to onebound and $\Delta G_{bind}$ is the energy gained from binding to the microtubule. Because binding energy for the MT-MTBD complex is hard to find, the following substitution is made:
+
+\begin{equation}
+  k_b = Ae^{\frac{-\Delta G}{k_BT}} = Be^{\frac{-\Delta G_{conf}}{k_BT}}
+\end{equation}
+
+Thus $B$ becomes a parameter of the model.\\
 
 \subsubsection{Brownian dynamics}
+The Brownian dynamics equation describes the motion of high-drag objects which spend most of their time at terminal velocity, and is given by:
+
+\begin{equation}
+  \dot{x} = \frac{1}{\gamma}\left(F_{net} + R\right)
+\end{equation}
+
+where $\gamma$ is the drag constant of the object and R is a random Brownian force which describes the effects of water particle collision. R a Gaussian-sampled zero-centered force with variance given by:
+
+\begin{equation}
+  R_{\sigma^2} = \sqrt{\frac{2*kb*T*\gamma}{dt}}
+\end{equation}
+
+Dynein is in the range of objects which BD describes well. (citation needed)
 
 \subsubsection{$\alpha-\beta$ binding unnecessary}
+Dynein binds to a site on the $\alpha-\beta$ tubulin polymer microtubule which repeats roughly every 8nm. By this, all dynein steps should be multiples of $8$nm. This model ignores this requirement and allows stepping to occur at any length. This assumption is not based on biology, but to simplify the model. The assumption is that \textit{in vivo} dynein is tuned to take 8nm steps based on its size and stepping angle, and doesn't search along the MT for a binding site.\\
 
 \subsubsection{2D model}
+The coordinate system for this model is two-dimensional. Thus interactions between the two motors and MTBDs are ignored. This assumption is made to simplify the model. Other dynein models, like the winch model \ref{sarlahmodel}, add in attractive and repulsive forces between the two motors which act in three dimensions. It is not clear why such forces are necessary for dynein motion, and so they are omitted.\\
+
+Side stepping of dynein is ignored by this model. Stepping perpendicular to the MT occurs in dynein \cite{weihongppaer}, as shown in Figure \ref{fig:weihong-side-stepping}. This model assumes it is a symptom, and not an influencer of, of dynein's forward-backward stepping mechanism.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/weihong-side-stepping}
+  \caption{Angular histogram of off-axis stepping of dynein, as found by \cite{weihongpaper}. 0 degrees corresponds to a step parallel to the MT, and 270 degrees a step purely to the right. Modified.}
+  \label{fig:weihong-side-stepping}
+\end{figure}
 
 \subsection{Mathematical models}
 In order to simulate a protein's passage through the above mechanochemical cycle, two mathematical models are needed: one for the prestroke, MTBD-detached state, and one for the poststroke, MTBD-bound state. The purpose of each model is to calculate the position and velocity of each domain at an arbitrary time.\\
@@ -755,14 +797,6 @@ The \verb|dt| used to update was $10^{-11}$ seconds.
 
 \paragraph{Transition rate}
 \label{sec:transitioning-states}
-Onebound and bothbound models transition between each other based on rate constants $k_b$, the binding constant, and $k_{ub}$, the unbinding constant, respectively. These values are calculated using the Arrhenius equation, and are given as:
-
-\begin{equation}
-  k_b = Ae^{\frac{-\Delta G}{k_BT}} = Ae^{\frac{-\Delta G_{conf}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}}
-\end{equation}
-
-where $\Delta G_{conf}$ is the change in spring energy in going from bothbound to onebound, $\Delta G_{bind}$ is the energy gained from binding to the microtubule, and A is a constant known as the preexponential factor with units of $s^{-1}$.\\
-
 Transitions from one state to another are accomplished by calculating the probability of a transition at a given timestep, given by $P_{ob\rightarrow bb} = k_bdt$. Each timestep a value in $[0,1]$ is sampled from a random number generator and, if lower than $P$, the respective transition is made. A code snippet illustrating how unbinding occurs is shown in Figure (\ref{transition-rate-snippet}).
 
 \begin{figure}[h!]
