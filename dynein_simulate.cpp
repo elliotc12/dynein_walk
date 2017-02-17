@@ -74,8 +74,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
 	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
-	if (am_debugging_rates) {
-	  printf("binding probability: %g\n", binding_prob);
+	if (am_debugging_rates && binding_prob != 0) {
+	  printf("binding probability: %g at time %g s\n", binding_prob, t);
 	}
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
 	  // if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
@@ -89,7 +89,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
-	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %.15f, boltzmann factor: %g\n", binding_prob, exp(-(Dynein_bothbound(dyn_ob, rand).get_PE() - dyn_ob->get_PE())/kb/T));
+	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %.15f, boltzmann factor: %g\n",
+                                                     binding_prob,
+                                                     exp(-(Dynein_bothbound(dyn_ob, rand).get_PE()
+                                                           - dyn_ob->get_PE())/kb/T));
 	  if (am_debugging_state_transitions) {
 	    printf("************why is boltzmann factor so big?*********\n");
 	    printf("OB BBA PE: %g\n", dyn_ob->PE_bba);
