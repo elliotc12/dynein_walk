@@ -1,7 +1,9 @@
 #!/usr/bin/python2.7
 
 import numpy as np
-import subprocess
+import subprocess, os
+
+os.system('mkdir -p runlogs data')
 
 assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 
@@ -19,46 +21,27 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 5000, "T": 310.15,
-#                     "cb": 1.5*binding_energy_high_affinity_atp,
-#                     "cm": 1.5*binding_energy_high_affinity_atp,
-#                     "ct": 1.5*binding_energy_high_affinity_atp})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-13, "k_ub": 80, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-1, "k_ub": 1e10, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-14, "k_ub": 80, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-3, "k_ub": 1e10, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-15, "k_ub": 80, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-5, "k_ub": 1e10, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-16, "k_ub": 80, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-7, "k_ub": 1e10, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-17, "k_ub": 80, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-18, "k_ub": 80, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-19, "k_ub": 80, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-20, "k_ub": 80, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-9, "k_ub": 1e10, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
@@ -92,7 +75,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "supersmall-rate-fitting"
+label = "quick-bothbound"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)

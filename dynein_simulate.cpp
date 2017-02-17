@@ -50,7 +50,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   long long iter = 0;
   State current_state = init_state;
 
-  double rebinding_immune_until = 0; // to prevent immediate rebinding in BB->OB transitions
+  // double rebinding_immune_until = 0; // to prevent immediate rebinding in BB->OB transitions
 
   bool run_indefinite;
   if (runtime == 0) {
@@ -62,7 +62,9 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   }
 
   double near_unbinding_prob_printing_average = 0;
+  // double binding_prob_printing_average = 0;
   int unbinding_prob_printing_n = 0;
+  // int binding_prob_printing_n = 0;
 
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
@@ -72,6 +74,9 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
 	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
+	if (am_debugging_rates && binding_prob != 0) {
+	  printf("binding probability: %g at time %g s\n", binding_prob, t);
+	}
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
 	  // if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
@@ -79,11 +84,27 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  current_state = UNBOUND;
 	  break;
 	}
-	else if (rand->rand() < binding_prob and t > rebinding_immune_until) { // switch to bothbound
+	// else if (rand->rand() < binding_prob and t > rebinding_immune_until) { // switch to bothbound
+	else if (rand->rand() < binding_prob) { // switch to bothbound
 	  // if (debug_stepping or am_debugging_rates) printf("\nswitch to bothbound at %.1f%%!\n", t/runtime*100);
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
-	  printf("just bound b/c binding probability was: %.15f, boltzmann factor: %f\n", binding_prob, exp((-Dynein_bothbound(dyn_ob, rand).get_PE() - dyn_ob->get_PE())/kb/T));
+	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %.15f, boltzmann factor: %g\n",
+                                                     binding_prob,
+                                                     exp(-(Dynein_bothbound(dyn_ob, rand).get_PE()
+                                                           - dyn_ob->get_PE())/kb/T));
+	  if (am_debugging_state_transitions) {
+	    printf("************why is boltzmann factor so big?*********\n");
+	    printf("OB BBA PE: %g\n", dyn_ob->PE_bba);
+	    printf("OB BMA PE: %g\n", dyn_ob->PE_bma);
+	    printf("OB TA PE: %g\n", dyn_ob->PE_ta);
+	    printf("OB UMA PE: %g\n", dyn_ob->PE_uma);
+
+	    printf("BB NBA PE: %g\n", dyn_bb->PE_nba);
+	    printf("BB NMA PE: %g\n", dyn_bb->PE_nma);
+	    printf("BB FMA PE: %g\n", dyn_bb->PE_fma);
+	    printf("BB FBA PE: %g\n", dyn_bb->PE_fba);
+	  }
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
@@ -140,7 +161,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_bb = NULL;
 	  current_state = FARBOUND;
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to farbound\n");
-	  rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
+	  // rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
@@ -150,7 +171,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_bb = NULL;
 	  current_state = NEARBOUND;
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to nearbound\n");
-	  rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
+	  // rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
 	  break;
 	}
 	else { // move like normal
