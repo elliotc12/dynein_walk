@@ -405,7 +405,7 @@ int main(int argc, char** argv) {
     sigemptyset (&new_action.sa_mask);
     new_action.sa_flags = 0;
 
-    sigaction(SIGINT, &new_action, NULL);
+    sigaction(SIGUSR1, &new_action, NULL);
   }
 
   char *stepping_data_fname = new char[200];
