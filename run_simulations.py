@@ -21,31 +21,36 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-1, "k_ub": 1e10, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e1, "k_ub": 1e20, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-3, "k_ub": 1e10, "T": 310.15,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e3, "k_ub": 1e20, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-5, "k_ub": 1e10, "T": 310.15,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e5, "k_ub": 1e20, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-7, "k_ub": 1e10, "T": 310.15,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e7, "k_ub": 1e20, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e-9, "k_ub": 1e10, "T": 310.15,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e9, "k_ub": 1e20, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": True, "onebound-debugging": True})
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1e11, "k_ub": 1e20, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -75,7 +80,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "quick-bothbound"
+label = "quick-bothbound-2-18"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
@@ -105,7 +110,7 @@ if len(custom_runs) != 0:
         ])
         if (run["movie"]):
             cmd.extend(["--movie"])
-        if (run["onebound-debugging"]):
+        if ("onebound-debugging" in run and run["onebound-debugging"]):
             cmd.extend(["--onebound-debugging"])
 
         basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])

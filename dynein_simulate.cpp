@@ -74,8 +74,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
 	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
-	if (am_debugging_rates && binding_prob != 0) {
-	  printf("binding probability: %g at time %g s\n", binding_prob, t);
+	if (am_debugging_rates and binding_prob != 0) {
+	  printf("binding probability: %g, uby %g at time %g s\n", binding_prob, dyn_ob->get_uby(), t);
 	}
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
 	  // if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
@@ -93,18 +93,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
                                                      binding_prob,
                                                      exp(-(Dynein_bothbound(dyn_ob, rand).get_PE()
                                                            - dyn_ob->get_PE())/kb/T));
-	  if (am_debugging_state_transitions) {
-	    printf("************why is boltzmann factor so big?*********\n");
-	    printf("OB BBA PE: %g\n", dyn_ob->PE_bba);
-	    printf("OB BMA PE: %g\n", dyn_ob->PE_bma);
-	    printf("OB TA PE: %g\n", dyn_ob->PE_ta);
-	    printf("OB UMA PE: %g\n", dyn_ob->PE_uma);
-
-	    printf("BB NBA PE: %g\n", dyn_bb->PE_nba);
-	    printf("BB NMA PE: %g\n", dyn_bb->PE_nma);
-	    printf("BB FMA PE: %g\n", dyn_bb->PE_fma);
-	    printf("BB FBA PE: %g\n", dyn_bb->PE_fba);
-	  }
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;

@@ -26,7 +26,7 @@ extern char* crash_movie_file_name_global;
 bool am_making_movie = false;
 bool am_debugging_onebound = false;
 
-int num_movie_writes = 1e6;
+int num_movie_writes = 1e4;
 // bytes per movie write: 213, 200mb bytes max movie size
 
 static const long MAX_FILESIZE_PERMITTED = 1<<30;
@@ -363,7 +363,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
 void sig_handler_print_movie_buffer(int signum) {
   if (am_making_movie) {
-    printf("Received sigint, writing to data file and turning off printing.\n");
+    printf("Received sigusr1, writing to data file and turning off printing.\n");
     on_crash_write_movie_buffer();
     am_making_movie = false;
     am_only_writing_on_crash = false;
