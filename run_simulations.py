@@ -80,7 +80,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "quick-bothbound-2-18"
+label = "1000ts-immunity-2-20"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)

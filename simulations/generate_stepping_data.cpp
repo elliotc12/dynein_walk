@@ -55,6 +55,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND or last_state == FARBOUND) {
       fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      fflush(data_file);
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
@@ -76,6 +77,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   else if (s == UNBOUND) {
     if (last_state != UNBOUND) {
       fprintf(data_file, "%.4e %.4e %.4e %.4e\n", last_bothbound_iteration*dt, iteration*dt, 0.0, 0.0);
+      fflush(data_file);
       if (display_step_info) printf("\nSwitched to UB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
     last_state = UNBOUND;
@@ -226,8 +228,10 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
   if ((am_making_movie or am_debugging_onebound) && iteration % stepping_movie_framerate == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
-  if (iteration % (long long) (0.01 / dt) == 0)
+  if (iteration % (long long) (0.01 / dt) == 0) {
     fprintf(job_msg.stepping_data_file, "#[time: %g]\n", iteration*dt);
+    printf("#[time: %g]\n", iteration*dt);
+  }
 
   if (job_msg.max_iteration > 0) {
     if (iteration % (int)5e5 == 0 && iteration != job_msg.max_iteration && display_progress) {
@@ -441,7 +445,7 @@ int main(int argc, char** argv) {
       printf("Error opening %s!\n", movie_data_fname);
       exit(1); 
     }
-    setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering for movie log
+    setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering
     fprintf(job_msg.movie_data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
