@@ -164,21 +164,56 @@ and ask lots of questions. Build interest in the motors here.\\
 
 \textit{make this figure good -- find a full length kinesin crystal structure, not 1BG2. Use kindyn.pse as a template.}
 
-\subsection{How does dynein walk?}
+\subsection{Dynein Stepping Background}
+Biophysicists and molecular biologists have conducted experiments over the past twenty years which shed light on how the dynein motor might walk. The full mechanism is not known, but results of such experiments suggest a certain vague picture of how dynein generates motion.\\
 
+\subsubsection{ATP cycle influences conformational state}
+Dynein is known to occupy multiple discrete conformational states depending on its environment. In particular, the concentration of ATP and microtubules is known to alter the shape dynein takes on. A FRET (fluorescence resonance energy transfer) study attached fluorophores to dynein's motor and tail and measured the average distance between the two \cite{FRETstatepaper}. It was found that average distance increased or decreased depending on the nucleotide bound to dynein, indicating the motor takes on different conformations for different bound nucleotides. Dynein unbound to nucleotide, or frozen in ATP or ADP-bound states, had a similar tail-motor distance. However, when the motor was stuck in an ADP-Pi state, with ATP hydrolyzed but phosphate not yet released, the tail-motor distance was increased. This suggests that dynein starts its cycle with no nucleotide, binds ATP, hydrolyzes ATP, enters the ADP-Pi state and changes conformation to a far tail-motor distance, then releases phosphate, moves back to its original close tail-motor conformation, then ejects ADP and starts over.\\
+
+Studies suggest that near/far tail-motor conformation changes are not due to lengthening of the stem linking the two domains, but rather a change in position of the head relative to the trail \cite{FRETstatepaper} \cite{burgess-paper}. Cryo-electron microscopy images of the dynein motor shown in Figure (\ref{fig:cryo-em-angles}) demonstrate the differences in conformation in the nucleotide-free and ADP-Pi state.\\
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures//burgess-dynein-angles}
+  \caption{Cryo-electron microscopy images of dynein in two different nucleotide states. Left: dynein frozen in ADP-Pi state. Middle: dynein without nucleotide. Right: two states superimposed on one another. Bottom: cartoons representing how dynein may bind to the MT in either state. From \cite{burgess-paper}.}
+  \label{fig:cryo-em-angles}
+\end{figure}
+
+Crystal structures of cytoplasmic dynein-2, a relative of dynein, indicate that ATP-Pi binding to the motor domain induces a conformation change in the motor domain, which alters the angle at which the motor binds to the tail \cite{carter-paper}. Taken together, these results indicate that as the motor binds and hydrolyzes ATP, it undergoes a conformation change which physically moves the motor relative to the tail. This movement might cause a net forward motion of the motor domain.\\
+
+\textbf{TODO: look at \cite{nicastro} and \cite{schmidt-carter} to see if they can add to this discussion}
+
+\subsubsection{Microtubule and nucleotide states are coupled}
+Dynein is known to bind to the microtubule at a location known as the $\alpha$-$\beta$ polymerization site \cite{redwineMTBDcomplex}. This site occurs roughly every 8nm, indicating dynein is restricted to step sizes which are multiples of 8nm.\\
+
+The nucleotide state of the motor is not the only determiner of dynein conformation; microtubule binding state has also been shown to influence conformation. A study on the MTBD-MT complex indicates the stalk connecting the motor and MTBD can take on two major conformations, depending on whether the MTBD is bound to the MT or not \cite{mt-atp-coupling}. The conformation of the stalk has been shown to communicate information between the motor and MTBD. In the presence of microtubules, the ATPase rate of the motor is increased 25-fold. This indicates the stalk communicates MT-binding state of the MTBD to the motor, increasing its ATP hydrolysis rate. The communication happens the other way, as well. Treating dynein with ATP causes MT-binding rate to drop 15-fold, indicating ATP-binding at the motor decreases MT-binding rate at the MTBD.\\
+
+In addition to a bidirectional linking between ATPase rate and MT-binding, stalk state has been shown to directly influence motor conformation \cite{mt-atp-coupling}. When the stalk is allowed to freely transition between bound and unbound states, the motor can also transition between near and far tail/motor states. However, when the stalk is frozen in a particular conformation, the motor loses its transitioning ability. This suggests that the conformations of the two systems are tightly linked.\\
+
+\subsubsection{Stepping pattern}
+Several studies have been done on the dynein motor's stepping pattern using selectively-labeled motor domains \cite{reck2006single} \cite{weihongpaper}. These studies show dynein's stepping pattern to be stochastic and weakly forward-directed. As shown in Figure (\ref{fig:weihong-steps}), dynein takes many backwards steps, and also many steps with components perpendicular to the microtubule. This indicates the process dynein uses to generate motion has a stochastic component to it. It is likely that the physical states of subcomponents in the motor, and/or the effects of Brownian motion due to water particle collision, play a role in dynein's stepping mechanism.\\
+
+\begin{figure}[h!]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/weihong-step-size}
+    \caption{Size of steps taken by dynein motor parallel to microtubule. Positive axis corresponds to steps towards the microtubule minus-end. Figure modified from \cite{weihongpaper}.}
+  \end{minipage}
+  \hspace{.2cm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/weihong-off-axis-steps}
+    \caption{Size of ``off-axis'' steps taken by the dynein motor perpendicular to the microtubule. Figure modified from \cite{weihongpaper}.}
+  \end{minipage}
+  \label{fig:weihong-steps}
+\end{figure}
+
+\subsection{Dynein models}
+Data presented in the previous sections paints a
+
+\subsubsection{Cianfrocco Model}
 Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motion via transitioning through the cycle of states shown in Fig. \ref{mech-cycle}. This model will hereon be referred to as the Cianfrocco model. The model claims the primary events in the dynein step are as follows. First, starting with both binding domains attached to the MT, ATP binds to the motor domain, which causes it to change conformation. ATP hydrolysis to ADP-Pi causes further conformation changes. These changes cause the binding domain to release the microtubule, meaning only one binding domain is MT-bound. The free binding domain then undergoes another conformation change known as the ``priming stroke,'' which changes the orientation of the binding domain with respect to the MT. Finally the binding domain rebinds to the MT, causing a final conformation change in the motor which returns it to the beginning of the cycle. The exact order of these events is not precisely known. More detail on each step of the cycle is given below.\\
 
 Maybe show the Cianfrocco model in a section \textit{after} talking about all the things which happen for sure in dynein, since it's more theoretical? Talk about the Cianfrocco model, but other interpretations?
-
-\textbf{Things which are known about dynein which support the Cianfrocco model}
-\begin{itemize}
-\item AAA1 only ATPase necessary for motility, which is why we don't include the other ATPases in our model \cite{cianfroccoreview}
-\item AAA5 mediates stalk register changes Schmidt H, Zalyte R, Urnavicius L, Carter AP. 2014. Structure of human cytoplasmic dynein-2 primed for
-  its power stroke. Nature 518:435–38
-\item Linker moves as response to AAA1 nucleotide binding Burgess SA, Walker ML, Sakakibara H, Knight PJ, Oiwa K. 2003. Dynein structure and power stroke. Nature
-  421:715–8
-\item Crystal structures with Vanadium-Adp show dynein in the pre-powerstroke state, hinting that ADP-Pi-bound dynein takes on a different conformation than ADP-Pi free dynein
-\end{itemize}
 
 Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you get what residues correspond to the linker somewhere?
 
@@ -246,104 +281,29 @@ Make a figure of pre/post-powerstroke dynein with the linker hilighted? Can you 
   \label{mech-cycle}
 \end{figure}
 
-\subsubsection{ATP binding / unbinding effects}
-\subsubsection{Microtubule un/rebinding}
-Microtubule binding and unbinding play an important role in the dynein mechanochemical cycle. The MTBD/stalk system has two conformational states: a high-MT-affinity state where MT binding occurs at a fast rate, and a low-affinity state with a slower binding rate \. The MTBD/stalk alternates between these two states as the motor progresses through the mechanochemical cycle
+\subsubsection{Other models}
+If there are other models which conflict with Cianfrocco, here would be a place to put them.\\
 
+\subsection{This work}
+\subsubsection{Our model}
+what we're trying to do with our project
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/mtbd-complex.png}
-  \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}. Is this figure actually useful, or would a diagram be better?}
-  \label{dynein-artist-rendition-2}
-\end{figure}
+\textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
 
-\subsubsection{Domain movement}
-Dynein domains have been shown to move in an alternating fashion, with motor domains moving twice the distance of head domains. This indicates an alternate shuffling-type movement.\\
+\subsubsection{Goals}
+What we hope to gain by simulating such a model, and what it would contribute to the current literature
 
-Flesh this out? Make a table of lots of different experiments and what they indicate?\\
+%% \textbf{Things which are known about dynein which support the Cianfrocco model}
+%% \begin{itemize}
+%% \item AAA1 only ATPase necessary for motility, which is why we don't include the other ATPases in our model \cite{cianfroccoreview}
+%% \item AAA5 mediates stalk register changes Schmidt H, Zalyte R, Urnavicius L, Carter AP. 2014. Structure of human cytoplasmic dynein-2 primed for
+%%   its power stroke. Nature 518:435–38
+%% \item Linker moves as response to AAA1 nucleotide binding Burgess SA, Walker ML, Sakakibara H, Knight PJ, Oiwa K. 2003. Dynein structure and power stroke. Nature
+%%   421:715–8
+%% \item Crystal structures with Vanadium-Adp show dynein in the pre-powerstroke state, hinting that ADP-Pi-bound dynein takes on a different conformation than ADP-Pi free dynein
+%% \end{itemize}
 
-\subsubsection{Conformation change of motor (``priming stroke'')}
-A FRET (fluorescent resonance energy transfer) study, which probes the closeness of different labeled domains on a protein, showed that dynein is found in two different major conformations, depending on the nucleotide bound to its AAA1 ATPase site \cite{FRETstatepaper}. When no nucleotide, ATP or ADP is bound, the authors label the protein ``state I.'' When ADP-Pi bound, the motor is said to be in ``state II,'' as shown in Fig \ref{nucleotide-state}. In addition, motors in the presence of the unhydrolyzable ATP analog were found in state II, indicating the transition from state I to II occurs during ATP binding. Similar reasoning shows that the state II to I transition occurs when the protein is ADP bound. This allows the authors to create the state diagram shown in Fig \ref{nucleotide-state-diagram}.\\
-
-%% \begin{figure}[h]
-%%   \centering
-%%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/two-state-em-diagram}
-%%   \caption{}
-%%   \label{nuecleotide-state}
-%% \end{figure}
-
-%% \begin{figure}[h]
-%%   \centering
-%%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/nucleotide-state-cycle}
-%%   \caption{}
-%%   \label{nucleotide-state-diagram}
-%% \end{figure}
-
-This single FRET study illustrates how the conformational aspect of the mechanochemical cycle works. Dynein begins in state I and binds ATP into its AAA1 ATPase, changing into state II by changing its stalk-tail angle to move the tail outward. ATP is then hydrolized into ADP-Pi. Pi is then ejected from the AAA1 site, leaving ADP behind. This causes the reverse state transition, moving the tail inward. When combined with microtubule affinity changes, this primitive model of the dynein cycle could explain how dynein walks.\\
-
-\textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
-
-\textit{Add figure somewhere of this cycle superimposed with markings of what states are considered onebound and bothbound}\\
-
-\textbf{more on how ATP actually causes the conformation change, if that's available. The change from an open/closed ATPase is what changes the nucleotide affinity, go into depth on that, but actual info on how ATP binding causes conformation change would be good. Something about going from a planar to nonplanar conformation?}\\
-
-also how crystal structures are in different positions
-
-\subsubsection{Experimental results on dynein’s step}
-Weihong's figures go here.\\
-
-\subsubsection{c What is still needed to support theory}
-Where our simulation fits in. Why we need this kind of information.
-There are many different things which might be important for dynein's walk which we don't take into account: springiness of tail/stalk, changes in spring constants, repulsion between the heads, multiple pre/post powerstroke conformations. We are trying to see if these things are actually important.
-
-\subsubsection{Other theories?}
-Imamula model: how it is different from Cianfrocco model, and why we chose the Cianfrocco model.\\
-	\subsection{Past Simulations}
-		\subsubsection{Sarlah Winch Model}
-		\subsubsection{Other models}
-
-\subsection{Moving forward}
-Talk about why simulation is the only way to verify the mechanochemical cycle, since experiments
-aren't high resolution enough to make good videos of the walk, and even if they were, in some sense
-knowing that dynein behaves identically to a simple mathematical model is more informative than
-a video, since there is lots of information in a video and really precise info in a simulation.\\
-
-\textbf{Not sure where this goes:} The 'goal' of our experiment, at a very high level, is to
-understand how dynein works. We can know this if we can come up with the minimum set of characteristics a physical system needs to act like dynein. This information is the same thing as knowing
-``how dynein walks.'' We don't need to know all the complex dynamics of every single amino acid in
-dynein, we only need to know our rough model.\\
-
-\section{Chapter: Introduction II}
-
-\subsection{Dynein Stepping Background}
-Biophysicists and molecular biologists have conducted experiments over the past twenty years which shed light on how the dynein motor might walk. The full mechanism is not known, but results of such experiments suggest a certain vague picture of how dynein generates motion.\\
-
-\subsubsection{ATP cycle influences conformational state}
-Dynein is known to occupy multiple discrete conformational states depending on its environment. In particular, the concentration of ATP and microtubules is known to alter the shape dynein takes on. A FRET (fluorescence resonance energy transfer) study attached fluorophores to dynein's motor and tail and measured the average distance between the two \cite{FRETstatepaper}. It was found that average distance increased or decreased depending on the nucleotide bound to dynein, indicating the motor takes on different conformations for different bound nucleotides. Dynein unbound to nucleotide, or frozen in ATP or ADP-bound states, had a similar tail-motor distance. However, when the motor was stuck in an ADP-Pi state, with ATP hydrolyzed but phosphate not yet released, the tail-motor distance was increased. This suggests that dynein starts its cycle with no nucleotide, binds ATP, hydrolyzes ATP, enters the ADP-Pi state and changes conformation to a far tail-motor distance, then releases phosphate, moves back to its original close tail-motor conformation, then ejects ADP and starts over.\\
-
-Studies suggest that near/far tail-motor conformation changes are not due to lengthening of the stem linking the two domains, but rather a change in position of the head relative to the trail \cite{FRETstatepaper} \cite{burgess-paper}. Cryo-electron microscopy images of the dynein motor shown in Figure (\ref{fig:cryo-em-angles}) demonstrate the differences in conformation in the nucleotide-free and ADP-Pi state.\\
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/literature/burgess-dynein-angles}
-  \caption{Cryo-electron microscopy images of dynein in two different nucleotide states. Left: dynein frozen in ADP-Pi state. Middle: dynein without nucleotide. Right: two states superimposed on one another. Bottom: cartoons representing how dynein may bind to the MT in either state. From \cite{burgess-paper}.}
-  \label{fig:cryo-em-angles}
-\end{figure}
-
-Crystal structures of cytoplasmic dynein-2, a relative of dynein, indicate that ATP-Pi binding to the motor domain induces a conformation change in the motor domain, which alters the angle at which the motor binds to the tail \cite{carter-paper}. Taken together, these results indicate that as the motor binds and hydrolyzes ATP, it undergoes a conformation change which physically moves the motor relative to the tail. This movement might cause a net forward motion of the motor domain.\\
-
-\textbf{TODO: look at \cite{nicastro} and \cite{schmidt-carter} to see if they can add to this discussion}
-
-\subsubsection{Microtubule and nucleotide states are coupled}
-Dynein is known to bind to the microtubule at a location known as the $\alpha$-$\beta$ polymerization site \cite{redwineMTBDcomplex}. This site occurs roughly every 8nm, indicating dynein is restricted to step sizes which are multiples of 8nm.\\
-
-The nucleotide state of the motor is not the only determiner of dynein conformation; microtubule binding state has also been shown to influence conformation. A study on the MTBD-MT complex indicates the stalk connecting the motor and MTBD can take on two major conformations, depending on whether the MTBD is bound to the MT or not \cite{mt-atp-coupling}. The conformation of the stalk has been shown to communicate information between the motor and MTBD. In the presence of microtubules, the ATPase rate of the motor is increased 25-fold. This indicates the stalk communicates MT-binding state of the MTBD to the motor, increasing its ATP hydrolysis rate. The communication happens the other way, as well. Treating dynein with ATP causes MT-binding rate to drop 15-fold, indicating ATP-binding at the motor decreases MT-binding rate at the MTBD.\\
-
-In addition to a bidirectional linking between ATPase rate and MT-binding, stalk state has been shown to directly influence motor conformation \cite{mt-atp-coupling}. When the stalk is allowed to freely transition between bound and unbound states, the motor can also transition between near and far tail/motor states. However, when the stalk is frozen in a particular conformation, the motor loses its transitioning ability. This suggests that the conformations of the two systems are tightly linked.\\
-
-\subsubsection{Stepping pattern}
-Several studies have been done on the dynein motor's stepping pattern using selectively-labeled motor domains \cite{reck2006single} \cite{weihongpaper}. These studies suggest that dynein has a 
+%% \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
 
 \section{Chapter: Theory}
 \subsection{Model features}
