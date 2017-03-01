@@ -28,6 +28,7 @@ t_ob = []
 t_bb = []
 t_proc = []
 kbs = []
+empty_kbs = []
 
 start_idx = datafiles[0].index('k_ub-') + 5
 end_idx = datafiles[0][start_idx:].index(',') + start_idx
@@ -36,9 +37,15 @@ kub = float(datafiles[0][start_idx:end_idx])
 for i in range(len(datafiles)):
     data = np.loadtxt("data/" + datafiles[i])
 
+    start_idx = datafiles[i].index('k_b-') + 4
+    end_idx = datafiles[i][start_idx:].index(',') + start_idx
+
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         print("Not enough steps in data file.")
+        empty_kbs.append(float(datafiles[i][start_idx:end_idx]))
         continue
+    else:
+        kbs.append(float(datafiles[i][start_idx:end_idx]))
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
@@ -61,30 +68,33 @@ for i in range(len(datafiles)):
     t_bb.append(np.mean(bothbound_times))
     t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
-    start_idx = datafiles[i].index('k_b-') + 4
-    end_idx = datafiles[i][start_idx:].index(',') + start_idx
-    kbs.append(float(datafiles[i][start_idx:end_idx]))
-
 print(t_bb)
 print(t_ob)
 print(kbs)
 
+minx = min(min(kbs), min(empty_kbs))
+maxx = max(max(kbs), max(empty_kbs))
+
 plt.figure()
 plt.gca().set_ylabel("$<t_{ob}> s$")
-plt.scatter(kbs, t_ob, color='b', label="$<t_{ob}>$")
-plt.plot([min(kbs), max(kbs)], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{ob}>$ exp: $4.5*10^{-4}$ s")
+plt.scatter(kbs, t_ob, color='b', s=50, label="$<t_{ob}>$")
+plt.plot([minx*0.7, maxx*1.3], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{ob}>$ exp: $4.5*10^{-4}$ s")
+plt.scatter(empty_kbs, [0]*len(empty_kbs), color='k', marker="x", label="no steps", s=50)
 plt.title("Binding constants vs unbound time, kub = " + str(kub))
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
+plt.gca().set_xlim([minx*0.8, maxx*1.2])
 plt.legend(shadow=True)
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{bb}> s$")
-plt.scatter(kbs, t_bb, color='r', label="$<t_{bb}>$")
-plt.plot([min(kbs), max(kbs)], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ exp: $0.0595$ s")
+plt.scatter(kbs, t_bb, color='r', label="$<t_{bb}>$", s=50)
+plt.plot([minx*0.7, maxx*1.3], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ exp: $0.0595$ s")
+plt.scatter(empty_kbs, [0]*len(empty_kbs), color='k', marker="x", label="no steps", s=50)
 plt.title("Binding constants vs bound time, kub = " + str(kub))
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
+plt.gca().set_xlim([minx*0.8, maxx*1.2])
 plt.legend(shadow=True)
 plt.show()
 
