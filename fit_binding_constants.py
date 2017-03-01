@@ -72,12 +72,20 @@ for i in range(len(datafiles)):
     t_bb.append(np.mean(bothbound_times))
     t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
+print("kbs: ", kbs)
+print("kubs: ", kubs)
+print("tobs: ", t_ob)
+print("tbbs: ", t_bb)
+
 if len(empty_kbs) == 0:
     minx_kb = min(kbs)
     maxx_kb = max(kbs)
 else:
     minx_kb = min(min(kbs), min(empty_kbs))
     maxx_kb = max(max(kbs), max(empty_kbs))
+
+maxy_tob = max(max(t_ob), 4.5*10**-4)
+maxy_tbb = max(max(t_bb), 0.0595)
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{ob}> s$")
@@ -88,6 +96,7 @@ plt.title("Binding constants vs unbound time")
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
+plt.gca().set_ylim([-0.1*maxy_tob, 1.5*maxy_tob])
 plt.legend(shadow=True)
 plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kb-fit.pdf", bbox_inches='tight')
 
@@ -100,6 +109,7 @@ plt.title("Binding constants vs bound time")
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
+plt.gca().set_ylim([-0.1*maxy_tbb, 1.5*maxy_tbb])
 plt.legend(shadow=True)
 plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kb-fit.pdf", bbox_inches='tight')
 
@@ -119,6 +129,7 @@ plt.title("Unbinding constants vs unbound time")
 plt.gca().set_xlabel("$k_{ub}$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
+plt.gca().set_ylim([-0.1*maxy_tob, 1.5*maxy_tob])
 plt.legend(shadow=True)
 plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kub-fit.pdf", bbox_inches='tight')
 
@@ -131,5 +142,6 @@ plt.title("Unbinding constants vs bound time")
 plt.gca().set_xlabel("$k_{ub}$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
+plt.gca().set_ylim([-0.1*maxy_tbb, 1.5*maxy_tbb])
 plt.legend(shadow=True)
 plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kub-fit.pdf", bbox_inches='tight')
