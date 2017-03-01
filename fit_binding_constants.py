@@ -2,6 +2,7 @@
 from __future__ import division, print_function
 
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -28,24 +29,27 @@ t_ob = []
 t_bb = []
 t_proc = []
 kbs = []
+kubs = []
 empty_kbs = []
-
-start_idx = datafiles[0].index('k_ub-') + 5
-end_idx = datafiles[0][start_idx:].index(',') + start_idx
-kub = float(datafiles[0][start_idx:end_idx])
+empty_kubs = []
 
 for i in range(len(datafiles)):
     data = np.loadtxt("data/" + datafiles[i])
 
-    start_idx = datafiles[i].index('k_b-') + 4
-    end_idx = datafiles[i][start_idx:].index(',') + start_idx
+    start_kb_idx = datafiles[i].index('k_b-') + 4
+    end_kb_idx = datafiles[i][start_kb_idx:].index(',') + start_kb_idx
+
+    start_kub_idx = datafiles[i].index('k_ub-') + 5
+    end_kub_idx = datafiles[i][start_kub_idx:].index(',') + start_kub_idx
 
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         print("Not enough steps in data file.")
-        empty_kbs.append(float(datafiles[i][start_idx:end_idx]))
+        empty_kbs.append(float(datafiles[i][start_kb_idx:end_kb_idx]))
+        empty_kubs.append(float(datafiles[i][start_kub_idx:end_kub_idx]))
         continue
     else:
-        kbs.append(float(datafiles[i][start_idx:end_idx]))
+        kbs.append(float(datafiles[i][start_kb_idx:end_kb_idx]))
+        kubs.append(float(datafiles[i][start_kub_idx:end_kub_idx]))
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
@@ -68,50 +72,64 @@ for i in range(len(datafiles)):
     t_bb.append(np.mean(bothbound_times))
     t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
-print(t_bb)
-print(t_ob)
-print(kbs)
-
-minx = min(min(kbs), min(empty_kbs))
-maxx = max(max(kbs), max(empty_kbs))
+if len(empty_kbs) == 0:
+    minx_kb = min(kbs)
+    maxx_kb = max(kbs)
+else:
+    minx_kb = min(min(kbs), min(empty_kbs))
+    maxx_kb = max(max(kbs), max(empty_kbs))
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{ob}> s$")
 plt.scatter(kbs, t_ob, color='b', s=50, label="$<t_{ob}>$")
-plt.plot([minx*0.7, maxx*1.3], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{ob}>$ exp: $4.5*10^{-4}$ s")
+plt.plot([minx_kb*0.7, maxx_kb*1.3], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{ob}>$ exp: $4.5*10^{-4}$ s")
 plt.scatter(empty_kbs, [0]*len(empty_kbs), color='k', marker="x", label="no steps", s=50)
-plt.title("Binding constants vs unbound time, kub = " + str(kub))
+plt.title("Binding constants vs unbound time")
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
-plt.gca().set_xlim([minx*0.8, maxx*1.2])
+plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
 plt.legend(shadow=True)
+plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kb-fit.pdf", bbox_inches='tight')
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{bb}> s$")
 plt.scatter(kbs, t_bb, color='r', label="$<t_{bb}>$", s=50)
-plt.plot([minx*0.7, maxx*1.3], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ exp: $0.0595$ s")
+plt.plot([minx_kb*0.7, maxx_kb*1.3], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ exp: $0.0595$ s")
 plt.scatter(empty_kbs, [0]*len(empty_kbs), color='k', marker="x", label="no steps", s=50)
-plt.title("Binding constants vs bound time, kub = " + str(kub))
+plt.title("Binding constants vs bound time")
 plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
-plt.gca().set_xlim([minx*0.8, maxx*1.2])
+plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
 plt.legend(shadow=True)
-plt.show()
+plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kb-fit.pdf", bbox_inches='tight')
 
-# fig, axarr = plt.subplots(2, sharex=True)
+if len(empty_kubs) == 0:
+    minx_kub = min(kubs)
+    maxx_kub = max(kubs)
+else:
+    minx_kub = min(min(kbs), min(empty_kbs))
+    maxx_kub = max(max(kbs), max(empty_kbs))
 
-# axarr[0].set_ylabel("$<t_{ob}> s$")
-# axarr[0].scatter(kbs, t_ob, color='b', label="$<t_{ob}>$")
-# axarr[0].plot([min(kbs), max(kbs)], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{bb}>$ ideal = $4.5*10^{-4}$ s")
+plt.figure()
+plt.gca().set_ylabel("$<t_{ob}> s$")
+plt.scatter(kubs, t_ob, color='b', s=50, label="$<t_{ob}>$")
+plt.plot([minx_kub*0.7, maxx_kub*1.3], [4.52*10**-4, 4.52*10**-4], color='g', label="$<t_{ob}>$ exp: $4.5*10^{-4}$ s")
+plt.scatter(empty_kubs, [0]*len(empty_kubs), color='k', marker="x", label="no steps", s=50)
+plt.title("Unbinding constants vs unbound time")
+plt.gca().set_xlabel("$k_{ub}$" + " $s^{-1}$")
+plt.gca().set_xscale('log')
+plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
+plt.legend(shadow=True)
+plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kub-fit.pdf", bbox_inches='tight')
 
-# axarr[1].set_ylabel("$<t_{bb}> s$")
-# axarr[1].scatter(kbs, t_bb, color='r', label="$<t_{bb}>$")
-# axarr[1].plot([min(kbs), max(kbs)], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ ideal = $0.0595$ s")
-
-# legend = axarr[0].legend(shadow=True)
-# legend = axarr[1].legend(shadow=True)
-
-# plt.title("Binding constants vs un/bound time, kub = " + str(kub))
-# axarr[0].set_xlabel("$k_b$" + " $s^{-1}$")
-# axarr[0].set_xscale('log')
-# plt.show()
+plt.figure()
+plt.gca().set_ylabel("$<t_{bb}> s$")
+plt.scatter(kubs, t_bb, color='r', label="$<t_{bb}>$", s=50)
+plt.plot([minx_kub*0.7, maxx_kub*1.3], [0.0595, 0.0595], color='g', label="$<t_{bb}>$ exp: $0.0595$ s")
+plt.scatter(empty_kubs, [0]*len(empty_kubs), color='k', marker="x", label="no steps", s=50)
+plt.title("Unbinding constants vs bound time")
+plt.gca().set_xlabel("$k_{ub}$" + " $s^{-1}$")
+plt.gca().set_xscale('log')
+plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
+plt.legend(shadow=True)
+plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kub-fit.pdf", bbox_inches='tight')
