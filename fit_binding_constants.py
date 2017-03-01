@@ -72,6 +72,11 @@ for i in range(len(datafiles)):
     t_bb.append(np.mean(bothbound_times))
     t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
+print("kbs: ", kbs)
+print("kubs: ", kubs)
+print("tobs: ", t_ob)
+print("tbbs: ", t_bb)
+
 if len(empty_kbs) == 0:
     minx_kb = min(kbs)
     maxx_kb = max(kbs)
