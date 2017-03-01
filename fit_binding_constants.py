@@ -2,6 +2,7 @@
 from __future__ import division, print_function
 
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -72,8 +73,12 @@ print(t_bb)
 print(t_ob)
 print(kbs)
 
-minx = min(min(kbs), min(empty_kbs))
-maxx = max(max(kbs), max(empty_kbs))
+if len(empty_kbs) == 0:
+    minx = min(kbs)
+    maxx = max(kbs)
+else:
+    minx = min(min(kbs), min(empty_kbs))
+    maxx = max(max(kbs), max(empty_kbs))
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{ob}> s$")
@@ -85,6 +90,7 @@ plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx*0.8, maxx*1.2])
 plt.legend(shadow=True)
+plt.savefig("plots/" + sys.argv[1] + "-tob-fit.pdf", bbox_inches='tight')
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{bb}> s$")
@@ -96,7 +102,7 @@ plt.gca().set_xlabel("$k_b$" + " $s^{-1}$")
 plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx*0.8, maxx*1.2])
 plt.legend(shadow=True)
-plt.show()
+plt.savefig("plots/" + sys.argv[1] + "-tbb-fit.pdf", bbox_inches='tight')
 
 # fig, axarr = plt.subplots(2, sharex=True)
 
