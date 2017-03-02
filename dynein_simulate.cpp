@@ -136,8 +136,9 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
 	  printf("BB near unbinding probability: %g\n", near_unbinding_prob_printing_average);
 	}
-	bool unbind_near = rand->rand() < near_unbinding_prob;
-	bool unbind_far = rand->rand() < far_unbinding_prob;
+	double roll = rand->rand();
+	bool unbind_near = roll < near_unbinding_prob;
+	bool unbind_far = roll < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
 	  if (debug_stepping) printf("both MTBDs want to fall off!\n");
 	  if (iter % 2 == 0) unbind_far = false;
@@ -146,8 +147,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	if (unbind_near) { // switch to farbound
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to farbound\n");
-	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %.15f, boltzmann factor: %g\n",
-                                                     near_unbinding_prob, exp(-(dyn_ob->get_PE()-dyn_bb->get_PE())/kb/T));
+	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %g, roll was: %g, boltzmann factor: %g\n",
+                                                     near_unbinding_prob, roll, exp(-(dyn_ob->get_PE()-dyn_bb->get_PE())/kb/T));
 	  delete dyn_bb;
 	  dyn_bb = NULL;
 	  current_state = FARBOUND;
@@ -160,8 +161,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	else if (unbind_far) { // switch to nearbound
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to nearbound\n");
-	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %.15f, boltzmann factor: %g\n",
-                                                     far_unbinding_prob, exp(-(dyn_ob->get_PE()-dyn_bb->get_PE())/kb/T));
+	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %g, roll as: %g, boltzmann factor: %g\n",
+                                                     far_unbinding_prob, roll, exp(-(dyn_ob->get_PE()-dyn_bb->get_PE())/kb/T));
 	  delete dyn_bb;
 	  dyn_bb = NULL;
 	  current_state = NEARBOUND;

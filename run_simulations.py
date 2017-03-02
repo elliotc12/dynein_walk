@@ -21,32 +21,37 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-1, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-7, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-2, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-9, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-3, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-4, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-13, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-5, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-15, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-6, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-17, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-19, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
