@@ -21,37 +21,12 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-7, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-3, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-9, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-11, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-13, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-15, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-17, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-19, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
@@ -85,7 +60,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "fit-kub-2-27"
+label = "debugging-zero-unbinding"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
@@ -101,6 +76,7 @@ if len(custom_runs) != 0:
     for run in custom_runs:
         cmd = ["srun"] if have_slurm else []
         cmd.extend([
+            "nice -19",
             "./generate_stepping_data",
             "--Ls",  str(run["ls"]),
             "--Lt",  str(run["lt"]),
