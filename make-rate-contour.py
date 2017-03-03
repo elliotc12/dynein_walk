@@ -88,9 +88,10 @@ plt.figure()
 ax = plt.gca()
 
 ratio = np.array(t_ob) / (4.5*10**-4)
+ratio = np.log10(ratio)
 m = cm.ScalarMappable(cmap=cm.jet)
-ratiomax = 10
-m.set_array(np.arange(0, ratiomax, 0.01))
+ratiomax = 1
+m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
     plot = plt.plot(kbs[i], kubs[i], '.',
@@ -103,7 +104,7 @@ ax.set_xlabel("$k_b$")
 ax.set_ylabel("$k_{ub}$")
 ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
-plt.title('(Onebound time / experimental) vs un/binding rates')
+plt.title('$\log_{10}$(Onebound time / experimental) vs un/binding rates')
 
 plt.savefig("plots/kb-kub-contour.pdf")
 
