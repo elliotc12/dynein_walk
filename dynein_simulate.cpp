@@ -137,6 +137,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  printf("BB near unbinding probability: %g\n", near_unbinding_prob_printing_average);
 	}
 	double roll = rand->rand();
+	while (roll == 0) roll = rand->rand();
 	bool unbind_near = roll < near_unbinding_prob;
 	bool unbind_far = roll < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
