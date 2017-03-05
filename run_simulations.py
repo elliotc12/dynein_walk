@@ -21,12 +21,42 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-9, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-6, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
 custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-3, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-9, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e-1, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 10, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 100, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1000, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
@@ -60,7 +90,7 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "debugging-zero-unbinding"
+label = "no-zero-3-5"
 
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
