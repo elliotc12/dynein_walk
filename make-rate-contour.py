@@ -8,8 +8,7 @@ import numpy as np
 import os
 import sys
 
-datafiles = os.listdir("data/contour/")
-datafiles = [s for s in datafiles if "stepping_data" in s]
+datafiles = [s for s in os.listdir("data/contour/") if "stepping_data" in s]
 
 t_step = []
 t_ob = []
@@ -19,7 +18,10 @@ kbs = []
 kubs = []
 
 for i in range(len(datafiles)):
-    data = np.loadtxt("data/" + datafiles[i])
+    fname = "data/contour/" + datafiles[i]
+    if os.stat(fname).st_size == 0:
+        continue
+    data = np.loadtxt(fname)
 
     start_kb_idx = datafiles[i].index('k_b-') + 4
     end_kb_idx = datafiles[i][start_kb_idx:].index(',') + start_kb_idx
@@ -37,7 +39,7 @@ for i in range(len(datafiles)):
         # t_ob.append(float("inf"))
         # t_bb.append(float("inf"))
         t_step.append(0)
-        t_ob.append(0)
+        t_ob.append(10) # hokey code to say this is very large!
         t_bb.append(0)
         t_proc.append(0)
     else:
@@ -86,25 +88,27 @@ plt.figure()
 ax = plt.gca()
 
 ratio = np.array(t_ob) / (4.5*10**-4)
+ratio = np.log10(ratio)
 m = cm.ScalarMappable(cmap=cm.jet)
-plot = plt.scatter(kbs, kubs, color=plt.get_cmap('jet')(ratio), cmap='jet')
-m = cm.ScalarMappable(cmap = cm.jet)
-m.set_array(ratio)
+ratiomax = 1
+m.set_array(np.linspace(-ratiomax, ratiomax, 100))
+for i in range(len(ratio)):
+    mycolor = m.cmap(ratio[i]/ratiomax)
+    plot = plt.plot(kbs[i], kubs[i], '.',
+                    color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
-contourplot = plt.contourf(KB, KUB, TBB)
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlabel("$k_b$")
 ax.set_ylabel("$k_{ub}$")
 ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
-# plt.clabel(contourplot, inline=1, fontsize=10)
-plt.title('(Onebound time / experimental) vs un/binding rates')
+plt.title('$\log_{10}$(Onebound time / experimental) vs un/binding rates')
 
 plt.savefig("plots/kb-kub-contour.pdf")
 
-print("ratio: ", ratio)
+# print("ratio: ", ratio)
 
 # plt.figure()
 # plt.gca().set_ylabel("$<t_{ob}> s$")
