@@ -129,15 +129,15 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
-	if (am_debugging_rates and rand->rand() < 1e-9) {
+	double roll = rand->rand();
+	while (roll == 0) roll = rand->rand();
+	if (am_debugging_rates and roll < 1e-8) {
 	  near_unbinding_prob_printing_average = (near_unbinding_prob_printing_average*unbinding_prob_printing_n + near_unbinding_prob);
 	  near_unbinding_prob_printing_average /= (unbinding_prob_printing_n + 1);
 	  unbinding_prob_printing_n++;
 
 	  printf("BB near unbinding probability: %g\n", near_unbinding_prob_printing_average);
 	}
-	double roll = rand->rand();
-	while (roll == 0) roll = rand->rand();
 	bool unbind_near = roll < near_unbinding_prob;
 	bool unbind_far = roll < far_unbinding_prob;
 	if (unbind_near && unbind_far) {
