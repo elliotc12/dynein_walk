@@ -96,7 +96,7 @@ if len(custom_runs) != 0:
     for run in custom_runs:
         cmd = ["srun"] if have_slurm else []
         cmd.extend([
-            "nice -19",
+            "nice", "-19",
             "./generate_stepping_data",
             "--Ls",  str(run["ls"]),
             "--Lt",  str(run["lt"]),

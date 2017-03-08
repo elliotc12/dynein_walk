@@ -473,10 +473,10 @@ int main(int argc, char** argv) {
   simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
   fclose(job_msg.stepping_data_file);
-  fclose(job_msg.movie_data_file);
+  if (job_msg.movie_data_file) fclose(job_msg.movie_data_file);
 
-  delete on_crash_old_movie_data_global_ptr;
-  delete on_crash_new_movie_data_global_ptr;
+  delete[] on_crash_old_movie_data_global_ptr;
+  delete[] on_crash_new_movie_data_global_ptr;
 
   return EXIT_SUCCESS;
 }
