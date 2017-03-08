@@ -4,10 +4,12 @@
 int main() {
   double RAND_INIT_SEED = 0;
   MTRand* rand = new MTRand(RAND_INIT_SEED);
-  double iters = 1e10;
-  double count = 0;
-  for (int i=0; i<iters; i++) {
+  FILE* fd = fopen("rnglog.txt", "w");
+  long long count = 0;
+  long long i = 0;
+  while (true) {
+    i++;
     if (rand->rand() == 0) count++;
-    if ((i % ((int) 1e8)) == 0) printf("count: %g, iters: %d, fraction: %g\n", count, i, count/iters);
+    if ((i % ((int) 1e8)) == 0) fprintf(fd, "count: %lld, iters: %lld, fraction: %g\n", count, i, count/i);
   }
 }
