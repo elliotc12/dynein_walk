@@ -117,8 +117,8 @@ if len(empty_kubs) == 0:
     minx_kub = min(kubs)
     maxx_kub = max(kubs)
 else:
-    minx_kub = min(min(kbs), min(empty_kbs))
-    maxx_kub = max(max(kbs), max(empty_kbs))
+    minx_kub = min(min(kubs), min(empty_kubs))
+    maxx_kub = max(max(kubs), max(empty_kubs))
 
 plt.figure()
 plt.gca().set_ylabel("$<t_{ob}> s$")
