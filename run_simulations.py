@@ -21,32 +21,33 @@ binding_energy_high_affinity_kJ_mol = 71;
 binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_kJ_per_mol;
 
 custom_runs = []
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e8, "T": 310.15,
+
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": .01, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e10, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": .1, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e12, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e13, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 100, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 800, "k_ub": 1e15, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 500, "k_ub": 5e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
