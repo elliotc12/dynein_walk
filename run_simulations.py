@@ -91,7 +91,7 @@ cb_range = np.linspace(cb_min, cb_max, num=cb_num)
 cm_range = np.linspace(cm_min, cm_max, num=cm_num)
 ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
-runtime = 0
+runtime = 0.25
 
 if len(custom_runs) != 0:
     for run in custom_runs:
