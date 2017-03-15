@@ -275,16 +275,20 @@ Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motio
 %% \subsubsection{Other models}
 %% Find other models and put them here
 
-\subsection{Necessary and sufficient criteria for motion}
-Each of the models described above postulates a series of chemical events which occur during the dynein step. Testing such hypotheses can be done in a variety of ways. 
+%% \subsection{Brownian dynamics}
+%% New section which describes how BD works.
 
-\subsubsection{Our model}
-what we're trying to do with our project
+\subsection{This work}
+\subsubsection{Necessary and sufficient criteria for motion}
+One of the principle goals of researchers studying the dynein motor is establishing how it walks. This can be a difficult task, since direct observation of the motor walking is not currently experimentally possible. The next best thing, then, is building a model which both only does all the things dynein does, and generates motion. Finding such a system would be very useful for forming hypotheses on how dynein walks. Another requirement of the system would be that it be as simple as possible while still explaining all the data. By Occam's Razor, such systems are the most likely to represent real dynein. Thus, finding the necessary and sufficient criteria for dynein's motion is a big goal in the field.\\
 
-\textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
+A good starting place for finding the minimum set of motile criteria would be preexisting models, like the Cianfrocco model. This model describes a set of states which logically lead to each other and are supported by experiment. It seems intuitive that a motor which obeyed the Cianfrocco cycle would walk. There are multiple ways to verify this. A completely synthetic biological motor could be designed which obeys the cycle, and its motile properties could be studied. This seems incredibly difficult. Much easier would be to create a physical model of such a cycle, simulate it, and see if it obeys similarly to experimentally observed dynein. If the physical model both behaves according to the laws of physics and captures experimental dynein behavior well, this would be good evidence that such a model describes how dynein actually walks.\\
 
 \subsubsection{Goals}
-What we hope to gain by simulating such a model, and what it would contribute to the current literature
+The goal of this work is to construct a minimum physical model of dynein protein based on the theoretical Cianfrocco model. The model should behave as physics predicts a protein to behave; namely, it should obey Brownian dynamics and conservation of energy. It should also roughly capture the state transitions and conformation changes of the Cianfrocco model. Also the model should be as simple as possible, to assure that each part of the model is necessary. If too many extra features are added, the model will not be minimal and not achieve its purpose.\\
+
+This model will then be converted into a computer program, tested for compliance with the laws of physics, and simulated. Information on the long-term behavior of such a simulation will then be used to evaluate how well the model describe's experimental dynein's behavior.\\
+
 
 %% \textbf{Things which are known about dynein which support the Cianfrocco model}
 %% \begin{itemize}
@@ -302,13 +306,7 @@ What we hope to gain by simulating such a model, and what it would contribute to
 \subsection{Model features}
 The purpose of this project is to find if a minimal set of features is capable of reproducing dynein's stepping behavior. To test this hypothesis, these features are put into a model and simulated. A schematic of the model is pictured in Figure \ref{fig:model-intro} and described below.\\
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.45\textwidth]{../../figures/code-onebound}
-  \includegraphics[width=.45\textwidth]{../../figures/code-bothbound}
-  \caption{Dynein model schematics.}{Representations of onebound (left) and bothbound (right) dynein models.}
-  \label{ob_fig}
-\end{figure}
+\textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
 
 %% \begin{itemize}
 %% \item Dynein is a collection of spherical domains joined together by massless rods
@@ -355,6 +353,16 @@ Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tai
 
 \subsubsection{Two-state model}
 The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. These states are also differentiated by different motor equilibrium angles, $\Theta_{m}^{bb}$ and $\Theta_{m}^{ob}$, and different transition rates. Biological dynein likely passes through a series of permutations of nucleotide, MT affinity and conformational states as it travels through its mechanochemical cycle. This model makes the assumption that the mechanochemical cycle can be broken down into a cycle of prestroking to move the unbound foot forward, brownian walking to place the foot on the microtubule, then powerstroking to move the other domains forward.\\
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/code-onebound}
+  \includegraphics[width=.45\textwidth]{../../figures/code-bothbound}
+  \caption{Dynein model schematics.}{Representations of onebound (left) and bothbound (right) dynein models.}
+  \label{ob_fig}
+\end{figure}
+
+\textbf{todo: Add springs to joints!}
 
 \subsubsection{Transitioning between states}
 The model transitions between states with a probability dependent on both the energy difference between the two states and the physical separation between the MT and binding MTBD. The energy difference between states A and B is given by:
@@ -469,24 +477,24 @@ The following equations allow recursive calculation of the positions of each dom
 $L_s$ and $L_t$ correspond to lengths of each interdomain rod, and the $t$ subscripts refer to tail domain coordinates.\\
 
 \paragraph{Angular and Cartesian velocities}
-The goal is to express angular velocities $\dot{\Theta}_{bb}, \dot{\Theta}_{bb}, \dot{\Theta}_{bb}$ and $\dot{\Theta}_{bb}$ in terms of known quantities. To begin, the cartesian velocities of each domain can be calculated from the above position equations in a similar recursive manner:
+The goal is to express angular velocities $\dot{\Theta}_{bb}, \dot{\Theta}_{bb}, \dot{\Theta}_{bb}$ and $\dot{\Theta}_{bb}$ in terms of known quantities. To begin, the cartesian velocities of each domain can be calculated from the above position equations in a similar recursive manner. A subset of the equations are shown here:
 
 \noindent\begin{minipage}{0.49\linewidth}
 \begin{align}
   \dot{X}_{bb} &= 0 \\
   \dot{X}_{bm} &= \dot{X}_{bb} - L_{s}\sin(\Theta_{bb})\dot{\Theta}_{bb} \label{cartesian-bmx}\\
-  \dot{X}_{t } &= \dot{X}_{bm} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm} \\
-  \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
-  \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
+  \dot{X}_{t } &= \dot{X}_{bm} - L_{t}\sin(\Theta_{bm})\dot{\Theta}_{bm}
+  %% \dot{X}_{fm} &= \dot{X}_{t } + L_{t}\sin(\Theta_{fm})\dot{\Theta}_{fm} \\
+  %% \dot{X}_{fb} &= \dot{X}_{fm} + L_{s}\sin(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}
 \end{minipage}
 \begin{minipage}{0.49\linewidth}
 \begin{align}                                                                          
   \dot{Y}_{bb} &= 0 \\                                                        
   \dot{Y}_{bm} &= \dot{Y}_{bb} + L_{s}\cos(\Theta_{bb})\dot{\Theta}_{bb} \\
-  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm} \\
-  \dot{Y}_{fm} &= \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
-  \dot{Y}_{fb} &= \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
+  \dot{Y}_{t}  &= \dot{Y}_{bm} + L_{t}\cos(\Theta_{bm})\dot{\Theta}_{bm}
+  %% \dot{Y}_{fm} &= \dot{Y}_{t } - L_{t}\cos(\Theta_{fm})\dot{\Theta}_{fm} \\
+  %% \dot{Y}_{fb} &= \dot{Y}_{fm} - L_{s}\cos(\Theta_{fb})\dot{\Theta}_{fb}
 \end{align}
 \end{minipage}
 \vspace{.5cm}
@@ -495,37 +503,37 @@ Another way to express these cartesian velocities is using the Brownian dynamics
 
 \begin{align}  
   \dot{X}_{bm} &= \frac{1}{\gamma_m} \Big(F_{xml} + - \lambda_{bs}(X_{bm} - X_{bb}) + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml} \label{brownian-bmx}\\
-  \dot{X}_{t } &= \frac{1}{\gamma_t} \Big(F_{xt } + - \lambda_{bt}(X_{t } - X_{bm}) + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt } \\
-  \dot{X}_{fm} &= \frac{1}{\gamma_m} \Big(F_{xmr} + - \lambda_{ft}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
-  \dot{X}_{fb} &= \frac{1}{\gamma_b} \Big(F_{xbr} + - \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xbr}
+  \dot{X}_{t } &= \frac{1}{\gamma_t} \Big(F_{xt } + - \lambda_{bt}(X_{t } - X_{bm}) + \lambda_{ft}(X_{fm} - X_{t }) \Big) + R_{xt }
+  %% \dot{X}_{fm} &= \frac{1}{\gamma_m} \Big(F_{xmr} + - \lambda_{ft}(X_{fm} - X_{t }) + \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xmr} \\
+  %% \dot{X}_{fb} &= \frac{1}{\gamma_b} \Big(F_{xbr} + - \lambda_{fs}(X_{fb} - X_{fm}) \Big) + R_{xbr}
 \end{align}
 
-\begin{align}  
-  \dot{Y}_{bm} &= \frac{1}{\gamma_m} \Big(F_{yml} + - \lambda_{bs}(Y_{bm} - Y_{bb}) + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml} \\
-  \dot{Y}_{t}  &= \frac{1}{\gamma_t} \Big(F_{yt } + - \lambda_{bt}(Y_{t } - Y_{bm}) + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
-  \dot{Y}_{fm} &= \frac{1}{\gamma_m} \Big(F_{ymr} + - \lambda_{ft}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
-  \dot{Y}_{fb} &= \frac{1}{\gamma_b} \Big(F_{ybr} + - \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ybr}
-\end{align}
+%% \begin{align}  
+%%   \dot{Y}_{bm} &= \frac{1}{\gamma_m} \Big(F_{yml} + - \lambda_{bs}(Y_{bm} - Y_{bb}) + \lambda_{bt}(Y_{t } - Y_{bm}) \Big) + R_{yml} \\
+%%   \dot{Y}_{t}  &= \frac{1}{\gamma_t} \Big(F_{yt } + - \lambda_{bt}(Y_{t } - Y_{bm}) + \lambda_{ft}(Y_{fm} - Y_{t }) \Big) + R_{yt } \\
+%%   \dot{Y}_{fm} &= \frac{1}{\gamma_m} \Big(F_{ymr} + - \lambda_{ft}(Y_{fm} - Y_{t }) + \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ymr} \\
+%%   \dot{Y}_{fb} &= \frac{1}{\gamma_b} \Big(F_{ybr} + - \lambda_{fs}(Y_{fb} - Y_{fm}) \Big) + R_{ybr}
+%% \end{align}
 
 where $\gamma_n$ is a drag coefficient for the binding, motor or tail domain with units of mass per second. $F_{xn}$ is the x component of external force on each domain $n$ due to various factors. $\lambda_{12}\left(X_1 - X_2\right)$ is the x component of internal force on domain $2$ due to domain $1$, where $\lambda$ is a tension coefficient with units of mass per second per second. $R_{xn}$ is the Brownian coefficient representing motion due to solvent collision, with units of velocity.\\
 
-These two sets of equations, cartesian and Brownian, can be equated to get more interesting equations. For example, Eq (\ref{cartesian-bmx}) and Eq (\ref{brownian-bmx}) can be equated. This equating, combined with expanding the recursive velocity definitions leads to: 
+These two sets of equations, cartesian and Brownian, can be equated to get more interesting equations. For example, Eq (\ref{cartesian-bmx}) and Eq (\ref{brownian-bmx}) can be equated. This equating, combined with expanding the recursive velocity definitions leads to new equations, some of which are shown here:
 
 \begin{align}
   &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} = \frac{1}{\gamma_m}F_{xml} + -\frac{1}{\gamma_m}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma_m}\lambda_{bt}(X_{t } - X_{bm}) + R_{bmx} \label{ob_system_first}\\
-  &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} = \frac{1}{\gamma_t}F_{xt } + -\frac{1}{\gamma_t}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma_t}\lambda_{ft}(X_{um} - X_{t }) + R_{tx} \\
-  &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} = \frac{1}{\gamma_m}F_{xmr} + -\frac{1}{\gamma_m}\lambda_{ft}(X_{um} - X_{t }) + \frac{1}{\gamma_m}\lambda_{fs}(X_{ub} - X_{um}) + R_{bmx} \\
-  &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub} = \frac{1}{\gamma_b}F_{xbr} + -\frac{1}{\gamma_b}\lambda_{fs}(X_{ub} - X_{um}) + R_{bbx}
+  &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} = \frac{1}{\gamma_t}F_{xt } + -\frac{1}{\gamma_t}\lambda_{bt}(X_{t } - X_{bm}) + \frac{1}{\gamma_t}\lambda_{ft}(X_{um} - X_{t }) + R_{tx}
+  %% &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} = \frac{1}{\gamma_m}F_{xmr} + -\frac{1}{\gamma_m}\lambda_{ft}(X_{um} - X_{t }) + \frac{1}{\gamma_m}\lambda_{fs}(X_{ub} - X_{um}) + R_{bmx} \\
+  %% &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} - L_t\sin(\theta_{bm})\dot{\theta}_{bm} + L_t\sin(\theta_{um})\dot{\theta}_{um} + L_s\sin(\theta_{ub})\dot{\theta}_{ub} = \frac{1}{\gamma_b}F_{xbr} + -\frac{1}{\gamma_b}\lambda_{fs}(X_{ub} - X_{um}) + R_{bbx}
 \end{align}
 
-\begin{align}
-  &L_s\cos(\theta_{bb})\dot{\theta}_{bm} = \frac{1}{\gamma_m}F_{yml} + -\frac{1}{\gamma_m}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma_m}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{umy} \\
-  &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} = \frac{1}{\gamma_t}F_{yt } + -\frac{1}{\gamma_t}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma_t}\lambda_{ft}(Y_{um} - Y_{t }) + R_{ty} \\
-  &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} = \frac{1}{\gamma_m}F_{ymr} + -\frac{1}{\gamma_m}\lambda_{ft}(Y_{um} - Y_{t }) + \frac{1}{\gamma_m}\lambda_{fs}(Y_{ub} - Y_{um}) + R_{bmy} \\
-  &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub} = \frac{1}{\gamma_b}F_{ybr} + -\frac{1}{\gamma_b}\lambda_{fs}(Y_{ub} - Y_{um}) + R_{bby} \label{ob_system_last}
-\end{align}
+%% \begin{align}
+%%   &L_s\cos(\theta_{bb})\dot{\theta}_{bm} = \frac{1}{\gamma_m}F_{yml} + -\frac{1}{\gamma_m}\lambda_{bs}(Y_{bm} - Y_{bb}) + \frac{1}{\gamma_m}\lambda_{bt}(Y_{t } - Y_{bm}) + R_{umy} \\
+%%   &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} = \frac{1}{\gamma_t}F_{yt } + -\frac{1}{\gamma_t}\lambda_{bt}(Y_{t } - Y_{bm}) + \frac{1}{\gamma_t}\lambda_{ft}(Y_{um} - Y_{t }) + R_{ty} \\
+%%   &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} = \frac{1}{\gamma_m}F_{ymr} + -\frac{1}{\gamma_m}\lambda_{ft}(Y_{um} - Y_{t }) + \frac{1}{\gamma_m}\lambda_{fs}(Y_{ub} - Y_{um}) + R_{bmy} \\
+%%   &L_s\cos(\theta_{bb})\dot{\theta}_{bb} + L_t\cos(\theta_{bm})\dot{\theta}_{bm} - L_t\cos(\theta_{um})\dot{\theta}_{um} - L_s\cos(\theta_{ub})\dot{\theta}_{ub} = \frac{1}{\gamma_b}F_{ybr} + -\frac{1}{\gamma_b}\lambda_{fs}(Y_{ub} - Y_{um}) + R_{bby} \label{ob_system_last}
+%% \end{align}
 
-These eight equations form a system of equations with eight unknowns: $\dot{\Theta}_{bb}, \dot{\Theta}_{bb}, \dot{\Theta}_{bb}$ and $\dot{\Theta}_{bb}$, and the four tension coefficients $\lambda_{bs}, \lambda_{bt}, \lambda_{um}$ and $\lambda_{ub}$. This system is more compactly represented as:
+A total of eight coupled differential equations are formed from this procedure. These eight equations form a system of equations with eight unknowns: $\dot{\Theta}_{bb}, \dot{\Theta}_{bb}, \dot{\Theta}_{bb}$ and $\dot{\Theta}_{bb}$, and the four tension coefficients $\lambda_{bs}, \lambda_{bt}, \lambda_{um}$ and $\lambda_{ub}$. This system is more compactly represented as:
 {\small
   \[
   \hspace{-1.0cm}
@@ -565,7 +573,7 @@ These eight equations form a system of equations with eight unknowns: $\dot{\The
   \]
 }
 
-This matrix is then solved using the Mathematica computer algebra system, resulting in a set of $\dot{\Theta}_n$ equations shown in Appendix (\ref{ob-motion-equations]}).
+This matrix is then solved using the Mathematica computer algebra system, resulting in a set of motion equations which describe the model's trajectory over time, eg $\dot{\Theta_{bm}}(\Theta_{bb}, \Theta_{bm}, \Theta_{um}, \Theta_{ub})$. These motion equations are further described in (\ref{sec:ob-motion-equations}).\\
 
 \subsubsection{Poststroke bothbound model}
 The main difference between the prestroke and poststroke mathematical models is that the latter has a further constraint: both its MTB domains are attached to the MT. This has the effect of diminishing the degrees of freedom of the system from four to two, assuming the motor remains above the MT. A spatial representation of the bothbound model is shown in Figure (\ref{bb_fig}).\\
@@ -618,26 +626,26 @@ These new artificial stalks are not physically relevant, but allow the definitio
   \end{cases}
 \end{align}
 
-These values are arrived at through the Law of Cosines and a trigonometric identity. The sign of $\sin\left(\Theta_n\right)$ is restricted to positive values due to the angle's $[0,\pi]$ domain. $\Theta_{ns}$'s domain is $[-\pi,\pi]$, meaning its sign is not restricted. The partial derivatives of these values are useful:
+These values are arrived at through the Law of Cosines and a trigonometric identity. The sign of $\sin\left(\Theta_n\right)$ is restricted to positive values due to the angle's $[0,\pi]$ domain. $\Theta_{ns}$'s domain is $[-\pi,\pi]$, meaning its sign is not restricted. The partial derivatives of these values are used in future calculations, and some are shown here:
 
 \begin{align}
   \frac{\partial \cos\theta_n}{\partial L_n} &= \frac{1}{L} - \frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\\
   \frac{\partial \cos\theta_n}{\partial L_f} &= -\frac{L_f}{LL_n}\\
   \frac{\partial \sin\theta_n}{\partial L_n} &= \frac{-\cos\theta_n}{\sqrt{1-\cos^2\theta_n}}
-  \left(\frac{1}{L} - \frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\right)\\
-  \frac{\partial \sin\theta_n}{\partial L_f} &= \frac{-\cos\theta_n}{\sqrt{1-\cos^2\theta_n}}
-  \left(\frac{-L_f}{LLn}\right)\\
-  \frac{\partial \cos\theta_{ns}}{\partial L_n} &= \frac{1}{L_s}
-  - \frac{L_s^2 + L_n^2 - L_t^2}{2L_sL_n^2}\\
-  \frac{\partial \cos\theta_{ns}}{\partial L_f} &= 0\\
-  \frac{\partial \sin\theta_{ns}}{\partial L_n} &=
-  \begin{cases}
-    \frac{-\cos\theta_{ns}}{\sqrt{1-\cos^2\theta_{ns}}}
-    \left(\frac{1}{L_s} - \frac{L_s^2+L_n^2-L_t^2}{2LL_n^2}\right) & \theta_{nm} < \pi \\
-    \frac{\cos\theta_{ns}}{\sqrt{1-\cos^2\theta_{ns}}}
-    \left(\frac{1}{L_s} - \frac{L_s^2+L_n^2-L_t^2}{2LL_n^2}\right) & \theta_{nm} > \pi
-  \end{cases}\\
-  \frac{\partial \sin\theta_{ns}}{\partial L_f} &= 0
+  \left(\frac{1}{L} - \frac{L^2 + L_n^2 - L_f^2}{2L L_n^2}\right)
+  %% \frac{\partial \sin\theta_n}{\partial L_f} &= \frac{-\cos\theta_n}{\sqrt{1-\cos^2\theta_n}}
+  %% \left(\frac{-L_f}{LLn}\right)\\
+  %% \frac{\partial \cos\theta_{ns}}{\partial L_n} &= \frac{1}{L_s}
+  %% - \frac{L_s^2 + L_n^2 - L_t^2}{2L_sL_n^2}\\
+  %% \frac{\partial \cos\theta_{ns}}{\partial L_f} &= 0\\
+  %% \frac{\partial \sin\theta_{ns}}{\partial L_n} &=
+  %% \begin{cases}
+  %%   \frac{-\cos\theta_{ns}}{\sqrt{1-\cos^2\theta_{ns}}}
+  %%   \left(\frac{1}{L_s} - \frac{L_s^2+L_n^2-L_t^2}{2LL_n^2}\right) & \theta_{nm} < \pi \\
+  %%   \frac{\cos\theta_{ns}}{\sqrt{1-\cos^2\theta_{ns}}}
+  %%   \left(\frac{1}{L_s} - \frac{L_s^2+L_n^2-L_t^2}{2LL_n^2}\right) & \theta_{nm} > \pi
+  %% \end{cases}\\
+  %% \frac{\partial \sin\theta_{ns}}{\partial L_f} &= 0
 \end{align}
 
 The position of the motor and tail domains is calculated as follws, using the angle addition trigonometric identity:
@@ -655,17 +663,17 @@ The position of the motor and tail domains is calculated as follws, using the an
   Y_{t} &= L_n\sin\theta_n\\
 \end{align}
 
-The partial derivatives of these values are:
+The partial derivatives of these values are used later. A selection are shown here:
 
 \begin{align}
   \frac{dX_{nm}}{dL_n} &= L_s\Big(\cos\theta_n\frac{d\cos\theta_{ns}}{dL_n} + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_n} - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_n} - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_n}\Big)\\
   \frac{dY_{nm}}{dL_n} &= L_s\Big(\cos\theta_n\frac{d\sin\theta_{ns}}{dL_n} + \sin\theta_{ns}\frac{d\cos\theta_{n}}{dL_n} + \sin\theta_n\frac{d\cos\theta_{ns}}{dL_n} + \cos\theta_{ns}\frac{d\sin\theta_{n}}{dL_n} \Big)\\
   \frac{dX_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_f} - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_f} \Big)\\
-  \frac{dY_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\sin\theta_{ns}}{dL_f} + \sin\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} + \sin\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\sin\theta_{n}}{dL_f}\Big)\\
-  \frac{dX_{t}}{dL_n} &= \cos\theta_n + L_n\frac{\partial \cos\theta_n}{\partial L_n} = \frac{L_n}{L}\\
-  \frac{dY_{t}}{dL_n} &= \sin\theta_n + L_n\frac{\partial \sin\theta_n}{\partial L_n}\\
-  \frac{dX_{t}}{dL_f} &= L_n\frac{\partial \cos\theta_n}{\partial L_f} = -\frac{L_f}{L}\\
-  \frac{dY_{t}}{dL_f} &= L_n\frac{\partial \sin\theta_n}{\partial L_f}\\
+  %% \frac{dY_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\sin\theta_{ns}}{dL_f} + \sin\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} + \sin\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\sin\theta_{n}}{dL_f}\Big)\\
+  %% \frac{dX_{t}}{dL_n} &= \cos\theta_n + L_n\frac{\partial \cos\theta_n}{\partial L_n} = \frac{L_n}{L}\\
+  %% \frac{dY_{t}}{dL_n} &= \sin\theta_n + L_n\frac{\partial \sin\theta_n}{\partial L_n}\\
+  %% \frac{dX_{t}}{dL_f} &= L_n\frac{\partial \cos\theta_n}{\partial L_f} = -\frac{L_f}{L}\\
+  %% \frac{dY_{t}}{dL_f} &= L_n\frac{\partial \sin\theta_n}{\partial L_f}\\
 \end{align}
 
 These partial derivatives are then used in a system of equations very similar to that in Equations (\ref{ob_system_first}-\ref{ob_system_last}), combining Brownian and coordinate system definitions of domain velocities:
@@ -730,19 +738,19 @@ The matrix version of this system looks like:
 \end{pmatrix}
 \]
 
-This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{both-motion-equations}).
+This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{sec:bb-motion-equations}).
 
 \subsection{Simulation}
 To generate stepping data, the models were coded in \verb|C++| and time-evolved using Euler's method to generate reasonable dynamical behavior. When in a position deemed worthy of a state transition a conversion, the model was converted to the respective other model, representing part of a ``step'' through the mechanochemical cycle. Some unphysical but minor corrections at points in the simulation were needed to rescue the model from entering incalculable positions.\\
 
 Code is available at \verb|https://github.com/elliotc12/dynein_walk.git|.
 
-\paragraph{Euler’s method}
-Show how Euler's method is arrived at, how its error scales, why we use it.
+%% \paragraph{Euler’s method}
+%% Show how Euler's method is arrived at, how its error scales, why we use it.
 
-\paragraph{Vs other methods (Runge Kutta, etc)}
-Talk about why our differential equation is most conducive to Euler's method. Euler's is more
-efficient -- is there a way to show how our differential equation is smooth, not jagged?
+%% \paragraph{Vs other methods (Runge Kutta, etc)}
+%% Talk about why our differential equation is most conducive to Euler's method. Euler's is more
+%% efficient -- is there a way to show how our differential equation is smooth, not jagged?
 
 \textit{todo: come up with a better word than ``model'' to describe the state of the system at any time}
 \subsubsection{Time evolution}
@@ -812,8 +820,8 @@ To create a BB model from OB, the following intermediate variables are first com
 \begin{align}
   L_n^2 &= \left(X_t - X_{nb}\right)^2 + Y_t^2\\
   L_f^2 &= \left(X_t - X_{fb}\right)^2 + Y_t^2\\
-  \cos(\Theta_{nm}) = \frac{L_s^2 + L_t^2 - L_n^2}{2L_sL_t}\\
-  \cos(\Theta_{fm}) = \frac{L_s^2 + L_t^2 - L_f^2}{2L_sL_t}\\
+  \cos(\Theta_{nm}) &= \frac{L_s^2 + L_t^2 - L_n^2}{2L_sL_t}\\
+  \cos(\Theta_{fm}) &= \frac{L_s^2 + L_t^2 - L_f^2}{2L_sL_t}
 \end{align}
 
 \textbf{todo: figure out why this new method is used instead of just computing the bad nma angles}
@@ -825,7 +833,7 @@ Similar to the binding transition, unbinding involves creating a new onebound dy
   \Theta_{new,bba} &= \Theta_{old,nba}\\
   \Theta_{new,bma} &= \Theta_{old,nma} + \Theta_{old,nba} - \pi\\
   \Theta_{new,uma} &= \Theta_{old,fma} + \Theta_{old,fba} - \pi\\
-  \Theta_{new,uba} &= \Theta_{old,fba}\\
+  \Theta_{new,uba} &= \Theta_{old,fba}
 \end{align}
 
 To do a nearbound transition, the ``f'' and ``n'' subscripts in the above equations are swapped.\\
@@ -845,7 +853,7 @@ Certain configurations of the model, such as in the bothbound model when $\Theta
 Alternative problem states are when $L = 0$ and ???. These states are corrected similarly.\\
 
 \subsubsection{Forces}
-Spring and Brownian forces are used to properly move the model through time. Appendices (\ref{onebound-motion-equatons}-\ref{bothbound-motion-equations}) show angular velocities are functions of the x- and y-components of both spring forces $F$ and Brownian forces $\gamma R$.
+Spring and Brownian forces are used to properly move the model through time. Appendices (\ref{sec:ob-motion-equatons}-\ref{sec:bb-motion-equations}) show angular velocities are functions of the x- and y-components of both spring forces $F$ and Brownian forces $\gamma R$.
 
 \paragraph{Brownian forces}
 Each Brownian force $R_{n,m}$ on domain $n$ in direction $m$ is sampled from a Gaussian with standard deviation $\sqrt{\frac{2k_BT\gamma_n}{dt}}$.\\
@@ -1091,11 +1099,6 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
 \paragraph{Fitting rate constants by simulation}
 \textit{Add in a plot of the binding rate fitting search}
 
-\subsubsection{Fitting spring constants}
-\paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
-\paragraph{Using $\Theta_m$ standard deviation to guess $c_m$}
-\paragraph{Fitting rate constants by simulation}
-
 %% \subsubsection{Fitting spring constants}
 %% \paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
 %% \paragraph{Using $\Theta_m$ standard deviation to guess $c_m$}
@@ -1149,7 +1152,7 @@ Mention the Burgess paper, which says spring constants might change between apo/
 Computational limitations: Our project is computational, not experimental. Thus the onus is on us to show that our system is not a humongously over-fit model which just happens to reproduce experimental data, but rather a good physical model of dynein which also replicates data.\\
 
 \subsection{Future work on this project}
-If setbacks happen, this'll be a big section. Or, further simulations which could be done.
+If setbacks happen, this'll be a big section. Or, further simulations which could be done. Namely taking our model and giving it lots more states and seeing if this model even better fits experimental data.\\
 
 \subsubsection{Experiments to verify our model}
 Talk about how FRET could be used to verify our model. We have domain distance info over long
@@ -1182,7 +1185,7 @@ and get its crystal structure to do some comparisons.
 \subsection{Motion equations}
 
 \subsubsection{Onebound equations}
-\label{onebound-motion-equations}
+\label{sec:ob-motion-equations}
 The following is a continuation of the derivation for the full motion equations used to time evolve the onebound model:
 
 \begin{align*}
@@ -1256,46 +1259,46 @@ Solving the above system for $\dot{\Theta}_{bb}, \dot{\Theta}_{bm}, \dot{\Theta}
 %%   ( - X3 + X4)/DD + (II*( - (BB*GG*LL*NN*PP*X1) + AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 + BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 + AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 + AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 - BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 + BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 + AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 - BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 - BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 - AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 - AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 - AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 + AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/(DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)) - ((( - JJ + KK)/DD - (II*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)*( - (JJ*NN) + CC*UU))/(DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)))*( - ((( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( - ((( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*NN*X2 +  Power(AA,4)* Power(BB,2)*NN*X3 -  Power(AA,4)* Power(BB,2)*CC*X7)))) + ( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( - ((( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,5)* Power(BB,3)*CC*DD*LL*X1 -  Power(AA,6)* Power(BB,2)*CC*DD*MM*X1 +  Power(AA,6)* Power(BB,2)*CC*DD*MM*X2 -  Power(AA,6)* Power(BB,3)*DD*NN*X2 +  Power(AA,6)* Power(BB,3)*DD*NN*X3 -  Power(AA,6)* Power(BB,3)*CC*OO*X3 +  Power(AA,6)* Power(BB,3)*CC*OO*X4 -  Power(AA,6)* Power(BB,3)*CC*DD*X8)))))/( - (( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*(( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( Power(AA,4)* Power(BB,2)*JJ*NN -  Power(AA,4)* Power(BB,2)*CC*UU)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( Power(AA,6)* Power(BB,3)*DD*JJ*NN -  Power(AA,6)* Power(BB,3)*CC*JJ*OO +  Power(AA,6)* Power(BB,3)*CC*KK*OO -  Power(AA,6)* Power(BB,3)*CC*DD*VV))
 %% }
 
-%% \subsubsection{Bothbound equations}
-%% \label{bothbound-motion-equations}
-%% The following are the full motion equations used to time evolve the bothbound model:
+\subsubsection{Bothbound equations}
+\label{sec:bb-motion-equations}
+The following are the full motion equations used to time evolve the bothbound model:
 
-%% \begin{center}
-%%   \begin{minipage}{0.3\textwidth}
-%%     \begin{align*}
-%%       a &= \frac{-dXnm}{dLn}\\
-%%        b &= \frac{-dXnm}{dLf}\\
-%%        c &= -(x_{nm} - x_{nb}) / \gamma_m\\
-%%        d &= (x_t - x_{nm}) / \gamma_m\\
-%%        e &= \frac{-dXt}{dLn}\\
-%%        f &= \frac{-dXt}{dLf}\\
-%%        g &= -(x_t - x_{nm}) / \gamma_t\\
-%%        h &= (x_{fm} - x_t) / \gamma_t\\
-%%        i &= \frac{-dXfm}{dLn}\\
-%%        j &= \frac{-dXfm}{dLf}\\
-%%        k &= -(x_{fm} - x_t) / \gamma_m\\
-%%        l &= (x_{fb} - x_{fm}) / \gamma_m\\
-%%     \end{align*}
-%%   \end{minipage}
-%%   \begin{minipage}{0.3\textwidth}
-%%     \begin{align*}
-%%        m &= \frac{-dYnm}{dLn}\\
-%%        n &= \frac{-dYnm}{dLf}\\
-%%        p &= -(y_{nm} - y_{nb}) / \gamma_m\\
-%%        q &= (y_t - y_{nm}) / \gamma_m\\
-%%        r &= \frac{-dYt}{dLn}\\
-%%        s &= \frac{-dYt}{dLf}\\
-%%        t &= -(y_t - y_{nm}) / \gamma_t\\
-%%        u &= (y_{fm} - y_t) / \gamma_t\\
-%%        v &= \frac{-dYfm}{dLn}\\
-%%        w &= \frac{-dYfm}{dLf}\\
-%%        x &= -(y_{fm} - y_t) / \gamma_m\\
-%%        y &= (y_{fb} - y_{fm}) / \gamma_m
-%%     \end{align*}
-%%   \end{minipage}
-%% \end{center}
+\begin{center}
+  \begin{minipage}{0.3\textwidth}
+    \begin{align*}
+      a &= \frac{-dXnm}{dLn}\\
+       b &= \frac{-dXnm}{dLf}\\
+       c &= -(x_{nm} - x_{nb}) / \gamma_m\\
+       d &= (x_t - x_{nm}) / \gamma_m\\
+       e &= \frac{-dXt}{dLn}\\
+       f &= \frac{-dXt}{dLf}\\
+       g &= -(x_t - x_{nm}) / \gamma_t\\
+       h &= (x_{fm} - x_t) / \gamma_t\\
+       i &= \frac{-dXfm}{dLn}\\
+       j &= \frac{-dXfm}{dLf}\\
+       k &= -(x_{fm} - x_t) / \gamma_m\\
+       l &= (x_{fb} - x_{fm}) / \gamma_m\\
+    \end{align*}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \begin{align*}
+       m &= \frac{-dYnm}{dLn}\\
+       n &= \frac{-dYnm}{dLf}\\
+       p &= -(y_{nm} - y_{nb}) / \gamma_m\\
+       q &= (y_t - y_{nm}) / \gamma_m\\
+       r &= \frac{-dYt}{dLn}\\
+       s &= \frac{-dYt}{dLf}\\
+       t &= -(y_t - y_{nm}) / \gamma_t\\
+       u &= (y_{fm} - y_t) / \gamma_t\\
+       v &= \frac{-dYfm}{dLn}\\
+       w &= \frac{-dYfm}{dLf}\\
+       x &= -(y_{fm} - y_t) / \gamma_m\\
+       y &= (y_{fb} - y_{fm}) / \gamma_m
+    \end{align*}
+  \end{minipage}
+\end{center}
 
-%% Solving the above system for $\dot{\Theta}_{nm}$ and $\dot{\Theta}_{fm}$ gives the desired velocities. Solution was done via Mathematica.
+Solving the above system for $\dot{\Theta}_{nm}$ and $\dot{\Theta}_{fm}$ gives the desired velocities. Solution was done via Mathematica.
 
 %% $\dot{Ln}$ =
 %% {\tiny
