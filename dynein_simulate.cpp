@@ -75,7 +75,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
 	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
-	if (am_debugging_rates and binding_prob != 0 and rand->rand() < 1e-8) {
+	if (am_debugging_rates and binding_prob != 0 and rand->rand() < 1e-3) {
 	  printf("binding probability: %g, uby %g at time %g s\n", binding_prob, dyn_ob->get_uby(), t);
 	}
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
