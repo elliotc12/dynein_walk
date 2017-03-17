@@ -27,6 +27,8 @@ datafiles = [s for s in datafiles if "stepping_data" in s]
 t_step = []
 t_ob = []
 t_bb = []
+t_ob_uncertainty = []
+t_bb_uncertainty = []
 t_proc = []
 kbs = []
 kubs = []
@@ -72,6 +74,9 @@ for i in range(len(datafiles)):
     t_bb.append(np.mean(bothbound_times))
     t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
+    t_ob_uncertainty.append(np.std(onebound_times)/np.sqrt(num_steps)*1.645) # 95% chance of true average being 1.645 stdevs from the sample average
+    t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
+
 print("kbs: ", kbs)
 print("kubs: ", kubs)
 print("tobs: ", t_ob)
@@ -98,6 +103,7 @@ plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
 plt.gca().set_ylim([-0.1*maxy_tob, 1.5*maxy_tob])
 plt.legend(shadow=True)
+plt.errorbar(kbs, t_ob, yerr=t_ob_uncertainty, linestyle="None")
 plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kb-fit.pdf", bbox_inches='tight')
 
 plt.figure()
@@ -111,6 +117,7 @@ plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kb*0.8, maxx_kb*1.2])
 plt.gca().set_ylim([-0.1*maxy_tbb, 1.5*maxy_tbb])
 plt.legend(shadow=True)
+plt.errorbar(kbs, t_bb, yerr=t_bb_uncertainty, linestyle="None")
 plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kb-fit.pdf", bbox_inches='tight')
 
 if len(empty_kubs) == 0:
@@ -131,6 +138,7 @@ plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
 plt.gca().set_ylim([-0.1*maxy_tob, 1.5*maxy_tob])
 plt.legend(shadow=True)
+plt.errorbar(kubs, t_ob, yerr=t_ob_uncertainty, linestyle="None")
 plt.savefig("plots/" + sys.argv[1] + "-tob-vs-kub-fit.pdf", bbox_inches='tight')
 
 plt.figure()
@@ -144,4 +152,5 @@ plt.gca().set_xscale('log')
 plt.gca().set_xlim([minx_kub*0.8, maxx_kub*1.2])
 plt.gca().set_ylim([-0.1*maxy_tbb, 1.5*maxy_tbb])
 plt.legend(shadow=True)
+plt.errorbar(kubs, t_bb, yerr=t_bb_uncertainty, linestyle="None")
 plt.savefig("plots/" + sys.argv[1] + "-tbb-vs-kub-fit.pdf", bbox_inches='tight')
