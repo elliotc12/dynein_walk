@@ -228,7 +228,7 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
   if ((am_making_movie or am_debugging_onebound) && iteration % stepping_movie_framerate == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
-  if (iteration % (long long) (0.01 / dt) == 0) {
+  if (iteration % (long long) (0.01 / dt) == 0) { // print time every tenth of a second.
     fprintf(job_msg.stepping_data_file, "#[time: %g]\n", iteration*dt);
     printf("#[time: %g]\n", iteration*dt);
   }
