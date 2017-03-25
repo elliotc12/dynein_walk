@@ -37,8 +37,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 
-\usepackage{tocbibind}
-\usepackage{tocloft}
+%% \usepackage{tocbibind}
+%% \usepackage{tocloft}
 \usepackage{xpatch}
 
 \renewcommand{\headrulewidth}{0pt} % Get rid of the default rule in the header
@@ -46,18 +46,18 @@
 \bibliographystyle{plain}
 
 \begin{document}
-\newcommand{\listequationsname}{List of Equations}
-\newlistof{myequations}{equ}{\listequationsname}
-\newcommand{\myequations}[1]{%
-\addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
+%% \newcommand{\listequationsname}{List of Equations}
+%% \newlistof{myequations}{equ}{\listequationsname}
+%% \newcommand{\myequations}[1]{%
+%% \addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
 
-\xpretocmd{\listofmyequations}{\addcontentsline{toc}{chapter}{\listequationsname}}{}{}
+%% \xpretocmd{\listofmyequations}{\addcontentsline{toc}{chapter}{\listequationsname}}{}{}
 
-\tableofcontents
+%% \tableofcontents
 \listoffigures
 \clearpage
-\listofmyequations
-\newpage
+%% \listofmyequations
+%% \newpage
 
 \section{Chapter: Introduction}
 
@@ -96,7 +96,7 @@ Diffusion, or random motion of molecules due to collisions with solvent (i.e. Br
   \label{diffusion-equation}
   <x> = \sqrt{2Dt}
 \end{equation}
-\myequations{some equation}
+%% \myequations{some equation}
 
 where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ \cite{diffusionconstants}, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same. Figure (\ref{fig:diffusion_vs_dynein}) demonstrates how motor transport quickly outstrips diffusion in a cell.\\
 
@@ -1021,7 +1021,7 @@ In addition, the physical conditions the simulations were run at are shown in Ta
     310.15 K & $1mM$\\ \hline
   \end{tabular}
   \caption{Physical constants of simulation.}{Table of physical constants used in simulation.}
-  \label{table:parameter-table}
+  \label{table:simulation-std-conditions}
 \end{figure}
 
 \subsubsection{Fitting rate constants}
@@ -1102,13 +1102,20 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
     134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
   \end{tabular}
   \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
-  \label{table:parameter-table}
+  \label{table:time-parameter-table}
 \end{figure}
 
-%% \textit{Add in a plot of the binding rate fitting search}
-
 \paragraph{Fitting rate constants by simulation}
-\textit{Add in a plot of the binding rate fitting search}
+\textit{Add in a plot of the binding rate fitting search}\\
+
+To find the ideal binding and unbinding rates of our model, we ran simulations at various $k_b$ and $k_{ub}$ conditions. The time each simulation spent in each state, $t_{bb}$ and $t_{ob}$, was compared with the experimental data shown in Table \ref{table:time-parameter-table}. Simulation behavior for a wide range of $k_b$ and $k_{ub}$ values is shown as a heat map in Figure \ref{fig:kb-kub-heatmap}.\\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{../../plots/kb-kub-contour}
+  \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$.}
+  \label{fig:kb-kub-heatmap}
+\end{figure}
 
 %% \subsubsection{Fitting spring constants}
 %% \paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
