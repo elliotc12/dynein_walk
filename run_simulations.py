@@ -25,43 +25,51 @@ custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 14, "k_ub": 2e11, "T": 310.15,
+                    "dt": 1e-12,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 11, "k_ub": 2e11, "T": 310.15,
+                    "dt": 5e-12,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 7, "k_ub": 2e11, "T": 310.15,
+                    "dt": 1e-11,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 9, "k_ub": 2e11, "T": 310.15,
+                    "dt": 8e-11,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 12, "k_ub": 2e11, "T": 310.15,
+                    "dt": 5e-11,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11, "T": 310.15,
+                    "dt": 2e-10,
+                    "movie": True,
+                    "constant-write": True})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 15, "k_ub": 2e11, "T": 310.15,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "movie": False})
-
+                    "dt": 1e-10,
+                    "movie": True,
+                    "constant-write": True})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -91,8 +99,6 @@ T_min = 310.15 # K
 T_max = 310.15 # K
 T_num = 1
 
-label = "debug-unbinding-3-13"
-
 ls_range = np.linspace(ls_min, ls_max, num=ls_num)
 lt_range = np.linspace(lt_min, lt_max, num=lt_num)
 k_b_range = np.linspace(k_b_min, k_b_max, num=k_b_num)
@@ -101,33 +107,29 @@ cb_range = np.linspace(cb_min, cb_max, num=cb_num)
 cm_range = np.linspace(cm_min, cm_max, num=cm_num)
 ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
-runtime = 1.0
-seed = 2
+runtime = 0.01
+label = "dt-PE-testing"
 
 if len(custom_runs) != 0:
     for run in custom_runs:
+        custom_label = label+str(run["dt"]) #edit this to uniquely name each simulation
+
         cmd = ["srun"] if have_slurm else []
-        cmd.extend([
-            "nice", "-19",
-            "./generate_stepping_data",
-            "--Ls",  str(run["ls"]),
-            "--Lt",  str(run["lt"]),
-            "--k_b", str(run["k_b"]),
-            "--k_ub",str(run["k_ub"]),
-            "--cb",  str(run["cb"]),
-            "--cm",  str(run["cm"]),
-            "--ct",  str(run["ct"]),
-            "--T",   str(run["T"]),
-            "--label", label,
-            "--runtime", str(runtime),
-            "--seed", str(seed),
-        ])
-        if (run["movie"]):
+        cmd.extend(["nice", "-19"])
+        cmd.extend(["./generate_stepping_data"])
+        cmd.extend(["--runtime", str(runtime)])
+        cmd.extend(["--label", str(custom_label)])
+
+        for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "custom-label"]:
+            if key in run:
+                cmd.extend(["--"+key, str(run[key])])
+
+        if "movie" in run and run["movie"]:
             cmd.extend(["--movie"])
-        if ("onebound-debugging" in run and run["onebound-debugging"]):
+        if "onebound-debugging" in run and run["onebound-debugging"]:
             cmd.extend(["--onebound-debugging"])
 
-        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
+        basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
         out = open('runlogs/' + basename + '.out', 'w')
         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
         print "Running: ", ' '.join(cmd)

@@ -245,7 +245,7 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
 
   log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
 
-  if ((am_making_movie or am_debugging_onebound) && iteration % stepping_movie_framerate == 0)
+  if ((am_making_movie or am_debugging_onebound) && iteration % int(stepping_movie_framerate/dt) == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
 
   if (iteration % (long long) (0.01 / dt) == 0) { // print time every tenth of a second.
@@ -278,8 +278,8 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
   static struct option long_options[] =
     {
-      {"Ls",       required_argument,    0, 'a'},
-      {"Lt",       required_argument,    0, 'b'},
+      {"ls",       required_argument,    0, 'a'},
+      {"lt",       required_argument,    0, 'b'},
       {"cb",       required_argument,    0, 'c'},
       {"cm",       required_argument,    0, 'd'},
       {"ct",       required_argument,    0, 'e'},
@@ -370,17 +370,17 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
   if (*run_name == 0) {
     if (label == 0) {
-      sprintf(run_name, "ls-%g,lt-%g,k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,T-%g", Ls, Lt,
-	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, T);
+      sprintf(run_name, "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g",
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, dt);
     }
     else {
-      sprintf(run_name, "%s__ls-%g,lt-%g,k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,T-%g", label, Ls,
-	      Lt, low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, T);
+      sprintf(run_name, "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g", label,
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, dt);
     }
   }
 
   if (optind != argc) {
-    printf("Improper usage, all options need an option name like --Ls or --T!\n");
+    printf("Improper usage. Example: ./generate_stepping_data --label test --Ls 34.5 --T 55 --movie\n");
     exit(EXIT_FAILURE);
   }
 }
@@ -417,7 +417,7 @@ int main(int argc, char** argv) {
   set_input_variables(argc, argv, run_name, &am_making_movie, &runtime);
 
   if (runtime == 0 and am_making_movie and not am_only_writing_on_crash) {
-    printf("value of am_only_writing: %d\n", (int)am_only_writing_on_crash);
+    printf("error,value of am_only_writing: %d\n", (int)am_only_writing_on_crash);
     //printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
     exit(EXIT_FAILURE);
   }
