@@ -30,6 +30,7 @@ int num_movie_writes = 1e4;
 // bytes per movie write: 213, 200mb bytes max movie size
 
 static const long MAX_FILESIZE_PERMITTED = 1<<30;
+static int NUM_STEPS = 0;
 
 void on_crash_write_movie_buffer();
 
@@ -40,6 +41,23 @@ struct job_msg_t {
   FILE *stepping_data_file;
   FILE *movie_data_file;
 };
+
+void check_for_quitting_conditions(double time_run) {
+  // P(stepping k times in t seconds) = ((t/0.06)^k*e^(t/0.06)) / k!
+  if (time_run > 0.3 and NUM_STEPS == 0 and am_exiting_on_improbable_stepping) {
+    printf("Zero steps in 0.3 seconds. There's a 0.67%% chance of real dynein doing this; exiting successfully.\n");
+    exit(0);
+  }
+  if (time_run > 0.3 and NUM_STEPS >= 10 and am_exiting_on_improbable_stepping) {
+    printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this; exiting successfully.\n");
+    exit(0);
+  }
+  else if (time_run > 0.7 and am_exiting_on_improbable_stepping) {
+    // printf("There's a 97%% chance of real dynein having stepped 5 times in 0.7 seconds, exiting successfully.\n");
+    printf("Exiting normally after 0.7 seconds.\n");
+    exit(0);
+  }
+}
 
 void zero_movie_struct(movie_data_struct* data) {
   for (int i = 0; i < MOVIE_BUFFER_SIZE; i++) {
@@ -56,6 +74,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     if (last_state == NEARBOUND or last_state == FARBOUND) {
       fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
       fflush(data_file);
+      NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
@@ -210,6 +229,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 }
 
 void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
+  check_for_quitting_conditions(iteration*dt);
   job_msg_t job_msg = *(job_msg_t *)job_msg_;
 
   if (iteration % 1000 == 0) {

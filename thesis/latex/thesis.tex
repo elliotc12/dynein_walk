@@ -49,21 +49,20 @@
 
 \section{Chapter: Introduction}
 
-%% Begin with a paper-like introduction which talks about:
+Begin with a paper-like introduction which talks about:
 
-%% \begin{itemize}
-%% \item How dynein is a structure which turns chemical energy into motion
-%% \item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
-%% \item How it's weird that a cellular structure can generate directed motion
-%% \item Other cool stuff - make dynein mysterious and cool.
-%% \end{itemize}
+\begin{itemize}
+\item How dynein is a structure which turns chemical energy into motion
+\item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
+\item How it's weird that a cellular structure can generate directed motion
+\item Other cool stuff - make dynein mysterious and cool.
+\end{itemize}
 
-%% Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
+Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
 
 \subsection{What is dynein?}
 \subsubsection{Basics}
-
-Dynein is a cellular structure which converts chemical energy to mechanical energy. It does so by reacting with adenosine triphosphate (ATP) to take steps along long cellular tracks known as microtubules (MTs). Dynein's mechanical energy is used to transport molecules around the cell, pull chromosomes during division, move cellular propellers known as cilia and various other functions \cite{cianfroccoreview}.\\
+Dynein is a cellular structure which converts chemical energy to mechanical energy. It does so by reacting with adenosine triphosphate (ATP) to take steps along long cellular tracks known as microtubules (MTs). Dynein's mechanical energy is used for various cellular functions, including to transport molecules around the cell, pull chromosomes during division, and move cellular propellers known as cilia \cite{cianfroccoreview}.\\
 
 Dynein is a protein with many smaller domains. A depiction of the protein and its labeled subdomains is shown in Figure (\ref{dynein-artist-rendition}). Each motor is a homodimer made up of two identical monomer proteins. Each monomer has a binding domain which binds to the microtubule, a motor domain which binds ATP, a tail domain which connects to the other monomer, a stalk which connects the binding and motor domains, and a linker which connects the motor and tail domains. The tail domain is also responsible for binding to cargo.\\
 
@@ -74,10 +73,10 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
   \label{dynein-artist-rendition}
 \end{figure}
 
-Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule can end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
+Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule will end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
 
 \subsubsection{Why do cells need motor transport?}
-Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2) \textbf{((is this the best way to cite this?))}, a $10^3$ factor difference in size.\\
+Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
 
 Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \textbf{cite here}:
 
@@ -85,15 +84,15 @@ Diffusion, or random motion of molecules due to collisions with solvent (i.e. Br
   \label{diffusion-equation}
   <x> = \sqrt{2Dt}
 \end{equation}
+%% \myequations{some equation}
 
-where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ %% \cite{diffusionconstants}
-, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same.
+where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ \cite{diffusionconstants}, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same. Figure (\ref{fig:diffusion_vs_dynein}) demonstrates how motor transport quickly outstrips diffusion in a cell.\\
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/diffusion_vs_dynein.png}
   \caption{Passive diffusion vs motor transport rate}{Plot comparing the diffusion rate of a 140kD protein with a diffusion consant $D = .2 \mu m^2/s$ with a dynein motor travelling at 100nm/s.}
-  \label{diffusion_vs_dynein}
+  \label{fig:diffusion_vs_dynein}
 \end{figure}
 
 \textit{Maybe use the more reasonable 2$\mu m / s$ number for dynein velocity, in-vitro speed may not be applicable since [ATP]-limited}
@@ -660,7 +659,7 @@ The position of the motor and tail domains is calculated as follws, using the an
   \right)
   \\
   X_{t} &= L_n\cos\theta_n\\
-  Y_{t} &= L_n\sin\theta_n\\
+  Y_{t} &= L_n\sin\theta_n
 \end{align}
 
 The partial derivatives of these values are used later. A selection are shown here:
@@ -668,7 +667,7 @@ The partial derivatives of these values are used later. A selection are shown he
 \begin{align}
   \frac{dX_{nm}}{dL_n} &= L_s\Big(\cos\theta_n\frac{d\cos\theta_{ns}}{dL_n} + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_n} - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_n} - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_n}\Big)\\
   \frac{dY_{nm}}{dL_n} &= L_s\Big(\cos\theta_n\frac{d\sin\theta_{ns}}{dL_n} + \sin\theta_{ns}\frac{d\cos\theta_{n}}{dL_n} + \sin\theta_n\frac{d\cos\theta_{ns}}{dL_n} + \cos\theta_{ns}\frac{d\sin\theta_{n}}{dL_n} \Big)\\
-  \frac{dX_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_f} - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_f} \Big)\\
+  \frac{dX_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} - \sin\theta_n\frac{d\sin\theta_{ns}}{dL_f} - \sin\theta_{ns}\frac{d\sin\theta_{n}}{dL_f} \Big)
   %% \frac{dY_{nm}}{dL_f} &= L_s\Big(\cos\theta_n\frac{d\sin\theta_{ns}}{dL_f} + \sin\theta_{ns}\frac{d\cos\theta_{n}}{dL_f} + \sin\theta_n\frac{d\cos\theta_{ns}}{dL_f} + \cos\theta_{ns}\frac{d\sin\theta_{n}}{dL_f}\Big)\\
   %% \frac{dX_{t}}{dL_n} &= \cos\theta_n + L_n\frac{\partial \cos\theta_n}{\partial L_n} = \frac{L_n}{L}\\
   %% \frac{dY_{t}}{dL_n} &= \sin\theta_n + L_n\frac{\partial \sin\theta_n}{\partial L_n}\\
@@ -739,6 +738,9 @@ The matrix version of this system looks like:
 \]
 
 This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{sec:bb-motion-equations}).
+
+\section{Chapter: Methods}
+This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
 
 \subsection{Simulation}
 To generate stepping data, the models were coded in \verb|C++| and time-evolved using Euler's method to generate reasonable dynamical behavior. When in a position deemed worthy of a state transition a conversion, the model was converted to the respective other model, representing part of a ``step'' through the mechanochemical cycle. Some unphysical but minor corrections at points in the simulation were needed to rescue the model from entering incalculable positions.\\
@@ -884,9 +886,6 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
   \label{transition-rate-snippet}
 \end{figure}
 
-\section{Chapter: Methods}
-This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
-
 \subsection{Verifying the model}
 The models were verified to follow physical laws by checking their behavior in various tests: general conformational tests, energy conservation and obeying the equipartition theorem. The purpose of these tests was to verify that equations had been entered properly (primarily the conformational and energy conservation tests), and that the model obeyed the laws of physics (all tests).
 
@@ -1010,7 +1009,7 @@ In addition, the physical conditions the simulations were run at are shown in Ta
     310.15 K & $1mM$\\ \hline
   \end{tabular}
   \caption{Physical constants of simulation.}{Table of physical constants used in simulation.}
-  \label{table:parameter-table}
+  \label{table:simulation-std-conditions}
 \end{figure}
 
 \subsubsection{Fitting rate constants}
@@ -1091,13 +1090,20 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
     134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
   \end{tabular}
   \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
-  \label{table:parameter-table}
+  \label{table:time-parameter-table}
 \end{figure}
 
-%% \textit{Add in a plot of the binding rate fitting search}
-
 \paragraph{Fitting rate constants by simulation}
-\textit{Add in a plot of the binding rate fitting search}
+\textit{Add in a plot of the binding rate fitting search}\\
+
+To find the ideal binding and unbinding rates of our model, we ran simulations at various $k_b$ and $k_{ub}$ conditions. The time each simulation spent in each state, $t_{bb}$ and $t_{ob}$, was compared with the experimental data shown in Table \ref{table:time-parameter-table}. Simulation behavior for a wide range of $k_b$ and $k_{ub}$ values is shown as a heat map in Figure \ref{fig:kb-kub-heatmap}.\\
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{../../plots/kb-kub-contour}
+  \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$.}
+  \label{fig:kb-kub-heatmap}
+\end{figure}
 
 %% \subsubsection{Fitting spring constants}
 %% \paragraph{Using $\Delta G_{bind}$ to guess $c_b$}

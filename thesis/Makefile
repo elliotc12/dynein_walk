@@ -5,6 +5,12 @@ FIGURES=$(patsubst ../figures/%.svg, ../figures/%.pdf, $(wildcard ../figures/*.s
 thesis.pdf: latex/thesis.tex $(FIGURES)
 	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
 
+# thesis.pdf: latex/thesis.tex $(FIGURES)
+# 	cd latex && xelatex thesis.tex && mv thesis.pdf ..
+
+thesis2.pdf: latex/thesis2.tex $(FIGURES)
+	cd latex && xelatex thesis2.tex && mv thesis2.pdf ..
+
 continuous:
 	touch latex/thesis.pdf
 	ln -sf latex/thesis.pdf thesis.pdf

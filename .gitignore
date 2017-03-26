@@ -55,3 +55,7 @@ create_bb_movie
 *.fdb_latexmk
 *.dSYM
 *.toc
+
+*.equ
+
+*.lof

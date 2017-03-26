@@ -77,6 +77,8 @@ const bool am_debugging_time = false;
 const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
 
+const bool am_exiting_on_improbable_stepping = true;
+
 const bool crash_on_nan = true;
 
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
