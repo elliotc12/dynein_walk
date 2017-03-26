@@ -27,27 +27,27 @@ custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 14, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 2, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 11, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 4, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 7, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 6, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 9, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "movie": False})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 8, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 12, "k_ub": 2e11, "T": 310.15,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
@@ -101,7 +101,8 @@ cb_range = np.linspace(cb_min, cb_max, num=cb_num)
 cm_range = np.linspace(cm_min, cm_max, num=cm_num)
 ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
-runtime = 0.33
+runtime = 1.0
+seed = 2
 
 if len(custom_runs) != 0:
     for run in custom_runs:
@@ -119,6 +120,7 @@ if len(custom_runs) != 0:
             "--T",   str(run["T"]),
             "--label", label,
             "--runtime", str(runtime),
+            "--seed", str(seed),
         ])
         if (run["movie"]):
             cmd.extend(["--movie"])
