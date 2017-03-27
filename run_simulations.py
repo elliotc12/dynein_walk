@@ -128,6 +128,8 @@ if len(custom_runs) != 0:
             cmd.extend(["--movie"])
         if "onebound-debugging" in run and run["onebound-debugging"]:
             cmd.extend(["--onebound-debugging"])
+        if "constant-write" in run and run["constant-write"]:
+            cmd.extend(["--constant-write"])
 
         basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
         out = open('runlogs/' + basename + '.out', 'w')
