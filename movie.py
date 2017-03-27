@@ -29,7 +29,7 @@ Usage: python2 TITLE %s speed=N [show] [forces] [energies] [tail]"
        tail: only use last 1000 lines of data file
 ''' % (sys.argv[0], sys.argv[0])
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
   print usage
   sys.exit(1)
 
@@ -44,7 +44,7 @@ if sys.argv[2][:6] != 'speed=':
   exit(1)
 speed =  float(sys.argv[2][6:])
 
-config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
+# config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
 
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
@@ -63,10 +63,6 @@ plt.ion()
 if len(data) == 0 or str(type(data[0])) == "<type 'numpy.float64'>":
        print "Very short animation!"
        close_windows()
-
-gb = float(config[0]) # FIXME: make point radii based on these
-gm = float(config[1])
-gt = float(config[2])
 
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
@@ -111,11 +107,13 @@ while i < len(data):
   if i >= len(data):
     i = 0
 
-  nba_scaling = min(max(1 - (data[i][2]) / (0.5*config[5]), 0), 1) # scale based on PE/kbT ratio forced between 0-1
-  nma_scaling = min(max(1 - (data[i][3]) / (0.5*config[5]), 0), 1)
-  ta_scaling  = min(max(1 - (data[i][4]) / (0.5*config[5]), 0), 1)
-  fma_scaling = min(max(1 - (data[i][5]) / (0.5*config[5]), 0), 1)
-  fba_scaling = min(max(1 - (data[i][6]) / (0.5*config[5]), 0), 1)
+  i = int(i)
+  kbT = 0.0001
+  nba_scaling = min(max(1 - (data[i][2]) / (kbT), 0), 1) # scale based on PE/kbT ratio forced between 0-1
+  nma_scaling = min(max(1 - (data[i][3]) / (kbT), 0), 1)
+  ta_scaling  = min(max(1 - (data[i][4]) / (kbT), 0), 1)
+  fma_scaling = min(max(1 - (data[i][5]) / (kbT), 0), 1)
+  fba_scaling = min(max(1 - (data[i][6]) / (kbT), 0), 1)
 
   if (pe_coloring == True):
     binding1.set_color((nba_scaling, 1, nba_scaling))
