@@ -45,11 +45,15 @@ struct job_msg_t {
 void check_for_quitting_conditions(double time_run) {
   // P(stepping k times in t seconds) = ((t/0.06)^k*e^(t/0.06)) / k!
   if (time_run > 0.3 and NUM_STEPS == 0 and am_exiting_on_improbable_stepping) {
-    printf("Zero steps in 0.3 seconds. There's a 0.67%% chance of real dynein doing this; exiting successfully.\n");
+    printf("Zero steps in 0.3 seconds. There's a 0.67%% chance of real dynein doing this; exiting early.\n");
     exit(0);
   }
   if (time_run > 0.3 and NUM_STEPS >= 10 and am_exiting_on_improbable_stepping) {
-    printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this; exiting successfully.\n");
+    printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this; exiting early.\n");
+    exit(0);
+  }
+  if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
+    printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this; exiting early.\n");
     exit(0);
   }
   else if (time_run > 0.7 and am_exiting_on_improbable_stepping) {
