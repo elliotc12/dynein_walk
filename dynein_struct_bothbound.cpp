@@ -116,10 +116,10 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
 
   if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
     if (am_naively_correcting_nan_errors) {
-      if (cosnma > 1) cosnma = 0.999999;
-      if (cosnma < -1) cosnma = -0.999999;
-      if (cosfma > 1) cosfma = 0.999999;
-      if (cosfma < -1) cosfma = -0.999999;
+      if (cosnma > 1) cosnma = 1 - 1e-6;
+      if (cosnma < -1) cosnma = -1 + 1e-6;
+      if (cosfma > 1) cosfma = 1 - 1e-6;
+      if (cosfma < -1) cosfma = -1 + 1e-6;
     }
     else {
       printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
@@ -287,8 +287,8 @@ void Dynein_bothbound::update_coordinates() {
 
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   if (am_naively_correcting_nan_errors) {
-    if (cosAn > 1) cosAn = 0.99;
-    if (cosAn < -1) cosAn = -0.99;
+    if (cosAn > 1) cosAn = 1 - 1e-6;
+    if (cosAn < -1) cosAn = -1 + 1e-6;
   }
   sinAn = sqrt(1 - cosAn*cosAn);
   cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
@@ -296,8 +296,8 @@ void Dynein_bothbound::update_coordinates() {
 
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
   if (am_naively_correcting_nan_errors) {
-    if (cosAf > 1) cosAf = 0.99;
-    if (cosAf < -1) cosAf = -0.99;
+    if (cosAf > 1) cosAf = 1 - 1e-6;
+    if (cosAf < -1) cosAf = -1 + 1e-6;
   }
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
@@ -331,8 +331,8 @@ void Dynein_bothbound::update_coordinates() {
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
     if (am_naively_correcting_nan_errors) {
-      if (nba < 0) nba = 0.001;
-      if (nba > M_PI) nba = M_PI - 0.001;
+      if (nba < 0) nba = 1e-6;
+      if (nba > M_PI) nba = M_PI - 1e-6;
     }
     else {
       printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
@@ -348,8 +348,8 @@ void Dynein_bothbound::update_coordinates() {
   }
   if (fba < 0 or fba > M_PI) {
     if (am_naively_correcting_nan_errors) {
-      if (fba < 0) fba = 0.001;
-      if (fba > M_PI) fba = M_PI - 0.001;
+      if (fba < 0) fba = 1e-6;
+      if (fba > M_PI) fba = M_PI - 1e-6;
     }
     else {
       printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",

@@ -275,8 +275,8 @@ double Power(double num, int pow) {
 void Dynein_onebound::update_velocities() {
   if (bma < -2*M_PI or bma > 2*M_PI) { // check motor angles for crazy states
     if (am_naively_correcting_nan_errors) {
-	if (bma < -2*M_PI) bma = -2*M_PI + 0.001;
-	if (bma > 2*M_PI) bma = 2*M_PI - 0.001;
+	if (bma < -2*M_PI) bma = -2*M_PI + 1e-6;
+	if (bma > 2*M_PI) bma = 2*M_PI - 1e-6;
     }
     if (am_debugging_angles) printf("bma angle is crazy man! %g\n", bma);
   }
@@ -284,8 +284,8 @@ void Dynein_onebound::update_velocities() {
 
   if (uma < -2*M_PI or uma > 2*M_PI) {
     if (am_naively_correcting_nan_errors) {
-	if (uma < -2*M_PI) uma = -2*M_PI + 0.001;
-	if (uma > 2*M_PI) uma = 2*M_PI - 0.001;
+	if (uma < -2*M_PI) uma = -2*M_PI + 1e-6;
+	if (uma > 2*M_PI) uma = 2*M_PI - 1e-6;
     }
     if (am_debugging_angles) printf("uma angle is crazy man! %g\n", uma);
   }
@@ -293,8 +293,8 @@ void Dynein_onebound::update_velocities() {
 
   if (bba > M_PI or bba < 0) { // check binding angles for crazy states
     if (am_naively_correcting_nan_errors) {
-	if (bba < 0) bba = 0.001;
-	if (bba > M_PI) bba = M_PI - 0.001;
+	if (bba < 0) bba = 1e-6;
+	if (bba > M_PI) bba = M_PI - 1e-6;
     }
     if (am_debugging_angles) printf("bba angle is crazy man! %g\n", bba);
   }
