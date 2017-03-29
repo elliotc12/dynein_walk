@@ -1,5 +1,6 @@
 #!/usr/bin/python2.7
 import numpy as np
+import random
 import subprocess, os
 
 os.system('mkdir -p runlogs data')
@@ -21,51 +22,62 @@ binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_
 
 custom_runs = []
 
+random.seed() # seed from a random source
+
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-11})
+                    "dt": 1e-11,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 3e-11})
+                    "dt": 3e-11,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 6e-11})
+                    "dt": 6e-11,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 8e-11})
+                    "dt": 8e-11,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-10})
+                    "dt": 1e-10,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 2e-10})
+                    "dt": 2e-10,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 3e-10})
+                    "dt": 3e-10,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 5e-10})
+                    "dt": 5e-10,
+                    "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 2e-11})
+                    "dt": 2e-11,
+                    "seed": random.randint(0,100)})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
