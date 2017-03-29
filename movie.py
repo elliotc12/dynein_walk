@@ -14,7 +14,8 @@ pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
 tail = 'tail' in sys.argv
 
-view_width = 50
+view_height = 150
+view_width = 150
 
 def close_windows(*_):
   plt.close()
@@ -35,8 +36,8 @@ if len(sys.argv) < 3:
 
 title = sys.argv[1]
 
-X = [0, 1, 2, 3, 4]
-Y = [0, 1, 2, 3, 4]
+X = numpy.array([0, 1, 2, 3, 4])
+Y = numpy.array([0, 1, 2, 3, 4])
 
 if sys.argv[2][:6] != 'speed=':
   print usage
@@ -64,10 +65,12 @@ if len(data) == 0 or str(type(data[0])) == "<type 'numpy.float64'>":
        print "Very short animation!"
        close_windows()
 
+print "Making " + str(len(data)/speed) + " frame movie out of " + str(len(data)) + " frames of data."
+
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
 ax.set_xlim(-view_width, view_width)
-ax.set_ylim(-view_width, view_width)
+ax.set_ylim(-view_height, view_height)
 
 microtubule_thickness = 2 # nm
 plt.gca().add_patch(Rectangle((-view_width, -microtubule_thickness),
@@ -78,11 +81,11 @@ tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
 tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
-binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=1)
-motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18)
-tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=12)
-motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18)
-binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=1)
+binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=1*50/view_width)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18*50/view_width)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=12*50/view_width)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18*50/view_width)
+binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=1*50/view_width)
 
 if force_vectors:
   force_line = [i for i in range(5)]
@@ -93,7 +96,7 @@ if force_vectors:
 
 title_text = plt.text(-.9*view_width, 0.9*view_width, 'State:')
 num_steps_text = plt.text(-.9*view_width, 0.8*view_width, '0 steps')
-pe_text = plt.text(-view_width, 50, 'PE: ')
+pe_text = plt.text(-view_width, view_height+10, 'PE: ')
 t_text = plt.text(-view_width+1, -view_width+1, 'Time:')
 
 i = 0
@@ -126,6 +129,11 @@ while i < len(data):
   Y[:] = data[i][8:17:2]
   Fx = data[i][17:27:2]
   Fy = data[i][18:28:2]
+
+  if X[0] > view_width:
+      X = X - view_width
+  elif X[0] < -view_width:
+      X = X + view_width
 
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
@@ -230,7 +238,7 @@ while i < len(data):
 
 
   i += speed
-  plt.pause(0.001)
+  # plt.pause(0.001)
   savefigframe += 1
 
   fname = 'PNGs/%s-%06d.png' % (title, savefigframe)
@@ -240,7 +248,7 @@ while i < len(data):
 
 # avconv may not be present on non-Debian-related systems, in which
 # case you may be able to substitute ffmpeg.
-framerate = 30
+framerate = 1
 
 have_avconv = True
 
