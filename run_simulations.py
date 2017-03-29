@@ -21,55 +21,51 @@ binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_
 
 custom_runs = []
 
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-12,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 1e-11})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 5e-12,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 3e-11})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-11,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 6e-11})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 8e-11,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 8e-11})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 5e-11,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 1e-10})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 2e-10,
-                    "movie": True,
-                    "constant-write": True})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "dt": 2e-10})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-10,
-                    "movie": True,
-                    "constant-write": True})
+                    "dt": 3e-10})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "dt": 5e-10})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "dt": 2e-11})
 
 ls_min = 22.1 # nm
 ls_max = 22.1 # nm
@@ -107,8 +103,8 @@ cb_range = np.linspace(cb_min, cb_max, num=cb_num)
 cm_range = np.linspace(cm_min, cm_max, num=cm_num)
 ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
-runtime = 0.01
-label = "dt-PE-testing"
+runtime = 0.3
+label = "test-nan-corrections"
 
 if len(custom_runs) != 0:
     for run in custom_runs:

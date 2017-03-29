@@ -90,6 +90,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
 	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %g, boltzmann factor: %g\n",
                                                      binding_prob, exp(-(dyn_bb->get_PE()-dyn_ob->get_PE())/kb/T));
+	  // if (am_debugging_state_transitions) {
+	  //   printf("previous OB angles: %g %g %g %g for bba bma uma uba\n", dyn_ob->get_bba(), dyn_ob->get_bma(), dyn_ob->get_uma(), dyn_ob->get_uba());
+	  //   printf("current  BB angles: %g %g %g %g for nba nma fma fba\n", dyn_bb->get_nba(), dyn_bb->get_nma(), dyn_bb->get_fma(), dyn_bb->get_fba());
+	  // }
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
