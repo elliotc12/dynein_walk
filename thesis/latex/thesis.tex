@@ -39,6 +39,8 @@
 
 \usepackage{csquotes}
 
+\usepackage{float}
+
 \renewcommand{\headrulewidth}{0pt} % Get rid of the default rule in the header
 
 \bibliographystyle{plain}
@@ -745,6 +747,89 @@ The matrix version of this system looks like:
 
 This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{sec:bb-motion-equations}).
 
+\subsection{Data interpretation}
+Metrics for quality are required to assess how well the model fits reality. These metrics include time spent in one/bothbound states and average step size. These metrics are developed here.\\
+
+\subsubsection{Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}
+Rate constants $k_b$ and $k_{ub}$ govern the probability of transitioning from onebound to bothbound and vice-versa, respectively. One issue is that when these parameters are measured experimentally, the values represent the average rate for an ensemble of dynein in many different conformations. In contrast, the rates the model uses represent the probability of unbinding of a specific conformation. Thus, it is necessary to find a way to convert between experimental rates $k_b^{exp}$ and $k_{ub}^{exp}$ and conformation-specific rates $k_b$ and $k_{ub}$. As shown in Section \ref{sec:transitioning-states}, rates can be expressed using the Arrhenius equation:
+
+\begin{align*}
+  k_b &= A_b'e^{\frac{-\Delta G_{bind}}{k_BT}} = A_b'e^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}} = A_be^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}\\
+  k_{ub} &= A_{ub}'e^{\frac{-\Delta G_{unbind}}{k_BT}} = A_{ub}'e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}e^{\frac{\Delta G_{bind}}{k_BT}} = A_{ub}e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}
+\end{align*}
+
+where the constant Boltzmann factor for binding energy are hidden inside the unprimed preexponential factors. The experimental values are calculated the same way, with the free energy changes replaced with expectation values. Since by the equipartition theorem $\left<G_{conf}^{ob}\right> = 2k_BT$ and $\left<G_{conf}^{bb}\right> = k_BT$, the equations can be simplified:
+
+\begin{align*}
+  k_b^{exp} &= A_be^{\frac{-\left(2k_BT - k_BT\right)}{k_BT}} = \frac{A_b}{e}\\
+  k_{ub}^{exp} &= A_{ub}e^{\frac{-\left(k_BT-2k_BT\right)}{k_BT}} = A_{ub}e
+\end{align*}
+
+Thus experimental rates can be converted easily into the model parameters $A_b$ and $A_{ub}$.
+
+\subsubsection{Literature values for experimental binding rates}
+Sarlah \textit{et. al.} \cite{sarlahmodel} perform a similar simulation of dynein and provide the reaction rates shown in Figure \ref{fig:sarlah-rate-table}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/SarlahParameterTable.png}
+  \caption{Sarlah kinetic rates.}{Kinetic rates used in Sarlah \textit{et. al.}'s model \cite{sarlahmodel}.}
+  \label{fig:sarlah-rate-table}
+\end{figure}
+
+The assumption of this project is that many of the states in this table can be combined into a single state without loss of predictive power of dynein behavior. Specifically, the assumption is that ejecting phosphate, conducting the powerstroke, releasing ADP, binding ATP and dissociating from the microtubule and all occur during the bothbound state, and hydrolyzing ATP, conducting the prestroke and rebinding the MT occur during onebound. These states are roughly grouped as MT-bound and MT-unbound states in the Cianfrocco mechanochemical cycle \cite{cianfroccoreview}.\\
+
+The rate-limiting transitions in the Cianfrocco model are used as the guess $k_b$ and $k_{ub}$ values. That means that, since ATP hydrolysis has the slowest rate constant in onebound and MT release has the slowest rate in bothbound, $k_b^{exp} = 180 s^{-1}$ and $k_{ub} = 460 s^{-1}$ serve as good initial guesses.\\
+
+\subsubsection{Calculating one/bothbound times of experimental dynein}
+Rate constants can be fit to experimentally measurable values, such as velocity and the time dynein is bound to the microtubule (processivity time). We define the following values:
+
+\newcommand\tbb{\left<t_{bb}\right>}
+\newcommand\tob{\left<t_{ob}\right>}
+\newcommand\tstep{\left<t_{step}\right>}
+\newcommand\tproc{\left<t_{processivity}\right>}
+\newcommand\kub{k_{ub}}
+\newcommand\kb{k_{b}}
+\newcommand\ko{k_{dis}}
+
+\begin{itemize}
+\item $\tbb$: Time in bothbound per step
+\item $\tob$: Time in onebound per step
+\item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
+\item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
+\item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
+\item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
+\item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
+\item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
+\item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
+\end{itemize}
+
+$\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
+
+\begin{align*}
+  \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+  \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
+  \tob &= \tstep-\tbb\\
+  &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
+  &= \frac{\tstep^2}{\tstep+\tproc}\\
+\end{align*}
+
+Thus, by the above equations and using data from \cite{weihongpaper}, values for $\tbb$ and $\tob$ can be found:
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{| c | c | c | c | c | c |}
+    \hline
+    Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
+    134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
+  \end{tabular}
+  \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
+  \label{table:time-parameter-table}
+\end{figure}
+
 \section{Chapter: Methods}
 This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
 
@@ -977,9 +1062,9 @@ This test verifies both force and velocity are calculated properly for either mo
 %% \subsubsection{Simulation running via SLURM}
 
 \subsection{Parameter fitting}
-There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\Theta_{m,eq}^{Pre}$, $\Theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}. Others are more difficult to find.\\
+There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\Theta_{m,eq}^{Pre}$, $\Theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}.\\
 
-What's more, using exact literature values for each parameter does not necessarily create the simulation most similar to \textit{in vivo} dynein. Defects and simplifications in the model may cause slightly less physical values for individual parameters to lead to a more physical simulation. For this reason, fitting model parameters to experiment is necessary. This process is chronicled below. Table \ref{table:parameter-table} concisely lists literature values for various parameters.
+Others are more difficult to find. These values, including $k_b$, $k_ub$ and the three spring constants, are fit by an optimization process. First un/binding rates are fit to one/bothbound times, then spring constants are fit to average step length. This process is chronicled below.
 
 \begin{figure}[h]
   \centering
@@ -1019,145 +1104,60 @@ In addition, the physical conditions the simulations were run at are shown in Ta
 \end{figure}
 
 \subsubsection{Fitting rate constants}
-\paragraph{Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}
-Rate constants $k_b$ and $k_{ub}$ govern the probability of transitioning from onebound to bothbound and vice-versa, respectively. One issue is that when these parameters are measured experimentally, the values represent the average rate for an ensemble of dynein in many different conformations. In contrast, the rates the model uses represent the probability of unbinding of a specific conformation. Thus, it is necessary to find a way to convert between experimental rates $k_b^{exp}$ and $k_{ub}^{exp}$ and conformation-specific rates $k_b$ and $k_{ub}$. As shown in Section \ref{sec:transitioning-states}, rates can be expressed using the Arrhenius equation:
-
-\begin{align*}
-  k_b &= A_b'e^{\frac{-\Delta G_{bind}}{k_BT}} = A_b'e^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}e^{\frac{-\Delta G_{bind}}{k_BT}} = A_be^{\frac{-\Delta G_{conf}^{ob\rightarrow bb}}{k_BT}}\\
-  k_{ub} &= A_{ub}'e^{\frac{-\Delta G_{unbind}}{k_BT}} = A_{ub}'e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}e^{\frac{\Delta G_{bind}}{k_BT}} = A_{ub}e^{\frac{-\Delta G_{conf}^{bb\rightarrow ob}}{k_BT}}
-\end{align*}
-
-where the constant Boltzmann factor for binding energy are hidden inside the unprimed preexponential factors. The experimental values are calculated the same way, with the free energy changes replaced with expectation values. Since by the equipartition theorem $\left<G_{conf}^{ob}\right> = 2k_BT$ and $\left<G_{conf}^{bb}\right> = k_BT$, the equations can be simplified:
-
-\begin{align*}
-  k_b^{exp} &= A_be^{\frac{-\left(2k_BT - k_BT\right)}{k_BT}} = \frac{A_b}{e}\\
-  k_{ub}^{exp} &= A_{ub}e^{\frac{-\left(k_BT-2k_BT\right)}{k_BT}} = A_{ub}e
-\end{align*}
-
-Thus experimental rates can be converted easily into the model parameters $A_b$ and $A_{ub}$.
-
-\paragraph{Literature values for experimental binding rates}
-Sarlah \textit{et. al.} \cite{sarlahmodel} perform a similar simulation of dynein and provide the reaction rates shown in Figure \ref{fig:sarlah-rate-table}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.45\textwidth]{../../figures/SarlahParameterTable.png}
-  \caption{Sarlah kinetic rates.}{Kinetic rates used in Sarlah \textit{et. al.}'s model \cite{sarlahmodel}.}
-  \label{fig:sarlah-rate-table}
-\end{figure}
-
-The assumption of this project is that many of the states in this table can be combined into a single state without loss of predictive power of dynein behavior. Specifically, the assumption is that ejecting phosphate, conducting the powerstroke, releasing ADP, binding ATP and dissociating from the microtubule and all occur during the bothbound state, and hydrolyzing ATP, conducting the prestroke and rebinding the MT occur during onebound. These states are roughly grouped as MT-bound and MT-unbound states in the Cianfrocco mechanochemical cycle \cite{cianfroccoreview}.\\
-
-The rate-limiting transitions in the Cianfrocco model are used as the guess $k_b$ and $k_{ub}$ values. That means that, since ATP hydrolysis has the slowest rate constant in onebound and MT release has the slowest rate in bothbound, $k_b^{exp} = 180 s^{-1}$ and $k_{ub} = 460 s^{-1}$ serve as good initial guesses.\\
-
-\paragraph{Fitting rate constants to processivity and step times}
-Rate constants can be fit to experimentally measurable values, such as velocity and the time dynein is bound to the microtubule (processivity time). We define the following values:
-
-\newcommand\tbb{\left<t_{bb}\right>}
-\newcommand\tob{\left<t_{ob}\right>}
-\newcommand\tstep{\left<t_{step}\right>}
-\newcommand\tproc{\left<t_{processivity}\right>}
-\newcommand\kub{k_{ub}}
-\newcommand\kb{k_{b}}
-\newcommand\ko{k_{dis}}
-
-\begin{itemize}
-\item $\tbb$: Time in bothbound per step
-\item $\tob$: Time in onebound per step
-\item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
-\item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
-\item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
-\item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
-\item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
-\item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
-\item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
-\end{itemize}
-
-$\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
-
-\begin{align*}
-  \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
-  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
-  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
-  \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
-  \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
-  \tob &= \tstep-\tbb\\
-  &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
-  &= \frac{\tstep^2}{\tstep+\tproc}\\
-\end{align*}
-
-Thus, by the above equations and using data from \cite{weihongpaper}, values for $\tbb$ and $\tob$ can be found:
-
-\begin{figure}[h]
-  \centering
-  \begin{tabular}{| c | c | c | c | c | c |}
-    \hline
-    Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
-    134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
-  \end{tabular}
-  \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
-  \label{table:time-parameter-table}
-\end{figure}
-
-\paragraph{Fitting rate constants by simulation}
-\textit{Add in a plot of the binding rate fitting search}\\
-
 To find the ideal binding and unbinding rates of our model, we ran simulations at various $k_b$ and $k_{ub}$ conditions. The time each simulation spent in each state, $t_{bb}$ and $t_{ob}$, was compared with the experimental data shown in Table \ref{table:time-parameter-table}. Simulation behavior for a wide range of $k_b$ and $k_{ub}$ values is shown as a heat map in Figure \ref{fig:kb-kub-heatmap}.\\
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{../../plots/kb-kub-contour}
   \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$.}
   \label{fig:kb-kub-heatmap}
 \end{figure}
 
-%% \subsubsection{Fitting spring constants}
-%% \paragraph{Using $\Delta G_{bind}$ to guess $c_b$}
-%% \paragraph{Using $\Theta_m$ standard deviation to guess $c_m$}
-%% \paragraph{Fitting rate constants by simulation}
-
-%% \subsubsection{Finding parameters from PyMol}
-
-%% \subsubsection{Finding the right timestep}
+\subsubsection{Fitting spring constants}
+This section will be written once it is conducted. This is contingent on getting rate fitting done, and preferably high-dt simulations stable so an optimization process can be run.\\
 
 \section{Chapter: Results}
+The ideal set of parameters found via the fitting process is shown in Table \ref{table:final-parameter-table}.\\
 
-\subsection{Simulation parameters}
-The ideal set of parameters used to generate data were found to be:
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | l | l | l | l | l |}
     \hline
     $L_s$ & $L_t$ & $R_b$ & $R_m$ & $R_t$ & $\theta_{m}^{Pre}$ & $\theta_{m}^{Post}$ & $\theta_{b}$ & $\theta_{t}$ & $A_{ub}$ & $A_b$ & $c_t$ & $c_m$  &$c_b$\\ \hline
-    21.0nm & 22.0nm & 1.45nm & 6.3nm & 2.2nm & 136$^{\circ}$ & 171$^{\circ}$ & 63.5$^{\circ}$ & 0$^{\circ}$ & 90 & 2000 & 0.5 & 2.2  & 3.1\\ \hline
+    21.0nm & 11.15nm & 1.45nm & 6.3nm & 2.2nm & 136$^{\circ}$ & 171$^{\circ}$ & 63.5$^{\circ}$ & 0$^{\circ}$ &  &  &  &   & \\ \hline
   \end{tabular}
   \caption{Ideal parameters for model stepping.}{Table of ideal parameters for reproducing \textit{in vivo} dynein stepping behavior.}
-  \label{final-parameter-table}
+  \label{table:final-parameter-table}
 \end{figure}
 
-\subsection{Histograms}
+Histograms of the simulation's stepping length and time are shown in Figure \ref{fig:final-histograms}. This figure also shows histograms for experimental dynein stepping behavior.\\
 
-%% \begin{figure}[h!]
-%%   \centering
-%%   \begin{minipage}[b]{0.45\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/length_histogram_sample.pdf}
-%%     \caption{Histogram of simulated stepping lengths using ideal dynein parameters. Todo: superimpose Weihong's histogram of the same.}
-%%   \end{minipage}
-%%   \hspace{.1cm}
-%%   \begin{minipage}[b]{0.45\textwidth}
-%%     \includegraphics[width=\textwidth]{../../figures/time_histogram_sample.pdf}
-%%     \caption{Histogram of simulated stepping times using ideal dynein parameters. Todo: superimpose Weihong's histogram of the same.}
-%%   \end{minipage}
-%%   \label{fig:final-histograms}
-%% \end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/length_histogram_sample.pdf}
+    \caption{Histogram of simulated stepping lengths using ideal dynein parameters. Todo: make these figures compare better.}
+  \end{minipage}
+  \hspace{.1cm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/time_histogram_sample.pdf}
+    \caption{Histogram of simulated stepping times using ideal dynein parameters.}
+  \end{minipage}\\
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/weihong-step-size.pdf}
+    \caption{Experimental dynein step size from \cite{weihongpaper}.}
+  \end{minipage}
+  \hspace{.1cm}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../../figures/weihong-velocity.pdf}
+    \caption{Experimental dynein step time from \cite{weihongpaper}}
+  \end{minipage}
+  \label{fig:final-histograms}
+\end{figure}
 
 \section{Chapter: Discussion}
 \subsubsection{Limitations}
-Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information,
-other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into
-account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be
-springy...
+Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information, other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be springy...
 
 Mention the Burgess paper, which says spring constants might change between apo/ADP states.
 
