@@ -115,14 +115,22 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
   }
 
   if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
-    printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
-    printf("     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
-    printf("     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
-    printf("     Ls/Lt = %g/%g\n", Ls, Lt);
-    printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
-    printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
-    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-    exit(1);
+    if (am_naively_correcting_nan_errors) {
+      if (cosnma > 1) cosnma = 0.999999;
+      if (cosnma < -1) cosnma = -0.999999;
+      if (cosfma > 1) cosfma = 0.999999;
+      if (cosfma < -1) cosfma = -0.999999;
+    }
+    else {
+      printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
+      printf("     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
+      printf("     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
+      printf("     Ls/Lt = %g/%g\n", Ls, Lt);
+      printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
+      printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
+      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      exit(1);
+    }
   }
 
   internal_testcase = NULL;
@@ -278,11 +286,19 @@ void Dynein_bothbound::update_coordinates() {
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
+  if (am_naively_correcting_nan_errors) {
+    if (cosAn > 1) cosAn = 0.99;
+    if (cosAn < -1) cosAn = -0.99;
+  }
   sinAn = sqrt(1 - cosAn*cosAn);
   cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
   sinAns = (sin(nma) > 0) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
 
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
+  if (am_naively_correcting_nan_errors) {
+    if (cosAf > 1) cosAf = 0.99;
+    if (cosAf < -1) cosAf = -0.99;
+  }
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
   sinAfs = (sin(fma) > 0) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
@@ -314,21 +330,33 @@ void Dynein_bothbound::update_coordinates() {
   nba = atan2(nmy, nmx - nbx);
   fba = atan2(fmy, fmx - (nbx + L));
   if (nba < 0 or nba > M_PI) {
-    printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
-           nba, nmy, nmx - nbx, tx, ty);
-    printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
-           nby, Ls, cosAn, sinAns, sinAn,cosAns);
-    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-    exit(1);
+    if (am_naively_correcting_nan_errors) {
+      if (nba < 0) nba = 0.001;
+      if (nba > M_PI) nba = M_PI - 0.001;
+    }
+    else {
+      printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
+	     nba, nmy, nmx - nbx, tx, ty);
+      printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
+	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      exit(1);
+    }
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
            nba, nmy, nmx - nbx);
   }
   if (fba < 0 or fba > M_PI) {
-    printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
-           fba, fmy, fmx - (nbx + L));
-    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-    exit(1);
+    if (am_naively_correcting_nan_errors) {
+      if (fba < 0) fba = 0.001;
+      if (fba > M_PI) fba = M_PI - 0.001;
+    }
+    else {
+      printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+	     fba, fmy, fmx - (nbx + L));
+      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      exit(1);
+    }
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
            fba, fmy, fmx - (nbx+L));

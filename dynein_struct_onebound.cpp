@@ -273,15 +273,40 @@ double Power(double num, int pow) {
 }
 
 void Dynein_onebound::update_velocities() {
-  if (bma < -2*M_PI or bma > 2*M_PI) {
+  if (bma < -2*M_PI or bma > 2*M_PI) { // check motor angles for crazy states
+    if (am_naively_correcting_nan_errors) {
+	if (bma < -2*M_PI) bma = -2*M_PI + 0.001;
+	if (bma > 2*M_PI) bma = 2*M_PI - 0.001;
+    }
     if (am_debugging_angles) printf("bma angle is crazy man! %g\n", bma);
-  } else {
-    if (am_debugging_angles) printf("bma angle is cool:      %g\n", bma);
   }
+  else if (am_debugging_angles) printf("bma angle is cool:      %g\n", bma);
+
   if (uma < -2*M_PI or uma > 2*M_PI) {
+    if (am_naively_correcting_nan_errors) {
+	if (uma < -2*M_PI) uma = -2*M_PI + 0.001;
+	if (uma > 2*M_PI) uma = 2*M_PI - 0.001;
+    }
     if (am_debugging_angles) printf("uma angle is crazy man! %g\n", uma);
-  } else {
-    if (am_debugging_angles) printf("uma angle is cool:      %g\n", uma);
+  }
+  else if (am_debugging_angles) printf("uma angle is cool:      %g\n", uma);
+
+  if (bba > M_PI or bba < 0) { // check binding angles for crazy states
+    if (am_naively_correcting_nan_errors) {
+	if (bba < 0) bba = 0.001;
+	if (bba > M_PI) bba = M_PI - 0.001;
+    }
+    if (am_debugging_angles) printf("bba angle is crazy man! %g\n", bba);
+  }
+
+  if (uba > 2*M_PI and am_naively_correcting_nan_errors) { // cyclic unbinding angle
+    // printf("%g becomes %g\n", uba, fmod(uba, 2*M_PI));
+    uba = fmod(uba, 2*M_PI);
+  }
+
+  if (uba < 0 and am_naively_correcting_nan_errors) {
+    // printf("%g becomes %g\n", uba, 2*M_PI - fmod(fabs(uba), 2*M_PI));
+    uba = 2*M_PI - fmod(fabs(uba), 2*M_PI);
   }
 
   //******* Checking for sub-MT dynein ********

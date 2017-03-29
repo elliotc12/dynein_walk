@@ -78,7 +78,9 @@ const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
 
 const bool am_exiting_on_improbable_stepping = true;
-const bool am_crashing_on_unphysical_behavior = false;
+
+const bool am_crashing_on_unphysical_behavior = false; // false necessary when running high-dt sims
+const bool am_naively_correcting_nan_errors = true; // true necessary when running high-dt sims
 
 const bool crash_on_nan = true;
 
