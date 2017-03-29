@@ -21,47 +21,47 @@ binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_
 
 custom_runs = []
 
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 1e-11})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 3e-11})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 6e-11})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 8e-11})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 1e-10})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 2e-10})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 3e-10})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
                     "dt": 5e-10})
-custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11,
+custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,

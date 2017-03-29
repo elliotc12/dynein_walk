@@ -7,8 +7,8 @@ const double kb_eV = 8.61733034e-5; // eV/K
 double kb = kb_eV / (atp_in_kJ_per_mol * eV_per_kJ_per_mol); // kB in ATP energies per K
 double T = 310.15; // K
 
-double Lt = 7.0;  // nm, guess - not sure how DNA tail-bridge works
-double Ls = 12.0; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
+double Lt = 21.1;  // nm, guess - not sure how DNA tail-bridge works
+double Ls = 11.15; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
 // tail domain radius, derived from PyMol, see thesis_stuff
 double fake_radius_t = 2.16;  // nm
