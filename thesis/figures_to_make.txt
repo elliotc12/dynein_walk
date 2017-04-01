@@ -1,3 +1,3 @@
 Figures to make, all using the same style, which explain stuff about the dyn
 
-Attention grabber: The three motor proteins (maybe doing their walks). Purpose: to show that dynein has a weird separation between its motor and foot domains
+Attention grabber: The three motor proteins (maybe doing their walks). Purpose: to show that dynein has a weird separation between its motor and foot domains. Show where energy is used in each motor.
