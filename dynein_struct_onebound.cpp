@@ -14,7 +14,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 State s, onebound_forces *internal_test,
 				 onebound_forces *brownian_test,
 				 onebound_equilibrium_angles* eq_angles,
-                                 MTRand* mtrand) {
+				 MTRand* mtrand) {
   bbx = bbx_init;
   bby = bby_init;
 
@@ -75,21 +75,21 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
     printf("DEBUG:\nDEBUG: creating onebound from bothbound!\n");
     if (get_state() == NEARBOUND) {
       printf("DEBUG: nbx/bbx = %8g vs %8g  nby/bby = %8g vs %8g\n",
-             old_dynein->get_nbx(), get_bbx(), old_dynein->get_nby(), get_bby());
+	     old_dynein->get_nbx(), get_bbx(), old_dynein->get_nby(), get_bby());
       printf("DEBUG: nmx/bmx = %8g vs %8g  nmy/bmy = %8g vs %8g\n",
-             old_dynein->get_nmx(), get_bmx(), old_dynein->get_nmy(), get_bmy());
+	     old_dynein->get_nmx(), get_bmx(), old_dynein->get_nmy(), get_bmy());
       printf("DEBUG: fbx/ubx = %8g vs %8g  fby/uby = %8g vs %8g\n",
-             old_dynein->get_fbx(), get_ubx(), old_dynein->get_fby(), get_uby());
+	     old_dynein->get_fbx(), get_ubx(), old_dynein->get_fby(), get_uby());
     } else {
       printf("DEBUG: nbx/ubx = %8g vs %8g  nby/uby = %8g vs %8g\n",
-             old_dynein->get_nbx(), get_ubx(), old_dynein->get_nby(), get_uby());
+	     old_dynein->get_nbx(), get_ubx(), old_dynein->get_nby(), get_uby());
       printf("DEBUG: nmx/umx = %8g vs %8g  nmy/umy = %8g vs %8g\n",
-             old_dynein->get_nmx(), get_umx(), old_dynein->get_nmy(), get_umy());
+	     old_dynein->get_nmx(), get_umx(), old_dynein->get_nmy(), get_umy());
       printf("DEBUG: fbx/bbx = %8g vs %8g  fby/bby = %8g vs %8g\n",
-             old_dynein->get_fbx(), get_bbx(), old_dynein->get_fby(), get_bby());
+	     old_dynein->get_fbx(), get_bbx(), old_dynein->get_fby(), get_bby());
     }
     printf("DEBUG:      tx = %8g vs %8g       ty = %8g vs %8g\n",
-           old_dynein->get_tx(), get_tx(), old_dynein->get_ty(), get_ty());
+	   old_dynein->get_tx(), get_tx(), old_dynein->get_ty(), get_ty());
   }
 }
 
@@ -172,7 +172,7 @@ void Dynein_onebound::update_internal_forces() {
     f.umx += -(f1x + f2x);
     f.umy += -(f1y + f2y);
 
-    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy()); 
+    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
     if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
     if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
@@ -210,36 +210,36 @@ void Dynein_onebound::update_internal_forces() {
 //   D4 = -Ls;
 
 //   X1 = (- 1/gm*f.bmy - 1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.bmy/gm - r.ty/gt - r.umy/gm -
-// 	r.uby/gb)*cos(bba) +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm +
-// 	r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
+//	r.uby/gb)*cos(bba) +( 1/gm*f.bmx + 1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.bmx/gm +
+//	r.tx/gt + r.umx/gm + r.ubx/gb )*sin(bba);
 
 //   X2 = (-1/gt*f.ty - 1/gm*f.umy - 1/gb*f.uby - r.ty/gt - r.umy/gm - r.uby/gb)*cos(bma) +
 //     (1/gt*f.tx + 1/gm*f.umx + 1/gb*f.ubx + r.tx/gt + r.umx/gm + r.ubx/gb)*sin(bma);
 
 //   X3 = (-r.umy/gm -r.uby/gb - 1/gm*f.umy - 1/gb*f.uby)*cos(uma) + (r.umx/gm + r.ubx/gb +
-// 	 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
+//	 1/gm*f.umx + 1/gb*f.ubx)*sin(uma);
 
 //   X4 = (r.uby/gb + 1/gb*f.uby)*cos(uba) - (r.ubx/gb + 1/gb*f.ubx)*sin(uba);
 
 //   Nbb = (-B2*C4*D3*X1 + B2*C3*D4*X1 + A4*C3*D2*X2 - A3*C4*D2*X2 - A4*C2*D3*X2 + A2*C4*D3*X2
-// 	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
-// 	 +B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4)
-// 	 +B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
+//	 +A3*C2*D4*X2 - A2*C3*D4*X2 + A4*B2*D3*X3 - A3*B2*D4*X3 - A4*B2*C3*X4 + A3*B2*C4*X4
+//	 +B4*(-C3*D2*X1 + C2*D3*X1 + A3*D2*X3 - A2*D3*X3 - A3*C2*X4 + A2*C3*X4)
+//	 +B3*(C4*D2*X1 - C2*D4*X1 - A4*D2*X3 + A2*D4*X3 + A4*C2*X4 - A2*C4*X4));
 
 //   Nml = (B1*C4*D3*X1 - B1*C3*D4*X1 - A4*C3*D1*X2 + A3*C4*D1*X2 + A4*C1*D3*X2 - A1*C4*D3*X2
-// 	 -A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4
-// 	 +B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4)
-// 	 +B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
+//	 -A3*C1*D4*X2 + A1*C3*D4*X2 - A4*B1*D3*X3 + A3*B1*D4*X3 + A4*B1*C3*X4 - A3*B1*C4*X4
+//	 +B4*(C3*D1*X1 - C1*D3*X1 - A3*D1*X3 + A1*D3*X3 + A3*C1*X4 - A1*C3*X4)
+//	 +B3*(-C4*D1*X1 + C1*D4*X1 + A4*D1*X3 - A1*D4*X3 - A4*C1*X4 + A1*C4*X4));
 
 //   Nmr = (-B1*C4*D2*X1 + B1*C2*D4*X1 + A4*C2*D1*X2 - A2*C4*D1*X2 - A4*C1*D2*X2 + A1*C4*D2*X2
-// 	 +A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4
-// 	 +B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4)
-// 	 +B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
+//	 +A2*C1*D4*X2 - A1*C2*D4*X2 + A4*B1*D2*X3 - A2*B1*D4*X3 - A4*B1*C2*X4 + A2*B1*C4*X4
+//	 +B4*(-C2*D1*X1 + C1*D2*X1 + A2*D1*X3 - A1*D2*X3 - A2*C1*X4 + A1*C2*X4)
+//	 +B2*(C4*D1*X1 - C1*D4*X1 - A4*D1*X3 + A1*D4*X3 + A4*C1*X4 - A1*C4*X4));
 
 //   Nbr = (B1*C3*D2*X1 - B1*C2*D3*X1 - A3*C2*D1*X2 + A2*C3*D1*X2 + A3*C1*D2*X2 - A1*C3*D2*X2
-// 	 -A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4
-// 	 +B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4)
-// 	 +B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
+//	 -A2*C1*D3*X2 + A1*C2*D3*X2 - A3*B1*D2*X3 + A2*B1*D3*X3 + A3*B1*C2*X4 - A2*B1*C3*X4
+//	 +B3*(C2*D1*X1 - C1*D2*X1 - A2*D1*X3 + A1*D2*X3 + A2*C1*X4 - A1*C2*X4)
+//	 +B2*(-C3*D1*X1 + C1*D3*X1 + A3*D1*X3 - A1*D3*X3 - A3*C1*X4 + A1*C3*X4));
 
 //   D = A2*B4*C3*D1 - A2*B3*C4*D1 - A1*B4*C3*D2 + A1*B3*C4*D2 - A2*B4*C1*D3 + A1*B4*C2*D3
 //          +A2*B1*C4*D3 - A1*B2*C4*D3 + A4*(B3*C2*D1 - B2*C3*D1 - B3*C1*D2 + B1*C3*D2 + B2*C1*D3
@@ -275,8 +275,14 @@ double Power(double num, int pow) {
 void Dynein_onebound::update_velocities() {
   if (bma < -2*M_PI or bma > 2*M_PI) { // check motor angles for crazy states
     if (am_naively_correcting_nan_errors) {
-	if (bma < -2*M_PI) bma = -2*M_PI + 1e-6;
-	if (bma > 2*M_PI) bma = 2*M_PI - 1e-6;
+      if (bma < -2*M_PI) {
+	if (am_debugging_naive_corrections) printf("Naive correction: bma < -2*M_PI\n");
+	bma = -2*M_PI + 1e-6;
+      }
+      if (bma > 2*M_PI) {
+	if (am_debugging_naive_corrections) printf("Naive correction: bma > 2*M_PI\n");
+	bma = 2*M_PI - 1e-6;
+      }
     }
     if (am_debugging_angles) printf("bma angle is crazy man! %g\n", bma);
   }
@@ -284,8 +290,14 @@ void Dynein_onebound::update_velocities() {
 
   if (uma < -2*M_PI or uma > 2*M_PI) {
     if (am_naively_correcting_nan_errors) {
-	if (uma < -2*M_PI) uma = -2*M_PI + 1e-6;
-	if (uma > 2*M_PI) uma = 2*M_PI - 1e-6;
+      if (uma < -2*M_PI) {
+	if (am_debugging_naive_corrections) printf("Naive correction: uma < -2*M_PI\n");
+	uma = -2*M_PI + 1e-6;
+      }
+      if (uma > 2*M_PI) {
+	if (am_debugging_naive_corrections) printf("Naive correction: uma > 2*M_PI\n");
+	uma = 2*M_PI - 1e-6;
+      }
     }
     if (am_debugging_angles) printf("uma angle is crazy man! %g\n", uma);
   }
@@ -293,19 +305,25 @@ void Dynein_onebound::update_velocities() {
 
   if (bba > M_PI or bba < 0) { // check binding angles for crazy states
     if (am_naively_correcting_nan_errors) {
-	if (bba < 0) bba = 1e-6;
-	if (bba > M_PI) bba = M_PI - 1e-6;
+      if (bba < 0) {
+	if (am_debugging_naive_corrections) printf("Naive correction: bba < 0\n");
+	bba = 1e-6;
+      }
+      if (bba > M_PI) {
+	if (am_debugging_naive_corrections) printf("Naive correction: bba > M_PI\n");
+	bba = M_PI - 1e-6;
+      }
     }
     if (am_debugging_angles) printf("bba angle is crazy man! %g\n", bba);
   }
 
   if (uba > 2*M_PI and am_naively_correcting_nan_errors) { // cyclic unbinding angle
-    // printf("%g becomes %g\n", uba, fmod(uba, 2*M_PI));
+    if (am_debugging_naive_corrections) printf("Naive correction: uba > 2*M_PI\n");
     uba = fmod(uba, 2*M_PI);
   }
 
   if (uba < 0 and am_naively_correcting_nan_errors) {
-    // printf("%g becomes %g\n", uba, 2*M_PI - fmod(fabs(uba), 2*M_PI));
+    if (am_debugging_naive_corrections) printf("Naive correction: uba < 0\n");
     uba = 2*M_PI - fmod(fabs(uba), 2*M_PI);
   }
 
@@ -849,165 +867,165 @@ void Dynein_onebound::update_velocities() {
     Power(AA,6)*Power(BB,3)*CC*DD*VV));
 
   d_uba = (-X3 + X4)/DD + (II*(-(BB*GG*LL*NN*PP*X1) +
-        AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 +
-        BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 +
-        AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 +
-        AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 -
-        BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 +
-        BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 +
-        AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 -
-        BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 -
-        BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 -
-        AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 -
-        AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 -
-        AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 +
-        AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/
-        (DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP
-        - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP -
-        BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ -
-        AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR -
-        BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR +
-        AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS -
-        BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS +
-        AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS -
-        CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT +
-        AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT +
-        BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)) - (((-JJ + KK)/DD -
-        (II*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP +
-        BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR +
-        AA*BB*PP*RR)*(-(JJ*NN) + CC*UU))/ (DD*(EE*GG*II*LL*MM*NN +
-        BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
-        AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
-        BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
-        CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
-        AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
-        CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
-        AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
-        BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
-        BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
-        BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
-        AA*BB*CC*PP*RR*TT)))* (-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM
-        - Power(AA,6)*Power(BB,3)*DD*HH*NN +
-        Power(AA,6)*Power(BB,3)*DD*II*NN -
-        Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR))) - (-(EE*LL) +
-        AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
-        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
-        Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
-        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
-        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*CC*SS))*
-        (-(((Power(AA,3)*Power(BB,2)*CC*FF*LL -
-        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
-        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
-        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
-        Power(AA,4)*Power(BB,2)*CC*X6))) +
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
-        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
-        Power(AA,4)*Power(BB,2)*NN*X2 + Power(AA,4)*Power(BB,2)*NN*X3
-        - Power(AA,4)*Power(BB,2)*CC*X7)))) + (-((-(EE*LL) +
-        AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
-        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
-        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
-        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
-        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
-        - Power(AA,4)*Power(BB,2)*CC*TT))*
-        (-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
-        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
-        Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
-        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
-        Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
-        Power(AA,4)*Power(BB,2)*CC*X6))) +
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL
-        - Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
-        (-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
-        Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
-        Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
-        Power(AA,6)*Power(BB,3)*DD*NN*X2 +
-        Power(AA,6)*Power(BB,3)*DD*NN*X3 -
-        Power(AA,6)*Power(BB,3)*CC*OO*X3 +
-        Power(AA,6)*Power(BB,3)*CC*OO*X4 -
-        Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ (-((-(EE*LL) +
-        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
-        Power(AA,6)*Power(BB,3)*DD*HH*NN +
-        Power(AA,6)*Power(BB,3)*DD*II*NN -
-        Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR))) - (-(EE*LL) +
-        AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
-        Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
-        Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
-        (Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
-        Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
-        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*CC*SS))*
-        (Power(AA,4)*Power(BB,2)*JJ*NN -
-        Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
-        (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
-        AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
-        Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
-        (Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
-        AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
-        AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
-        Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
-        AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
-        Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
-        Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
-        Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
-        - Power(AA,4)*Power(BB,2)*CC*TT))*
-        (Power(AA,6)*Power(BB,3)*DD*JJ*NN -
-        Power(AA,6)*Power(BB,3)*CC*JJ*OO +
-        Power(AA,6)*Power(BB,3)*CC*KK*OO -
-        Power(AA,6)*Power(BB,3)*CC*DD*VV));
+	AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 +
+	BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 +
+	AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 +
+	AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 -
+	BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 +
+	BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 +
+	AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 -
+	BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 -
+	BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 -
+	AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 -
+	AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 -
+	AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 +
+	AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/
+	(DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP
+	- AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP -
+	BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ -
+	AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR -
+	BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR +
+	AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS -
+	BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS +
+	AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS -
+	CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT +
+	AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT +
+	BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)) - (((-JJ + KK)/DD -
+	(II*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP +
+	BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR +
+	AA*BB*PP*RR)*(-(JJ*NN) + CC*UU))/ (DD*(EE*GG*II*LL*MM*NN +
+	BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP +
+	AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ +
+	BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ -
+	CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR +
+	AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR +
+	CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS +
+	AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS +
+	BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT +
+	BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT -
+	BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT -
+	AA*BB*CC*PP*RR*TT)))* (-(((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM
+	- Power(AA,6)*Power(BB,3)*DD*HH*NN +
+	Power(AA,6)*Power(BB,3)*DD*II*NN -
+	Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR))) - (-(EE*LL) +
+	AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+	Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+	Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+	(Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+	AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*CC*SS))*
+	(-(((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+	Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+	(Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ))*
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+	Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+	Power(AA,4)*Power(BB,2)*CC*X6))) +
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* (-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+	Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+	Power(AA,4)*Power(BB,2)*NN*X2 + Power(AA,4)*Power(BB,2)*NN*X3
+	- Power(AA,4)*Power(BB,2)*CC*X7)))) + (-((-(EE*LL) +
+	AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+	Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,4)*Power(BB,2)*GG*NN)* (-(EE*LL) + AA*PP) -
+	(Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+	AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+	AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
+	- Power(AA,4)*Power(BB,2)*CC*TT))*
+	(-(((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+	Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+	Power(AA,6)*Power(BB,3)*DD*GG*NN)*(-(EE*LL) + AA*PP) -
+	(Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) + AA*QQ))*
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(LL*X1) + AA*X5)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,3)*Power(BB,2)*CC*LL*X1 -
+	Power(AA,4)*BB*CC*MM*X1 + Power(AA,4)*BB*CC*MM*X2 -
+	Power(AA,4)*Power(BB,2)*CC*X6))) +
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* (-((Power(AA,5)*Power(BB,3)*CC*DD*EE*LL
+	- Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(LL*X1) + AA*X5)) +
+	(-(EE*LL) + AA*PP)*(Power(AA,5)*Power(BB,3)*CC*DD*LL*X1 -
+	Power(AA,6)*Power(BB,2)*CC*DD*MM*X1 +
+	Power(AA,6)*Power(BB,2)*CC*DD*MM*X2 -
+	Power(AA,6)*Power(BB,3)*DD*NN*X2 +
+	Power(AA,6)*Power(BB,3)*DD*NN*X3 -
+	Power(AA,6)*Power(BB,3)*CC*OO*X3 +
+	Power(AA,6)*Power(BB,3)*CC*OO*X4 -
+	Power(AA,6)*Power(BB,3)*CC*DD*X8)))))/ (-((-(EE*LL) +
+	AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* ((Power(AA,6)*Power(BB,2)*CC*DD*HH*MM -
+	Power(AA,6)*Power(BB,3)*DD*HH*NN +
+	Power(AA,6)*Power(BB,3)*DD*II*NN -
+	Power(AA,6)*Power(BB,3)*CC*II*OO)*(-(EE*LL) + AA*PP)*
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR))) - (-(EE*LL) +
+	AA*PP)*((Power(AA,5)*Power(BB,3)*CC*DD*FF*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*FF*MM +
+	Power(AA,6)*Power(BB,2)*CC*DD*GG*MM -
+	Power(AA,6)*Power(BB,3)*DD*GG*NN)* (-(EE*LL) + AA*PP) -
+	(Power(AA,5)*Power(BB,3)*CC*DD*EE*LL -
+	Power(AA,6)*Power(BB,2)*CC*DD*EE*MM)*(-(FF*LL) +
+	AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*CC*SS))*
+	(Power(AA,4)*Power(BB,2)*JJ*NN -
+	Power(AA,4)*Power(BB,2)*CC*UU)) + (-(EE*LL) + AA*PP)*
+	(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* (-((-(EE*LL) +
+	AA*PP)*((Power(AA,3)*Power(BB,2)*CC*FF*LL -
+	Power(AA,4)*BB*CC*FF*MM + Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,4)*Power(BB,2)*GG*NN)*(-(EE*LL) + AA*PP) -
+	(Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) +
+	AA*QQ))*(Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*CC*SS)) + (-(EE*LL) +
+	AA*PP)*(-((Power(AA,3)*Power(BB,2)*CC*EE*LL -
+	Power(AA,4)*BB*CC*EE*MM)*(-(FF*LL) + AA*QQ)) + (-(EE*LL) +
+	AA*PP)*(Power(AA,4)*BB*CC*GG*MM -
+	Power(AA,2)*BB*CC*(-(AA*BB*FF*LL) + Power(AA,2)*FF*MM +
+	Power(AA,2)*BB*RR)))* (Power(AA,4)*BB*CC*HH*MM -
+	Power(AA,4)*Power(BB,2)*HH*NN + Power(AA,4)*Power(BB,2)*II*NN
+	- Power(AA,4)*Power(BB,2)*CC*TT))*
+	(Power(AA,6)*Power(BB,3)*DD*JJ*NN -
+	Power(AA,6)*Power(BB,3)*CC*JJ*OO +
+	Power(AA,6)*Power(BB,3)*CC*KK*OO -
+	Power(AA,6)*Power(BB,3)*CC*DD*VV));
 }
 
 double Dynein_onebound::get_binding_rate() {

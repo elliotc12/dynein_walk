@@ -76,6 +76,7 @@ const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
 const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
+const bool am_debugging_naive_corrections = true;
 
 const bool am_exiting_on_improbable_stepping = true;
 
@@ -110,11 +111,11 @@ class Dynein_bothbound;
 class Dynein_onebound {
 public:
   Dynein_onebound(double bba_init, double bma_init, double fma_init, double fba_init,
-                  double bbx_init, double bby_init, State s,
+		  double bbx_init, double bby_init, State s,
 		  onebound_forces *internal_test,
-                  onebound_forces *brownian_test,
+		  onebound_forces *brownian_test,
 		  onebound_equilibrium_angles* eq_angles,
-                  MTRand* mtrand);
+		  MTRand* mtrand);
 
   Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* rand, State s);
 
@@ -295,7 +296,7 @@ public:
 
   double dcosAn_dLf, dsinAn_dLf, dcosAns_dLf, dsinAns_dLf;
   double dcosAf_dLf, dsinAf_dLf, dcosAfs_dLf, dsinAfs_dLf;
-  
+
      // Various interesting derivatives that are used in finding the
      // velocities (and are set by update_velocities).
   double dXnm_dLn, dYnm_dLn, dXnm_dLf, dYnm_dLf, dXfm_dLf, dYfm_dLf,
@@ -453,7 +454,7 @@ void get_onebound_equipartition_ratio(onebound_data* eq_data, generic_data* forc
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void *job_msg, data_union* job_data,
-              long long iteration), void *job_msg, data_union* job_data);
+	      long long iteration), void *job_msg, data_union* job_data);
 
 /** create_ob/bb_plots .txt generation code **/
 void generate_force_data(double* times, double* f, int len, const char* legend, char* fname_base, const char* annotation);
