@@ -48,7 +48,6 @@ paper.pdf: latex/paper.tex $(FIGURES)
 
 test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
 	$(CXX) test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o dynein_simulate.o utilities.o -o test_bothbound
-	./test_bothbound
 
 test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o dynein_simulate.o
 	$(CXX) test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o dynein_simulate.o utilities.o -o test_onebound
@@ -108,7 +107,7 @@ plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data
 plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
 
-generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
+generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results
 	mkdir -p runlogs
 	mkdir -p data
 	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
