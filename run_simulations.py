@@ -83,9 +83,7 @@ label = "test-variable-ts"
 for run in custom_runs:
         custom_label = label+str(run["dt"]) #edit this to uniquely name each simulation
 
-        # cmd = ["srun"] if have_slurm else []
-        cmd = []
-        cmd.extend(["echo"])
+        cmd = ["srun"] if have_slurm else []
         cmd.extend(["nice", "-19"])
         cmd.extend(["./generate_stepping_data"])
         cmd.extend(["--runtime", str(runtime)])
@@ -105,4 +103,4 @@ for run in custom_runs:
         basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
         out = open('runlogs/' + basename + '.out', 'w')
         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
-        print("Running: %s", join(cmd))
+        print("Running: %s", " ".join(cmd))
