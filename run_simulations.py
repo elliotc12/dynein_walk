@@ -29,24 +29,6 @@ custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 1e-11,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 3e-11,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 6e-11,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
                     "dt": 8e-11,
                     "seed": random.randint(0,100)})
 custom_runs.append({"k_b": 10, "k_ub": 2e11,
@@ -96,7 +78,7 @@ if len(custom_runs) == 0:  # if no custom_runs specified above, load them from a
                 print("usage: %s filename", sys.argv[0])
 
 runtime = 0.3
-label = "test-nan-corrections"
+label = "test-variable-ts"
 
 for run in custom_runs:
         custom_label = label+str(run["dt"]) #edit this to uniquely name each simulation
@@ -121,4 +103,4 @@ for run in custom_runs:
         basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
         out = open('runlogs/' + basename + '.out', 'w')
         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
-        print("Running: %s" % " ".join(cmd))
+        print("Running: %s", join(cmd))
