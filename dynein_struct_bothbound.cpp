@@ -426,23 +426,29 @@ void Dynein_bothbound::update_coordinates() {
   } else {
     if (am_debugging_angles) printf("nma angle is cool:      %g\n", nma);
   }
+}
+
+static const bool am_debugging_nans = false;
+
+int Dynein_bothbound::update_velocities() {
+  update_coordinates();
+  update_brownian_forces();
+  update_internal_forces();
 
   // ******* Checking for sub-MT dynein ********
   if (am_crashing_on_unphysical_behavior) {
     if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
       printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      exit(1);
+      if (using_variable_timestep) {
+	printf("Going to last checkpoint.\n");
+	return VARIABLE_TS_REWIND_RETURN;
+      }
+      else {
+	exit(1);
+      }
     }
   }
-}
-
-static const bool am_debugging_nans = false;
-
-void Dynein_bothbound::update_velocities() {
-  update_coordinates();
-  update_brownian_forces();
-  update_internal_forces();
 
   if (am_debugging_nans) printf("cosAn %g\n", cosAn);
   if (am_debugging_nans) printf("sinAn %g\n", sinAn);
@@ -633,6 +639,7 @@ void Dynein_bothbound::update_velocities() {
 
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
+  return RETURN_OKAY;
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {

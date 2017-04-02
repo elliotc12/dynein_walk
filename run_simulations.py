@@ -83,7 +83,9 @@ label = "test-variable-ts"
 for run in custom_runs:
         custom_label = label+str(run["dt"]) #edit this to uniquely name each simulation
 
-        cmd = ["srun"] if have_slurm else []
+        # cmd = ["srun"] if have_slurm else []
+        cmd = []
+        cmd.extend(["echo"])
         cmd.extend(["nice", "-19"])
         cmd.extend(["./generate_stepping_data"])
         cmd.extend(["--runtime", str(runtime)])
