@@ -1,6 +1,7 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
 #include <stdlib.h> // for exit
+#include <string.h>
 
 static const bool debug_stepping = false;
 
@@ -74,10 +75,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   }
 
   if (using_variable_timestep) {
-    variable_ts_checkpoint_onebound = NULL;
-    variable_ts_checkpoint_bothbound = NULL;
+    variable_ts_checkpoint_onebound = (Dynein_onebound*) malloc(sizeof(Dynein_onebound));
+    variable_ts_checkpoint_bothbound = (Dynein_bothbound*) malloc(sizeof(Dynein_bothbound));
     variable_ts_checkpoint_time = 0;
     variable_ts_stepping_print_buffer = (char*) malloc(4096*sizeof(char));
+    variable_ts_stepping_print_buffer[0] = 0;
     variable_ts_stepping_print_buffer_index = 0;
     variable_ts_base_dt = dt;
     variable_ts_rewinding_state = false;
@@ -91,8 +93,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
 	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
 	  variable_ts_checkpoint_time = t;
-	  variable_ts_checkpoint_onebound = dyn_ob;
-	  variable_ts_checkpoint_bothbound = dyn_bb;
+	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
+	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
 	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
 	  variable_ts_stepping_print_buffer_index = 0;
 	  variable_ts_rewinding_state = false;
@@ -156,8 +158,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
 	    printf("Rewinding and lowering timestep.\n");
 	    t = variable_ts_checkpoint_time;
-	    dyn_ob = variable_ts_checkpoint_onebound;
-	    dyn_bb = variable_ts_checkpoint_bothbound;
+	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
+	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
 	    variable_ts_stepping_print_buffer_index = 0;
 	    dt = 1e-12;
 	  }
@@ -168,8 +170,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
 	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
 	  variable_ts_checkpoint_time = t;
-	  variable_ts_checkpoint_onebound = dyn_ob;
-	  variable_ts_checkpoint_bothbound = dyn_bb;
+	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
+	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
 	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
 	  variable_ts_stepping_print_buffer_index = 0;
 	  variable_ts_rewinding_state = false;
@@ -247,8 +249,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
 	    printf("Rewinding and lowering timestep.\n");
 	    t = variable_ts_checkpoint_time;
-	    dyn_ob = variable_ts_checkpoint_onebound;
-	    dyn_bb = variable_ts_checkpoint_bothbound;
+	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
+	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
 	    variable_ts_stepping_print_buffer_index = 0;
 	    dt = 1e-12;
 	  }
