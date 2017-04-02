@@ -297,6 +297,11 @@ void Dynein_bothbound::update_coordinates() {
   Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
   Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
 
+  if (am_debugging_angles) {
+    printf("nma: %g, fma: %g\n", nma, fma);
+    printf("Ln: %g, Lf: %g\n", Ln, Lf);
+  }
+
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
   if (am_naively_correcting_nan_errors) {
     if (cosAn > 1) {
@@ -343,7 +348,7 @@ void Dynein_bothbound::update_coordinates() {
   fmx = nbx + L + Ls*(cosAf*cosAfs - sinAf*sinAfs);
   fmy = nby + Ls*(cosAf*sinAfs + sinAf*cosAfs);
 
-  if (am_debugging_conversions) {
+  if (am_debugging_conversions or am_debugging_angles) {
     printf("DEBUG: sinAn %8g sinAns = %8g  sinAf %8g sinAfs = %8g\n", sinAn, sinAns, sinAf, sinAfs);
     printf("DEBUG: cosAn %8g cosAns = %8g  cosAf %8g cosAfs = %8g\n", cosAn, cosAns, cosAf, cosAfs);
     printf("DEBUG: nmx/nmy = %8g/%8g  fmx/fmy = %8g/%8g\n", nmx, nmy, fmx, fmy);

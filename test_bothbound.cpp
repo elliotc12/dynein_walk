@@ -99,7 +99,7 @@ int main(int argvc, char **argv) {
   double R = gm*sqrt(2*kb*T/(gm*dt)); // Brownian force constant
   MTRand* rand = new MTRand(RAND_INIT_SEED);
   int num_failures = 0;
-  
+
   bothbound_forces no_forces  = {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
   bothbound_forces out_forces = {0,0,-R,0,0,0,R,0,0,0};
   bothbound_forces x_forces   = {0,0,R,0,R,0,R,0,0,0};
@@ -113,11 +113,11 @@ int main(int argvc, char **argv) {
     };
 
     Dynein_bothbound dyn_bb(M_PI - 1e-15,      // nma_init
-                            M_PI + 1e-15,      // fma_init
-                            0,                 // nbx_init
-                            0,                 // nby_init
-                            1e-25,             // L
-                            NULL,              // internal forces
+			    M_PI + 1e-15,      // fma_init
+			    0,                 // nbx_init
+			    0,                 // nby_init
+			    1e-25,             // L
+			    NULL,              // internal forces
 			    &no_forces,        // brownian forces
 			    &line_eq_angles,   // equilibrium angles
 			    rand);             // MTRand
@@ -165,7 +165,7 @@ int main(int argvc, char **argv) {
 			     &no_forces,    // internal forces
 			     &out_forces,   // brownian forces
 			     NULL,          // equilibrium angles
-			     rand);         // MTRand                 
+			     rand);         // MTRand
 
      printf("\tTesting coordinate definitions:\n");
      if (!test("nmx = zero?", dyn_bb.get_nmx(), 0)) num_failures++;
@@ -219,14 +219,14 @@ int main(int argvc, char **argv) {
   { printf("\n**'Almost' upwards line conformation with +x forces**\n");
 
     Dynein_bothbound dyn_bb(M_PI - 1e-7,      // nma_init
-                            M_PI + 1e-7,      // fma_init
-                            0,                // nbx_init
-                            0,                // nby_init
-                            1e-1,             // L
-                            &no_forces,       // internal forces
+			    M_PI + 1e-7,      // fma_init
+			    0,                // nbx_init
+			    0,                // nby_init
+			    1e-1,             // L
+			    &no_forces,       // internal forces
 			    &x_forces,        // brownian forces
 			    NULL,             // equilibrium angles
-			    rand);            // MTRand            
+			    rand);            // MTRand
 
     printf("\tTesting time derivatives:\n");
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
@@ -236,28 +236,28 @@ int main(int argvc, char **argv) {
 
   { printf("\n**Two table-ish conformations with near/far domains flipped**\n");
 
-    double first_nma = 1.0; // acos(Lt/(2*Ls));
-    double second_nma = .5;
+    double first_nma = 4.0; // acos(Lt/(2*Ls));
+    double second_nma = 2.0;
 
     Dynein_bothbound left_dyn_bb(first_nma,              // nma_init
 				 second_nma,             // fma_init
-				 0,                      // nbx_init	       	
-				 0,                      // nby_init	       	
-				 Ls,                     // L		       	
-				 NULL,                   // internal forces    
-				 &no_forces,             // brownian forces    
+				 0,                      // nbx_init
+				 0,                      // nby_init
+				 Lt,                     // L
+				 NULL,                   // internal forces
+				 &no_forces,             // brownian forces
 				 NULL,                   // equilibrium angles
-				 rand);                  // MTRand             
+				 rand);                  // MTRand
 
     Dynein_bothbound right_dyn_bb(second_nma,             // nma_init
 				  first_nma,              // fma_init
-				  Ls,                     // nbx_init	       	
-				  0,                      // nby_init	       	
-				  -Ls,                    // L		       	
-				  NULL,                   // internal forces    
-				  &no_forces,             // brownian forces    
+				  Lt,                     // nbx_init
+				  0,                      // nby_init
+				  -Lt,                    // L
+				  NULL,                   // internal forces
+				  &no_forces,             // brownian forces
 				  NULL,                   // equilibrium angles
-				  rand);                  // MTRand             
+				  rand);                  // MTRand
 
     printf("\tTesting coordinate definitions:\n");
     if (!test("left bx coords equal?",
@@ -281,7 +281,7 @@ int main(int argvc, char **argv) {
 	      left_dyn_bb.get_fmy(), right_dyn_bb.get_nmy())) num_failures++;
     if (!test("right by coords equal?",
 	      left_dyn_bb.get_fby(), right_dyn_bb.get_nby())) num_failures++;
-    
+
     if (!test("Left Ln/Lf equal?",
 	      left_dyn_bb.get_ln(), right_dyn_bb.get_lf())) num_failures++;
     if (!test("Right Ln/Lf equal?",
@@ -305,7 +305,7 @@ int main(int argvc, char **argv) {
 	      right_dyn_bb.get_internal().ty)) num_failures++;
     if (!test("left f.fmy = right f.nmy?", left_dyn_bb.get_internal().fmy,
 	      right_dyn_bb.get_internal().nmy)) num_failures++;
-    
+
     printf("\n\tTesting time derivatives:\n");
     if (!test("left angle velocities exactly equal?",
 	      left_dyn_bb.get_d_nma(), right_dyn_bb.get_d_fma(), 0)) num_failures++;
@@ -338,7 +338,7 @@ int main(int argvc, char **argv) {
 			  NULL,          // internal forces
 			  &no_forces,    // brownian forces
 			  NULL,          // equilibrium angles
-			  rand);         // MTRand                 
+			  rand);         // MTRand
 
     Dynein_bothbound bb_2(4.6*M_PI/6 + poke, // nma_init
 			  7.1*M_PI/6 + poke, // fma_init
@@ -348,7 +348,7 @@ int main(int argvc, char **argv) {
 			  NULL,            // internal forces
 			  &no_forces,      // brownian forces
 			  NULL,            // equilibrium angles
-			  rand);           // MTRand                 
+			  rand);           // MTRand
 
     double d_PE = bb_2.get_PE() - bb_1.get_PE();
 
