@@ -29,38 +29,38 @@ custom_runs.append({"k_b": 10, "k_ub": 2e11,
                     "cb": 2.4,
                     "cm": 2.4,
                     "ct": 2.4,
-                    "dt": 8e-11,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 1e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 2e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
                     "dt": 3e-10,
                     "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 5e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 2e-11,
-                    "seed": random.randint(0,100)})
+# custom_runs.append({"k_b": 10, "k_ub": 2e11,
+#                     "cb": 2.4,
+#                     "cm": 2.4,
+#                     "ct": 2.4,
+#                     "dt": 1e-10,
+#                     "seed": random.randint(0,100)})
+# custom_runs.append({"k_b": 10, "k_ub": 2e11,
+#                     "cb": 2.4,
+#                     "cm": 2.4,
+#                     "ct": 2.4,
+#                     "dt": 2e-10,
+#                     "seed": random.randint(0,100)})
+# custom_runs.append({"k_b": 10, "k_ub": 2e11,
+#                     "cb": 2.4,
+#                     "cm": 2.4,
+#                     "ct": 2.4,
+#                     "dt": 3e-10,
+#                     "seed": random.randint(0,100)})
+# custom_runs.append({"k_b": 10, "k_ub": 2e11,
+#                     "cb": 2.4,
+#                     "cm": 2.4,
+#                     "ct": 2.4,
+#                     "dt": 5e-10,
+#                     "seed": random.randint(0,100)})
+# custom_runs.append({"k_b": 10, "k_ub": 2e11,
+#                     "cb": 2.4,
+#                     "cm": 2.4,
+#                     "ct": 2.4,
+#                     "dt": 2e-11,
+#                     "seed": random.randint(0,100)})
 
 if len(custom_runs) == 0:  # if no custom_runs specified above, load them from a file
         cmdArgs = sys.argv[1:]

@@ -14,8 +14,8 @@ pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
 tail = 'tail' in sys.argv
 
-view_height = 150
-view_width = 150
+view_height = 50
+view_width = 50
 
 def close_windows(*_):
   plt.close()
@@ -48,7 +48,7 @@ speed =  float(sys.argv[2][6:])
 # config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
 
 if tail and sys.stdin.isatty():
-    skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 1000
+    skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 100
     if skiplen < 0:
 	skiplen = 1
 
