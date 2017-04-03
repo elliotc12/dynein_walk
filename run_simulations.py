@@ -5,17 +5,17 @@ import sys
 
 
 
-# os.system('mkdir -p runlogs data')
+os.system('mkdir -p runlogs data')
 
-# assert(subprocess.call("make histogram-stuff", shell=True) == 0)
-#
-# have_slurm = True
-#
-# try:
-#     subprocess.check_call("squeue > /dev/null", shell=True)
-# except (OSError, subprocess.CalledProcessError):
-#     print "Not using slurm..."
-#     have_slurm = False
+assert(subprocess.call("make histogram-stuff", shell=True) == 0)
+
+have_slurm = True
+
+try:
+    subprocess.check_call("squeue > /dev/null", shell=True)
+except (OSError, subprocess.CalledProcessError):
+    print "Not using slurm..."
+    have_slurm = False
 
 atp_in_kJ_per_mol = 30.5
 
@@ -24,7 +24,7 @@ binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_
 
 
 # --- adding code to pull parameters from cmd line specified txt file - John - 3/27 --- #
-# --- the code will now pull the valu
+# --- the code will now pull the values from runVars.txt file specified at terminal
 custom_runs = []
 cmdArgs = sys.argv[1:]
 file = cmdArgs[0]
@@ -42,46 +42,46 @@ except:
 print "\n"
 for run in custom_runs:
 	print run
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 2, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 4, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 6, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 8, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
-# custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 15, "k_ub": 2e11, "T": 310.15,
-#                     "cb": 2.4,
-#                     "cm": 2.4,
-#                     "ct": 2.4,
-#                     "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 0.1, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 1, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 2, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 4, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 6, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 8, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 10, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
+custom_runs.append({"ls": 22.1, "lt": 11.15, "k_b": 15, "k_ub": 2e11, "T": 310.15,
+                    "cb": 2.4,
+                    "cm": 2.4,
+                    "ct": 2.4,
+                    "movie": False})
 
 
 ls_min = 22.1 # nm
@@ -124,52 +124,52 @@ ct_range = np.linspace(ct_min, ct_max, num=ct_num)
 
 runtime = 0.33
 
-# if len(custom_runs) != 0:
-#     for run in custom_runs:
-#         cmd = ["srun"] if have_slurm else []
-#         cmd.extend([
-#             "nice", "-19",
-#             "./generate_stepping_data",
-#             "--Ls",  str(run["ls"]),
-#             "--Lt",  str(run["lt"]),
-#             "--k_b", str(run["k_b"]),
-#             "--k_ub",str(run["k_ub"]),
-#             "--cb",  str(run["cb"]),
-#             "--cm",  str(run["cm"]),
-#             "--ct",  str(run["ct"]),
-#             "--T",   str(run["T"]),
-#             "--label", label,
-#             "--runtime", str(runtime),
-#         ])
-#         if (run["movie"]):
-#             cmd.extend(["--movie"])
-#         if ("onebound-debugging" in run and run["onebound-debugging"]):
-#             cmd.extend(["--onebound-debugging"])
-#
-#         basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
-#         out = open('runlogs/' + basename + '.out', 'w')
-#         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
-#         print "Running: ", ' '.join(cmd)
-# else:
-#     for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "ct": ct} for ls in ls_range for lt in lt_range
-#                     for k_b in k_b_range for T in T_range for cb in cb_range for cm in cm_range for ct in ct_range]:
-#         cmd = ["srun"] if have_slurm else []
-#         cmd.extend([
-#             "./generate_stepping_data",
-#             "--Ls", str(permutation["ls"]),
-#             "--Lt", str(permutation["lt"]),
-#             "--k_b", str(permutation["k_b"]),
-#             "--cb", str(permutation["cb"]),
-#             "--cm", str(permutation["cm"]),
-#             "--ct", str(permutation["ct"]),
-#             "--T", str(permutation["T"]),
-#             "--label", label,
-#             "--runtime", str(runtime),
-#             "--movie"
-#         ])
-#         print "Running: ", ' '.join(cmd)
-#
-#         basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, permutation['ls'], permutation['lt'], permutation["k_b"],
-#                                                                       permutation["cb"], permutation["cm"], permutation["ct"], permutation['T'])
-#         out = open('runlogs/' + basename + '.out', 'w')
-#         subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+if len(custom_runs) != 0:
+    for run in custom_runs:
+        cmd = ["srun"] if have_slurm else []
+        cmd.extend([
+            "nice", "-19",
+            "./generate_stepping_data",
+            "--Ls",  str(run["ls"]),
+            "--Lt",  str(run["lt"]),
+            "--k_b", str(run["k_b"]),
+            "--k_ub",str(run["k_ub"]),
+            "--cb",  str(run["cb"]),
+            "--cm",  str(run["cm"]),
+            "--ct",  str(run["ct"]),
+            "--T",   str(run["T"]),
+            "--label", label,
+            "--runtime", str(runtime),
+        ])
+        if (run["movie"]):
+            cmd.extend(["--movie"])
+        if ("onebound-debugging" in run and run["onebound-debugging"]):
+            cmd.extend(["--onebound-debugging"])
+
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,k_ub-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, run['ls'], run['lt'], run["k_b"], run["k_ub"], run["cb"], run["cm"], run["ct"], run['T'])
+        out = open('runlogs/' + basename + '.out', 'w')
+        subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+        print "Running: ", ' '.join(cmd)
+else:
+    for permutation in [{"ls": ls,"lt": lt,"k_b": k_b, "T": T, "cb": cb, "cm": cm, "ct": ct} for ls in ls_range for lt in lt_range
+                    for k_b in k_b_range for T in T_range for cb in cb_range for cm in cm_range for ct in ct_range]:
+        cmd = ["srun"] if have_slurm else []
+        cmd.extend([
+            "./generate_stepping_data",
+            "--Ls", str(permutation["ls"]),
+            "--Lt", str(permutation["lt"]),
+            "--k_b", str(permutation["k_b"]),
+            "--cb", str(permutation["cb"]),
+            "--cm", str(permutation["cm"]),
+            "--ct", str(permutation["ct"]),
+            "--T", str(permutation["T"]),
+            "--label", label,
+            "--runtime", str(runtime),
+            "--movie"
+        ])
+        print "Running: ", ' '.join(cmd)
+
+        basename = '%s__ls-%.3g,lt-%.3g,k_b-%s,cb-%s,cm-%s,ct-%s,T-%s' % (label, permutation['ls'], permutation['lt'], permutation["k_b"],
+                                                                      permutation["cb"], permutation["cm"], permutation["ct"], permutation['T'])
+        out = open('runlogs/' + basename + '.out', 'w')
+        subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
