@@ -1,8 +1,21 @@
 #include "dynein_struct.h"
 #include "simulations/simulation_defaults.h"
 #include <stdlib.h> // for exit
+#include <string.h>
 
 static const bool debug_stepping = false;
+
+double variable_ts_checkpoint_interval = 1e-6;
+char* variable_ts_stepping_print_buffer;
+int variable_ts_stepping_print_buffer_index;
+FILE* variable_ts_stepping_data_file;
+
+Dynein_onebound* variable_ts_checkpoint_onebound;
+Dynein_bothbound* variable_ts_checkpoint_bothbound;
+double variable_ts_checkpoint_time;
+
+int variable_ts_rewinding_state = false;
+double variable_ts_base_dt;
 
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void *job_msg, data_union* job_data,
@@ -61,25 +74,41 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	printf("Running for %g s\n", runtime);
   }
 
+  if (using_variable_timestep) {
+    variable_ts_checkpoint_onebound = (Dynein_onebound*) malloc(sizeof(Dynein_onebound));
+    variable_ts_checkpoint_bothbound = (Dynein_bothbound*) malloc(sizeof(Dynein_bothbound));
+    variable_ts_checkpoint_time = 0;
+    variable_ts_stepping_print_buffer = (char*) malloc(4096*sizeof(char));
+    variable_ts_stepping_print_buffer[0] = 0;
+    variable_ts_stepping_print_buffer_index = 0;
+    variable_ts_base_dt = dt;
+    variable_ts_rewinding_state = false;
+  }
+
   double near_unbinding_prob_printing_average = 0;
-  // double binding_prob_printing_average = 0;
   int unbinding_prob_printing_n = 0;
-  // int binding_prob_printing_n = 0;
 
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
-	//printf("time: %g\n", t);
+	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
+	  variable_ts_checkpoint_time = t;
+	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
+	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
+	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
+	  variable_ts_stepping_print_buffer_index = 0;
+	  variable_ts_rewinding_state = false;
+	  dt = variable_ts_base_dt;
+	}
+
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
+	
         double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
         double binding_prob = dyn_ob->get_binding_rate()*dt;
-	// if (am_debugging_rates) printf("OB unbinding probability: %g\n", unbinding_prob);
-	// if (am_debugging_rates) printf("OB binding probability: %g\n", binding_prob);
 	if (am_debugging_rates and binding_prob != 0 and rand->rand() < 1e-3) {
 	  printf("binding probability: %g, uby %g at time %g s\n", binding_prob, dyn_ob->get_uby(), t);
 	}
 	if (rand->rand() < unbinding_prob) { // unbind, switch to unbound
-	  // if (debug_stepping or am_debugging_rates) printf("\nunbinding at %.1f%%!\n", t/runtime*100);
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = UNBOUND;
@@ -90,10 +119,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
 	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %g, boltzmann factor: %g\n",
                                                      binding_prob, exp(-(dyn_bb->get_PE()-dyn_ob->get_PE())/kb/T));
-	  // if (am_debugging_state_transitions) {
-	  //   printf("previous OB angles: %g %g %g %g for bba bma uma uba\n", dyn_ob->get_bba(), dyn_ob->get_bma(), dyn_ob->get_uma(), dyn_ob->get_uba());
-	  //   printf("current  BB angles: %g %g %g %g for nba nma fma fba\n", dyn_bb->get_nba(), dyn_bb->get_nma(), dyn_bb->get_fma(), dyn_bb->get_fba());
-	  // }
 	  delete dyn_ob;
 	  dyn_ob = NULL;
 	  current_state = BOTHBOUND;
@@ -123,13 +148,36 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
 	    exit(1);
 	  }
-	  dyn_ob->update_velocities();
+
+	  if (dyn_ob->update_velocities() == VARIABLE_TS_REWIND_RETURN) {
+	    if (variable_ts_rewinding_state == true) {
+	      printf("Incurred error while at a lower timestep, exiting.\n");
+	      exit(1);
+	    }
+	    variable_ts_rewinding_state = true;
+
+	    printf("Rewinding and lowering timestep.\n");
+	    t = variable_ts_checkpoint_time;
+	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
+	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
+	    variable_ts_stepping_print_buffer_index = 0;
+	    dt = 1e-12;
+	  }
 	}
       }
 
     if (current_state == BOTHBOUND) {
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
-	//printf("time: %g\n", t);
+	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
+	  variable_ts_checkpoint_time = t;
+	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
+	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
+	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
+	  variable_ts_stepping_print_buffer_index = 0;
+	  variable_ts_rewinding_state = false;
+	  dt = variable_ts_base_dt;
+	}
+
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;
@@ -192,7 +240,20 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	    exit(1);
 	  }
 
-	  dyn_bb->update_velocities();
+	  if (dyn_bb->update_velocities() == VARIABLE_TS_REWIND_RETURN) {
+	    if (variable_ts_rewinding_state == true) {
+	      printf("Incurred error while at a lower timestep, exiting.\n");
+	      exit(1);
+	    }
+	    variable_ts_rewinding_state = true;
+
+	    printf("Rewinding and lowering timestep.\n");
+	    t = variable_ts_checkpoint_time;
+	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
+	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
+	    variable_ts_stepping_print_buffer_index = 0;
+	    dt = 1e-12;
+	  }
 	}
       }
     }

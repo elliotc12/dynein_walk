@@ -76,8 +76,16 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if (last_state == NEARBOUND or last_state == FARBOUND) {
-      fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-      fflush(data_file);
+      if (using_variable_timestep) {
+	char temp_buffer[300];
+	int num_chars_added = sprintf(temp_buffer, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+	strcpy(&variable_ts_stepping_print_buffer[variable_ts_stepping_print_buffer_index], temp_buffer);
+	variable_ts_stepping_print_buffer_index += num_chars_added;
+      }
+      else {
+	fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+	fflush(data_file);
+      }
       NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
@@ -462,6 +470,10 @@ int main(int argc, char** argv) {
   job_msg.run_msg = run_name;
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
   job_msg.movie_data_file = 0;
+
+  if (using_variable_timestep) {
+    variable_ts_stepping_data_file = job_msg.stepping_data_file;
+  }
 
   if (am_making_movie or am_debugging_onebound) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
