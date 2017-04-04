@@ -309,7 +309,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       // {"runtime",  required_argument,    0, 'p'},
       // {"runtime",  required_argument,    0, 'q'},
       // {"runtime",  required_argument,    0, 'r'},
-      {"movie",  no_argument, (int*) am_making_movie, 1},
+      {"nomovie",  no_argument, (int*) am_making_movie, 0},
       {"constant-write", no_argument, (int*) &am_only_writing_on_crash, false},
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {0, 0, 0, 0}
@@ -415,7 +415,7 @@ int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
 
   char* run_name = new char[100];
-  am_making_movie = 0;
+  am_making_movie = 1;
 
   crash_movie_file_name_global = new char[1000];
 
