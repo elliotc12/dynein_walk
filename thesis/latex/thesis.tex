@@ -56,17 +56,17 @@
 
 Cells need to create asymmetric, heterogeneous structures inside themselves in order to function. However, as per the above quote, diffusive processes cannot create this asymmetry. How then do cells create heterogeneity? Motor proteins are part of the answer. Motor proteins are structures which use energy to create directed motion in cells. In broad terms, they are creators of asymmetry. This thesis will explore a hypothesis on how one such motor protein, Dynein, generates directed motion.\\
 
-\subsection{Interest builder}
-Begin with a paper-like introduction which talks about:
+%% \subsection{Interest builder}
+%% Begin with a paper-like introduction which talks about:
 
-\begin{itemize}
-\item How dynein is a structure which turns chemical energy into motion
-\item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
-\item How it's weird that a cellular structure can generate directed motion
-\item Other cool stuff - make dynein mysterious and cool.
-\end{itemize}
+%% \begin{itemize}
+%% \item How dynein is a structure which turns chemical energy into motion
+%% \item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
+%% \item How it's weird that a cellular structure can generate directed motion
+%% \item Other cool stuff - make dynein mysterious and cool.
+%% \end{itemize}
 
-Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
+%% Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
 
 \subsection{Interest builder}
 Motor proteins are cellular structures which use chemical energy to do work and generate motion. Kinesin, myosin and dynein are the three main motor proteins in cells. Though these proteins have significantly different ancestors [cite], they all evolved into a single similar structure. In biology when a structure is evolved three separate times, it is a sign that nature has found an efficient way for solving a problem. How, then, do motor proteins work?\\
@@ -77,7 +77,7 @@ Although the three motor protein families operate using the same stepping cycle,
 
 One possibility is that dynein's size and organization are responsible for the motor's odd stepping pattern. Dynein is much larger than kinesin or myosin, meaning its feet may need to move significantly further over each cycle. Due to the random nature of Brownian motion from water particle collisions, there may be significantly more variance in the path taken by dynein's feet compared to other motor feet. This could explain the large variance in step size. Another contributing factor could be that dynein is so large that it can twist and contort during its step, allowing varying and even backwards steps, which a small motor would be too tense to achieve.\\
 
-This thesis aims to test whether Brownian motion and flexibility are what give rise to dynein's unique stepping pattern. To do this, an artificial motor model is created which exhibits flexibility and is affected by Brownian motion. This model is then simulated, and its behavior are compared to the behavior of real dynein.
+This thesis describes an experiment which aims to test whether Brownian motion and flexibility are what give rise to dynein's unique stepping pattern. To do this, a mathematical model of a dynein-like motor is constructed which exhibits flexibility and feels Brownian forces. This model is then simulated, and its behavior is compared to the behavior of real dynein.\\
 
 %% Dynein:
 %% feet which bind to track
@@ -115,7 +115,7 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/dynein-artist-rendition.jpg}
-  \caption{Artist's rendition of dynein.}{Artist rendition of the dynein motor bound to a microtubule. One monomer is bound to the MT, and one is raised up. Modified. Source: Lander Lab, The Scripps Research Institute.}
+  \caption{Artist's rendition of dynein bound to a microtubule.}{One monomer is bound to the MT, and the other is raised up. Modified. Source: Lander Lab, The Scripps Research Institute.}
   \label{dynein-artist-rendition}
 \end{figure}
 
@@ -124,13 +124,12 @@ Dynein is believed to move by using the energy of ATP to cycle through a ring of
 \subsubsection{Why do cells need motor transport?}
 Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
 
-Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \textbf{cite here}:
+Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \cite{einstein-paper}:
 
 \begin{equation}
   \label{diffusion-equation}
   <x> = \sqrt{2Dt}
 \end{equation}
-%% \myequations{some equation}
 
 where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ \cite{diffusionconstants}, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same. Figure (\ref{fig:diffusion_vs_dynein}) demonstrates how motor transport quickly outstrips diffusion in a cell.\\
 
@@ -148,8 +147,8 @@ Another advantage of motor transport is that microtubules can be highly specific
 \textit{maybe decorate the above plot with pictures of cells of each size, or how long certain cellular events take? That could be cool and make it actually an interesting plot}
 \textit{this argument would be much better if you could find examples of things which need to be done quickly in the cell, like responding to foreign particles or signalling molecules or cell division or neural events}
 
-\subsubsection{What role does it play in the cell?}
-Some of dynein's primary roles in the cell are to transport cellular cargos such as organelles, vesicles, mRNA, cytoskeletal filaments and certain proteins. Dynein also plays a role in positioning and breaking down the nucleus, cell death, spindle formation and the placement of other important cellular structures \cite{valetoolbox}.
+\subsubsection{What role does dynein play in the cell?}
+Some of dynein's primary roles in the cell are to transport cellular cargos such as organelles, vesicles, mRNA, cytoskeletal filaments and certain proteins. Dynein also plays a role in positioning and breaking down the nucleus, cell death, spindle formation and the placement of other important cellular structures \cite{valetoolbox}.\\
 
 Microtubules are long polymers of alternating $\alpha-$ and $\beta-$ tubulin subunits. MTs are polar, meaning they have a distinct directionality based on the orientation of thetubulin proteins which comprise them. One pole, the minus end, is where they initiate formation, typically at a MTOC (microtubule organizing center) around the center of the cell. The other pole, the plus end, is where they grow and shrink from. Kinesin and myosin, two other families of motor protein, typically walk towards the plus end of the MT. Dynein is unique in that it walks towards the minus end, making it a minus end-directed motor. This lends it to a particularly important function inside neurons known as retrograde transport.\\
 
