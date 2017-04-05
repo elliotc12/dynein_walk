@@ -25,42 +25,41 @@ binding_energy_high_affinity_atp = binding_energy_high_affinity_kJ_mol / atp_in_
 random.seed() # seed from a random source
 custom_runs = []
 
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 8e-11,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 1e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 2e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 3e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 5e-10,
-                    "seed": random.randint(0,100)})
-custom_runs.append({"k_b": 10, "k_ub": 2e11,
-                    "cb": 2.4,
-                    "cm": 2.4,
-                    "ct": 2.4,
-                    "dt": 2e-11,
-                    "seed": random.randint(0,100)})
+custom_runs.append({"k_b":  500, "k_ub": 2e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 2e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 2e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 2e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 2e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+
+custom_runs.append({"k_b":  500, "k_ub": 5e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 5e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 5e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 5e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 5e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+
+custom_runs.append({"k_b":  500, "k_ub": 8e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 8e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 8e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 8e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 8e11, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+
+custom_runs.append({"k_b":  500, "k_ub": 1e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 1e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 1e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 1e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 1e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+
+custom_runs.append({"k_b":  500, "k_ub": 4e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 4e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 4e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 4e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 4e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+
+custom_runs.append({"k_b":  500, "k_ub": 7e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  700, "k_ub": 7e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b":  900, "k_ub": 7e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1100, "k_ub": 7e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
+custom_runs.append({"k_b": 1300, "k_ub": 7e12, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "seed": 1})
 
 if len(custom_runs) == 0:  # if no custom_runs specified above, load them from a file
         cmdArgs = sys.argv[1:]
@@ -78,10 +77,10 @@ if len(custom_runs) == 0:  # if no custom_runs specified above, load them from a
                 print("usage: %s filename", sys.argv[0])
 
 runtime = 0.3
-label = "test-variable-ts"
+label = "4-4-rate-square"
 
 for run in custom_runs:
-        custom_label = label+str(run["dt"]) #edit this to uniquely name each simulation
+        custom_label = label #edit this to uniquely name each simulation
 
         cmd = ["srun"] if have_slurm else []
         cmd.extend(["nice", "-19"])

@@ -2,3 +2,10 @@ Keep accidentally erasing these! .log shouldn't get erased.
 
 4/4/17
 Anything over 5e-11 timestep goes under the MT. Perhaps this means a more rigid set of spring constants is necessary? Running a trial with dt=5e-10, c=[1,5,10,15,25,100]. Named: "high-dt-high-c"
+
+4/4/17
+It looks like high-c dt=3e-10 trials have "bad nmx" errors where some transitions generate NaNs. This seems especially so for high-c (c=50 or c=100) trials; low-c runs have MTBD-under-the-MT errors.
+
+It looks like dt=1e-10 simulations don't have this issue. Low-c runs all seem to behave pretty well; high-c runs have NaN issues. Hopefully this is true for all such low-c simulations.
+
+Generating a rate contour entitled "4-4-rate-square". 

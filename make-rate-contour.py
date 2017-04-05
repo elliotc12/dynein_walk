@@ -9,7 +9,10 @@ import numpy as np
 import os
 import sys
 
-datafiles = [s for s in os.listdir("data/contour/") if "stepping_data" in s]
+if len(sys.argv) != 2:
+    print("Usage: ", sys.argv[0], " /path/to/stepping_data/dir/")
+
+datafiles = [s for s in os.listdir(sys.argv[1]) if "stepping_data" in s]
 
 t_step = []
 t_ob = []
@@ -19,7 +22,7 @@ kbs = []
 kubs = []
 
 for i in range(len(datafiles)):
-    fname = "data/contour/" + datafiles[i]
+    fname = sys.argv[1] + datafiles[i]
     if os.stat(fname).st_size == 0:
         continue
     data = np.loadtxt(fname)
