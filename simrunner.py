@@ -1,4 +1,5 @@
 import subprocess, os
+import numpy as np
 
 def have_slurm():
     try:
@@ -21,27 +22,24 @@ def read_csv(fname):
     return custom_runs
 
 
-def run_sim(**run = {}, k_b=None):
+def run_sim(**run):
     cmd = ["srun"] if have_slurm() else []
     cmd.extend(["nice", "-19"])
     cmd.extend(["./generate_stepping_data"])
-    cmd.extend(["--runtime", str(runtime)])
-    cmd.extend(["--label", str(custom_label)])
 
-    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "custom-label"]:
+    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "runtime"]:
         if key in run:
             cmd.extend(["--"+key, str(run[key])])
-    if k_b is not None:
-        cmd.extend(['--k_b', k_b])
 
-    if "movie" in run and run["movie"]:
-        cmd.extend(["--movie"])
-    if "onebound-debugging" in run and run["onebound-debugging"]:
-        cmd.extend(["--onebound-debugging"])
-    if "constant-write" in run and run["constant-write"]:
-        cmd.extend(["--constant-write"])
+    # just pass these things in as keys with empty "" values in the run dict
+    # if "movie" in run and run["movie"]:
+    #     cmd.extend(["--movie"])
+    # if "onebound-debugging" in run and run["onebound-debugging"]:
+    #     cmd.extend(["--onebound-debugging"])
+    # if "constant-write" in run and run["constant-write"]:
+    #     cmd.extend(["--constant-write"])
 
-    basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
+    basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(run["label"]), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
     out = open('runlogs/' + basename + '.out', 'w')
-    subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+    # subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
     print("Running: %s", " ".join(cmd))
