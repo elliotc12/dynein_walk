@@ -14,11 +14,15 @@ def read_csv(fname):
     custom_runs = []
     if values.ndim != 1:
         for i in range(0, values.shape[0]):
-            custom_runs.append({"ls":float(values[i,0]), "lt":float(values[i,1]), "k_b":float(values[i,2]), "k_ub":float(values[i,3]),
-                                "T":float(values[i,4]), "cb":float(values[i,5]), "cm":float(values[i,6]), "ct":float(values[i,7])})
-        else:
-            custom_runs.append({"ls":float(values[0]), "lt":float(values[1]), "k_b":float(values[2]), "k_ub":float(values[3]),
-                                "T":float(values[4]), "cb":float(values[5]), "cm":float(values[6]), "ct":float(values[7])})
+            custom_runs.append({"ls":float(values[i,0]), "lt":float(values[i,1]),
+                                "k_b":float(values[i,2]), "k_ub":float(values[i,3]),
+                                "T":float(values[i,4]), "cb":float(values[i,5]),
+                                "cm":float(values[i,6]), "ct":float(values[i,7])})
+    else:
+        custom_runs.append({"ls":float(values[0]), "lt":float(values[1]),
+                            "k_b":float(values[2]), "k_ub":float(values[3]),
+                            "T":float(values[4]), "cb":float(values[5]),
+                            "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
 
@@ -27,17 +31,9 @@ def run_sim(**run):
     cmd.extend(["nice", "-19"])
     cmd.extend(["./generate_stepping_data"])
 
-    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "runtime"]:
+    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "runtime", "movie", "onebound-debugging", "constant-write"]:
         if key in run:
             cmd.extend(["--"+key, str(run[key])])
-
-    # just pass these things in as keys with empty "" values in the run dict
-    # if "movie" in run and run["movie"]:
-    #     cmd.extend(["--movie"])
-    # if "onebound-debugging" in run and run["onebound-debugging"]:
-    #     cmd.extend(["--onebound-debugging"])
-    # if "constant-write" in run and run["constant-write"]:
-    #     cmd.extend(["--constant-write"])
 
     basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(run["label"]), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
     out = open('runlogs/' + basename + '.out', 'w')
