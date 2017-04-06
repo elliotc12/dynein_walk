@@ -8,4 +8,7 @@ It looks like high-c dt=3e-10 trials have "bad nmx" errors where some transition
 
 It looks like dt=1e-10 simulations don't have this issue. Low-c runs all seem to behave pretty well; high-c runs have NaN issues. Hopefully this is true for all such low-c simulations.
 
-Generating a rate contour entitled "4-4-rate-square". 
+Generating a rate contour entitled "4-4-rate-square".
+
+4/5/17
+Lots of jobs quit due to sub-MT dynein. How to fix?? Should only show up on contour if the sim quit properly.

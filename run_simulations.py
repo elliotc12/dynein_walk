@@ -77,7 +77,7 @@ if len(custom_runs) == 0:  # if no custom_runs specified above, load them from a
                 print("usage: %s filename", sys.argv[0])
 
 runtime = 0.3
-label = "4-4-rate-square"
+label = "why-sub-MT"
 
 for run in custom_runs:
         custom_label = label #edit this to uniquely name each simulation
