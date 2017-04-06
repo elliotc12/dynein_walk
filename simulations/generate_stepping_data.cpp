@@ -23,7 +23,7 @@ extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;
 extern char* crash_movie_file_name_global;
 
-bool am_making_movie = false;
+bool am_making_movie = true;
 bool am_debugging_onebound = false;
 
 int num_movie_writes = 1e4;
@@ -415,7 +415,7 @@ int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
 
   char* run_name = new char[100];
-  am_making_movie = 1;
+  am_making_movie = true;
 
   crash_movie_file_name_global = new char[1000];
 
