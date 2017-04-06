@@ -25,8 +25,10 @@ def read_csv(fname):
                             "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
-
 def run_sim(**run):
+    os.system('mkdir -p ../runlogs ../data')
+    assert(subprocess.call("cd .. && make histogram-stuff", shell=True) == 0)
+
     cmd = ["srun"] if have_slurm() else []
     cmd.extend(["nice", "-19"])
     cmd.extend(["./generate_stepping_data"])
@@ -36,6 +38,6 @@ def run_sim(**run):
             cmd.extend(["--"+key, str(run[key])])
 
     basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(run["label"]), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
-    out = open('runlogs/' + basename + '.out', 'w')
-    # subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+    out = open('../runlogs/' + basename + '.out', 'w')
+    subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
     print("Running: %s", " ".join(cmd))

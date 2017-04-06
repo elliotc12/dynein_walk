@@ -6,7 +6,6 @@ import subprocess, os
 import sys
 
 os.system('mkdir -p runlogs data')
-
 assert(subprocess.call("make histogram-stuff", shell=True) == 0)
 
 have_slurm = True
@@ -101,5 +100,5 @@ for run in custom_runs:
 
         basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(custom_label), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
         out = open('runlogs/' + basename + '.out', 'w')
-        subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+        #subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
         print("Running: %s", " ".join(cmd))
