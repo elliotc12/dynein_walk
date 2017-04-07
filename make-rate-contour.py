@@ -11,6 +11,7 @@ import sys
 
 if len(sys.argv) != 2:
     print("Usage: ", sys.argv[0], " /path/to/stepping_data/dir/")
+    exit(1)
 
 datafiles = [s for s in os.listdir(sys.argv[1]) if "stepping_data" in s]
 
@@ -20,6 +21,8 @@ t_bb = []
 t_proc = []
 kbs = []
 kubs = []
+nan_kbs = []
+nan_kubs = []
 
 for i in range(len(datafiles)):
     fname = sys.argv[1] + datafiles[i]
@@ -35,13 +38,16 @@ for i in range(len(datafiles)):
     end_kub_idx = datafiles[i][start_kub_idx:].index(',') + start_kub_idx
     kub = float(datafiles[i][start_kub_idx:end_kub_idx])
 
+    if "#EXIT SUCCESSFULLY" not in open(fname).read():
+        print("Simulation did not exit successfully.")
+        nan_kbs.append(kb)
+        nan_kubs.append(kub)
+        continue
+
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         print("Not enough steps in data file.")
         kbs.append(kb)
         kubs.append(kub)
-        # t_step.append(float("inf"))
-        # t_ob.append(float("inf"))
-        # t_bb.append(float("inf"))
         t_step.append(0)
         t_ob.append(10) # hokey code to say this is very large!
         t_bb.append(0)
@@ -68,10 +74,9 @@ for i in range(len(datafiles)):
         t_bb.append(np.mean(bothbound_times))
         t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
-print("kbs: ", kbs)
-print("kubs: ", kubs)
-print("tobs: ", t_ob)
-print("tbbs: ", t_bb)
+if len(kbs) == 0:
+    print("Error, no stepping data!")
+    exit(1)
 
 min_kb = min(kbs)
 max_kb = max(kbs)
@@ -85,12 +90,13 @@ KB, KUB = np.meshgrid(kbs, kubs)
 
 TBB = np.zeros((len(kbs), len(kubs)))
 
-for i in range(len(t_ob)):
-    TBB[i,i] = t_ob[i]
+# for i in range(len(t_ob)):
+#     TBB[i,i] = t_ob[i]
 
 plt.figure()
 ax = plt.gca()
 
+### TOB plot ###
 ratio = np.array(t_ob) / (4.5*10**-4)
 ratio = np.log10(ratio)
 m = cm.ScalarMappable(cmap=cm.jet)
@@ -98,9 +104,10 @@ ratiomax = 1
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
-    plot = plt.plot(kbs[i], kubs[i], '.',
-                    color=mycolor, markeredgecolor=mycolor)
+    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
+
+plt.plot(nan_kbs, nan_kubs, 'x')
 
 ax.set_xscale("log")
 ax.set_yscale("log")
@@ -110,7 +117,29 @@ ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
 plt.title('$\log_{10}$(Onebound time / experimental) vs un/binding rates')
 
-plt.savefig("plots/kb-kub-contour.pdf")
+plt.savefig("plots/tob-rate-contour.pdf")
+
+### TBB plot ###
+ratio = np.array(t_bb) / (0.0595)
+ratio = np.log10(ratio)
+m = cm.ScalarMappable(cmap=cm.jet)
+ratiomax = 1
+m.set_array(np.linspace(-ratiomax, ratiomax, 100))
+for i in range(len(ratio)):
+    mycolor = m.cmap(ratio[i]/ratiomax)
+    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+
+plt.plot(nan_kbs, nan_kubs, 'x')
+
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_xlabel("$k_b$")
+ax.set_ylabel("$k_{ub}$")
+ax.set_xlim([0.01*min_kb, 100*max_kb])
+ax.set_ylim([0.01*min_kub, 100*max_kub])
+plt.title('$\log_{10}$(Bothbound time / experimental) vs un/binding rates')
+
+plt.savefig("plots/tbb-rate-contour.pdf")
 
 # print("ratio: ", ratio)
 
