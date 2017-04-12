@@ -42,27 +42,35 @@ struct job_msg_t {
   FILE *movie_data_file;
 };
 
-void check_for_quitting_conditions(double time_run, FILE* data_file) {
+void check_for_quitting_conditions(double time_run, FILE* data_file, double last_unbinding_time) {
   // P(stepping k times in t seconds) = ((t/0.06)^k*e^(t/0.06)) / k!
   if (time_run > 0.3 and NUM_STEPS == 0 and am_exiting_on_improbable_stepping) {
     printf("Zero steps in 0.3 seconds. There's a 0.67%% chance of real dynein doing this. Exiting successfully\n");
-    fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
+    fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
+    fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
   if (time_run > 0.3 and NUM_STEPS >= 10 and am_exiting_on_improbable_stepping) {
     printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this. Exiting successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
+    fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
   if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
     printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this. Exiting successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
+    fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
   else if (time_run > 0.7 and am_exiting_on_improbable_stepping) {
     // printf("There's a 97%% chance of real dynein having stepped 5 times in 0.7 seconds, exiting successfully.\n");
     printf("Exiting normally after 0.7 seconds.\nExit successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
+    fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
 }
@@ -117,6 +125,8 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     }
     last_state = UNBOUND;
   }
+
+  check_for_quitting_conditions(iteration*dt, job_msg.stepping_data_file, last_bothbound_iteration*dt);
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
@@ -246,7 +256,6 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 
 void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_data, long long iteration) {
   job_msg_t job_msg = *(job_msg_t *)job_msg_;
-  check_for_quitting_conditions(iteration*dt, job_msg.stepping_data_file);
 
   if (iteration % 1000 == 0) {
     if (ftell(stdout) > MAX_FILESIZE_PERMITTED) {
