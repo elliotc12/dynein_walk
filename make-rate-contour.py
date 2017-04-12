@@ -41,10 +41,14 @@ for i in range(len(datafiles)):
     end_kub_idx = file_txt[start_kub_idx:].index(',') + start_kub_idx
     kub = float(file_txt[start_kub_idx:end_kub_idx])
 
-    if "#EXIT SUCCESSFULLY" not in open(fname).read():
+    if "#EXIT SUCCESSFULLY" not in file_txt:
         print("Simulation did not exit successfully.")
         nan_kbs.append(kb)
         nan_kubs.append(kub)
+        continue
+
+    if "#Last unbinding time" not in file_txt:
+        print("Error, this is an old data file that doesn't have a #Last unbinding time.")
         continue
 
     start_last_unbinding_idx = file_txt.index("#Last unbinding time: ") + 22
@@ -61,9 +65,12 @@ for i in range(len(datafiles)):
         kubs.append(kub)
 
         t_step.append(0)
-        t_ob.append(runtime-last_unbinding)
-        t_bb.append(last_unbinding)
+        t_ob.append(runtime-last_unbinding_time)
+        t_bb.append(last_unbinding_time)
         t_proc.append(float('inf'))
+
+        print("T_ob:", t_ob)
+        print("T_bb:", t_bb)
 
     else:
         kbs.append(kb)
@@ -87,6 +94,8 @@ for i in range(len(datafiles)):
         print("T_bb:", t_bb)
         print("onebound_times", onebound_times)
         print("bothbound_times", bothbound_times)
+
+    print("\n")
 
 if len(kbs) == 0:
     print("Error, no stepping data in these data files!")
