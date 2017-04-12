@@ -15,6 +15,11 @@ all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movi
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
+version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp)
+	echo -n static const char '*version' = '"' > version-info.h
+	git describe --dirty | head -c -1 >> version-info.h
+	echo '";' >> version-info.h
+
 derivation.pdf: latex/derivation.tex $(FIGURES)
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
 
@@ -107,7 +112,7 @@ plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data
 plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
 	./make_stepping_plots.py $*
 
-generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results
+generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results version-info.h
 	mkdir -p runlogs
 	mkdir -p data
 	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
