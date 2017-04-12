@@ -1,3 +1,4 @@
+#/usr/bin/python3
 import subprocess, os
 import numpy as np
 
