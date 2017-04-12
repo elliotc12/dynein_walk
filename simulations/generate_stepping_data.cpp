@@ -126,7 +126,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     last_state = UNBOUND;
   }
 
-  check_for_quitting_conditions(iteration*dt, job_msg.stepping_data_file, last_bothbound_iteration*dt);
+  check_for_quitting_conditions(iteration*dt, data_file, last_bothbound_iteration*dt);
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
