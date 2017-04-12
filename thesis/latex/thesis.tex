@@ -172,7 +172,7 @@ Neurons have cell bodies at their centers and axons which grow outwards. Axons a
 
 \textit{eventually find a different figure}
 
-As shown in \ref{dynein-artist-rendition-2}, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.
+As shown in the crystal structure in Figure XXX, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.
 
 \textbf{Binding domain}
 Microtubule binding domains (MTBDs) allow dynein to bind to the microtubule. 
@@ -184,10 +184,14 @@ Microtubule binding domains (MTBDs) allow dynein to bind to the microtubule.
 %%   \label{dynein-artist-rendition-2}
 %% \end{figure}
 
-\subsubsection{How does it behave?}
-Talk about its stepping behavior using Weihong's figures (as well as the new paper David found?)\\
 
-Also possibly talk about the other things Dynein has been found to do, such as hydrolyse ATP and move its subdomains around. This may be better in a different section than the introduction though, since its a lot of biochemistry for the second section in an intro? maybe not, it has to go somewhere.
+This could be fixed up...probably remove multiple of these sections
+
+\subsubsection{How does it behave?}
+Dynein's stepping pattern is distinct from its partner, kinesin. Kinesin takes very precise 8-nm steps \cite{kinesin-step-size}. In contrast, dynein takes a large range of steps, as shown in Figure \\
+
+
+
 
 \subsubsection{Why is dynein special and interesting?}
 Compare the processive motion of dynein to kinesin in \textbf{a.)} directionality, \textbf{b.)} stepping pattern and \textbf{c.)} size (like how it can step over roadblocks kinesin cannot).\\
@@ -388,7 +392,7 @@ Thus R becomes a parameter input to the model.\\
 \subsubsection{Rigid rods}
 The model assumes connected domains are rigidly attached to one another by rods. This assumption makes the math easier, and is not necessarily based on biology. One study found that the standard deviation of stalk and stem lengths in \textit{in vitro} dynein was roughly $1nm$ \ref{burgess-paper}. However a contrasting piece of evidence showed the coiled coil, a common protein structure which links the MTBD and motor domains in dynein, can stretch in myosin, another motor protein, by 2.5x \ref{myosin-cc-elasticity}.
 
-In reality, all molecules have a degree of elasticity. A dynein model by Sarlah \textit{et. al.} models the dynein stalk as an elastic rod \cite{sarlahpaper}. However, the timescale of harmonic stalk oscillations is likely much quicker than that of the mechanochemical cycle, so it is reasonable to model the stalk as a rigid rod at the stalk's average extension length.\\
+In reality, all molecules have a degree of elasticity. A dynein model by Sarlah \textit{et. al.} models the dynein stalk as an elastic rod \cite{sarlahmodel}. However, the timescale of harmonic stalk oscillations is likely much quicker than that of the mechanochemical cycle, so it is reasonable to model the stalk as a rigid rod at the stalk's average extension length.\\
 
 \subsubsection{Angular springs}
 Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tail, which decides the energy associated with that domain angle. For example, the tail domain energy is given by
@@ -452,7 +456,7 @@ The model ``steps'' whenever an MTBD diffuses near the microtubule. \textit{In v
 \subsubsection{2D model}
 The coordinate system for this model is two-dimensional. Thus interactions between the two motors and MTBDs are ignored. This assumption is made to simplify the model. Other dynein models, like the winch model \ref{sarlahmodel}, add in attractive and repulsive forces between the two motors which act in three dimensions. It is not clear why such forces are necessary for dynein motion, and so they are omitted.\\
 
-Side stepping of dynein is ignored in this model. Stepping perpendicular to the MT occurs in dynein \cite{weihongppaer}, as shown in Figure \ref{fig:weihong-side-stepping}. This model assumes it is a symptom, and not an influencer of, of dynein's forward-backward stepping mechanism.
+Side stepping of dynein is ignored in this model. Stepping perpendicular to the MT occurs in dynein \cite{weihongpaper}, as shown in Figure \ref{fig:weihong-side-stepping}. This model assumes it is a symptom, and not an influencer of, of dynein's forward-backward stepping mechanism.
 
 \begin{figure}[h]
   \centering
@@ -1152,10 +1156,13 @@ To find the ideal binding and unbinding rates of our model, we ran simulations a
   \label{fig:kb-kub-heatmap}
 \end{figure}
 
+\textbf{Way to represent heatmap: show a blowup of the most promising section of the first heatmap, then a blowup of the second, etc until the optimum is found}
+
 \subsubsection{Fitting spring constants}
 This section will be written once it is conducted. This is contingent on getting rate fitting done, and preferably high-dt simulations stable so an optimization process can be run.\\
 
-\section{Chapter: Results}
+\section{Chapter: Results \& Discussion}
+\subsection{Stepping behavior of fit model}
 The ideal set of parameters found via the fitting process is shown in Table \ref{table:final-parameter-table}.\\
 
 \begin{figure}[H]
@@ -1194,16 +1201,15 @@ Histograms of the simulation's stepping length and time are shown in Figure \ref
   \label{fig:final-histograms}
 \end{figure}
 
-\section{Chapter: Discussion}
+Do our spring constants seem to indicate that the protein does about one ATP's worth of work through its cycle? I wonder if the motor cools down its surroundings when it walks...\\
+
+Our project un/successfully predicted how dynein behaved. How would we modify it to describe kinesin? Is dynein's linker-motor connection less tense than kinesin's, leading to more random motion? This would likely be lots of speculation, but it could be cool to look up some papers on kinesin motility and get its crystal structure to do some comparisons.
+
+\subsection{Next Steps}
 \subsubsection{Limitations}
-The accuracy of correspondence between model dynein and physical dynein is very relevant when assessing the meaningfulness of the simulation results. Reducing a megaDalton weight protein to a five-coordinate kinematic model with springy hinges is bound to have low resolution. However, the point of this model is to predict gross stepping behavior over large timescales. Thus, only assumptions which possibly add large systematic errors to stepping behavior are of interest. These possible limitations are listed below.\\
-
-Domain shape influences primarily the drag coefficients $\gamma$ of the model. These in turn affect the diffusion rate of different domains. Reducing domains to spheres adds a systematic error to the diffusion speed of each domain, which could bias step size. However, spring constants $c_b$, $c_m$ and $c_t$ also have an influence on the diffusion rate of spheres. Thus by fitting spring constants to the proper step length, the systematic error of domain size can be reduced -- ???\\
-
-Treating the conformational dynamics of the domains as harmonic energies is a simplification, but 
 
 -------------------------------------
-Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information, other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be springy...
+Talk about the things we \textit{don't} take into account...motor-motor interaction, 2d information, other ATPase nucleotide state, saying certain mechanochemical steps occur ``fast,'' not taking into account all mechanochemical cycle states, making the coiled coil domain rigid even though it may be springy, 2D model...
 
 Mention the Burgess paper, which says spring constants might change between apo/ADP states.
 Also dynein may move helically: Bidirectional helical motility of cytoplasmic dynein around microtubules
@@ -1211,26 +1217,17 @@ Also dynein may move helically: Bidirectional helical motility of cytoplasmic dy
 Computational limitations: Our project is computational, not experimental. Thus the onus is on us to show that our system is not a humongously over-fit model which just happens to reproduce experimental data, but rather a good physical model of dynein which also replicates data.\\
 -------------------------------------
 
-\subsection{Future work on this project}
-If setbacks happen, this'll be a big section. Or, further simulations which could be done. Namely taking our model and giving it lots more states and seeing if this model even better fits experimental data.\\
+\subsubsection{Improvements to model}
 
-\subsubsection{Experiments to verify our model}
-Talk about how FRET could be used to verify our model. We have domain distance info over long
-timescales in our model - this is something we could compare to a FRET experiment exploring
-the distance between domains in dynein.\\
+\subsubsection{\textit{Experiments to verify our model}}
+Talk about how FRET could be used to verify our model. We have domain distance info over long timescales in our model - this is something we could compare to a FRET experiment exploring the distance between domains in dynein.\\
 
 Other biophysics experiments which could verify our model?\\
 
-Do our spring constants seem to indicate that the protein does about one ATP's worth of work through its cycle? I wonder if the motor cools down its surroundings when it walks...\\
+Calorimetry could get Gibb's energy of binding if you froze the motor in onebound using vanadium? Maybe...\\
 
-Calorimetry could get Gibb's energy of binding if you froze the motor in onebound using
-vanadium? Maybe...\\
-\subsection{Possible further projects}
-\subsection{Difference between dynein and kinesin}
-Our project un/successfully predicted how dynein behaved. How would we modify it to describe kinesin?
-Is dynein's linker-motor connection less tense than kinesin's, leading to more random motion? This
-would likely be lots of speculation, but it could be cool to look up some papers on kinesin motility
-and get its crystal structure to do some comparisons.
+\section{Conclusion}
+Does anything actually go here?
 
 \bibliography{thesis-articles}
 

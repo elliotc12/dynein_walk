@@ -1,4 +1,5 @@
 Figures to make, all using the same style, which explain stuff about the dyn
 
-Interest builder: The three motor proteins (maybe doing their walks). Purpose: to show that dynein has a weird separation between its motor and foot domains. Show where energy is used in each motor.
+1.0.0 Interest builder: The three motor proteins (maybe doing their walks). Purpose: to show that dynein has a weird separation between its motor and foot domains. Show where energy is used in each motor.
 
+1.2.6 Why is dynein special and interesting?: Figure comparing the crystal structures of kinesin and dynein together
