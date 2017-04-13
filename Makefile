@@ -15,9 +15,11 @@ all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movi
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
-version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp)
+version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp) Makefile
 	echo -n static const char '*version' = '"' > version-info.h
 	git describe --dirty | head -c -1 >> version-info.h
+	echo -n '-=-' >> version-info.h
+	date -Ins | head -c -1 >> version-info.h
 	echo '";' >> version-info.h
 
 derivation.pdf: latex/derivation.tex $(FIGURES)
