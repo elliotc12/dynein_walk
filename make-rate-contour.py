@@ -107,6 +107,9 @@ KB, KUB = np.meshgrid(kbs, kubs)
 
 TBB = np.zeros((len(kbs), len(kubs)))
 
+print("onebound times: ", t_ob)
+print("bothbound times: ", t_bb)
+
 plt.figure()
 ax = plt.gca()
 
@@ -114,10 +117,10 @@ ax = plt.gca()
 ratio = np.array(t_ob) / (4.5*10**-4)
 ratio = np.log10(ratio)
 m = cm.ScalarMappable(cmap=cm.jet)
-ratiomax = 1
+ratiomax = 10
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
-    mycolor = m.cmap(ratio[i]/ratiomax)
+    mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
@@ -141,10 +144,10 @@ ax = plt.gca()
 ratio = np.array(t_bb) / (0.0595)
 ratio = np.log10(ratio)
 m = cm.ScalarMappable(cmap=cm.jet)
-ratiomax = 1
+ratiomax = 10
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
-    mycolor = m.cmap(ratio[i]/ratiomax)
+    mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
