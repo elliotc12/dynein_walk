@@ -28,7 +28,8 @@ for i in range(len(datafiles)):
     fname = sys.argv[1] + datafiles[i]
     if os.stat(fname).st_size == 0:
         continue
-    print("filename: %s", fname)
+    print("filename: %s" % fname)
+
     data = np.loadtxt(fname)
 
     file_txt = open(fname).read()
@@ -42,7 +43,7 @@ for i in range(len(datafiles)):
     kub = float(file_txt[start_kub_idx:end_kub_idx])
 
     if "#EXIT SUCCESSFULLY" not in file_txt:
-        print("Simulation did not exit successfully.")
+        print("Simulation either did not exit successfully or is not done.")
         nan_kbs.append(kb)
         nan_kubs.append(kub)
         continue
@@ -60,7 +61,7 @@ for i in range(len(datafiles)):
     runtime = float(file_txt[start_runtime_idx:end_runtime_idx])
 
     if len(data) == 0: #or str(type(data[0])) == "<type 'numpy.float64'>":
-        print("No steps in data file.")
+        print("No steps in data file...")
         kbs.append(kb)
         kubs.append(kub)
 
@@ -69,10 +70,8 @@ for i in range(len(datafiles)):
         t_bb.append(last_unbinding_time)
         t_proc.append(float('inf'))
 
-        print("T_ob:", t_ob)
-        print("T_bb:", t_bb)
-
     else:
+        print("Found steps in data file...")
         kbs.append(kb)
         kubs.append(kub)
         bind_times = np.array(np.concatenate(([0], data[:,1])))
@@ -90,18 +89,11 @@ for i in range(len(datafiles)):
         t_bb.append(np.mean(bothbound_times))
         t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
-        print("T_ob:", t_ob)
-        print("T_bb:", t_bb)
-        print("onebound_times", onebound_times)
-        print("bothbound_times", bothbound_times)
-
     print("\n")
 
 if len(kbs) == 0:
     print("Error, no stepping data in these data files!")
     exit(1)
-
-exit(0)
 
 min_kb = min(kbs)
 max_kb = max(kbs)
@@ -126,11 +118,10 @@ ratiomax = 1
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
-    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor, label="normal data")
+    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
-plt.plot(nan_kbs, nan_kubs, 'x', label="Error in simulation")
-plt.plot(nostep_kbs, nostep_kubs, 'o', label="No steps in simulation")
+plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
 
 ax.set_xscale("log")
 ax.set_yscale("log")
@@ -138,10 +129,13 @@ ax.set_xlabel("$k_b$")
 ax.set_ylabel("$k_{ub}$")
 ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
-ax.legend(framealpha=0.5)
+plt.legend(framealpha=0.5)
 plt.title('$\log_{10}$(Onebound time / experimental) vs un/binding rates')
 
 plt.savefig("plots/tob-rate-contour.pdf")
+
+plt.figure()
+ax = plt.gca()
 
 ### TBB plot ###
 ratio = np.array(t_bb) / (0.0595)
@@ -152,8 +146,9 @@ m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+CB = plt.colorbar(m)
 
-plt.plot(nan_kbs, nan_kubs, 'x')
+plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
 
 ax.set_xscale("log")
 ax.set_yscale("log")
@@ -161,6 +156,7 @@ ax.set_xlabel("$k_b$")
 ax.set_ylabel("$k_{ub}$")
 ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
+plt.legend(framealpha=0.5)
 plt.title('$\log_{10}$(Bothbound time / experimental) vs un/binding rates')
 
 plt.savefig("plots/tbb-rate-contour.pdf")
