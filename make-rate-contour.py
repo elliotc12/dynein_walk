@@ -6,6 +6,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
+import math
 import os
 import sys
 
@@ -112,13 +113,25 @@ ax = plt.gca()
 
 ### TOB plot ###
 ratio = np.array(t_ob) / (4.5*10**-4)
-ratio = np.log10(ratio)
+log_ratio = np.array(ratio)
+
+for i in range(len(ratio)):
+    if ratio[i] != 0:
+        log_ratio[i] = math.log(ratio[i], 10)
+    else:
+        log_ratio[i] = -float('inf')
+
 m = cm.ScalarMappable(cmap=cm.jet)
-ratiomax = 1
-m.set_array(np.linspace(-ratiomax, ratiomax, 100))
+ratiomax = 10
+m.set_array(np.linspace(-ratiomax, ratiomax, 1000))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
-    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+    if (log_ratio[i] < -10):
+        plt.plot(kbs[i], kubs[i], '*', color='b', markersize=5) # blue circle: ratio < 0.01
+    elif (log_ratio[i] > 10):
+        plt.plot(kbs[i], kubs[i], '*', color='r', markersize=5) # red circle: ratio > 100.0
+    else:
+        plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
 plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
@@ -139,13 +152,25 @@ ax = plt.gca()
 
 ### TBB plot ###
 ratio = np.array(t_bb) / (0.0595)
-ratio = np.log10(ratio)
-m = cm.ScalarMappable(cmap=cm.jet)
-ratiomax = 1
-m.set_array(np.linspace(-ratiomax, ratiomax, 100))
+log_ratio = np.array(ratio)
+
 for i in range(len(ratio)):
-    mycolor = m.cmap(ratio[i]/ratiomax)
-    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+    if ratio[i] != 0:
+        log_ratio[i] = math.log(ratio[i], 10)
+    else:
+        log_ratio[i] = -float('inf')
+
+m = cm.ScalarMappable(cmap=cm.jet)
+ratiomax = 10
+m.set_array(np.linspace(-ratiomax, ratiomax, 1000))
+for i in range(len(ratio)):
+    mycolor = m.cmap(log_ratio[i]/ratiomax)
+    if (log_ratio[i] < -10):
+        plt.plot(kbs[i], kubs[i], '*', color='b', markersize=5) # blue circle: ratio < 0.01
+    elif (log_ratio[i] > 10):
+        plt.plot(kbs[i], kubs[i], '*', color='r', markersize=5) # red circle: ratio > 100.0
+    else:
+        plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
 CB = plt.colorbar(m)
 
 plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
