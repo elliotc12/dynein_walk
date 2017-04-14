@@ -59,3 +59,4 @@ create_bb_movie
 *.lof
 simrunner
 *.pyc
+version-info.h

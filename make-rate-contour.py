@@ -115,8 +115,8 @@ plt.figure()
 ax = plt.gca()
 
 ### TOB plot ###
-ratio = np.array(t_ob) / (4.5*10**-4)
-ratio = np.log10(ratio)
+raw_ratio = np.array(t_ob) / (4.5*10**-4)
+ratio = np.log10([s if s != 0 else 1e-100 for s in raw_ratio])
 
 m = cm.ScalarMappable(cmap=cm.jet)
 ratiomax = 10
@@ -125,6 +125,9 @@ m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+    plt.annotate(str(math.floor(np.log10(t_ob[i]))), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2),
+                 fontsize='1', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
+
 CB = plt.colorbar(m)
 
 plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
@@ -144,8 +147,8 @@ plt.figure()
 ax = plt.gca()
 
 ### TBB plot ###
-ratio = np.array(t_bb) / (0.0595)
-ratio = np.log10(ratio)
+raw_ratio = np.array(t_bb) / (0.0595)
+ratio = np.log10([s if s != 0 else 1e-100 for s in raw_ratio])
 
 m = cm.ScalarMappable(cmap=cm.jet)
 ratiomax = 10
@@ -154,6 +157,8 @@ m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+    plt.annotate(str(math.floor(np.log10(t_bb[i]))), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2),
+                 fontsize='1', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 
 CB = plt.colorbar(m)
 
