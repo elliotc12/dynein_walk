@@ -1,0 +1,16 @@
+# command line: ./generate_stepping_data --k_b 1e-12 --k_ub 2e+11 --cb 2.4 --cm 2.4 --ct 2.4 --dt 1e-10 --label 4-13-tinier-kb
+# version: -=-2017-04-13T22:46:04,367292926-0700
+
+
+
+
+#********4-13-tinier-kb__k_b-1e-12,k_ub-2e+11,cb-2.4,cm-2.4,ct-2.4,dt-1e-10********
+#time_unbind, time_bind, nbx, fbx
+#[time: 0]
+#[time: 0.01]
+#[time: 0.02]
+#[time: 0.03]
+#[time: 0.04]
+#[time: 0.05]
+#[time: 0.06]
+6.166211960000000e-02 6.166220930000000e-02 0.000000000000000e+00 -4.713794547764140e+01
