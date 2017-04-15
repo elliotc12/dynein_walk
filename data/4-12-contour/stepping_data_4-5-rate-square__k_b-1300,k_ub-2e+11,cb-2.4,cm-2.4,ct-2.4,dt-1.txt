@@ -1,0 +1,7 @@
+# command line: ./generate_stepping_data --k_b 1300 --k_ub 2e+11 --cb 2.4 --cm 2.4 --ct 2.4 --dt 1 --label 4-5-rate-square
+
+
+
+#********4-5-rate-square__k_b-1300,k_ub-2e+11,cb-2.4,cm-2.4,ct-2.4,dt-1********
+#time_unbind, time_bind, nbx, fbx
+#Exit successfully!

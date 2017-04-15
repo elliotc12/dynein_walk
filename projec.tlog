@@ -19,3 +19,6 @@ Looks like things are working! Running more simulations to explore the space.
 4/11/17
 "4-6-rate-square" was pretty good, lots of too-slow steps
 "4-6-tiny-rate-square" was bad. Lots of NaNs were generated, which is odd - they should have been run at the same conditions as above, more or less.
+
+4/12/17
+All current onebound points in 4-12-contour are too low. Going to try some much lower kbs..."4-12-low-kb", kb=[1e-3, 1e-2, 1e-1, 1, 10, 100] kub=[1e9, 1e10, 1e11, 1e12]
