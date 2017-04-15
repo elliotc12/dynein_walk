@@ -12,3 +12,10 @@ Generating a rate contour entitled "4-4-rate-square".
 
 4/5/17
 Lots of jobs quit due to sub-MT dynein. How to fix?? Should only show up on contour if the sim quit properly.
+
+4/6/17
+Looks like things are working! Running more simulations to explore the space.
+
+4/11/17
+"4-6-rate-square" was pretty good, lots of too-slow steps
+"4-6-tiny-rate-square" was bad. Lots of NaNs were generated, which is odd - they should have been run at the same conditions as above, more or less.

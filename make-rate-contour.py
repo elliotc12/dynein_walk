@@ -28,55 +28,80 @@ for i in range(len(datafiles)):
     fname = sys.argv[1] + datafiles[i]
     if os.stat(fname).st_size == 0:
         continue
+    print("filename: %s", fname)
     data = np.loadtxt(fname)
 
-    start_kb_idx = datafiles[i].index('k_b-') + 4
-    end_kb_idx = datafiles[i][start_kb_idx:].index(',') + start_kb_idx
-    kb = float(datafiles[i][start_kb_idx:end_kb_idx])
+    file_txt = open(fname).read()
 
-    start_kub_idx = datafiles[i].index('k_ub-') + 5
-    end_kub_idx = datafiles[i][start_kub_idx:].index(',') + start_kub_idx
-    kub = float(datafiles[i][start_kub_idx:end_kub_idx])
+    start_kb_idx = file_txt.index('k_b-') + 4
+    end_kb_idx = file_txt[start_kb_idx:].index(',') + start_kb_idx
+    kb = float(file_txt[start_kb_idx:end_kb_idx])
 
-    if "#EXIT SUCCESSFULLY" not in open(fname).read():
+    start_kub_idx = file_txt.index('k_ub-') + 5
+    end_kub_idx = file_txt[start_kub_idx:].index(',') + start_kub_idx
+    kub = float(file_txt[start_kub_idx:end_kub_idx])
+
+    if "#EXIT SUCCESSFULLY" not in file_txt:
         print("Simulation did not exit successfully.")
         nan_kbs.append(kb)
         nan_kubs.append(kub)
         continue
 
-    if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
-        print("Not enough steps in data file.")
+    if "#Last unbinding time" not in file_txt:
+        print("Error, this is an old data file that doesn't have a #Last unbinding time.")
+        continue
+
+    start_last_unbinding_idx = file_txt.index("#Last unbinding time: ") + 22
+    end_last_unbinding_idx = file_txt[start_last_unbinding_idx:].index('\n') + start_last_unbinding_idx
+    last_unbinding_time = float(file_txt[start_last_unbinding_idx:end_last_unbinding_idx])
+
+    start_runtime_idx = file_txt.index("#Runtime: ") + 10
+    end_runtime_idx = file_txt[start_runtime_idx:].index('\n') + start_runtime_idx
+    runtime = float(file_txt[start_runtime_idx:end_runtime_idx])
+
+    if len(data) == 0: #or str(type(data[0])) == "<type 'numpy.float64'>":
+        print("No steps in data file.")
         kbs.append(kb)
         kubs.append(kub)
+
         t_step.append(0)
-        t_ob.append(10) # hokey code to say this is very large!
-        t_bb.append(0)
-        t_proc.append(0)
+        t_ob.append(runtime-last_unbinding_time)
+        t_bb.append(last_unbinding_time)
+        t_proc.append(float('inf'))
+
+        print("T_ob:", t_ob)
+        print("T_bb:", t_bb)
+
     else:
         kbs.append(kb)
         kubs.append(kub)
-        bind_times = np.array(data[:,1])
-        unbind_times = np.array(data[:,0])
-        near_positions = np.array(data[:,2])
-        far_positions = np.array(data[:,3])
-        near_step_idxs = near_positions[1:] != near_positions[:-1]
-        far_step_idxs = far_positions[1:] != far_positions[:-1]
-        near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
-        far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
+        bind_times = np.array(np.concatenate(([0], data[:,1])))
+        unbind_times = np.array(np.concatenate((data[:,0], [last_unbinding_time])))
 
         step_times = np.array(bind_times[1:] - bind_times[:-1])
-        onebound_times = bind_times - unbind_times
-        bothbound_times = bind_times[1:] - unbind_times[:-1]
-        step_lengths = np.concatenate((near_step_lens, far_step_lens))
+        onebound_times = bind_times[1:] - unbind_times[:-1]
+        bothbound_times = unbind_times - bind_times
+
+        if (last_unbinding_time != runtime):
+            onebound_times = np.append(onebound_times, runtime-last_unbinding_time)
 
         t_step.append(np.mean(step_times))
         t_ob.append(np.mean(onebound_times))
         t_bb.append(np.mean(bothbound_times))
         t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
+        print("T_ob:", t_ob)
+        print("T_bb:", t_bb)
+        print("onebound_times", onebound_times)
+        print("bothbound_times", bothbound_times)
+
+    print("\n")
+
 if len(kbs) == 0:
-    print("Error, no stepping data!")
+    print("Error, no stepping data in these data files!")
     exit(1)
+
+exit(0)
 
 min_kb = min(kbs)
 max_kb = max(kbs)
@@ -90,9 +115,6 @@ KB, KUB = np.meshgrid(kbs, kubs)
 
 TBB = np.zeros((len(kbs), len(kubs)))
 
-# for i in range(len(t_ob)):
-#     TBB[i,i] = t_ob[i]
-
 plt.figure()
 ax = plt.gca()
 
@@ -104,10 +126,11 @@ ratiomax = 1
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i]/ratiomax)
-    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
+    plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor, label="normal data")
 CB = plt.colorbar(m)
 
-plt.plot(nan_kbs, nan_kubs, 'x')
+plt.plot(nan_kbs, nan_kubs, 'x', label="Error in simulation")
+plt.plot(nostep_kbs, nostep_kubs, 'o', label="No steps in simulation")
 
 ax.set_xscale("log")
 ax.set_yscale("log")
@@ -115,6 +138,7 @@ ax.set_xlabel("$k_b$")
 ax.set_ylabel("$k_{ub}$")
 ax.set_xlim([0.01*min_kb, 100*max_kb])
 ax.set_ylim([0.01*min_kub, 100*max_kub])
+ax.legend(framealpha=0.5)
 plt.title('$\log_{10}$(Onebound time / experimental) vs un/binding rates')
 
 plt.savefig("plots/tob-rate-contour.pdf")
