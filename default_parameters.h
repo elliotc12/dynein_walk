@@ -7,8 +7,8 @@ const double kb_eV = 8.61733034e-5; // eV/K
 double kb = kb_eV / (atp_in_kJ_per_mol * eV_per_kJ_per_mol); // kB in ATP energies per K
 double T = 310.15; // K
 
-double Lt = 21.1;  // nm, guess - not sure how DNA tail-bridge works
-double Ls = 11.15; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
+double Lt = 11.15; // nm, guess - not sure how DNA tail-bridge works
+double Ls = 22.1; // nm, derived from PyMol dynein crystal struct 3VKH, 212.2 angstroms
 
 // tail domain radius, derived from PyMol, see thesis_stuff
 double fake_radius_t = 2.16;  // nm
@@ -35,7 +35,7 @@ double ct = 0.1*binding_energy_high_affinity_atp; // ct = 0.5 cb
 double cm = 0.1*binding_energy_high_affinity_atp; // cm = 3*cb
 double cb = 0.1*binding_energy_high_affinity_atp; // see thesis_stuff.pdf 'Estimating cb spring constant', then experimental tweaking to get the 0.1s
 
-double dt = 1e-11;
+double dt = 1e-10;
 
 double low_affinity_binding_rate = 180; //s^-1
 double low_affinity_unbinding_rate = 460; //s^-1
@@ -58,7 +58,7 @@ onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
    63.5 * M_PI / 180.0,
   136.0 * M_PI / 180.0,
     0.0 * M_PI / 180.0,
-  171.0 * M_PI / 180.0
+  160.0 * M_PI / 180.0
 };
 
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
