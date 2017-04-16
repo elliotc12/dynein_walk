@@ -22,3 +22,6 @@ Looks like things are working! Running more simulations to explore the space.
 
 4/12/17
 All current onebound points in 4-12-contour are too low. Going to try some much lower kbs..."4-12-low-kb", kb=[1e-3, 1e-2, 1e-1, 1, 10, 100] kub=[1e9, 1e10, 1e11, 1e12]
+
+4/16/17
+Make a new directory called data/final-params with the updated parameters, since Ls/Lt were switched in the previous month of sims. Re-exploring the space iteratively.

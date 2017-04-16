@@ -125,8 +125,7 @@ m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
-    plt.annotate(str(math.floor(np.log10(t_ob[i]))), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2),
-                 fontsize='1', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
+    plt.annotate("{0:.2f}".format(np.log10(t_ob[i])), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 
 CB = plt.colorbar(m)
 
@@ -157,8 +156,7 @@ m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
     mycolor = m.cmap(ratio[i])
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
-    plt.annotate(str(math.floor(np.log10(t_bb[i]))), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2),
-                 fontsize='1', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
+    plt.annotate("{0:.2f}".format(np.log10(t_bb[i])), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 
 CB = plt.colorbar(m)
 
