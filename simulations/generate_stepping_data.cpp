@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "../version-info.h"
 #include "../default_parameters.h"
 #include "../dynein_struct.h"
 #include "simulation_defaults.h"
@@ -53,14 +54,14 @@ void check_for_quitting_conditions(double time_run, FILE* data_file, double last
   }
   if (time_run > 0.3 and NUM_STEPS >= 10 and am_exiting_on_improbable_stepping) {
     printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this. Exiting successfully!\n");
-    fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
   if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
     printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this. Exiting successfully!\n");
-    fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
@@ -506,6 +507,7 @@ int main(int argc, char** argv) {
   }
 
   printf("\n\n\n*********%s*********\n", run_name);
+  fprintf(job_msg.stepping_data_file, "\n# version: %s\n", version);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
   fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
 
