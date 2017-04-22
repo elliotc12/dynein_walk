@@ -83,24 +83,21 @@ void zero_movie_struct(movie_data_struct* data) {
 }
 
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
-  static State  last_state = BOTHBOUND;
+  static State  last_state = NEARBOUND;
   static double last_bothbound_iteration = 0;
+  static bool am_in_initial_partial_step = true;
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-    if (last_state == NEARBOUND or last_state == FARBOUND) {
-      if (using_variable_timestep) {
-	char temp_buffer[300];
-	int num_chars_added = sprintf(temp_buffer, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-	strcpy(&variable_ts_stepping_print_buffer[variable_ts_stepping_print_buffer_index], temp_buffer);
-	variable_ts_stepping_print_buffer_index += num_chars_added;
-      }
-      else {
-	fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-	fflush(data_file);
-      }
+    if ((last_state == NEARBOUND or last_state == FARBOUND) and !am_in_initial_partial_step) {
+      fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      fflush(data_file);
       NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+    }
+    else if ((last_state == NEARBOUND or last_state == FARBOUND) and am_in_initial_partial_step) {
+      am_in_initial_partial_step = false;
+      if (display_step_info) printf("\nInitial switch to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
     last_bothbound_iteration = iteration;
@@ -516,12 +513,17 @@ int main(int argc, char** argv) {
     exit(errno);
   }
 
-  bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
-  double init_position[] = {eq.nma,
-			    eq.fma,
-			    0, 0, 1.0};
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
+  double init_position[] = {eq.bba,
+			    eq.bma - M_PI + eq.bba,
+			    eq.ta + eq.bma - M_PI + eq.bba,
+			    M_PI - eq.uma + eq.ta + eq.bma - M_PI + eq.bba,
+			    0.0, 0.0};
 
-  simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
+  printf("Initial conditions: %g %g %g %g\n", init_position[0], init_position[1], init_position[2], init_position[3]);
+  exit(1);
+
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
   fclose(job_msg.stepping_data_file);
   if (job_msg.movie_data_file) fclose(job_msg.movie_data_file);

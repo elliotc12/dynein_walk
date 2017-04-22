@@ -29,3 +29,6 @@ Make a new directory called data/final-params with the updated parameters, since
 4/17/17
 Looks like all the low-kub simulations didn't unstep in 0.3 seconds, meaning their kubs were too low. Trying more low-kb, middle-kub simulations named "4-17"
 Possible problem: tbb plot isn't calculated properly? It seems like, since the model spends most of its time bothbound in the last simulation, that all the bothbound times should be over one, not under it. Plotting problem?
+
+4/19/17
+Running a "4-19-randint" trial with random seeds to see if weird quickstepping can be averaged out
