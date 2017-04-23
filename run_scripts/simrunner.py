@@ -41,4 +41,4 @@ def run_sim(**run):
     basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(run["label"]), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
     out = open('../runlogs/' + basename + '.out', 'w')
     subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
-    print("Running: %s", " ".join(cmd))
+    print("Running: ", " ".join(cmd))
