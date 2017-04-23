@@ -129,9 +129,6 @@ for i in range(len(ratio)):
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
     plt.annotate("%.2f" % ratio[i], xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 
-print ("onebound raw ratio: ", raw_ratio)
-print ("onebound log ratios: ", ratio)
-
 CB = plt.colorbar(m)
 
 plt.plot(nan_kbs, nan_kubs, 'x', label="Incomplete or NaN-generating simulation")
