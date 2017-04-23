@@ -517,11 +517,10 @@ int main(int argc, char** argv) {
   double init_position[] = {eq.bba,
 			    eq.bma - M_PI + eq.bba,
 			    eq.ta + eq.bma - M_PI + eq.bba,
-			    M_PI - eq.uma + eq.ta + eq.bma - M_PI + eq.bba,
+			    eq.ta + eq.bma + eq.bba - eq.uma,
 			    0.0, 0.0};
 
   printf("Initial conditions: %g %g %g %g\n", init_position[0], init_position[1], init_position[2], init_position[3]);
-  exit(1);
 
   simulate(runtime, RAND_INIT_SEED, NEARBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
