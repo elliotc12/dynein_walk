@@ -43,11 +43,12 @@ struct job_msg_t {
   FILE *movie_data_file;
 };
 
-void check_for_quitting_conditions(double time_run, FILE* data_file, double last_unbinding_time) {
+void check_for_quitting_conditions(double time_run, FILE* data_file, double first_binding_time, double last_unbinding_time) {
   // P(stepping k times in t seconds) = ((t/0.06)^k*e^(t/0.06)) / k!
   if (time_run > 0.3 and NUM_STEPS == 0 and am_exiting_on_improbable_stepping) {
     printf("Zero steps in 0.3 seconds. There's a 0.67%% chance of real dynein doing this. Exiting successfully\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
+    fprintf(data_file, "#First binding time: %g\n", first_binding_time);
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
@@ -55,6 +56,7 @@ void check_for_quitting_conditions(double time_run, FILE* data_file, double last
   if (time_run > 0.3 and NUM_STEPS >= 10 and am_exiting_on_improbable_stepping) {
     printf("Over 10 steps in 0.3 seconds. There's less than a 1.4%% chance of real dynein doing this. Exiting successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
+    fprintf(data_file, "#First binding time: %g\n", first_binding_time);
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
@@ -62,6 +64,7 @@ void check_for_quitting_conditions(double time_run, FILE* data_file, double last
   if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
     printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this. Exiting successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
+    fprintf(data_file, "#First binding time: %g\n", first_binding_time);
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
@@ -70,6 +73,7 @@ void check_for_quitting_conditions(double time_run, FILE* data_file, double last
     // printf("There's a 97%% chance of real dynein having stepped 5 times in 0.7 seconds, exiting successfully.\n");
     printf("Exiting normally after 0.7 seconds.\nExit successfully!\n");
     fprintf(data_file, "#EXIT SUCCESSFULLY!");
+    fprintf(data_file, "#First binding time: %g\n", first_binding_time);
     fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
@@ -83,24 +87,23 @@ void zero_movie_struct(movie_data_struct* data) {
 }
 
 void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
-  static State  last_state = BOTHBOUND;
+  static State  last_state = NEARBOUND;
+  static double first_bothbound_iteration = 0;
   static double last_bothbound_iteration = 0;
+  static bool am_in_initial_partial_step = true;
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-    if (last_state == NEARBOUND or last_state == FARBOUND) {
-      if (using_variable_timestep) {
-	char temp_buffer[300];
-	int num_chars_added = sprintf(temp_buffer, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-	strcpy(&variable_ts_stepping_print_buffer[variable_ts_stepping_print_buffer_index], temp_buffer);
-	variable_ts_stepping_print_buffer_index += num_chars_added;
-      }
-      else {
-	fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
-	fflush(data_file);
-      }
+    if ((last_state == NEARBOUND or last_state == FARBOUND) and !am_in_initial_partial_step) {
+      fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      fflush(data_file);
       NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
+    }
+    else if ((last_state == NEARBOUND or last_state == FARBOUND) and am_in_initial_partial_step) {
+      am_in_initial_partial_step = false;
+      first_bothbound_iteration = iteration; // track the first time the model binds
+      if (display_step_info) printf("\nInitial switch to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
     }
 
     last_bothbound_iteration = iteration;
@@ -127,7 +130,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     last_state = UNBOUND;
   }
 
-  check_for_quitting_conditions(iteration*dt, data_file, last_bothbound_iteration*dt);
+  check_for_quitting_conditions(iteration*dt, data_file, first_bothbound_iteration*dt, last_bothbound_iteration*dt);
 }
 
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
@@ -516,12 +519,16 @@ int main(int argc, char** argv) {
     exit(errno);
   }
 
-  bothbound_equilibrium_angles eq = bothbound_pre_powerstroke_internal_angles;
-  double init_position[] = {eq.nma,
-			    eq.fma,
-			    0, 0, 1.0};
+  onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
+  double init_position[] = {eq.bba,
+			    eq.bma - M_PI + eq.bba,
+			    eq.ta + eq.bma - M_PI + eq.bba,
+			    eq.ta + eq.bma + eq.bba - eq.uma,
+			    0.0, 0.0};
 
-  simulate(runtime, RAND_INIT_SEED, BOTHBOUND, init_position, stepping_data_callback, &job_msg, NULL);
+  printf("Initial conditions: %g %g %g %g\n", init_position[0], init_position[1], init_position[2], init_position[3]);
+
+  simulate(runtime, RAND_INIT_SEED, NEARBOUND, init_position, stepping_data_callback, &job_msg, NULL);
 
   fclose(job_msg.stepping_data_file);
   if (job_msg.movie_data_file) fclose(job_msg.movie_data_file);

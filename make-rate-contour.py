@@ -53,9 +53,17 @@ for i in range(len(datafiles)):
         print("Error, this is an old data file that doesn't have a #Last unbinding time.")
         continue
 
+    if "#First unbinding time" not in file_txt:
+        print("Error, this is an old data file that doesn't have a #First unbinding time.")
+        continue
+
     start_last_unbinding_idx = file_txt.index("#Last unbinding time: ") + 22
     end_last_unbinding_idx = file_txt[start_last_unbinding_idx:].index('\n') + start_last_unbinding_idx
     last_unbinding_time = float(file_txt[start_last_unbinding_idx:end_last_unbinding_idx])
+
+    start_first_binding_idx = file_txt.index("#First binding time: ") + 20
+    end_first_binding_idx = file_txt[start_first_binding_idx:].index('\n') + start_first_binding_idx
+    first_binding_time = float(file_txt[start_first_binding_idx:end_first_binding_idx])
 
     start_runtime_idx = file_txt.index("#Runtime: ") + 10
     end_runtime_idx = file_txt[start_runtime_idx:].index('\n') + start_runtime_idx
@@ -75,20 +83,22 @@ for i in range(len(datafiles)):
         print("Found steps in data file...")
         kbs.append(kb)
         kubs.append(kub)
-        bind_times = np.array(np.concatenate(([0], data[:,1])))
-        unbind_times = np.array(np.concatenate((data[:,0], [last_unbinding_time])))
+        bind_times = np.array(data[:,1])
+        unbind_times = np.array(data[:,0])
 
-        step_times = np.array(bind_times[1:] - bind_times[:-1])
-        onebound_times = bind_times[1:] - unbind_times[:-1]
-        bothbound_times = unbind_times - bind_times
+        #step_times = np.array(bind_times[1:] - bind_times[:-1])
+        onebound_times = bind_times - unbind_times
+        if (len(bind_times) >= 2):
+            bothbound_times = unbind_times[1:] - bind_times[:-1]
+        else:
+            bothbound_times = np.array([])
+        bothbound_times = np.append(bothbound_times, [last_unbinding_time-bind_times[-1]])
+        bothbound_times = np.append(bothbound_times, [unbind_times[0]-first_binding_time])
 
-        if (last_unbinding_time != runtime):
-            onebound_times = np.append(onebound_times, runtime-last_unbinding_time)
-
-        t_step.append(np.mean(step_times))
+        #t_step.append(np.mean(step_times))
         t_ob.append(np.mean(onebound_times))
         t_bb.append(np.mean(bothbound_times))
-        t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
+        #t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
     print("\n")
 
@@ -115,17 +125,19 @@ plt.figure()
 ax = plt.gca()
 
 ### TOB plot ###
-raw_ratio = np.array(t_ob) / (4.5*10**-4)
+raw_ratio = np.array(t_ob) / 4.5 / 1e-4
 ratio = np.log10([s if s != 0 else 1e-100 for s in raw_ratio])
 
 m = cm.ScalarMappable(cmap=cm.jet)
 ratiomax = 10
 
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
+
 for i in range(len(ratio)):
-    mycolor = m.cmap(ratio[i])
+    normalized_color = (ratio[i]+10)/20
+    mycolor = m.cmap(normalized_color)
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
-    plt.annotate("{0:.2f}".format(np.log10(t_ob[i])), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
+    plt.annotate("%.2f" % ratio[i], xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 
 CB = plt.colorbar(m)
 
@@ -154,7 +166,8 @@ ratiomax = 10
 
 m.set_array(np.linspace(-ratiomax, ratiomax, 100))
 for i in range(len(ratio)):
-    mycolor = m.cmap(ratio[i])
+    normalized_color = (ratio[i]+10)/20
+    mycolor = m.cmap(normalized_color)
     plt.plot(kbs[i], kubs[i], '.', color=mycolor, markeredgecolor=mycolor)
     plt.annotate("{0:.2f}".format(np.log10(t_bb[i])), xy=(kbs[i], kubs[i]), textcoords="offset points", xytext=(0,2), fontsize='2', arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
 

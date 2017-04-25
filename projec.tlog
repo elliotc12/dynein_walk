@@ -25,3 +25,13 @@ All current onebound points in 4-12-contour are too low. Going to try some much 
 
 4/16/17
 Make a new directory called data/final-params with the updated parameters, since Ls/Lt were switched in the previous month of sims. Re-exploring the space iteratively.
+
+4/17/17
+Looks like all the low-kub simulations didn't unstep in 0.3 seconds, meaning their kubs were too low. Trying more low-kb, middle-kub simulations named "4-17"
+Possible problem: tbb plot isn't calculated properly? It seems like, since the model spends most of its time bothbound in the last simulation, that all the bothbound times should be over one, not under it. Plotting problem?
+
+4/19/17
+Running a "4-19-randint" trial with random seeds to see if weird quickstepping can be averaged out
+
+4/21/17
+Running a new "4-21" simulation set which start in onebound. This'll hopefully be more true to how the motor behaves.
