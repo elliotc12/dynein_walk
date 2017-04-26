@@ -1181,30 +1181,27 @@ The simulation was first validated for obeying the laws of physics, and in parti
   \label{fig:equipartition_agreement}
 \end{figure}
 
-\subsection{Exploring the parameter space}
-Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
+\subsection{Model achieves processivity}
+At certain input parameters, the model can successfully take steps. Figure \ref{fig:stepping-ghosts} shows snapshots of the model at various times throughout a simulation. The model steps back and forth, taking both forwards and backwards steps.\\
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../figures/kb-kub-contour}
-  \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$. The fit quality of each simulation is decided by $\log_{10}\left(\frac{\left<t_{bb}\right>_{sim}}{\left<t_{bb}\right>_{exp}}\right)$, then fit to the colorbar on the right. Values over or under the colorbar bounds are rounded to the max (1.0 or -1.0).}
-  \label{fig:kb-kub-heatmap}
+  \includegraphics[width=\textwidth]{../../figures/stepping-ghosts}
+  \caption{Snapshots of model over the course of a simulation. Bothbound states are depicted immediately after binding events. Onebound states depict the conformation with the highest unbound binding domain between binding events. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
+  \label{fig:stepping-ghosts}
 \end{figure}
 
-\subsection{Stepping behavior of fit model}
-The ideal set of parameters found via the fitting process is shown in Table \ref{table:final-parameter-table}.\\
+More detailed stepping information is shown in Figure \ref{fig:stepping-trajectory}. The model steps both forwards and backwards, but has a definite forward bias. 
 
 \begin{figure}[H]
   \centering
-  \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | l | l | l | l | l |}
-    \hline
-    $L_s$ & $L_t$ & $R_b$ & $R_m$ & $R_t$ & $\theta_{m}^{Pre}$ & $\theta_{m}^{Post}$ & $\theta_{b}$ & $\theta_{t}$ & $A_{ub}$ & $A_b$ & $c_t$ & $c_m$  &$c_b$\\ \hline
-    21.0nm & 11.15nm & 1.45nm & 6.3nm & 2.2nm & 136$^{\circ}$ & 171$^{\circ}$ & 63.5$^{\circ}$ & 0$^{\circ}$ &  &  &  &   & \\ \hline
-  \end{tabular}
-  \caption{Ideal parameters for model stepping.}{Table of ideal parameters for reproducing \textit{in vivo} dynein stepping behavior.}
-  \label{table:final-parameter-table}
+  \includegraphics[width=\textwidth]{../../figures/stepping-trajectory}
+  \caption{Near and far binding domains over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
+  \label{fig:stepping-trajectory}
 \end{figure}
 
+
+--------------------------
 Histograms of the simulation's stepping length and time are shown in Figure \ref{fig:final-histograms}. This figure also shows histograms for experimental dynein stepping behavior.\\
 
 \begin{figure}[H]
@@ -1233,6 +1230,16 @@ Histograms of the simulation's stepping length and time are shown in Figure \ref
 Do our spring constants seem to indicate that the protein does about one ATP's worth of work through its cycle? I wonder if the motor cools down its surroundings when it walks...\\
 
 Our project un/successfully predicted how dynein behaved. How would we modify it to describe kinesin? Is dynein's linker-motor connection less tense than kinesin's, leading to more random motion? This would likely be lots of speculation, but it could be cool to look up some papers on kinesin motility and get its crystal structure to do some comparisons.
+
+\subsection{Current work: Refining model parameters}
+Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../figures/kb-kub-contour}
+  \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$. The fit quality of each simulation is decided by $\log_{10}\left(\frac{\left<t_{bb}\right>_{sim}}{\left<t_{bb}\right>_{exp}}\right)$, then fit to the colorbar on the right. Values over or under the colorbar bounds are rounded to the max (1.0 or -1.0).}
+  \label{fig:kb-kub-heatmap}
+\end{figure}
 
 \subsection{Next Steps}
 \subsubsection{Limitations}
