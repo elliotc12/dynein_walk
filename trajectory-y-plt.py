@@ -38,22 +38,28 @@ if len(data) == 0:
        print "Very short run!"
        exit(1)
 
-nbxs = data[:,7]
-fbxs = data[:,15]
+nbys = np.zeros(len(data))
+fbys = np.zeros(len(data))
 
-x_min = np.min([np.min(nbxs), np.min(fbxs)])
-x_max = np.max([np.max(nbxs), np.max(fbxs)])
+for i in range(len(data)):
+    if data[i,0] == 0:
+        fbys = data[i,16]
+    elif data[i,0] == 1:
+        nbys = data[i,16]
 
-plt.title("Trajectories of two feet")
+y_min = np.min([np.min(nbys), np.min(fbys)])
+y_max = np.max([np.max(nbys), np.max(fbys)])
+
+plt.title("Trajectory of unbound binding domains")
 plt.xlabel("time (s)")
 plt.ylabel("foot position")
 
-plt.gca().set_ylim(x_min-1,x_max+1)
+plt.gca().set_ylim(y_min-1,y_max+1)
 
-plt.plot(nbxs, label="nbx")
-plt.plot(fbxs, label="fbx")
+plt.plot(nbys, label="nby")
+plt.plot(fbys, label="fby")
 
 plt.legend()
 plt.tight_layout()
 
-plt.savefig("plots/x-trajectory-" + title + ".pdf")
+plt.savefig("plots/y-trajectory-" + title + ".pdf")

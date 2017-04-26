@@ -1191,18 +1191,16 @@ At certain input parameters, the model can successfully take steps. Figure \ref{
   \label{fig:stepping-ghosts}
 \end{figure}
 
-More detailed stepping information is shown in Figure \ref{fig:stepping-trajectory}. The model steps both forwards and backwards, but has a definite forward bias. 
+More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajectory}.a. The model steps both forwards and backwards, but has a definite forward bias. The model's behavior can be contrasted with experimental behavior in Figure \ref{fig:stepping-trajectory}.b. The two trajectory plots look very different, but share major key features: forwards and backwards steps, a directional bias, and varying step sizes. At a minimum, the two-state stepping model 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../figures/stepping-trajectory}
+  \includegraphics[width=\textwidth]{../../figures/stepping-x-trajectory}
   \caption{Near and far binding domains over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
-  \label{fig:stepping-trajectory}
+  \label{fig:stepping-x-trajectory}
 \end{figure}
 
-
---------------------------
-Histograms of the simulation's stepping length and time are shown in Figure \ref{fig:final-histograms}. This figure also shows histograms for experimental dynein stepping behavior.\\
+\subsection{Model steps reasonably}
 
 \begin{figure}[H]
   \centering
@@ -1227,6 +1225,16 @@ Histograms of the simulation's stepping length and time are shown in Figure \ref
   \label{fig:final-histograms}
 \end{figure}
 
+\subsection{Model does not drag as it steps}
+The model lifts its foot up and lowers it as it is about to step; it doesn't drag along the microtubule searching for the binding site. This behavior is shown in Figure \ref{fig:stepping-y-trajectory}.\\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../figures/stepping-y-trajectory}
+  \caption{Unbound binding domain position over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
+  \label{fig:stepping-y-trajectory}
+\end{figure}
+
 Do our spring constants seem to indicate that the protein does about one ATP's worth of work through its cycle? I wonder if the motor cools down its surroundings when it walks...\\
 
 Our project un/successfully predicted how dynein behaved. How would we modify it to describe kinesin? Is dynein's linker-motor connection less tense than kinesin's, leading to more random motion? This would likely be lots of speculation, but it could be cool to look up some papers on kinesin motility and get its crystal structure to do some comparisons.
@@ -1240,6 +1248,8 @@ Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-h
   \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$. The fit quality of each simulation is decided by $\log_{10}\left(\frac{\left<t_{bb}\right>_{sim}}{\left<t_{bb}\right>_{exp}}\right)$, then fit to the colorbar on the right. Values over or under the colorbar bounds are rounded to the max (1.0 or -1.0).}
   \label{fig:kb-kub-heatmap}
 \end{figure}
+
+\section{Conclusion}
 
 \subsection{Next Steps}
 \subsubsection{Limitations}
@@ -1261,9 +1271,6 @@ Talk about how FRET could be used to verify our model. We have domain distance i
 Other biophysics experiments which could verify our model?\\
 
 Calorimetry could get Gibb's energy of binding if you froze the motor in onebound using vanadium? Maybe...\\
-
-\section{Conclusion}
-Does anything actually go here?
 
 \bibliography{thesis-articles}
 
