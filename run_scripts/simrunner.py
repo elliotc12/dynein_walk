@@ -3,6 +3,8 @@ import subprocess, os
 import numpy as np
 
 def have_slurm():
+    if avoid_slurm:
+        return False
     try:
         subprocess.check_call("squeue > /dev/null", shell=True)
     except (OSError, subprocess.CalledProcessError):
@@ -26,7 +28,11 @@ def read_csv(fname):
                             "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
+avoid_slurm = False
+
 def run_sim(**run):
+    if os.path.isdir('run_scripts'):
+        os.chdir('run_scripts')
     os.system('mkdir -p ../runlogs ../data')
     assert(subprocess.call("cd .. && make histogram-stuff", shell=True) == 0)
 
@@ -34,11 +40,23 @@ def run_sim(**run):
     cmd.extend(["nice", "-19"])
     cmd.extend(["./generate_stepping_data"])
 
-    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "runtime", "movie", "onebound-debugging", "constant-write"]:
+    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "runtime"]:
         if key in run:
             cmd.extend(["--"+key, str(run[key])])
+    for key in ["nomovie", "onebound-debugging", "constant-write"]:
+        if key in run:
+            cmd.extend(["--"+key])
 
-    basename = '%s__k_b-%s,k_ub-%s,c-%s,dt-%s' % (str(run["label"]), str(run["k_b"]), str(run["k_ub"]), str(run["cb"]), str(run["dt"]))
+    if 'label' in run:
+      basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
+                                                                 run["cb"], run["cm"], run["ct"], run["dt"])
+    else:
+      basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
+                                                             run["cb"], run["cm"], run["ct"], run["dt"])
+
     out = open('../runlogs/' + basename + '.out', 'w')
-    subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
+    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
     print("Running: ", " ".join(cmd))
+    if avoid_slurm:
+        process_object.wait()
+    return basename
