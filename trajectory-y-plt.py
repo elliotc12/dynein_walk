@@ -15,8 +15,6 @@ Usage: python2 TITLE %s [show] [tail]"
 	     omitting show makes %s faster but less exciting to watch
 ''' % (sys.argv[0], sys.argv[0])
 
-print("argv: ", sys.argv)
-
 if len(sys.argv) < 2:
   print usage
   sys.exit(1)
@@ -47,10 +45,8 @@ times = np.empty(timesteps)
 for i in range(timesteps):
     if int(data[i,0]) == 0:
         fbys[i] = data[i,16]
-        print i, fbys[i], nbys[i], data[i,0], int(data[i,0])
     elif int(data[i,0]) == 1:
         nbys[i] = data[i,16]
-        print i, fbys[i], nbys[i], data[i,0], int(data[i,0])
     times[i] = data[i,1]
 
 y_min = np.min([np.min(nbys), np.min(fbys)])

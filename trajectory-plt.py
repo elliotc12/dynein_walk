@@ -15,8 +15,6 @@ Usage: python2 TITLE %s [show] [tail]"
 	     omitting show makes %s faster but less exciting to watch
 ''' % (sys.argv[0], sys.argv[0])
 
-print("argv: ", sys.argv)
-
 if len(sys.argv) < 2:
   print usage
   sys.exit(1)
