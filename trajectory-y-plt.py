@@ -29,6 +29,8 @@ if tail:
 else:
     data = np.genfromtxt(data_filename, delimiter="\t", invalid_raise=False)
 
+timesteps = len(data)
+
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open(data_filename)) - 100
     if skiplen < 0:
@@ -38,26 +40,29 @@ if len(data) == 0:
        print "Very short run!"
        exit(1)
 
-nbys = np.zeros(len(data))
-fbys = np.zeros(len(data))
+nbys =  np.zeros(timesteps)
+fbys =  np.zeros(timesteps)
+times = np.empty(timesteps)
 
-for i in range(len(data)):
-    if data[i,0] == 0:
-        fbys = data[i,16]
-    elif data[i,0] == 1:
-        nbys = data[i,16]
+for i in range(timesteps):
+    if int(data[i,0]) == 0:
+        fbys[i] = data[i,16]
+        print i, fbys[i], nbys[i], data[i,0], int(data[i,0])
+    elif int(data[i,0]) == 1:
+        nbys[i] = data[i,16]
+        print i, fbys[i], nbys[i], data[i,0], int(data[i,0])
+    times[i] = data[i,1]
 
 y_min = np.min([np.min(nbys), np.min(fbys)])
 y_max = np.max([np.max(nbys), np.max(fbys)])
 
-plt.title("Trajectory of unbound binding domains")
 plt.xlabel("time (s)")
-plt.ylabel("foot position")
+plt.ylabel("binding domain y-projection (nm)")
 
 plt.gca().set_ylim(y_min-1,y_max+1)
 
-plt.plot(nbys, label="nby")
-plt.plot(fbys, label="fby")
+plt.plot(times, nbys, label="nby")
+plt.plot(times, fbys, label="fby")
 
 plt.legend()
 plt.tight_layout()
