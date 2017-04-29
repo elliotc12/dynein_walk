@@ -409,7 +409,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
   }
 
   if (optind != argc) {
-    printf("Improper usage. Example: ./generate_stepping_data --label test --Ls 34.5 --T 55 --movie\n");
+    printf("Improper usage. Example: ./generate_stepping_data --label test --Ls 34.5 --T 55 --constant-write\n");
     exit(EXIT_FAILURE);
   }
 }

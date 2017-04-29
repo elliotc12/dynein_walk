@@ -56,4 +56,5 @@ plt.plot(fbxs, label="fbx")
 plt.legend()
 plt.tight_layout()
 
+os.system('mkdir -p plots')
 plt.savefig("plots/x-trajectory-" + title + ".pdf")

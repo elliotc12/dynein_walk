@@ -67,4 +67,5 @@ plt.plot(times, fbys, label="fby")
 plt.legend()
 plt.tight_layout()
 
+os.system('mkdir -p plots')
 plt.savefig("plots/y-trajectory-" + title + ".pdf")

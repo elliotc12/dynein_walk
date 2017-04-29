@@ -120,6 +120,15 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
 
+data/thesis_movie.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
+	python run_scripts/generate-thesis-data.py
+
+plots/x-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-plt.py
+	python trajectory-plt.py data/thesis_movie.txt
+
+plots/y-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-y-plt.py
+	python trajectory-y-plt.py data/thesis_movie.txt
+
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 #	mkdir -p data
 #	make generate_stepping_data
@@ -203,10 +212,12 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 
 ########################### THESIS STUFF #################################
 
+THESIS_FIGURES = plots/x-trajectory-thesis_movie.pdf plots/y-trajectory-thesis_movie.pdf
+
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
 	cd thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && mv thesis_stuff.pdf ..
 
-thesis:
+thesis: $(THESIS_FIGURES)
 	cd thesis && $(MAKE)
 
 clean:
