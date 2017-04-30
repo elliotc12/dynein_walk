@@ -113,8 +113,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
 	  // potentially faster to compute velocity here, instead of down there?
 
-	  printf("doing another onebound euler step\n");
-
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
 	  double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
@@ -124,6 +122,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_bma(temp_bma);
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
+
+	  dyn_ob->update_velocities();
 
 	  if (crash_on_nan and (isnan(temp_bba) or isnan(temp_bma) or isnan(temp_uma) or isnan(temp_uba))) {
 	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
@@ -191,6 +191,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
 	  dyn_bb->set_nma(temp_nma);
 	  dyn_bb->set_fma(temp_fma);
+
+	  dyn_bb->update_velocities();
 
 	  if (crash_on_nan and (isnan(temp_nma) or isnan(temp_fma))) {
 	    printf("Bothbound velocity calculation generated a NaN, exiting.\n");
