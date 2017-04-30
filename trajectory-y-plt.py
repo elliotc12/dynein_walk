@@ -38,6 +38,9 @@ if len(data) == 0:
        print("Very short run!")
        exit(1)
 
+avging_window_width = 5000
+num_windows = len(data) // avging_window_width # floor division
+
 nbys =  np.zeros(timesteps)
 fbys =  np.zeros(timesteps)
 times = np.empty(timesteps)
@@ -49,16 +52,20 @@ for i in range(timesteps):
         nbys[i] = data[i,16]
     times[i] = data[i,1]*1000
 
-y_min = np.min([np.min(nbys), np.min(fbys)])
-y_max = np.max([np.max(nbys), np.max(fbys)])
+avg_nbys = np.array([np.mean(nbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
+avg_fbys = np.array([np.mean(fbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
+avg_times = np.array([times[int(np.floor((i+0.5)*avging_window_width))] for i in range(num_windows)])
+
+y_min = np.min([np.min(avg_nbys), np.min(avg_fbys)])
+y_max = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
 plt.xlabel("time (ms)")
 plt.ylabel("Binding domain y-projection (nm)")
 
 plt.gca().set_ylim(y_min-1,y_max+1)
 
-plt.plot(times, nbys, label="nby")
-plt.plot(times, fbys, label="fby")
+plt.plot(avg_times, avg_nbys, label="nby")
+plt.plot(avg_times, avg_fbys, label="fby")
 
 plt.legend()
 plt.tight_layout()
