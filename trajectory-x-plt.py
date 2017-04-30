@@ -74,4 +74,4 @@ plt.legend()
 plt.tight_layout()
 
 os.system('mkdir -p plots')
-plt.savefig("plots/x-trajectory-" + title + ".pdf")
+plt.savefig("plots/x-trajectory.pdf")

@@ -2,7 +2,7 @@ default: thesis.pdf
 
 FIGURES=$(patsubst ../figures/%.svg, ../figures/%.pdf, $(wildcard ../figures/*.svg))
 
-PLOTS= ../plots/x-trajectory-thesis_movie.pdf ../plots/y-trajectory-thesis_movie.pdf
+PLOTS= ../plots/x-trajectory-thesis_movie.pdf ../plots/y-trajectory-thesis_movie.pdf ../plots/stepping_length_histogram_thesis_movie.pdf ../plots/stepping_time_histogram_thesis_movie.pdf
 
 thesis.pdf: latex/thesis.tex $(FIGURES) $(PLOTS)
 	#cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..

@@ -1195,8 +1195,8 @@ More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajec
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{../../plots/x-trajectory-thesis_movie}
-  \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory-thesis_movie}
+  \includegraphics[width=0.5\textwidth]{../../plots/x-trajectory_thesis}
+  \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory_thesis}
   \caption{Near and far binding domains over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
   \label{fig:stepping-x-trajectory}
 \end{figure}
@@ -1205,25 +1205,12 @@ More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajec
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/length_histogram_sample.pdf}
-    \caption{Histogram of simulated stepping lengths using ideal dynein parameters. Todo: make these figures compare better.}
-  \end{minipage}
-  \hspace{.1cm}
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/time_histogram_sample.pdf}
-    \caption{Histogram of simulated stepping times using ideal dynein parameters.}
-  \end{minipage}\\
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/weihong-step-size.pdf}
-    \caption{Experimental dynein step size from \cite{weihongpaper}.}
-  \end{minipage}
-  \hspace{.1cm}
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/weihong-velocity.pdf}
+    \includegraphics[width=0.5\textwidth]{../../plots/stepping_length_histogram_thesis}%%
+    \includegraphics[width=0.5\textwidth]{../../plots/stepping_time_histogram_thesis}
+    \includegraphics[width=0.5\textwidth]{../../figures/weihong-step-size.pdf}%%
+    \includegraphics[width=0.5\textwidth]{../../figures/weihong-velocity.pdf}
     \caption{Experimental dynein step time from \cite{weihongpaper}}
-  \end{minipage}
-  \label{fig:final-histograms}
+    \label{fig:final-histograms}
 \end{figure}
 
 \subsection{Model does not drag as it steps}
@@ -1231,7 +1218,7 @@ The model lifts its foot up and lowers it as it is about to step; it doesn't dra
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory-thesis_movie}
+  \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory_thesis}
   \caption{Unbound binding domain position over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
   \label{fig:stepping-y-trajectory}
 \end{figure}
