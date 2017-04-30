@@ -7,7 +7,7 @@ l = "thesis"
 simrunner.avoid_slurm = True
 
 basename = simrunner.run_sim(**{"k_b": 1e10, "k_ub":  1e20, "cb": 2.4, "cm": 2.4, "ct": 2.4, "dt": 1e-10, "label": l,
-                                "runtime": 1e-5,
+                                "runtime": 1e-4,
                                 "constant-write": True,
                                 "no-slurm": True})
 

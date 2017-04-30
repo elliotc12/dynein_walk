@@ -27,8 +27,8 @@ extern char* crash_movie_file_name_global;
 bool am_making_movie = true;
 bool am_debugging_onebound = false;
 
-int num_movie_writes = 1e4;
-// bytes per movie write: 213, 200mb bytes max movie size
+long num_movie_writes = 1e7;
+// bytes per movie write: 213, 2000Mb bytes max movie size
 
 static const long MAX_FILESIZE_PERMITTED = 1<<30;
 static int NUM_STEPS = 0;

@@ -16,7 +16,7 @@ Usage: python2 TITLE %s [show] [tail]"
 ''' % (sys.argv[0], sys.argv[0])
 
 if len(sys.argv) < 2:
-  print usage
+  print(usage)
   sys.exit(1)
 
 data_filename = sys.argv[1]
@@ -32,10 +32,10 @@ timesteps = len(data)
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open(data_filename)) - 100
     if skiplen < 0:
-	skiplen = 1
+        skiplen = 1
 
 if len(data) == 0:
-       print "Very short run!"
+       print("Very short run!")
        exit(1)
 
 nbxs =  np.zeros(timesteps)
@@ -50,8 +50,6 @@ for i in range(timesteps):
         nbxs[i] = data[i,15]
         fbxs[i] = data[i,7]
     times[i] = data[i,1]*1000
-
-print("nbx: ", nbxs)
 
 y_min = np.min([np.min(nbxs), np.min(fbxs)])
 y_max = np.max([np.max(nbxs), np.max(fbxs)])
