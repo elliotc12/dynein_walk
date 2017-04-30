@@ -28,8 +28,6 @@ def read_csv(fname):
                             "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
-avoid_slurm = False
-
 def run_sim(**run):
     if os.path.isdir('run_scripts'):
         os.chdir('run_scripts')
@@ -57,6 +55,6 @@ def run_sim(**run):
     out = open('../runlogs/' + basename + '.out', 'w')
     process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
     print("Running: ", " ".join(cmd))
-    if avoid_slurm:
+    if "no-slurm" in run:
         process_object.wait()
     return basename
