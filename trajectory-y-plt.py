@@ -47,12 +47,12 @@ for i in range(timesteps):
         fbys[i] = data[i,16]
     elif int(data[i,0]) == 1:
         nbys[i] = data[i,16]
-    times[i] = data[i,1]
+    times[i] = data[i,1]*1000
 
 y_min = np.min([np.min(nbys), np.min(fbys)])
 y_max = np.max([np.max(nbys), np.max(fbys)])
 
-plt.xlabel("time (s)")
+plt.xlabel("time (ms)")
 plt.ylabel("binding domain y-projection (nm)")
 
 plt.gca().set_ylim(y_min-1,y_max+1)

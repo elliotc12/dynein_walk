@@ -440,13 +440,7 @@ int Dynein_bothbound::update_velocities() {
     if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
       printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (using_variable_timestep) {
-	printf("Going to last checkpoint.\n");
-	return VARIABLE_TS_REWIND_RETURN;
-      }
-      else {
-	exit(1);
-      }
+      exit(1);
     }
   }
 
@@ -639,7 +633,7 @@ int Dynein_bothbound::update_velocities() {
 
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
-  return RETURN_OKAY;
+  return 0;
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {

@@ -88,23 +88,6 @@ const bool am_naively_correcting_nan_errors = false; // "nudges" nan states into
 
 const bool crash_on_nan = true;
 
-const bool using_variable_timestep = false;
-
-extern double variable_ts_checkpoint_interval;
-extern char* variable_ts_stepping_print_buffer;
-extern int variable_ts_stepping_print_buffer_index;
-extern FILE* variable_ts_stepping_data_file;
-
-extern Dynein_onebound* variable_ts_checkpoint_onebound;
-extern Dynein_bothbound* variable_ts_checkpoint_bothbound;
-extern double variable_ts_checkpoint_time;
-
-const int VARIABLE_TS_REWIND_RETURN = 1;
-const int RETURN_OKAY = 0;
-extern int variable_ts_rewinding_state;
-extern double variable_ts_base_dt;
-
-
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);
 #endif

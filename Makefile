@@ -133,8 +133,8 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 data/thesis_movie.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python run_scripts/generate-thesis-data.py
 
-plots/x-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-plt.py
-	python trajectory-plt.py data/thesis_movie.txt
+plots/x-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-x-plt.py
+	python trajectory-x-plt.py data/thesis_movie.txt
 
 plots/y-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-y-plt.py
 	python trajectory-y-plt.py data/thesis_movie.txt

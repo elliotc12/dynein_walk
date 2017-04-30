@@ -488,10 +488,6 @@ int main(int argc, char** argv) {
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
   job_msg.movie_data_file = 0;
 
-  if (using_variable_timestep) {
-    variable_ts_stepping_data_file = job_msg.stepping_data_file;
-  }
-
   if (am_making_movie or am_debugging_onebound) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
     if (!job_msg.movie_data_file) {

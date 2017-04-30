@@ -332,13 +332,7 @@ int Dynein_onebound::update_velocities() {
     if (get_bmy() < -1.5 or get_ty() < -1.5 or get_umy() < -1.5 or get_uby() < -1.5) {
       printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (using_variable_timestep) {
-	printf("Going to last checkpoint.\n");
-	return VARIABLE_TS_REWIND_RETURN;
-      }
-      else {
-	exit(1);
-      }
+      exit(1);
     }
   }
 
@@ -1032,7 +1026,7 @@ int Dynein_onebound::update_velocities() {
 	Power(AA,6)*Power(BB,3)*CC*JJ*OO +
 	Power(AA,6)*Power(BB,3)*CC*KK*OO -
 	Power(AA,6)*Power(BB,3)*CC*DD*VV));
-  return RETURN_OKAY;
+  return 0;
 }
 
 double Dynein_onebound::get_binding_rate() {
