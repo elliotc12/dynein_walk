@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import simrunner, os
 import numpy as np
 
@@ -11,7 +11,7 @@ basename = simrunner.run_sim(**{"k_b": 1e10, "k_ub":  1e20, "cb": 2.4, "cm": 2.4
                                 "constant-write": True,
                                 "no-slurm": True})
 
-print basename
+print(basename)
 
 os.rename("../data/stepping_movie_data_%s.txt" % (basename),
           "../data/thesis_movie.txt")
