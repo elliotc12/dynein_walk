@@ -53,7 +53,7 @@ y_min = np.min([np.min(nbys), np.min(fbys)])
 y_max = np.max([np.max(nbys), np.max(fbys)])
 
 plt.xlabel("time (ms)")
-plt.ylabel("binding domain y-projection (nm)")
+plt.ylabel("Binding domain y-projection (nm)")
 
 plt.gca().set_ylim(y_min-1,y_max+1)
 

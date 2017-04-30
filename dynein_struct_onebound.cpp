@@ -172,10 +172,15 @@ void Dynein_onebound::update_internal_forces() {
     f.umx += -(f1x + f2x);
     f.umy += -(f1y + f2y);
 
+    printf("get_uby(): %g\n", get_uby());
+
     if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
     if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
+    if (get_uby() < 0) {
+      f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
+      printf("applying unbinding force.\n");
+    }
   }
 }
 
@@ -336,6 +341,7 @@ int Dynein_onebound::update_velocities() {
     }
   }
 
+  printf("running update_internal_forces()\n");
   update_internal_forces();
   update_brownian_forces();
 

@@ -81,7 +81,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
-	
+
         double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	if (am_debugging_rates and binding_prob != 0 and rand->rand() < 1e-3) {
@@ -112,6 +112,8 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  iter++;
 
 	  // potentially faster to compute velocity here, instead of down there?
+
+	  printf("doing another onebound euler step\n");
 
 	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
