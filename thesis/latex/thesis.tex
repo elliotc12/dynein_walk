@@ -1184,11 +1184,15 @@ The simulation was first validated for obeying the laws of physics, and in parti
 \subsection{Model achieves processivity}
 At certain input parameters, the model can successfully take steps. Figure \ref{fig:stepping-ghosts} shows snapshots of the model at various times throughout a simulation. The model steps back and forth, taking both forwards and backwards steps.\\
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
-  \includegraphics[width=0.2\textwidth]{../../plots/stepping-ghost}
-  \caption{Snapshots of model over the course of a simulation. Bothbound states are depicted immediately after binding events. Onebound states depict the conformation with the highest unbound binding domain between binding events. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
-  \label{fig:stepping-ghosts}
+  \begin{tabular}{| l | l | l | l | l |}
+    \hline
+    $k_{b}$ & $k_{ub}$ & $c_b$ &  $c_m$ & $c_t$\\\hline
+    $10^{18} s^{-1}$ & $10^{20} s^{-1}$ & $2.0\Delta G_{ATP}$ & $2.0\Delta G_{ATP}$ & $1.0\Delta G_{ATP}$\\ \hline
+  \end{tabular}
+  \caption{Parameters used in simulations.}
+  \label{table:thesis-parameters}
 \end{figure}
 
 More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajectory}.a. The model steps both forwards and backwards, but has a definite forward bias. The model's behavior can be contrasted with experimental behavior in Figure \ref{fig:stepping-trajectory}.b. The two trajectory plots look very different, but share major key features: forwards and backwards steps, a directional bias, and varying step sizes. At a minimum, the two-state stepping model 
@@ -1206,10 +1210,8 @@ More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajec
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{../../plots/stepping_length_histogram_thesis}%%
-    \includegraphics[width=0.5\textwidth]{../../plots/stepping_time_histogram_thesis}
-    \includegraphics[width=0.5\textwidth]{../../figures/weihong-step-size.pdf}%%
-    \includegraphics[width=0.5\textwidth]{../../figures/weihong-velocity.pdf}
-    \caption{Experimental dynein step time from \cite{weihongpaper}}
+    \includegraphics[width=0.5\textwidth]{../../figures/weihong-step-size.pdf}
+    \caption{Model vs experimental step sizes. \textbf{a.)} Step sizes model took at parameters in \ref{table:thesis-parameters}. \textbf{b.)} Experimental stepping behavior of dynein \cite{weihongpaper}.}
     \label{fig:final-histograms}
 \end{figure}
 
