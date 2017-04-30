@@ -131,13 +131,13 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
 
 data/thesis_movie.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
-	python run_scripts/generate-thesis-data.py
+	python3 run_scripts/generate-thesis-data.py
 
 plots/x-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-x-plt.py
-	python trajectory-x-plt.py data/thesis_movie.txt
+	python3 trajectory-x-plt.py data/thesis_movie.txt
 
 plots/y-trajectory-thesis_movie.pdf: data/thesis_movie.txt trajectory-y-plt.py
-	python trajectory-y-plt.py data/thesis_movie.txt
+	python3 trajectory-y-plt.py data/thesis_movie.txt
 
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 #	mkdir -p data
