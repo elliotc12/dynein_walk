@@ -27,8 +27,6 @@ if tail:
 else:
     data = np.genfromtxt(data_filename, delimiter="\t", invalid_raise=False)
 
-timesteps = len(data)
-
 if tail and sys.stdin.isatty():
     skiplen = sum(1 for line in open(data_filename)) - 100
     if skiplen < 0:
@@ -38,14 +36,16 @@ if len(data) == 0:
        print("Very short run!")
        exit(1)
 
-avging_window_width = 1
-num_windows = len(data) // avging_window_width # floor division
+plot_length = int(min(1e5,len(data)))
 
-nbys =  np.zeros(timesteps)
-fbys =  np.zeros(timesteps)
-times = np.empty(timesteps)
+avging_window_width = 300
+num_windows = plot_length // avging_window_width # floor division
 
-for i in range(timesteps):
+nbys =  np.zeros(plot_length)
+fbys =  np.zeros(plot_length)
+times = np.empty(plot_length)
+
+for i in range(plot_length):
     if int(data[i,0]) == 0:
         fbys[i] = data[i,16]
     elif int(data[i,0]) == 1:
@@ -64,10 +64,10 @@ plt.ylabel("Binding domain y-projection (nm)")
 
 plt.gca().set_ylim(y_min-1,y_max+1)
 
-plt.plot(avg_times, avg_nbys, label="near foot")
-plt.plot(avg_times, avg_fbys, label="far foot")
+plt.plot(avg_times, avg_nbys, label="near foot", c='b')
+plt.plot(avg_times, avg_fbys, label="far foot", c='r')
 
-plt.legend()
+plt.legend(loc="upper right")
 plt.tight_layout()
 
 os.system('mkdir -p plots')

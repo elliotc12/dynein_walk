@@ -37,11 +37,13 @@ if len(data) == 0:
        print("Very short run!")
        exit(1)
 
-nbxs =  np.zeros(len(data))
-fbxs =  np.zeros(len(data))
-times = np.empty(len(data))
+plot_length = int(min(1e5,len(data)))
 
-for i in range(len(data)):
+nbxs =  np.zeros(plot_length)
+fbxs =  np.zeros(plot_length)
+times = np.empty(plot_length)
+
+for i in range(plot_length):
     if int(data[i,0]) == 0 or int(data[i,0]) == 2:
         nbxs[i] = data[i,7]
         fbxs[i] = data[i,15]
@@ -50,8 +52,8 @@ for i in range(len(data)):
         fbxs[i] = data[i,7]
     times[i] = data[i,1]*1e6
 
-avging_window_width = 1
-num_windows = len(data) // avging_window_width # floor division
+avging_window_width = 300
+num_windows = plot_length // avging_window_width # floor division
 
 avg_nbxs = np.array([np.mean(nbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
 avg_fbxs = np.array([np.mean(fbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
@@ -63,14 +65,12 @@ y_max = np.max([np.max(avg_nbxs), np.max(avg_fbxs)])
 plt.xlabel("time ($\mu$s)")
 plt.ylabel("Binding domain x-projection (nm)")
 
-#plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
 plt.gca().set_ylim(y_min-1,y_max+1)
 
-plt.plot(avg_times, avg_nbxs, label="near foot")
-plt.plot(avg_times, avg_fbxs, label="far foot")
+plt.plot(avg_times, avg_nbxs, label="near foot", c='b')
+plt.plot(avg_times, avg_fbxs, label="far foot", c='r')
 
-plt.legend()
+plt.legend(loc="upper right")
 plt.tight_layout()
 
 os.system('mkdir -p plots')
