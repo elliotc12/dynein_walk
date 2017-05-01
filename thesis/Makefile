@@ -5,8 +5,8 @@ FIGURES=$(patsubst ../figures/%.svg, ../figures/%.pdf, $(wildcard ../figures/*.s
 PLOTS= ../plots/x-trajectory_thesis.pdf ../plots/y-trajectory_thesis.pdf ../plots/stepping_length_histogram_thesis.pdf ../plots/stepping_time_histogram_thesis.pdf
 
 thesis.pdf: latex/thesis.tex $(FIGURES) $(PLOTS)
-	#cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
-	cd latex && xelatex -interaction=batchmode thesis.tex && tail -n 25 thesis.log && mv thesis.pdf ..
+	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
+	#cd latex && xelatex -interaction=batchmode thesis.tex && tail -n 25 thesis.log && mv thesis.pdf ..
 
 # thesis.pdf: latex/thesis.tex $(FIGURES)
 # 	cd latex && xelatex thesis.tex && mv thesis.pdf ..
