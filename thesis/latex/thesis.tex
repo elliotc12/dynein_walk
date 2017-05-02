@@ -27,16 +27,24 @@
 
 \setlength{\emergencystretch}{3cm} % somehow helps prevent hboxes from overflowing
 
-\titleformat{\paragraph}
-{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
-\titlespacing*{\paragraph}
-{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+%% \titleformat{\paragraph}
+%% {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+%% \titlespacing*{\paragraph}
+%% {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \usepackage{fancyhdr}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \pagestyle{fancy}
 \fancyhf{}
+
+% Format of the section titles
+\titleformat{\section}{\color{headings}
+\scshape\Large\raggedright}{}{0em}{}[\color{black}\titlerule]
+
+\title{Simulating dynein's powerstroke using Brownian dynamics}
+\author{Elliott Capek}
+\titlespacing{\section}{0pt}{0pt}{5pt} % Spacing around titles
 
 \usepackage{csquotes}
 
@@ -72,9 +80,13 @@
 
 \begin{document}
 
+\maketitle{}
 \tableofcontents
 \listoffigures
 \newpage
+
+\textbf{Abstract}
+\blockquote{Dynein is a motor protein which uses cellular energy to transport cargo around the cell. Like related motor proteins kinesin and myosin, dynein uses ATP bond breaking to alternatingly kick its two foot domains forward and generate motion. Unlike the more regularly-stepping kinesin or myosin, dynein's stepping pattern is very random: it can take steps between zero and 60\textit{nm} in both the forwards and backwards directions. It is believed that dynein takes broad, stochastic steps because it is large and has several elastic regions, making it more affected by Brownian motion. To test this, we model the motor as a 2D system of springy hinges, then simulate this model using Brownian dynamics. Preliminary results indicate such a model is capable of taking steps between 0 and 25nm. These results give hope that, with further tweaking, the model may be able to generate both larger and backwards steps.}
 
 \section{Chapter: Introduction}
 \blockquote{An embryo in its spherical blastula stage has spherical symmetry [...]. But a system which has spherical symmetry, and whose state is changing because of chemical reactions and diffusion, will remain spherically symmetrical for ever [...]. It certainly cannot result in an organism such as a horse, which is not spherically symmetrical. \textbf{Alan Turing, The Chemical Basis of Morphogenesis, 1952}}
