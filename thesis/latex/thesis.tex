@@ -88,6 +88,8 @@
 \textbf{Abstract}
 \blockquote{Dynein is a motor protein which uses cellular energy to transport cargo around the cell. Like related motor proteins kinesin and myosin, dynein uses ATP bond breaking to alternatingly kick its two foot domains forward and generate motion. Unlike the more regularly-stepping kinesin or myosin, dynein's stepping pattern is very random: it can take steps between zero and 60\textit{nm} in both the forwards and backwards directions. It is believed that dynein takes broad, stochastic steps because it is large and has several elastic regions, making it more affected by Brownian motion. To test this, we model the motor as a 2D system of springy hinges, then simulate this model using Brownian dynamics. Preliminary results indicate such a model is capable of taking steps between 0 and 25nm. These results give hope that, with further tweaking, the model may be able to generate both larger and backwards steps.}
 
+\textbf{Keywords}: Dynein, powerstroke, Brownian dynamics, coarse-grained, dynamics simulation\\
+
 \section{Chapter: Introduction}
 \blockquote{An embryo in its spherical blastula stage has spherical symmetry [...]. But a system which has spherical symmetry, and whose state is changing because of chemical reactions and diffusion, will remain spherically symmetrical for ever [...]. It certainly cannot result in an organism such as a horse, which is not spherically symmetrical. \textbf{Alan Turing, The Chemical Basis of Morphogenesis, 1952}}
 
@@ -1059,6 +1061,7 @@ The models were verified to follow physical laws by checking their behavior in v
 
 
 \subsubsection{Conformational tests}
+\label{sec:conformational-tests}
 The models were tested in the following different conformations to verify they behaved as expected:\\
 
 \textbf{Onebound tests}
@@ -1083,6 +1086,7 @@ These tests together verify that the onebound model's internal coordinate system
 These tests verify the bothbound model's angle system behaves as expected, forces are zero when expected and have the proper signs, and that the whole system is symmetric with either dimer.
 
 \subsubsection{Energy conservation}
+\label{sec:energy-conservation}
 To verify that the magnitudes of forces are calculated properly, a conservation of energy test was performed. A very slight angular nudge was applied to either model. This nudge caused a small change in energy. This change in energy was compared with the work the forces on each domain caused over the nudge. For energy to be conserved, these values were required to be very similar. Mathematically the test required the following:
 
 \begin{equation}
@@ -1177,7 +1181,7 @@ This section will be written once it is conducted. This is contingent on getting
 \newpage
 \section{Chapter: Results \& Discussion}
 \subsection{Validating model}
-The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over time.\\
+The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly inncorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
 
 \begin{figure}[h!]
   \centering
@@ -1194,30 +1198,35 @@ The simulation was first validated for obeying the laws of physics, and in parti
 \end{figure}
 
 \subsection{Model achieves processivity}
-At certain input parameters, the model can successfully take steps. Figure \ref{fig:stepping-ghosts} shows snapshots of the model at various times throughout a simulation. The model steps back and forth, taking both forwards and backwards steps.\\
+When run at the proper parameters, the dynein model can step processively. Figure \ref{fig:stepping-trajectory} shows the dynamics of a motor when run at the parameters shown in Table \ref{table:thesis-parameters}.
 
 \begin{figure}[h]
   \centering
-  \begin{tabular}{| l | l | l | l | l |}
+  \begin{tabular}{| l | l | l | l | l | l |}
     \hline
-    $k_{b}$ & $k_{ub}$ & $c_b$ &  $c_m$ & $c_t$\\\hline
-    $10^{18} s^{-1}$ & $10^{20} s^{-1}$ & $2.0\Delta G_{ATP}$ & $2.0\Delta G_{ATP}$ & $1.0\Delta G_{ATP}$\\ \hline
+    $k_{b}$ & $k_{ub}$ & $c_b$ &  $c_m$ & $c_t$ & dt\\\hline
+    $10^{18} s^{-1}$ & $10^{20} s^{-1}$ & $2.0\Delta G_{ATP}$ & $2.0\Delta G_{ATP}$ & $1.0\Delta G_{ATP}$ & $10^{-10}s$\\ \hline
   \end{tabular}
-  \caption{Parameters used in simulations.}
+  \caption{Parameters used in processive simulations in Figures \ref{fig:stepping-trajectory} and \ref{fig:final-histograms}.}
   \label{table:thesis-parameters}
 \end{figure}
-
-More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajectory}.a. The model steps both forwards and backwards, but has a definite forward bias. The model's behavior can be contrasted with experimental behavior in Figure \ref{fig:stepping-trajectory}.b. The two trajectory plots look very different, but share major key features: forwards and backwards steps, a directional bias, and varying step sizes. At a minimum, the two-state stepping model 
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.5\textwidth]{../../plots/x-trajectory_thesis}
   \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory_thesis}
-  \caption{Near and far binding domains over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
-  \label{fig:stepping-x-trajectory}
+  \caption{Near and far binding domains over the course of several microseconds of simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
+  \label{fig:stepping-trajectory}
 \end{figure}
 
-\subsection{Model steps reasonably}
+Figures \ref{fig:stepping-trajectory}.b and \ref{fig:stepping-trajectory}.c demonstrate the model stepping five times, where a step constitutes lifting a binding domain off the microtubule for any amount of time. This behavior indicates that a springy hinge model with shifting equilibrium angles is capable of generating processive stepping behavior. Now that the model has demonstrated stepping behavior, it must be seen if it can generate steps at a size- and time-scale similar to that which real dynein takes in experiment.\\
+
+Another important determination from Figure \ref{fig:stepping-trajectory}.c is the average position of the unbound foot is about 30\textit{nm} above the microtubule. This is a preliminary finding which may not represent how the model will behave once fit to stepping behavior, so drawing conclusive conclusions from it is impossible. However, it does initially suggest how dynein searches for the microtubule. Instead of hovering near the microtubule looking for a binding site, the motor pulls its foot away from the microtubule, diffusing until pushed downward far enough to bind. This behavior could explain why dynein's stepping pattern is so large: diffusing downward from 30\textit{nm} would allow significant x-diffusion along the microtubule. This could be contrasted with kinesin, which is smaller and could not move its foot so high off the microtubule.\\
+
+Importantly, the physical parameters causing processive motion are reasonable physically. The spring constants are roughly the same size as the energy of hydrolysis of ATP, which is reasonable. By a very rough argument, the dynein must move its tail angle by roughly one radian to diffuse enough for a step. This would correspond to a $\Delta G_{spring} = \frac{1}{2}c_t\Delta \theta_t \approx \Delta G_{ATP}$, which is very reasonable. In addition, the tail spring constant is less than the motor and binding spring constants, which is in line with the notion that the tail is much more elastic than the motor or binding domains. CITE\\
+
+\subsection{Model step size is highly variant}
+Figure \ref{fig:final-histograms}.a shows the stepping pattern of the model at the parameters shown in Table \ref{table:thesis-parameters}. This simulation was run over a much longer time period, and hence shows much more significant information on the model's stepping behavior.\\
 
 \begin{figure}[H]
   \centering
@@ -1227,29 +1236,25 @@ More detailed stepping information is shown in Figure \ref{fig:stepping-x-trajec
     \label{fig:final-histograms}
 \end{figure}
 
-\subsection{Model does not drag as it steps}
-The model lifts its foot up and lowers it as it is about to step; it doesn't drag along the microtubule searching for the binding site. This behavior is shown in Figure \ref{fig:stepping-y-trajectory}.\\
+Figure \ref{fig:final-histograms}.a shows the model has a strong preference for $<5nm$ steps, but is capable of generating steps up to $25nm$ in length, with a fairly even distribution of step frequency between $5$ and $25nm$. This is a very important result, since it indicates that the model is capable of taking a varied step size. This behavior is characteristic of dynein, and hence very important to reproduce.\\
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.5\textwidth]{../../plots/y-trajectory_thesis}
-  \caption{Unbound binding domain position over the course of a simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
-  \label{fig:stepping-y-trajectory}
-\end{figure}
+The preference for $<5nm$ steps is very un-dynein-like. One explanation is that steps may be defined differently between experimental and modeled dynein. In the simulation, every state transition where the motor unbinds from the microtubule is considered a step and plotted on the stepping histogram. This may not be how the experiment in \ref{fig:final-histograms}.b records steps. Another possibility is that the binding rate used for these simulations is far too high, and thus, immediate rebinding is very likely. A solution would thus be to lower the microtubule binding rate and see if the stepping histogram would level out. This may help, but may not, since lowering the binding rate would affect all binding probabilities, not just immediate rebindings.\\
 
-Do our spring constants seem to indicate that the protein does about one ATP's worth of work through its cycle? I wonder if the motor cools down its surroundings when it walks...\\
+The ability of the model to generate near-experiment stepping behavior is imperative if the model is to be considered a proper explanation of dynein's stepping. In the case that changing the binding rate does not remove the small-step preference of the model, it may be necessary to change how the model works. For example, using the total spring-energy-of-binding change to calculate the binding probability may be invalid, or perhaps the entire two-state model will need to be thrown out. The inability of either of these assumptions to predict dynein's behavior would themselves be important findings.\\
 
-Our project un/successfully predicted how dynein behaved. How would we modify it to describe kinesin? Is dynein's linker-motor connection less tense than kinesin's, leading to more random motion? This would likely be lots of speculation, but it could be cool to look up some papers on kinesin motility and get its crystal structure to do some comparisons.
+Another issue with the simulated histogram is that it shows no steps over $30nm$. This is a problem, since taking $40+nm$ steps is characteristic of dynein. Ideally, tuning the parameters of dynein would increase the step size. However, in the case that it can't, this might be an important result. The current model assumes connections between domains are rigid. This may not be a valid assumption, since the coiled coil region connecting the binding and motor domains has some elasticity to it CITE. Thus it may be necessary to add in elasticity to the model to reproduce long steps.\\
 
-\subsection{Current work: Refining model parameters}
-Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
+Comparing the simulation results in \ref{fig:final-histograms}.a with the experimental results in \ref{fig:final-histograms}.b, it is clear that the model is still far from experimental dynein. However, this is not indicative of a failure of the model, since the simulation parameters have not yet been tuned to dynein. It is very possible that changing the binding rate, unbinding rate and spring constants will change the stepping behavior of the model dramatically. Lowering the binding rate may even out the histogram and prevent instant rebinding. It may also allow the model to diffuse along the microtubule longer, generating longer steps than 25nm. Another issue is the lack of backwards steps, which may also be solved by altering the spring constants.\\
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{../../figures/kb-kub-contour}
-  \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$. The fit quality of each simulation is decided by $\log_{10}\left(\frac{\left<t_{bb}\right>_{sim}}{\left<t_{bb}\right>_{exp}}\right)$, then fit to the colorbar on the right. Values over or under the colorbar bounds are rounded to the max (1.0 or -1.0).}
-  \label{fig:kb-kub-heatmap}
-\end{figure}
+%% \subsection{Current work: Refining model parameters}
+%% Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
+
+%% \begin{figure}[H]
+%%   \centering
+%%   \includegraphics[width=\textwidth]{../../figures/kb-kub-contour}
+%%   \caption{Heat map comparing $k_b$ and $k_{ub}$ values to time spent in the onebound state. Simulations run for XXXXX seconds at standard conditions shown in Table \ref{table:simulation-std-conditions}, with spring constants $c_b = c_m = c_t = 2.4\Delta G_{ATP}$, $L_s=22.1nm$ and $L_t=11.15nm$. The fit quality of each simulation is decided by $\log_{10}\left(\frac{\left<t_{bb}\right>_{sim}}{\left<t_{bb}\right>_{exp}}\right)$, then fit to the colorbar on the right. Values over or under the colorbar bounds are rounded to the max (1.0 or -1.0).}
+%%   \label{fig:kb-kub-heatmap}
+%% \end{figure}
 
 \section{Conclusion}
 
