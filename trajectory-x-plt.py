@@ -3,6 +3,7 @@
 from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess
+import draw_cartoon
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -69,6 +70,21 @@ plt.gca().set_ylim(y_min-1,y_max+1)
 
 plt.plot(avg_times, avg_nbxs, label="near foot", c='b')
 plt.plot(avg_times, avg_fbxs, label="far foot", c='r')
+
+ax = plt.gca()
+x_axes_size = ax.get_xlim()[1] - ax.get_xlim()[0]
+y_axes_size = ax.get_ylim()[1] - ax.get_ylim()[0]
+
+x_scaling = 0.005*x_axes_size
+y_scaling = 0.005*y_axes_size
+
+times = np.array([0.3*1e-6, 0.6*1e-6])
+
+for t in times:
+    idx = np.where(data[:,1] == t)[0][0]
+    Xs = data[idx,7:16:2]
+    Ys = data[idx,8:17:2]
+    draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
 
 plt.legend(loc="upper right")
 plt.tight_layout()
