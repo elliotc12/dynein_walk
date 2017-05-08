@@ -125,7 +125,7 @@ generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o
 	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
 
 plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: make_stepping_plots.py data/thesis_stepping_data.txt
-	./make_stepping_plots.py data/thesis_stepping_data.txt
+	python3 make_stepping_plots.py data/thesis_stepping_data.txt
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
