@@ -6,6 +6,7 @@ PLOTS= ../plots/x-trajectory_thesis.pdf ../plots/y-trajectory_thesis.pdf ../plot
 
 thesis.pdf: latex/thesis.tex $(FIGURES) $(PLOTS)
 	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
+	cp thesis.pdf ../public/
 	#cd latex && xelatex -interaction=batchmode thesis.tex && tail -n 25 thesis.log && mv thesis.pdf ..
 
 # thesis.pdf: latex/thesis.tex $(FIGURES)

@@ -8,6 +8,9 @@ build:
     - git config --global user.name "Travis Builder"
   script:
     - make
+  artifacts:
+    paths:
+      - public
 
 pages:
   stage: deploy
@@ -19,8 +22,6 @@ pages:
     - git config --global user.name "Travis Builder"
   script:
     - make
-    - mkdir public
-    - cp thesis/thesis.pdf public/
   artifacts:
     paths:
       - public
