@@ -10,8 +10,9 @@ Forked from origial respository. Intended to be refactored into Rust using dimen
 
 ## Building
 
-To build this project you will need GNU make, inkscape, texlive
-(specifically, bibtex and pdflatex), and a C++ compiler such as g++.
-On a Debian-derived system  you can install these with:
+To build this project you will need GNU make, inkscape, texlive,
+(specifically, bibtex and pdflatex), python3 with matplotlib, and a
+C++ compiler such as g++.  On a Debian-derived system you can install
+these with:
 
-    apt-get install inkscape texlive texlive-xetex texlive-latex-extra build-essential
+    apt-get install inkscape texlive texlive-xetex texlive-latex-extra build-essential python3-matplotlib

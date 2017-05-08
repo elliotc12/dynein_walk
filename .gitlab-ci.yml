@@ -3,7 +3,7 @@ build:
   before_script:
     - apt-get update -qq
     - apt-get install -y inkscape python3-matplotlib
-    - apt-get install -y texlive texlive-xetex texlive-latex-extra python-matplotlib # for papers
+    - apt-get install -y texlive texlive-xetex texlive-latex-extra
     - git config --global user.email "testing-on-travis@example.com"
     - git config --global user.name "Travis Builder"
   script:
