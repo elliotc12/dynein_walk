@@ -1,0 +1,26 @@
+build:
+  stage: build
+  before_script:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y inkscape
+    - sudo apt-get install -y texlive texlive-xetex texlive-latex-extra python-matplotlib # for papers
+    - git config --global user.email "testing-on-travis@example.com"
+    - git config --global user.name "Travis Builder"
+  script:
+    - make
+
+pages:
+  stage: deploy
+  before_script:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y inkscape
+    - sudo apt-get install -y texlive texlive-xetex texlive-latex-extra python-matplotlib # for papers
+    - git config --global user.email "testing-on-travis@example.com"
+    - git config --global user.name "Travis Builder"
+  script:
+    - make
+    - mkdir public
+    - cp thesis/thesis.pdf public/
+  artifacts:
+    paths:
+      - public
