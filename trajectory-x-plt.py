@@ -3,10 +3,11 @@
 from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess
-import draw_cartoon
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
+
+import draw_cartoon
 import matplotlib.pyplot as plt
 
 tail = 'tail' in sys.argv
