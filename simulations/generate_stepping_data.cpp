@@ -61,14 +61,14 @@ void check_for_quitting_conditions(double time_run, FILE* data_file, double firs
     fprintf(data_file, "#Runtime: %g\n", time_run);
     exit(0);
   }
-  if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
-    printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this. Exiting successfully!\n");
-    fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
-    fprintf(data_file, "#First binding time: %g\n", first_binding_time);
-    fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
-    fprintf(data_file, "#Runtime: %g\n", time_run);
-    exit(0);
-  }
+  // if (time_run > 0.001 and NUM_STEPS > 5 and am_exiting_on_improbable_stepping) {
+  //   printf("Over 5 steps in 0.001 seconds. There's less than a 1e-11 chance of real dynein doing this. Exiting successfully!\n");
+  //   fprintf(data_file, "#EXIT SUCCESSFULLY!\n");
+  //   fprintf(data_file, "#First binding time: %g\n", first_binding_time);
+  //   fprintf(data_file, "#Last unbinding time: %g\n", last_unbinding_time);
+  //   fprintf(data_file, "#Runtime: %g\n", time_run);
+  //   exit(0);
+  // }
   else if (time_run > 0.7 and am_exiting_on_improbable_stepping) {
     // printf("There's a 97%% chance of real dynein having stepped 5 times in 0.7 seconds, exiting successfully.\n");
     printf("Exiting normally after 0.7 seconds.\nExit successfully!\n");

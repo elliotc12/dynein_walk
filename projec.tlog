@@ -35,3 +35,6 @@ Running a "4-19-randint" trial with random seeds to see if weird quickstepping c
 
 4/21/17
 Running a new "4-21" simulation set which start in onebound. This'll hopefully be more true to how the motor behaves.
+
+4/25/17
+Removed the 0.001s quick exit and added random seeds to make steps more trustworthy. Rerunning at kbs of 1e-6 and 1e-12.

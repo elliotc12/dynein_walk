@@ -53,7 +53,7 @@ for i in range(len(datafiles)):
         print("Error, this is an old data file that doesn't have a #Last unbinding time.")
         continue
 
-    if "#First unbinding time" not in file_txt:
+    if "#First binding time" not in file_txt:
         print("Error, this is an old data file that doesn't have a #First unbinding time.")
         continue
 
@@ -78,6 +78,24 @@ for i in range(len(datafiles)):
         t_ob.append(runtime-last_unbinding_time)
         t_bb.append(last_unbinding_time)
         t_proc.append(float('inf'))
+
+    elif str(data.shape) == "(4,)":
+        print("found one step")
+        kbs.append(kb)
+        kubs.append(kub)
+
+        bind_time = data[1]
+        unbind_time = data[0]
+
+        onebound_time = bind_time - unbind_time
+        bothbound_times = np.array([])
+        bothbound_times = np.append(bothbound_times, [last_unbinding_time-bind_time])
+        bothbound_times = np.append(bothbound_times, [unbind_time-first_binding_time])
+
+        #t_step.append(np.mean(step_times))
+        t_ob.append(onebound_time)
+        t_bb.append(np.mean(bothbound_times))
+        #t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 
     else:
         print("Found steps in data file...")
