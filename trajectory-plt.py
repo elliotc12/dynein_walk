@@ -10,6 +10,7 @@ if 'show' not in sys.argv:
 import draw_cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from matplotlib.patches import Rectangle
 
 import io
 
@@ -95,7 +96,7 @@ ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
 ax0.legend(loc="upper right")
 
 # cartoons
-ax1.axis('off')
+# ax1.axis('off')
 ax1.set_aspect('equal', 'datalim')
 plt.setp(ax1.get_xticklabels(), visible=False)
 
@@ -113,6 +114,9 @@ for t in cartoon_draw_times_x_proj:
     Xs = data[idx,7:16:2]
     Ys = data[idx,8:17:2]
     draw_cartoon.draw_cartoon([t*1e6, 0], Xs, Ys, x_scaling, y_scaling)
+
+ax1.set_ylim([0,2])
+ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.4))
 
 # y projection
 ax2.set_xlabel("time ($\mu$s)")
