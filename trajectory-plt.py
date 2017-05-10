@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.7
+#! /usr/bin/env python3
 
 from __future__ import division
 import numpy as np
@@ -9,6 +9,9 @@ if 'show' not in sys.argv:
 
 import draw_cartoon
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
+
+import io
 
 tail = 'tail' in sys.argv
 
@@ -25,21 +28,19 @@ if len(sys.argv) < 2:
 data_filename = sys.argv[1]
 title = data_filename[data_filename.index("data/")+5:-4]
 
-if tail:
-    data = np.genfromtxt(data_filename, delimiter="\t", invalid_raise=False, skip_header=skiplen)
-else:
-    data = np.genfromtxt(data_filename, delimiter="\t", invalid_raise=False)
+raw_lines = open(data_filename, 'r').readlines()
+lines = sum(1 for l in raw_lines)
+start_line = 0
+end_line = int(min(1e5,lines))
+plot_length = end_line - start_line - 1
 
-if tail and sys.stdin.isatty():
-    skiplen = sum(1 for line in open(data_filename)) - 100
-    if skiplen < 0:
-        skiplen = 1
+raw_data = "".join(raw_lines[start_line:end_line])
+
+data = np.genfromtxt(io.BytesIO(raw_data.encode()), delimiter="\t", invalid_raise=False)
 
 if len(data) == 0:
        print("Very short run!")
        exit(1)
-
-plot_length = int(min(1e5,len(data)))
 
 nbxs =  np.zeros(plot_length)
 fbxs =  np.zeros(plot_length)
@@ -70,66 +71,72 @@ avg_fbys = np.array([np.mean(fbys[avging_window_width*i:avging_window_width*(i+1
 avg_times = np.array([times[int(np.floor((i+0.5)*avging_window_width))] for i in range(num_windows)])
 
 y_min_xproj = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
-y_max_xproj = np.max([np.max(avg_nbxs), np.max(avg_fbxs)])
+y_max_xproj = np.max([np.max(avg_nbxs), 20])
 
-# x projection
-plt.subplot(2, 1, 1)
-plt.xlabel("time ($\mu$s)")
-plt.ylabel("Binding domain x-projection (nm)")
-
-plt.gca().set_ylim(y_min_xproj-1,y_max_xproj+1)
-
-plt.plot(avg_times, avg_nbxs, label="near foot", c='b')
-plt.plot(avg_times, avg_fbxs, label="far foot", c='r')
-
-ax = plt.gca()
-x_axes_size = ax.get_xlim()[1] - ax.get_xlim()[0]
-y_axes_size = ax.get_ylim()[1] - ax.get_ylim()[0]
-
-x_scaling = 0.005*x_axes_size
-y_scaling = 0.005*y_axes_size
-
-cartoon_draw_times = np.array([0.3*1e-6, 0.6*1e-6])
-
-for t in cartoon_draw_times:
-    idx = np.where(data[:,1] == t)[0][0]
-    Xs = data[idx,7:16:2]
-    Ys = data[idx,8:17:2]
-    draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
-
-plt.legend(loc="upper right")
-plt.tight_layout()
-
-# y projection
 y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
-plt.subplot(2, 1, 1)
-plt.xlabel("time ($\mu$s)")
-plt.ylabel("Binding domain y-projection (nm)")
+fig = plt.figure()
+gs = gridspec.GridSpec(3, 1, height_ratios=[3, 1, 3])
+ax0 = fig.add_subplot(gs[0])
+ax1 = fig.add_subplot(gs[1], sharex=ax0)
+ax2 = fig.add_subplot(gs[2], sharex=ax0)
 
-plt.gca().set_ylim(y_min_yproj-1,y_max_yproj+1)
+plt.setp([ax0.get_xticklabels(), ax1.get_xticklabels()], visible=False)
 
-plt.plot(avg_times, avg_nbys, label="near foot", c='b')
-plt.plot(avg_times, avg_fbys, label="far foot", c='r')
+# x projection
+ax0.set_ylabel("x-projection (nm)")
+ax0.set_ylim(y_min_xproj-1,y_max_xproj+1)
 
-ax = plt.gca()
-x_axes_size = ax.get_xlim()[1] - ax.get_xlim()[0]
-y_axes_size = ax.get_ylim()[1] - ax.get_ylim()[0]
+ax0.plot(avg_times, avg_nbxs, label="near foot", c='b')
+ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
+
+ax0.legend(loc="upper right")
+
+# cartoons
+# ax1.set_ylim(-20, 20)
+ax1.axis('off')
+
+x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
+y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 
 x_scaling = 0.005*x_axes_size
 y_scaling = 0.005*y_axes_size
 
-cartoon_draw_times = np.array([0.3*1e-6, 0.6*1e-6])
+cartoon_draw_times_x_proj = np.array([0.5*1e-6, 4.5*1e-6, 8.5*1e-6])
 
-for t in cartoon_draw_times:
+plt.sca(ax1)
+for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] == t)[0][0]
     Xs = data[idx,7:16:2]
     Ys = data[idx,8:17:2]
-    draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
+    draw_cartoon.draw_cartoon([t*1e6, 0], Xs, Ys, x_scaling, y_scaling)
 
-plt.legend(loc="upper right")
-plt.tight_layout()
+# y projection
+ax2.set_xlabel("time ($\mu$s)")
+ax2.set_ylabel("y-projection (nm)")
+
+ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)
+
+ax2.plot(avg_times, avg_nbys, label="near foot", c='b')
+ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
+
+# x_axes_size = ax2.get_xlim()[1] - ax2.get_xlim()[0]
+# y_axes_size = ax2.get_ylim()[1] - ax2.get_ylim()[0]
+
+# x_scaling = 0.005*x_axes_size
+# y_scaling = 0.005*y_axes_size
+
+# cartoon_draw_times_y_proj = np.array([0.3*1e-6, 0.6*1e-6])
+
+# plt.sca(ax2)
+# for t in cartoon_draw_times_y_proj:
+#     idx = np.where(data[:,1] == t)[0][0]
+#     Xs = data[idx,7:16:2]
+#     Ys = data[idx,8:17:2]
+#     draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
+
+fig.tight_layout()
 
 os.system('mkdir -p plots')
 plt.savefig("plots/trajectory-plot.pdf")

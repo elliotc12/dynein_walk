@@ -132,8 +132,8 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
 
-plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py
-	python3 trajectory-x-plt.py data/thesis_movie_data.txt
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py draw_cartoon.py
+	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
