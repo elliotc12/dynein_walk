@@ -15,6 +15,7 @@ build:
 pages:
   stage: deploy
   script:
+    - date > public/date.txt
     - echo I already built everything...
     - ls -lh public/
   artifacts:
