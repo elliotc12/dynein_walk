@@ -132,13 +132,9 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
 
-plots/x-trajectory_thesis.pdf: data/thesis_movie_data.txt trajectory-x-plt.py
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py
 	python3 trajectory-x-plt.py data/thesis_movie_data.txt
-	mv plots/x-trajectory.pdf plots/x-trajectory_thesis.pdf
-
-plots/y-trajectory_thesis.pdf: data/thesis_movie_data.txt trajectory-y-plt.py
-	python3 trajectory-y-plt.py data/thesis_movie_data.txt
-	mv plots/y-trajectory.pdf plots/y-trajectory_thesis.pdf
+	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 #	mkdir -p data
@@ -223,7 +219,7 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 
 ########################### THESIS STUFF #################################
 
-THESIS_FIGURES = plots/x-trajectory_thesis.pdf plots/y-trajectory_thesis.pdf plots/stepping_length_histogram_thesis.pdf plots/stepping_time_histogram_thesis.pdf
+THESIS_FIGURES = plots/trajectory-plot_thesis.pdf plots/stepping_length_histogram_thesis.pdf plots/stepping_time_histogram_thesis.pdf
 
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
 	cd thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && mv thesis_stuff.pdf ..

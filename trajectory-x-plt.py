@@ -43,15 +43,20 @@ plot_length = int(min(1e5,len(data)))
 
 nbxs =  np.zeros(plot_length)
 fbxs =  np.zeros(plot_length)
+nbys =  np.zeros(plot_length)
+fbys =  np.zeros(plot_length)
+
 times = np.empty(plot_length)
 
 for i in range(plot_length):
     if int(data[i,0]) == 0 or int(data[i,0]) == 2:
         nbxs[i] = data[i,7]
         fbxs[i] = data[i,15]
+        fbys[i] = data[i,16]
     elif int(data[i,0]) == 1:
         nbxs[i] = data[i,15]
         fbxs[i] = data[i,7]
+        nbys[i] = data[i,16]
     times[i] = data[i,1]*1e6
 
 avging_window_width = 300
@@ -59,15 +64,20 @@ num_windows = plot_length // avging_window_width # floor division
 
 avg_nbxs = np.array([np.mean(nbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
 avg_fbxs = np.array([np.mean(fbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
+avg_nbys = np.array([np.mean(nbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
+avg_fbys = np.array([np.mean(fbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
+
 avg_times = np.array([times[int(np.floor((i+0.5)*avging_window_width))] for i in range(num_windows)])
 
-y_min = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
-y_max = np.max([np.max(avg_nbxs), np.max(avg_fbxs)])
+y_min_xproj = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
+y_max_xproj = np.max([np.max(avg_nbxs), np.max(avg_fbxs)])
 
+# x projection
+plt.subplot(2, 1, 1)
 plt.xlabel("time ($\mu$s)")
 plt.ylabel("Binding domain x-projection (nm)")
 
-plt.gca().set_ylim(y_min-1,y_max+1)
+plt.gca().set_ylim(y_min_xproj-1,y_max_xproj+1)
 
 plt.plot(avg_times, avg_nbxs, label="near foot", c='b')
 plt.plot(avg_times, avg_fbxs, label="far foot", c='r')
@@ -79,9 +89,40 @@ y_axes_size = ax.get_ylim()[1] - ax.get_ylim()[0]
 x_scaling = 0.005*x_axes_size
 y_scaling = 0.005*y_axes_size
 
-times = np.array([0.3*1e-6, 0.6*1e-6])
+cartoon_draw_times = np.array([0.3*1e-6, 0.6*1e-6])
 
-for t in times:
+for t in cartoon_draw_times:
+    idx = np.where(data[:,1] == t)[0][0]
+    Xs = data[idx,7:16:2]
+    Ys = data[idx,8:17:2]
+    draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
+
+plt.legend(loc="upper right")
+plt.tight_layout()
+
+# y projection
+y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
+y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
+
+plt.subplot(2, 1, 1)
+plt.xlabel("time ($\mu$s)")
+plt.ylabel("Binding domain y-projection (nm)")
+
+plt.gca().set_ylim(y_min_yproj-1,y_max_yproj+1)
+
+plt.plot(avg_times, avg_nbys, label="near foot", c='b')
+plt.plot(avg_times, avg_fbys, label="far foot", c='r')
+
+ax = plt.gca()
+x_axes_size = ax.get_xlim()[1] - ax.get_xlim()[0]
+y_axes_size = ax.get_ylim()[1] - ax.get_ylim()[0]
+
+x_scaling = 0.005*x_axes_size
+y_scaling = 0.005*y_axes_size
+
+cartoon_draw_times = np.array([0.3*1e-6, 0.6*1e-6])
+
+for t in cartoon_draw_times:
     idx = np.where(data[:,1] == t)[0][0]
     Xs = data[idx,7:16:2]
     Ys = data[idx,8:17:2]
@@ -91,4 +132,4 @@ plt.legend(loc="upper right")
 plt.tight_layout()
 
 os.system('mkdir -p plots')
-plt.savefig("plots/x-trajectory.pdf")
+plt.savefig("plots/trajectory-plot.pdf")
