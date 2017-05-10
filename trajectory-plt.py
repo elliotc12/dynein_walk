@@ -87,6 +87,7 @@ plt.setp([ax0.get_xticklabels(), ax1.get_xticklabels()], visible=False)
 # x projection
 ax0.set_ylabel("x-projection (nm)")
 ax0.set_ylim(y_min_xproj-1,y_max_xproj+1)
+plt.setp(ax0.get_xticklabels(), visible=False)
 
 ax0.plot(avg_times, avg_nbxs, label="near foot", c='b')
 ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
@@ -94,16 +95,17 @@ ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
 ax0.legend(loc="upper right")
 
 # cartoons
-# ax1.set_ylim(-20, 20)
 ax1.axis('off')
+ax1.set_aspect('equal', 'datalim')
+plt.setp(ax1.get_xticklabels(), visible=False)
 
 x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
 y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 
-x_scaling = 0.005*x_axes_size
-y_scaling = 0.005*y_axes_size
+x_scaling = 0.04
+y_scaling = 0.04
 
-cartoon_draw_times_x_proj = np.array([0.5*1e-6, 4.5*1e-6, 8.5*1e-6])
+cartoon_draw_times_x_proj = np.array([1.0*1e-6, 3.0*1e-6, 4.899*1e-6, 7.0*1e-6, 9.0*1e-6])
 
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
@@ -136,7 +138,7 @@ ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
 #     Ys = data[idx,8:17:2]
 #     draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
 
-fig.tight_layout()
+gs.tight_layout(fig, h_pad=0)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/trajectory-plot.pdf")
