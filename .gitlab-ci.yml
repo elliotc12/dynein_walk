@@ -15,7 +15,6 @@ build:
 pages:
   stage: deploy
   script:
-    - TZ=America/Los_Angeles date > public/date.txt
     - echo I already built everything...
     - ls -lh public/
   artifacts:

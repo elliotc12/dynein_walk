@@ -7,10 +7,8 @@ PLOTS= ../plots/trajectory-plot_thesis.pdf ../plots/stepping_length_histogram_th
 thesis.pdf: latex/thesis.tex $(FIGURES) $(PLOTS)
 	cd latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex && mv thesis.pdf ..
 	cp thesis.pdf ../public/
+	TZ=America/Los_Angeles date > ../public/date.txt
 	#cd latex && xelatex -interaction=batchmode thesis.tex && tail -n 25 thesis.log && mv thesis.pdf ..
-
-# thesis.pdf: latex/thesis.tex $(FIGURES)
-# 	cd latex && xelatex thesis.tex && mv thesis.pdf ..
 
 thesis2.pdf: latex/thesis2.tex $(FIGURES)
 	cd latex && xelatex thesis2.tex && mv thesis2.pdf ..
