@@ -34,7 +34,7 @@ if len(sys.argv) < 3:
   print usage
   sys.exit(1)
 
-title = sys.argv[1]
+data_file = sys.argv[1]
 
 X = numpy.array([0, 1, 2, 3, 4])
 Y = numpy.array([0, 1, 2, 3, 4])
@@ -45,18 +45,16 @@ if sys.argv[2][:6] != 'speed=':
   exit(1)
 speed =  float(sys.argv[2][6:])
 
-# config = numpy.loadtxt("data/stepping_movie_config_" + title + ".txt")
-
 if tail and sys.stdin.isatty():
-    skiplen = sum(1 for line in open("data/stepping_movie_data_" + title + ".txt")) - 100
+    skiplen = sum(1 for line in open(data_file)) - 100
     if skiplen < 0:
 	skiplen = 1
 
 if sys.stdin.isatty():
     if tail:
-	data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False, skip_header=skiplen)
+	data = numpy.genfromtxt(data_file, delimiter="\t", invalid_raise=False, skip_header=skiplen)
     else:
-	data = numpy.genfromtxt("data/stepping_movie_data_" + title + ".txt", delimiter="\t", invalid_raise=False)
+	data = numpy.genfromtxt(data_file, delimiter="\t", invalid_raise=False)
 else:
   data = numpy.genfromtxt(sys.stdin, delimiter="\t", invalid_raise=False)
 plt.ion()
@@ -81,11 +79,11 @@ tail1,  = plt.plot([ X[1], X[2] ], [ Y[1], Y[2] ], color="black")
 tail2,  = plt.plot([ X[2], X[3] ], [ Y[2], Y[3] ], color="black")
 stalk2, = plt.plot([ X[3], X[4] ], [ Y[3], Y[4] ], color="black")
 
-binding1, = plt.plot([X[0]], [Y[0]], marker='o', color="white", markersize=1*50/view_width)
-motor1,   = plt.plot([X[1]], [Y[1]], marker='o', color="white", markersize=18*50/view_width)
-tail,     = plt.plot([X[2]], [Y[2]], marker='o', color="red",   markersize=12*50/view_width)
-motor2,   = plt.plot([X[3]], [Y[3]], marker='o', color="white", markersize=18*50/view_width)
-binding2, = plt.plot([X[4]], [Y[4]], marker='o', color="white", markersize=1*50/view_width)
+binding1, = plt.plot([X[0]], [Y[0]], marker='o', markeredgecolor='k', color="white", markersize=1*50/view_width)
+motor1,   = plt.plot([X[1]], [Y[1]], marker='o', markeredgecolor='k', color="white", markersize=18*50/view_width)
+tail,     = plt.plot([X[2]], [Y[2]], marker='o', markeredgecolor='k', color="red",   markersize=12*50/view_width)
+motor2,   = plt.plot([X[3]], [Y[3]], marker='o', markeredgecolor='k', color="white", markersize=18*50/view_width)
+binding2, = plt.plot([X[4]], [Y[4]], marker='o', markeredgecolor='k', color="white", markersize=1*50/view_width)
 
 if force_vectors:
   force_line = [i for i in range(5)]
@@ -241,7 +239,7 @@ while i < len(data):
   # plt.pause(0.001)
   savefigframe += 1
 
-  fname = 'PNGs/%s-%06d.png' % (title, savefigframe)
+  fname = 'PNGs/movie-%06d.png' % (savefigframe)
   plt.savefig(fname)
   sys.stdout.write("video progress: %.1f%%\r" % (i/len(data)*100))
   sys.stdout.flush()
@@ -259,9 +257,9 @@ except (OSError, subprocess.CalledProcessError):
     have_avconv = False
 
 if have_avconv:
-    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
+    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
 else:
-    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/%s-%%06d.png -b 1000k movies/%s.mp4" % (framerate, title, title)
+    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
 
 print(movie_cmd)
 os.system(movie_cmd) # make the movie

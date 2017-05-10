@@ -74,35 +74,14 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	printf("Running for %g s\n", runtime);
   }
 
-  if (using_variable_timestep) {
-    variable_ts_checkpoint_onebound = (Dynein_onebound*) malloc(sizeof(Dynein_onebound));
-    variable_ts_checkpoint_bothbound = (Dynein_bothbound*) malloc(sizeof(Dynein_bothbound));
-    variable_ts_checkpoint_time = 0;
-    variable_ts_stepping_print_buffer = (char*) malloc(4096*sizeof(char));
-    variable_ts_stepping_print_buffer[0] = 0;
-    variable_ts_stepping_print_buffer_index = 0;
-    variable_ts_base_dt = dt;
-    variable_ts_rewinding_state = false;
-  }
-
   double near_unbinding_prob_printing_average = 0;
   int unbinding_prob_printing_n = 0;
 
   while( t < runtime or run_indefinite) {
     if (current_state == NEARBOUND or current_state == FARBOUND)
       while (t < runtime or run_indefinite) { // loop as long as it is onebound
-	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
-	  variable_ts_checkpoint_time = t;
-	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
-	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
-	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
-	  variable_ts_stepping_print_buffer_index = 0;
-	  variable_ts_rewinding_state = false;
-	  dt = variable_ts_base_dt;
-	}
-
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
-	
+
         double unbinding_prob = dyn_ob->get_unbinding_rate()*dt;
         double binding_prob = dyn_ob->get_binding_rate()*dt;
 	if (am_debugging_rates and binding_prob != 0 and rand->rand() < 1e-3) {
@@ -144,39 +123,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_ob->set_uma(temp_uma);
 	  dyn_ob->set_uba(temp_uba);
 
+	  dyn_ob->update_velocities();
+
 	  if (crash_on_nan and (isnan(temp_bba) or isnan(temp_bma) or isnan(temp_uma) or isnan(temp_uba))) {
 	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
 	    exit(1);
-	  }
-
-	  if (dyn_ob->update_velocities() == VARIABLE_TS_REWIND_RETURN) {
-	    if (variable_ts_rewinding_state == true) {
-	      printf("Incurred error while at a lower timestep, exiting.\n");
-	      exit(1);
-	    }
-	    variable_ts_rewinding_state = true;
-
-	    printf("Rewinding and lowering timestep.\n");
-	    t = variable_ts_checkpoint_time;
-	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
-	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
-	    variable_ts_stepping_print_buffer_index = 0;
-	    dt = 1e-12;
 	  }
 	}
       }
 
     if (current_state == BOTHBOUND) {
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
-	if (using_variable_timestep and t > variable_ts_checkpoint_time + variable_ts_checkpoint_interval) { // if we are due for a new checkpoint
-	  variable_ts_checkpoint_time = t;
-	  if (dyn_ob != NULL) memcpy(variable_ts_checkpoint_onebound, dyn_ob, sizeof(Dynein_onebound));
-	  if (dyn_bb != NULL) memcpy(variable_ts_checkpoint_bothbound, dyn_bb, sizeof(Dynein_bothbound));
-	  fprintf(variable_ts_stepping_data_file, "%s", variable_ts_stepping_print_buffer);
-	  variable_ts_stepping_print_buffer_index = 0;
-	  variable_ts_rewinding_state = false;
-	  dt = variable_ts_base_dt;
-	}
 
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
@@ -235,24 +192,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  dyn_bb->set_nma(temp_nma);
 	  dyn_bb->set_fma(temp_fma);
 
+	  dyn_bb->update_velocities();
+
 	  if (crash_on_nan and (isnan(temp_nma) or isnan(temp_fma))) {
 	    printf("Bothbound velocity calculation generated a NaN, exiting.\n");
 	    exit(1);
-	  }
-
-	  if (dyn_bb->update_velocities() == VARIABLE_TS_REWIND_RETURN) {
-	    if (variable_ts_rewinding_state == true) {
-	      printf("Incurred error while at a lower timestep, exiting.\n");
-	      exit(1);
-	    }
-	    variable_ts_rewinding_state = true;
-
-	    printf("Rewinding and lowering timestep.\n");
-	    t = variable_ts_checkpoint_time;
-	    if (variable_ts_checkpoint_onebound != NULL) memcpy(dyn_ob, variable_ts_checkpoint_onebound, sizeof(Dynein_onebound));
-	    if (variable_ts_checkpoint_bothbound != NULL) memcpy(dyn_bb, variable_ts_checkpoint_bothbound, sizeof(Dynein_bothbound));
-	    variable_ts_stepping_print_buffer_index = 0;
-	    dt = 1e-12;
 	  }
 	}
       }

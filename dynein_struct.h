@@ -81,29 +81,12 @@ const bool am_debugging_state_transitions = true;
 const bool am_debugging_rates = true;
 const bool am_debugging_naive_corrections = true;
 
-const bool am_exiting_on_improbable_stepping = true;
+const bool am_exiting_on_improbable_stepping = false;
 
 const bool am_crashing_on_unphysical_behavior = false; // crash when model under MT, etc
 const bool am_naively_correcting_nan_errors = false; // "nudges" nan states into good states, eg if cosAn > 1, cosAn = 0.9999
 
 const bool crash_on_nan = true;
-
-const bool using_variable_timestep = false;
-
-extern double variable_ts_checkpoint_interval;
-extern char* variable_ts_stepping_print_buffer;
-extern int variable_ts_stepping_print_buffer_index;
-extern FILE* variable_ts_stepping_data_file;
-
-extern Dynein_onebound* variable_ts_checkpoint_onebound;
-extern Dynein_bothbound* variable_ts_checkpoint_bothbound;
-extern double variable_ts_checkpoint_time;
-
-const int VARIABLE_TS_REWIND_RETURN = 1;
-const int RETURN_OKAY = 0;
-extern int variable_ts_rewinding_state;
-extern double variable_ts_base_dt;
-
 
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);

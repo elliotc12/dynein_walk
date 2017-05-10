@@ -15,12 +15,22 @@ all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movi
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
+version-info.h: SHELL:=/bin/bash
 version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp) Makefile
-	echo -n static const char '*version' = '"' > version-info.h
-	git describe --dirty | head -c -1 >> version-info.h
-	echo -n '-=-' >> version-info.h
-	date -Ins | head -c -1 >> version-info.h
-	echo '";' >> version-info.h
+	UNAMESTR=$$(uname); if [[ "$$UNAMESTR" == 'Linux' ]]; then \
+	echo -n static const char '*version' = '"' > version-info.h; \
+	cat version-info.h; \
+	git describe --dirty --tags | tr -d '\n' >> version-info.h; \
+	cat version-info.h; \
+	echo -n '-=-' >> version-info.h; \
+	cat version-info.h; \
+	date -Ins | tr -d '\n' >> version-info.h; \
+	cat version-info.h; \
+	echo '";' >> version-info.h; \
+	cat version-info.h; \
+	elif [[ "$$UNAMESTR" == 'Darwin' ]]; then \
+	    echo 'static const char *version = "mac-breaks-version-stuff";' > version-info.h; \
+	fi;
 
 derivation.pdf: latex/derivation.tex $(FIGURES)
 	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
@@ -108,17 +118,27 @@ histograms:
 	make $(STEPPING_LENGTH_HISTOGRAMS)
 	make $(STEPPING_TIME_HISTOGRAMS)
 
-plots/stepping_length_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
-	./make_stepping_plots.py $*
-
-plots/stepping_time_histogram_%.pdf: make_stepping_plots.py data/stepping_data_%.txt data/stepping_config_%.txt
-	./make_stepping_plots.py $*
-
 generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results version-info.h
 	mkdir -p runlogs
 	mkdir -p data
 	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
 	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
+
+plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: make_stepping_plots.py data/thesis_stepping_data.txt
+	python3 make_stepping_plots.py data/thesis_stepping_data.txt
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
+
+data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
+	python3 run_scripts/generate-thesis-data.py
+
+plots/x-trajectory_thesis.pdf: data/thesis_movie_data.txt trajectory-x-plt.py
+	python3 trajectory-x-plt.py data/thesis_movie_data.txt
+	mv plots/x-trajectory.pdf plots/x-trajectory_thesis.pdf
+
+plots/y-trajectory_thesis.pdf: data/thesis_movie_data.txt trajectory-y-plt.py
+	python3 trajectory-y-plt.py data/thesis_movie_data.txt
+	mv plots/y-trajectory.pdf plots/y-trajectory_thesis.pdf
 
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 #	mkdir -p data
@@ -203,10 +223,12 @@ data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct
 
 ########################### THESIS STUFF #################################
 
+THESIS_FIGURES = plots/x-trajectory_thesis.pdf plots/y-trajectory_thesis.pdf plots/stepping_length_histogram_thesis.pdf plots/stepping_time_histogram_thesis.pdf
+
 thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
 	cd thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && mv thesis_stuff.pdf ..
 
-thesis:
+thesis: $(THESIS_FIGURES)
 	cd thesis && $(MAKE)
 
 clean:
@@ -237,5 +259,7 @@ clean:
 	rm -f *#
 	rm -f *.fdb_latexmk
 	rm -f *.fls
+	rm data/thesis_data.txt
+	rm data/thesis_plot.txt
 	cd figures && $(MAKE) clean
 	cd thesis && $(MAKE) clean

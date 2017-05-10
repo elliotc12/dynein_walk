@@ -27,8 +27,8 @@ extern char* crash_movie_file_name_global;
 bool am_making_movie = true;
 bool am_debugging_onebound = false;
 
-int num_movie_writes = 1e4;
-// bytes per movie write: 213, 200mb bytes max movie size
+long num_movie_writes = 1e6;
+// bytes per movie write: 213, 2000Mb bytes max movie size
 
 static const long MAX_FILESIZE_PERMITTED = 1<<30;
 static int NUM_STEPS = 0;
@@ -409,7 +409,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
   }
 
   if (optind != argc) {
-    printf("Improper usage. Example: ./generate_stepping_data --label test --Ls 34.5 --T 55 --movie\n");
+    printf("Improper usage. Example: ./generate_stepping_data --label test --Ls 34.5 --T 55 --constant-write\n");
     exit(EXIT_FAILURE);
   }
 }
@@ -487,10 +487,6 @@ int main(int argc, char** argv) {
   job_msg.run_msg = run_name;
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
   job_msg.movie_data_file = 0;
-
-  if (using_variable_timestep) {
-    variable_ts_stepping_data_file = job_msg.stepping_data_file;
-  }
 
   if (am_making_movie or am_debugging_onebound) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
