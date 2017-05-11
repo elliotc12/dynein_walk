@@ -308,11 +308,17 @@ KOMA-script documentation for details.}]{fancyhdr}
 }
 \NewDocumentCommand{\setblankpagestyle}{ m }{\DeclareDocumentCommand{\blank@p@gestyle}{}{#1}}
 
-\DeclareDocumentCommand\cleardoublepage{}{\clearpage\if@twoside \ifodd\c@page\else
+%% \DeclareDocumentCommand\cleardoublepage{}{\clearpage\if@twoside \ifodd\c@page\else
+%% 	\hbox{}
+%% 	\thispagestyle{\blank@p@gestyle}
+%% 	\newpage
+%% 	\if@twocolumn\hbox{}\newpage\fi\fi\fi%
+%% }
+
+\DeclareDocumentCommand\cleardoublepage{}{\if@twoside \ifodd\c@page\else
 	\hbox{}
 	\thispagestyle{\blank@p@gestyle}
-	\newpage
-	\if@twocolumn\hbox{}\newpage\fi\fi\fi%
+	\if@twocolumn\hbox{}\fi\fi\fi%
 }
 
 %----------------------------------------------------------------------------------------

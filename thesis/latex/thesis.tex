@@ -23,7 +23,7 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[
-12pt, % The default document font size, options: 10pt, 11pt, 12pt
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
 %oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 english, % ngerman for German
 singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
@@ -41,18 +41,19 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 
-\usepackage{palatino} % Use the Palatino font by default
+\usepackage{lmodern} % Use the Palatino font by default
 
-\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\usepackage[backend=bibtex,style=numeric,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 
 \addbibresource{thesis-articles.bib} % The filename of the bibliography
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
 % Elliott-added packages
-\usepackage{amsmath}
+\usepackage{amsmath} % for align and other environments
 \usepackage{listings}
-\usepackage{float}
+\usepackage{float}   % for H figure specifier
+\usepackage{indentfirst} % to indent after sections
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -62,7 +63,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 	paper=a4paper, % Change to letterpaper for US letter
 	inner=2.5cm, % Inner margin
 	outer=2.5cm, % Outer margin
-	bindingoffset=.5cm, % Binding offset
+	bindingoffset=.0cm, % Binding offset
 	top=1.5cm, % Top margin
 	bottom=1.5cm, % Bottom margin
 	%showframe, % Uncomment to show how the type block is set on the page
@@ -82,7 +83,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 \subject{Physics} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
 \keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
 \university{\href{http://www.university.com}{Oregon State University}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
-\department{\href{http://physics.oregonstate.edu}{Physics}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\department{\href{http://physics.oregonstate.edu}{Oregon State University Department of Physics}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
 \group{\href{http://physics.oregonstate.edu/~roundyd/}{Roundy Research Group}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
 \faculty{} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
 
@@ -149,6 +150,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 Dynein is a motor protein which transports cargo along tracks inside the cell. Like related motor proteins kinesin and myosin, dynein uses cellular energy to take steps with its two foot domains. Unlike kinesin or myosin, dynein's stepping pattern is highly varied: it can take steps between zero and 60nm in both the forwards and backwards directions. It is believed that dynein takes such broad, stochastic steps because its large size and several elastic regions make it more influenced by Brownian motion. To test this, we model the motor as a 2D system of elastic hinges, then simulate this model using Brownian dynamics. Preliminary results indicate such a model is capable of taking steps between zero and 25nm. These results give hope that, with further tweaking, the model may be able to generate both larger steps and backwards steps.
 \end{abstract}
+\newpage
 
 %% %----------------------------------------------------------------------------------------
 %% %	ACKNOWLEDGEMENTS
@@ -164,21 +166,24 @@ Dynein is a motor protein which transports cargo along tracks inside the cell. L
 %----------------------------------------------------------------------------------------
 
 \tableofcontents % Prints the main table of contents
+\newpage
 
 \listoffigures % Prints the list of figures
+\newpage
 
 \listoftables % Prints the list of tables
+\newpage
 
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
+%% %----------------------------------------------------------------------------------------
+%% %	ABBREVIATIONS
+%% %----------------------------------------------------------------------------------------
 
-\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+%% \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{MT} & \textbf{M}icro\textbf{t}ubule\\
-\textbf{MTBD} & \textbf{M}icro\textbf{t}ubule \textbf{B}inding \textbf{D}omain\\
+%% \textbf{MT} & \textbf{M}icro\textbf{t}ubule\\
+%% \textbf{MTBD} & \textbf{M}icro\textbf{t}ubule \textbf{B}inding \textbf{D}omain\\
 
-\end{abbreviations}
+%% \end{abbreviations}
 
 %% %----------------------------------------------------------------------------------------
 %% %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
@@ -527,6 +532,7 @@ This model will then be converted into a computer program, tested for compliance
 
 %% \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
 
+\newpage
 \chapter{Theory}
 \label{chap:Theory}
 
@@ -1052,6 +1058,7 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
   \label{table:time-parameter-table}
 \end{figure}
 
+\newpage
 \chapter{Methods}
 \label{chap:Methods}
 This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
@@ -1322,6 +1329,7 @@ To find the ideal binding and unbinding rates of our model, we ran simulations a
 \subsection{Fitting spring constants}
 This section will be written once it is conducted. This is contingent on getting rate fitting done, and preferably high-dt simulations stable so an optimization process can be run.\\
 
+\newpage
 \chapter{Results \& Discussion}
 \label{chap:ResultsAndDiscussion}
 
@@ -1400,6 +1408,7 @@ Comparing the simulation results in \ref{fig:final-histograms}.a with the experi
 %%   \label{fig:kb-kub-heatmap}
 %% \end{figure}
 
+\newpage
 \chapter{Conclusion}
 \label{chap:Conclusion}
 
