@@ -255,7 +255,7 @@ clean:
 	rm -f *#
 	rm -f *.fdb_latexmk
 	rm -f *.fls
-	rm data/thesis_data.txt
-	rm data/thesis_plot.txt
+	rm -f data/thesis_data.txt
+	rm -f data/thesis_plot.txt
 	cd figures && $(MAKE) clean
 	cd thesis && $(MAKE) clean
