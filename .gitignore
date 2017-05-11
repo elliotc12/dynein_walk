@@ -58,7 +58,6 @@ create_bb_movie
 *.equ
 *.lof
 *.lot
-*.cls
 simrunner
 *.pyc
 version-info.h
