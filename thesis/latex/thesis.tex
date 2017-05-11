@@ -300,7 +300,7 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/dynein-artist-rendition.jpg}
-  \caption{Artist's rendition of dynein bound to a microtubule.}{One monomer is bound to the MT, and the other is raised up. Modified. Source: Lander Lab, The Scripps Research Institute.}
+  \caption{Artist's rendition of dynein bound to a microtubule.}{Two heavy chains (green/blue) and several tail proteins (pink) come together to form the dynein motor complex. One monomer's binding domain is bound to the microtubule, and the other is diffusing. ATP hydrolysis sites are labeled glowing green. Figure modified. Source: Lander Lab, The Scripps Research Institute \cite{landerartistsrendition}.}
   \label{dynein-artist-rendition}
 \end{figure}
 
@@ -316,64 +316,42 @@ Diffusion, or random motion of molecules due to collisions with solvent (i.e. Br
   <x> = \sqrt{2Dt}
 \end{equation}
 
-where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ \cite{diffusionconstants}, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same. Figure (\ref{fig:diffusion_vs_dynein}) demonstrates how motor transport quickly outstrips diffusion in a cell.\\
+where D is the diffusion constant describing the diffusability of the biomolecule. For a medium-sized (140kD, 1D = weight of H atom) protein with a diffusion constant $D = .2 \mu m^2/s$ \cite{diffusionconstants}, it would take about a month to travel across a millimeter-sized cell. In contrast, it would take dynein, which travels at roughly 100nm/s \cite{weihongpaper}, a much more reasonable three hours to do the same. \\%% Figure (\ref{fig:diffusion_vs_dynein}) demonstrates how motor transport quickly outstrips diffusion in a cell.\\
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/diffusion_vs_dynein.png}
-  \caption{Passive diffusion vs motor transport rate}{Plot comparing the diffusion rate of a 140kD protein with a diffusion consant $D = .2 \mu m^2/s$ with a dynein motor travelling at 100nm/s.}
-  \label{fig:diffusion_vs_dynein}
-\end{figure}
-
-\textit{Maybe use the more reasonable 2$\mu m / s$ number for dynein velocity, in-vitro speed may not be applicable since [ATP]-limited}
+%% \begin{figure}[h]
+%%   \centering
+%%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/diffusion_vs_dynein.png}
+%%   \caption{Passive diffusion vs motor transport rate}{Plot comparing the diffusion rate of a 140kD protein with a diffusion consant $D = .2 \mu m^2/s$ with a dynein motor travelling at 100nm/s.}
+%%   \label{fig:diffusion_vs_dynein}
+%% \end{figure}
 
 Another advantage of motor transport is that microtubules can be highly specific in their location in the cell. During cell division chromosomes line up at the center of each cell in a plane. Such a geometrically precise shape requires some sort of directed motion which a random process could never provide.\\
 
-\textit{maybe decorate the above plot with pictures of cells of each size, or how long certain cellular events take? That could be cool and make it actually an interesting plot}
-\textit{this argument would be much better if you could find examples of things which need to be done quickly in the cell, like responding to foreign particles or signalling molecules or cell division or neural events}
-
 \subsection{What role does dynein play in the cell?}
-Some of dynein's primary roles in the cell are to transport cellular cargos such as organelles, vesicles, mRNA, cytoskeletal filaments and certain proteins. Dynein also plays a role in positioning and breaking down the nucleus, cell death, spindle formation and the placement of other important cellular structures \cite{valetoolbox}.\\
+One of dynein's primary jobs is to transport cellular cargos such as organelles, vesicles, mRNA, cytoskeletal filaments and certain proteins from place to place in the cell. Dynein also plays a role in positioning and breaking down the nucleus, cell death, spindle formation and the placement of other important cellular structures \cite{valetoolbox}.\\
 
-Microtubules are long polymers of alternating $\alpha-$ and $\beta-$ tubulin subunits. MTs are polar, meaning they have a distinct directionality based on the orientation of thetubulin proteins which comprise them. One pole, the minus end, is where they initiate formation, typically at a MTOC (microtubule organizing center) around the center of the cell. The other pole, the plus end, is where they grow and shrink from. Kinesin and myosin, two other families of motor protein, typically walk towards the plus end of the MT. Dynein is unique in that it walks towards the minus end, making it a minus end-directed motor. This lends it to a particularly important function inside neurons known as retrograde transport.\\
+Dynein walks along cellular tracks called microtubules (MTs). MTs are long polymers of alternating $\alpha-$ and $\beta-$ tubulin subunits. MTs are polar, meaning they have a distinct directionality based on the orientation of the tubulin proteins which comprise them. One pole, called the minus end, is where they initiate formation, typically at a MTOC (microtubule organizing center) around the center of the cell. The other pole, the plus end, is where they grow and shrink from. Kinesin, another type of motor protein, typically walks towards the plus end of the MT. Dynein is unique in that it walks towards the minus end, making it a minus end-directed motor. This lends it to a particularly important function inside neurons known as retrograde transport.\\
 
 Neurons have cell bodies at their centers and axons which grow outwards. Axons are long, narrow structures extending up to a meter in length in humans. Cell bodies contain nuclei and important organelles for synthesizing proteins, but growth of axon tips is vital for neuron function. This means bidirectional motor transport between axon tips and cell bodies is very important in neurons, since diffusion would not be quick enough. Retrograde transport is transport from the axon tip to the cell body. Cargo includes vesicles full of proteins ready to be broken down in the cell body and microtubule fragments to be returned from the axon tip \cite{neuroanatomy}. Because microtubule minus ends are found in the cell body, dynein's minus end-directed nature makes it the only protein capable of retrograde transport. An interesting question is, if proteins like dynein are synthesized in the cell body but needed at the axon tip to perform retrograde transport, how do dynein get to the tip? The answer is shown in \ref{retrograde-transport}: kinesin, a plus end-directed motor, takes dynein to the tip from the cell body.\\
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/retrograde_transport.jpg}
-  \caption{Dynein localization to axon growth cones.}{Mechanism of dynein localization to axon tips, or growth cones, in retrograde transport mediated by kinesin anterograde transport. Modified from \cite{valetoolbox}.}
+  \caption{Dynein transport to neuron growth cones.}{Dynein and kinesin collaborate to move cargo between the neuron body and axon tip. The oppositely-directed motors take turns transporting each other, along with cargo for building the axon growth cone. Borrowed from \cite{valetoolbox}.}
   \label{retrograde-transport}
 \end{figure}
 
 \subsection{Dynein structure}
+As shown in the crystal structure in Figure \ref{fig:pdb-motm-dynein}, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.
+
+Dynein is a fusion of two identical proteins, referred to as monomers. A single monomer, depicted in \ref{fig:pdb-motm-dynein}, is composed of a microtubule-binding domain (MTBD), a stalk, a buttress, a motor domain, a linker and a tail. The MTBD is responsible for binding to the microtubule. The stalk links the motor domain to the MTBD and carries information about the state of the motor to the MTBD. The motor domain hydrolyses ATP and performs the main conformation changes involved in the step \cite{FRETstatepaper}. The linker connects the tail to the motor and also changes conformation during the step. The tail is a binding site which interacts with several binding partners, including the tail of a twin monomer.\\
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/dynein-artist-rendition.jpg}
-  \caption{Artist's rendition of motor-MT complex.}{Artist rendition of the dynein motor bound to a microtubule. One monomer is bound to the MT, and one is raised up. Modified. Source: Lander Lab, The Scripps Research Institute.}
-  \label{dynein-artist-rendition-2}
+  \includegraphics[width=.5\textwidth,keepaspectratio]{../../figures/pdb-motm-dynein}
+  \caption{Structure of a dynein monomer.}{A cryo-electron microscopy-inspired image detailing the subcomponents of a single dynein monomer. The microtubule-binding domain (MTBD) connects to the motor domain via a coiled coil known as the stalk. The six AAA regions provide structure for the motor domain, and AAA2 conducts the ATP hydrolysis. The linker is a flexible region which connects the motor domain to the tail. One of the main roles of the tail is connecting a monomer to its twin to form the dynein complex. Image borrowed from \cite{pdb-motm-dynein}.}
+  \label{fig:pdb-motm-dynein}
 \end{figure}
-
-\textit{eventually find a different figure}
-
-As shown in the crystal structure in Figure XXX, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.
-
-\textbf{Binding domain}
-Microtubule binding domains (MTBDs) allow dynein to bind to the microtubule. 
-
-%% \begin{figure}[h]
-%%   \centering
-%%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/mtbd-complex.png}
-%%   \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}.}
-%%   \label{dynein-artist-rendition-2}
-%% \end{figure}
-
-
-This could be fixed up...probably remove multiple of these sections
-
-\subsection{How does it behave?}
-Dynein's stepping pattern is distinct from its partner, kinesin. Kinesin takes very precise 8-nm steps \cite{kinesin-step-size}. In contrast, dynein takes a large range of steps, as shown in Figure \\
 
 \subsection{Why is dynein interesting?}
 Studying how nature creates directed motion is interesting in itself. Another interesting question is how, given the large number of similarities between motors kinesin and dynein, does dynein achieve such a radically different stepping pattern than kinesin? Elucidating how the structural differences between the motors give rise to the differences in dynamics would provide lots of important information on how the machines fine-tune their stepping.\\
@@ -399,14 +377,16 @@ Studies suggest that near/far tail-motor conformation changes are not due to len
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures//burgess-dynein-angles}
-  \caption{Cryo-EM microscopy of dynein conformational states.}{Cryo-electron microscopy images of dynein in two different nucleotide states. Left: dynein frozen in ADP-Pi state. Middle: dynein without nucleotide. Right: two states superimposed on one another. Bottom: cartoons representing how dynein may bind to the MT in either state. From \cite{burgess-paper}.}
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/burgess-dynein-angles}\\
+  \hspace{1cm}
+  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/linker-swing}
+  \caption{Dynein conformation change during a step.}{Top: Cryo-electron microscopy images of axonemal dynein in two different nucleotide states. Top left: dynein frozen in ADP-Pi state. Top middle: dynein without nucleotide. Top right: two states superimposed on one another. Figures borrowed from \cite{burgess-paper}. Bottom: X-ray diffraction-inspired image of a motor in two nucleotide states. Bottom left: motor in ADP-Pi state. Bottom right: Motor in ADP state. The linker undergoes an approximately 40 degree swing between these two states. Figure borrowed from \cite{bhabha-paper}.}
   \label{fig:cryo-em-angles}
 \end{figure}
 
 Crystal structures of cytoplasmic dynein-2, a relative of dynein, indicate that ATP-Pi binding to the motor domain induces a conformation change in the motor domain, which alters the angle at which the motor binds to the tail \cite{carter-paper} (make a Chimaera figure where the pre/poststroke motors are docked showing this). Taken together, these results indicate that as the motor binds and hydrolyzes ATP, it undergoes a conformation change which physically moves the motor relative to the tail.\\
 
-\textbf{TODO: look at \cite{nicastro} and \cite{schmidt-carter} to see if they can add to this discussion}
+%% \textbf{TODO: look at \cite{nicastro} and \cite{schmidt-carter} to see if they can add to this discussion}
 
 \subsection{Microtubule and nucleotide states are coupled}
 Dynein is known to bind to the microtubule at a location known as the $\alpha$-$\beta$ polymerization site \cite{redwineMTBDcomplex}. This site occurs roughly every 8nm, indicating dynein is restricted to step sizes which are multiples of 8nm.\\
@@ -420,15 +400,9 @@ Several studies have been done on the dynein motor's stepping pattern using sele
 
 \begin{figure}[h!]
   \centering
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/weihong-step-size}
-    \caption{Experimental dynein step size histogram.}{Size of steps taken by dynein motor parallel to microtubule. Positive axis corresponds to steps towards the microtubule minus-end. Figure modified from \cite{weihongpaper}.}
-  \end{minipage}
-  \hspace{.2cm}
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/weihong-off-axis-steps}
-    \caption{Dynein experimental off-axis stepping size.}{Size of ``off-axis'' steps taken by the dynein motor perpendicular to the microtubule. Figure modified from \cite{weihongpaper}.}
-  \end{minipage}
+  \includegraphics[width=0.49\textwidth]{../../figures/weihong-step-size}
+  \includegraphics[width=0.49\textwidth]{../../figures/weihong-off-axis-steps}
+    \caption{Experimental dynein stepping behavior histograms.}{Left: Size of steps taken by dynein motor parallel to microtubule. Positive axis corresponds to steps towards the microtubule minus-end. Right: Size of ``off-axis'' steps taken by the dynein motor perpendicular to the microtubule. Figure modified from \cite{weihongpaper}.}
   \label{fig:weihong-steps}
 \end{figure}
 
