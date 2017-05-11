@@ -61,3 +61,4 @@ create_bb_movie
 simrunner
 *.pyc
 version-info.h
+*.xml
