@@ -1,242 +1,104 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Masters/Doctoral Thesis 
-% LaTeX Template
-% Version 2.4 (22/11/16)
-%
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% Version 2.x major modifications by:
-% Vel (vel@latextemplates.com)
-%
-% This template is based on a template by:
-% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
-% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
-%
-% Template license:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[defaultstyle,11pt]{article}
+%% \documentclass[defaultstyle,11pt]{thesis}
 
-%----------------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
+\usepackage[hmargin=1.25cm, vmargin=1.5cm]{geometry} % Document margins
+\usepackage[usenames,dvipsnames]{xcolor} % Allows the definition of hex colors
 
-\documentclass[
-12pt, % The default document font size, options: 10pt, 11pt, 12pt
-%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
-english, % ngerman for German
-singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
-%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
-%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
-%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
-%toctotoc, % Uncomment to add the main table of contents to the table of contents
-%parskip, % Uncomment to add space between paragraphs
-%nohyperref, % Uncomment to not load the hyperref package
-headsepline, % Uncomment to get a line under the header
-%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
-%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
-]{MastersDoctoralThesis} % The class file specifying the document structure
-
-\usepackage[utf8]{inputenc} % Required for inputting international characters
-\usepackage[T1]{fontenc} % Output font encoding for international characters
-
-\usepackage{palatino} % Use the Palatino font by default
-
-\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-
-\addbibresource{thesis-articles.bib} % The filename of the bibliography
-
-\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
-
-% Elliott-added packages
-\usepackage{amsmath}
 \usepackage{listings}
+\lstset{escapechar=\&}
+
+% Fonts and tweaks for XeLaTeX
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+% Colors for links, text and headings
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{506266} % Blue-gray color for links
+\definecolor{shade}{HTML}{F5DD9D} % Peach color for the contact information box
+\definecolor{text1}{HTML}{2b2b2b} % Main document font color, off-black
+\definecolor{headings}{HTML}{701112} % Dark red color for headings
+% Other color palettes: shade=B9D7D9 and linkcolor=A40000; shade=D4D7FE and linkcolor=FF0080
+
+\hypersetup{colorlinks,breaklinks, urlcolor=linkcolor, linkcolor=linkcolor} % Set up links and colors
+
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+
+\setlength{\emergencystretch}{3cm} % somehow helps prevent hboxes from overflowing
+
+%% \titleformat{\paragraph}
+%% {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+%% \titlespacing*{\paragraph}
+%% {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\pagestyle{fancy}
+\fancyhf{}
+
+% Format of the section titles
+\titleformat{\section}{\color{headings}
+\scshape\Large\raggedright}{}{0em}{}[\color{black}\titlerule]
+
+\title{Simulating dynein's powerstroke using Brownian dynamics}
+\author{Elliott Capek}
+\titlespacing{\section}{0pt}{0pt}{5pt} % Spacing around titles
+
+\usepackage{csquotes}
+
 \usepackage{float}
 
-%----------------------------------------------------------------------------------------
-%	MARGIN SETTINGS
-%----------------------------------------------------------------------------------------
+\renewcommand{\headrulewidth}{0pt} % Get rid of the default rule in the header
 
-\geometry{
-	paper=a4paper, % Change to letterpaper for US letter
-	inner=2.5cm, % Inner margin
-	outer=3.8cm, % Outer margin
-	bindingoffset=.5cm, % Binding offset
-	top=1.5cm, % Top margin
-	bottom=1.5cm, % Bottom margin
-	%showframe, % Uncomment to show how the type block is set on the page
-}
+\bibliographystyle{plain}
 
-%----------------------------------------------------------------------------------------
-%	THESIS INFORMATION
-%----------------------------------------------------------------------------------------
+%% \title{Simulating a Brownian model of the dynein motor protein}
+%% \author{E. L.}{Capek}
 
-\thesistitle{Simulating dynein'’s powerstroke using Brownian dynamics} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-\supervisor{Dr. David \textsc{Roundy}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
-\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
-\degree{Bachelor of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\author{Elliott \textsc{Capek}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
-\addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+%% \otherdegrees{B.A., North Dakota State University, 2005 \\
+%% 	      M.S., University of Reno, 2007}
 
-\subject{Physics} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
-\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
-\university{\href{http://www.university.com}{Oregon State University}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
-\department{\href{http://physics.oregonstate.edu}{Physics}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
-\group{\href{http://physics.oregonstate.edu/~roundyd/}{Roundy Research Group}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
-\faculty{} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+%% \degree{Doctor of Philosophy}		%  #1 {long descr.}
+%% 	{Ph.D., Rocket Science}		%  #2 {short descr.}
 
-\AtBeginDocument{
-\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
-\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
-\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
-}
+%% \dept{Department of}			%  #1 {designation}
+%% 	{Rocket Science}		%  #2 {name}
+
+%% \advisor{Prof.}				%  #1 {title}
+%% 	{Ed Visor}			%  #2 {name}
+
+%% \reader{Prof.~Rachel Goddard}		%  2nd person to sign thesis
+%% \readerThree{Ms.~Thora Nea}		%  3rd person to sign thesis
+
+%% \abstract{Yet to come.}
+
+%% \dedication{Yet to come.}
+
+%% \acknowledgements{Yet to come.}
 
 \begin{document}
 
-\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+\maketitle{}
+\tableofcontents
+\listoffigures
+\newpage
 
-\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+\textbf{Abstract}
+%% \blockquote{Dynein is a motor protein which transports cargo along tracks inside the cell. Like related motor proteins kinesin and myosin, dynein uses cellular energy to take steps with its two foot domains. Unlike the more regularly-stepping kinesin or myosin, dynein's stepping pattern is very random: it can take steps between zero and 60\textit{nm} in both the forwards and backwards directions. It is believed that dynein takes such broad, stochastic steps because of its large size and several elastic regions, which make it more influenced by Brownian motion. To test this diffusion-dominated hypothesis for dynein stepping, we create a minimal model of dynein with elastic regions which feels Brownian forces, and simulate the model's stepping behavior in a cellular environment. The model treats dynein's domains as ``point hinges'' connected by rigid rods, and accomplishes steps by changing the openness of its hinges. The model's behavior is found using Brownian dynamics equations. Preliminary data indicate such a model is capable of taking steps between 0 and 25nm, though it vastly prefers <5nm steps. These results affirm that the Brownian hinge model of dynein is capable of stepping, and give hope that, with further tweaking, the model may be able to generate both larger and backwards steps, supporting the notion of a diffusion-dominated dynein step.}
 
-%----------------------------------------------------------------------------------------
-%	TITLE PAGE
-%----------------------------------------------------------------------------------------
+\blockquote{Dynein is a motor protein which transports cargo along tracks inside the cell. Like related motor proteins kinesin and myosin, dynein uses cellular energy to take steps with its two foot domains. Unlike kinesin or myosin, dynein's stepping pattern is highly varied: it can take steps between zero and 60nm in both the forwards and backwards directions. It is believed that dynein takes such broad, stochastic steps because its large size and several elastic regions make it more influenced by Brownian motion. To test this, we model the motor as a 2D system of elastic hinges, then simulate this model using Brownian dynamics. Preliminary results indicate such a model is capable of taking steps between zero and 25nm. These results give hope that, with further tweaking, the model may be able to generate both larger steps and backwards steps.}
 
-\begin{titlepage}
-\begin{center}
+\textbf{Keywords}: Dynein, powerstroke, Brownian dynamics, coarse-grained, dynamics simulation\\
 
-\vspace*{.06\textheight}
-{\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
-\textsc{\Large Undergraduate Thesis}\\[0.5cm] % Thesis type
-
-\HRule \\[0.4cm] % Horizontal line
-{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
-\HRule \\[1.5cm] % Horizontal line
- 
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushleft} \large
-\emph{Author:}\\
-{\authorname} % Author name - remove the \href bracket to remove the link
-\end{flushleft}
-\end{minipage}
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushright} \large
-\emph{Supervisor:} \\
-{\supname} % Supervisor name - remove the \href bracket to remove the link  
-\end{flushright}
-\end{minipage}\\[3cm]
- 
-\vfill
-
-\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
-\textit{in the}\\[0.4cm]
-\groupname\\\deptname\\[2cm] % Research group name and department name
- 
-\vfill
-
-{\large \today}\\[4cm] % Date
-%\includegraphics{Logo} % University/department logo - uncomment to place it
- 
-\vfill
-\end{center}
-\end{titlepage}
-
-%----------------------------------------------------------------------------------------
-%	ABSTRACT PAGE
-%----------------------------------------------------------------------------------------
-
-\begin{abstract}
-\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-Dynein is a motor protein which transports cargo along tracks inside the cell. Like related motor proteins kinesin and myosin, dynein uses cellular energy to take steps with its two foot domains. Unlike kinesin or myosin, dynein's stepping pattern is highly varied: it can take steps between zero and 60nm in both the forwards and backwards directions. It is believed that dynein takes such broad, stochastic steps because its large size and several elastic regions make it more influenced by Brownian motion. To test this, we model the motor as a 2D system of elastic hinges, then simulate this model using Brownian dynamics. Preliminary results indicate such a model is capable of taking steps between zero and 25nm. These results give hope that, with further tweaking, the model may be able to generate both larger steps and backwards steps.
-\end{abstract}
-
-%% %----------------------------------------------------------------------------------------
-%% %	ACKNOWLEDGEMENTS
-%% %----------------------------------------------------------------------------------------
-
-%% \begin{acknowledgements}
-%% \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-%% The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
-%% \end{acknowledgements}
-
-%----------------------------------------------------------------------------------------
-%	LIST OF CONTENTS/FIGURES/TABLES PAGES
-%----------------------------------------------------------------------------------------
-
-\tableofcontents % Prints the main table of contents
-
-\listoffigures % Prints the list of figures
-
-\listoftables % Prints the list of tables
-
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
-
-\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
-
-\textbf{MT} & \textbf{M}icro\textbf{t}ubule\\
-\textbf{MTBD} & \textbf{M}icro\textbf{t}ubule \textbf{B}inding \textbf{D}omain\\
-
-\end{abbreviations}
-
-%% %----------------------------------------------------------------------------------------
-%% %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
-%% %----------------------------------------------------------------------------------------
-
-%% \begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
-
-%% % The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
-
-%% Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
-%% %Constant Name & $Symbol$ & $Constant Value$ with units\\
-
-%% \end{constants}
-
-%% %----------------------------------------------------------------------------------------
-%% %	SYMBOLS
-%% %----------------------------------------------------------------------------------------
-
-%% \begin{symbols}{lll} % Include a list of Symbols (a three column table)
-
-%% $a$ & distance & \si{\meter} \\
-%% $P$ & power & \si{\watt} (\si{\joule\per\second}) \\
-%% %Symbol & Name & Unit \\
-
-%% \addlinespace % Gap to separate the Roman symbols from the Greek
-
-%% $\omega$ & angular frequency & \si{\radian} \\
-
-%% \end{symbols}
-
-%% %----------------------------------------------------------------------------------------
-%% %	DEDICATION
-%% %----------------------------------------------------------------------------------------
-
-%% \dedicatory{For/Dedicated to/To my\ldots} 
-
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - CHAPTERS
-%----------------------------------------------------------------------------------------
-
-\mainmatter % Begin numeric (1,2,3...) page numbering
-
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
-
-% Include the chapters of the thesis as separate files from the Chapters folder
-% Uncomment the lines as you write the chapters
-
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - CHAPTERS
-%----------------------------------------------------------------------------------------
-\chapter{Introduction}
-\label{chap:Introduction}
-
+\newpage
+\section{Chapter: Introduction}
 \blockquote{An embryo in its spherical blastula stage has spherical symmetry [...]. But a system which has spherical symmetry, and whose state is changing because of chemical reactions and diffusion, will remain spherically symmetrical for ever [...]. It certainly cannot result in an organism such as a horse, which is not spherically symmetrical. \textbf{Alan Turing, The Chemical Basis of Morphogenesis, 1952}}
 
 Cells need to create asymmetric, heterogeneous structures inside themselves in order to function. However, diffusive processes cannot create this asymmetry. How then do cells create the heterogeneous structures they need to exist? Motor proteins are part of the answer. Motor proteins are structures which use energy to create directed motion in cells. In broad terms, they are mechanical creators of asymmetry. This thesis explores a hypothesis about how one such motor protein, dynein, generates directed motion.\\
 
-%% \section{Interest builder}
+%% \subsection{Interest builder}
 %% Begin with a paper-like introduction which talks about:
 
 %% \begin{itemize}
@@ -248,7 +110,7 @@ Cells need to create asymmetric, heterogeneous structures inside themselves in o
 
 %% Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
 
-\section{Motivation}
+\subsection{Motivation}
 Motor proteins are cellular structures which use chemical energy to do work and generate motion. Kinesin, myosin and dynein are the three main motor proteins in cells. Though these proteins have significantly different ancestors \ref{cite}, they all evolved into a single similar structure. In biology when a structure is evolved three separate times, it is a sign that nature has found an efficient way of solving a problem. How, then, do motor proteins work?\\
 
 The basic process is simple. Kinesin, myosin and dynein each use two binding domains to attach to a surface. These binding domains are connected via a linker domain. Each motor protein is an engine which undergoes cycles, where each cycle moves the motor across a surface. In a single cycle a binding domain unbinds from a surface, tenses its foot to kick forward, rebinds, then untenses its foot to pull the whole motor forward. This pattern is repeated by both feet to generate motion \cite{kinesin-cycle} \cite{myosin-cycle}.\\
@@ -286,8 +148,8 @@ This thesis describes an experiment which aims to test whether Brownian motion a
 %% binding causes foot to change relative to lever, shifting the motor forward
 %% ATP binding causes dissocaition and undoing the powerstroke
 
-\section{What is dynein?}
-\subsection{Basics}
+\subsection{What is dynein?}
+\subsubsection{Basics}
 Dynein is a cellular structure which converts chemical energy to mechanical energy. It does so by reacting with adenosine triphosphate (ATP) to take steps along long cellular tracks known as microtubules (MTs). Dynein's mechanical energy is used for various cellular functions, including to transport molecules around the cell, pull chromosomes during division, and move cellular propellers known as cilia \cite{cianfroccoreview}.\\
 
 Dynein is a protein with many smaller domains. A depiction of the protein and its labeled subdomains is shown in Figure (\ref{dynein-artist-rendition}). Each motor is a homodimer made up of two identical monomer proteins. Each monomer has a binding domain which binds to the microtubule, a motor domain which binds ATP, a tail domain which connects to the other monomer, a stalk which connects the binding and motor domains, and a linker which connects the motor and tail domains. The tail domain is also responsible for binding to cargo.\\
@@ -301,7 +163,7 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 
 Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule will end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
 
-\subsection{Why do cells need motor transport?}
+\subsubsection{Why do cells need motor transport?}
 Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
 
 Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \cite{einstein-paper}:
@@ -327,7 +189,7 @@ Another advantage of motor transport is that microtubules can be highly specific
 \textit{maybe decorate the above plot with pictures of cells of each size, or how long certain cellular events take? That could be cool and make it actually an interesting plot}
 \textit{this argument would be much better if you could find examples of things which need to be done quickly in the cell, like responding to foreign particles or signalling molecules or cell division or neural events}
 
-\subsection{What role does dynein play in the cell?}
+\subsubsection{What role does dynein play in the cell?}
 Some of dynein's primary roles in the cell are to transport cellular cargos such as organelles, vesicles, mRNA, cytoskeletal filaments and certain proteins. Dynein also plays a role in positioning and breaking down the nucleus, cell death, spindle formation and the placement of other important cellular structures \cite{valetoolbox}.\\
 
 Microtubules are long polymers of alternating $\alpha-$ and $\beta-$ tubulin subunits. MTs are polar, meaning they have a distinct directionality based on the orientation of thetubulin proteins which comprise them. One pole, the minus end, is where they initiate formation, typically at a MTOC (microtubule organizing center) around the center of the cell. The other pole, the plus end, is where they grow and shrink from. Kinesin and myosin, two other families of motor protein, typically walk towards the plus end of the MT. Dynein is unique in that it walks towards the minus end, making it a minus end-directed motor. This lends it to a particularly important function inside neurons known as retrograde transport.\\
@@ -341,7 +203,7 @@ Neurons have cell bodies at their centers and axons which grow outwards. Axons a
   \label{retrograde-transport}
 \end{figure}
 
-\subsection{Dynein structure}
+\subsubsection{Dynein structure}
 
 \begin{figure}[h]
   \centering
@@ -367,10 +229,10 @@ Microtubule binding domains (MTBDs) allow dynein to bind to the microtubule.
 
 This could be fixed up...probably remove multiple of these sections
 
-\subsection{How does it behave?}
+\subsubsection{How does it behave?}
 Dynein's stepping pattern is distinct from its partner, kinesin. Kinesin takes very precise 8-nm steps \cite{kinesin-step-size}. In contrast, dynein takes a large range of steps, as shown in Figure \\
 
-\subsection{Why is dynein interesting?}
+\subsubsection{Why is dynein interesting?}
 Studying how nature creates directed motion is interesting in itself. Another interesting question is how, given the large number of similarities between motors kinesin and dynein, does dynein achieve such a radically different stepping pattern than kinesin? Elucidating how the structural differences between the motors give rise to the differences in dynamics would provide lots of important information on how the machines fine-tune their stepping.\\
 
 The major difference between kinesin and dynein is their size. Kinesin proteins are generally 100-200 kD in mass, whereas dynein is roughly 1mD. As shown in Figure \ref{fig:kinesin-vs-dynein}, the size and volume differences between proteins is very apparent. Dynein is about 20nm from MTBD to tail, whereas kinesin is ----. Another key difference is the separation between active sites on either protein. Kinesin binds to the MT with a foot domain, colored blue in Figure \ref{fig:kinesin-vs-dynein}. It hydrolyzes ATP at the residues colored pink. The separation between these domains is roughly ---nm. In contrast, Dynein binds to the MT with its MTBD, colored blue, and hydrolyses ATP in its motor domain, residues colored pink. This distance is close to 20nm in length - much longer than kinesin. Another difference is the way the motors interact with the microtubule. Both motors bind to the MT using domains. However, for dynein the motor-MTBD-MT angle is ---, whereas for kinesin, it is ---.\\
@@ -384,10 +246,10 @@ Despite these differences, the two motors implement very similar chemical cycles
 %%   \label{fig:kinesin-vs-dynein}
 %% \end{figure}
 
-\section{Dynein Stepping Background}
+\subsection{Dynein Stepping Background}
 Biophysicists and molecular biologists have conducted experiments over the past twenty years which shed light on how the dynein motor might walk. The full mechanism is not known, but results of such experiments suggest a certain vague picture of how dynein generates motion.\\
 
-\subsection{ATP cycle influences conformational state}
+\subsubsection{ATP cycle influences conformational state}
 Dynein is known to occupy multiple discrete conformational states depending on its environment. In particular, the concentration of ATP and microtubules is known to alter the shape dynein takes on. A FRET (fluorescence resonance energy transfer) study attached fluorophores to dynein's motor and tail and measured the average distance between the two \cite{FRETstatepaper}. It was found that average distance increased or decreased depending on the nucleotide bound to dynein, indicating the motor takes on different conformations for different bound nucleotides. Dynein unbound to nucleotide, or frozen in ATP or ADP-bound states, had a similar tail-motor distance. However, when the motor was stuck in an ADP-Pi state, with ATP hydrolyzed but phosphate not yet released, the tail-motor distance was increased. This suggests that dynein starts its cycle with no nucleotide, binds ATP, hydrolyzes ATP, enters the ADP-Pi state and changes conformation to a far tail-motor distance, then releases phosphate, moves back to its original close tail-motor conformation, then ejects ADP and starts over.\\
 
 Studies suggest that near/far tail-motor conformation changes are not due to lengthening of the stem linking the two domains, but rather a change in position of the head relative to the trail \cite{FRETstatepaper} \cite{burgess-paper}. Cryo-electron microscopy images of the dynein motor shown in Figure (\ref{fig:cryo-em-angles}) demonstrate the differences in conformation in the nucleotide-free and ADP-Pi state.\\
@@ -403,14 +265,14 @@ Crystal structures of cytoplasmic dynein-2, a relative of dynein, indicate that 
 
 \textbf{TODO: look at \cite{nicastro} and \cite{schmidt-carter} to see if they can add to this discussion}
 
-\subsection{Microtubule and nucleotide states are coupled}
+\subsubsection{Microtubule and nucleotide states are coupled}
 Dynein is known to bind to the microtubule at a location known as the $\alpha$-$\beta$ polymerization site \cite{redwineMTBDcomplex}. This site occurs roughly every 8nm, indicating dynein is restricted to step sizes which are multiples of 8nm.\\
 
 The nucleotide state of the motor is not the only determiner of dynein conformation; microtubule binding state has also been shown to influence conformation. A study on the MTBD-MT complex indicates the stalk connecting the motor and MTBD can take on two major conformations, depending on whether the MTBD is bound to the MT or not \cite{mt-atp-coupling}. The conformation of the stalk has been shown to communicate information between the motor and MTBD. In the presence of microtubules, the ATPase rate of the motor is increased 25-fold. This indicates the stalk communicates MT-binding state of the MTBD to the motor, increasing its ATP hydrolysis rate. The communication happens the other way, as well. Treating dynein with ATP causes MT-binding rate to drop 15-fold, indicating ATP-binding at the motor decreases MT-binding rate at the MTBD.\\
 
 In addition to a bidirectional linking between ATPase rate and MT-binding, stalk state has been shown to directly influence motor conformation \cite{mt-atp-coupling}. When the stalk is allowed to freely transition between bound and unbound states, the motor can also transition between near and far tail/motor states. However, when the stalk is frozen in a particular conformation, the motor loses its transitioning ability. This suggests that the conformations of the two systems are tightly linked.\\
 
-\subsection{Stepping pattern}
+\subsubsection{Stepping pattern}
 Several studies have been done on the dynein motor's stepping pattern using selectively-labeled motor domains \cite{reck2006single} \cite{weihongpaper}. These studies show dynein's stepping pattern to be stochastic and weakly forward-directed. As shown in Figure (\ref{fig:weihong-steps}), dynein takes many backwards steps, and also many steps with components perpendicular to the microtubule. This indicates the process dynein uses to generate motion has a stochastic component to it. It is likely that the physical states of subcomponents in the motor, and/or the effects of Brownian motion due to water particle collision, play a role in dynein's stepping mechanism.\\
 
 \begin{figure}[h!]
@@ -427,10 +289,10 @@ Several studies have been done on the dynein motor's stepping pattern using sele
   \label{fig:weihong-steps}
 \end{figure}
 
-\section{Dynein models}
+\subsection{Dynein models}
 Data presented in the previous sections paints a picture of dynein as a collection of interconnected parts, each cycling through its own collection of states and influencing other parts. Somehow the protein itneracts with nucleotides and microtubules in a way that allows it to reliably move through the cell. Models presented below take these facts and string them together into cohesive cycles which might explain how dynein walks. It is important to note that these models are hypotheses.\\
 
-\subsection{Cianfrocco Model}
+\subsubsection{Cianfrocco Model}
 Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motion via transitioning through the cycle of states shown in Fig. \ref{mech-cycle}. This model will hereon be referred to as the Cianfrocco model. The model claims the primary events in the dynein step are as follows. First, starting with both binding domains attached to the MT, ATP binds to the motor domain, which causes it to change conformation. ATP hydrolysis to ADP-Pi causes further conformation changes. These changes cause the binding domain to release the microtubule, meaning only one binding domain is MT-bound. The free binding domain then undergoes another conformation change known as the ``priming stroke,'' which changes the orientation of the binding domain with respect to the MT. Finally the binding domain rebinds to the MT, causing a final conformation change in the motor which returns it to the beginning of the cycle. The exact order of these events is not precisely known.\\
 
 \begin{figure}[h!]
@@ -497,19 +359,19 @@ Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motio
   \label{mech-cycle}
 \end{figure}
 
-%% \subsection{Other models}
+%% \subsubsection{Other models}
 %% Find other models and put them here
 
-%% \section{Brownian dynamics}
+%% \subsection{Brownian dynamics}
 %% New section which describes how BD works.
 
-\section{This work}
-\subsection{Necessary and sufficient criteria for motion}
+\subsection{This work}
+\subsubsection{Necessary and sufficient criteria for motion}
 One of the principle goals of researchers studying the dynein motor is establishing how it walks. This can be a difficult task, since direct observation of the motor walking is not currently experimentally possible. The next best thing, then, is building a model which both only does all the things dynein does, and generates motion. Finding such a system would be very useful for forming hypotheses on how dynein walks. Another requirement of the system would be that it be as simple as possible while still explaining all the data. By Occam's Razor, such systems are the most likely to represent real dynein. Thus, finding the necessary and sufficient criteria for dynein's motion is a big goal in the field.\\
 
 A good starting place for finding the minimum set of motile criteria would be preexisting models, like the Cianfrocco model. This model describes a set of states which logically lead to each other and are supported by experiment. It seems intuitive that a motor which obeyed the Cianfrocco cycle would walk. There are multiple ways to verify this. A completely synthetic biological motor could be designed which obeys the cycle, and its motile properties could be studied. This seems incredibly difficult. Much easier would be to create a physical model of such a cycle, simulate it, and see if it obeys similarly to experimentally observed dynein. If the physical model both behaves according to the laws of physics and captures experimental dynein behavior well, this would be good evidence that such a model describes how dynein actually walks.\\
 
-\subsection{Goals}
+\subsubsection{Goals}
 The goal of this work is to construct a minimum physical model of dynein protein based on the theoretical Cianfrocco model. The model should behave as physics predicts a protein to behave; namely, it should obey Brownian dynamics and conservation of energy. It should also roughly capture the state transitions and conformation changes of the Cianfrocco model. Also the model should be as simple as possible, to assure that each part of the model is necessary. If too many extra features are added, the model will not be minimal and not achieve its purpose.\\
 
 This model will then be converted into a computer program, tested for compliance with the laws of physics, and simulated. Information on the long-term behavior of such a simulation will then be used to evaluate how well the model describe's experimental dynein's behavior.\\
@@ -527,10 +389,9 @@ This model will then be converted into a computer program, tested for compliance
 
 %% \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
 
-\chapter{Theory}
-\label{chap:Theory}
-
-\section{Model features}
+\newpage
+\section{Chapter: Theory}
+\subsection{Model features}
 The purpose of this project is to find if a minimal set of features is capable of reproducing dynein's stepping behavior. To test this hypothesis, these features are put into a model and simulated. A schematic of the model is pictured in Figure \ref{fig:model-intro} and described below.\\
 
 \textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
@@ -555,7 +416,7 @@ The purpose of this project is to find if a minimal set of features is capable o
 %%   \label{fig:model-intro}
 %% \end{figure}
 
-\subsection{Spherical domains connected by massless rods}
+\subsubsection{Spherical domains connected by massless rods}
 A key feature of the model is that each domain of the protein (two feet, twp motors and a tail) is treated as a sphere. Each sphere is connected to one or two other spheres, as shown in Figure (\ref{fig:model-intro}). This simplification is made to make the math easier and allow a simple definition of dynein's conformation.\\
 
 One quickly notices by glancing at Figure (\ref{fig:crystal-structure-model-imposed}), a visualization of actual dynein, that modelling the tail and feet domains as spheres is a stretch. The main point of the simplification is not to capture the shape of dynein, but the conformation. It is undefined to discuss the distance between the two motor domains in real dynein, because the motors are made up of hundreds of amino acids, and the average inter-domain distance between amino acids is comparable to the intra-domain distance. However it is very easy to describe the difference between two spheres.\\
@@ -568,19 +429,19 @@ Each sphere has an associated drag factor $\gamma$, which describes the resistan
 %
 Thus R becomes a parameter input to the model.\\
 
-\subsection{Rigid rods}
+\subsubsection{Rigid rods}
 The model assumes connected domains are rigidly attached to one another by rods. This assumption makes the math easier, and is not necessarily based on biology. One study found that the standard deviation of stalk and stem lengths in \textit{in vitro} dynein was roughly $1nm$ \ref{burgess-paper}. However a contrasting piece of evidence showed the coiled coil, a common protein structure which links the MTBD and motor domains in dynein, can stretch in myosin, another motor protein, by 2.5x \ref{myosin-cc-elasticity}.
 
 In reality, all molecules have a degree of elasticity. A dynein model by Sarlah \textit{et. al.} models the dynein stalk as an elastic rod \cite{sarlahmodel}. However, the timescale of harmonic stalk oscillations is likely much quicker than that of the mechanochemical cycle, so it is reasonable to model the stalk as a rigid rod at the stalk's average extension length.\\
 
-\subsection{Angular springs}
+\subsubsection{Angular springs}
 Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tail, which decides the energy associated with that domain angle. For example, the tail domain energy is given by
 %
 \begin{equation}
   \Delta G_t = \frac12c_t\left(\theta_t - \theta_t^{eq}\right)^2
 \end{equation}
 
-\subsection{Two-state model}
+\subsubsection{Two-state model}
 The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. These states are also differentiated by different motor equilibrium angles, $\Theta_{m}^{bb}$ and $\Theta_{m}^{ob}$, and different transition rates. Biological dynein likely passes through a series of permutations of nucleotide, MT affinity and conformational states as it travels through its mechanochemical cycle. This model makes the assumption that the mechanochemical cycle can be broken down into a cycle of prestroking to move the unbound foot forward, brownian walking to place the foot on the microtubule, then powerstroking to move the other domains forward.\\
 
 \begin{figure}[h]
@@ -593,7 +454,7 @@ The model assumes MT-bound dynein can assume one of two states: one where both M
 
 \textbf{todo: Add springs to joints!}
 
-\subsection{Transitioning between states}
+\subsubsection{Transitioning between states}
 The model transitions between states with a probability dependent on both the energy difference between the two states and the physical separation between the MT and binding MTBD. The energy difference between states A and B is given by:
 %
 \begin{equation}
@@ -614,7 +475,7 @@ where $\Delta G_{conf}$ is the change in spring energy in going from bothbound t
 %
 Thus $B$ becomes a parameter of the model.\\
 
-\subsection{Brownian dynamics}
+\subsubsection{Brownian dynamics}
 The Brownian dynamics equation describes the motion of high-drag objects which spend most of their time at terminal velocity, and is given by:
 %
 \begin{equation}
@@ -629,10 +490,10 @@ where $\gamma$ is the drag constant of the object and $R$ is a random Brownian f
 %
 Dynein is in the range of objects which BD describes well. (citation needed)
 
-\subsection{Binding to microtubule}
+\subsubsection{Binding to microtubule}
 The model ``steps'' whenever an MTBD diffuses near the microtubule. \textit{In vivo}, dynein binds to a site on the $\alpha-\beta$ tubulin polymer microtubule which repeats roughly every 8nm. Thus, all dynein steps should be multiples of $8$nm. This model ignores this requirement and allows stepping to occur at any length. The assumption is that \textit{in vivo} dynein takes 8nm steps because of its size and stepping angle. Thus the 8nm step length should be reproduced by the model without explicit coding.\\
 
-\subsection{2D model}
+\subsubsection{2D model}
 The coordinate system for this model is two-dimensional. Thus interactions between the two motors and MTBDs are ignored. This assumption is made to simplify the model. Other dynein models, like the winch model \ref{sarlahmodel}, add in attractive and repulsive forces between the two motors which act in three dimensions. It is not clear why such forces are necessary for dynein motion, and so they are omitted.\\
 
 Side stepping of dynein is ignored in this model. Stepping perpendicular to the MT occurs in dynein \cite{weihongpaper}, as shown in Figure \ref{fig:weihong-side-stepping}. This model assumes it is a symptom, and not an influencer of, of dynein's forward-backward stepping mechanism.
@@ -644,10 +505,10 @@ Side stepping of dynein is ignored in this model. Stepping perpendicular to the 
   \label{fig:weihong-side-stepping}
 \end{figure}
 
-\section{Mathematical models}
+\subsection{Mathematical models}
 To simulate a protein's passage through the above mechanochemical cycle, two mathematical models are needed: one for the prestroke, MTBD-detached state, and one for the poststroke, MTBD-bound state. The purpose of each model is to calculate the position and velocity of each domain at an arbitrary time.\\
 
-\subsection{Prestroke onebound model}
+\subsubsection{Prestroke onebound model}
 Prestroke dynein is referred to as onebound, since one motor domain is bound to the MT in this state, and the other unbound. A spatial representation of onebound dynein is shown in Figure \ref{ob_fig}. 
 
 %% \begin{figure}[h]
@@ -804,7 +665,7 @@ A total of eight coupled differential equations are formed from this procedure. 
 
 This matrix is then solved using the Mathematica computer algebra system, resulting in a set of motion equations which describe the model's trajectory over time, eg $\dot{\Theta_{bm}}(\Theta_{bb}, \Theta_{bm}, \Theta_{um}, \Theta_{ub})$. These motion equations are further described in (\ref{sec:ob-motion-equations}).\\
 
-\subsection{Poststroke bothbound model}
+\subsubsection{Poststroke bothbound model}
 The main difference between the prestroke and poststroke mathematical models is that the latter has a further constraint: both its MTB domains are attached to the MT. This has the effect of diminishing the degrees of freedom of the system from four to two, assuming the motor remains above the MT. A spatial representation of the bothbound model is shown in Figure (\ref{bb_fig}).\\
 
 \begin{figure}[h]
@@ -969,10 +830,10 @@ The matrix version of this system looks like:
 
 This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{sec:bb-motion-equations}).
 
-\section{Data interpretation}
+\subsection{Data interpretation}
 Metrics for quality are required to assess how well the model fits reality. These metrics include time spent in one/bothbound states and average step size. These metrics are developed here.\\
 
-\subsection{Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}
+\subsubsection{Converting experimental rates to preexponential factors $A_b$ and $A_{ub}$}
 Rate constants $k_b$ and $k_{ub}$ govern the probability of transitioning from onebound to bothbound and vice-versa, respectively. One issue is that when these parameters are measured experimentally, the values represent the average rate for an ensemble of dynein in many different conformations. In contrast, the rates the model uses represent the probability of unbinding of a specific conformation. Thus, it is necessary to find a way to convert between experimental rates $k_b^{exp}$ and $k_{ub}^{exp}$ and conformation-specific rates $k_b$ and $k_{ub}$. As shown in Section \ref{sec:transitioning-states}, rates can be expressed using the Arrhenius equation:
 
 \begin{align*}
@@ -989,7 +850,7 @@ where the constant Boltzmann factor for binding energy are hidden inside the unp
 
 Thus experimental rates can be converted easily into the model parameters $A_b$ and $A_{ub}$.
 
-\subsection{Literature values for experimental binding rates}
+\subsubsection{Literature values for experimental binding rates}
 Sarlah \textit{et. al.} \cite{sarlahmodel} perform a similar simulation of dynein and provide the reaction rates shown in Figure \ref{fig:sarlah-rate-table}.
 
 \begin{figure}[h]
@@ -1003,7 +864,7 @@ The assumption of this project is that many of the states in this table can be c
 
 The rate-limiting transitions in the Cianfrocco model are used as the guess $k_b$ and $k_{ub}$ values. That means that, since ATP hydrolysis has the slowest rate constant in onebound and MT release has the slowest rate in bothbound, $k_b^{exp} = 180 s^{-1}$ and $k_{ub} = 460 s^{-1}$ serve as good initial guesses.\\
 
-\subsection{Calculating one/bothbound times of experimental dynein}
+\subsubsection{Calculating one/bothbound times of experimental dynein}
 Rate constants can be fit to experimentally measurable values, such as velocity and the time dynein is bound to the microtubule (processivity time). We define the following values:
 
 \newcommand\tbb{\left<t_{bb}\right>}
@@ -1052,11 +913,11 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
   \label{table:time-parameter-table}
 \end{figure}
 
-\chapter{Methods}
-\label{chap:Methods}
+\newpage
+\section{Chapter: Methods}
 This section will go into detail on how the model was implemented in code, verified for accuracy, and how its parameters were fit to experiment.\\
 
-\section{Simulation}
+\subsection{Simulation}
 To generate stepping data, the models were coded in \verb|C++| and time-evolved using Euler's method to generate reasonable dynamical behavior. When in a position deemed worthy of a state transition a conversion, the model was converted to the respective other model, representing part of a ``step'' through the mechanochemical cycle. Some unphysical but minor corrections at points in the simulation were needed to rescue the model from entering incalculable positions.\\
 
 Code is available at \verb|https://github.com/elliotc12/dynein_walk.git|.
@@ -1069,7 +930,7 @@ Code is available at \verb|https://github.com/elliotc12/dynein_walk.git|.
 %% efficient -- is there a way to show how our differential equation is smooth, not jagged?
 
 \textit{todo: come up with a better word than ``model'' to describe the state of the system at any time}
-\subsection{Time evolution}
+\subsubsection{Time evolution}
 Euler's method for solving differential equations was used to calculate domain positions through time. Because each model is a set of multiple coupled differential equations, care was taken to update each domain position at the same time, and not in a cascade. A code snippet is shown in Figure (\ref{euler-code-snippet}) for the onebound updating scheme.
 
 \begin{figure}[h!]
@@ -1098,7 +959,7 @@ Euler's method for solving differential equations was used to calculate domain p
 
 The \verb|dt| used to update was $10^{-11}$ seconds.
 
-\subsection{Transitioning between states}
+\subsubsection{Transitioning between states}
 
 \paragraph{Transition rate}
 \label{sec:transitioning-states}
@@ -1156,7 +1017,7 @@ To do a nearbound transition, the ``f'' and ``n'' subscripts in the above equati
 
 As shown in Section \ref{final-parameter-table}, the MT binding rate is much quicker than the unbinding rate. This means that, when just unbound, the rate of rebinding is very high. To prevent immediate rebinding, the model is given a ``rebinding immunity'' of a single timestep. During this immunity period, rebinding is not allowed.\\
 
-\subsection{Corrections}
+\subsubsection{Corrections}
 \label{corrections-section}
 Certain configurations of the model, such as in the bothbound model when $\Theta_{nm} = \pi$ or $\Theta_{fm} = \pi$, it becomes impossible to calculate intermediate variables due to values going to infinity (name for this??). For example when $\Theta_{nm} = \pi$, $Ln = Ls + Lt$ and so:
 
@@ -1168,7 +1029,7 @@ Certain configurations of the model, such as in the bothbound model when $\Theta
 
 Alternative problem states are when $L = 0$ and ???. These states are corrected similarly.\\
 
-\subsection{Forces}
+\subsubsection{Forces}
 Spring and Brownian forces are used to properly move the model through time. Appendices (\ref{sec:ob-motion-equatons}-\ref{sec:bb-motion-equations}) show angular velocities are functions of the x- and y-components of both spring forces $F$ and Brownian forces $\gamma R$.
 
 \paragraph{Brownian forces}
@@ -1200,11 +1061,11 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
   \label{transition-rate-snippet}
 \end{figure}
 
-\section{Verifying the model}
+\subsection{Verifying the model}
 The models were verified to follow physical laws by checking their behavior in various tests: general conformational tests, energy conservation and obeying the equipartition theorem. The purpose of these tests was to verify that equations had been entered properly (primarily the conformational and energy conservation tests), and that the model obeyed the laws of physics (all tests).
 
 
-\subsection{Conformational tests}
+\subsubsection{Conformational tests}
 \label{sec:conformational-tests}
 The models were tested in the following different conformations to verify they behaved as expected:\\
 
@@ -1229,7 +1090,7 @@ These tests together verify that the onebound model's internal coordinate system
 
 These tests verify the bothbound model's angle system behaves as expected, forces are zero when expected and have the proper signs, and that the whole system is symmetric with either dimer.
 
-\subsection{Energy conservation}
+\subsubsection{Energy conservation}
 \label{sec:energy-conservation}
 To verify that the magnitudes of forces are calculated properly, a conservation of energy test was performed. A very slight angular nudge was applied to either model. This nudge caused a small change in energy. This change in energy was compared with the work the forces on each domain caused over the nudge. For energy to be conserved, these values were required to be very similar. Mathematically the test required the following:
 
@@ -1241,7 +1102,7 @@ where $\Theta_{nudge}$ was the angular nudge applied, $F_n$ the net force on dom
 
 \textbf{is there a test to be run which could verify the velocity calculation is correct?}
 
-\subsection{Equipartition theorem}
+\subsubsection{Equipartition theorem}
 The equipartition theorem (ET) is a thermodynamic statement which says that all systems with solely quadratic energy dependence on $N$ degrees of freedom will have $<E> = \frac N2 k_bT$. For the dynein models to display ET behavior, they would have to both properly calculate forces and properly calculate velocities from forces. Brownian forces are also required to properly explore the different states of the system, but they need not be the correct magnitude for ET agreement.\\
 
 To test if the models obey the ET, the total potential energy of each model was logged over \textbf{ten million} (???) timesteps of simulation. The results are reported in Figure \ref{equipartition_agreement}, where the PE scale is in units of $\frac12 k_bT$. Energies are reported as a running average over the simulation from 0 to time $t$. As shown, both models have their average potential energy converge to the expected amount, where the onebound model has four degrees of freedom and the bothbound two.\\
@@ -1264,15 +1125,15 @@ This test verifies both force and velocity are calculated properly for either mo
   \label{table:parameter-table}
 \end{figure}
 
-%% \section{Data collection}
+%% \subsection{Data collection}
 %% Time evolution of the system has the potential to create a huge amount of data, so care has to be taken to only collect what is necessary. For the purposes of testing stepping behavior of the model the geometry and per-domain forces and energies can be safely ignored. All that is needed to determine model fitness is the size and duration of each step.\\
 
-%% \subsection{Stepping data output and calculation}
+%% \subsubsection{Stepping data output and calculation}
 %% A step is defined as a complete cycle of 
 
-%% \subsection{Simulation running via SLURM}
+%% \subsubsection{Simulation running via SLURM}
 
-\section{Parameter fitting}
+\subsection{Parameter fitting}
 There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\Theta_{m,eq}^{Pre}$, $\Theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}.\\
 
 Others are more difficult to find. These values, including $k_b$, $k_ub$ and the three spring constants, are fit by an optimization process. First un/binding rates are fit to one/bothbound times, then spring constants are fit to average step length. This process is chronicled below.
@@ -1314,18 +1175,17 @@ In addition, the physical conditions the simulations were run at are shown in Ta
   \label{table:simulation-std-conditions}
 \end{figure}
 
-\subsection{Fitting rate constants}
+\subsubsection{Fitting rate constants}
 To find the ideal binding and unbinding rates of our model, we ran simulations at various $k_b$ and $k_{ub}$ conditions. The time each simulation spent in each state, $t_{bb}$ and $t_{ob}$, was compared with the experimental data shown in Table \ref{table:time-parameter-table}. Simulation behavior for a wide range of $k_b$ and $k_{ub}$ values is shown as a heat map in Figure \ref{fig:kb-kub-heatmap}.\\
 
 \textbf{Way to represent heatmap: show a blowup of the most promising section of the first heatmap, then a blowup of the second, etc until the optimum is found}
 
-\subsection{Fitting spring constants}
+\subsubsection{Fitting spring constants}
 This section will be written once it is conducted. This is contingent on getting rate fitting done, and preferably high-dt simulations stable so an optimization process can be run.\\
 
-\chapter{Results \& Discussion}
-\label{chap:ResultsAndDiscussion}
-
-\section{Validating model}
+\newpage
+\section{Chapter: Results \& Discussion}
+\subsection{Validating model}
 The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly inncorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
 
 \begin{figure}[h!]
@@ -1342,7 +1202,7 @@ The simulation was first validated for obeying the laws of physics, and in parti
   \label{fig:equipartition_agreement}
 \end{figure}
 
-\section{Model achieves processivity}
+\subsection{Model achieves processivity}
 When run at the proper parameters, the dynein model can step processively. Figure \ref{fig:stepping-trajectory} shows the dynamics of a motor when run at the parameters shown in Table \ref{table:thesis-parameters}.
 
 \begin{figure}[h]
@@ -1369,7 +1229,7 @@ Another important determination from Figure \ref{fig:stepping-trajectory}.c is t
 
 Importantly, the physical parameters causing processive motion are reasonable physically. The spring constants are roughly the same size as the energy of hydrolysis of ATP, which is reasonable. By a very rough argument, the dynein must move its tail angle by roughly one radian to diffuse enough for a step. This would correspond to a $\Delta G_{spring} = \frac{1}{2}c_t\Delta \theta_t \approx \Delta G_{ATP}$, which is very reasonable. In addition, the tail spring constant is less than the motor and binding spring constants, which is in line with the notion that the tail is much more elastic than the motor or binding domains. CITE\\
 
-\section{Model step size is highly variant}
+\subsection{Model step size is highly variant}
 Figure \ref{fig:final-histograms}.a shows the stepping pattern of the model at the parameters shown in Table \ref{table:thesis-parameters}. This simulation was run over a much longer time period, and hence shows much more significant information on the model's stepping behavior.\\
 
 \begin{figure}[H]
@@ -1390,7 +1250,7 @@ Another issue with the simulated histogram is that it shows no steps over $30nm$
 
 Comparing the simulation results in \ref{fig:final-histograms}.a with the experimental results in \ref{fig:final-histograms}.b, it is clear that the model is still far from experimental dynein. However, this is not indicative of a failure of the model, since the simulation parameters have not yet been tuned to dynein. It is very possible that changing the binding rate, unbinding rate and spring constants will change the stepping behavior of the model dramatically. Lowering the binding rate may even out the histogram and prevent instant rebinding. It may also allow the model to diffuse along the microtubule longer, generating longer steps than 25nm. Another issue is the lack of backwards steps, which may also be solved by altering the spring constants.\\
 
-%% \section{Current work: Refining model parameters}
+%% \subsection{Current work: Refining model parameters}
 %% Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
 
 %% \begin{figure}[H]
@@ -1400,17 +1260,16 @@ Comparing the simulation results in \ref{fig:final-histograms}.a with the experi
 %%   \label{fig:kb-kub-heatmap}
 %% \end{figure}
 
-\chapter{Conclusion}
-\label{chap:Conclusion}
-
-\section{Findings}
+\newpage
+\section{Chapter: Conclusion}
+\subsection{Findings}
 The most important findings of this work are that a springy hinge model of dynein can take steps of a similar size to real dynein. What's more, it is likely further tweaking of the model will improve the model's behavior to the point of generating backwards and large steps. This would be a very important result which would strongly support the linker-swing/diffusive-step model of dynein stepping and guide further research.\\
 
 Many studies have been done on dynein, resulting in a large body of literature about the motor's behavior and features. Sifting through this information to find what is important for the motor's step is a difficult task. Mutational studies can remove traits of the motor, deducing what traits are necessary for stepping. However, this process is slow, and it can be difficult to remove large traits of the motor while keeping the engineered dynein representative of the natural motor. This is where simulations come in. Minimal features can be put into a physical model, which can then be tested for behavior similar to real dynein. In this study, we created a mathematical model which simplifies the motor to a rigid hinge structure with harmonic spring energies between the hinges. The equilibrium angles change dynamically to reflect structural changes during dynein's mechanochemical cycle. The model was then subjected to Brownian forces and evolved. If the model generates a stepping pattern similar to real dynein, this would demonstrate that dynein can be thought of as a rigid hinged structure. This would mean that many other traits of dynein may not be vital for stepping, such as stalk elasticity \cite{sarlahmodel}, motor-motor interaction \cite{sarlahmodel}, nucleotide state \cite{cianfroccoreview}, nucleotide state of non-AAA1 nuclease sites \cite{cianfroccoreview}, and changing stiffness of the foot domain \cite{burgess-paper}. Thus future research may want to focus more on linker swing and binding interactions, and less on these other traits.\\
 
 Other findings cast doubt on some aspects of the model. The vast preference of the model for $<5nm$ steps suggests that the model may handle binding events unlike real dynein. When binding, the total spring energy of the transition from a onebound to a bothbound state is calculated, then used to calculate the likelihood of transition via a Boltzmann factor. This approach may be overly simple, or take into account the wrong information. It may be that it is necessary to expand the two-state model into a three-state model with a low-microtubule-affinity onebound state immediately after unbinding, to prevent instant rebinding. This state would eventually transition to the high-microtubule-affinity state after some time. If this proves to be necessary to decrease small steps, this would be an interesting result showing that the motor might rely on its low-microtule-affinity ADP-Pi state to prevent early binding.\\
 
-\section{Further work}
+\subsection{Further work}
 The goal of studying dynein's mechanochemical cycle is to find an explanation for how it work. That is, to find the necessary and sufficient properties of dynein that cause the cycle to happen. Simulations are only part of the recipe for creating a scientific theory. Simulations are easy to implement and can study phenomena which are difficult to design experiments for. However, when experimental data is available, it is generally more reliable than a simulation of the same system. This is because a simulation is only as good as the strength of correspondence between the mathematical model and the system it represents. With dynein, this correspondence can be hard to achieve because the protein is complicated. The model predicts, according to the laws of physics for small objects, how a small machine composed of springy hinges would behave in an aqueous environment. This machine can be made the same size and general shape as dynein, and its conformational angles can be made the same as dynein's, and its state transitions can happen in the same way dynein's do. However, it is never possible to say that this machine ``is'' dynein or represents how dynein actually behaves. Thus, it is only possible to say that the simulation provides sufficient criteria for dynein stepping, not necessary criteria. The simulation shows that the linker-swing/diffusive-step model is sufficient for motion, but it cannot show that this is needed for dynein's walk.\\
 
 To more strongly support the linker-swing/diffusive step model of dynein motion, more experiments should be done. Demonstrating that dynein requires flexible domain connections in order to take such broad steps would be one powerful experiment. Mutating the foot and tail domains to be more rigid, then examining stepping behavior would be one way to see if rigidity is necessary for random steps. Another experiment could use FRET (Forster Resonance Energy Transfer) and fluorophores on the microtubule and foot domain to track how the distance between the two regions evolves with time. This could provide information about the average distance between the MTBD and MT, which would validate this work's finding that the MTBD mostly hovers. More importantly, FRET data could be fit to models to predict the amount of diffusion the foot domain undergoes over the course of a step. Significant diffusion would indicate that diffusion may be very important for the step. Experiments with both feet labeled could get similarly good information.\\
@@ -1423,18 +1282,21 @@ Another very interesting simulation which could be run could help answer the ope
 
 Next: add Big Questions to introduction, then answer them here.\\
 
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - APPENDICES
-%----------------------------------------------------------------------------------------
 
-\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+\bibliography{thesis-articles}
 
-% Include the appendices of the thesis as separate files from the Appendices folder
-% Uncomment the lines as you write the Appendices
+%% \bibliography{thesis-webpages}
 
-\chapter{Onebound equations} % Main appendix title
-\label{sec:AppendixOneboundEquations}
+\section{Appendix}
 
+\subsubsection{Glossary}
+\textbf{ATP} Adenosine triphosphate is a small organic molecule which very spontaneously breaks apart into ADP and a phosphate. This reaction is used to power many energy-requiring mechanisms within the cell. This reaction has a $\Delta G^\circ \approx -36 kJ/mol$ at physiological conditions \ref{ATPenergy}.\\\\
+\textbf{Protein} Dynein is a protein, or long chain of amino acids linked together and folded into a particular shape.\\
+
+\subsection{Motion equations}
+
+\subsubsection{Onebound equations}
+\label{sec:ob-motion-equations}
 The following is a continuation of the derivation for the full motion equations used to time evolve the onebound model:
 
 \begin{align*}
@@ -1488,9 +1350,28 @@ KK &= -\gamma_b (X_{ub} - X_{um})       &	 VV &= -\gamma_b (Y_{ub} - Y_{um})\\
 
 Solving the above system for $\dot{\Theta}_{bb}, \dot{\Theta}_{bm}, \dot{\Theta}_{um}$ and $\dot{\Theta}_{ub}$ gives the desired velocities. Solution was done via Mathematica.
 
-\chapter{Bothbound equations} % Main appendix title
-\label{sec:AppendixBothboundEquations}
+%% $\dot{\Theta}_{bb}$ =
+%% {\tiny
+%% ( - (GG*II*MM*NN*PP*X1) + CC*HH*MM*PP*RR*X1 - BB*HH*NN*PP*RR*X1 + BB*II*NN*PP*RR*X1 - CC*GG*MM*PP*SS*X1 + BB*GG*NN*PP*SS*X1 + CC*GG*MM*PP*TT*X1 - BB*CC*PP*RR*TT*X1 + FF*II*MM*NN*PP*X2 - EE*II*MM*NN*QQ*X2 + CC*FF*MM*PP*SS*X2 - BB*FF*NN*PP*SS*X2 - CC*EE*MM*QQ*SS*X2 + BB*EE*NN*QQ*SS*X2 - CC*FF*MM*PP*TT*X2 + CC*EE*MM*QQ*TT*X2 - FF*HH*MM*NN*PP*X3 + EE*HH*MM*NN*QQ*X3 + BB*FF*NN*PP*SS*X3 - BB*EE*NN*QQ*SS*X3 + EE*GG*II*MM*NN*X5 - CC*EE*HH*MM*RR*X5 + BB*EE*HH*NN*RR*X5 - BB*EE*II*NN*RR*X5 + CC*EE*GG*MM*SS*X5 - BB*EE*GG*NN*SS*X5 - CC*EE*GG*MM*TT*X5 + BB*CC*EE*RR*TT*X5 - CC*FF*HH*MM*PP*X6 + BB*FF*HH*NN*PP*X6 - BB*FF*II*NN*PP*X6 + CC*EE*HH*MM*QQ*X6 - BB*EE*HH*NN*QQ*X6 + BB*EE*II*NN*QQ*X6 + BB*CC*FF*PP*TT*X6 - BB*CC*EE*QQ*TT*X6 + CC*FF*HH*MM*PP*X7 - CC*EE*HH*MM*QQ*X7 - BB*CC*FF*PP*SS*X7 + BB*CC*EE*QQ*SS*X7)/(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT) - ((FF*PP - EE*QQ)*(HH*MM - BB*SS)*(JJ*NN - CC*UU)*( - ((( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( - ((( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*NN*X2 +  Power(AA,4)* Power(BB,2)*NN*X3 -  Power(AA,4)* Power(BB,2)*CC*X7)))) + ( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( - ((( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,5)* Power(BB,3)*CC*DD*LL*X1 -  Power(AA,6)* Power(BB,2)*CC*DD*MM*X1 +  Power(AA,6)* Power(BB,2)*CC*DD*MM*X2 -  Power(AA,6)* Power(BB,3)*DD*NN*X2 +  Power(AA,6)* Power(BB,3)*DD*NN*X3 -  Power(AA,6)* Power(BB,3)*CC*OO*X3 +  Power(AA,6)* Power(BB,3)*CC*OO*X4 -  Power(AA,6)* Power(BB,3)*CC*DD*X8)))))/(( - (EE*GG*II*LL*MM*NN) - BB*FF*HH*LL*NN*PP + BB*FF*II*LL*NN*PP + AA*FF*HH*MM*NN*PP - AA*FF*II*MM*NN*PP + AA*GG*II*MM*NN*PP + BB*EE*HH*LL*NN*QQ - BB*EE*II*LL*NN*QQ - AA*EE*HH*MM*NN*QQ + AA*EE*II*MM*NN*QQ + CC*EE*HH*LL*MM*RR - BB*EE*HH*LL*NN*RR + BB*EE*II*LL*NN*RR - AA*CC*HH*MM*PP*RR + AA*BB*HH*NN*PP*RR - AA*BB*II*NN*PP*RR - CC*EE*GG*LL*MM*SS + BB*EE*GG*LL*NN*SS + BB*CC*FF*LL*PP*SS - AA*CC*FF*MM*PP*SS + AA*CC*GG*MM*PP*SS - AA*BB*GG*NN*PP*SS - BB*CC*EE*LL*QQ*SS + AA*CC*EE*MM*QQ*SS + CC*EE*GG*LL*MM*TT - BB*CC*FF*LL*PP*TT + AA*CC*FF*MM*PP*TT - AA*CC*GG*MM*PP*TT + BB*CC*EE*LL*QQ*TT - AA*CC*EE*MM*QQ*TT - BB*CC*EE*LL*RR*TT + AA*BB*CC*PP*RR*TT)*( - (( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*(( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( Power(AA,4)* Power(BB,2)*JJ*NN -  Power(AA,4)* Power(BB,2)*CC*UU)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( Power(AA,6)* Power(BB,3)*DD*JJ*NN -  Power(AA,6)* Power(BB,3)*CC*JJ*OO +  Power(AA,6)* Power(BB,3)*CC*KK*OO -  Power(AA,6)* Power(BB,3)*CC*DD*VV)))
+%% } \break
 
+%% $\dot{\Theta}_{bm}$ =
+%% {\tiny
+%%   (GG*II*LL*NN*PP*X1 - CC*HH*LL*PP*RR*X1 + AA*HH*NN*PP*RR*X1 - AA*II*NN*PP*RR*X1 + CC*GG*LL*PP*SS*X1 - AA*GG*NN*PP*SS*X1 - CC*GG*LL*PP*TT*X1 + AA*CC*PP*RR*TT*X1 - FF*II*LL*NN*PP*X2 + EE*II*LL*NN*QQ*X2 - EE*II*LL*NN*RR*X2 + AA*II*NN*PP*RR*X2 - CC*FF*LL*PP*SS*X2 + AA*FF*NN*PP*SS*X2 + CC*EE*LL*QQ*SS*X2 - AA*EE*NN*QQ*SS*X2 + CC*FF*LL*PP*TT*X2 - CC*EE*LL*QQ*TT*X2 + CC*EE*LL*RR*TT*X2 - AA*CC*PP*RR*TT*X2 + FF*HH*LL*NN*PP*X3 - EE*HH*LL*NN*QQ*X3 + EE*HH*LL*NN*RR*X3 - AA*HH*NN*PP*RR*X3 - EE*GG*LL*NN*SS*X3 - AA*FF*NN*PP*SS*X3 + AA*GG*NN*PP*SS*X3 + AA*EE*NN*QQ*SS*X3 - EE*GG*II*LL*NN*X5 + CC*EE*HH*LL*RR*X5 - AA*EE*HH*NN*RR*X5 + AA*EE*II*NN*RR*X5 - CC*EE*GG*LL*SS*X5 + AA*EE*GG*NN*SS*X5 + CC*EE*GG*LL*TT*X5 - AA*CC*EE*RR*TT*X5 + EE*GG*II*LL*NN*X6 + CC*FF*HH*LL*PP*X6 - AA*FF*HH*NN*PP*X6 + AA*FF*II*NN*PP*X6 - AA*GG*II*NN*PP*X6 - CC*EE*HH*LL*QQ*X6 + AA*EE*HH*NN*QQ*X6 - AA*EE*II*NN*QQ*X6 - CC*EE*GG*LL*TT*X6 - AA*CC*FF*PP*TT*X6 + AA*CC*GG*PP*TT*X6 + AA*CC*EE*QQ*TT*X6 - CC*FF*HH*LL*PP*X7 + CC*EE*HH*LL*QQ*X7 - CC*EE*HH*LL*RR*X7 + AA*CC*HH*PP*RR*X7 + CC*EE*GG*LL*SS*X7 + AA*CC*FF*PP*SS*X7 - AA*CC*GG*PP*SS*X7 - AA*CC*EE*QQ*SS*X7)/(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT) + (( - (FF*HH*LL*PP) + EE*HH*LL*QQ - EE*HH*LL*RR + AA*HH*PP*RR + EE*GG*LL*SS + AA*FF*PP*SS - AA*GG*PP*SS - AA*EE*QQ*SS)*(JJ*NN - CC*UU)*( - ((( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( - ((( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*NN*X2 +  Power(AA,4)* Power(BB,2)*NN*X3 -  Power(AA,4)* Power(BB,2)*CC*X7)))) + ( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( - ((( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,5)* Power(BB,3)*CC*DD*LL*X1 -  Power(AA,6)* Power(BB,2)*CC*DD*MM*X1 +  Power(AA,6)* Power(BB,2)*CC*DD*MM*X2 -  Power(AA,6)* Power(BB,3)*DD*NN*X2 +  Power(AA,6)* Power(BB,3)*DD*NN*X3 -  Power(AA,6)* Power(BB,3)*CC*OO*X3 +  Power(AA,6)* Power(BB,3)*CC*OO*X4 -  Power(AA,6)* Power(BB,3)*CC*DD*X8)))))/((EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)*( - (( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*(( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( Power(AA,4)* Power(BB,2)*JJ*NN -  Power(AA,4)* Power(BB,2)*CC*UU)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( Power(AA,6)* Power(BB,3)*DD*JJ*NN -  Power(AA,6)* Power(BB,3)*CC*JJ*OO +  Power(AA,6)* Power(BB,3)*CC*KK*OO -  Power(AA,6)* Power(BB,3)*CC*DD*VV)))
+%% }\break
+
+%% $\dot{\Theta}_{um}$ =
+%% {\tiny
+%%   ( - X2 + X3)/CC + (GG*( - (BB*LL*PP*X1) + AA*MM*PP*X1 + EE*LL*MM*X2 - AA*MM*PP*X2 + BB*EE*LL*X5 - AA*EE*MM*X5 - BB*EE*LL*X6 + AA*BB*PP*X6))/(CC*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)) - ((( - HH + II)/CC - (GG*(EE*LL - AA*PP)*( - (HH*MM) + BB*SS))/(CC*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)))*( - (BB*GG*LL*NN*PP*X1) + AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 + BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 + AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 + AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 - BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 + BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 + AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 - BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 - BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 - AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 - AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 - AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 + AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT) - ((JJ/CC + ((EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)*(( - HH + II)/CC - (GG*(EE*LL - AA*PP)*( - (HH*MM) + BB*SS))/(CC*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)))*( - (JJ*NN) + CC*UU))/(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT))*( - ((( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( - ((( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*NN*X2 +  Power(AA,4)* Power(BB,2)*NN*X3 -  Power(AA,4)* Power(BB,2)*CC*X7)))) + ( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( - ((( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,5)* Power(BB,3)*CC*DD*LL*X1 -  Power(AA,6)* Power(BB,2)*CC*DD*MM*X1 +  Power(AA,6)* Power(BB,2)*CC*DD*MM*X2 -  Power(AA,6)* Power(BB,3)*DD*NN*X2 +  Power(AA,6)* Power(BB,3)*DD*NN*X3 -  Power(AA,6)* Power(BB,3)*CC*OO*X3 +  Power(AA,6)* Power(BB,3)*CC*OO*X4 -  Power(AA,6)* Power(BB,3)*CC*DD*X8)))))/( - (( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*(( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( Power(AA,4)* Power(BB,2)*JJ*NN -  Power(AA,4)* Power(BB,2)*CC*UU)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( Power(AA,6)* Power(BB,3)*DD*JJ*NN -  Power(AA,6)* Power(BB,3)*CC*JJ*OO +  Power(AA,6)* Power(BB,3)*CC*KK*OO -  Power(AA,6)* Power(BB,3)*CC*DD*VV))
+%% }\break
+
+%% $\dot{\Theta}_{ub}$ =
+%% {\tiny
+%%   ( - X3 + X4)/DD + (II*( - (BB*GG*LL*NN*PP*X1) + AA*GG*MM*NN*PP*X1 + BB*CC*LL*PP*RR*X1 - AA*CC*MM*PP*RR*X1 + BB*FF*LL*NN*PP*X2 - AA*FF*MM*NN*PP*X2 - BB*EE*LL*NN*QQ*X2 + AA*EE*MM*NN*QQ*X2 - CC*EE*LL*MM*RR*X2 + BB*EE*LL*NN*RR*X2 + AA*CC*MM*PP*RR*X2 - AA*BB*NN*PP*RR*X2 + EE*GG*LL*MM*NN*X3 - BB*FF*LL*NN*PP*X3 + AA*FF*MM*NN*PP*X3 - AA*GG*MM*NN*PP*X3 + BB*EE*LL*NN*QQ*X3 - AA*EE*MM*NN*QQ*X3 - BB*EE*LL*NN*RR*X3 + AA*BB*NN*PP*RR*X3 + BB*EE*GG*LL*NN*X5 - AA*EE*GG*MM*NN*X5 - BB*CC*EE*LL*RR*X5 + AA*CC*EE*MM*RR*X5 + CC*EE*GG*LL*MM*X6 - BB*EE*GG*LL*NN*X6 - BB*CC*FF*LL*PP*X6 + AA*CC*FF*MM*PP*X6 - AA*CC*GG*MM*PP*X6 + AA*BB*GG*NN*PP*X6 + BB*CC*EE*LL*QQ*X6 - AA*CC*EE*MM*QQ*X6 - CC*EE*GG*LL*MM*X7 + BB*CC*FF*LL*PP*X7 - AA*CC*FF*MM*PP*X7 + AA*CC*GG*MM*PP*X7 - BB*CC*EE*LL*QQ*X7 + AA*CC*EE*MM*QQ*X7 + BB*CC*EE*LL*RR*X7 - AA*BB*CC*PP*RR*X7))/(DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)) - ((( - JJ + KK)/DD - (II*(EE*GG*LL*MM - BB*FF*LL*PP + AA*FF*MM*PP - AA*GG*MM*PP + BB*EE*LL*QQ - AA*EE*MM*QQ - BB*EE*LL*RR + AA*BB*PP*RR)*( - (JJ*NN) + CC*UU))/(DD*(EE*GG*II*LL*MM*NN + BB*FF*HH*LL*NN*PP - BB*FF*II*LL*NN*PP - AA*FF*HH*MM*NN*PP + AA*FF*II*MM*NN*PP - AA*GG*II*MM*NN*PP - BB*EE*HH*LL*NN*QQ + BB*EE*II*LL*NN*QQ + AA*EE*HH*MM*NN*QQ - AA*EE*II*MM*NN*QQ - CC*EE*HH*LL*MM*RR + BB*EE*HH*LL*NN*RR - BB*EE*II*LL*NN*RR + AA*CC*HH*MM*PP*RR - AA*BB*HH*NN*PP*RR + AA*BB*II*NN*PP*RR + CC*EE*GG*LL*MM*SS - BB*EE*GG*LL*NN*SS - BB*CC*FF*LL*PP*SS + AA*CC*FF*MM*PP*SS - AA*CC*GG*MM*PP*SS + AA*BB*GG*NN*PP*SS + BB*CC*EE*LL*QQ*SS - AA*CC*EE*MM*QQ*SS - CC*EE*GG*LL*MM*TT + BB*CC*FF*LL*PP*TT - AA*CC*FF*MM*PP*TT + AA*CC*GG*MM*PP*TT - BB*CC*EE*LL*QQ*TT + AA*CC*EE*MM*QQ*TT + BB*CC*EE*LL*RR*TT - AA*BB*CC*PP*RR*TT)))*( - ((( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( - ((( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*NN*X2 +  Power(AA,4)* Power(BB,2)*NN*X3 -  Power(AA,4)* Power(BB,2)*CC*X7)))) + ( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( - ((( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,3)* Power(BB,2)*CC*LL*X1 -  Power(AA,4)*BB*CC*MM*X1 +  Power(AA,4)*BB*CC*MM*X2 -  Power(AA,4)* Power(BB,2)*CC*X6))) + ( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (LL*X1) + AA*X5)) + ( - (EE*LL) + AA*PP)*( Power(AA,5)* Power(BB,3)*CC*DD*LL*X1 -  Power(AA,6)* Power(BB,2)*CC*DD*MM*X1 +  Power(AA,6)* Power(BB,2)*CC*DD*MM*X2 -  Power(AA,6)* Power(BB,3)*DD*NN*X2 +  Power(AA,6)* Power(BB,3)*DD*NN*X3 -  Power(AA,6)* Power(BB,3)*CC*OO*X3 +  Power(AA,6)* Power(BB,3)*CC*OO*X4 -  Power(AA,6)* Power(BB,3)*CC*DD*X8)))))/( - (( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*(( Power(AA,6)* Power(BB,2)*CC*DD*HH*MM -  Power(AA,6)* Power(BB,3)*DD*HH*NN +  Power(AA,6)* Power(BB,3)*DD*II*NN -  Power(AA,6)* Power(BB,3)*CC*II*OO)*( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR))) - ( - (EE*LL) + AA*PP)*(( Power(AA,5)* Power(BB,3)*CC*DD*FF*LL -  Power(AA,6)* Power(BB,2)*CC*DD*FF*MM +  Power(AA,6)* Power(BB,2)*CC*DD*GG*MM -  Power(AA,6)* Power(BB,3)*DD*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,5)* Power(BB,3)*CC*DD*EE*LL -  Power(AA,6)* Power(BB,2)*CC*DD*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS))*( Power(AA,4)* Power(BB,2)*JJ*NN -  Power(AA,4)* Power(BB,2)*CC*UU)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( - (( - (EE*LL) + AA*PP)*(( Power(AA,3)* Power(BB,2)*CC*FF*LL -  Power(AA,4)*BB*CC*FF*MM +  Power(AA,4)*BB*CC*GG*MM -  Power(AA,4)* Power(BB,2)*GG*NN)*( - (EE*LL) + AA*PP) - ( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*CC*SS)) + ( - (EE*LL) + AA*PP)*( - (( Power(AA,3)* Power(BB,2)*CC*EE*LL -  Power(AA,4)*BB*CC*EE*MM)*( - (FF*LL) + AA*QQ)) + ( - (EE*LL) + AA*PP)*( Power(AA,4)*BB*CC*GG*MM -  Power(AA,2)*BB*CC*( - (AA*BB*FF*LL) +  Power(AA,2)*FF*MM +  Power(AA,2)*BB*RR)))*( Power(AA,4)*BB*CC*HH*MM -  Power(AA,4)* Power(BB,2)*HH*NN +  Power(AA,4)* Power(BB,2)*II*NN -  Power(AA,4)* Power(BB,2)*CC*TT))*( Power(AA,6)* Power(BB,3)*DD*JJ*NN -  Power(AA,6)* Power(BB,3)*CC*JJ*OO +  Power(AA,6)* Power(BB,3)*CC*KK*OO -  Power(AA,6)* Power(BB,3)*CC*DD*VV))
+%% }
+
+\subsubsection{Bothbound equations}
+\label{sec:bb-motion-equations}
 The following are the full motion equations used to time evolve the bothbound model:
 
 \begin{center}
@@ -1530,12 +1411,91 @@ The following are the full motion equations used to time evolve the bothbound mo
 
 Solving the above system for $\dot{\Theta}_{nm}$ and $\dot{\Theta}_{fm}$ gives the desired velocities. Solution was done via Mathematica.
 
-%----------------------------------------------------------------------------------------
-%	BIBLIOGRAPHY
-%----------------------------------------------------------------------------------------
+%% $\dot{Ln}$ =
+%% {\tiny
+%%     (h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 +
+%%      d*l*p*u*w*x2 - c*l*q*u*w*x2 - d*l*p*s*x*x2 + c*l*q*s*x*x2 -
+%%      c*l*n*t*x*x2 + b*l*p*t*x*x2 - c*h*l*t*w*x4 + c*g*l*u*w*x4 -
+%%      c*g*l*s*x*x4 + c*f*l*t*x*x4 - d*h*l*p*w*x5 + c*h*l*q*w*x5 +
+%%      c*g*l*n*x*x5 + d*f*l*p*x*x5 - b*g*l*p*x*x5 - c*f*l*q*x*x5 +
+%%      d*h*l*p*s*x6 - c*h*l*q*s*x6 + c*h*l*n*t*x6 - b*h*l*p*t*x6 -
+%%      c*g*l*n*u*x6 - d*f*l*p*u*x6 + b*g*l*p*u*x6 + c*f*l*q*u*x6 -
+%%      g*k*p*s*x1*y - h*j*p*t*x1*y + f*k*p*t*x1*y + g*j*p*u*x1*y +
+%%      d*k*p*s*x2*y - c*k*q*s*x2*y + c*k*n*t*x2*y - b*k*p*t*x2*y -
+%%      d*j*p*u*x2*y + c*j*q*u*x2*y - d*h*p*s*x3*y + c*h*q*s*x3*y -
+%%      c*h*n*t*x3*y + b*h*p*t*x3*y + c*g*n*u*x3*y + d*f*p*u*x3*y -
+%%      b*g*p*u*x3*y - c*f*q*u*x3*y + c*g*k*s*x4*y + c*h*j*t*x4*y -
+%%      c*f*k*t*x4*y - c*g*j*u*x4*y - c*g*k*n*x5*y + d*h*j*p*x5*y -
+%%      d*f*k*p*x5*y + b*g*k*p*x5*y - c*h*j*q*x5*y + c*f*k*q*x5*y)/
+%%      (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v -
+%%      c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + c*f*l*q*u*v -
+%%      d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w +
+%%      c*g*l*m*u*w + d*e*l*p*u*w - a*g*l*p*u*w - c*e*l*q*u*w +
+%%      c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x -
+%%      c*g*l*m*s*x - d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x +
+%%      c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x -
+%%      c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y -
+%%      c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - d*h*i*p*s*y +
+%%      d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y +
+%%      c*h*j*m*t*y - c*f*k*m*t*y - c*h*i*n*t*y + c*e*k*n*t*y +
+%%      b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
+%%      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
+%%      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y)
+%% }\break
 
-\printbibliography[heading=bibintoc]
+%% $\dot{Lf}$ =
+%% {\tiny
+%%     (-(h*l*p*t*v*x1) + g*l*p*u*v*x1 - g*l*p*r*x*x1 + e*l*p*t*x*x1 -
+%%      d*l*p*u*v*x2 + c*l*q*u*v*x2 + d*l*p*r*x*x2 - c*l*q*r*x*x2 +
+%%      c*l*m*t*x*x2 - a*l*p*t*x*x2 + c*h*l*t*v*x4 - c*g*l*u*v*x4 +
+%%      c*g*l*r*x*x4 - c*e*l*t*x*x4 + d*h*l*p*v*x5 - c*h*l*q*v*x5 -
+%%      c*g*l*m*x*x5 - d*e*l*p*x*x5 + a*g*l*p*x*x5 + c*e*l*q*x*x5 -
+%%      d*h*l*p*r*x6 + c*h*l*q*r*x6 - c*h*l*m*t*x6 + a*h*l*p*t*x6 +
+%%      c*g*l*m*u*x6 + d*e*l*p*u*x6 - a*g*l*p*u*x6 - c*e*l*q*u*x6 +
+%%      g*k*p*r*x1*y + h*i*p*t*x1*y - e*k*p*t*x1*y - g*i*p*u*x1*y -
+%%      d*k*p*r*x2*y + c*k*q*r*x2*y - c*k*m*t*x2*y + a*k*p*t*x2*y +
+%%      d*i*p*u*x2*y - c*i*q*u*x2*y + d*h*p*r*x3*y - c*h*q*r*x3*y +
+%%      c*h*m*t*x3*y - a*h*p*t*x3*y - c*g*m*u*x3*y - d*e*p*u*x3*y +
+%%      a*g*p*u*x3*y + c*e*q*u*x3*y - c*g*k*r*x4*y - c*h*i*t*x4*y +
+%%      c*e*k*t*x4*y + c*g*i*u*x4*y + c*g*k*m*x5*y - d*h*i*p*x5*y +
+%%      d*e*k*p*x5*y - a*g*k*p*x5*y + c*h*i*q*x5*y - c*e*k*q*x5*y)/
+%%      (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v -
+%%      c*g*l*n*u*v - d*f*l*p*u*v + b*g*l*p*u*v + c*f*l*q*u*v -
+%%      d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w +
+%%      c*g*l*m*u*w + d*e*l*p*u*w - a*g*l*p*u*w - c*e*l*q*u*w +
+%%      c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - c*f*l*q*r*x -
+%%      c*g*l*m*s*x - d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x +
+%%      c*f*l*m*t*x - c*e*l*n*t*x + b*e*l*p*t*x - a*f*l*p*t*x -
+%%      c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y -
+%%      c*h*j*q*r*y + c*f*k*q*r*y + c*g*k*m*s*y - d*h*i*p*s*y +
+%%      d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y +
+%%      c*h*j*m*t*y - c*f*k*m*t*y - c*h*i*n*t*y + c*e*k*n*t*y +
+%%      b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + a*f*k*p*t*y -
+%%      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
+%%      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y)
+%% }
 
-%----------------------------------------------------------------------------------------
+\section{Questions for Tate/Nicole}
+%%\begin{itemize}
+%% \item How responsible am I for the papers I cite? Should I have read them, know their methodologies?
+%% \item Is it appropriate to cite web pages in a thesis? In a separate citation section? For images
+%% \item When is a fact ``common knowledge'' enough that it doesn't need a citation?
+%% \item Some papers have 'Request permission to reuse' links for figures - do I need to do this for copying figures?
+%% \item Is 25 pages too long for a thesis? What makes a thesis too long?
+%% \item What details belong in a thesis, and which are too much? ex going in-depth on what tests do, describing how we came up with guess numbers for parameter hunt, describing function of dynein in the cell, showing why motor proteins are necessary.
+%% \item Supplemental info?
+%%\end{itemize}
 
-\end{document}  
+\section{Questions for David}
+\begin{itemize}
+\item Would it be possible to, for the ET test, also verify the standard deviation of energy is what it should be? Since just verifying the energy averages to N/2KbT doesn't verify the forces are correct, but the stdev would?
+\item What is the value of $\left<\Delta G_{conf}\right>$ in going from bothbound to onebound?
+\end{itemize}
+
+\section{Todo for project}
+\begin{itemize}
+\item Do calculations to turn processivity into state time ratios
+\item Fit the state times to above number by tweaking un/binding rates
+\item Fit spring constants to step length histograms
+\end{itemize}
+\end{document}
