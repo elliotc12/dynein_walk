@@ -78,7 +78,7 @@ y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
 fig = plt.figure()
-gs = gridspec.GridSpec(3, 1, height_ratios=[3, 1, 3])
+gs = gridspec.GridSpec(3, 1, height_ratios=[2, 1, 2])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1], sharex=ax0)
 ax2 = fig.add_subplot(gs[2], sharex=ax0)
@@ -103,20 +103,24 @@ plt.setp(ax1.get_xticklabels(), visible=False)
 x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
 y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 
-x_scaling = 0.04
-y_scaling = 0.04
+x_scaling = 0.03
+y_scaling = 0.03
 
-cartoon_draw_times_x_proj = np.array([1.0*1e-6, 3.0*1e-6, 4.899*1e-6, 7.0*1e-6, 9.0*1e-6])
+cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
+
+# todo: add little lines in to indicate where the dynein is
 
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] == t)[0][0]
     Xs = data[idx,7:16:2]
     Ys = data[idx,8:17:2]
+    if int(data[idx, 0]) == 1:
+        Xs = Xs[::-1]
+        Ys = Ys[::-1]
     draw_cartoon.draw_cartoon([t*1e6, 0], Xs, Ys, x_scaling, y_scaling)
 
-ax1.set_ylim([0,2])
-ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.4))
+ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
 
 # y projection
 ax2.set_xlabel("time ($\mu$s)")
