@@ -988,7 +988,7 @@ The \verb|dt| used to update was $10^{-11}$ seconds.
 
 \subsubsection{Transition rate}
 \label{sec:transitioning-states}
-Transitions from one state to another are accomplished by calculating the probability of a transition $t$ at a given timestep, given by $P_{t} = k_tdt$. Each timestep a value in $[0,1]$ is sampled from a random number generator and, if lower than $k_tdt$, the respective transition is made. The following sections describe how transitions are done.\\
+Transitions from one state to another are accomplished by calculating the probability of a transition $t$ at a given timestep, given by $P_{t} = k_tdt$. Each timestep a value in $[0,1]$ is sampled from a random number generator and, if the roll is lower than $k_tdt$, the respective transition is made. The following sections describe how transitions are done.\\
 
 \subsubsection{Onebound to bothbound transition calculation}
 When binding occurs, conversion between OB and BB models is done by creating a bothbound dynein which is as similar in terms of domain position as possible to the onebound dynein.\\
@@ -1005,7 +1005,7 @@ To create a BB model from OB, the following intermediate variables are first com
 \end{align}
 
 \subsubsection{Bothbound to onebound transition calculation}
-Similar to the binding transition, unbinding involves creating a new onebound dynein from the old bothbound. To accomplish a transition to the farbound state, the following equations are used:\\
+Similar to the binding transition, unbinding involves creating a new onebound dynein from the old bothbound. To accomplish a transition to the farbound state, the following equations are used:
 
 \begin{align}
   \theta_{new,bba} &= \theta_{old,nba}\\
@@ -1041,7 +1041,7 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
   \centering
   \begin{tabular}{c}
     \begin{lstlisting}[language=C++]
-      def get_onebound_restoring_forces():
+      def set_onebound_restoring_forces():
           T = cm*(nma - nma_eq);
           f1 = T/Ls;
           f2 = T/Lt;
@@ -1064,7 +1064,7 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
 \section{Verifying the model}
 The models were verified to follow physical laws by checking their behavior in various tests: general conformational tests, energy conservation and obeying the equipartition theorem. The purpose of these tests was to verify that equations had been entered properly (primarily the conformational and energy conservation tests), and that the model obeyed the laws of physics (all tests).\\
 
-A series of conformational tests were done. These are listed in Appendix \ref{sec:conformational-tests}.\\
+A series of conformational tests were done to test if the coordinate systems of either model worked. These are listed in Appendix \ref{sec:conformational-tests}.\\
 
 \subsection{Energy conservation}
 \label{sec:energy-conservation}
@@ -1104,9 +1104,9 @@ This test verifies both force and velocity are calculated properly for either mo
 %% \subsection{Simulation running via SLURM}
 
 \section{Parameter fitting}
-There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\theta_{m,eq}^{Pre}$, $\theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}.\\
+There are 14 free variables in the dynein model: rigid rod lengths $L_s$ and $L_t$, domain radii $R_b$, $R_m$ and $R_t$, spring constants $c_b$, $c_m$ and $c_t$, equilibrium angles $\theta_{b,eq}$, $\theta_{t,eq}$, $\theta_{m,eq}^{Pre}$, $\theta_{m,eq}^{Post}$, onebound binding rate $k_b$, and bothbound unbinding rate $k_{ub}$. Each of these values influences the stepping behavior of the model, and so must be chosen wisely. Some of these values are found easily from literature or by looking at crystal structures of the motor protein, as shown in Table \ref{parameter-table}. Others are more difficult to find. These values, including $k_b$, $k_ub$ and the three spring constants, must be found via fitting the model to experiment.\\
 
-Others are more difficult to find. These values, including $k_b$, $k_ub$ and the three spring constants, are fit by an optimization process. First un/binding rates are fit to one/bothbound times, then spring constants are fit to average step length. This process is chronicled below.
+The process entails running simulations at various binding rates and spring constants, checking the output, and optimizing the input parameters until physical stepping behavior is achieved. Fitting these parameters to experiment is an active area of work on this project, but has shown tentative positive results, as shown in the Results section.\\
 
 \begin{figure}[h]
   \centering
@@ -1132,54 +1132,54 @@ Others are more difficult to find. These values, including $k_b$, $k_ub$ and the
   \label{table:parameter-table}
 \end{figure}
 
-\subsection{Calculating one/bothbound times of experimental dynein}
-In order to fit parameters, a goodness metric for a simulation is needed. Time spent in onebound and bothbound states are good metrics. These values are calculated here.\\
+%% \subsection{Calculating one/bothbound times of experimental dynein}
+%% In order to fit parameters, a goodness metric for a simulation is needed. Time spent in onebound and bothbound states are good metrics. These values are calculated here.\\
 
-\newcommand\tbb{\left<t_{bb}\right>}
-\newcommand\tob{\left<t_{ob}\right>}
-\newcommand\tstep{\left<t_{step}\right>}
-\newcommand\tproc{\left<t_{processivity}\right>}
-\newcommand\kub{k_{ub}}
-\newcommand\kb{k_{b}}
-\newcommand\ko{k_{dis}}
+%% \newcommand\tbb{\left<t_{bb}\right>}
+%% \newcommand\tob{\left<t_{ob}\right>}
+%% \newcommand\tstep{\left<t_{step}\right>}
+%% \newcommand\tproc{\left<t_{processivity}\right>}
+%% \newcommand\kub{k_{ub}}
+%% \newcommand\kb{k_{b}}
+%% \newcommand\ko{k_{dis}}
 
-\begin{itemize}
-\item $\tbb$: Time in bothbound per step
-\item $\tob$: Time in onebound per step
-\item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
-\item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
-\item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
-\item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
-\item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
-\item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
-\item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
-\end{itemize}
+%% \begin{itemize}
+%% \item $\tbb$: Time in bothbound per step
+%% \item $\tob$: Time in onebound per step
+%% \item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
+%% \item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
+%% \item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
+%% \item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
+%% \item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
+%% \item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
+%% \item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
+%% \end{itemize}
 
-$\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
+%% $\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
 
-\begin{align*}
-  \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
-  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
-  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
-  \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
-  \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
-  \tob &= \tstep-\tbb\\
-  &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
-  &= \frac{\tstep^2}{\tstep+\tproc}\\
-\end{align*}
+%% \begin{align*}
+%%   \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
+%%   &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+%%   &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+%%   \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+%%   \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
+%%   \tob &= \tstep-\tbb\\
+%%   &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
+%%   &= \frac{\tstep^2}{\tstep+\tproc}\\
+%% \end{align*}
 
-Thus, by the above equations and using data from \cite{weihongpaper}, values for $\tbb$ and $\tob$ can be found:
+%% Thus, by the above equations and using data from \cite{weihongpaper}, values for $\tbb$ and $\tob$ can be found:
 
-\begin{figure}[h]
-  \centering
-  \begin{tabular}{| c | c | c | c | c | c |}
-    \hline
-    Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
-    134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
-  \end{tabular}
-  \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
-  \label{table:time-parameter-table}
-\end{figure}
+%% \begin{figure}[h]
+%%   \centering
+%%   \begin{tabular}{| c | c | c | c | c | c |}
+%%     \hline
+%%     Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
+%%     134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
+%%   \end{tabular}
+%%   \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
+%%   \label{table:time-parameter-table}
+%% \end{figure}
 
 %% \subsection{Fitting rate constants}
 %% To find the ideal binding and unbinding rates of our model, we ran simulations at various $k_b$ and $k_{ub}$ conditions. The time each simulation spent in each state, $t_{bb}$ and $t_{ob}$, was compared with the experimental data shown in Table \ref{table:time-parameter-table}. Simulation behavior for a wide range of $k_b$ and $k_{ub}$ values is shown as a heat map in Figure \ref{fig:kb-kub-heatmap}.\\
@@ -1193,25 +1193,25 @@ Thus, by the above equations and using data from \cite{weihongpaper}, values for
 \chapter{Results \& Discussion}
 \label{chap:ResultsAndDiscussion}
 
-\section{Validating model}
-The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly inncorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
+%% \section{Validating model}
+%% The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly inncorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
 
-\begin{figure}[h!]
-  \centering
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/OB_Average_PE.pdf}
-    \caption{Onebound average spring energy.}{Average domain PE of onebound model converging to $\frac12 k_BT$ energy over time.}
-  \end{minipage}
-  \hspace{.2cm}
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../../figures/BB_Average_PE.pdf}
-    \caption{Bothbound average spring energy.}{Total domain PE of bothbound model converging to $\frac12 k_BT$ energy over time.}
-  \end{minipage}
-  \label{fig:equipartition_agreement}
-\end{figure}
+%% \begin{figure}[h!]
+%%   \centering
+%%   \begin{minipage}[b]{0.45\textwidth}
+%%     \includegraphics[width=\textwidth]{../../figures/OB_Average_PE.pdf}
+%%     \caption{Onebound average spring energy.}{Average domain PE of onebound model converging to $\frac12 k_BT$ energy over time.}
+%%   \end{minipage}
+%%   \hspace{.2cm}
+%%   \begin{minipage}[b]{0.45\textwidth}
+%%     \includegraphics[width=\textwidth]{../../figures/BB_Average_PE.pdf}
+%%     \caption{Bothbound average spring energy.}{Total domain PE of bothbound model converging to $\frac12 k_BT$ energy over time.}
+%%   \end{minipage}
+%%   \label{fig:equipartition_agreement}
+%% \end{figure}
 
 \section{Model achieves processivity}
-When run at the proper parameters, the dynein model can step processively. Figure \ref{fig:stepping-trajectory} shows the dynamics of a motor when run at the parameters shown in Table \ref{table:thesis-parameters}.
+When the simulation is run at the parameters shown in \ref{table:thesis-parameters}, the model exhibits stepping behavior, as shown in Figure \ref{fig:stepping-trajectory}.\\
 
 \begin{figure}[h]
   \centering
@@ -1226,7 +1226,7 @@ When run at the proper parameters, the dynein model can step processively. Figur
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{../../plots/trajectory-plot_thesis}
+  \includegraphics[width=0.9\textwidth]{../../plots/trajectory-plot_thesis}
   \caption{Near and far binding domains over the course of several microseconds of simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
   \label{fig:stepping-trajectory}
 \end{figure}
@@ -1280,20 +1280,23 @@ The most important findings of this work are that a springy hinge model of dynei
 
 Many studies have been done on dynein, resulting in a large body of literature about the motor's behavior and features. Sifting through this information to find what is important for the motor's step is a difficult task. Mutational studies can remove traits of the motor, deducing what traits are necessary for stepping. However, this process is slow, and it can be difficult to remove large traits of the motor while keeping the engineered dynein representative of the natural motor. This is where simulations come in. Minimal features can be put into a physical model, which can then be tested for behavior similar to real dynein. In this study, we created a mathematical model which simplifies the motor to a rigid hinge structure with harmonic spring energies between the hinges. The equilibrium angles change dynamically to reflect structural changes during dynein's mechanochemical cycle. The model was then subjected to Brownian forces and evolved. If the model generates a stepping pattern similar to real dynein, this would demonstrate that dynein can be thought of as a rigid hinged structure. This would mean that many other traits of dynein may not be vital for stepping, such as stalk elasticity \cite{sarlahmodel}, motor-motor interaction \cite{sarlahmodel}, nucleotide state \cite{cianfroccoreview}, nucleotide state of non-AAA1 nuclease sites \cite{cianfroccoreview}, and changing stiffness of the foot domain \cite{burgess-paper}. Thus future research may want to focus more on linker swing and binding interactions, and less on these other traits.\\
 
-Other findings cast doubt on some aspects of the model. The vast preference of the model for $<5nm$ steps suggests that the model may handle binding events unlike real dynein. When binding, the total spring energy of the transition from a onebound to a bothbound state is calculated, then used to calculate the likelihood of transition via a Boltzmann factor. This approach may be overly simple, or take into account the wrong information. It may be that it is necessary to expand the two-state model into a three-state model with a low-microtubule-affinity onebound state immediately after unbinding, to prevent instant rebinding. This state would eventually transition to the high-microtubule-affinity state after some time. If this proves to be necessary to decrease small steps, this would be an interesting result showing that the motor might rely on its low-microtule-affinity ADP-Pi state to prevent early binding.\\
+Other findings cast doubt on some aspects of the model. The vast preference of the model for $<5nm$ steps suggests that the model may handle binding events unlike real dynein. When binding, the total spring energy of the transition from a onebound to a bothbound state is calculated, then used to calculate the likelihood of transition via a Boltzmann factor. This approach may be overly simple, or take into account the wrong information. It may be that it is necessary to expand the two-state model into a three-state model with a low-microtubule-affinity onebound state immediately after unbinding, to prevent instant rebinding. This state would eventually transition to the high-microtubule-affinity state after some time. If this proves to be necessary to decrease small steps, this would be an interesting result showing that the motor might rely on its low-microtubule-affinity ADP-Pi state to prevent early binding.\\
 
 \section{Further work}
 The goal of studying dynein's mechanochemical cycle is to find an explanation for how it work. That is, to find the necessary and sufficient properties of dynein that cause the cycle to happen. Simulations are only part of the recipe for creating a scientific theory. Simulations are easy to implement and can study phenomena which are difficult to design experiments for. However, when experimental data is available, it is generally more reliable than a simulation of the same system. This is because a simulation is only as good as the strength of correspondence between the mathematical model and the system it represents. With dynein, this correspondence can be hard to achieve because the protein is complicated. The model predicts, according to the laws of physics for small objects, how a small machine composed of springy hinges would behave in an aqueous environment. This machine can be made the same size and general shape as dynein, and its conformational angles can be made the same as dynein's, and its state transitions can happen in the same way dynein's do. However, it is never possible to say that this machine ``is'' dynein or represents how dynein actually behaves. Thus, it is only possible to say that the simulation provides sufficient criteria for dynein stepping, not necessary criteria. The simulation shows that the linker-swing/diffusive-step model is sufficient for motion, but it cannot show that this is needed for dynein's walk.\\
 
+\subsection{Experimental validation}
 To more strongly support the linker-swing/diffusive step model of dynein motion, more experiments should be done. Demonstrating that dynein requires flexible domain connections in order to take such broad steps would be one powerful experiment. Mutating the foot and tail domains to be more rigid, then examining stepping behavior would be one way to see if rigidity is necessary for random steps. Another experiment could use FRET (Forster Resonance Energy Transfer) and fluorophores on the microtubule and foot domain to track how the distance between the two regions evolves with time. This could provide information about the average distance between the MTBD and MT, which would validate this work's finding that the MTBD mostly hovers. More importantly, FRET data could be fit to models to predict the amount of diffusion the foot domain undergoes over the course of a step. Significant diffusion would indicate that diffusion may be very important for the step. Experiments with both feet labeled could get similarly good information.\\
 
-\textbf{Talk to Dr. Hsu about this sort of thing...what experiments could be used to validate the model?}
+%% \textbf{Talk to Dr. Hsu about this sort of thing...what experiments could be used to validate the model?}
 
-If the model were validated by FRET and rigidity mutation studies, then there are many other interesting things which could be found from it. First, the amount of work done by the motor could be found by inducing an artificial drag force pulling the protein's motor domains against its direction of travel. This force could be integrated over dynein's trajectory to find the work the model exerted on its artificial cargo. This could be used to estimate the efficiency of the motor. Another interesting study would be to add binding sites to the model, only allowing it to bind at $\alpha-\beta$ tubulin dimerization sites, like real dynein. This would mandate re-fitting the binding constants to the new environment. It would be interesting to know if this model behaves more, or less dynein-like than the original. This would help answer the question of whether dynein searches for a binding site on the microtubule, or if it is naturally tuned to bind at the right site.\\
+\subsection{Further questions}
+If the model were validated by FRET and rigidity mutation studies, there are many other interesting things which could be found from it. First, the amount of work done by the motor could be found by inducing an artificial drag force pulling the protein's motor domains against its direction of travel. This force could be integrated over dynein's trajectory to find the work the model exerted on its artificial cargo. This could be used to estimate the efficiency of the motor. Another interesting study would be to add binding sites to the model, only allowing it to bind at $\alpha-\beta$ tubulin dimerization sites, like real dynein. This would mandate re-fitting the binding constants to the new environment. It would be interesting to know if this model behaves more, or less dynein-like than the original. This would help answer the question of whether dynein searches for a binding site on the microtubule, or if it is naturally tuned to bind at the right site.\\
 
 Another very interesting simulation which could be run could help answer the open question of why kinesin and dynein, though using similar mechanisms, produce such different steps. Kinesin, unlike dynein, conducts all of its chemistry directly on its foot. This translates to effectively having two fewer joints than dynein. Kinesin's stroke is believed to involves a similar foot unbinding, kicking forward, rebinding, then lurching the motor forward mechanism. The dynein model could be used to construct a very rough model of kinesin by shrinking the tail linkers and increasing the motor domain spring constant $c_m$ high enough to simulate a rigid hinge. This model could then be reduced to the size of kinesin, given the proper equilibrium angles, and simulated with Brownian dynamics. If this new model even roughly manages to mimic experimental kinesin stepping,that would be fascinating. This result would show that the differences betwen kinesin and dynein can be explained exclusively through the values of spring constants $c_t$, $c_m$, $c_b$, lengths $L_s$ and $L_t$, equilibrium angles and un/binding constants. This would mean the differences between the two motors are primarily due to the conformational angles the motors take with the microtubule and between their own domains, not because of differences in their mechanism.\\
 
-Next: add Big Questions to introduction, then answer them here.\\
+\subsection{The future of dynein research}
+The motor protein field has come a long way over the past two decades. Theoretical papers in the 90s, such as \textit{Bhaba et. al.} \cite{bhabha-paper},  opened up many questions about how cells can use proteins and simple chemical reactions to generate directed, finely-controlled motion. Following these papers came low-resolution structures and experiments testing the stepping behavior, directionality, conformation changes and chemical affinities of these motors. As structural technology got better, resolution got better, until eventually amino-acid resolution structures were found \cite{schmidt-carter}. These structures allowed more informed hypotheses to integrate experimental data and structures into well-advised theories on motor motility, such as \textit{Andreasson et. al.} for kinesin \cite{kinesin-cycle} and \textit{Cianfrocco et. al.} for dynein \cite{cianfroccoreview}. These theories are now being tested using state of the art methods. For example, a lab at Penn State is currently exploring kinesin dynamics using gold nanoparticles, and is capable of getting 2nm spatial resolution and 1ms temporal resolution \cite{kinesin-gold-nanoparticle}. This level of detail would provide intra-step information about the kinesin mechanochemical cycle, confirming or rejecting hypotheses about how the motor steps. If such technology were applied to dynein, the accuracy of the Cianfrocco model and the role of diffusion would be definitively determined. However, such experiments take time to design and implement. In the meantime, modelling projects like the one in this thesis can be used to provide rough windows into the nanoscale world, guiding future experimental work. They sanity-check theories and help scientists form new questions, such as if dynein drags along the microtubule or diffuses above it. It is uncertain what direction the field will go over the coming decade, but it is clear that now is a very exciting time for dynein research.\\
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
