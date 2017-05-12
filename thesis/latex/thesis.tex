@@ -397,6 +397,7 @@ The nucleotide state of the motor is not the only determiner of dynein conformat
 In addition to a bidirectional linking between ATPase rate and MT-binding, stalk state has been shown to directly influence motor conformation \cite{mt-atp-coupling}. When the stalk is allowed to freely transition between bound and unbound states, the motor can also transition between near and far tail/motor states. However, when the stalk is frozen in a particular conformation, the motor loses its transitioning ability. This suggests that the conformations of the two systems are tightly linked.\\
 
 \section{Cianfrocco model for dynein stepping}
+\label{sec:cianfrocco-model}
 Data presented in the previous sections paints a picture of dynein as a collection of interconnected parts, each cycling through its own collection of states and influencing other parts. Somehow the protein interacts with nucleotides and microtubules in a way that allows it to reliably move through the cell. The Cianfrocco model presented below takes these facts and string them together into cohesive cycles which might explain how dynein walks.\\
 
 Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motion via transitioning through the cycle of states shown in Fig. \ref{mech-cycle}. The model claims the primary events in the dynein step are as follows. First, starting with both binding domains attached to the MT, ATP binds to the motor domain, which causes it to change conformation. ATP hydrolysis to ADP-Pi causes further conformation changes. These changes cause the binding domain to release the microtubule, meaning only one binding domain is MT-bound. The free binding domain then undergoes another conformation change known as the ``priming stroke,'' which changes the orientation of the binding domain with respect to the MT. Finally the binding domain rebinds to the MT, causing a final conformation change in the motor which returns it to the beginning of the cycle. The exact order of these events is not precisely known.\\
@@ -498,16 +499,24 @@ Kinesin and dynein generally travel in opposite directions along the microtubule
 %% \item Crystal structures with Vanadium-Adp show dynein in the pre-powerstroke state, hinting that ADP-Pi-bound dynein takes on a different conformation than ADP-Pi free dynein
 %% \end{itemize}
 
-%% \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
-
 \newpage
 \chapter{Theory}
 \label{chap:Theory}
 
-\section{Model features}
-The purpose of this project is to find if a minimal set of features is capable of reproducing dynein's stepping behavior. To test this hypothesis, these features are put into a model and simulated. A schematic of the model is pictured in Figure \ref{fig:model-intro} and described below.\\
+\section{Building the model}
+The model constructed in this thesis is meant to accurately approximate how a protein with dynein's structure which underwent the conformational changes described in the Cianfrocco model \ref{sec:cianfrocco-model} would behave in a cell. In order to be compared to experiment, the model should output spatial information about dynein's rough conformation at all times during the simulation. Creating such a model is a balance between accuracy and computational efficiency. The model must be complex enough to correspond well to dynein, but not be so complex that it cannot be simulated in a reasonable amount of time. Molecular dynamics, a technique which simulates the individual amino acids in a protein, would be highly accurate, but would be infeasibly computationally expensive to simulate a dynein step. Thus, many approximations are made about dynein to simplify the simulation.\\
 
-\textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.45\textwidth]{../../figures/theory-onebound}
+  \includegraphics[width=.45\textwidth]{../../figures/theory-bothbound}
+  \caption{Spatial representation of the dynein dynamic model.}{Dynein is simplified to a two-dimensional point-particle system. Five points in total represent the two MTBDs, two motor domains and one tail domain. These points are connected by rigid rods. Although approximated as points, each domain has a radius $R$ associated with it used for drag calculations.}
+  \label{fig:theory-intro}
+\end{figure}
+
+%% \textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
 
 %% \begin{itemize}
 %% \item Dynein is a collection of spherical domains joined together by massless rods
@@ -556,14 +565,6 @@ Each domain has a spring constant, $c_b, c_m$ or $c_t$ for binding, motor or tai
 
 \subsection{Two-state model}
 The model assumes MT-bound dynein can assume one of two states: one where both MTBDs are bound, and one where only one MTBD is bound to the MT. These states are also differentiated by different motor equilibrium angles, $\Theta_{m}^{bb}$ and $\Theta_{m}^{ob}$, and different transition rates. Biological dynein likely passes through a series of permutations of nucleotide, MT affinity and conformational states as it travels through its mechanochemical cycle. This model makes the assumption that the mechanochemical cycle can be broken down into a cycle of prestroking to move the unbound foot forward, brownian walking to place the foot on the microtubule, then powerstroking to move the other domains forward.\\
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=.45\textwidth]{../../figures/code-onebound}
-  \includegraphics[width=.45\textwidth]{../../figures/code-bothbound}
-  \caption{Dynein model schematics.}{Representations of onebound (left) and bothbound (right) dynein models.}
-  \label{ob_fig}
-\end{figure}
 
 \textbf{todo: Add springs to joints!}
 
@@ -1379,6 +1380,9 @@ Comparing the simulation results in \ref{fig:final-histograms}.a with the experi
 \newpage
 \chapter{Conclusion}
 \label{chap:Conclusion}
+
+%thoughts
+%% \textit{It is interesting to note that the hydrolysis of ATP is not actually used to directly power the motor -- binding AMP-PMP, a nonhydrolyzable analog of ATP, can also cause the motor to change from state I to state II \cite{FRETstatepaper}. The specialness of ATP is that it can be broken down into ADP, which causes another conformation change back to state I. Thus, something something the transfer of energy from nucleotide to motor is in its shape, not in its chemistry.}\\
 
 \section{Findings}
 The most important findings of this work are that a springy hinge model of dynein can take steps of a similar size to real dynein. What's more, it is likely further tweaking of the model will improve the model's behavior to the point of generating backwards and large steps. This would be a very important result which would strongly support the linker-swing/diffusive-step model of dynein stepping and guide further research.\\
