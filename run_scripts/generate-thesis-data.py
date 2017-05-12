@@ -29,6 +29,7 @@ print(basename)
 
 os.rename("../data/stepping_movie_data_%s.txt" % (basename), "../data/thesis_movie_data.txt")
 os.rename("../data/stepping_data_%s.txt" % (basename), "../data/thesis_stepping_data.txt")
+os.rename("../data/stepping_parameters_%s.tex" % (basename), "../data/thesis_stepping_parameters.tex")
 
 os.unlink("../data/stepping_movie_config_%s.txt" % basename)
 os.unlink("../data/stepping_config_%s.txt" % basename)
