@@ -503,18 +503,23 @@ Kinesin and dynein generally travel in opposite directions along the microtubule
 \chapter{Theory}
 \label{chap:Theory}
 
-\section{Building the model}
+\section{Model overview}
 The model constructed in this thesis is meant to accurately approximate how a protein with dynein's structure which underwent the conformational changes described in the Cianfrocco model \ref{sec:cianfrocco-model} would behave in a cell. In order to be compared to experiment, the model should output spatial information about dynein's rough conformation at all times during the simulation. Creating such a model is a balance between accuracy and computational efficiency. The model must be complex enough to correspond well to dynein, but not be so complex that it cannot be simulated in a reasonable amount of time. Molecular dynamics, a technique which simulates the individual amino acids in a protein, would be highly accurate, but would be infeasibly computationally expensive to simulate a dynein step. Thus, many approximations are made about dynein to simplify the simulation.\\
-
-
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=.45\textwidth]{../../figures/theory-onebound}
   \includegraphics[width=.45\textwidth]{../../figures/theory-bothbound}
-  \caption{Spatial representation of the dynein dynamic model.}{Dynein is simplified to a two-dimensional point-particle system. Five points in total represent the two MTBDs, two motor domains and one tail domain. These points are connected by rigid rods. Although approximated as points, each domain has a radius $R$ associated with it used for drag calculations.}
+  \caption{Spatial representation of the dynein dynamic model.}{Dynein is simplified to two two-dimensional point-particle systems. The left ``onebound'' system represents dynein when one MTBD is unbound, and the right ``bothbound'' system represents dynein with both MTBDs bound. Five points in total represent the two MTBDs, two motor domains and one tail domain. Each model's orientation is defined by a set of angles, four in the onebound case and two in the bothbound case. These points are connected by rigid rods. Although approximated as points, each domain has a radius $R$ associated with it used for drag calculations.}
   \label{fig:theory-intro}
 \end{figure}
+
+\subsection{Summary}
+The model is composed of two separate systems of five point particles, with each point representing a domain of dynein: two binding domains, two motor domains and one tail domain. Physical representations of these two systems are shown in Figure \ref{fig:theory-intro}. The points are connected together by rigid rods, and the sytems are defined by the angles the rods make at each point. These angles are free to swivel. Each point thus acts somewhat like a ``hinge'' which can open or close. These two systems represent different modes dynein can be in. The Cianfrocco model is simplified to two states: onebound, when one MTBD (Microtubule Binding Domain) is diffusively searching for a binding site, and bothbound, where both MTBDs are MT-bound. The model can be in one of these two states at any time, and can transition between them if the right conditions are met. For example, if the model is in the onebound state but drifts such that both of its MTBDs are near the microtubule, the model can ``bind'' the MT and transition to the bothbound state.\\
+
+The model is subject to two forces, each of which is meant to simulate the effects real dynein domains feel. The first is a Brownian force which constantly changes. This force is meant to mimic the force of water particles colliding with the domains and causing diffusion. The second force is called a conformational force, and is meant to mimic the conformation and elasticity of dynein. Each hinge is somewhat like a spring with an equilibrium resting angle. At this angle, the domain feels no force. However, when the angle deviates from this equilibrium, a harmonic restoring force proportional to the displacement angle is applied to the involved domains to push the angle back to equilibrium. Thus these two forces oppose each other during a simulation, with Brownian forces pushing the model out of equilibrium and conformational forces trying to restore equilibrium.\\
+
+How this system is used to generate data is covered later in the section. In brief, this system is then converted into a computer program. A technique known as Brownian dynamics, described below, is used by the program to evolve the model through time. Models are started in one state and evolved, occasionally transitioning from one state to another. The positions of each domain in time are stored as data. Each time a model transitions from onebound to bothbound, the model registers a ``step'' having occured. Thus long simulations can be used to find the stepping behavior of a model.\\
 
 %% \textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
 
@@ -538,6 +543,7 @@ The model constructed in this thesis is meant to accurately approximate how a pr
 %%   \label{fig:model-intro}
 %% \end{figure}
 
+\section{Model assumptions}
 \subsection{Spherical domains connected by massless rods}
 A key feature of the model is that each domain of the protein (two feet, twp motors and a tail) is treated as a sphere. Each sphere is connected to one or two other spheres, as shown in Figure (\ref{fig:model-intro}). This simplification is made to make the math easier and allow a simple definition of dynein's conformation.\\
 
