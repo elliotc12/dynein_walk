@@ -241,18 +241,6 @@ Dynein is a motor protein which transports cargo along tracks inside the cell. L
 
 Cells need to create asymmetric, heterogeneous structures inside themselves in order to function. However, diffusive processes cannot create this asymmetry. How then do cells create the heterogeneous structures they need to exist? Motor proteins are part of the answer. Motor proteins are structures which use energy to create directed motion in cells. In broad terms, they are mechanical creators of asymmetry. This thesis explores a hypothesis about how one such motor protein, dynein, generates directed motion.\\
 
-%% \section{Interest builder}
-%% Begin with a paper-like introduction which talks about:
-
-%% \begin{itemize}
-%% \item How dynein is a structure which turns chemical energy into motion
-%% \item How dynein's variation in step size and directionality suggest a large diffusion component \cite{reck2006single}
-%% \item How it's weird that a cellular structure can generate directed motion
-%% \item Other cool stuff - make dynein mysterious and cool.
-%% \end{itemize}
-
-%% Tell a story about dynein! Present the project as a story -- we don't have knowledge abotu dynein, it's really weird, we want to get info about it
-
 \section{Motivation}
 Motor proteins are cellular structures which use chemical energy to do work and generate motion. Kinesin, myosin and dynein are the three main motor proteins in cells. Though these proteins have significantly different ancestors \ref{hook-family}, they all evolved into a single similar structure. In biology when a structure is evolved three separate times, it is a sign that nature has found an efficient way of solving a problem. How, then, do motor proteins work?\\
 
@@ -354,21 +342,34 @@ Dynein is a fusion of two identical proteins, referred to as monomers. A single 
 \end{figure}
 
 \subsection{Why is dynein interesting?}
-Studying how nature creates directed motion is interesting in itself. Another interesting question is how, given the large number of similarities between motors kinesin and dynein, does dynein achieve such a radically different stepping pattern than kinesin? Elucidating how the structural differences between the motors give rise to the differences in dynamics would provide lots of important information on how the machines fine-tune their stepping.\\
+Selective domain labeling indicates dynein's stepping pattern is highly varied \cite{reck2006single} \cite{weihongpaper}. These studies show dynein's stepping pattern to be stochastic and weakly forward-directed. As shown in Figure (\ref{fig:weihong-steps}), dynein takes many backwards steps, and also many steps with components perpendicular to the microtubule. This indicates the process dynein uses to generate motion has a stochastic component to it. In contrast, kinesin is known to take very regular 8nm steps in the absence of large forces \cite{kinesin-step-size}.\\
 
-The major difference between kinesin and dynein is their size. Kinesin proteins are generally 100-200 kD in mass, whereas dynein is roughly 1mD. As shown in Figure \ref{fig:kinesin-vs-dynein}, the size and volume differences between proteins is very apparent. Dynein is about 20nm from MTBD to tail, whereas kinesin is ----. Another key difference is the separation between active sites on either protein. Kinesin binds to the MT with a foot domain, colored blue in Figure \ref{fig:kinesin-vs-dynein}. It hydrolyzes ATP at the residues colored pink. The separation between these domains is roughly ---nm. In contrast, Dynein binds to the MT with its MTBD, colored blue, and hydrolyses ATP in its motor domain, residues colored pink. This distance is close to 20nm in length - much longer than kinesin. Another difference is the way the motors interact with the microtubule. Both motors bind to the MT using domains. However, for dynein the motor-MTBD-MT angle is ---, whereas for kinesin, it is ---.\\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.49\textwidth]{../../figures/weihong-step-size}
+  \includegraphics[width=0.49\textwidth]{../../figures/weihong-off-axis-steps}
+    \caption{Experimental dynein stepping behavior histograms.}{Left: Size of steps taken by dynein motor parallel to microtubule. Positive axis corresponds to steps towards the microtubule minus-end. Right: Size of ``off-axis'' steps taken by the dynein motor perpendicular to the microtubule. Figure modified from \cite{weihongpaper}.}
+  \label{fig:weihong-steps}
+\end{figure}
 
-Despite these differences, the two motors implement very similar chemical cycles to achieve motion. Both feet begin bound to the microtubule, then one unbinds. This foot diffuses forward, then rebinds to the microtubule
+Kinesin and dynein, although of very different evolutionary origin \cite{hook-family}, have very similar stepping cycles. Both proteins bind bipedally to microtubules. Both proteins use ATP hydrolysis to leverage against a linker domain, pushing the motor domain forward. Both proteins couple their nucleotide and MT-binding states \cite{vale-kinesin-cycle}. How, given the large number of similarities between these motors, does dynein achieve such a radically different stepping pattern than kinesin? Elucidating how the structural differences between the motors give rise to the differences in dynamics would provide lots of important information on how the machines fine-tune their stepping.\\
 
-%% \begin{figure}[h]
-%%   \centering
-%%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/kinesin-vs-dynein}
-%%   \caption{Crystal structure of the MTBD-MT complex. Modified from Redwine \textit{et. al} \cite{redwineMTBDcomplex}.}
-%%   \label{fig:kinesin-vs-dynein}
-%% \end{figure}
+A major factor which could contribute to differences in stepping is each protein's size. Kinesin proteins are generally 100-200 kD in mass, whereas dynein is on the order of 1mD. As shown in Figure \ref{fig:kinesin-vs-dynein}, the dynein motor domain is much bigger than the kinesin motor domain. Another key difference is the separation between ATP hydrolysis sites on either protein. Kinesin's ATP hydrolysis site is inside the globular microtubule-binding domain. In contrast, Dynein binds to the MT with its MTBD, colored yellow in Figure \ref{fig:kinesin-vs-dynein}, and hydrolyses ATP in its motor domain, which is colored cyan. This distance is close to 20nm in length - much longer than kinesin. This large separation might act like a loose ``leash,'' allowing the binding domain to diffuse freely around the microtubule. Kinesin has a much more rigid leash, as shown in the bottom pane of \ref{fig:kinesin-vs-dynein}. This more rigid leash may prevent diffusion from happening as much.\\
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{../../figures/kinesin_vs_dynein}
+  \end{minipage}
+  \begin{minipage}{0.65\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{../../figures/kinesin_vs_dynein_2}
+  \end{minipage}
+  \caption{Structural comparison of dynein and kinesin}{Left: Comparison of crystal structures of the motor domains of dynein and kinesin bound to a microtubule. Image from \cite{kinesin-vs-dynein}. Right: Full motor complexes of dynein and kinesin. The blue regions of either protein are the motor domains, which are pictured in the above crystal structures. Image from \cite{kinesin-vs-dynein-2}.}
+  \label{fig:kinesin-vs-dynein}
+\end{figure}
 
 \section{Dynein Stepping Background}
-Biophysicists and molecular biologists have conducted experiments over the past twenty years which shed light on how the dynein motor might walk. The full mechanism is not known, but results of such experiments suggest a certain vague picture of how dynein generates motion.\\
+Biophysicists and molecular biologists have conducted experiments over the past twenty years which shed light on how the dynein motor might walk. The full mechanism is not known, but several known behaviors of dynein can be taken together to construct a model for how the motor walks.\\
 
 \subsection{ATP cycle influences conformational state}
 Dynein is known to occupy multiple discrete conformational states depending on its environment. In particular, the concentration of ATP and microtubules is known to alter the shape dynein takes on. A FRET (fluorescence resonance energy transfer) study attached fluorophores to dynein's motor and tail and measured the average distance between the two \cite{FRETstatepaper}. It was found that average distance increased or decreased depending on the nucleotide bound to dynein, indicating the motor takes on different conformations for different bound nucleotides. Dynein unbound to nucleotide, or frozen in ATP or ADP-bound states, had a similar tail-motor distance. However, when the motor was stuck in an ADP-Pi state, with ATP hydrolyzed but phosphate not yet released, the tail-motor distance was increased. This suggests that dynein starts its cycle with no nucleotide, binds ATP, hydrolyzes ATP, enters the ADP-Pi state and changes conformation to a far tail-motor distance, then releases phosphate, moves back to its original close tail-motor conformation, then ejects ADP and starts over.\\
@@ -379,7 +380,7 @@ Studies suggest that near/far tail-motor conformation changes are not due to len
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/burgess-dynein-angles}\\
   \hspace{1cm}
-  \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/linker-swing}
+  \includegraphics[width=.85\textwidth,keepaspectratio]{../../figures/linker-swing}
   \caption{Dynein conformation change during a step.}{Top: Cryo-electron microscopy images of axonemal dynein in two different nucleotide states. Top left: dynein frozen in ADP-Pi state. Top middle: dynein without nucleotide. Top right: two states superimposed on one another. Figures borrowed from \cite{burgess-paper}. Bottom: X-ray diffraction-inspired image of a motor in two nucleotide states. Bottom left: motor in ADP-Pi state. Bottom right: Motor in ADP state. The linker undergoes an approximately 40 degree swing between these two states. Figure borrowed from \cite{bhabha-paper}.}
   \label{fig:cryo-em-angles}
 \end{figure}
@@ -395,21 +396,9 @@ The nucleotide state of the motor is not the only determiner of dynein conformat
 
 In addition to a bidirectional linking between ATPase rate and MT-binding, stalk state has been shown to directly influence motor conformation \cite{mt-atp-coupling}. When the stalk is allowed to freely transition between bound and unbound states, the motor can also transition between near and far tail/motor states. However, when the stalk is frozen in a particular conformation, the motor loses its transitioning ability. This suggests that the conformations of the two systems are tightly linked.\\
 
-\subsection{Stepping pattern}
-Several studies have been done on the dynein motor's stepping pattern using selectively-labeled motor domains \cite{reck2006single} \cite{weihongpaper}. These studies show dynein's stepping pattern to be stochastic and weakly forward-directed. As shown in Figure (\ref{fig:weihong-steps}), dynein takes many backwards steps, and also many steps with components perpendicular to the microtubule. This indicates the process dynein uses to generate motion has a stochastic component to it. It is likely that the physical states of subcomponents in the motor, and/or the effects of Brownian motion due to water particle collision, play a role in dynein's stepping mechanism.\\
+\section{Cianfrocco model for dynein stepping}
+Data presented in the previous sections paints a picture of dynein as a collection of interconnected parts, each cycling through its own collection of states and influencing other parts. Somehow the protein interacts with nucleotides and microtubules in a way that allows it to reliably move through the cell. The Cianfrocco model presented below takes these facts and string them together into cohesive cycles which might explain how dynein walks.\\
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.49\textwidth]{../../figures/weihong-step-size}
-  \includegraphics[width=0.49\textwidth]{../../figures/weihong-off-axis-steps}
-    \caption{Experimental dynein stepping behavior histograms.}{Left: Size of steps taken by dynein motor parallel to microtubule. Positive axis corresponds to steps towards the microtubule minus-end. Right: Size of ``off-axis'' steps taken by the dynein motor perpendicular to the microtubule. Figure modified from \cite{weihongpaper}.}
-  \label{fig:weihong-steps}
-\end{figure}
-
-\section{Dynein models}
-Data presented in the previous sections paints a picture of dynein as a collection of interconnected parts, each cycling through its own collection of states and influencing other parts. Somehow the protein itneracts with nucleotides and microtubules in a way that allows it to reliably move through the cell. Models presented below take these facts and string them together into cohesive cycles which might explain how dynein walks. It is important to note that these models are hypotheses.\\
-
-\subsection{Cianfrocco Model}
 Cianfrocco \textit{et. al} \cite{cianfroccoreview} propose dynein achieves motion via transitioning through the cycle of states shown in Fig. \ref{mech-cycle}. This model will hereon be referred to as the Cianfrocco model. The model claims the primary events in the dynein step are as follows. First, starting with both binding domains attached to the MT, ATP binds to the motor domain, which causes it to change conformation. ATP hydrolysis to ADP-Pi causes further conformation changes. These changes cause the binding domain to release the microtubule, meaning only one binding domain is MT-bound. The free binding domain then undergoes another conformation change known as the ``priming stroke,'' which changes the orientation of the binding domain with respect to the MT. Finally the binding domain rebinds to the MT, causing a final conformation change in the motor which returns it to the beginning of the cycle. The exact order of these events is not precisely known.\\
 
 \begin{figure}[h!]
