@@ -99,6 +99,7 @@ ax0.legend(loc="upper right")
 # ax1.axis('off')
 ax1.set_aspect('equal', 'datalim')
 plt.setp(ax1.get_xticklabels(), visible=False)
+plt.setp(ax1.get_yticklabels(), visible=False)
 
 x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
 y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]

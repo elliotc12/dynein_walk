@@ -18,4 +18,4 @@ def draw_cartoon(near_foot_figure_coords, x_coords, y_coords, x_scaling, y_scali
     plt.plot([figure_xs[1]], [figure_ys[1]], marker='o', markeredgecolor='k', markeredgewidth=0.1, zorder=5, color="white", markersize=6*x_scaling*50)
     plt.plot([figure_xs[0]], [figure_ys[0]], marker='o', markeredgecolor='k', markeredgewidth=0.1, zorder=6, color="blue",  markersize=2*x_scaling*50)
 
-    plt.gca().add_patch(Rectangle((figure_xs[0], -0.15), 0.003, 0.3, facecolor='k', alpha=0.5, zorder=-1))
+    plt.gca().add_patch(Rectangle((figure_xs[0], -0.15), 0.01, 0.3, facecolor='k', alpha=0.8, zorder=-1))

@@ -171,7 +171,7 @@ Dynein is a motor protein which transports cargo along tracks inside the cell. L
 \listoffigures % Prints the list of figures
 \newpage
 
-\listoftables % Prints the list of tables
+%% \listoftables % Prints the list of tables
 \newpage
 
 %% %----------------------------------------------------------------------------------------
@@ -295,7 +295,7 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule will end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
 
 \subsection{Why do cells need motor transport?}
-Cells are organized, heretogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
+Cells are organized, heterogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
 
 Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \cite{einstein-paper}:
 
@@ -309,7 +309,7 @@ where D is the diffusion constant describing the diffusability of the biomolecul
 %% \begin{figure}[h]
 %%   \centering
 %%   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/diffusion_vs_dynein.png}
-%%   \caption{Passive diffusion vs motor transport rate}{Plot comparing the diffusion rate of a 140kD protein with a diffusion consant $D = .2 \mu m^2/s$ with a dynein motor travelling at 100nm/s.}
+%%   \caption{Passive diffusion vs motor transport rate}{Plot comparing the diffusion rate of a 140kD protein with a diffusion constant $D = .2 \mu m^2/s$ with a dynein motor travelling at 100nm/s.}
 %%   \label{fig:diffusion_vs_dynein}
 %% \end{figure}
 
@@ -330,7 +330,7 @@ Neurons have cell bodies at their centers and axons which grow outwards. Axons a
 \end{figure}
 
 \subsection{Dynein structure}
-As shown in the crystal structure in Figure \ref{fig:pdb-motm-dynein}, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.
+As shown in the crystal structure in Figure \ref{fig:pdb-motm-dynein}, a dynein motor is a fusion of two identical subunits, or monomers, each with binding, stalk, motor and tail subdomains. Each of these subunits has a unique purpose for the motor.\\
 
 Dynein is a fusion of two identical proteins, referred to as monomers. A single monomer, depicted in \ref{fig:pdb-motm-dynein}, is composed of a microtubule-binding domain (MTBD), a stalk, a buttress, a motor domain, a linker and a tail. The MTBD is responsible for binding to the microtubule. The stalk links the motor domain to the MTBD and carries information about the state of the motor to the MTBD. The motor domain hydrolyses ATP and performs the main conformation changes involved in the step \cite{FRETstatepaper}. The linker connects the tail to the motor and also changes conformation during the step. The tail is a binding site which interacts with several binding partners, including the tail of a twin monomer.\\
 
@@ -504,7 +504,7 @@ Kinesin and dynein generally travel in opposite directions along the microtubule
 \label{chap:Theory}
 
 \section{Model overview}
-The model constructed in this thesis is meant to accurately approximate how a protein with dynein's structure which underwent the conformational changes described in the Cianfrocco model \ref{sec:cianfrocco-model} would behave in a cell. In order to be compared to experiment, the model should output spatial information about dynein's rough conformation at all times during the simulation. Creating such a model is a balance between accuracy and computational efficiency. The model must be complex enough to correspond well to dynein, but not be so complex that it cannot be simulated in a reasonable amount of time. Molecular dynamics, a technique which simulates the individual amino acids in a protein, would be highly accurate, but would be infeasibly computationally expensive to simulate a dynein step. Thus, many approximations are made about dynein to simplify the simulation.\\
+The model constructed in this thesis is meant to accurately approximate how a protein with dynein's structure which underwent the conformational changes described in the Cianfrocco model \ref{sec:cianfrocco-model} would behave in a cell. In order to be compared to experiment, the model should output spatial information about dynein's rough conformation at all times during the simulation. Creating such a model is a balance between accuracy and computational efficiency. The model must be complex enough to correspond well to dynein, but not be so complex that it cannot be simulated in a reasonable amount of time. Molecular dynamics, a technique which simulates the individual amino acids in a protein, would be highly accurate, but would be prohibitively expensive to simulate a dynein step. Thus, many approximations are made about dynein to simplify the simulation.\\
 
 \begin{figure}[h]
   \centering
@@ -519,7 +519,7 @@ The model is composed of two separate systems of five point particles, with each
 
 The model is subject to two forces, each of which is meant to simulate the effects real dynein domains feel. The first is a Brownian force which constantly changes. This force is meant to mimic the force of water particles colliding with the domains and causing diffusion. The second force is called a conformational force, and is meant to mimic the conformation and elasticity of dynein. Each hinge is somewhat like a spring with an equilibrium resting angle. At this angle, the domain feels no force. However, when the angle deviates from this equilibrium, a harmonic restoring force proportional to the displacement angle is applied to the involved domains to push the angle back to equilibrium. Thus these two forces oppose each other during a simulation, with Brownian forces pushing the model out of equilibrium and conformational forces trying to restore equilibrium.\\
 
-How this system is used to generate data is covered later in the section. In brief, this system is then converted into a computer program. A technique known as Brownian dynamics, described below, is used by the program to evolve the model through time. Models are started in one state and evolved, occasionally transitioning from one state to another. The positions of each domain in time are stored as data. Each time a model transitions from onebound to bothbound, the model registers a ``step'' having occured. Thus long simulations can be used to find the stepping behavior of a model.\\
+How this system is used to generate data is covered later in the section. In brief, this system is then converted into a computer program. A technique known as Brownian dynamics, described below, is used by the program to evolve the model through time. Models are started in one state and evolved, occasionally transitioning from one state to another. The positions of each domain in time are stored as data. Each time a model transitions from onebound to bothbound, the model registers a ``step'' having occurred. Thus long simulations can be used to find the stepping behavior of a model.\\
 
 %% \textit{Add a figure (maybe here?) of all the events which are known to happen in dynein, along with our mechanochemical cycle. It would basically show all events occuring at two times: unbinding or rebinding.}\\
 
@@ -579,7 +579,7 @@ This energy represents the conformational energy of that particular domain. This
 \end{figure}
 
 \subsection{Two-state model}
-According to the Cianfrocco model, dynein takes on a total of eight states during a single step. Many of these states are conformationally very similar, eg the ADP- vs apo-bound or ATP- vs ADP-bound. Others involve quick transitions, eg from the just-MT-bound state to the post-powerstroke state. The transitions which take the most time according to reaction rate calculations are MT-binding and MT-release \cite{sarlahmodel}. Thus, these two states are taken to be the most important, and the Cianfrocco model is approximated by transitioning between these two states.\\
+According to the Cianfrocco model, dynein takes on a total of eight states during a single step. Many of these states are conformationally very similar, e.g. the ADP- vs apo-bound or ATP- vs ADP-bound. Others involve quick transitions, e.g. from the just-MT-bound state to the post-powerstroke state. The transitions which take the most time according to reaction rate calculations are MT-binding and MT-release \cite{sarlahmodel}. Thus, these two states are taken to be the most important, and the Cianfrocco model is approximated by transitioning between these two states.\\
 
 The main difference between these two states is that onebound has one diffusing MTBD, whereas bothbound has both its MTBDs MT-bound. Another key difference is equilibrium angles of the motor domains. During powerstroke, according to the Cianfrocco model, the dynein linker shifts, causing the tail-MTBD angle to shift. In this model, the conformation change caused by ATP hydrolysis is modelled as shifting the bothbound equilibrium angle $\theta_{xm}^{bb,eq}$ to $\theta_{xm}^{ob,eq}$.\\
 
@@ -629,7 +629,7 @@ where $\gamma$ is the drag constant of the object and $R$ is a random Brownian f
 which is calculated from the Einstein relation.\\
 
 \subsection{Binding to microtubule}
-The model ``steps'' whenever an MTBD diffuses near the microtubule. \textit{In vivo}, dynein binds to a site on the $\alpha-\beta$ tubulin polymer microtubule which repeats roughly every 8nm. Thus, all dynein steps should be multiples of $8$nm. This model ignores this requirement and allows stepping to occur at any length. The assumption is that \textit{in vivo} dynein takes 8nm steps because it is tuned to take 8nm steps, not because it drags along the microtubule searching for a binding site. Thus the 8nm step length should be reproduced by the model even if stepping is allowed anywhere.\\
+The model ``steps'' whenever an MTBD diffuses near the microtubule. \textit{in vivo}, dynein binds to a site on the $\alpha-\beta$ tubulin polymer microtubule which repeats roughly every 8nm. Thus, all dynein steps should be multiples of $8$nm. This model ignores this requirement and allows stepping to occur at any length. The assumption is that \textit{in vivo} dynein takes 8nm steps because it is tuned to take 8nm steps, not because it drags along the microtubule searching for a binding site. Thus the 8nm step length should be reproduced by the model even if stepping is allowed anywhere.\\
 
 \subsection{2D model}
 The coordinate system for this model is two-dimensional. Thus interactions between the two motors and MTBDs are ignored. This assumption is made to simplify the model. Other dynein models, like the winch model \ref{sarlahmodel}, add in attractive and repulsive forces between the two motors which act in three dimensions. This model ignores such effects.\\
@@ -684,7 +684,7 @@ The following equations allow recursive calculation of the positions of each dom
 
 $L_s$ and $L_t$ correspond to lengths of each interdomain rod, and the $t$ subscripts refer to tail domain coordinates.\\
 
-The goal is to express angular velocities $\dot{\theta}_{bb}, \dot{\theta}_{bb}, \dot{\theta}_{bb}$ and $\dot{\theta}_{bb}$ in terms of known quantities. To begin, the cartesian velocities of each domain can be calculated from the above position equations in a similar recursive manner. A subset of the equations are shown here:
+The goal is to express angular velocities $\dot{\theta}_{bb}, \dot{\theta}_{bb}, \dot{\theta}_{bb}$ and $\dot{\theta}_{bb}$ in terms of known quantities. To begin, the Cartesian velocities of each domain can be calculated from the above position equations in a similar recursive manner. A subset of the equations are shown here:
 
 \noindent\begin{minipage}{0.49\linewidth}
 \begin{align}
@@ -706,7 +706,7 @@ The goal is to express angular velocities $\dot{\theta}_{bb}, \dot{\theta}_{bb},
 \end{minipage}
 \vspace{.5cm}
 %
-Another way to express these cartesian velocities is using the Brownian dynamics equation $\dot{X} = \frac1\gamma F_{net} + R$:
+Another way to express these Cartesian velocities is using the Brownian dynamics equation $\dot{X} = \frac1\gamma F_{net} + R$:
 
 \begin{align}  
   \dot{X}_{bm} &= \frac{1}{\gamma_m} \Big(F_{xml} + - \lambda_{bs}(X_{bm} - X_{bb}) + \lambda_{bt}(X_{t } - X_{bm}) \Big) + R_{xml} \label{brownian-bmx}\\
@@ -717,7 +717,7 @@ Another way to express these cartesian velocities is using the Brownian dynamics
 %
 where $\gamma_n$ is a drag coefficient for the binding, motor or tail domain with units of mass per second. $F_{xn}$ is the x component of external force on each domain $n$ due to various factors. $\lambda_{12}\left(X_1 - X_2\right)$ is the x component of internal force on domain $2$ due to domain $1$, where $\lambda$ is a tension coefficient with units of mass per second per second. $R_{xn}$ is the Brownian coefficient representing motion due to solvent collision, with units of velocity.\\
 
-These two sets of equations, cartesian and Brownian, can be equated to get more interesting equations. For example, Eq (\ref{cartesian-bmx}) and Eq (\ref{brownian-bmx}) can be equated. This equating, combined with expanding the recursive velocity definitions leads to new equations, some of which are shown here:
+These two sets of equations, Cartesian and Brownian, can be equated to get more interesting equations. For example, Eq (\ref{cartesian-bmx}) and Eq (\ref{brownian-bmx}) can be equated. This equating, combined with expanding the recursive velocity definitions leads to new equations, some of which are shown here:
 
 \begin{align}
   &-L_s\sin(\theta_{bb})\dot{\theta}_{bb} = \frac{1}{\gamma_m}F_{xml} + -\frac{1}{\gamma_m}\lambda_{bs}(X_{bm} - X_{bb}) + \frac{1}{\gamma_m}\lambda_{bt}(X_{t } - X_{bm}) + R_{bmx} \label{ob_system_first}\\
@@ -764,7 +764,7 @@ A total of eight coupled differential equations are formed from this procedure. 
   \]
 }
 
-This matrix is then solved using the Mathematica computer algebra system, resulting in a set of motion equations which describe the model's trajectory over time, eg $\dot{\theta_{bm}}(\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub})$. These motion equations are further described in (\ref{sec:AppendixOneboundEquations}).\\
+This matrix is then solved using the Mathematica computer algebra system, resulting in a set of motion equations which describe the model's trajectory over time, e.g. $\dot{\theta_{bm}}(\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub})$. These motion equations are further described in (\ref{sec:AppendixOneboundEquations}).\\
 
 \subsection{Poststroke bothbound model}
 The main difference between the prestroke and poststroke mathematical models is that the latter has a further constraint: both of its MTBDs are attached to the MT. This has the effect of diminishing the degrees of freedom of the system from four to two, assuming the motor remains above the MT. A spatial representation of the bothbound model is shown in Figure (\ref{fig:derivation-botbound}).\\
@@ -978,7 +978,7 @@ Euler's method for solving differential equations was used to calculate domain p
               t += dt
     \end{lstlisting}
   \end{tabular}
-  \caption{Code snippet}{Code snippet of Euler's method to update the positions of the onebound model simultaneously.}
+  \caption{Euler's method code snippet.}{This code calculates domain velocities for onebound dynein and uses them to find position displacements. These values are stored in temporary variables first, then updated all at once.}
   \label{snip:euler-code-snippet}
 \end{figure}
 
@@ -1057,7 +1057,7 @@ Spring forces are calculated by first finding the torque $\tau$ on each angle, t
           f.bmy += -(f1y + f2y);
     \end{lstlisting}
   \end{tabular}
-  \caption{Code snippet of restoring force calculation for near motor domain displacement.}{Torque is calculated the near motor's angular displacement from equilibrium. This is converted to force exerted on adjacent domains. Finally, the equal and opposite force is exerted on the near motor domain.}
+  \caption{Code snippet of restoring force calculation.}{Torque is calculated the near motor's angular displacement from equilibrium. This is converted to force exerted on adjacent domains. Finally, the equal and opposite force is exerted on the near motor domain.}
   \label{snip:transition-rate-snippet}
 \end{figure}
 
@@ -1074,7 +1074,7 @@ To verify that the magnitudes of forces are calculated properly, a conservation 
   \sum_n \frac12 \left(\theta_{nudge} - \theta_{n} - \theta_{n,eq}\right) = \sum_n \vec{F}_n \cdot \vec{r}_{n,nudge}
 \end{equation}
 
-where $\theta_{nudge}$ was the angular nudge applied, $F_n$ the net force on domain $n$ and $\vec{r}_{n,nudge}$ the cartesian displacement of each domain $n$ due to the nudge. This test is powerful since it links the force-calculation system of either model to the energy calculation system. Energy is calculated by looking at displacements of angles from equilibrium, whereas forces are calculated using displacement of angles from equilibrium, but also orientation and position of each domain. Having the force system and energy system calculate the same results indicates that they are both likely correct.\\
+where $\theta_{nudge}$ was the angular nudge applied, $F_n$ the net force on domain $n$ and $\vec{r}_{n,nudge}$ the Cartesian displacement of each domain $n$ due to the nudge. This test is powerful since it links the force-calculation system of either model to the energy calculation system. Energy is calculated by looking at displacements of angles from equilibrium, whereas forces are calculated using displacement of angles from equilibrium, but also orientation and position of each domain. Having the force system and energy system calculate the same results indicates that they are both likely correct.\\
 
 \subsection{Equipartition theorem}
 The equipartition theorem (ET) is a thermodynamic statement which says that all systems with solely quadratic energy dependence on $N$ degrees of freedom will have $<E> = \frac N2 k_bT$. For the dynein models to display ET behavior, they would have to both properly calculate forces and properly calculate velocities from forces. Brownian forces are also required to properly explore the different states of the system, but they need not be the correct magnitude for ET agreement.\\
@@ -1194,7 +1194,7 @@ The process entails running simulations at various binding rates and spring cons
 \label{chap:ResultsAndDiscussion}
 
 %% \section{Validating model}
-%% The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly inncorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
+%% The simulation was first validated for obeying the laws of physics, and in particular, the equipartition theorem. Figure \ref{fig:equipartition_agreement} shows how both models have their angular potential energy converge to the expected $\frac{n}{2}k_BT$ energy over a long time. This is evidence that both the forces and velocities of the model are properly calculated. Grossly incorrect velocity or force calculations would lead to an incorrect occupation distrobution of angles, and hence an incorrect average energy. The model's force calculations are further validated in Section \ref{sec:conformational-tests}, and energy conservation is validated in Section \ref{sec:energy-conservation}.\\
 
 %% \begin{figure}[h!]
 %%   \centering
@@ -1220,14 +1220,14 @@ When the simulation is run at the parameters shown in \ref{table:thesis-paramete
     $k_{b}$ & $k_{ub}$ & $c_b$ &  $c_m$ & $c_t$ & dt\\\hline
     $10^{18} s^{-1}$ & $10^{20} s^{-1}$ & $2.0\Delta G_{ATP}$ & $2.0\Delta G_{ATP}$ & $1.0\Delta G_{ATP}$ & $10^{-10}s$\\ \hline
   \end{tabular}
-  \caption{Parameters used in processive simulations in Figures \ref{fig:stepping-trajectory} and \ref{fig:final-histograms}.}
+  \caption{Parameters used in processive simulations.}{These parameters cause processive stepping in the dynein model, as shown in Figures \ref{fig:stepping-trajectory} and \ref{fig:final-histograms}.}
   \label{table:thesis-parameters}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{../../plots/trajectory-plot_thesis}
-  \caption{Near and far binding domains over the course of several microseconds of simulation. Simulation run at standard conditions with $k_b=123 s^{-1}, k_{ub}=456 s^{-1}, c_b=c_m=c_t=789 \Delta G_{ATP}$.}
+  \caption{Dynein simulation displays processive stepping.}{Near and far binding domain x and y projections over the course of several microseconds of simulation. The blue foot corresponds to the ``near'' dimer closer to the viewer, and the red to the far dimer. Top: x-projection of binding domains over time. The motor steps roughly 50nm in 10 $\mu s$. Middle: cartoon depictions of the model during simulation. In the cartoons the blue foot's position on the x-axis corresponds to the time axis on the top and bottom plots. That is, the first cartoon corresponds to dynein at roughly 1 $\mu s$. The first cartoon corresponds to a bothbound model, and the second cartoon corresponds to a onebound model. Bottom: y-projection of binding domains over time. Notice that only one binding domain is above 0nm at any time.}
   \label{fig:stepping-trajectory}
 \end{figure}
 
@@ -1238,25 +1238,25 @@ Another important determination from Figure \ref{fig:stepping-trajectory}.c is t
 Importantly, the physical parameters causing processive motion are reasonable physically. The spring constants are roughly the same size as the energy of hydrolysis of ATP, which is reasonable. By a very rough argument, the dynein must move its tail angle by roughly one radian to diffuse enough for a step. This would correspond to a $\Delta G_{spring} = \frac{1}{2}c_t\Delta \theta_t \approx \Delta G_{ATP}$, which is very reasonable. In addition, the tail spring constant is less than the motor and binding spring constants, which is in line with the notion that the tail is much more elastic than the motor or binding domains. CITE\\
 
 \section{Model step size is highly variant}
-Figure \ref{fig:final-histograms}.a shows the stepping pattern of the model at the parameters shown in Table \ref{table:thesis-parameters}. This simulation was run over a much longer time period, and hence shows much more significant information on the model's stepping behavior.\\
+Figure \ref{fig:final-histograms} shows the stepping pattern of the model at the parameters shown in Table \ref{table:thesis-parameters}. This simulation was run over a much longer time period, and hence shows much more significant information on the model's stepping behavior.\\
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{../../plots/stepping_length_histogram_thesis}%%
     \includegraphics[width=0.5\textwidth]{../../figures/weihong-step-size.pdf}
-    \caption{Model vs experimental step sizes. \textbf{a.)} Step sizes model took at parameters in \ref{table:thesis-parameters}. \textbf{b.)} Experimental stepping behavior of dynein \cite{weihongpaper}.}
+    \caption{Stepping distribution of processive model and experimental dynein.}{Left: step sizes generated by model. Note the model can generate 25nm steps, but has a high preference for <5nm steps. Also note that no backward steps are generated by the model. Simulation run at conditions in \ref{table:thesis-parameters}. Right: Experimental stepping distribution of dynein, from \cite{weihongpaper}.}
     \label{fig:final-histograms}
 \end{figure}
 
-Figure \ref{fig:final-histograms}.a shows the model has a strong preference for $<5nm$ steps, but is capable of generating steps up to $25nm$ in length, with a fairly even distribution of step frequency between $5$ and $25nm$. This is a very important result, since it indicates that the model is capable of taking a varied step size. This behavior is characteristic of dynein, and hence very important to reproduce.\\
+Figure \ref{fig:final-histograms} shows the model has a strong preference for $<5nm$ steps, but is capable of generating steps up to $25nm$ in length, with a fairly even distribution of step frequency between $5$ and $25nm$. This is a very important result, since it indicates that the model is capable of taking a varied step size. This behavior is characteristic of dynein, and hence very important to reproduce.\\
 
-The preference for $<5nm$ steps is very un-dynein-like. One explanation is that steps may be defined differently between experimental and modeled dynein. In the simulation, every state transition where the motor unbinds from the microtubule is considered a step and plotted on the stepping histogram. This may not be how the experiment in \ref{fig:final-histograms}.b records steps. Another possibility is that the binding rate used for these simulations is far too high, and thus, immediate rebinding is very likely. A solution would thus be to lower the microtubule binding rate and see if the stepping histogram would level out. This may help, but may not, since lowering the binding rate would affect all binding probabilities, not just immediate rebindings.\\
+The preference for $<5nm$ steps is very un-dynein-like. One explanation is that steps may be defined differently between experimental and modeled dynein. In the simulation, every state transition where the motor unbinds from the microtubule is considered a step and plotted on the stepping histogram. This may not be how the experiment in \ref{fig:final-histograms} records steps. Another possibility is that the binding rate used for these simulations is far too high, and thus, immediate rebinding is very likely. A solution would thus be to lower the microtubule binding rate and see if the stepping histogram would level out. This may help, but may not, since lowering the binding rate would affect all binding probabilities, not just immediate rebindings.\\
 
 The ability of the model to generate near-experiment stepping behavior is imperative if the model is to be considered a proper explanation of dynein's stepping. In the case that changing the binding rate does not remove the small-step preference of the model, it may be necessary to change how the model works. For example, using the total spring-energy-of-binding change to calculate the binding probability may be invalid, or perhaps the entire two-state model will need to be thrown out. The inability of either of these assumptions to predict dynein's behavior would themselves be important findings.\\
 
 Another issue with the simulated histogram is that it shows no steps over $30nm$. This is a problem, since taking $40+nm$ steps is characteristic of dynein. Ideally, tuning the parameters of dynein would increase the step size. However, in the case that it can't, this might be an important result. The current model assumes connections between domains are rigid. This may not be a valid assumption, since the coiled coil region connecting the binding and motor domains has some elasticity to it CITE. Thus it may be necessary to add in elasticity to the model to reproduce long steps.\\
 
-Comparing the simulation results in \ref{fig:final-histograms}.a with the experimental results in \ref{fig:final-histograms}.b, it is clear that the model is still far from experimental dynein. However, this is not indicative of a failure of the model, since the simulation parameters have not yet been tuned to dynein. It is very possible that changing the binding rate, unbinding rate and spring constants will change the stepping behavior of the model dramatically. Lowering the binding rate may even out the histogram and prevent instant rebinding. It may also allow the model to diffuse along the microtubule longer, generating longer steps than 25nm. Another issue is the lack of backwards steps, which may also be solved by altering the spring constants.\\
+Comparing the simulation results in \ref{fig:final-histograms} with the experimental results in \ref{fig:final-histograms}.b, it is clear that the model is still far from experimental dynein. However, this is not indicative of a failure of the model, since the simulation parameters have not yet been tuned to dynein. It is very possible that changing the binding rate, unbinding rate and spring constants will change the stepping behavior of the model dramatically. Lowering the binding rate may even out the histogram and prevent instant rebinding. It may also allow the model to diffuse along the microtubule longer, generating longer steps than 25nm. Another issue is the lack of backwards steps, which may also be solved by altering the spring constants.\\
 
 %% \section{Current work: Refining model parameters}
 %% Once validated, the model was fit to experimental data. Figure \ref{fig:kb-kub-heatmap} shows a heat map of the behavior of simulations running at many different $k_b$ and $k_{ub}$ values. The color of each point represents the fit quality of a simulation's $\left<t_{ob}\right>$ value to experiment. As can be seen, a good fit is found in the $k_b=XX$, $k_{ub}=YY$ region.
@@ -1293,7 +1293,7 @@ To more strongly support the linker-swing/diffusive step model of dynein motion,
 \subsection{Further questions}
 If the model were validated by FRET and rigidity mutation studies, there are many other interesting things which could be found from it. First, the amount of work done by the motor could be found by inducing an artificial drag force pulling the protein's motor domains against its direction of travel. This force could be integrated over dynein's trajectory to find the work the model exerted on its artificial cargo. This could be used to estimate the efficiency of the motor. Another interesting study would be to add binding sites to the model, only allowing it to bind at $\alpha-\beta$ tubulin dimerization sites, like real dynein. This would mandate re-fitting the binding constants to the new environment. It would be interesting to know if this model behaves more, or less dynein-like than the original. This would help answer the question of whether dynein searches for a binding site on the microtubule, or if it is naturally tuned to bind at the right site.\\
 
-Another very interesting simulation which could be run could help answer the open question of why kinesin and dynein, though using similar mechanisms, produce such different steps. Kinesin, unlike dynein, conducts all of its chemistry directly on its foot. This translates to effectively having two fewer joints than dynein. Kinesin's stroke is believed to involves a similar foot unbinding, kicking forward, rebinding, then lurching the motor forward mechanism. The dynein model could be used to construct a very rough model of kinesin by shrinking the tail linkers and increasing the motor domain spring constant $c_m$ high enough to simulate a rigid hinge. This model could then be reduced to the size of kinesin, given the proper equilibrium angles, and simulated with Brownian dynamics. If this new model even roughly manages to mimic experimental kinesin stepping,that would be fascinating. This result would show that the differences betwen kinesin and dynein can be explained exclusively through the values of spring constants $c_t$, $c_m$, $c_b$, lengths $L_s$ and $L_t$, equilibrium angles and un/binding constants. This would mean the differences between the two motors are primarily due to the conformational angles the motors take with the microtubule and between their own domains, not because of differences in their mechanism.\\
+Another very interesting simulation which could be run could help answer the open question of why kinesin and dynein, though using similar mechanisms, produce such different steps. Kinesin, unlike dynein, conducts all of its chemistry directly on its foot. This translates to effectively having two fewer joints than dynein. Kinesin's stroke is believed to involves a similar foot unbinding, kicking forward, rebinding, then lurching the motor forward mechanism. The dynein model could be used to construct a very rough model of kinesin by shrinking the tail linkers and increasing the motor domain spring constant $c_m$ high enough to simulate a rigid hinge. This model could then be reduced to the size of kinesin, given the proper equilibrium angles, and simulated with Brownian dynamics. If this new model even roughly manages to mimic experimental kinesin stepping,that would be fascinating. This result would show that the differences between kinesin and dynein can be explained exclusively through the values of spring constants $c_t$, $c_m$, $c_b$, lengths $L_s$ and $L_t$, equilibrium angles and un/binding constants. This would mean the differences between the two motors are primarily due to the conformational angles the motors take with the microtubule and between their own domains, not because of differences in their mechanism.\\
 
 \subsection{The future of dynein research}
 The motor protein field has come a long way over the past two decades. Theoretical papers in the 90s, such as \textit{Bhaba et. al.} \cite{bhabha-paper},  opened up many questions about how cells can use proteins and simple chemical reactions to generate directed, finely-controlled motion. Following these papers came low-resolution structures and experiments testing the stepping behavior, directionality, conformation changes and chemical affinities of these motors. As structural technology got better, resolution got better, until eventually amino-acid resolution structures were found \cite{schmidt-carter}. These structures allowed more informed hypotheses to integrate experimental data and structures into well-advised theories on motor motility, such as \textit{Andreasson et. al.} for kinesin \cite{kinesin-cycle} and \textit{Cianfrocco et. al.} for dynein \cite{cianfroccoreview}. These theories are now being tested using state of the art methods. For example, a lab at Penn State is currently exploring kinesin dynamics using gold nanoparticles, and is capable of getting 2nm spatial resolution and 1ms temporal resolution \cite{kinesin-gold-nanoparticle}. This level of detail would provide intra-step information about the kinesin mechanochemical cycle, confirming or rejecting hypotheses about how the motor steps. If such technology were applied to dynein, the accuracy of the Cianfrocco model and the role of diffusion would be definitively determined. However, such experiments take time to design and implement. In the meantime, modelling projects like the one in this thesis can be used to provide rough windows into the nanoscale world, guiding future experimental work. They sanity-check theories and help scientists form new questions, such as if dynein drags along the microtubule or diffuses above it. It is uncertain what direction the field will go over the coming decade, but it is clear that now is a very exciting time for dynein research.\\
@@ -1411,10 +1411,10 @@ The models were tested in the following different conformations to verify they b
 
 \textbf{Onebound tests}
 \begin{itemize}
-\item \textbf{Onebound:} \textit{Upwards line conformation with no forces.} Check that all domain x-values are zero$^*$ and all y-values are the proper addition of $L_s$ and $L_t$ lengths. Also checks that all angular velocities are zero. This test verifies that the angle scheme is defined properly, that the model can handle straight lines without generating NaNs and that there are no velocities (angular or cartesian) without forces.
+\item \textbf{Onebound:} \textit{Upwards line conformation with no forces.} Check that all domain x-values are zero$^*$ and all y-values are the proper addition of $L_s$ and $L_t$ lengths. Also checks that all angular velocities are zero. This test verifies that the angle scheme is defined properly, that the model can handle straight lines without generating NaNs and that there are no velocities (angular or Cartesian) without forces.
 \item \textbf{Onebound:} \textit{Horizontal line conformation with no forces.} Check that all domain y-values are zero and all x-values are the proper addition of $L_s$ and $L_t$ lengths. Also check that all velocities are zero. This test double-verifies that the coordinate system behaves as expected and that velocities are zero in the absence of forces.
-\item \textbf{Onebound:} \textit{Upwards line conformation with +x forces} Check that cartesian x-velocities are positive and y-velocities are zero. Verifies that the cartesian velocities have the expected sign.
-\item \textbf{Onebound:} \textit{Upwards line conformation with +y forces} Check that all cartesian velocities are zero. Verifies that upwards forces in an already-vertical stalk have no effect on velocity.
+\item \textbf{Onebound:} \textit{Upwards line conformation with +x forces} Check that Cartesian x-velocities are positive and y-velocities are zero. Verifies that the Cartesian velocities have the expected sign.
+\item \textbf{Onebound:} \textit{Upwards line conformation with +y forces} Check that all Cartesian velocities are zero. Verifies that upwards forces in an already-vertical stalk have no effect on velocity.
   \item \textbf{Onebound:} \textit{Prepowerstroke opposing internal/brownian forces} Check that, for two onebound models, one with +x spring forces and no Brownian forces and the other with -x Brownian forces and no spring forces, that the velocities of each unbound domain are equal and opposite. Verifies that equal Brownian and internal forces have the same magnitude and direction of effect on velocities.
 \end{itemize}
 *: checks for equality are within a margin of error of $\epsilon = 1e^{-5}$.\\
