@@ -28,6 +28,33 @@ def read_csv(fname):
                             "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
+def latex_format(x):
+    if isinstance(x, float) or isinstance(x, int):
+        x = '{:g}'.format(x)
+        if 'e+0' in x:
+            m,e = x.split('e+0')
+            if m == '1':
+                return r'10^{'+e+'}'
+            return m + r'\times 10^{' + e+ '}'
+        if 'e+' in x:
+            m,e = x.split('e+')
+            if m == '1':
+                return r'10^{'+e+'}'
+            return m + r'\times 10^{' + e+ '}'
+        if 'e-0' in x:
+            m,e = x.split('e-0')
+            if m == '1':
+                return r'10^{-'+e+'}'
+            return m + r'\times 10^{-' + e+ '}'
+        if 'e' in x:
+            m,e = x.split('e')
+            if m == '1':
+                return r'10^{'+e+'}'
+            return m + r'\times 10^{' + e+ '}'
+    if isinstance(x, str):
+        x = x.replace('-', '_')
+    return x
+
 def run_sim(**run):
     if os.path.isdir('run_scripts'):
         os.chdir('run_scripts')
@@ -52,6 +79,12 @@ def run_sim(**run):
       basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                              run["cb"], run["cm"], run["ct"], run["dt"])
 
+    with open("../data/stepping_parameters_%s.tex" % basename, "w") as f:
+        for k,v in sorted(run.items()):
+            if 'label' in run:
+                f.write(r'\newcommand\%s_%s{%s}' % (latex_format(k), latex_format(run['label']), latex_format(v)) + '\n')
+            else:
+                f.write(r'\newcommand\%s_value{%s}' % (latex_format(k), latex_format(v)) + '\n')
     out = open('../runlogs/' + basename + '.out', 'w')
     process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, cwd="../")
     print("Running: ", " ".join(cmd))
