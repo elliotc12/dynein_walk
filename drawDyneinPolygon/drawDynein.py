@@ -6,30 +6,26 @@ import re
 
 
 coords_path = "circle_coords.txt"
-circle_data = open(coords_path, 'r')
+with open(coords_path, 'r') as circle_data:
+    #print circle_data.read() 
+    data = []
 
-#print circle_data.read() 
-data = []
-x = []
-y = []
+    for piece in circle_data:
+        splitLine = re.split(r'\s|,', piece)
+        for strng in splitLine:
+            try:
+                f =float(strng)
+                data.append(f)
+            except ValueError:
+                print "Cannot convert string to int", strng
 
-for piece in circle_data:
-    splitLine = re.split(r'\s|,', piece)
-    for strng in splitLine:
-        data.append(strng)
-        try:
-            f =float(strng)
-            data.append(f)
-        except ValueError:
-            print "Cannot convert string to int", strng
-
-circle_data.close() 
-
+x = [0]
+y = [0]
 for i in range( len(data)):
     if i%2==0:
-        x.append(data[i])
+        y.append(y[-1] + data[i])
     else:
-        y.append(data[i])
+        x.append(x[-1] + data[i])
 
 
 
@@ -38,16 +34,10 @@ for i in range(0, len(x)):
     circle[i,0] = x[i]
     circle[i,1] = y[i]
 
-
-
-
-
-
 fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
 
-
-plt.plot(x,y)
+plt.plot(x,y, '.-')
 plt.show()
 
 
