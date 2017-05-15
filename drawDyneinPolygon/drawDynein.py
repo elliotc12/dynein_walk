@@ -14,7 +14,7 @@ x = []
 y = []
 
 for piece in circle_data:
-    splitLine = re.split('\s|,', piece)
+    splitLine = re.split(r'\s|,', piece)
     for strng in splitLine:
         data.append(strng)
         try:
@@ -47,7 +47,8 @@ fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
 
 
-poly = np.array([[0.0,3.0689],[4.43377,-2.516243],[-1.99789, -3.95718]])
+plt.plot(x,y)
+plt.show()
 
 
 
