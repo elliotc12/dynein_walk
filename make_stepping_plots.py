@@ -34,7 +34,7 @@ num_steps = len(step_lengths)
 
 #step length histogram
 fig = plt.figure()
-plt.hist(step_lengths, bins=12)
+plt.hist(step_lengths, bins=50)
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
@@ -42,7 +42,7 @@ plt.close(fig)
 
 #step time histogram
 fig = plt.figure()
-plt.hist(step_times, bins=12)
+plt.hist(step_times, bins=50)
 plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 plt.xlabel("Step time (s)")
 plt.ylabel("Frequency")

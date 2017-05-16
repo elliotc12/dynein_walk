@@ -136,6 +136,14 @@ plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py d
 	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
+data/fitting_stepping_data.txt data/fitting_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-fitting-data.py
+	python3 run_scripts/generate-fitting-data.py
+
+plots/stepping_time_histogram_fitting.pdf plots/stepping_length_histogram_fitting.pdf: make_stepping_plots.py data/fitting_stepping_data.txt
+	python3 make_stepping_plots.py data/fitting_stepping_data.txt
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_fitting.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_fitting.pdf
+
 #data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
 #	mkdir -p data
 #	make generate_stepping_data
