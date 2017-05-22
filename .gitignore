@@ -62,3 +62,4 @@ simrunner
 *.pyc
 version-info.h
 *.xml
+draw/polygons.py
