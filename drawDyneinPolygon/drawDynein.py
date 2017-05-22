@@ -1,24 +1,15 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
-import motorDomain as md
+import polygonData as pd
 
 
 
 fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
-M =md.motorDomainArray(0.5,0.5,0.001)
-# ax.add_patch(
-#     patches.Polygon(
-#         M*0.001,
-#         color='blue',
-#         alpha= 1.0
-#         )
-#     )
-plt.plot(M[:,0],M[:,1])
 
 
-plt.show()
+
 
 def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     length = np.sqrt((xm-xb)**2+(ym-yb)**2)
@@ -46,7 +37,7 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     )
 
     #motor domain
-    md_array = md.motorDomainArray(xm,ym,0.001)
+    md_array = pd.motorDomainArray(xm,ym,0.0025)
     ax.add_patch(
         patches.Polygon(
             md_array,
@@ -65,7 +56,10 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
         )
 
 
-
+dyneinPolygon(0,0,1,1,2.5,2,'blue',1.0,ax) 
+plt.xlim(-5,5)
+plt.ylim(-5,5)
+plt.show()
 
 
 
