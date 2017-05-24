@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 import re
@@ -17,7 +18,7 @@ with open(outer_path, 'r') as outer_data:
                 f =float(strng)
                 outer_disps.append(f)
             except ValueError:
-                print "Cannot convert string to int", strng
+                print("Cannot convert string to int", strng)
 mdo_x = [0]     #motor domain outer path x displacements
 mdo_y = [0]     #motor domain outer path y displacements
 for i in range( len(outer_disps)):
@@ -31,7 +32,7 @@ for j in range(len(mdo_x)):
     mdo_array[j,0] = mdo_x[j]
     mdo_array[j,1] = mdo_y[j]
 center_mass = mdo_array.sum(axis=0)/len(mdo_array)
-print center_mass
+print(center_mass)
 
 for i in range(len(mdo_array)):
     mdo_array[i,:] -= center_mass
