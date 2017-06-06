@@ -125,26 +125,28 @@ ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
 
 # cartoons
 # ax1.axis('off')
-ax1.set_aspect('equal', 'datalim')
+
 plt.setp(ax1.get_xticklabels(), visible=False)
-plt.setp(ax1.get_yticklabels(), visible=False)
+# plt.setp(ax1.get_yticklabels(), visible=False)
 
 x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
 y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 
-x_scaling = 0.03
-y_scaling = 0.03
+x_scaling = 0.02
+y_scaling = 0.02
 
 cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
 
-gs.tight_layout(fig, h_pad=0)
+# gs.tight_layout(fig, h_pad=0)
 plt.sca(ax1)
 
 i = 0
+savefigframe = 0
 dt = data[1,1] - data[0,1]
 
 while i*dt < 9.0*1e-6:
     ax1.cla()
+
     ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
     for silhouette_time in cartoon_draw_times_x_proj:
         if (silhouette_time > i*dt):
@@ -155,7 +157,7 @@ while i*dt < 9.0*1e-6:
         if int(data[idx, 0]) == 1:
             Xs = Xs[::-1]
             Ys = Ys[::-1]
-        alpha = 0.3
+        alpha = 0.6
         draw_cartoon.draw_cartoon([silhouette_time*1e6, 0], Xs, Ys, x_scaling, y_scaling, alpha)
 
     Xs = data[i,7:16:2]
@@ -166,7 +168,13 @@ while i*dt < 9.0*1e-6:
     alpha = 1.0
     draw_cartoon.draw_cartoon([i*dt*1e6, 0], Xs, Ys, x_scaling, y_scaling, alpha)
 
-    fname = 'PNGs/movie-%06d.png' % i
+    # plt.setp(ax1.get_xticklabels(), visible=False)
+    # plt.setp(ax1.get_yticklabels(), visible=False)
+    ax1.set_xlim([0,10])
+    ax1.set_ylim([0,1])
+
+    fname = 'PNGs/movie-%06d.png' % savefigframe
+    savefigframe += 1
     plt.savefig(fname)
     sys.stdout.write("video progress: %.1f%%\r" % (i*dt/(9.0*1e-6)*100))
     sys.stdout.flush()
@@ -174,7 +182,7 @@ while i*dt < 9.0*1e-6:
 
 os.system('mkdir -p plots')
 
-framerate = 1
+framerate = 24
 have_avconv = True
 
 try:
@@ -184,9 +192,9 @@ except (OSError, subprocess.CalledProcessError):
     have_avconv = False
 
 if have_avconv:
-    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
+    movie_cmd = "avconv -loglevel quiet -y -framerater %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
 else:
-    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
+    movie_cmd = "ffmpeg -loglevel quiet -y -framerate %g -i PNGs/movie-%%06d.png -b 1000k movies/movie.mp4" % framerate
 
 print(movie_cmd)
 os.system(movie_cmd) # make the movie
