@@ -18,8 +18,8 @@ if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
 
 bind_times = np.array(data[:,1])
 unbind_times = np.array(data[:,0])
-near_positions = np.array(data[:,2])
-far_positions = np.array(data[:,3])
+near_positions = -1*np.array(data[:,2])
+far_positions = -1*np.array(data[:,3])
 near_step_idxs = near_positions[1:] != near_positions[:-1]
 far_step_idxs = far_positions[1:] != far_positions[:-1]
 near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
