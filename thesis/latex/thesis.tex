@@ -246,7 +246,7 @@ Motor proteins are cellular structures which use chemical energy to do work and 
 
 The basic process is simple. Kinesin, myosin and dynein each use two binding domains to attach to a surface. These binding domains are connected via a linker domain. Each motor protein is an engine which undergoes cycles, where each cycle moves the motor across a surface. In a single cycle a binding domain unbinds from a surface, tenses its foot to kick forward, rebinds, then untenses its foot to pull the whole motor forward. This pattern is repeated by both feet to generate motion \cite{kinesin-cycle} \cite{myosin-cycle}.\\
 
-Although the three motor protein families operate using the same stepping cycle, their behaviors differ significantly. Kinesin and myosin are predictable motors which step in the forward direction with a regular step size [get kinesin, myosin stepping papers]. In contrast, dynein's stepping pattern varies in both size and direction. The motor can take 64nm steps forward or 32nm steps backward, and often steps sideways as well \cite{weihongpaper}. How can motors which implement the same release, lever, bind, lurch stepping mechanism behave so differently?\\
+Although the three motor protein families operate using the same stepping cycle, their behaviors differ significantly. Kinesin and myosin are predictable motors which step in the forward direction with a regular step size. In contrast, dynein's stepping pattern varies in both size and direction. The motor can take 64nm steps forward or 32nm steps backward, and often steps sideways as well \cite{weihongpaper}. How can motors which implement the same release, lever, bind, lurch stepping mechanism behave so differently?\\
 
 One possibility is that dynein's size and organization are responsible for the motor's odd stepping pattern. Dynein is much larger than kinesin or myosin, so its feet may need to move significantly further during each cycle. Due to the random nature of Brownian motion from water particle collisions, there may be significantly more variance in the path taken by dynein's feet compared to other motor feet. This could explain the large variance in step size. Another contributing factor could be that dynein is so large that it can twist and contort during its step, allowing varying and even backwards steps, which a small motor would be too stiff to achieve.\\
 
@@ -288,14 +288,14 @@ Dynein is a protein with many smaller domains. A depiction of the protein and it
 \begin{figure}[h]
   \centering
   \includegraphics[width=.65\textwidth,keepaspectratio]{../../figures/dynein-artist-rendition.jpg}
-  \caption{Artist's rendition of dynein bound to a microtubule.}{Two heavy chains (green/blue) and several tail proteins (pink) come together to form the dynein motor complex. One monomer's binding domain is bound to the microtubule, and the other is diffusing. ATP hydrolysis sites are labeled glowing green. Figure modified. Source: Lander Lab, The Scripps Research Institute \cite{landerartistsrendition}.}
+  \caption{Artist's rendition of dynein bound to a microtubule.}{Two heavy chains (cyan and blue) and several tail proteins (pink) come together to form the dynein motor complex. One monomer's binding domain is bound to the microtubule (green), and the other is diffusing. ATP hydrolysis sites are labeled glowing green. Figure modified. Source: Lander Lab, The Scripps Research Institute \cite{landerartistsrendition}.}
   \label{dynein-artist-rendition}
 \end{figure}
 
-Dynein is believed to move by using the energy of ATP to cycle through a ring of states, each with different spatial relations to the microtubule. By cycling forward through this ring, the molecule will end up in the same state it began, but moved forward a small amount. This ring of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
+Dynein is believed to move by using the energy of ATP to cycle through a sequence of states, each with different spatial relations to the microtubule. By cycling forward through this sequence, the molecule will end up in the same state it began, but moved forward a small amount. This sequence of states is known as the mechanochemical cycle \cite{cianfroccoreview}. The goal of this project is to create a mathematical model of the mechanochemical cycle and verify that it can reproduce experimental dynein stepping data. There are several types of dynein which all behave slightly differently. This project will focus on cytoplasmic dynein-1, hereby referred to as dynein.\\
 
 \subsection{Why do cells need motor transport?}
-Cells are organized, heterogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu m^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
+Cells are organized, heterogenous structures which respond quickly to their environments. This means that cells require a mechanism for rapidly moving components to precise locations within the cell. This can be a challenge, since cells are fairly large compared to the proteins which compose them. A human fibroblast cell has a volume of roughly 2000 $\mu\text{m}^3$\cite{fibroblastvolume}, corresponding to roughly $8 \mu m$ in diameter. In comparison, human hemoglobin has a diameter of roughly $5 nm$ (PDB id 5ME2), a $10^3$ factor difference in size.\\
 
 Diffusion, or random motion of molecules due to collisions with solvent (i.e. Brownian motion), is one possible process cells could use to transport biomolecules. Diffusion has two problems: it is slow and nondirected. The expected distance covered for one-dimensional Brownian motion after time t was found by Einstein to be \cite{einstein-paper}:
 
@@ -978,7 +978,7 @@ Euler's method for solving differential equations was used to calculate domain p
               t += dt
     \end{lstlisting}
   \end{tabular}
-  \caption{Euler's method code snippet.}{This code calculates domain velocities for onebound dynein and uses them to find position displacements. These values are stored in temporary variables first, then updated all at once.}
+  \caption{Domain time evolution via Euler's method code snippet.}{This code calculates domain velocities for onebound dynein and uses them to find position displacements. These values are stored in temporary variables first, then updated all at once.}
   \label{snip:euler-code-snippet}
 \end{figure}
 
