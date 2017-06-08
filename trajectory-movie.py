@@ -150,7 +150,7 @@ while i*dt < 9.0*1e-6:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
     alpha = 1.0
-    draw_cartoon.draw_cartoon([0, 0], int(data[i, 0]), Xs, Ys, x_scaling, y_scaling, alpha)
+    draw_cartoon.draw_cartoon_movie_edition([0, 0], int(data[i, 0]), Xs, Ys, x_scaling, y_scaling, alpha)
 
     ax2.set_xlim([-60,30])
     ax2.set_ylim([-5,40])
