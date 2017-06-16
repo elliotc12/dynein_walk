@@ -14,10 +14,8 @@ from matplotlib.patches import Rectangle
 
 import io
 
-tail = 'tail' in sys.argv
-
 usage = '''
-Usage: python3 TITLE %s [show] [tail]"
+Usage: python2 %s FILENAME [show]"
        show: show animation in a window while generating movie
 	     omitting show makes %s faster but less exciting to watch
 ''' % (sys.argv[0], sys.argv[0])
@@ -80,6 +78,7 @@ y_max_xproj = np.max([np.max(avg_nbxs), 20])
 y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
+plt.ion()
 fig = plt.figure()
 gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
@@ -164,6 +163,7 @@ while i*dt < 9.0*1e-6:
     sys.stdout.write("video progress: %.1f%%\r" % (i*dt/(9.0*1e-6)*100))
     sys.stdout.flush()
     i += 100
+    plt.draw()
 
 os.system('mkdir -p plots')
 

@@ -17,10 +17,9 @@ import io
 tail = 'tail' in sys.argv
 
 usage = '''
-Usage: python2 TITLE %s [show] [tail]"
-       show: show animation in a window while generating movie
-	     omitting show makes %s faster but less exciting to watch
-''' % (sys.argv[0], sys.argv[0])
+Usage: python2 %s FILENAME [show]"
+       show: show plot in a window
+''' % (sys.argv[0])
 
 if len(sys.argv) < 2:
   print(usage)
@@ -154,3 +153,4 @@ gs.tight_layout(fig, h_pad=0)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/trajectory-plot.pdf")
+plt.show()
