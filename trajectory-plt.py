@@ -114,12 +114,15 @@ cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-0
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] == t)[0][0]
-    Xs = data[idx,7:16:2]
-    Ys = data[idx,8:17:2]
-    if int(data[idx, 0]) == 1:
+    Xs = -x_scaling*data[idx,7:16:2]
+    Xs -= Xs[4]
+    Ys = y_scaling*data[idx,8:17:2]
+    state = int(data[idx, 0])
+    if state == 1:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
-    draw_cartoon.draw_cartoon([t*1e6, 0], Xs, Ys, x_scaling, y_scaling)
+    Xs = Xs + t*1e6;
+    draw_cartoon.draw(Xs, Ys)
 
 ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
 
