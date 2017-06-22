@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
-import polygonData as pd
-
-
+import motor_domain as md 
+import tail 
 
 fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
@@ -13,8 +12,7 @@ ax = fig.add_subplot(111, aspect='equal')
 
 def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     length = np.sqrt((xm-xb)**2+(ym-yb)**2)
-    r1 = 0.05*length
-    r2 = 0.1*length
+    r1 = 0.1*length
 
     # binding domain 
     ax.add_patch(
@@ -32,34 +30,55 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             [[xb,yb],[xm,ym]],
             color = c ,
             alpha = a,
-            lw = 0.65*length
+            lw = 0.4*length
         )
     )
 
-    #motor domain
-    md_array = pd.motorDomainArray(xm,ym,0.0025)
-    ax.add_patch(
-        patches.Polygon(
-            md_array,
-            color = c,
-            alpha = a
-        )
-    )
+
     #tail
+    t = tail.array
+    L = np.sqrt((xt-xm)**2+(yt-ym)**2)
+    t[:,0] = (0.5*L)*t[:,0]
+    t[:,1] = (0.3*L)*t[:,1]
+    theta = np.arctan2((yt-ym),(xt-xm))
+    rot = np.matrix([[np.cos(theta), -np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+    for i in range(0, len(t[:,0])):
+        t[i] = np.dot(rot, t[i])
+    t[:,0] = t[:,0] + xm
+    t[:,1] = t[:,1] + ym
+    
     ax.add_patch(
         patches.Polygon(
-            [[xm,ym],[xt,yt]],
-            color = c,
-            alpha = a,
-            lw = 0.65*np.sqrt((xt-xm)**2+(yt-ym)**2)
+            t,
+            color = c, # "black",
+            alpha = a
             )
         )
 
+    #motor domain
+ 
+    motor_domain = np.zeros((len(md.array[:,0]),2))
+    motor_domain = md.array
+    motor_domain[:,0] = motor_domain[:,0] + xm
+    motor_domain[:,1] = motor_domain[:,1] + ym 
+    ax.add_patch(
+        patches.Polygon(
+            motor_domain,
+            color = c,
+            alpha = a
+            )
+        )
 
-dyneinPolygon(0,0,1,1,2.5,2,'blue',1.0,ax) 
-plt.xlim(-5,5)
-plt.ylim(-5,5)
-plt.show()
+    
+   
+
+ 
+
+dyneinPolygon(0,0,10,20,30,35,'blue',1.0,ax)
+plt.xlim(-10,50)
+plt.ylim(-10,50)
+plt.show() 
+ 
 
 
 
