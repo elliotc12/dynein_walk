@@ -28,6 +28,8 @@ def read_csv(fname):
                             "cm":float(values[6]), "ct":float(values[7])})
     return custom_runs
 
+
+# ask professor round / elliott about this latex_format stuff - 6/26/17
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
         x = '{:g}'.format(x)
