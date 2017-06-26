@@ -7,7 +7,8 @@ import time, signal, sys, os, matplotlib, subprocess
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-import draw_cartoon
+import draw_cartoon as cartoon
+# import draw.drawDynein
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
@@ -121,7 +122,7 @@ for t in cartoon_draw_times_x_proj:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
     Xs = Xs + t*1e6;
-    draw_cartoon.draw(Xs, Ys)
+    cartoon.draw(Xs, Ys)
 
 ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
 
@@ -133,21 +134,6 @@ ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)
 
 ax2.plot(avg_times, avg_nbys, label="near foot", c='b')
 ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
-
-# x_axes_size = ax2.get_xlim()[1] - ax2.get_xlim()[0]
-# y_axes_size = ax2.get_ylim()[1] - ax2.get_ylim()[0]
-
-# x_scaling = 0.005*x_axes_size
-# y_scaling = 0.005*y_axes_size
-
-# cartoon_draw_times_y_proj = np.array([0.3*1e-6, 0.6*1e-6])
-
-# plt.sca(ax2)
-# for t in cartoon_draw_times_y_proj:
-#     idx = np.where(data[:,1] == t)[0][0]
-#     Xs = data[idx,7:16:2]
-#     Ys = data[idx,8:17:2]
-#     draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
 
 gs.tight_layout(fig, h_pad=0)
 

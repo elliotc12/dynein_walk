@@ -132,12 +132,15 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
 
-plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py draw_cartoon.py draw/polygons.py
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py draw_cartoon.py draw/motor_domain.py draw/tail.py
 	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
-draw/polygons.py: draw/translatePolygonDataToPython.py $(wildcard draw/*.txt)
-	cd draw && python translatePolygonDataToPython.py
+draw/motor_domain.py: draw/create_MD_array.py draw/outer_coords.txt
+	cd draw && python create_MD_array.py
+
+draw/tail.py: draw/tailDomain.py
+	cd draw && python tailDomain.py
 
 data/fitting_stepping_data.txt data/fitting_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-fitting-data.py
 	python3 run_scripts/generate-fitting-data.py
