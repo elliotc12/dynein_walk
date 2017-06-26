@@ -7,9 +7,6 @@ import tail
 fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
 
-
-
-
 def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     length = np.sqrt((xm-xb)**2+(ym-yb)**2)
     r1 = 0.1*length
@@ -30,13 +27,12 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             [[xb,yb],[xm,ym]],
             color = c ,
             alpha = a,
-            lw = 0.4*length
+            lw = 0.4*length  #scaling not physically significant. Just for visual appeal
         )
     )
 
-
     #tail
-    t = tail.array
+    t = np.array(tail.array)
     L = np.sqrt((xt-xm)**2+(yt-ym)**2)
     t[:,0] = (0.5*L)*t[:,0]
     t[:,1] = (0.3*L)*t[:,1]
@@ -56,9 +52,7 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
         )
 
     #motor domain
- 
-    motor_domain = np.zeros((len(md.array[:,0]),2))
-    motor_domain = md.array
+    motor_domain = np.array(md.array)
     motor_domain[:,0] = motor_domain[:,0] + xm
     motor_domain[:,1] = motor_domain[:,1] + ym 
     ax.add_patch(
@@ -68,15 +62,15 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             alpha = a
             )
         )
+#dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax)
 
-    
-   
+dyneinPolygon(0,5,10,25,30,35,'blue',1.0,ax)
+dyneinPolygon(10,0,11,21,30,35,'red',1.0,ax)
 
- 
-
-dyneinPolygon(0,0,10,20,30,35,'blue',1.0,ax)
 plt.xlim(-10,50)
-plt.ylim(-10,50)
+plt.ylim(-10,50) 
+
+
 plt.show() 
  
 
