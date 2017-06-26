@@ -1,17 +1,24 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
-import motor_domain as md 
-import tail 
+from . import motor_domain as md
+from . import tail
+
+physical_stalk_length = 22.1 # nm
 
 fig = plt.figure()
 ax = fig.add_subplot(111, aspect='equal')
 
-def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
-    length = np.sqrt((xm-xb)**2+(ym-yb)**2)
-    r1 = 0.1*length
+def draw(x_coords, y_coords, alpha=1):
+    ax = plt.gca()
+    dyneinPolygon(x_coords[0], y_coords[0], x_coords[1], y_coords[1], x_coords[2], y_coords[2], 'blue', alpha, ax)
+    dyneinPolygon(x_coords[4], y_coords[4], x_coords[3], y_coords[3], x_coords[2], y_coords[2], 'red', alpha, ax)
 
-    # binding domain 
+def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
+    stalk_length = np.sqrt((xm-xb)**2+(ym-yb)**2)
+    r1 = 0.1*stalk_length
+
+    # binding domain
     ax.add_patch(
         patches.Circle(
             (xb, yb),
@@ -21,13 +28,13 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
         )
     )
 
-    #leg 
+    #leg
     ax.add_patch(
         patches.Polygon(
             [[xb,yb],[xm,ym]],
             color = c ,
             alpha = a,
-            lw = 0.4*length  #scaling not physically significant. Just for visual appeal
+            lw = 0.4*stalk_length  #scaling not physically significant. Just for visual appeal
         )
     )
 
@@ -42,7 +49,6 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
         t[i] = np.dot(rot, t[i])
     t[:,0] = t[:,0] + xm
     t[:,1] = t[:,1] + ym
-    
     ax.add_patch(
         patches.Polygon(
             t,
@@ -52,9 +58,9 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
         )
 
     #motor domain
-    motor_domain = np.array(md.array)
+    motor_domain = np.array(md.array)*stalk_length/physical_stalk_length
     motor_domain[:,0] = motor_domain[:,0] + xm
-    motor_domain[:,1] = motor_domain[:,1] + ym 
+    motor_domain[:,1] = motor_domain[:,1] + ym
     ax.add_patch(
         patches.Polygon(
             motor_domain,
@@ -62,17 +68,16 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             alpha = a
             )
         )
-#dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax)
 
-dyneinPolygon(0,5,10,25,30,35,'blue',1.0,ax)
-dyneinPolygon(10,0,11,21,30,35,'red',1.0,ax)
+if __name__ == "__main__":
+    dyneinPolygon(0,5,10,25,30,35,'blue',1.0,ax)
+    dyneinPolygon(10,0,11,21,30,35,'red',1.0,ax)
 
-plt.xlim(-10,50)
-plt.ylim(-10,50) 
+    plt.xlim(-10,50)
+    plt.ylim(-10,50)
 
+    plt.show()
 
-plt.show() 
- 
 
 
 
