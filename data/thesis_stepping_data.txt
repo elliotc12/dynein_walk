@@ -1,5 +1,5 @@
 # command line: ./generate_stepping_data --k_b 1e+16 --k_ub 1e+20 --cb 2 --cm 2 --ct 1 --dt 1e-10 --label thesis --seed 8 --runtime 0.001 --constant-write
-# version: -=-2017-06-26T09:53:51,041328498-0700
+# version: -=-2017-07-11T10:43:51,196352676-0700
 
 
 
