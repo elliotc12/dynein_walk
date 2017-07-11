@@ -6,10 +6,9 @@ import matplotlib.pyplot as plt
 # path = "thesis_movie_data.txt"
 # dataTable = np.loadtxt(path, skiprows=2, comments='#', delimiter='\t')
 
-A = np.array([1,1,1,1,1,3,1,4,2,1,2,5,6,2,1,1,1,1,1])
-dt = 1
 
-def autoCorrelate(data):
+
+def autoCorrelate1(data):
     rho = np.zeros(len(data)) # autocorrelation function to be returned
     n = len(data)
     mu = np.mean(data) #mean 
@@ -23,8 +22,41 @@ def autoCorrelate(data):
 
         rho[k] = (1/((n-k)*sig2**2))*R
     return rho 
-                   
-RHO = autoCorrelate(A)
-t = np.arrange(0, dt*len(A), dt)
-plt.plot(t, RHO)
+
+def autoCorrelate2(data):
+    n = len(data)
+    rho = np.zeros(n)
+    mu = np.mean(data)
+    
+    for k in range(0, n):
+        R = 0
+        N = 0
+        for t in range(0, n-k):
+            R = R + (data[t]-mu)*(data[t+k]-mu)
+            N = N + np.abs(data[t]-mu)**2
+        rho[k] = R/N
+
+    return rho
+
+A = np.random.rand(1000)
+rho1 = autoCorrelate1(A)
+rho2 = autoCorrelate1(A)
+l = len(A)
+
+plt.figure()
+plt.plot(rho1, 'b')
+plt.xlim(-5, l)
+plt.ylim(-20,20)
+plt.xlabel('n')
+plt.ylabel('np.random.rand(n)')
+plt.title('Wikipedia R(k) method')
+
+plt.figure()
+plt.plot(rho2, 'k')
+plt.xlim(-5, l)
+plt.ylim(-20,20) 
+plt.xlabel('n')
+plt.ylabel('np.random.rand(n)')
+plt.title('Prof Roundy Method')
+
 plt.show()
