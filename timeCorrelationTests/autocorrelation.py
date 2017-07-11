@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 # path = "thesis_movie_data.txt"
 # dataTable = np.loadtxt(path, skiprows=2, comments='#', delimiter='\t')
 
-A = np.array([1,1,1,1,1,3,1,4,2,1,2,5,6,2,1,1,1,1,1])
-dt = 1
+A = np.random.rand(1000)
+dt = 1 # this will be changed later to match dynein dt 
 
 def autoCorrelate(data):
     rho = np.zeros(len(data)) # autocorrelation function to be returned
@@ -25,6 +25,8 @@ def autoCorrelate(data):
     return rho 
                    
 RHO = autoCorrelate(A)
-t = np.arrange(0, dt*len(A), dt)
+t = np.arange(0, dt*len(A), dt)
 plt.plot(t, RHO)
+plt.xlabel(r'$\tau$')
+plt.ylabel(r'$\rho(\tau)$')
 plt.show()
