@@ -1,14 +1,21 @@
 from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
+import sys 
+
+# example for running script from terminal: python autocorrelation.py data.txt #
+# expecting thesis_movie_data.txt
+
+## loading data in fo
+path = sys.argv[1]
+dataTable = np.loadtxt(path, delimiter='\t', skiprows=1)
+print "Successfully loaded!"
+print np.shape(dataTable)
 
 
-# path = "thesis_movie_data.txt"
-# dataTable = np.loadtxt(path, skiprows=2, comments='#', delimiter='\t')
 
 
-
-
+## autocorrelation fucntion definitions ##
 def autoCorrelate1(data):
     rho = np.zeros(len(data)) # autocorrelation function to be returned
     n = len(data)
@@ -38,26 +45,26 @@ def autoCorrelate2(data):
         rho[k] = R/N
 
     return rho
+ 
+# A = np.random.rand(1000)
+# rho1 = autoCorrelate1(A)
+# rho2 = autoCorrelate1(A)
+# l = len(A)
 
-A = np.random.rand(1000)
-rho1 = autoCorrelate1(A)
-rho2 = autoCorrelate1(A)
-l = len(A)
+# plt.figure()
+# plt.plot(rho1, 'b')
+# plt.xlim(-5, l)
+# plt.ylim(-20,20)
+# plt.xlabel('n')
+# plt.ylabel('np.random.rand(n)')
+# plt.title('Wikipedia R(k) method')
 
-plt.figure()
-plt.plot(rho1, 'b')
-plt.xlim(-5, l)
-plt.ylim(-20,20)
-plt.xlabel('n')
-plt.ylabel('np.random.rand(n)')
-plt.title('Wikipedia R(k) method')
+# plt.figure()
+# plt.plot(rho2, 'k')
+# plt.xlim(-5, l)
+# plt.ylim(-20,20) 
+# plt.xlabel('n')
+# plt.ylabel('np.random.rand(n)')
+# plt.title('Prof Roundy Method')
 
-plt.figure()
-plt.plot(rho2, 'k')
-plt.xlim(-5, l)
-plt.ylim(-20,20) 
-plt.xlabel('n')
-plt.ylabel('np.random.rand(n)')
-plt.title('Prof Roundy Method')
-
-plt.show()
+# plt.show()
