@@ -1,0 +1,990 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.4 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{kinesin-cycle}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Andreasson}{A.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Shastry}{S.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hancock}{H.}%
+     {W.}{W.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Block}{B.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{AJ+1}
+  \strng{fullhash}{AJSSHWBS1}
+  \field{sortinit}{A}
+  \field{number}{25}
+  \field{pages}{1166\bibrangedash 1175}
+  \field{title}{The mechanochemical cycle of mammalian kinesin-2 KIF3A/B under
+  load}
+  \field{volume}{9}
+  \field{journaltitle}{Curr Biol.}
+  \field{year}{2015}
+\endentry
+
+\entry{bhabha-paper}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Bhabha}{B.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Johnson}{J.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schroeder}{S.}%
+     {C.}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vale}{V.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {CellPress}%
+  }
+  \strng{namehash}{BG+1}
+  \strng{fullhash}{BGJGSCVR1}
+  \field{sortinit}{B}
+  \field{number}{1}
+  \field{pages}{94\bibrangedash 105}
+  \field{title}{How Dynein Moves Along Microtubules}
+  \field{journaltitle}{Trends in Biochemical Sciences}
+  \field{year}{2016}
+\endentry
+
+\entry{burgess-paper}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Burgess}{B.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Walker}{W.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sakakibara}{S.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {H.}{H.}%
+     {P.}{P.}%
+     {}{}%
+     {Knight}{K.}}%
+    {{}%
+     {Oiwa}{O.}%
+     {K.}{K.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{BS+1}
+  \strng{fullhash}{BSWMSHKPOK1}
+  \field{sortinit}{B}
+  \field{pages}{715\bibrangedash 718}
+  \field{title}{Dynein structure and power stroke}
+  \field{volume}{421}
+  \field{journaltitle}{Nature}
+  \field{year}{2003}
+\endentry
+
+\entry{kinesin-step-size}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Carter}{C.}%
+     {N.~J}{N.~J}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cross}{C.}%
+     {R.~A.}{R.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {AIP}%
+  }
+  \strng{namehash}{CNJCRA1}
+  \strng{fullhash}{CNJCRA1}
+  \field{sortinit}{C}
+  \field{number}{435}
+  \field{pages}{308\bibrangedash 312}
+  \field{title}{Mechanics of the kinesin step}
+  \field{journaltitle}{Nature}
+  \field{year}{2005}
+\endentry
+
+\entry{cianfroccoreview}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Cianfrocco}{C.}%
+     {Michael~A.}{M.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {DeSantis}{D.}%
+     {Morgan~E.}{M.~E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Leschziner}{L.}%
+     {Andres~E.}{A.~E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Reck-Peterson}{R.-P.}%
+     {Samara~L.}{S.~L.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Annual Reviews}%
+  }
+  \strng{namehash}{CMA+1}
+  \strng{fullhash}{CMADMELAERPSL1}
+  \field{sortinit}{C}
+  \field{number}{Nov}
+  \field{pages}{83\bibrangedash 108}
+  \field{title}{Mechanism and Regulation of Cytoplasmic Dynein}
+  \field{volume}{31}
+  \field{journaltitle}{Annual Reviews of Cell and Developmental Biology}
+  \field{year}{2015}
+\endentry
+
+\entry{einstein-paper}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Einstein}{E.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Princeton University Press}%
+  }
+  \strng{namehash}{EA1}
+  \strng{fullhash}{EA1}
+  \field{sortinit}{E}
+  \field{title}{On the movement of small particles suspended in a stationary
+  liquid demanded by the molecular-kinetic theory of heat}
+  \field{year}{1989}
+\endentry
+
+\entry{pdb-motm-dynein}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Goodsell}{G.}%
+     {David}{D.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{GD1}
+  \strng{fullhash}{GD1}
+  \field{sortinit}{G}
+  \field{howpublished}{\url{https://pdb101.rcsb.org/motm/176}}
+  \field{note}{Accessed: 2017-5-11}
+  \field{title}{Molecule of the Month: Dynein}
+  \field{year}{2014}
+\endentry
+
+\entry{kinesin-vs-dynein-2}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Hendricks}{H.}%
+     {Adam}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{HA1}
+  \strng{fullhash}{HA1}
+  \field{sortinit}{H}
+  \field{howpublished}{\url{https://hendricks.lab.mcgill.ca/}}
+  \field{note}{Accessed: 2017-5-11}
+  \field{title}{HendricksLab Homepage}
+  \field{year}{2012}
+\endentry
+
+\entry{hook-family}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Hook}{H.}%
+     {P.}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vallee}{V.}%
+     {RB.}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {The Company of Biologists}%
+  }
+  \strng{namehash}{HPVR1}
+  \strng{fullhash}{HPVR1}
+  \field{sortinit}{H}
+  \field{pages}{4369\bibrangedash 4371}
+  \field{title}{The dynein family at a glance.}
+  \field{volume}{119}
+  \field{journaltitle}{J Cell Sci}
+  \field{year}{2004}
+\endentry
+
+\entry{mt-atp-coupling}{article}{}
+  \name{author}{8}{}{%
+    {{}%
+     {Kon}{K.}%
+     {T.}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Imamula}{I.}%
+     {K.}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Roberts}{R.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ohkura}{O.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Knight}{K.}%
+     {P.}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Gibbons}{G.}%
+     {IR.}{I.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Burgess}{B.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sutoh}{S.}%
+     {K.}{K.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{KT+1}
+  \strng{fullhash}{KTIKRAORKPGIBSSK1}
+  \field{sortinit}{K}
+  \field{pages}{325\bibrangedash 333}
+  \field{title}{Helix sliding in the stalk coiled coil of dynein couples ATPase
+  and microtubule binding}
+  \field{volume}{16}
+  \field{journaltitle}{Nat Struct Mol Biol.}
+  \field{year}{2009}
+\endentry
+
+\entry{FRETstatepaper}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Kon}{K.}%
+     {Takahide}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Mogami}{M.}%
+     {Toshifumi}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ohkura}{O.}%
+     {Reiko}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Nishiura}{N.}%
+     {Masaya}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sutoh}{S.}%
+     {Kazuo}{K.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{KT+2}
+  \strng{fullhash}{KTMTORNMSK1}
+  \field{sortinit}{K}
+  \field{pages}{513\bibrangedash 519}
+  \field{title}{ATP hydrolysis cycle-dependent tail motions in cytoplasmic
+  dynein}
+  \field{volume}{12}
+  \field{journaltitle}{Nature Structure and Molecular Biology}
+  \field{year}{2005}
+\endentry
+
+\entry{kinesin-gold-nanoparticle}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Krause}{K.}%
+     {Mindy}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{KM1}
+  \strng{fullhash}{KM1}
+  \field{sortinit}{K}
+  \field{howpublished}{\url{http://news.psu.edu/story/439633/2016/11/30/nih-grant-supports-study-molecular-motors-understand-brain-disease}}
+  \field{note}{Accessed: 2017-5-12}
+  \field{title}{NIH grant supports the study of molecular motors to understand
+  brain disease}
+  \field{year}{2016}
+\endentry
+
+\entry{diffusionconstants}{misc}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Milo}{M.}%
+     {Ron}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Phillips}{P.}%
+     {Rob}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MRPR1}
+  \strng{fullhash}{MRPR1}
+  \field{sortinit}{M}
+  \field{howpublished}{\url{http://book.bionumbers.org/what-are-the-time-scales-for-diffusion-in-cells/}}
+  \field{note}{Accessed: 2016-12-21}
+  \field{title}{What are the time scales for diffusion in cells?}
+\endentry
+
+\entry{kinesin-dynein-mt-overlap}{article}{}
+  \name{author}{7}{}{%
+    {{}%
+     {Mizuno}{M.}%
+     {N.}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Toba}{T.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Edamatsu}{E.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Watai-Nishii}{W.-N.}%
+     {N.}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hirokawa}{H.}%
+     {N.}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Toyoshima}{T.}%
+     {Y.}{Y.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kikkawa}{K.}%
+     {M}{M}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {EMBO}%
+  }
+  \strng{namehash}{MN+1}
+  \strng{fullhash}{MNTSEMWNNHNTYKM1}
+  \field{sortinit}{M}
+  \field{number}{13}
+  \field{pages}{2459–2467}
+  \field{title}{Dynein and kinesin share an overlapping microtubule-binding
+  site}
+  \field{volume}{23}
+  \field{journaltitle}{EMBO J}
+  \field{year}{2004}
+\endentry
+
+\entry{neuroanatomy}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Oztas}{O.}%
+     {Emin}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Neuroanatomy}%
+  }
+  \strng{namehash}{OE1}
+  \strng{fullhash}{OE1}
+  \field{sortinit}{O}
+  \field{number}{1}
+  \field{pages}{2\bibrangedash 5}
+  \field{title}{Neuronal tracing}
+  \field{volume}{2}
+  \field{journaltitle}{Neuroanatomy}
+  \field{year}{2003}
+\endentry
+
+\entry{weihongpaper}{article}{}
+  \name{author}{7}{}{%
+    {{}%
+     {Qiu}{Q.}%
+     {Weihong}{W.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Derr}{D.}%
+     {Nathan~D.}{N.~D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Goodman}{G.}%
+     {Brian~S.}{B.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Villa}{V.}%
+     {Elizabeth}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wu}{W.}%
+     {David}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Shih}{S.}%
+     {William}{W.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Reck-Peterson}{R.-P.}%
+     {Samara~L.}{S.~L.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{QW+1}
+  \strng{fullhash}{QWDNDGBSVEWDSWRPSL1}
+  \field{sortinit}{Q}
+  \field{number}{2}
+  \field{pages}{193\bibrangedash 200}
+  \field{title}{Dynein achieves processive motion using both stochastic and
+  coordinated stepping}
+  \field{volume}{19}
+  \field{journaltitle}{Nat Struct Mol Biol.}
+  \field{year}{2012}
+\endentry
+
+\entry{reck2006single}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Reck-Peterson}{R.-P.}%
+     {Samara~L}{S.~L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Yildiz}{Y.}%
+     {Ahmet}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Carter}{C.}%
+     {Andrew~P}{A.~P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Gennerich}{G.}%
+     {Arne}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zhang}{Z.}%
+     {Nan}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vale}{V.}%
+     {Ronald~D}{R.~D.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Elsevier}%
+  }
+  \strng{namehash}{RPSL+1}
+  \strng{fullhash}{RPSLYACAPGAZNVRD1}
+  \field{sortinit}{R}
+  \field{number}{2}
+  \field{pages}{335\bibrangedash 348}
+  \field{title}{Single-molecule analysis of dynein processivity and stepping
+  behavior}
+  \field{volume}{126}
+  \field{journaltitle}{Cell}
+  \field{year}{2006}
+\endentry
+
+\entry{redwineMTBDcomplex}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Redwine}{R.}%
+     {W.~B}{W.~B}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hernandez-Lopez}{H.-L.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zou}{Z.}%
+     {S}{S}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Huang}{H.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Reck-Peterson}{R.-P.}%
+     {S.~L}{S.~L}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Leschziner}{L.}%
+     {A.~E.}{A.~E.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Science}%
+  }
+  \strng{namehash}{RWB+1}
+  \strng{fullhash}{RWBHLRZSHJRPSLLAE1}
+  \field{sortinit}{R}
+  \field{number}{6101}
+  \field{pages}{1532\bibrangedash 1536}
+  \field{title}{Structural basis for microtubule binding and release by dynein}
+  \field{volume}{337}
+  \field{journaltitle}{Science}
+  \field{year}{2012}
+\endentry
+
+\entry{leschziner}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Redwine}{R.}%
+     {W.~B}{W.~B}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hernandez-Lopez}{H.-L.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zou}{Z.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Huang}{H.}%
+     {J}{J}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Reck-Peterson}{R.-P.}%
+     {S.~L}{S.~L}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Leschziner}{L.}%
+     {A.~E}{A.~E}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Science}%
+  }
+  \strng{namehash}{RWB+1}
+  \strng{fullhash}{RWBHLRZSHJRPSLLAE2}
+  \field{sortinit}{R}
+  \field{number}{6101}
+  \field{pages}{1532\bibrangedash 1536}
+  \field{title}{Structural basis for microtubule binding and release by dynein}
+  \field{volume}{337}
+  \field{journaltitle}{Science}
+  \field{year}{2012}
+\endentry
+
+\entry{sarlahmodel}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Sarlah}{S.}%
+     {Andreja}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vilfan}{V.}%
+     {Andrej}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Elsevier}%
+  }
+  \strng{namehash}{SAVA1}
+  \strng{fullhash}{SAVA1}
+  \field{sortinit}{S}
+  \field{number}{107}
+  \field{pages}{662\bibrangedash 671}
+  \field{title}{The Winch Model Can Explain both Coordinated and Uncoordinated
+  Stepping of Cytoplasmic Dynein}
+  \field{volume}{3}
+  \field{journaltitle}{Biophys J}
+  \field{year}{2014}
+\endentry
+
+\entry{schmidt-carter}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Schmidt}{S.}%
+     {H.}{H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Gleave}{G.}%
+     {ES.}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Carter}{C.}%
+     {AP.}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{SHGECA1}
+  \strng{fullhash}{SHGECA1}
+  \field{sortinit}{S}
+  \field{pages}{492\bibrangedash 497}
+  \field{title}{Insights into dynein motor domain function from a 3.3A crystal
+  structure}
+  \field{volume}{19}
+  \field{journaltitle}{Nat Struct Mol Biol.}
+  \field{year}{2012}
+\endentry
+
+\entry{carter-paper}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Schmidt}{S.}%
+     {H*.}{H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zalyte}{Z.}%
+     {R*.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Urnavicius}{U.}%
+     {L.}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Carter}{C.}%
+     {AP.}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{SH+1}
+  \strng{fullhash}{SHZRULCA1}
+  \field{sortinit}{S}
+  \field{pages}{435\bibrangedash 438}
+  \field{title}{Structure of human cytoplasmic dynein-2 primed for its power
+  stroke}
+  \field{volume}{518}
+  \field{journaltitle}{Nature}
+  \field{year}{2014}
+\endentry
+
+\entry{myosin-cc-elasticity}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Schwaiger}{S.}%
+     {I.}{I.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sattler}{S.}%
+     {C.}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {D.}{D.}%
+     {Hostetter.}{H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Rief.}{R.}%
+     {M}{M}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature}%
+  }
+  \strng{namehash}{SI+1}
+  \strng{fullhash}{SISCDHRM1}
+  \field{sortinit}{S}
+  \field{pages}{232\bibrangedash 235}
+  \field{title}{The myosin coiled-coil is a truly elastic protein structure}
+  \field{volume}{1}
+  \field{journaltitle}{Nature Materials}
+  \field{year}{2002}
+\endentry
+
+\entry{landerartistsrendition}{misc}{}
+  \field{sortinit}{T}
+  \field{howpublished}{\url{https://www.scripps.edu/news/press/2015/20150309lander.html}}
+  \field{note}{Accessed: 2017-5-11}
+  \field{title}{TSRI Scientists Reveal Structural Secrets of Nature's Little
+  Locomotive}
+\endentry
+
+\entry{vale-kinesin-cycle}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Vale}{V.}%
+     {R.~D.}{R.~D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Milligan}{M.}%
+     {R.~A.}{R.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {American Association for the Advancement of Science}%
+  }
+  \strng{namehash}{VRDMRA1}
+  \strng{fullhash}{VRDMRA1}
+  \field{sortinit}{V}
+  \field{number}{5463}
+  \field{pages}{88\bibrangedash 95}
+  \field{title}{The Way Things Move: Looking under the Hood of Molecular Motor
+  Proteins}
+  \field{volume}{288}
+  \field{journaltitle}{Science}
+  \field{year}{2000}
+\endentry
+
+\entry{kinesin-vs-dynein}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Vale}{V.}%
+     {Ronald}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{VR1}
+  \strng{fullhash}{VR1}
+  \field{sortinit}{V}
+  \field{howpublished}{\url{https://valelab4.ucsf.edu/external/moviepages/moviesMolecMotors.html}}
+  \field{note}{Accessed: 2017-5-11}
+  \field{title}{Molecular Motors Movies and Images}
+  \field{year}{2012}
+\endentry
+
+\entry{valetoolbox}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Vale}{V.}%
+     {Ronald~D.}{R.~D.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Elsevier}%
+  }
+  \strng{namehash}{VRD1}
+  \strng{fullhash}{VRD1}
+  \field{sortinit}{V}
+  \field{number}{4}
+  \field{pages}{467\bibrangedash 480}
+  \field{title}{The Molecular Motor Toolbox for Intracellular Transport}
+  \field{volume}{112}
+  \field{journaltitle}{Cell}
+  \field{year}{2003}
+\endentry
+
+\entry{myosin-cycle}{article}{}
+  \name{author}{10}{}{%
+    {{}%
+     {Wulfa}{W.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ropars}{R.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Fujita-Becker}{F.-B.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Oster}{O.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hofhaus}{H.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Trabuco}{T.}%
+     {L.}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Pylypenko}{P.}%
+     {O.}{O.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sweeney}{S.}%
+     {L}{L}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Houdesse}{H.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schröder}{S.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {PNAS}%
+  }
+  \strng{namehash}{WS+1}
+  \strng{fullhash}{WSRVFBSOMHGTLPOSLHASR1}
+  \field{sortinit}{W}
+  \field{number}{3}
+  \field{pages}{E1844\bibrangedash E1852}
+  \field{title}{Force-producing ADP state of myosin bound to actin}
+  \field{volume}{113}
+  \field{journaltitle}{Proceedings of the National Academy of Sciences}
+  \field{year}{2016}
+\endentry
+
+\entry{fibroblastvolume}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Y}{Y}%
+     {Mitsui}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {EL}{E.}%
+     {Schneider}{S.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {American Association for the Advancement of Science}%
+  }
+  \strng{namehash}{YMES1}
+  \strng{fullhash}{YMES1}
+  \field{sortinit}{Y}
+  \field{number}{1}
+  \field{pages}{45\bibrangedash 56}
+  \field{title}{Relationship between cell replication and volume in senescent
+  human diploid fibroblasts.}
+  \field{volume}{5}
+  \field{journaltitle}{Mech Ageing Dev.}
+  \field{year}{1976}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
