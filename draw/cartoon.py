@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
-from . import motor_domain as md
-from . import tail
+import draw.motor_domain as md
+import draw.tail as tail
 
 physical_stalk_length = 22.1 # nm
 

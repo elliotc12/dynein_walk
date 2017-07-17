@@ -3,18 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys 
 
-# example for running script from terminal: python autocorrelation.py data.txt #
-# expecting thesis_movie_data.txt
-
-## loading data in fo
-path = sys.argv[1]
-dataTable = np.loadtxt(path, delimiter='\t', skiprows=1)
-print "Successfully loaded!"
-print np.shape(dataTable)
-
-
-
-
 ## autocorrelation fucntion definitions ##
 def autoCorrelate1(data):
     rho = np.zeros(len(data)) # autocorrelation function to be returned
@@ -28,43 +16,49 @@ def autoCorrelate1(data):
         for t in range(0, n-k): #index t's up to n-k 
             R = R + (data[t]-mu)*(data[t+k]-mu)
 
-        rho[k] = (1/((n-k)*sig2**2))*R
+        rho[k] = (1/((n-k)*sig2))*R
     return rho 
 
-def autoCorrelate2(data):
+def autoCorrelate2(data, Nmax = None, verbose = False):
     n = len(data)
+    if Nmax is not None:
+        n = Nmax
     rho = np.zeros(n)
     mu = np.mean(data)
-    
+
+    percent_done = int(n/100 + 1)
     for k in range(0, n):
         R = 0
         N = 0
-        for t in range(0, n-k):
+        for t in range(0, len(data)-k):
             R = R + (data[t]-mu)*(data[t+k]-mu)
-            N = N + np.abs(data[t]-mu)**2
+            N = N + (data[t]-mu)**2
+        if verbose and k % percent_done == 0:
+            print '{}% done...'.format(k/n*100)
         rho[k] = R/N
 
     return rho
- 
-# A = np.random.rand(1000)
-# rho1 = autoCorrelate1(A)
-# rho2 = autoCorrelate1(A)
-# l = len(A)
 
-# plt.figure()
-# plt.plot(rho1, 'b')
-# plt.xlim(-5, l)
-# plt.ylim(-20,20)
-# plt.xlabel('n')
-# plt.ylabel('np.random.rand(n)')
-# plt.title('Wikipedia R(k) method')
+if __name__ == "__main__":
+    A = np.random.rand(1000)
+    rho1 = autoCorrelate1(A)
+    rho2 = autoCorrelate2(A)
+    l = len(A)
 
-# plt.figure()
-# plt.plot(rho2, 'k')
-# plt.xlim(-5, l)
-# plt.ylim(-20,20) 
-# plt.xlabel('n')
-# plt.ylabel('np.random.rand(n)')
-# plt.title('Prof Roundy Method')
+    plt.figure()
+    plt.plot(rho1, 'b')
+    plt.xlim(-5, l)
+    plt.ylim(-20,20)
+    plt.xlabel('n')
+    plt.ylabel('np.random.rand(n)')
+    plt.title('Wikipedia R(k) method')
 
-# plt.show()
+    plt.figure()
+    plt.plot(rho2, 'k')
+    plt.xlim(-5, l)
+    plt.ylim(-20,20) 
+    plt.xlabel('n')
+    plt.ylabel('np.random.rand(n)')
+    plt.title('Prof Roundy Method')
+
+    plt.show()

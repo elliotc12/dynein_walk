@@ -21,7 +21,7 @@ PE_3 = dataTable[:,4]
 PE_4 = dataTable[:,5]
 PE_5 = dataTable[:,6]
 
-print PE_1
+print repr(PE_1)
 
 with open("data_arrays.py" , "w") as f:
     f.write("""from numpy import array \n""")
