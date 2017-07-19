@@ -19,10 +19,10 @@ Nmax = 1000
 
 print "Energies fetched. Generating autocorrelation function..."
 rho1 = ac.autoCorrelate2(PE_1, Nmax = Nmax, verbose=True)
-# rho2 = ac.autoCorrelate2(PE_2, Nmax = Nmax, verbose=True)
-# rho3 = ac.autoCorrelate2(PE_3, Nmax = Nmax, verbose=True) 
-# rho4 = ac.autoCorrelate2(PE_4, Nmax = Nmax, verbose=True)
-# rho5 = ac.autoCorrelate2(PE_5, Nmax = Nmax, verbose=True)
+rho2 = ac.autoCorrelate2(PE_2, Nmax = Nmax, verbose=True)
+rho3 = ac.autoCorrelate2(PE_3, Nmax = Nmax, verbose=True) 
+rho4 = ac.autoCorrelate2(PE_4, Nmax = Nmax, verbose=True)
+rho5 = ac.autoCorrelate2(PE_5, Nmax = Nmax, verbose=True)
 
 print "Functions generated. Plotting..."
 
@@ -30,21 +30,21 @@ plt.figure()
 plt.plot(times[:Nmax], rho1)
 plt.savefig("PE_1.pdf")
 
-# plt.figure()
-# plt.plot(times[:Nmax], rho2)
-# plt.savefig("PE_2.pfg")
+plt.figure()
+plt.plot(times[:Nmax], rho2)
+plt.savefig("PE_2.pdf")
 
-# plt.figure()
-# plt.plot(times[:Nmax], rho3)
-# plt.savefig("PE_3.pfg")
+plt.figure()
+plt.plot(times[:Nmax], rho3)
+plt.savefig("PE_3.pdf")
 
-# plt.figure()
-# plt.plot(times[:Nmax], rho4)
-# plt.savefig("PE_4.pfg")
+plt.figure()
+plt.plot(times[:Nmax], rho4)
+plt.savefig("PE_4.pdf")
 
-# plt.figure()
-# plt.plot(times[:Nmax], rho5)
-# plt.savefig("PE_5.pfg")
+plt.figure()
+plt.plot(times[:Nmax], rho5)
+plt.savefig("PE_5.pdf")
 
 print "Finished. Saving figure..."
 
