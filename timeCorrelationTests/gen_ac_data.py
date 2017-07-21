@@ -27,23 +27,12 @@ rho5 = ac.autoCorrelate2(PE_5, Nmax = Nmax, verbose=True)
 print "Functions generated. Plotting..."
 
 plt.figure()
-plt.plot(times[:Nmax], rho1)
-plt.savefig("PE_1.pdf")
-
-plt.figure()
-plt.plot(times[:Nmax], rho2)
-plt.savefig("PE_2.pdf")
-
-plt.figure()
-plt.plot(times[:Nmax], rho3)
-plt.savefig("PE_3.pdf")
-
-plt.figure()
-plt.plot(times[:Nmax], rho4)
-plt.savefig("PE_4.pdf")
-
-plt.figure()
-plt.plot(times[:Nmax], rho5)
+plt.plot(times[:Nmax], rho1, label = 'PE_1')
+plt.plot(times[:Nmax], rho2, label = 'PE_2')
+plt.plot(times[:Nmax], rho3, label = 'PE_3')
+plt.plot(times[:Nmax], rho4, label = 'PE_4')
+plt.plot(times[:Nmax], rho5, label = 'PE_5')
+plt.legend(loc = 0)
 plt.savefig("PE_5.pdf")
 
 print "Finished. Saving figure..."
