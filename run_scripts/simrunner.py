@@ -3,8 +3,8 @@ import subprocess, os
 import numpy as np
 
 def have_slurm():
-    if avoid_slurm:
-        return False
+   # if avoid_slurm:
+    #    return False
     try:
         subprocess.check_call("squeue > /dev/null", shell=True)
     except (OSError, subprocess.CalledProcessError):
