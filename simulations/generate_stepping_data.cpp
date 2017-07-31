@@ -447,7 +447,7 @@ int main(int argc, char** argv) {
 
   if (runtime == 0 and am_making_movie and not am_only_writing_on_crash) {
     printf("error,value of am_only_writing: %d\n", (int)am_only_writing_on_crash);
-    //printf("Error: run settings would cause indefinite movie data printing and fill up the disc!\n");
+    printf("Error: run settings would cause indefinite movie data printing and fill up the disk!\n");
     exit(EXIT_FAILURE);
   }
 
