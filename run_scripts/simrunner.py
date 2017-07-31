@@ -63,7 +63,16 @@ def run_sim(**run):
     os.system('mkdir -p ../runlogs ../data')
     assert(subprocess.call("cd .. && make histogram-stuff", shell=True) == 0)
 
+    if 'label' in run:
+      basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
+                                                                 run["cb"], run["cm"], run["ct"], run["dt"])
+    else:
+      basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
+                                                             run["cb"], run["cm"], run["ct"], run["dt"])
+
     cmd = ["srun"] if have_slurm() else []
+    if have_slurm():
+        cmd.extend(["-J", basename])
     cmd.extend(["nice", "-19"])
     cmd.extend(["./generate_stepping_data"])
 
@@ -73,13 +82,6 @@ def run_sim(**run):
     for key in ["nomovie", "onebound-debugging", "constant-write"]:
         if key in run:
             cmd.extend(["--"+key])
-
-    if 'label' in run:
-      basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
-                                                                 run["cb"], run["cm"], run["ct"], run["dt"])
-    else:
-      basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
-                                                             run["cb"], run["cm"], run["ct"], run["dt"])
 
     with open("../data/stepping_parameters_%s.tex" % basename, "w") as f:
         for k,v in sorted(run.items()):
