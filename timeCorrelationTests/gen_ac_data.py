@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import autocorrelation as ac
 
 path = sys.argv[1]
+label = sys.argv[2]
+    
 dataTable = np.loadtxt(path, delimiter='\t', skiprows=1)
 print "data table successfully loaded. Fetching energies..."
 
@@ -32,8 +34,18 @@ plt.plot(times[:Nmax], rho2, label = 'PE_2')
 plt.plot(times[:Nmax], rho3, label = 'PE_3')
 plt.plot(times[:Nmax], rho4, label = 'PE_4')
 plt.plot(times[:Nmax], rho5, label = 'PE_5')
+plt.title("Autocorrelation functions for potential eneergies by domain")
+plt.xlabel(r'$\Delta t$ [s]')
+plt.ylabel(r'$\rho (\Delta t) $')
 plt.legend(loc = 0)
-plt.savefig("PE_5.pdf")
+plt.savefig("{}.pdf".format(label))
+
+
+if sys.argv[3] == '-s': #save the data to a txt file to play with later 
+    with open('{}_data.txt'.format(label), 'r') as f:
+        f.write('rho1, rho2, rho3, rho4, rho5')
+        for i in range(len(rho1)):
+            f.write(','.join(rho1[i], rho2[i], rho3[i], rho4[i], rho5[i]))
 
 print "Finished. Saving figure..."
 
