@@ -34,7 +34,7 @@ plt.plot(times[:Nmax], rho2, label = 'PE_2')
 plt.plot(times[:Nmax], rho3, label = 'PE_3')
 plt.plot(times[:Nmax], rho4, label = 'PE_4')
 plt.plot(times[:Nmax], rho5, label = 'PE_5')
-plt.title("Autocorrelation functions for potential eneergies by domain")
+plt.title("Autocorrelation functions for potential energies by domain")
 plt.xlabel(r'$\Delta t$ [s]')
 plt.ylabel(r'$\rho (\Delta t) $')
 plt.legend(loc = 0)
@@ -46,6 +46,9 @@ if sys.argv[3] == '-s': #save the data to a txt file to play with later
         f.write('rho1, rho2, rho3, rho4, rho5')
         for i in range(len(rho1)):
             f.write(','.join(rho1[i], rho2[i], rho3[i], rho4[i], rho5[i]))
+
+else:
+    pass
 
 print "Finished. Saving figure..."
 
