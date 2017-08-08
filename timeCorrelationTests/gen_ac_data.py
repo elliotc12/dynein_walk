@@ -17,7 +17,7 @@ PE_3 = dataTable[:,4]
 PE_4 = dataTable[:,5]
 PE_5 = dataTable[:,6]
 
-Nmax = 1000
+Nmax = 6000
 
 print "Energies fetched. Generating autocorrelation function..."
 rho1 = ac.autoCorrelate2(PE_1, Nmax = Nmax, skipIndex = 10, verbose=True)
@@ -29,11 +29,11 @@ rho5 = ac.autoCorrelate2(PE_5, Nmax = Nmax, skipIndex = 10, verbose=True)
 print "Functions generated. Plotting..."
 
 plt.figure()
-plt.plot(times[:Nmax], rho1, skipIndex = 10, label = 'PE_1')
-plt.plot(times[:Nmax], rho2, skipIndex = 10, label = 'PE_2')
-plt.plot(times[:Nmax], rho3, skipIndex = 10, label = 'PE_3')
-plt.plot(times[:Nmax], rho4, skipIndex = 10, label = 'PE_4')
-plt.plot(times[:Nmax], rho5, skipIndex = 10, label = 'PE_5')
+plt.plot(times[:Nmax], rho1, label = 'PE_1')
+plt.plot(times[:Nmax], rho2, label = 'PE_2')
+plt.plot(times[:Nmax], rho3, label = 'PE_3')
+plt.plot(times[:Nmax], rho4, label = 'PE_4')
+plt.plot(times[:Nmax], rho5, label = 'PE_5')
 plt.title("Autocorrelation functions for potential energies by domain")
 plt.xlabel(r'$\Delta t$ [s]')
 plt.ylabel(r'$\rho (\Delta t) $')
