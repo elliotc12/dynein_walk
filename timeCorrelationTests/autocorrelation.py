@@ -69,6 +69,9 @@ def autoCorrelate2(data, Nmax = None, skipIndex = 1, verbose = False):
         rho[k] = R/N
     return rho
 
+def autoCorrelateFFT():
+    pass 
+
 if __name__ == "__main__":
     A = np.random.rand(1000)
     rho10 = autoCorrelate2(A, Nmax = 500, skipIndex = 10)
