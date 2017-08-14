@@ -23,11 +23,11 @@ dt = times[1]-times[0]
 print
 
 print "Energies fetched. Generating autocorrelation function..."
-rho1 = ac.autoCorrelate2(PE_1, Nmax = Nmax, skipIndex = S_I, verbose=True)
-rho2 = ac.autoCorrelate2(PE_2, Nmax = Nmax, skipIndex = S_I, verbose=True)
-rho3 = ac.autoCorrelate2(PE_3, Nmax = Nmax, skipIndex = S_I, verbose=True) 
-rho4 = ac.autoCorrelate2(PE_4, Nmax = Nmax, skipIndex = S_I, verbose=True)
-rho5 = ac.autoCorrelate2(PE_5, Nmax = Nmax, skipIndex = S_I, verbose=True)
+rho1 = ac.autoCorrelateFFT(PE_1, Nmax = Nmax, skipIndex = S_I, verbose=True)
+rho2 = ac.autoCorrelateFFT(PE_2, Nmax = Nmax, skipIndex = S_I, verbose=True)
+rho3 = ac.autoCorrelateFFT(PE_3, Nmax = Nmax, skipIndex = S_I, verbose=True)
+rho4 = ac.autoCorrelateFFT(PE_4, Nmax = Nmax, skipIndex = S_I, verbose=True)
+rho5 = ac.autoCorrelateFFT(PE_5, Nmax = Nmax, skipIndex = S_I, verbose=True)
 
 print "Functions generated. Saving..."
 
@@ -35,8 +35,8 @@ print "Functions generated. Saving..."
 with open("ac_data_{}.txt".format(label), 'w') as f:
     f.write("time, rho1, rho2, rho3, rho4, rho5")
     if S_I is not 1:
-            times = np.arange(0, Nmax*dt, dt)
-    for i in range(0, len(rho1)):
+            times = np.arange(0, Nmax*dt - dt/2, dt)
+    for i in range(0, len(times)):
         f.write(','.join([str(times[i]), str(rho1[i]), str(rho2[i]), str(rho3[i]), str(rho4[i]), str(rho5[i])]))
         f.write('\n') 
         

@@ -69,7 +69,7 @@ def autoCorrelate2(data, Nmax = None, skipIndex = 1, verbose = False):
         rho[k] = R/N
     return rho
 
-def autoCorrelateFFT(data):
+def autoCorrelateFFT(data, Nmax = None, skipIndex = 1, verbose = False):
     f_t = data #rename to make math clear
     f_w = np.fft.fft(f_t)
     norm2 = f_w*f_w
