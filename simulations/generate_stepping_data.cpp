@@ -495,7 +495,7 @@ int main(int argc, char** argv) {
       exit(1); 
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering
-    fprintf(job_msg.movie_data_file, "#State\ttime\tPE_1\tPE_2\tPE_3\tPE_4\tPE_5\t"
+    fprintf(job_msg.movie_data_file, "#State\ttime\tPE_b1\tPE_m1\tPE_t\tPE_m2\tPE_b2\t"
             "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
   }
