@@ -69,24 +69,16 @@ def autoCorrelate2(data, Nmax = None, skipIndex = 1, verbose = False):
         rho[k] = R/N
     return rho
 
-def autoCorrelateFFT():
-    pass 
+def autoCorrelateFFT(data):
+    f_t = data #rename to make math clear
+    f_w = np.fft.fft(f_t)
+    norm2 = f_w*f_w
+    rho = np.fft.ifft(norm2)
+    return rho 
 
 if __name__ == "__main__":
     A = np.random.rand(1000)
-    rho10 = autoCorrelate2(A, Nmax = 500, skipIndex = 10)
-    rho0 = autoCorrelate2(A, Nmax = 500)
-    rho5 = autoCorrelate2(A, Nmax = 500, skipIndex = 5) 
-    l = len(A)
-
+    C = autoCorrelateFFT(A)
     plt.figure()
-    plt.plot(rho10, 'k')
-    plt.plot(rho0, 'b')
-    plt.plot(rho5, 'r') 
-    plt.xlabel('n')
-    plt.ylabel('np.random.rand(n)')
-    plt.title('Test graph')
-    plt.xlabel(r'$\Delta t$ [s]')
-    plt.ylabel(r'$\rho (\Delta t) $')
-
+    plt.plot(C) 
     plt.show()
