@@ -2,16 +2,6 @@
 import subprocess, os
 import numpy as np
 
-def have_slurm():
-   # if avoid_slurm:
-    #    return False
-    try:
-        subprocess.check_call("squeue > /dev/null", shell=True)
-    except (OSError, subprocess.CalledProcessError):
-        print("Not using slurm...")
-        return False
-    return True
-
 def read_csv(fname):
     values = np.loadtxt(fname, delimiter=',', comments='#', dtype='string')
     custom_runs = []
@@ -70,11 +60,7 @@ def run_sim(**run):
       basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                              run["cb"], run["cm"], run["ct"], run["dt"])
 
-    cmd = ["srun"] if have_slurm() else []
-    if have_slurm():
-        cmd.extend(["-J", basename])
-    cmd.extend(["nice", "-19"])
-    cmd.extend(["./generate_stepping_data"])
+    cmd = ["./generate_stepping_data"]
 
     for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie"]:
         if key in run:
