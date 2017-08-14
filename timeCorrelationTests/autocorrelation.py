@@ -79,6 +79,9 @@ def autoCorrelateFFT(data):
 if __name__ == "__main__":
     A = np.random.rand(1000)
     C = autoCorrelateFFT(A)
+    rho = autoCorrelate2(A)
     plt.figure()
-    plt.plot(C) 
+    plt.plot(C, label = 'fft')
+    plt.plot(rho, label = 'old')
+    plt.legend(loc=0)
     plt.show()
