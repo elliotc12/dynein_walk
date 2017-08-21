@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys 
 
-# use this method -- autoCorrelate1 was used to verify the math was correct
+
 def autoCorrelate1(data, Nmax = None, skipIndex = 0, verbose = False):
     '''
     verbose prints the percent done while running
@@ -54,13 +54,13 @@ def autoCorrelate2(data, Nmax = None, skipIndex = 1, verbose = False):
     '''
     n = len(data)
     if Nmax is not None:
-        n = Nmax     # total number of points desired
+        n = Nmax     # maximum index 
     rho = np.zeros(n)
     mu = np.mean(data)
 
     percent_done = int(n/100 + 1)
-
     data_minus_mu = data - mu
+    
     for k in range(0, n):
         R = sum(data_minus_mu[0:len(data)-k:skipIndex]*data_minus_mu[k:len(data):skipIndex])
         N = sum((data_minus_mu**2)[0:len(data)-k:skipIndex])
@@ -70,18 +70,25 @@ def autoCorrelate2(data, Nmax = None, skipIndex = 1, verbose = False):
     return rho
 
 def autoCorrelateFFT(data, Nmax = None, skipIndex = 1, verbose = False):
-    f_t = data #rename to make math clear
-    f_w = np.fft.fft(f_t)
-    norm2 = f_w*f_w
+    ## need to think about units for Tmax ##
+    if Nmax is not None:
+        f_t = data[:Nmax:skipIndex]
+    else:
+        f_t = data[::skipIndex]
+    mu = np.mean(f_t)
+    f_w = np.fft.fft(f_t-mu)
+    f_w_conj = np.conjugate(f_w)
+    norm2 = f_w*f_w_conj
     rho = np.fft.ifft(norm2)
-    return rho 
+    return rho
 
 if __name__ == "__main__":
-    A = np.random.rand(1000)
-    C = autoCorrelateFFT(A)
-    rho = autoCorrelate2(A)
+    x = np.random.rand(10000)
+    A = np.exp(x) 
+    C = autoCorrelateFFT(A, Nmax = 5000, skipIndex=1)
+    rho = autoCorrelate2(A, Nmax = 5000, skipIndex=10, verbose=False)
     plt.figure()
     plt.plot(C, label = 'fft')
-    plt.plot(rho, label = 'old')
+    plt.plot(rho, '--', label = 'old')
     plt.legend(loc=0)
     plt.show()

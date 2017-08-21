@@ -5,8 +5,8 @@ import sys
 
 label = sys.argv[1]
 
-data_10 = np.loadtxt('./data/ac_data_bothbound_dt1e-10.txt', delimiter=',', skiprows = 1)
-data_11 = np.loadtxt('./data/ac_data_bothbound_dt1e-11.txt', delimiter=',', skiprows = 1)
+data_10 = np.loadtxt('./data/onebound_dt1e-10.txt', delimiter=',', skiprows = 1)
+data_11 = np.loadtxt('./data/onebound_dt1e-11.txt', delimiter=',', skiprows = 1)
 
 d10 = {}
 d11 = {}
@@ -44,3 +44,6 @@ plt.xlabel('t [s]')
 plt.ylabel(r'$\rho(\Delta t)$')
 plt.legend(loc = 0)
 plt.savefig(label) 
+plt.show()
+
+
