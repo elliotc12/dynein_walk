@@ -17,8 +17,8 @@ PE_3 = dataTable[:,4]
 PE_4 = dataTable[:,5]
 PE_5 = dataTable[:,6]
 
-Nmax = 6000 # total number of points
-S_I = 10  # skip index value
+Nmax = None # total number of points
+S_I = 1  # skip index value
 
 print "Energies fetched. Generating autocorrelation function..."
 rho1 = ac.autoCorrelateFFT(PE_1, Nmax = Nmax, skipIndex = S_I)
