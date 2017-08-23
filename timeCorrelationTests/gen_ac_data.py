@@ -28,9 +28,12 @@ rho4 = ac.autoCorrelateFFT(PE_4, Nmax = Nmax, skipIndex = S_I)
 rho5 = ac.autoCorrelateFFT(PE_5, Nmax = Nmax, skipIndex = S_I)
 
 print "Functions generated. Saving..."
-times = times[:Nmax:S_I]
 
-saveData = np.zeros((int(Nmax/S_I), 6)) 
+if Nmax is not None:
+    times = times[:Nmax:S_I]
+    saveData = np.zeros((int(Nmax/S_I), 6))
+else:
+    saveData = np.zeros((len(rho1), 6)) 
 saveData[:,0] = times
 saveData[:,1] = rho1
 saveData[:,2] = rho2
