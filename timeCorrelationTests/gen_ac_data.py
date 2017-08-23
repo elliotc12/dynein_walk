@@ -17,8 +17,8 @@ PE_3 = dataTable[:,4]
 PE_4 = dataTable[:,5]
 PE_5 = dataTable[:,6]
 
-Nmax = 6000 # total number of points
-S_I = 10  # skip index value
+Nmax = None # total number of points
+S_I = 1  # skip index value
 
 print "Energies fetched. Generating autocorrelation function..."
 rho1 = ac.autoCorrelateFFT(PE_1, Nmax = Nmax, skipIndex = S_I)
@@ -28,9 +28,12 @@ rho4 = ac.autoCorrelateFFT(PE_4, Nmax = Nmax, skipIndex = S_I)
 rho5 = ac.autoCorrelateFFT(PE_5, Nmax = Nmax, skipIndex = S_I)
 
 print "Functions generated. Saving..."
-times = times[:Nmax:S_I]
 
-saveData = np.zeros((int(Nmax/S_I), 6)) 
+if Nmax is not None:
+    times = times[:Nmax:S_I]
+    saveData = np.zeros((int(Nmax/S_I), 6))
+else:
+    saveData = np.zeros((len(rho1), 6)) 
 saveData[:,0] = times
 saveData[:,1] = rho1
 saveData[:,2] = rho2

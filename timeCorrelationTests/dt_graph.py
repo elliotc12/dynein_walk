@@ -26,7 +26,6 @@ d11['rho4'] = data_11[:,4]
 d11['rho5'] = data_11[:,5]
 
 plt.figure()
-plt.title("dt = 1e-10 vs dt = 1e-11")
 
 plt.plot(d10['t'], d10['rho1'], 'r', label='rho1 dt1e-10')
 plt.plot(d10['t'], d10['rho2'], 'g',label='rho2 dt1e-10')
@@ -40,10 +39,11 @@ plt.plot(d11['t'], d11['rho3'], 'b--', label = 'rho3 dt1e-11')
 plt.plot(d11['t'], d11['rho4'], 'k--', label = 'rho4 dt1e-11')
 plt.plot(d11['t'], d11['rho5'], 'm--', label = 'rho5 dt1e-11')
 
+plt.title("dt = 1e-10 vs dt = 1e-11")
 plt.xlabel('t [s]')
 plt.ylabel(r'$\rho(\Delta t)$')
 plt.legend(loc = 0)
 plt.savefig(label) 
-plt.show()
+plt.show() 
 
 
