@@ -13,26 +13,31 @@ d10 = {}
 d11 = {}
 d12 = {}
 
+# pull data from saved file and normalize by first value since it should be
+# the largest
+
 d10['t'] = data_10[:,0]
-d10['rho1'] = data_10[:,1]
-d10['rho2'] = data_10[:,2]
-d10['rho3'] = data_10[:,3]
-d10['rho4'] = data_10[:,4]
-d10['rho5'] = data_10[:,5]
+d10['rho1'] = data_10[:,1]/data_10[0,1]
+d10['rho2'] = data_10[:,2]/data_10[0,2]
+d10['rho3'] = data_10[:,3]/data_10[0,3]
+d10['rho4'] = data_10[:,4]/data_10[0,4]
+d10['rho5'] = data_10[:,5]/data_10[0,5]
 
 d11['t'] = data_11[:,0]
-d11['rho1'] = data_11[:,1]
-d11['rho2'] = data_11[:,2]
-d11['rho3'] = data_11[:,3]
-d11['rho4'] = data_11[:,4]
-d11['rho5'] = data_11[:,5]
+d11['rho1'] = data_11[:,1]/data_11[0,1]
+d11['rho2'] = data_11[:,2]/data_11[0,2]
+d11['rho3'] = data_11[:,3]/data_11[0,3]
+d11['rho4'] = data_11[:,4]/data_11[0,4]
+d11['rho5'] = data_11[:,5]/data_11[0,5]
 
 d12['t'] = data_12[:,0]
-d12['rho1'] = data_12[:,1]
-d12['rho2'] = data_12[:,2]
-d12['rho3'] = data_12[:,3]
-d12['rho4'] = data_12[:,4]
-d12['rho5'] = data_12[:,5]
+d12['rho1'] = data_12[:,1]/data_12[0,1]
+d12['rho2'] = data_12[:,2]/data_12[0,2]
+d12['rho3'] = data_12[:,3]/data_12[0,3]
+d12['rho4'] = data_12[:,4]/data_12[0,4]
+d12['rho5'] = data_12[:,5]/data_12[0,5]
+
+# plot the data 
 
 plt.figure()
 
