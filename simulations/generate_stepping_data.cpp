@@ -30,7 +30,7 @@ bool am_debugging_onebound = false;
 long num_movie_writes = 1e6;
 // bytes per movie write: 213, 2000Mb bytes max movie size
 
-static const long MAX_FILESIZE_PERMITTED = 1<<30;
+static const long MAX_FILESIZE_PERMITTED = 1<<30; // <- bit shift 
 static int NUM_STEPS = 0;
 
 void on_crash_write_movie_buffer();
