@@ -8,7 +8,7 @@ latex/latexlog.txt
 *.out
 *.tum
 GIFS/*.gif
-PNGs/*.png
+*.png
 data/*
 *~
 *.o

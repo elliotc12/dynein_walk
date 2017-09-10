@@ -126,6 +126,7 @@ plt.sca(ax2)
 i = 0
 savefigframe = 0
 dt = data[1,1] - data[0,1]
+skip_every = 10000 # we only plot every "skip_every" frames, to make things faster
 
 while i*dt < 9.0*1e-6:
     ax2.cla()
@@ -162,7 +163,7 @@ while i*dt < 9.0*1e-6:
     plt.savefig(fname)
     sys.stdout.write("video progress: %.1f%%\r" % (i*dt/(9.0*1e-6)*100))
     sys.stdout.flush()
-    i += 100
+    i += skip_every
     plt.draw()
 
 os.system('mkdir -p plots')
