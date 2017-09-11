@@ -124,7 +124,7 @@ def main():
     plt.ylabel(r'$\rho(\Delta t)$')
     plt.savefig(options.label+'_ac.pdf')
 
-    fig2 = plt.figure()
+    plt.figure()
     for key in usefullData:
         print key
         plt.plot(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(key))
@@ -135,8 +135,23 @@ def main():
     plt.legend(loc=0)
     plt.xlabel('t [s]')
     plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
 
     plt.savefig(options.label+'_U.pdf')
+
+    plt.figure()
+    for key in usefullData:
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(key))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_2'], label="PE_2 {}".format(key))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_3'], label="PE_3 {}".format(key))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_4'], label="PE_4 {}".format(key))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(key))
+    plt.legend(loc=0)
+    plt.xlabel('t [s]')
+    plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
+
+    plt.savefig(options.label+'_U_vs_logt.pdf')
 
     if options.p is not False: 
         plt.show() 
