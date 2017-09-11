@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt 
 
 def simulate(n): # run simulations
+    os.chdir("../data")
+    subprocess.call('rm *.txt && rm *.tex', shell=True)
     os.chdir("../run_scripts") # can't change dir with subprocess.call() for some reason...
     print os.getcwd() 
     if n == 1:
@@ -39,6 +41,7 @@ def main():
     parser.add_option("-n", dest ="n", default = 1,
                       help = 'Run onebound or bothbound simulation. 1 = onebound, 2 = bothbound. 1 is the default.') 
     (options, args) = parser.parse_args()
+    parser.add_option("-p", "--plot", action="store_true", dest = 'p', default = False, help="plot the figures in interactive window") 
 
 
     if options.verbose:
@@ -116,11 +119,14 @@ def main():
         plt.plot(usefullData[key]['times'], usefullData[key]['rho4'], label="rho4 {}".format(key))
         plt.plot(usefullData[key]['times'], usefullData[key]['rho5'], label="rho5 {}".format(key))
     plt.legend(loc = 0)
-   # plt.xlim(0, 5*10**-9)
+    plt.xlim(0, 5*10**-9)
     plt.xlabel('t [s]')
     plt.ylabel(r'$\rho(\Delta t)$')
-    plt.savefig(options.label+'_ac', format='pdf')
-
+    if options.label is not None: 
+        plt.savefig(options.label+'_ac', format='pdf')
+    else:
+        plt.savefig('ac', format = 'pdf') 
+        
     fig2 = plt.figure()
     for key in usefullData:
         print key
@@ -131,9 +137,15 @@ def main():
         plt.plot(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(key))
     plt.legend(loc=0)
     plt.xlabel('t [s]')
-    plt.ylabel('U(t) ')
-    plt.savefig(options.label+'_U',format='pdf') 
-    plt.show() 
+    plt.ylabel('U(t)')
+
+    if options.label is not None:
+        plt.savefig(options.label+'_U',format='pdf')
+    else:
+        plt.savefig('U', format='pdf') 
+
+    if options.p is not False: 
+        plt.show() 
         
 if __name__ == '__main__':
     main() 
