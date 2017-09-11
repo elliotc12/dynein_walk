@@ -34,14 +34,14 @@ def ac(data, Nmax = None): # generate autocorrelation function
 def main():
     # set up command line flags.  
     parser = OptionParser()
-    parser.add_option("-l", "--label", dest = 'label',
+    parser.add_option("-l", "--label", dest = 'label', default='compare',
                       help = 'label for output graphs')
     parser.add_option("-v", "--verbose", action="store_true", dest = 'verbose', default = False, 
                       help = 'print extra status messages')
     parser.add_option("-n", dest ="n", default = 1,
                       help = 'Run onebound or bothbound simulation. 1 = onebound, 2 = bothbound. 1 is the default.') 
-    (options, args) = parser.parse_args()
     parser.add_option("-p", "--plot", action="store_true", dest = 'p', default = False, help="plot the figures in interactive window") 
+    (options, args) = parser.parse_args()
 
 
     if options.verbose:
@@ -122,11 +122,8 @@ def main():
     plt.xlim(0, 5*10**-9)
     plt.xlabel('t [s]')
     plt.ylabel(r'$\rho(\Delta t)$')
-    if options.label is not None: 
-        plt.savefig(options.label+'_ac', format='pdf')
-    else:
-        plt.savefig('ac', format = 'pdf') 
-        
+    plt.savefig(options.label+'_ac', format='pdf')
+
     fig2 = plt.figure()
     for key in usefullData:
         print key
@@ -139,10 +136,7 @@ def main():
     plt.xlabel('t [s]')
     plt.ylabel('U(t)')
 
-    if options.label is not None:
-        plt.savefig(options.label+'_U',format='pdf')
-    else:
-        plt.savefig('U', format='pdf') 
+    plt.savefig(options.label+'_U',format='pdf')
 
     if options.p is not False: 
         plt.show() 
