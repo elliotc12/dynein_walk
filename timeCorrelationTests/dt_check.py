@@ -122,7 +122,7 @@ def main():
     plt.xlim(0, 5*10**-9)
     plt.xlabel('t [s]')
     plt.ylabel(r'$\rho(\Delta t)$')
-    plt.savefig(options.label+'_ac', format='pdf')
+    plt.savefig(options.label+'_ac.pdf')
 
     fig2 = plt.figure()
     for key in usefullData:
@@ -136,7 +136,7 @@ def main():
     plt.xlabel('t [s]')
     plt.ylabel('U(t)')
 
-    plt.savefig(options.label+'_U',format='pdf')
+    plt.savefig(options.label+'_U.pdf')
 
     if options.p is not False: 
         plt.show() 
