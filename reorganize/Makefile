@@ -27,4 +27,5 @@ generate_stepping_data: src/generate_stepping_data.cpp src/dynein_simulate.o src
 
 clean:
 	rm -f src/*.o
+	rm -f src/version-info.h
 	rm -f generate_stepping_data
