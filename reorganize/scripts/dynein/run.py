@@ -2,7 +2,7 @@
 import subprocess, os
 import numpy as np
 
-def run_sim(**run):
+def sim(**run):
 
     if 'label' in run:
       basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
@@ -11,7 +11,7 @@ def run_sim(**run):
       basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                              run["cb"], run["cm"], run["ct"], run["dt"])
 
-    cmd = ["../src/generate_stepping_data"]
+    cmd = ["./generate_stepping_data"]
 
     for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie"]:
         if key in run:
@@ -21,5 +21,5 @@ def run_sim(**run):
             cmd.extend(["--"+key])
             
     print "Running: " + " ".join(cmd)
-    subprocess.call(cmd, shell=True)
+    subprocess.call(cmd)
     return basename
