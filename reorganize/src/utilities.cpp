@@ -134,6 +134,10 @@ void write_config_file(char* fname, int omit_flags, const char* custom_str) {
 
 void write_movie_config(char* movie_config_fname, double runtime) {
   FILE* config_file = fopen(movie_config_fname, "w");
+  if (!config_file) {
+    printf("Unable to create file %s\n", movie_config_fname);
+    exit(1);
+  }
   fprintf(config_file,
 	  "#gb\t"
 	  "gm\t"
