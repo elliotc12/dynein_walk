@@ -1,5 +1,5 @@
 #include "dynein_struct.h"
-#include "simulations/simulation_defaults.h"
+#include "simulation_defaults.h"
 #include <stdlib.h> // for exit
 #include <string.h>
 

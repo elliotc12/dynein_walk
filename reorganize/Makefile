@@ -15,21 +15,16 @@ all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movi
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
-version-info.h: SHELL:=/bin/bash
-version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp) Makefile
+src/version-info.h: SHELL:=/bin/bash
+src/version-info.h: ../.git/refs/heads/master $(wildcard src/*.cpp) Makefile
 	UNAMESTR=$$(uname); if [[ "$$UNAMESTR" == 'Linux' ]]; then \
-	echo -n static const char '*version' = '"' > version-info.h; \
-	cat version-info.h; \
-	git describe --dirty --tags | tr -d '\n' >> version-info.h; \
-	cat version-info.h; \
-	echo -n '-=-' >> version-info.h; \
-	cat version-info.h; \
-	date -Ins | tr -d '\n' >> version-info.h; \
-	cat version-info.h; \
-	echo '";' >> version-info.h; \
-	cat version-info.h; \
+	echo -n static const char '*version' = '"' > src/version-info.h; \
+	git describe --dirty --tags | tr -d '\n' >> src/version-info.h; \
+	echo -n '-=-' >> src/version-info.h; \
+	date -Ins | tr -d '\n' >> src/version-info.h; \
+	echo '";' >> src/version-info.h; \
 	elif [[ "$$UNAMESTR" == 'Darwin' ]]; then \
-	    echo 'static const char *version = "mac-breaks-version-stuff";' > version-info.h; \
+	    echo 'static const char *version = "mac-breaks-version-stuff";' > src/version-info.h; \
 	fi;
 
 derivation.pdf: latex/derivation.tex $(FIGURES)
@@ -118,11 +113,12 @@ histograms:
 	make $(STEPPING_LENGTH_HISTOGRAMS)
 	make $(STEPPING_TIME_HISTOGRAMS)
 
-generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results version-info.h
+#  test_onebound.results test_bothbound.results
+generate_stepping_data: src/generate_stepping_data.cpp src/dynein_simulate.o src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o src/version-info.h
 	mkdir -p runlogs
 	mkdir -p data
-	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
-	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
+	$(CXX) -c -o src/generate_stepping_data.o src/generate_stepping_data.cpp $(CPPFLAGS)
+	$(CXX) src/generate_stepping_data.o src/dynein_simulate.o src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o -o generate_stepping_data
 
 plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: make_stepping_plots.py data/thesis_stepping_data.txt
 	python3 make_stepping_plots.py data/thesis_stepping_data.txt
@@ -246,7 +242,7 @@ thesis: $(THESIS_FIGURES)
 
 clean:
 	rm -f *.txt
-	rm -f *.o
+	rm -f *.o src/*.o
 	rm -f plot
 	rm -f test_onebound
 	rm -f test_bothbound
@@ -274,5 +270,5 @@ clean:
 	rm -f *.fls
 	rm -f data/thesis_data.txt
 	rm -f data/thesis_plot.txt
-	cd figures && $(MAKE) clean
-	cd thesis && $(MAKE) clean
+# cd figures && $(MAKE) clean
+# cd thesis && $(MAKE) clean

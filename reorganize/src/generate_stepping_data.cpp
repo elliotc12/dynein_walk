@@ -12,9 +12,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "../version-info.h"
-#include "../default_parameters.h"
-#include "../dynein_struct.h"
+#include "version-info.h"
+#include "default_parameters.h"
+#include "dynein_struct.h"
 #include "simulation_defaults.h"
 
 const bool display_step_info = false;
