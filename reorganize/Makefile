@@ -26,5 +26,5 @@ generate_stepping_data: src/generate_stepping_data.cpp src/dynein_simulate.o src
 	$(CXX) src/generate_stepping_data.o src/dynein_simulate.o src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o -o generate_stepping_data
 
 clean:
-	rm -f *.o src/*.o
+	rm -f src/*.o
 	rm -f generate_stepping_data
