@@ -19,11 +19,11 @@ src/version-info.h: ../.git/refs/heads/master $(wildcard src/*.cpp) Makefile
 	    echo 'static const char *version = "mac-breaks-version-stuff";' > src/version-info.h; \
 	fi;
 
-generate_stepping_data: src/generate_stepping_data.cpp src/dynein_simulate.o src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o src/version-info.h
-	mkdir -p runlogs
-	mkdir -p data
-	$(CXX) -c -o src/generate_stepping_data.o src/generate_stepping_data.cpp $(CPPFLAGS)
-	$(CXX) src/generate_stepping_data.o src/dynein_simulate.o src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o -o generate_stepping_data
+src/generate_stepping_data.o: src/generate_stepping_data.cpp src/version-info.h
+
+generate_stepping_data: src/generate_stepping_data.o src/dynein_simulate.o \
+			src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o
+	$(CXX) -o generate_stepping_data $^
 
 clean:
 	rm -f src/*.o
