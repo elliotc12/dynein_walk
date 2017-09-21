@@ -83,7 +83,7 @@ if __name__ == '__main__':
         if VERBOSE:
             print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
 
-        file_names.append(basename1, basename2, basename3)
+        data_files.append(basename1, basename2, basename3)
         
     else:  
         print "Not sure if bothbound or onebound was selected. Run again using flag -o or -b"
@@ -91,12 +91,30 @@ if __name__ == '__main__':
 
     # process data and generate autocorrelation function
     if VERBOSE:
-        print "Simulations finished. Generating autocorrelation functions"
+        print "Simulations finished. Reading data"
 
     usefullData = {}
-    for file in file_names:
+    for file in data_files:
         print file
-        dataTable = np.loadtxt(file, delimiter='\t', skiprows=1)
+        dataTable = np.loadtxt("data/"+file, delimiter='\t', skiprows=1)
         if VERBOSE:
-            print "{} successfully loaded".format(file) 
+            print "{} successfully loaded".format(file)
+        times = dataTable[:,1]
+        PE_1 = dataTable[:,2]
+        PE_2 = dataTable[:,3]
+        PE_3 = dataTable[:,4]
+        PE_4 = dataTable[:,5]
+        PE_5 = dataTable[:,6]
+
+        if VERBOSE:
+            print "Generating autocorrelation function"
+
+        Nmax = None
+        rho1 = ac(PE_1, Nmax = Nmax)
+        rho2 = ac(PE_2, Nmax = Nmax)
+        rho3 = ac(PE_3, Nmax = Nmax)
+        rho4 = ac(PE_4, Nmax = Nmax)
+        rho5 = ac(PE_5, Nmax = Nmax)
+
+        
             
