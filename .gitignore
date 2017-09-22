@@ -66,3 +66,4 @@ version-info.h
 draw/polygons.py
 *-blx.bib
 .fac
+*.DS_Store
