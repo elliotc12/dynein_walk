@@ -5,7 +5,9 @@ LIBRARIES = -lm
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
-all: generate_stepping_data
+PAPERS = papers/fft_speedup/convolution_theorem.pdf
+
+all: generate_stepping_data $(PAPERS)
 
 src/version-info.h: SHELL:=/bin/bash
 src/version-info.h: ../.git/refs/heads/master $(wildcard src/*.cpp) Makefile
@@ -24,6 +26,9 @@ src/generate_stepping_data.o: src/generate_stepping_data.cpp src/version-info.h
 generate_stepping_data: src/generate_stepping_data.o src/dynein_simulate.o \
 			src/dynein_struct_onebound.o src/dynein_struct_bothbound.o src/utilities.o
 	$(CXX) -o generate_stepping_data $^
+
+papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
+	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
 clean:
 	rm -f src/*.o
