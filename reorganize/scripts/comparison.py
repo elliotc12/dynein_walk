@@ -101,7 +101,7 @@ if __name__ == '__main__':
     usefullData = {}
     for file in data_files:
         print file
-        dataTable = np.loadtxt("data/"+file, delimiter='\t', skiprows=1)
+        dataTable = np.loadtxt("data/stepping_movie_data_"+file, delimiter='\t', skiprows=1)
         if VERBOSE:
             print "{} successfully loaded".format(file)
         times = dataTable[:,1]
@@ -140,4 +140,7 @@ if __name__ == '__main__':
 
         # now add this dictionary to usefullData for each file 
         
-            
+        usefullData[file] = dt_dict
+        
+    if VERBOSE:
+        print "graphing...\n" 
