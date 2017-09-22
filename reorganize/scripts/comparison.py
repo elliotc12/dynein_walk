@@ -63,7 +63,9 @@ if __name__ == '__main__':
         if VERBOSE:
             print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
 
-        data_files.append(basename1, basename2, basename3) 
+        data_files.append(basename1)
+        data_files.append(basename2)
+        data_files.append(basename3) 
 
     elif BOTHBOUND:
         if VERBOSE:
@@ -83,7 +85,10 @@ if __name__ == '__main__':
         if VERBOSE:
             print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
 
-        data_files.append(basename1, basename2, basename3)
+
+        data_files.append(basename1)
+        data_files.append(basename2)
+        data_files.append(basename3)
         
     else:  
         print "Not sure if bothbound or onebound was selected. Run again using flag -o or -b"
@@ -116,5 +121,23 @@ if __name__ == '__main__':
         rho4 = ac(PE_4, Nmax = Nmax)
         rho5 = ac(PE_5, Nmax = Nmax)
 
+        if VERBOSE:
+            print "putting into data into dictionary"
+
+        # make dictionary of all important quantities
+        dt_dict = {}
+        dt_dict['times'] = times
+        dt_dict['PE_1'] = PE_1
+        dt_dict['PE_2'] = PE_2
+        dt_dict['PE_3'] = PE_3
+        dt_dict['PE_4'] = PE_4
+        dt_dict['PE_5'] = PE_5
+        dt_dict['rho1'] = rho1
+        dt_dict['rho2'] = rho2
+        dt_dict['rho3'] = rho3
+        dt_dict['rho4'] = rho4
+        dt_dict['rho5'] = rho5
+
+        # now add this dictionary to usefullData for each file 
         
             
