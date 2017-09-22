@@ -63,7 +63,7 @@ if __name__ == '__main__':
         if VERBOSE:
             print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
 
-        file_names.append(basename1, basename2, basename3) 
+        data_files.append(basename1, basename2, basename3) 
 
     elif BOTHBOUND:
         if VERBOSE:
