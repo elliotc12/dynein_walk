@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import re
 
 outer_path = "outer_coords.txt"
-tail_path = "tailCoords.txt"
 
 actual_radius = 7 # nanometers
 
@@ -31,8 +30,9 @@ mdo_array = np.zeros((len(mdo_x),2))
 for j in range(len(mdo_x)):
     mdo_array[j,0] = mdo_x[j]
     mdo_array[j,1] = mdo_y[j]
+
 center_mass = mdo_array.sum(axis=0)/len(mdo_array)
-print(center_mass)
+#print(center_mass)
 
 for i in range(len(mdo_array)):
     mdo_array[i,:] -= center_mass
@@ -42,7 +42,7 @@ for i in range(len(mdo_array)):
     radius = max(radius, np.sqrt(mdo_array[i,0]**2 + mdo_array[i,1]**2))
 mdo_array *= actual_radius/radius
 
-with open("polygons.py", "w") as f:
+with open("motor_domain.py", "w") as f:
     f.write("""from numpy import array
 """)
-    f.write("motor_domain_array = %s" % repr(mdo_array))
+    f.write("array = %s" % repr(mdo_array))

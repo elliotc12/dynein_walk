@@ -7,7 +7,8 @@ import time, signal, sys, os, matplotlib, subprocess
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-import draw_cartoon
+#import draw.balls as cartoon
+import draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
@@ -17,10 +18,9 @@ import io
 tail = 'tail' in sys.argv
 
 usage = '''
-Usage: python2 TITLE %s [show] [tail]"
-       show: show animation in a window while generating movie
-	     omitting show makes %s faster but less exciting to watch
-''' % (sys.argv[0], sys.argv[0])
+Usage: python2 %s FILENAME [show]"
+       show: show plot in a window
+''' % (sys.argv[0])
 
 if len(sys.argv) < 2:
   print(usage)
@@ -114,12 +114,15 @@ cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-0
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] == t)[0][0]
-    Xs = data[idx,7:16:2]
-    Ys = data[idx,8:17:2]
-    if int(data[idx, 0]) == 1:
+    Xs = -x_scaling*data[idx,7:16:2]
+    Xs -= Xs[4]
+    Ys = y_scaling*data[idx,8:17:2]
+    state = int(data[idx, 0])
+    if state == 1:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
-    draw_cartoon.draw_cartoon([t*1e6, 0], Xs, Ys, x_scaling, y_scaling)
+    Xs = Xs + t*1e6;
+    cartoon.draw(Xs, Ys)
 
 ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
 
@@ -132,22 +135,8 @@ ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)
 ax2.plot(avg_times, avg_nbys, label="near foot", c='b')
 ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
 
-# x_axes_size = ax2.get_xlim()[1] - ax2.get_xlim()[0]
-# y_axes_size = ax2.get_ylim()[1] - ax2.get_ylim()[0]
-
-# x_scaling = 0.005*x_axes_size
-# y_scaling = 0.005*y_axes_size
-
-# cartoon_draw_times_y_proj = np.array([0.3*1e-6, 0.6*1e-6])
-
-# plt.sca(ax2)
-# for t in cartoon_draw_times_y_proj:
-#     idx = np.where(data[:,1] == t)[0][0]
-#     Xs = data[idx,7:16:2]
-#     Ys = data[idx,8:17:2]
-#     draw_cartoon.draw_cartoon([t*1e6,-10], Xs, Ys, x_scaling, y_scaling)
-
 gs.tight_layout(fig, h_pad=0)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/trajectory-plot.pdf")
+plt.show()

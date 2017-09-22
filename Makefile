@@ -11,7 +11,7 @@ STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/%.mp4, $(wildc
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data thesis
+all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data thesis movies/movie.mp4
 
 histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
 
@@ -132,12 +132,18 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
 
-plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py draw_cartoon.py draw/polygons.py
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
-draw/polygons.py: draw/translatePolygonDataToPython.py $(wildcard draw/*.txt)
-	cd draw && python translatePolygonDataToPython.py
+movies/movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
+	python3 trajectory-movie.py data/thesis_movie_data.txt
+
+draw/motor_domain.py: draw/create_MD_array.py draw/outer_coords.txt
+	cd draw && python create_MD_array.py
+
+draw/tail.py: draw/tailDomain.py
+	cd draw && python tailDomain.py
 
 data/fitting_stepping_data.txt data/fitting_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-fitting-data.py
 	python3 run_scripts/generate-fitting-data.py

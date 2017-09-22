@@ -12,9 +12,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "../version-info.h"
-#include "../default_parameters.h"
-#include "../dynein_struct.h"
+#include "version-info.h"
+#include "default_parameters.h"
+#include "dynein_struct.h"
 #include "simulation_defaults.h"
 
 const bool display_step_info = false;
@@ -486,6 +486,10 @@ int main(int argc, char** argv) {
   job_msg.start_time = clock();
   job_msg.run_msg = run_name;
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
+  if (!job_msg.stepping_data_file) {
+    printf("Unable to create file: %s\n", stepping_data_fname);
+    exit(1);
+  }
   job_msg.movie_data_file = 0;
 
   if (am_making_movie or am_debugging_onebound) {

@@ -7,17 +7,15 @@ import time, signal, sys, os, matplotlib, subprocess
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-import draw_cartoon
+import draw.balls as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
 
 import io
 
-tail = 'tail' in sys.argv
-
 usage = '''
-Usage: python3 TITLE %s [show] [tail]"
+Usage: python2 %s FILENAME [show]"
        show: show animation in a window while generating movie
 	     omitting show makes %s faster but less exciting to watch
 ''' % (sys.argv[0], sys.argv[0])
@@ -80,6 +78,7 @@ y_max_xproj = np.max([np.max(avg_nbxs), 20])
 y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
+plt.ion()
 fig = plt.figure()
 gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
@@ -127,6 +126,7 @@ plt.sca(ax2)
 i = 0
 savefigframe = 0
 dt = data[1,1] - data[0,1]
+skip_every = 10000 # we only plot every "skip_every" frames, to make things faster
 
 while i*dt < 9.0*1e-6:
     ax2.cla()
@@ -150,7 +150,8 @@ while i*dt < 9.0*1e-6:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
     alpha = 1.0
-    draw_cartoon.draw_cartoon_movie_edition([0, 0], int(data[i, 0]), Xs, Ys, x_scaling, y_scaling, alpha)
+
+    cartoon.draw_cartoon([0, 0], int(data[i, 0]), Xs, Ys, x_scaling, y_scaling, alpha)
 
     ax2.set_xlim([-60,30])
     ax2.set_ylim([-5,40])
@@ -163,7 +164,8 @@ while i*dt < 9.0*1e-6:
     plt.savefig(fname)
     sys.stdout.write("video progress: %.1f%%\r" % (i*dt/(9.0*1e-6)*100))
     sys.stdout.flush()
-    i += 100
+    i += skip_every
+    plt.draw()
 
 os.system('mkdir -p plots')
 

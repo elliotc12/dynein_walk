@@ -8,7 +8,7 @@ latex/latexlog.txt
 *.out
 *.tum
 GIFS/*.gif
-PNGs/*.png
+*.png
 data/*
 *~
 *.o
@@ -18,7 +18,8 @@ test
 walk
 init.txt
 \#*
-.*
+.nfs*
+.#*
 run_data.txt
 run.txt
 test_bothbound
@@ -63,3 +64,5 @@ simrunner
 version-info.h
 *.xml
 draw/polygons.py
+*-blx.bib
+.fac
