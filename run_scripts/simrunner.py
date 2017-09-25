@@ -62,7 +62,7 @@ def run_sim(**run):
 
     cmd = ["./generate_stepping_data"]
 
-    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie"]:
+    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie", "framerate"]:
         if key in run:
             cmd.extend(["--"+key, str(run[key])])
     for key in ["nomovie", "onebound-debugging", "constant-write"]:
