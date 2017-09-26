@@ -14,7 +14,7 @@ def ac(data, Nmax = None): #generate autocorrelation function
     f_w = np.fft.fft(f_t-mu)
     f_w_conj = np.conjugate(f_w)
     norm2 = f_w*f_w_conj
-    rho = np.fftifft(norm2)
+    rho = np.fft.ifft(norm2)
     rho = rho/rho[0] #normalize by first element
     return rho
 
