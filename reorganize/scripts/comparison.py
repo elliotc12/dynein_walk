@@ -143,4 +143,25 @@ if __name__ == '__main__':
         usefullData[file] = dt_dict
         
     if VERBOSE:
-        print "graphing...\n" 
+        print "graphing...\n"
+
+    fig1 = plt.figure()
+
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho1'], label="rho1 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho2'], label="rho2 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho3'], label="rho3 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho4'], label="rho4 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho5'], label="rho5 {}".format(dt))
+    plt.legend(loc = 0)
+    plt.xlim(0, 5*10**-9)
+    plt.xlabel('t [s]')
+    plt.ylabel(r'$\rho(\Delta t)$')
+    plt.savefig(options.label+'_ac.pdf')
+
+        
