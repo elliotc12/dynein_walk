@@ -101,7 +101,7 @@ if __name__ == '__main__':
     usefullData = {}
     for file in data_files:
         print file
-        dataTable = np.loadtxt("data/stepping_movie_data_"+file, delimiter='\t', skiprows=1)
+        dataTable = np.loadtxt("data/stepping_movie_data_"+file+".txt", delimiter='\t', skiprows=1)
         if VERBOSE:
             print "{} successfully loaded".format(file)
         times = dataTable[:,1]
@@ -162,6 +162,27 @@ if __name__ == '__main__':
     plt.xlim(0, 5*10**-9)
     plt.xlabel('t [s]')
     plt.ylabel(r'$\rho(\Delta t)$')
-    plt.savefig(options.label+'_ac.pdf')
+    plt.savefig(LABEL+'_ac.pdf')
+
+    fig2 = plt.figure()
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+        
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_2'], label="PE_2 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_3'], label="PE_3 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_4'], label="PE_4 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(dt))
+    plt.legend(loc=0)
+    plt.xlabel('t [s]')
+    plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
+
+    plt.savefig(LABEL+'_U.pdf')
+
+        
 
         
