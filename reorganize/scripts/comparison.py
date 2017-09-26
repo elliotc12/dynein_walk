@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import dynein.run as run 
 
 
-def act(data, Nmax = None): #generate autocorrelation function
+def ac(data, Nmax = None): #generate autocorrelation function
     if Nmax is not None:
         f_t = data[:Nmax]
     else:
@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     parser.add_argument("-L", "--label", dest = 'label', default = 'compare', help = 'label for output graphs')
     parser.add_argument("-v", "--verbose", action = 'store_true', dest = 'verbose', default = False, help = 'print extra status messages')
+    parser.add_argument("-p", "--plot", action = 'store_true', dest = 'plot', default = False, help = 'plot output graphs in interactive window')  
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-o", "--onebound", action = "store_true", dest = 'onebound', default = False, help = 'check dt behavior for onebound state')
     group.add_argument("-b", "--bothbound", action = "store_true", dest = 'bothbound', default = False, help = 'check dt behavior for bothbound state')
@@ -34,6 +35,7 @@ if __name__ == '__main__':
     VERBOSE = args.verbose
     ONEBOUND = args.onebound
     BOTHBOUND = args.bothbound
+    PLOT = args.plot
 
     if ONEBOUND is False and BOTHBOUND is False:    # make onebound default while keeping them mutually exclusives args 
         ONEBOUND = True 
@@ -180,8 +182,36 @@ if __name__ == '__main__':
     plt.xlabel('t [s]')
     plt.ylabel('U(t)')
     #plt.xlim(0,5e-9)
-
     plt.savefig(LABEL+'_U.pdf')
+
+    fig3 = plt.figure()
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+        
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_2'], label="PE_2 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_3'], label="PE_3 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_4'], label="PE_4 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(dt))
+    plt.legend(loc=0)
+    plt.xlabel('t [s]')
+    plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
+
+    plt.savefig(options.label+'_U_vs_logt.pdf')
+
+    if options.p is not False: 
+        plt.show() 
+
+
+    plt.savefig(LABEL+'_U_vs_logt.pdf')
+
+ 
+    if PLOT:
+        plt.show() 
 
         
 
