@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg') # to let me do this over ssh 
 import subprocess, os
 import argparse 
 import numpy as np
@@ -5,7 +7,7 @@ import matplotlib.pyplot as plt
 import dynein.run as run 
 
 
-def act(data, Nmax = None): #generate autocorrelation function
+def ac(data, Nmax = None): #generate autocorrelation function
     if Nmax is not None:
         f_t = data[:Nmax]
     else:
@@ -14,7 +16,7 @@ def act(data, Nmax = None): #generate autocorrelation function
     f_w = np.fft.fft(f_t-mu)
     f_w_conj = np.conjugate(f_w)
     norm2 = f_w*f_w_conj
-    rho = np.fftifft(norm2)
+    rho = np.fft.ifft(norm2)
     rho = rho/rho[0] #normalize by first element
     return rho
 
@@ -24,6 +26,7 @@ if __name__ == '__main__':
 
     parser.add_argument("-L", "--label", dest = 'label', default = 'compare', help = 'label for output graphs')
     parser.add_argument("-v", "--verbose", action = 'store_true', dest = 'verbose', default = False, help = 'print extra status messages')
+    parser.add_argument("-p", "--plot", action = 'store_true', dest = 'plot', default = False, help = 'plot output graphs in interactive window')  
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-o", "--onebound", action = "store_true", dest = 'onebound', default = False, help = 'check dt behavior for onebound state')
     group.add_argument("-b", "--bothbound", action = "store_true", dest = 'bothbound', default = False, help = 'check dt behavior for bothbound state')
@@ -34,6 +37,7 @@ if __name__ == '__main__':
     VERBOSE = args.verbose
     ONEBOUND = args.onebound
     BOTHBOUND = args.bothbound
+    PLOT = args.plot
 
     if ONEBOUND is False and BOTHBOUND is False:    # make onebound default while keeping them mutually exclusives args 
         ONEBOUND = True 
@@ -101,7 +105,7 @@ if __name__ == '__main__':
     usefullData = {}
     for file in data_files:
         print file
-        dataTable = np.loadtxt("data/stepping_movie_data_"+file, delimiter='\t', skiprows=1)
+        dataTable = np.loadtxt("data/stepping_movie_data_"+file+".txt", delimiter='\t', skiprows=1)
         if VERBOSE:
             print "{} successfully loaded".format(file)
         times = dataTable[:,1]
@@ -143,4 +147,74 @@ if __name__ == '__main__':
         usefullData[file] = dt_dict
         
     if VERBOSE:
-        print "graphing...\n" 
+        print "graphing...\n"
+
+    fig1 = plt.figure()
+
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho1'], label="rho1 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho2'], label="rho2 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho3'], label="rho3 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho4'], label="rho4 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['rho5'], label="rho5 {}".format(dt))
+    plt.legend(loc = 0)
+    plt.xlim(0, 5*10**-9)
+    plt.xlabel('t [s]')
+    plt.ylabel(r'$\rho(\Delta t)$')
+    plt.savefig(LABEL+'_ac.pdf')
+
+    fig2 = plt.figure()
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+        
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_2'], label="PE_2 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_3'], label="PE_3 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_4'], label="PE_4 {}".format(dt))
+        plt.plot(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(dt))
+    plt.legend(loc=0)
+    plt.xlabel('t [s]')
+    plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
+    plt.savefig(LABEL+'_U.pdf')
+
+    fig3 = plt.figure()
+    for key in usefullData:
+        if VERBOSE:
+            print key
+        dt_loc = key.find("dt-1e")
+        dt = key[dt_loc:dt_loc+8]
+        
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_1'], label="PE_1 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_2'], label="PE_2 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_3'], label="PE_3 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_4'], label="PE_4 {}".format(dt))
+        plt.semilogx(usefullData[key]['times'], usefullData[key]['PE_5'], label="PE_5 {}".format(dt))
+    plt.legend(loc=0)
+    plt.xlabel('t [s]')
+    plt.ylabel('U(t)')
+    #plt.xlim(0,5e-9)
+
+    plt.savefig(options.label+'_U_vs_logt.pdf')
+
+    if options.p is not False: 
+        plt.show() 
+
+
+    plt.savefig(LABEL+'_U_vs_logt.pdf')
+
+ 
+    if PLOT:
+        plt.show() 
+
+        
+
+        
