@@ -132,18 +132,26 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
 
+data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-exploration-data.py
+	python3 run_scripts/generate-exploration-data.py
+
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
+
+plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt exploration-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
+	python3 exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
 
 movies/movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-movie.py data/thesis_movie_data.txt
 
 draw/motor_domain.py: draw/create_MD_array.py draw/outer_coords.txt
-	cd draw && python create_MD_array.py
+	cd draw && python2 create_MD_array.py
 
 draw/tail.py: draw/tailDomain.py
-	cd draw && python tailDomain.py
+	cd draw && python2 tailDomain.py
 
 data/fitting_stepping_data.txt data/fitting_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-fitting-data.py
 	python3 run_scripts/generate-fitting-data.py

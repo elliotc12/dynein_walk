@@ -69,6 +69,7 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   REBINDING_IMMUNITY_TIME;
 
 extern bool am_only_writing_on_crash;
+extern double stepping_movie_framerate;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;

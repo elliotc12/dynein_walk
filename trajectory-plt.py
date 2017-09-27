@@ -59,7 +59,7 @@ for i in range(plot_length):
         nbxs[i] = data[i,15]
         fbxs[i] = data[i,7]
         nbys[i] = data[i,16]
-    times[i] = data[i,1]*1e6
+    times[i] = data[i,1]
 
 avging_window_width = 300
 num_windows = plot_length // avging_window_width # floor division
@@ -82,7 +82,6 @@ gs = gridspec.GridSpec(3, 1, height_ratios=[2, 1, 2])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1], sharex=ax0)
 ax2 = fig.add_subplot(gs[2], sharex=ax0)
-
 plt.setp([ax0.get_xticklabels(), ax1.get_xticklabels()], visible=False)
 
 # x projection
@@ -109,8 +108,6 @@ y_scaling = 0.03
 
 cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
 
-# todo: add little lines in to indicate where the dynein is
-
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] == t)[0][0]
@@ -127,7 +124,7 @@ for t in cartoon_draw_times_x_proj:
 ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
 
 # y projection
-ax2.set_xlabel("time ($\mu$s)")
+ax2.set_xlabel("time (s)")
 ax2.set_ylabel("y-projection (nm)")
 
 ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)

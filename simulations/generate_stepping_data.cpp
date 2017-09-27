@@ -321,6 +321,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"runtime",  required_argument,    0, 'l'},
       {"label",    required_argument,    0, 'm'},
       {"dt",       required_argument,    0, 'n'},
+      {"framerate",required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
@@ -387,6 +388,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'n':
       dt = strtod(optarg, NULL);
+      break;
+    case 'o':
+      stepping_movie_framerate = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
