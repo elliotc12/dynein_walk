@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg') # to let me do this over ssh 
 import subprocess, os
 import argparse 
 import numpy as np
