@@ -203,12 +203,6 @@ if __name__ == '__main__':
     plt.ylabel('U(t)')
     #plt.xlim(0,5e-9)
 
-    plt.savefig(options.label+'_U_vs_logt.pdf')
-
-    if options.p is not False: 
-        plt.show() 
-
-
     plt.savefig(LABEL+'_U_vs_logt.pdf')
 
  
