@@ -113,7 +113,7 @@ gs.tight_layout(fig, pad=2)
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kbexploration, k_{ub}: \kubexploration$',
+    r' $k_{b}: \kb, k_{ub}: \kub$',
     fontsize=14)
 
 os.system('mkdir -p plots')
@@ -194,7 +194,7 @@ ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kbexploration, k_{ub}: \kubexploration$',
+    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
     fontsize=14)
 
 plt.subplots_adjust(hspace=0.6)
