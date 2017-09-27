@@ -2,7 +2,7 @@
 
 from __future__ import division
 import numpy as np
-import time, signal, sys, os, matplotlib, subprocess
+import time, signal, sys, os, matplotlib, subprocess, re
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -36,6 +36,9 @@ end_line = int(min(1e6, lines))
 plot_length = end_line - start_line - 1
 
 raw_data = "".join(raw_lines[start_line:end_line])
+
+run_conditions = open("data/exploration_stepping_parameters.tex").read()
+raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data = np.genfromtxt(io.BytesIO(raw_data.encode()), delimiter="\t", invalid_raise=False)
 
@@ -78,6 +81,8 @@ y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
 fig = plt.figure()
+plt.rc('text', usetex=True)
+
 gs = gridspec.GridSpec(2, 1, height_ratios=[2, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1], sharex=ax0)
@@ -104,7 +109,12 @@ ax1.set_ylim(y_min_yproj-1,y_max_yproj+1)
 ax1.plot(avg_times, avg_nbys, label="near foot", c='b')
 ax1.plot(avg_times, avg_fbys, label="far foot", c='r')
 
-gs.tight_layout(fig, h_pad=0)
+gs.tight_layout(fig, pad=2)
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kbexploration, k_{ub}: \kubexploration$',
+    fontsize=14)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/exploration-plot.pdf")
@@ -144,36 +154,24 @@ t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 t_ob_uncertainty.append(np.std(onebound_times)/np.sqrt(num_steps)*1.645) # 95% chance of true average being 1.645 stdevs from the sample average
 t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 
-print("ob_time_avg: ", str(np.mean(onebound_times)))
-print("bb_time_avg: ", str(np.mean(bothbound_times)))
-
-# ax1.text(0, 0.8, "ob_time_avg: " + "{:.3g}".format(np.mean(onebound_times)) + ", theory: 0.0595s", fontsize=6)
-# ax1.text(0, 0.6, "bb_time_avg: " + "{:.3g}".format(np.mean(bothbound_times)) + ", theory: 4.52e-4s", fontsize=6)
-
 #step length histogram
 
-plt.clf()
 fig = plt.figure()
+
 plt.hist(step_lengths, bins=50)
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
-plt.rc('text', usetex=True)
-
 #step time histogram
 fig = plt.figure()
+plt.rc('text', usetex=True)
+
 gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1])
 ax2 = fig.add_subplot(gs[2])
-
-# run_conditions = open("data/exploration_stepping_parameters.tex").read()
-
-# print("run_conditions + r'cb: \cbexploration'", run_conditions + r'cb: \cbexploration')
-
-# ax0.text(10, 10, run_conditions + r'cb: \cbexploration')
 
 ax0.hist(step_times, bins=50)
 ax0.set_title("Step times")
@@ -194,10 +192,14 @@ ax2.set_ylabel("Frequency")
 ax2.set_yscale("log")
 ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kbexploration, k_{ub}: \kubexploration$',
+    fontsize=14)
+
 plt.subplots_adjust(hspace=0.6)
+plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 plt.show()
-
-plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
 plt.close(fig)

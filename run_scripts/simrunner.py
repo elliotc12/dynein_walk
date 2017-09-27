@@ -72,7 +72,7 @@ def run_sim(**run):
     with open("../data/stepping_parameters_%s.tex" % basename, "w") as f:
         for k,v in sorted(run.items()):
             if 'label' in run:
-                f.write(r'\newcommand\%s%s{%s}' % (latex_format(k), latex_format(run['label']), latex_format(v)) + '\n')
+                f.write(r'\newcommand\%s%s{%s}' % (latex_format(k).replace("_",""), latex_format(run['label']), latex_format(v)) + '\n')
             else:
                 f.write(r'\newcommand\%svalue{%s}' % (latex_format(k), latex_format(v)) + '\n')
     out = open('../runlogs/' + basename + '.out', 'w')
