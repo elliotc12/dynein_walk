@@ -78,11 +78,12 @@ y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
 y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
 
 fig = plt.figure()
-gs = gridspec.GridSpec(3, 1, height_ratios=[2, 1, 2])
+gs = gridspec.GridSpec(2, 1, height_ratios=[2, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1], sharex=ax0)
-ax2 = fig.add_subplot(gs[2], sharex=ax0)
-plt.setp([ax0.get_xticklabels(), ax1.get_xticklabels()], visible=False)
+plt.setp([ax0.get_xticklabels()], visible=False)
+
+### Trajectory plots
 
 # x projection
 ax0.set_ylabel("x-projection (nm)")
@@ -94,7 +95,22 @@ ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
 
 ax0.legend(loc="upper right")
 
-# stepping statistics
+# y projection
+ax1.set_xlabel("time (s)")
+ax1.set_ylabel("y-projection (nm)")
+
+ax1.set_ylim(y_min_yproj-1,y_max_yproj+1)
+
+ax1.plot(avg_times, avg_nbys, label="near foot", c='b')
+ax1.plot(avg_times, avg_fbys, label="far foot", c='r')
+
+gs.tight_layout(fig, h_pad=0)
+
+os.system('mkdir -p plots')
+plt.savefig("plots/exploration-plot.pdf")
+plt.show()
+
+### Histogram plots
 stepdata = np.loadtxt(sys.argv[2])
 
 bind_times = np.array(stepdata[:,1])
@@ -128,20 +144,60 @@ t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 t_ob_uncertainty.append(np.std(onebound_times)/np.sqrt(num_steps)*1.645) # 95% chance of true average being 1.645 stdevs from the sample average
 t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 
-ax1.text(0, 0.8, "ob_time_avg: " + str(np.mean(onebound_times)) + ", theory: 0.0595s", fontsize=6)
-ax1.text(0, 0.6, "bb_time_avg: " + str(np.mean(bothbound_times)) + ", theory: 4.52e-4s", fontsize=6)
+print("ob_time_avg: ", str(np.mean(onebound_times)))
+print("bb_time_avg: ", str(np.mean(bothbound_times)))
 
-# y projection
-ax2.set_xlabel("time (s)")
-ax2.set_ylabel("y-projection (nm)")
+# ax1.text(0, 0.8, "ob_time_avg: " + "{:.3g}".format(np.mean(onebound_times)) + ", theory: 0.0595s", fontsize=6)
+# ax1.text(0, 0.6, "bb_time_avg: " + "{:.3g}".format(np.mean(bothbound_times)) + ", theory: 4.52e-4s", fontsize=6)
 
-ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)
+#step length histogram
 
-ax2.plot(avg_times, avg_nbys, label="near foot", c='b')
-ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
+plt.clf()
+fig = plt.figure()
+plt.hist(step_lengths, bins=50)
+plt.xlabel("Step length (nm)")
+plt.ylabel("Frequency")
+plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
+plt.close(fig)
 
-gs.tight_layout(fig, h_pad=0)
+plt.rc('text', usetex=True)
 
-os.system('mkdir -p plots')
-plt.savefig("plots/exploration-plot.pdf")
+#step time histogram
+fig = plt.figure()
+gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+ax0 = fig.add_subplot(gs[0])
+ax1 = fig.add_subplot(gs[1])
+ax2 = fig.add_subplot(gs[2])
+
+# run_conditions = open("data/exploration_stepping_parameters.tex").read()
+
+# print("run_conditions + r'cb: \cbexploration'", run_conditions + r'cb: \cbexploration')
+
+# ax0.text(10, 10, run_conditions + r'cb: \cbexploration')
+
+ax0.hist(step_times, bins=50)
+ax0.set_title("Step times")
+ax0.set_ylabel("Frequency")
+ax0.set_yscale("log")
+ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+ax1.hist(onebound_times, bins=50)
+ax1.set_title("onebound times")
+ax1.set_ylabel("Frequency")
+ax1.set_yscale("log")
+ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+ax2.hist(bothbound_times, bins=50)
+ax2.set_title("bothbound times")
+ax2.set_xlabel("Step time (s)")
+ax2.set_ylabel("Frequency")
+ax2.set_yscale("log")
+ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+plt.subplots_adjust(hspace=0.6)
+
 plt.show()
+
+plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
+plt.close(fig)

@@ -139,8 +139,10 @@ plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py $
 	python3 trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
-plots/exploration-plt.pdf: data/exploration_movie_data.txt trajectory-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
+plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt exploration-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
 
 movies/movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-movie.py data/thesis_movie_data.txt
