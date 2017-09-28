@@ -166,7 +166,7 @@ if __name__ == '__main__':
     plt.xlim(0, 5*10**-9)
     plt.xlabel('t [s]')
     plt.ylabel(r'$\rho(\Delta t)$')
-    plt.savefig(LABEL+'_ac.pdf')
+    plt.savefig('figs/'+LABEL+'_ac.pdf')
 
     fig2 = plt.figure()
     for key in usefullData:
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     plt.xlabel('t [s]')
     plt.ylabel('U(t)')
     #plt.xlim(0,5e-9)
-    plt.savefig(LABEL+'_U.pdf')
+    plt.savefig('figs/'+LABEL+'_U.pdf')
 
     fig3 = plt.figure()
     for key in usefullData:
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     plt.ylabel('U(t)')
     #plt.xlim(0,5e-9)
 
-    plt.savefig(LABEL+'_U_vs_logt.pdf')
+    plt.savefig('figs/'+LABEL+'_U_vs_logt.pdf')
 
  
     if PLOT:
