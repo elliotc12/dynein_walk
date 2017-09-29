@@ -6,10 +6,10 @@ l = "exploration"
 
 simrunner.avoid_slurm = True
 
-basename = simrunner.run_sim(**{"k_b": 8e10, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
+basename = simrunner.run_sim(**{"k_b": 100, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
                                 "seed": 1,
-                                "runtime": 1e-2,
-                                "framerate": 1e-8,
+                                "runtime": 1e-1,
+                                "framerate": 1e-7,
                                 "constant-write": True,
                                 "no-slurm": True})
 
