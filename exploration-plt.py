@@ -134,8 +134,15 @@ far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
 
 step_times = np.array(bind_times[1:] - bind_times[:-1])
 onebound_times = bind_times - unbind_times
-bothbound_times = bind_times[1:] - unbind_times[:-1]
+bothbound_times = unbind_times[1:] - bind_times[:-1]
 step_lengths = np.concatenate((near_step_lens, far_step_lens))
+
+for i in range(len(onebound_times)):
+    print("lifted off at {}, bound at {}, ob_time: {}".format(unbind_times[i], bind_times[i], onebound_times[i]))
+
+for j in range(len(bothbound_times)):
+    print("bound at {}, lifted off at {}, bb_time: {}".format(
+        bind_times[:-1][j], unbind_times[1:][j], bothbound_times[j]))
 
 num_steps = len(step_lengths)
 
@@ -190,7 +197,10 @@ ax2.set_title("bothbound times (theory: 4.52e-4s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
 ax2.set_yscale("log")
-ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+print(onebound_times)
+print(bothbound_times)
 
 plt.gcf().suptitle(
     raw_run_conditions +
@@ -198,7 +208,6 @@ plt.gcf().suptitle(
     fontsize=14)
 
 plt.subplots_adjust(hspace=0.6)
-plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 plt.show()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
