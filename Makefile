@@ -9,7 +9,7 @@ STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/%.mp4, $(wildc
 
 .PHONY: clean histograms thesis
 
-.PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
+.PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
 
 all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data thesis movies/movie.mp4
 
@@ -144,8 +144,18 @@ plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/s
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
 
-movies/movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
+movies/thesis-movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-movie.py data/thesis_movie_data.txt
+	mv movies/movie.mp4 movies/thesis-movie.mp4
+
+# movies/exploration-movie.mp4: data/exploration_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py plots/exploration-plot.pdf
+# 	python3 trajectory-movie.py data/exploration_movie_data.txt
+# 	mv movies/movie.mp4 movies/exploration-movie.mp4
+
+movies/exploration-movie.mp4: data/exploration_movie_data.txt movie.py
+	mkdir -p movies
+	./movie.py data/exploration_movie_data.txt speed=1000
+	mv movies/movie.mp4 movies/exploration-movie.mp4
 
 draw/motor_domain.py: draw/create_MD_array.py draw/outer_coords.txt
 	cd draw && python2 create_MD_array.py

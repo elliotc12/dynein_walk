@@ -126,9 +126,10 @@ plt.sca(ax2)
 i = 0
 savefigframe = 0
 dt = data[1,1] - data[0,1]
-skip_every = 10000 # we only plot every "skip_every" frames, to make things faster
+skip_every = 1000 # we only plot every "skip_every" frames, to make things faster
 
-while i*dt < 9.0*1e-6:
+while i < len(data):
+    print("i: {}, dt: {}, i*dt: {}".format(i, dt, i*dt))
     ax2.cla()
 
     ax2.add_patch(Rectangle((30, -5), -90, 5, alpha=0.8, zorder=-1))
