@@ -5,6 +5,7 @@ latex/latexlog.txt
 *.blg
 *.log
 *.pdf
+*.lof
 *.out
 *.tum
 GIFS/*.gif
