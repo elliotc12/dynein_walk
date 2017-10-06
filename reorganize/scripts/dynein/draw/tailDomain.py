@@ -2,6 +2,8 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 
+## function that creates tail domain for cartoon ## 
+
 m = 2
 N = 500
 t = np.linspace(-10,10,N) 

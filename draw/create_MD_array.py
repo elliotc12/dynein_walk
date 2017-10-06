@@ -17,7 +17,7 @@ with open(outer_path, 'r') as outer_data:
                 f =float(strng)
                 outer_disps.append(f)
             except ValueError:
-                print("Cannot convert string to int", strng)
+                print ("Cannot convert string to float: ", strng)  
 mdo_x = [0]     #motor domain outer path x displacements
 mdo_y = [0]     #motor domain outer path y displacements
 for i in range( len(outer_disps)):
