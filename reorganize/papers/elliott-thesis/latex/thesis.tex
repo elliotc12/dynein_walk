@@ -73,15 +73,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-%% \newcommand{\ttitle}{Simulating dynein's powerstroke using Brownian dynamics}
-%% \newcommand{\title}{Simulating dynein's powerstroke using Brownian dynamics}
-%% \thesistitle{Simulating dynein'’s powerstroke using Brownian dynamics} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-
-\newcommand{\ttitle}{Thesis title}
-\makeatletter
-\renewcommand{\@title}{Thesis title}
-\makeatother
-
+\thesistitle{Simulating dynein'’s powerstroke using Brownian dynamics} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
 \supervisor{Dr. David \textsc{Roundy}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Bachelor of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
@@ -96,7 +88,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 \faculty{} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
 
 \AtBeginDocument{
-%% \hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
 \hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
 \hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
 }
@@ -119,7 +111,7 @@ chapterinoneline, % Uncomment to place the chapter title next to the number on o
 \textsc{\Large Undergraduate Thesis}\\[0.5cm] % Thesis type
 
 \HRule \\[0.4cm] % Horizontal line
-%% {\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
 \HRule \\[1.5cm] % Horizontal line
  
 \begin{minipage}[t]{0.4\textwidth}
