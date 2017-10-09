@@ -4,12 +4,12 @@ import numpy as np
 
 l = "exploration"
 
-simrunner.avoid_slurm = True
+simrunner.avoid_roundqueue = True
 
-basename = simrunner.run_sim(**{"k_b": 10, "k_ub": 1e10, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
+basename = simrunner.run_sim(**{"k_b": 35, "k_ub": 5e9, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
                                 "seed": 1,
-                                "runtime": 1,
-                                "framerate": 1e-5,
+                                "runtime": 20,
+                                "framerate": 1e-4,
                                 "constant-write": True,
                                 "no-slurm": True})
 
