@@ -8,7 +8,7 @@ if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
 #import draw.balls as cartoon
-import dynein.draw.cartoon as cartoon
+import draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
@@ -134,6 +134,6 @@ ax2.plot(avg_times, avg_fbys, label="far foot", c='r')
 
 gs.tight_layout(fig, h_pad=0)
 
-os.chdir("../figs") 
-plt.savefig("trajectory-plot.pdf")
+os.system('mkdir -p plots')
+plt.savefig("plots/trajectory-plot.pdf")
 plt.show()

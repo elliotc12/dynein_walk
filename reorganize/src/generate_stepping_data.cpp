@@ -138,6 +138,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   if (!am_only_writing_on_crash or (am_debugging_onebound and s != BOTHBOUND)) {
     if (--num_movie_writes > 0) {
       if (num_movie_writes == 1) printf("about to exceed movie printing line #\n");
+      printf("i'm printing to file!!");
       const char *format = "%d\t"
 	"%.10g\t"
 	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
@@ -321,6 +322,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"runtime",  required_argument,    0, 'l'},
       {"label",    required_argument,    0, 'm'},
       {"dt",       required_argument,    0, 'n'},
+      {"framerate",required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
@@ -387,6 +389,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'n':
       dt = strtod(optarg, NULL);
+      break;
+    case 'o':
+      stepping_movie_framerate = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
@@ -486,10 +491,6 @@ int main(int argc, char** argv) {
   job_msg.start_time = clock();
   job_msg.run_msg = run_name;
   job_msg.stepping_data_file = fopen(stepping_data_fname, "w");
-  if (!job_msg.stepping_data_file) {
-    printf("Unable to create file: %s\n", stepping_data_fname);
-    exit(1);
-  }
   job_msg.movie_data_file = 0;
 
   if (am_making_movie or am_debugging_onebound) {

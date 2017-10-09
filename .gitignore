@@ -68,3 +68,4 @@ draw/polygons.py
 *-blx.bib
 .fac
 *.DS_Store
+*.gch

@@ -1,0 +1,9 @@
+#!/usr/bin/python2.7
+
+import os
+
+students = ['droundy', 'elliotc12', 'john-waczak', 'ValdemarTD'] #ValdemarTd - Zachary Lee
+ 
+for student in students:
+    os.system('git pull git://github.com/%s/dynein_walk.git :' % student)
+

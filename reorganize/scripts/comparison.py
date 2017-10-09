@@ -5,7 +5,7 @@ import subprocess, os
 import argparse 
 import numpy as np
 import matplotlib.pyplot as plt
-import dynein.run as run 
+import draw.run as run 
 
 
 def ac(data, Nmax = None): #generate autocorrelation function
@@ -206,10 +206,6 @@ if __name__ == '__main__':
 
     plt.savefig('figs/'+LABEL+'_U_vs_logt.pdf')
 
- 
+
     if PLOT:
-        plt.show() 
-
-        
-
-        
+        plt.show()
