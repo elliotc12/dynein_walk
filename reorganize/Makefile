@@ -68,6 +68,11 @@ plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/s
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
 
+plots/exploration-movie.mp4: data/exploration_movie_data.txt scripts/movie.py
+	mkdir -p movies
+	./scripts/movie.py data/exploration_movie_data.txt speed=1 tail
+	mv plots/movie.mp4 plots/exploration-movie.mp4
+
 ######### papers ##########
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
