@@ -6,8 +6,9 @@ LIBRARIES = -lm
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt # prevent nonexistant data files from being deleted after creation+use
 
 PAPERS = papers/fft_speedup/convolution_theorem.pdf
+DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 
-all: generate_stepping_data $(PAPERS)
+all: generate_stepping_data $(PAPERS) $(DRAW)
 
 src/version-info.h: SHELL:=/bin/bash
 src/version-info.h: ../.git/refs/heads/master $(wildcard src/*.cpp) Makefile
@@ -29,6 +30,17 @@ generate_stepping_data: src/generate_stepping_data.o src/dynein_simulate.o \
 
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
+
+## draw module stuff ##
+scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
+	cd scripts/dynein/draw && python2 create_MD_array.py
+
+
+scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
+	cd scripts/dynein/draw && python2 tailDomain.py
+
+
+
 
 clean:
 	rm -f src/*.o
