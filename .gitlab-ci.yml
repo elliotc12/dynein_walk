@@ -7,7 +7,7 @@ build:
     - git config --global user.email "testing-on-travis@example.com"
     - git config --global user.name "Travis Builder"
   script:
-    - make
+    - cd reorganize && make
   artifacts:
     paths:
       - public

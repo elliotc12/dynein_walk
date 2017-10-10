@@ -9,6 +9,7 @@ from matplotlib.patches import Rectangle
 
 os.system("rm -rf PNGs") # ensure the PNGs directory is empty.
 os.system("mkdir -p PNGs") # ensure the PNGs directory exists.
+os.system("mkdir -p plots") # ensure the PNGs directory exists.
 
 pe_coloring = 'energies' in sys.argv
 force_vectors = 'forces' in sys.argv
