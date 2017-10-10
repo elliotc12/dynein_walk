@@ -83,3 +83,4 @@ clean:
 	rm -f generate_stepping_data
 	rm -f scripts/draw/motor_domain.py scripts/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
+	rm -rf plots
