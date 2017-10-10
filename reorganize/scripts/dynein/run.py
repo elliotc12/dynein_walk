@@ -1,4 +1,4 @@
-#/usr/bin/python3
+#/usr/bin/python
 import subprocess, os
 import numpy as np
 
@@ -47,11 +47,7 @@ def latex_format(x):
         x = x.replace('-', '_')
     return x
 
-def run_sim(**run):
-    if os.path.isdir('run_scripts'):
-        os.chdir('run_scripts')
-    os.system('mkdir -p runlogs')
-
+def run(**run):
     if 'label' in run:
       basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                                  run["cb"], run["cm"], run["ct"], run["dt"])

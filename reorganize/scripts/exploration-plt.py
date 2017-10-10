@@ -8,7 +8,7 @@ if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
 #import draw.balls as cartoon
-import draw.cartoon as cartoon
+import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
@@ -137,12 +137,12 @@ onebound_times = bind_times - unbind_times
 bothbound_times = unbind_times[1:] - bind_times[:-1]
 step_lengths = np.concatenate((near_step_lens, far_step_lens))
 
-for i in range(len(onebound_times)):
-    print("lifted off at {}, bound at {}, ob_time: {}".format(unbind_times[i], bind_times[i], onebound_times[i]))
+# for i in range(len(onebound_times)):
+#     print("lifted off at {}, bound at {}, ob_time: {}".format(unbind_times[i], bind_times[i], onebound_times[i]))
 
-for j in range(len(bothbound_times)):
-    print("bound at {}, lifted off at {}, bb_time: {}".format(
-        bind_times[:-1][j], unbind_times[1:][j], bothbound_times[j]))
+# for j in range(len(bothbound_times)):
+#     print("bound at {}, lifted off at {}, bb_time: {}".format(
+#         bind_times[:-1][j], unbind_times[1:][j], bothbound_times[j]))
 
 num_steps = len(step_lengths)
 
@@ -231,8 +231,8 @@ ax2.set_ylabel("Frequency")
 ax2.set_yscale("log")
 ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-print(onebound_times)
-print(bothbound_times)
+# print(onebound_times)
+# print(bothbound_times)
 
 plt.gcf().suptitle(
     raw_run_conditions +

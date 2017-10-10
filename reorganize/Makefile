@@ -2,7 +2,7 @@ CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
 PAPERS = papers/fft_speedup/convolution_theorem.pdf
-DRAW = scripts/draw/motor_domain.py scripts/draw/tail.py
+DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
 all: generate_stepping_data $(PAPERS) $(DRAW)
@@ -36,25 +36,25 @@ generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
 	$(CXX) -o generate_stepping_data $^
 
 ######### draw module stuff ##########
-scripts/draw/motor_domain.py: scripts/draw/create_MD_array.py scripts/draw/outer_coords.txt
-	cd scripts/draw && python2 create_MD_array.py
+scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
+	cd scripts/dynein/draw && python2 create_MD_array.py
 
-scripts/draw/tail.py: scripts/draw/tailDomain.py
-	cd scripts/draw && python2 tailDomain.py
+scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
+	cd scripts/dynein/draw && python2 tailDomain.py
 
 ######### data ##########
-data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/run_scripts/simrunner.py scripts/run_scripts/generate-thesis-data.py
+data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
 	mkdir -p data
-	mkdir -p scripts/run_scripts/runlogs
-	python3 scripts/run_scripts/generate-thesis-data.py
+	mkdir -p sim-logs
+	python3 scripts/generate-thesis-data.py
 
-data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data scripts/run_scripts/simrunner.py scripts/run_scripts/generate-exploration-data.py
+data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-exploration-data.py
 	mkdir -p data
-	mkdir -p scripts/run_scripts/runlogs
-	python3 scripts/run_scripts/generate-exploration-data.py
+	mkdir -p sim-logs
+	python3 scripts/generate-exploration-data.py
 
 ######### plots ##########
-plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(wildcard scripts/draw/*.py)
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
 	python3 scripts/trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
@@ -63,7 +63,7 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py scripts/draw/tail.py scripts/draw/motor_domain.py
+plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py $(DRAW)
 	python3 scripts/exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
@@ -81,5 +81,5 @@ clean:
 	rm -f build/*.o
 	rm -f src/version-info.h
 	rm -f generate_stepping_data
-	rm -f scripts/draw/motor_domain.py scripts/draw/tail.py
+	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
