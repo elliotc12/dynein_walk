@@ -81,3 +81,5 @@ clean:
 	rm -f build/*.o
 	rm -f src/version-info.h
 	rm -f generate_stepping_data
+	rm -f scripts/draw/motor_domain.py scripts/draw/tail.py
+	rm -f scripts/*.pyc scripts/*/*.pyc
