@@ -7,7 +7,7 @@ HEADERS = $(wildcard src/*.h) src/version-info.h
 
 all: generate_stepping_data $(PAPERS) $(DRAW)
 
-.PHONY: clean
+.PHONY: clean elliott-thesis
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
 
@@ -63,19 +63,29 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py scripts/draw/tail.py scripts/draw/motor_domain.py
+plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py $(DRAW)
 	python3 scripts/exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
 
-plots/exploration-movie.mp4: data/exploration_movie_data.txt scripts/movie.py
+plots/exploration-movie.mp4: data/exploration_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
 	./scripts/movie.py data/exploration_movie_data.txt speed=1 tail
 	mv plots/movie.mp4 plots/exploration-movie.mp4
 
 ######### papers ##########
+SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
+
+ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+
+papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
+	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
+
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
+
+elliott-thesis: $(DRAW) $(ALL_FIGURES)
+	$(MAKE) -C papers/elliott-thesis
 
 clean:
 	rm -f build/*.o
@@ -84,3 +94,5 @@ clean:
 	rm -f scripts/draw/motor_domain.py scripts/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
 	rm -rf plots
+	$(MAKE) -C papers/elliott-thesis clean
+	rm -f $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
