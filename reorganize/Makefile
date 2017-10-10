@@ -63,7 +63,7 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py $(wildcard scripts/draw/*.py) scripts/draw/tail.py scripts/draw/motor_domain.py
+plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py scripts/draw/tail.py scripts/draw/motor_domain.py
 	python3 scripts/exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
