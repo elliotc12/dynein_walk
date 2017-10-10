@@ -165,7 +165,39 @@ t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 
 fig = plt.figure()
 
+weihong_step_lengths = []
+weihong_step_lengths = weihong_step_lengths + [-35]*3
+weihong_step_lengths = weihong_step_lengths + [-25]*3
+weihong_step_lengths = weihong_step_lengths + [-22]*4
+weihong_step_lengths = weihong_step_lengths + [-19]*10
+weihong_step_lengths = weihong_step_lengths + [-16]*15
+weihong_step_lengths = weihong_step_lengths + [-13]*30
+weihong_step_lengths = weihong_step_lengths + [-10]*62
+weihong_step_lengths = weihong_step_lengths + [-7]*80
+weihong_step_lengths = weihong_step_lengths + [-4]*67
+weihong_step_lengths = weihong_step_lengths + [2]*94
+weihong_step_lengths = weihong_step_lengths + [5]*94
+weihong_step_lengths = weihong_step_lengths + [8]*209
+weihong_step_lengths = weihong_step_lengths + [11]*152
+weihong_step_lengths = weihong_step_lengths + [14]*128
+weihong_step_lengths = weihong_step_lengths + [17]*80
+weihong_step_lengths = weihong_step_lengths + [20]*67
+weihong_step_lengths = weihong_step_lengths + [23]*35
+weihong_step_lengths = weihong_step_lengths + [26]*24
+weihong_step_lengths = weihong_step_lengths + [29]*13
+weihong_step_lengths = weihong_step_lengths + [32]*11
+weihong_step_lengths = weihong_step_lengths + [35]*8
+weihong_step_lengths = weihong_step_lengths + [35]*4
+weihong_step_lengths = weihong_step_lengths + [38]*2
+
+plt.subplot(122)
+plt.title("GST-labelled dynein (experiment)")
+plt.hist(weihong_step_lengths, bins=50)
+plt.xlabel("Step length (nm)")
+
+plt.subplot(121)
 plt.hist(step_lengths, bins=50)
+plt.title("Model")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
