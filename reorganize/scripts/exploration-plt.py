@@ -219,7 +219,7 @@ ax0.set_yscale("log")
 ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax1.hist(onebound_times, bins=50)
-ax1.set_title("onebound times (theory 4.52e-4s)")
+ax1.set_title("onebound times (theory: ~bb/100)")
 ax1.set_ylabel("Frequency")
 ax1.set_yscale("log")
 ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))

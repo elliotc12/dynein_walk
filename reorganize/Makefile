@@ -87,6 +87,9 @@ papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theor
 elliott-thesis: $(DRAW) $(ALL_FIGURES)
 	$(MAKE) -C papers/elliott-thesis
 
+papers/parameter-calculation/param-calc.pdf: papers/parameter-calculation/param-calc.tex
+	cd papers/parameter-calculation && xelatex param-calc.tex
+
 clean:
 	rm -f build/*.o
 	rm -f src/version-info.h

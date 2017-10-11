@@ -12,7 +12,7 @@ l = "exploration"
 #                                 "constant-write": True,
 #                                 "no-slurm": True})
 
-basename  = run.run(**{"k_b": 35*1e9, "k_ub": 1e13, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
+basename  = run.run(**{"k_b": 35*1e9, "k_ub": 1e15, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
                        "seed": 1,
                        "runtime": 1e-3,
                        "framerate": 1e-9,
