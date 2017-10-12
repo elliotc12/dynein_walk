@@ -16,6 +16,8 @@ pages:
   stage: deploy
   script:
     - echo I already built everything...
+    - rm -rf public
+    - mv reorganize/public public
     - ls -lh public/
   artifacts:
     paths:

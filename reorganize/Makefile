@@ -87,6 +87,10 @@ papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theor
 elliott-thesis: $(DRAW) $(ALL_FIGURES)
 	$(MAKE) -C papers/elliott-thesis
 
+public: elliott-thesis papers/fft_speedup/convolution_theorem.pdf
+	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
+	cp -v papers/fft_speedup/convolution_theorem.pdf public/
+
 clean:
 	rm -f build/*.o
 	rm -f src/version-info.h
@@ -96,3 +100,4 @@ clean:
 	rm -rf plots
 	$(MAKE) -C papers/elliott-thesis clean
 	rm -f $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+	rm -f public/*.pdf
