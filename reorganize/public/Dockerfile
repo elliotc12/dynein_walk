@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:stable-slim
 
 # This docker image provides all the prerequisites for building and
 # testing the dynein code.
