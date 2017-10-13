@@ -1,13 +1,13 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/param-calculation/param-calc.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
-all: generate_stepping_data $(PAPERS) $(DRAW)
+all: generate_stepping_data public $(DRAW)
 
-.PHONY: clean elliott-thesis
+.PHONY: clean elliott-thesis public
 
 .PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
 
@@ -87,12 +87,12 @@ papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theor
 elliott-thesis: $(DRAW) $(ALL_FIGURES)
 	$(MAKE) -C papers/elliott-thesis
 
-public: elliott-thesis papers/fft_speedup/convolution_theorem.pdf
+public: elliott-thesis $(PAPERS)
 	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
-	cp -v papers/fft_speedup/convolution_theorem.pdf public/
+	cp -v $(PAPERS) public/
 
-papers/parameter-calculation/param-calc.pdf: papers/parameter-calculation/param-calc.tex
-	cd papers/parameter-calculation && xelatex param-calc.tex
+papers/param-calculation/param-calc.pdf: papers/param-calculation/param-calc.tex
+	cd papers/param-calculation && xelatex param-calc.tex
 
 clean:
 	rm -f build/*.o
