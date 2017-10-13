@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.patches as patches
-import draw.cartoon as draw
+import dynein.draw.cartoon as draw
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111,aspect='equal')

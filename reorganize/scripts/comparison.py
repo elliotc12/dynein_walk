@@ -5,7 +5,7 @@ import subprocess, os
 import argparse 
 import numpy as np
 import matplotlib.pyplot as plt
-import draw.run as run 
+import dynein.run as run 
 
 
 def ac(data, Nmax = None): #generate autocorrelation function
