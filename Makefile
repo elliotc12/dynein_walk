@@ -131,9 +131,13 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
 	python3 run_scripts/generate-thesis-data.py
+# The following lets make (sort of) know that one run generates both outputs.
+data/thesis_stepping_data.txt: data/thesis_movie_data.txt
 
 data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-exploration-data.py
 	python3 run_scripts/generate-exploration-data.py
+# The following lets make (sort of) know that one run generates both outputs.
+data/exploration_stepping_data.txt: data/exploration_movie_data.txt
 
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
 	python3 trajectory-plt.py data/thesis_movie_data.txt

@@ -1,16 +1,17 @@
 #!/usr/bin/python3
-import simrunner, os
+import os
 import numpy as np
+import dynein.run as run
 
 l = "thesis"
 
-simrunner.avoid_slurm = True
+run.avoid_slurm = True
 
-basename = simrunner.run_sim(**{"k_b": 1e16, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
-                                "seed": 8,
-                                "runtime": 1e-3,
-                                "constant-write": True,
-                                "no-slurm": True})
+basename = run.run(**{"k_b": 1e16, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
+                      "seed": 8,
+                      "runtime": 1e-3,
+                      "constant-write": True,
+                      "no-slurm": True})
 
 #this one has a bothbound at the end
 # basename = simrunner.run_sim(**{"k_b": 1e18, "k_ub": 1e7, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-10, "label": l,

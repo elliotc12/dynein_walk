@@ -9,9 +9,6 @@ all: generate_stepping_data public $(DRAW)
 
 .PHONY: clean elliott-thesis public
 
-.PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
-
-
 ######### SRC stuff ##########
 src/version-info.h: SHELL:=/bin/bash
 src/version-info.h: ../.git/refs/heads/master $(wildcard src/*.cpp) Makefile
@@ -104,3 +101,4 @@ clean:
 	$(MAKE) -C papers/elliott-thesis clean
 	rm -f $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
 	rm -f public/*.pdf
+	rm -f data/thesis_* data/exploration_*
