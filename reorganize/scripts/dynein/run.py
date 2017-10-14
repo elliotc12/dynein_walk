@@ -70,6 +70,8 @@ def run(**run):
                 f.write(r'\newcommand\runlabel{%s}' % (latex_format(v)) + '\n')
             else:
                 f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(v)) + '\n')
+    os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
+    os.makedirs('data', exist_ok=True) # ensure data directory exists
     out = open('runlogs/' + basename + '.out', 'w')
     process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
     print("Running: ", " ".join(cmd))

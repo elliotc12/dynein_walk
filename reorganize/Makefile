@@ -41,13 +41,9 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 
 ######### data ##########
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
-	mkdir -p data
-	mkdir -p sim-logs
 	python3 scripts/generate-thesis-data.py
 
 data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-exploration-data.py
-	mkdir -p data
-	mkdir -p sim-logs
 	python3 scripts/generate-exploration-data.py
 
 ######### plots ##########
