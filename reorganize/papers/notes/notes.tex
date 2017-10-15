@@ -34,7 +34,7 @@
 \titleformat{\section}{\color{headings}
 \scshape\Large\raggedright}{}{0em}{}[\color{black}\titlerule]
 
-\title{Dynein project log}
+\title{Dynein notes}
 \author{Elliott Capek}
 \titlespacing{\section}{0pt}{0pt}{5pt} % Spacing around titles
 
@@ -42,608 +42,67 @@
 
 \maketitle{}
 
-\section{Equipartition Theorem}
-The Equipartition Theorem (ET) predicts the average energy per degree of freedom of a system with energy which depends on the square of each degree of freedom. Mathematically is is expressed as:
+\subsection{Calculating one/bothbound times of experimental dynein}
+In order to fit parameters, a goodness metric for a simulation is needed. Time spent in onebound and bothbound states are good metrics. These values are calculated here.\\
+
+\newcommand\tbb{\left<t_{bb}\right>}
+\newcommand\tob{\left<t_{ob}\right>}
+\newcommand\tstep{\left<t_{step}\right>}
+\newcommand\tproc{\left<t_{processivity}\right>}
+\newcommand\kub{k_{ub}}
+\newcommand\kb{k_{b}}
+\newcommand\ko{k_{dis}}
+
+\begin{itemize}
+\item $\tbb$: Time in bothbound per step
+\item $\tob$: Time in onebound per step
+\item $\tstep$: Time of a single step. $\tstep=\tbb+\tob$.
+\item $P_{bb}$: Probability of being bothbound per unit time. $P_{bb} = \frac{\tbb}{\tstep}$
+\item $P_{ob}$: Probability of being onebound per unit time. $P_{ob} = \frac{\tob}{\tstep}$
+\item $\kub$: Rate of unbinding per unit time while in bothbound. $\kub = \tbb^{-1}$
+\item $\kb$: Rate of binding per unit time while in onebound. $\kb = \tob^{-1}$
+\item $\ko$: Rate of unbinding per unit time while in onebound. $\ko = P_{ob}\kub$
+\item $\tproc$: Time bound to microtubule before dissociation. step length / velocity $= \ko^{-1}$
+\end{itemize}
+
+$\tbb$ and $\tob$ can thus be defined in terms of observables $\tstep$ and $\tproc$:
 
 \begin{align*}
-  Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
-  <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
-  &= \frac{1}{2}k_BT\\
+  \ko &= P_{ob}\kub = \frac{\tob}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  &= \frac{\tstep-\tbb}{\tstep\tbb}\\
+  \tproc &= \frac{\tstep\tbb}{\tstep-\tbb}\\
+  \tbb &= \frac{\tproc\tstep}{\tproc+\tstep}\\
+  \tob &= \tstep-\tbb\\
+  &= \tstep - \frac{\tstep\tproc}{\tstep+\tproc}\\
+  &= \frac{\tstep^2}{\tstep+\tproc}\\
+  \frac\tob\tbb &= \frac{\tstep}{\tproc}
 \end{align*}
 
-where Z is the partition function and x a degree of freedom.\\
+Thus, by the above equations and data from various sources, estimates on $\tbb$ and $\tob$ can be made.\\
 
-For our model, each domain feels three separate forces:
-
-\textbf{Brownian forces}: Random forces due to water particle collisions. Gaussian-sampled with a
-variance $\sqrt{\frac{\gamma k_BT}{dt}}$. Brownian forces are somehow necessary for the ET energy
-to be realized.\\
-
-\textbf{Conformational forces}: Spring forces from the molecule deviating from its lowest-energy
-conformation. The energy from these forces is quadratic with respect to angle, and so each free
-angle should contribute to the average energy by ET.\\
-
-\textbf{Internal forces}. Tension forces (constraint forces) felt between domains which keep
-the protein rigid. These are not quadratic, so it is unclear how they contribute to energy!\\
-
-\subsection{Onebound case}
-The conformational forces are:\\
-\begin{align*}
-  |\vec{F_{ub}}| &\approx \frac{c_m\theta_{um}}{L_s}\\
-  |\vec{F_{um}}| &\approx \frac{c_m\theta_{um}}{L_s} + \frac{c_m\theta_{um}}{L_t} + \frac{c_t\theta_{t}}{L_t}\\
-  |\vec{F_{t}}| &\approx \frac{c_m\theta_{um}}{L_t} + 2\frac{c_t\theta_t}{L_t} + \frac{c_m\theta_{bm}}{L_t}\\
-  |\vec{F_{bm}}| &\approx \frac{c_t\theta_t}{L_t} + \frac{c_m\theta_{bm}}{L_t} + \frac{c_m\theta_{bm}}{L_s} + \frac{c_b\theta_{bb}}{L_s}\\
-  |\vec{F_{bb}}| &\approx \frac{c_m\theta_{bm}}{L_s} + \frac{c_b\theta_{bb}}{L_s}\\
-\end{align*}
-
-From this we can come up with rough order-of-magnitude estimates of the energy of each domain is:
-
-\begin{align*}
-  PE_{ub} &\approx \frac{c_m}{L_s}\theta_{um}^2 + \frac{c_m}{L_t}\theta_{um}^2\\
-  PE_{t} &\approx \frac{c_t}{L_t}\theta_{t}^2\\
-  PE_{bm} &\approx \frac{c_m}{L_s}\theta_{bm}^2 + \frac{c_m}{L_t}\theta_{bm}^2\\
-  PE_{bb} &\approx \frac{c_m}{L_s}\theta_{um}^2\\
-\end{align*}
-
-From this we can see that the conformational PE of each domain depends on different combinations of
-stalk/tail length and spring constants.
-
-\textbf{When is equipartition behaved?}
-It seems like ET should be behaved when we have an even balance of Brownian and conformational forces:
-
-\begin{align*}
-  F_{conf} &\approx F_{Brownian}\\
-  \frac{c}{L}\theta &\approx \sqrt{\frac{k_BT\gamma}{dt}}\\
-\end{align*}
-
-Is this reflected in our simulation? Well take a look at %% Fig ($\ref{fig:latent-heat}$)
-...
-
-%% \begin{figure}[h!]
-%%   \centering
-%%   \includegraphics[width=0.5\textwidth]{../figures/ob_equipartition_vs_force_ratio.pdf}
-%%   \caption{Onebound conformational energy follows equipartition best when the ratio of conformational
-%%   forces to Brownian forces is one.}
-%%   \label{fig:equipartition_vs_force_ratio}
-%% \end{figure}
-
-\section{Brownian motion}
-\subsection{Derivation} \label{sec:bmotion-derivation}
-We can derive the equation for the position of a particle using the simple Newtonian mechanics. We
-start with the general $2^{nd}$ law equation for a particle with random forces and drag (the
-Langevin equation). We then take the time-averages of all variables (using expectation value signs)
-to eliminate the effect of random Brownian forces. After some algebra we arrive at a differential
-equation for squared position. We solve it and simplify its expression for limits when $t >> \tau$
-and $t << \tau$.\\
-
-\begin{align*}
-  \frac{d\vec{v}}{dt} &= \frac{1}{m}\left(\frac{-mv}{\tau} + R\right)\\
-  \frac{d\vec{v}}{dt} &= \frac{-v}{\tau} + \frac{R}{m}\\
-  <\vec{r} \cdot \frac{d\vec{v}}{dt} > &+ \frac{1}{\tau}<\vec{r} \cdot \vec{v}> = 0\\
-  \frac{1}{2}\frac{d^2}{dt^2}(r^2) &+ \frac{1}{2\tau}\frac{d}{dt}(r^2) - v^2 = 0 \hspace{1cm} \Bigg(\mbox{b/c }\frac{d}{dt}\left(\vec{r} \cdot \vec{v}\right) = v^2 + \left(\vec{r} \cdot \frac{d\vec{v}}{dt}\right)
-  \mbox{ and }
-  \frac{d}{dt}\left(\vec{r} \cdot \vec{r}\right) = 2\left(\vec{r} \cdot \vec{v}\right) \Bigg)\\
-  \frac{d^2}{dt^2}(<r^2>) + &\frac{1}{\tau}\frac{d}{dt}(<r^2>) = 2<v^2> = \frac{6k_BT}{m} \hspace{1cm}\left(\mbox{Equipartition Theorem}\right)\\
-  <r^2> &= \frac{6k_BT\tau^2}{m}\left(e^{-t/\tau}-1+\frac{t}{\tau}\right)\\
-\end{align*}
-
-so...
-
-\begin{align*}
-  \left(t << \tau \right) \rightarrow <r^2> = \frac{3k_BT}{m}t^2 \hspace{2cm}\mbox{free particle motion}\\
-  \left(t >> \tau \right) \rightarrow <r^2> = \frac{6k_BT\tau}{m}t \hspace{2cm}\mbox{motion proportional to }\sqrt{t}\\
-\end{align*}
-
-\textbf{Averaging over time?}
-In the above derivation we use time averaging to eliminate the effect of Brownian forces. This is
-essentially just discussing the motion of a particle on a timescale where Brownian forces go to
-zero. The variance of the Brownian force R is:
-
-\begin{align*}
-  \sigma_R^2 &= \sqrt{\frac{2k_BTm}{\tau dt}}\\
-\end{align*}
-
-(TODO: further justify the dt in the variance)\\
-Thus over larger timescales (bigger dt's) the Brownian force is smaller. When time averaging, all
-we are saying is that our dt is large enough that Brownian forces are negligible.\\
-
-An interesting observation is that the motion equation for a particle feeling Brownian forces is
-identical to the equation for a macroscopic object feeling drag forces, which makes sense, since
-to solve the Brownian motion equation we just eliminate R.\\
-
-\section{Brownian dynamics}
-We use Brownian dynamics as our equation of motion. BD is just the special case of Langevin dynamics
-
-\begin{align*}
-  m\frac{d\vec{v}}{dt} &= -\frac{m}{\tau}\vec{v} + \vec{F} + \vec{R}\\
-\end{align*}
-
-where $m\rightarrow0$:
-
-\begin{align*}
-  \vec{v} &= \frac{\tau}{m}\vec{F} + \frac{\tau}{m}\vec{R}\\
-\end{align*}
-
-where m is the mass, $\tau$ the time constant, $\vec{F}$ a generic force and $\vec{R}$ the Brownian
-force. Mass ``going to zero'' means we are discussing particles where $m << $ any other variable.
-Because m is tiny the particle effectively has no net force on it, so the drag force must cancel
-out the other forces. From this we can find velocity.\\
-
-\subsection{What is $\tau$?}
-Tau is a time constant that describes the behavior of a system with respect to time. By looking at
-the motion equations for Brownian systems in Section (\ref{sec:bmotion-derivation}), we see that the
-size of t with respect to $\tau$ decides what type of motion the particle will feel. On the ``small''
-timescale the system displays free particle motion, but on the ``large'' timescale, the system
-displays Brownian motion. $\tau$ can be thought of as the time the system switches from free to
-Brownian motion.\\
-
-\section{Finding a reasonable dt}
-TODO: describe the relationship between diffusion constant D, time constant $\tau$ and dt.\\
-
-\subsection{Relating D to $\tau$}
-
-I don't really understand this derivation:
-
-\begin{align*}
-  \sin\left(\Delta\theta\right) &\approx \Delta\theta = \frac{x}{L}\\
-  \Delta\theta^2 &= \frac{x^2}{L^2} = \frac{Dt}{L^2}\\
-\end{align*}
-
-We set our $\tau$ to be the time when $<\Delta\theta^2> \approx 1$, so:
-
-\begin{align*}
-  \tau = \frac{L^2}{D}\\
-\end{align*}
-
-\subsection{Finding D}
-For a particle feeling Brownian forces:
-
-\begin{align*}
-  \frac{\Delta x}{\Delta t} &= \frac{\tau}{m} R\\
-\end{align*}
-
-We say the magnitude of R is the standard deviation of a Gaussian process:
-
-\begin{align*}
-  \frac{\Delta x}{\Delta t} &= \frac{\tau}{m}\sqrt{\frac{2k_BTm}{\tau \Delta t}}\\
-  \Delta x &= \sqrt{\frac{2k_BT\tau}{m\Delta t}}\Delta t\\
-  <\Delta x^2> &= \frac{2k_BT\tau}{m}\Delta t\\
-\end{align*}
-
-We then use the Brownian motion equation for $t >> \tau$ to find D:\\
-
-\begin{align*}
-  <\Delta x^2> &= D\Delta t = \frac{2k_BT\tau}{m}\Delta t\\
-  D = \frac{2k_BT\tau}{m} = \frac{2k_BT}{\gamma}\\
-\end{align*}
-
-\subsection{Alternative derivation of D (Einstein relation)}
-We can also arrive at an expression for D through an equilibrium argument. There are two forces which cause currents in solutions: drift and diffusion.
-Drift is motion due to a force acting on particles. Diffusion is current due to random, natural motions of particles. Our equilibrium condition is when
-the flux of particles due to both effects is equal, so there is no net particle flow. We first need to describe these fluxes:\\
-
-\textbf{Drift flux}\\
-Our particles obey Brownian dynamics, so $\gamma\dot{x} = F$, where $\gamma$ is the drag force constant. Flux J, or particles per second-area, can be
-found by multiplying the velocity of particles by the concentration $\rho$:
-
-\begin{align*}
-  J_{drift} &= \frac{1}{\gamma}F(x)\rho(x)\\
-  &= -\frac{1}{\gamma}\rho(x)\nabla U\\
-\end{align*}
-
-\textbf{Diffusion flux}\\
-Flux due to diffusion is proportional to the negative gradient in concentration and D:
-
-\begin{align*}
-  J_{diff} &= -D\nabla \rho(x)\\
-\end{align*}
-
-\textbf{Solving for D}\\
-The concentration gradient in a solution is proportional to the energy gradient. By the chain rule:
-
-\begin{align*}
-  \nabla \rho &= \frac{\partial\rho}{\partial U} \nabla U\\
-\end{align*}
-
-We then set the sum of our two fluxes to zero and solve for the equilibrium condition:
-
-\begin{align*}
-  J_{diff} + J_{drift} &= 0\\
-  -\frac{1}{\gamma}\rho(x)\nabla U - D\nabla \rho(x) &= 0\\
-  \frac{1}{\gamma}\rho(x)\nabla U + D \frac{\partial\rho}{\partial U} \nabla U&= 0\\
-  \left(\frac{1}{\gamma}\rho(x) + D\frac{\partial\rho}{\partial U}\right)\nabla U &= 0\\
-\end{align*}
-
-because $\nabla U$ is not guarenteed to be zero everywhere, it must be the case that:
-
-\begin{align*}
-  \frac{1}{\gamma}\rho(x) &= -D\frac{\partial\rho}{\partial U}\\
-  \frac{-\rho(x)}{\gamma\frac{\partial\rho}{\partial U}} &= D\\
-\end{align*}
-
-\textbf{Finding d$\rho$/dU}\\
-To simplify this value, we note that, because the particles do not interact, energy is purely a function of position. Thus, by
-Maxwell-Boltzman statistics, the probability of being at a location x (i.e $\rho(x)$) is proportional to $e^{-\beta U(x)}$.
-From this we can find an expression for concentration and d$\rho(x)/dU(x)$:
-
-\begin{align*}
-  \rho(x) &= Ae^{-\beta U(x)}\\
-  \frac{\partial \rho(x)}{\partial U} &= \frac{-1}{k_BT}Ae^{-\beta U(x)}\\
-\end{align*}
-
-Plugging these expressions into our D equation, in addition to our definition for $\gamma$, we can see that:
-
-\begin{align*}
-  \frac{-1}{\gamma\frac{-1}{k_BT}} &= D\\
-  D &= \frac{k_BT}{\gamma} = \frac{k_BT\tau}{m}\\
-\end{align*}
-
-\section{Equipartition Theorem for quadratic energies}
-\begin{align*}
-  Z &= \int_{-\infty}^{\infty} e^{-\beta Ax^2}dx = \sqrt{\frac{\pi}{\beta A}}\\
-  <E> &= - \frac{d\ln Z}{d\beta} = -\left(\sqrt{\frac{\beta A}{\pi}}\right)\left(\frac{\sqrt{\beta A}}{2\sqrt{\pi}}\right)\frac{-\pi}{A\beta^2}\\
-  &= \frac{k_BT}{2}\\
-\end{align*}
-
-\section{Gamma derivation}
-
-Stoke's Law states that the relationship between viscosity, force, and
-velocity for a spherical particle is given by:
-\begin{align}
-  \mathbf{v} &= \frac{\mathbf{F}}{6\pi \mu R}
-\end{align}
-where $\mu$ is the viscosity of the fluid, and $R$ is the radius of
-the particle.  Thus in our terminology:
-\begin{align}
-  \gamma &= 6\pi \mu R.
-\end{align}
-Note that the viscosity of water is temperature-dependent and around
-0.7~mPa~s at body temperature.  However, the viscosity of cytoplasm
-may be rather different, and will of course depend on length scale.
-But for our purposes we can probably get away with this value.
-
-The random force $\mathbf{R}(t)$ should have a Gaussian distribution
-with variance~1, but then be divided by $\sqrt{\Delta t}$.  Thus, the
-smaller the time step, the larger the random force we will apply.  We
-can understand this in the backwards direction.  When we observe a
-larger time step, the ``random force'' results from many smaller
-random forces added together, and these smaller forces often cancel,
-leading to this reduction in the total force over that time period.
-
-Finally, we will need estimates for the radii of each domain (to go
-into the $\gamma$ parameter, the equilibrium angles for each hinge, and
-the spring constants for each hinge.  The first two we can estimate
-from the structure of dynein.  The third will require a rough guess.
-We can get a ball-park guess by deciding how much we want the angle to
-fluctuate (e.g. $\ll \pi$ for each angle!), and then take our spring
-constant to be $kT$ divided by that anglular fluctuation squared.
-
-\section{Background of Correlation function}
-This is based on the Autocorrelation procedure (see Convolution on Wikipedia).
-In our correlation function code, we take the autocorrelation function of our
-potential and time-translate it to get the time at which there is zero correlation
-between the functions. Flesh this out sometime!\\
-
-\section{CLT (and/or Brownian distribution is Gaussian?) Derivation}
-Here we show that, given an initial PDF as a delta function $P(t_0,x) = \delta(x)$
-and any transition likelihood $W(s)$ for some step size s and 1 timestep, P
-eventually evolves into a Gaussian function.\\
-
-We use a discrete time, continuous position model:\\
-
-\begin{align}
-  P(t_0+1,x') &= \int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx
-\end{align}
-
-This matches the form of a convolution integral:
-
-\begin{align*}
-  (P*W)(x') &= \int_{-\infty}^{\infty}P(t_0,x)W(x'-x)dx
-\end{align*}
-
-By the Convolution Theorem (prove?) we can simplify the above expression:
-
-\begin{align}
-  F\{P(t_0+1,x')\} &= F\left\{\int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx\right\}\\
-  \widetilde{P}(t_0+1,k) &= \widetilde{W}(k)\widetilde{P}(t_0,k)
-\end{align}
-
-We now let our initial time $t_0$ be zero and note that, because
-$W_n(\Delta x) = W(\Delta x)^n$, we can simplify our expression to:
-
-\begin{align}
-  \widetilde{P}(n,k) &= \widetilde{W}(k)^n\widetilde{P}(t_0,k)
-\end{align}
-
-We then take the Inverse Fourier Transform of this expression, yielding:
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\widetilde{P}(n,k)e^{2\pi ikx}dk
-  = \int_{-\infty}^{\infty}\widetilde{W}(k)^n\widetilde{P}(t_0,k)e^{2\pi ikx}dk
-\end{align}
-
-Since $P(0,x)$ is a delta function, we know that $\widetilde{P}(0,x) = 1$, so:
-
-\begin{align}
-  P(n,x) &=  \int_{-\infty}^{\infty}\widetilde{W}(k)^ne^{2\pi ikx}dk
-\end{align}
-
-The Taylor Series for $\widetilde{W}(k)$ is:
-
-\begin{align*}
-  \widetilde{W}(k) &= \widetilde{W}(0) + k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) + ...\\
-  &= 1 + k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) ...\\
-\end{align*}
-
-We define a variable $\widetilde{W}$ such that:
-
-\begin{align*}
-  \widetilde{W}(k) &= 1 - \widetilde{C}\\
-  \widetilde{C} &= -(k\widetilde{W_1}(0) + \frac{k^2}{2}\widetilde{W_2}(0) + \frac{k^3}{6}\widetilde{W_3}(0) ...)\\
-\end{align*}
-
-This allows us to substitute in $\widetilde{C}$ and use the Binomial Expansion:
-
-\begin{align}
-  P(n,x) &=  \int_{-\infty}^{\infty}\left(1 - \widetilde{C}\right)^ne^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n {}_nC_\alpha\left(-\widetilde{C}\right)^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^n \frac{n!(-1)^\alpha}{(n-\alpha)!\alpha!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
-\end{align}
-
-The Taylor Series of our goal, the Gaussian function, is:\\
-
-\begin{align*}
-  e^{\frac{-x^2}{2\sigma^2}} &= \sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\left(\frac{x}{\sqrt{2}\sigma}\right)^{2\alpha}
-\end{align*}
-
-We want to make our expression for $P(n,x)$ resemble this. We begin by saying that, for sufficiently large $n$, the higher-order
-$\alpha$ terms in the sum go to zero due to the $1/\alpha!$. Thus, we can extend our sum to infinity:\\
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n!}{(n-\alpha)!} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
-\end{align}
-
-We then apply Sterling's Approximation in the form $Z! = e^{Z\ln(Z)-Z}$:
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{e^{n\ln(n)-n}}{e^{(n-\alpha)\ln(n-\alpha)-(n-\alpha)}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^ne^{-n}}{(n-\alpha)^{n-\alpha}e^{\alpha-n}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk
-\end{align}
-
-Because n is large, we can get rid of its decaying exponentials and simplify:\\
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}e^{\alpha}} \widetilde{C}^\alpha\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^n}{(n-\alpha)^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{(-1)^\alpha}{\alpha!}\frac{n^\alpha}{(1-\frac{\alpha}{n})^{n-\alpha}} \sqrt{\frac{\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
-\end{align}
-
-%% We now use the following simplification, assuming that $\alpha/n < 1$:
-
-%% \begin{align*}
-%%   \left(1-\frac{\alpha}{n}\right)^{n-\alpha} &= \sum_{x=0}^{n-\alpha} \frac{(n-\alpha)!}{(n-\alpha-x)!x!} \left(\frac{\alpha}{n}\right)^x\\
-%%   &= 1 - (n-\alpha)\left(\frac{\alpha}{n}\right) + (n-\alpha)(n-\alpha-1)\left(\frac{\alpha}{n}\right)^2\\
-%%   &= 1 - \alpha + \frac{\alpha^2}{n} + \alpha^2 + \frac{-\alpha^3}{n} + \frac{-\alpha^2}{n} + \frac{-\alpha^3}{n} + \frac{\alpha^4}{n^2} + \frac{\alpha^3}{n^2}\\
-%%   &= 1 - \alpha + \alpha^2 + \frac{-2\alpha^3}{n} + \frac{\alpha^4}{n^2} + \frac{\alpha^3}{n^2}\\
-%% \end{align*}
-
-We then supply the middle factorial fraction with a name, $m = \frac{1}{(1-\frac{\alpha}{n})^{n-\alpha}}$:
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}\left(\sum_{\alpha=0}^\infty \frac{m(-1)^\alpha}{\alpha!}\sqrt{\frac{n\widetilde{C}}{e}}^{2\alpha}\right)e^{2\pi ikx}dk
-\end{align}
-
-\textbf{TODO: figure out why m is there}
-
-We then are \textit{almost} in a form where we can invert the Gaussian Taylor Expansion. We try it anyway, ignoring m. We also make the assumptions
-that our second $\widetilde{W}_1(0)$ Taylor Expansion term in $\widetilde{C}$ is zero and the third term is negative.\\
-
-\begin{align}
-  P(n,x) &= \int_{-\infty}^{\infty}e^{\frac{-k^2}{\sqrt{2}\frac{e}{|nW_2(0)|}}}e^{2\pi ikx}dk\\
-  &= \int_{-\infty}^{\infty}e^{\frac{-k^2}{\sqrt{2}\sigma^2}}e^{2\pi ikx}dk
-\end{align}
-
-We finally use the fact that Gaussians take the same form in real and Fourier space to undo the transform:
-
-\begin{align}
-  P(n,x) &= e^{\frac{-k^2}{\sqrt{2}\sigma^2}}\\
-\end{align}
-
-where
-
-\begin{align}
-  \sigma^2 = \frac{e}{n|W_2(0)|}\\
-\end{align}
-
-%% We then solve for $\widetilde{W}_2(0)$ to find our variance:
-
-%% \begin{align}
-%%   \widetilde{W}_2(0) &= \frac{d^2}{dk^2}\widetilde{W}(0)\\
-%%   &= \left(\frac{d^2}{dk^2}\int_{-\infty}^{\infty}W(x)e^{2\pi ikx}dx\right)_{k=0}\\
-%% \end{align}
-
-\section{Alternative CLT Derivation}
-Here we show that, given an initial PDF as a delta function $P(t_0,x) = \delta(x)$
-and any transition likelihood $W(s)$ for some step size s and 1 timestep, P
-eventually evolves into a Gaussian function.\\
-
-We use a discrete time, continuous position model:\\
-
-\begin{align}
-  P(t_0+1,x') &= \int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx
-\end{align}
-
-This matches the form of a convolution integral:
-
-\begin{align*}
-  (P*W)(x') &= \int_{-\infty}^{\infty}P(t_0,x)W(x'-x)dx
-\end{align*}
-
-By the Convolution Theorem (prove?) we can simplify the above expression:
-
-\begin{align}
-  F\{P(t_0+1,x')\} &= F\left\{\int_{-\infty}^{\infty}W(x'-x)P(t_0,x)dx\right\}\\
-  \widetilde{P}(t_0+1,k) &= \widetilde{W}(k)\widetilde{P}(t_0,k)
-\end{align}
-
-We see that in general, the transformed probability distribution after n
-timsteps is given by:\\
-
-\begin{align}
-  \widetilde{P}(t_0+n,k) &= \widetilde{W}(k)\widetilde{P}(t_0+n-1,k)
-\end{align}
-
-Thus our distribution after n timesteps can be expressed as:
-
-\begin{align}
-  \widetilde{P}(t_0+n,k) &= \widetilde{W}^n(k)\widetilde{P}(t_0,k)
-\end{align}
-
-We wish to solve for the non-transformed probability distribution, so we
-apply the inverse Fourier Transform:
-
-\begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)\widetilde{P}(t_0,k)e^{ikx}dk
-\end{align}
-
-We specified our initial probability as a delta function, which Fourier Transforms to unity:
-
-\begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde{W}^n(k)e^{ikx}dk
-\end{align}
-
-We now introduce a new definition $\widetilde{W} = e^{\widetilde{L}}$:\\
-
-\begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\widetilde{L}}e^{ikx}dk
-\end{align}
-
-We now need to expand $\widetilde{L}$. We use a Taylor Series:
-
-\begin{align*}
-  \widetilde{L}(k) &= \ln(\widetilde{W}) = \sum\frac{k^n\frac{d^n}{dk^n}\ln(\widetilde{W})}{n!}\\
-  &= \ln\left(\widetilde{W}(0)\right) + k\frac{\widetilde{W}_1(0)}{\widetilde{W}(0)}
-  + \frac{k^2}{2}\left(\frac{\widetilde{W}_2(0)}{\widetilde{W}(0)} - \frac{\widetilde{W}_1(0)^2}{\widetilde{W}_0(0)^2}\right)
-  + \frac{k^3}{6}\left(\frac{2\widetilde{W}_1(0)^3}{\widetilde{W}_(0)^3} + \frac{\widetilde{W}_3(0)}{\widetilde{W}(0)}
-     - \frac{3\widetilde{W}_1(0)\widetilde{W}_2(0)}{\widetilde{W}(0)^2}\right)\\
-  &+ \frac{k^4}{24}\left(\frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} - \frac{6\widetilde{W}_1(0)^4}{\widetilde{W}(0)^4}
-  - \frac{3\widetilde{W}_2(0)^2}{\widetilde{W}(0)^2} - \frac{3\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}
-  + \frac{6\widetilde{W}_1(0)^2\widetilde{W}_2(0)}{\widetilde{W}(0)^3} + \frac{\widetilde{W}_4(0)}{\widetilde{W}(0)}
-  - \frac{\widetilde{W}_1(0)\widetilde{W}_3(0)}{\widetilde{W}(0)^2}\right) + O(5)
-\end{align*}
-
-We then make the following assumption: \textbf{Assume all odd terms in $\widetilde{W}$'s expansion are zero}. We justify this by imposing that
-$\widetilde{W}$ must be symmetric about the y-axis. We also say that $\widetilde{W}_1(0)=1$, which I don't know how to justify -- (just because
-W is normalized to one doesn't mean its maximum point equals one?). These assumptions allow us to simplify $\widetilde{L}$:\\
-
-\begin{align*}
-  \widetilde{L}(k) &= \frac{k^2}{2}\widetilde{W}_2(0) + \frac{k^4}{24}\left(\widetilde{W}_4(0) - 3\widetilde{W}_2(0)\right)
-\end{align*}
-
-I'm not really sure how to justify this part either:
-
-\begin{align}
-  \widetilde{L}(k) &\approx \frac{k^2}{2}\widetilde{W}_2(0)
-\end{align}
-
-We then plug this into our definition for $P(t_0+n,k)$:
-
-\begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{n\frac{k^2}{2}\widetilde{W}_2(0)}e^{ikx}dk
-\end{align}
-
-In order to be normalizable, all derivatives of $\widetilde{W}$ must be negative. Thus we rewrite
-$\widetilde{W}_2$:
-
-\begin{align}
-  P(t_0+n,k) &= \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-n\frac{k^2}{2}|\widetilde{W}_2(0)|}e^{ikx}dk
-\end{align}
-
-This takes the form of a Gaussian. We know that Gaussians are invariant under Fourier Transform,
-so:\\
-
-\begin{align}
-  P(t_0+n,k) &= e^{\frac{k^2}{2\sigma^2}}
-\end{align}
-
-where $\sigma = \sqrt{\frac{1}{n\widetilde{W}_2(0)}}$. As expected by the CLT, the standard deviation of our
-new probability depends on $\frac{1}{\sqrt{n}}$!\\
-
-We now try and find more out about $|\widetilde{W}_2(k)|$:
-
-\begin{align*}
-  \widetilde{W}_2(k) &= \frac{d^2}{dk^2}\widetilde{W}(k)\\
-  &= \frac{d^2}{dk^2}\int_{-\infty}^\infty W(x)e^{-ikx}dx\\
-  &= \frac{d}{dk}\int_{-\infty}^\infty -ixW(x)e^{-ikx}dx\\
-  &= -\int_{-\infty}^\infty x^2W(x)e^{-ikx}dx\\
-\end{align*}
-
-We are specifically interested in the case where $k=0$:
-
-\begin{align*}
-  \widetilde{W}_2(0) &= -\int_{-\infty}^\infty x^2W(x)dx
-\end{align*}
-
-We explicitly denote $\widetilde{W}_2$'s negativity:
-
-\begin{align*}
-  |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx
-\end{align*}
-
-and finally note that, since W is the transition probability per timestep, this looks like the expected squared deviation in a single timestep:
-
-\begin{align*}
-  |\widetilde{W}_2(0)| &= \int_{-\infty}^\infty x^2W(x)dx = <\Delta x>
-\end{align*}
-
-We plug this back into our Gaussian to get our final answer:
-
-\begin{align}
-  P(t_0+n,k) &= e^{\frac{k^2}{2\frac{1}{n<\Delta x>}}}
-\end{align}
-
-A $\sigma = \sqrt{\frac{1}{n<W>}}$ does not make sense. For one, $\sqrt{<\Delta x>}$ should be in the numerator, since it is the
-single-timestep standard deviation. Plus it seems like for longer times the distribution would get more spread out, not less, hence
-$\sqrt{n}$ should be in the numerator as well? But the CLT says it should be in the denominator...\\
-\\
-
-\section{Un/binding constants}
-We let our un/binding rates $k_b$ and $k_u$ be, according to the Arrhenius equation:
-
-\begin{align}
-  k_b &= A_be^{\Delta G_{u\rightarrow b}\beta}\\
-  k_u &= A_ue^{\Delta G_{b\rightarrow u}\beta}
-\end{align}
-
-Our Gibb's free energy changes are given as functions of angular state $\theta$:
-
-\begin{align}
-  \Delta G_{u\rightarrow b}(\theta) &= \sum_i \frac{1}{2}c_{bi}\Delta\theta_{bi}^2 - \sum_i \frac{1}{2}c_{ui}\Delta\theta_{ui}^2 + G_{bind}\\
-  \Delta G_{u\rightarrow b}(\theta) &= \sum_i \frac{1}{2}c_{ui}\Delta\theta_{ui}^2 - \sum_i \frac{1}{2}c_{bi}\Delta\theta_{bi}^2 + G_{unbind}\\
-\end{align}
-
-\section{Equipartition Theorem}
-Both bothbound and onebound states show good agreement with the equipartition theorem. Horizontal dashed line represents Equipartition Thorem energy $\frac{1}{2}k_BT$.
-
-\begin{figure}[h!]
+\begin{figure}[h]
   \centering
-
-  \begin{minipage}[b]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{../figures/OB_Average_PE.pdf}
-    \caption{Onebound PE vs time.}
-  \end{minipage}
-  \begin{minipage}[b]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{../figures/BB_Average_PE.pdf}
-    \caption{Bothbound PE vs time.}
-  \end{minipage}
-  \label{fig:equipartition_agreement}
+  \begin{tabular}{| c | c | c | c | c | c | c |}
+    \hline
+    Source & Velocity & $\left<L_{step}\right>$ & $\tstep$ & $\tproc$ & $\tbb$ & $\tob$ \\ \hline
+    Weihong 2012 GST-dimerized & 134nm/s & 8nm & 0.06s & 7.9s & 0.0595s & 4.52e-4\\ \hline
+    Higuchi 2006 & 800nm/s &  &  &   &   & \\ \hline
+    Schroer 2000 native 2mM ATP w/ 210nm beads            & 700nm/s &  & 0.011s & 1s    & 0.011s & 1.3e-4\\ \hline
+    Schroer 2000 native 2mM ATP w/ 210nm beads + dynactin & 700nm/s &  & 0.011s & 2.14s & 0.011s & 6e-5\\ \hline
+    Vale    2006 GST-dimerized 1mM + qdots                & 87 nm/s &  & 0.09s  & 13.8s & &\\ \hline
+    Schroer 2000 organic dye-labelled full-length dynein & 120nm/s &  &  &  &  & \\ \hline
+    
+  \end{tabular}
+  \caption{Experimental values for fitting.}{Table calculating estimates for $\tbb$ and $\tob$.}
+  \label{table:time-parameter-table}
 \end{figure}
 
 \section{Physical Parameters}
 
 \begin{figure}
   \centering
-  \includegraphics[width=.45\textwidth]{../figures/equilibrium-onebound}
+  \includegraphics[width=.45\textwidth]{figures/equilibrium-onebound}
   \caption{Definition of equilibrium angles.}
   \label{fig:eq_angles}
 \end{figure}
@@ -827,7 +286,7 @@ A more reliable step time determiner is $\Big<\mbox{step time}\Big>$, which shou
 Yildiz shows that dynein only requires one functional head, and an MTBD linker, to walk. He claims that this shows dynein relies on high bb/ob time, not from communication. He does say that linker tension increases ATP hydrolysis rate, which isn't really inter-head connection.\\
 Takeaway: linker tension inhibits MT release. Stepping happens lots when the active head is low-tension (near its partner), but not when it is far away.\\
 
-Yildiz found that processivity and velocity are inversely related. This means that the MT-bound to unbound ratio is related to how far the motor can walk. Thus, tuning k_b and k_ub may be a way to alter dynein processivity.\\
+Yildiz found that processivity and velocity are inversely related. This means that the MT-bound to unbound ratio is related to how far the motor can walk. Thus, tuning $k_b$ and $k_ub$ may be a way to alter dynein processivity.\\
 
 A ring domain can be substituted with another protein and still walks, so ring-ring interactions aren't necessary for motion, either.\\
 
@@ -1079,15 +538,15 @@ Jianfeng Lin, Kyoko Okada, Milen Raytchev, Maria C. Smith \& Daniela Nicastro. `
 
 This paper finds the 3D structures of both pre (3J68) and post (3J67)-powerstroke dynein. This paper is about \textbf{axonmenal} dynein, which seems to be wildly different from cytoplasmic dynein, but this paper doesn't really mention any differences. The paper claims there are three conformational states: prestroke-1 immediately after MT unbinding, prestroke-2 after MT-binding, then poststroke after the powerstroke. This paper claims that transitioning between the post and pre-powerstroke ``resembled an opening jackknife with an angular amplitude of ~65$^{\circ}$ or ~50$^{\circ}$, depending on which axonemal dynein. It is unclear what this jackknife metaphor is referring to - the linker?. They make the claim that \textit{rotation of the head is the principle mechanism of Dynein powerstroke, not linker remodelling}. They seem to be claiming that the major thing differentiating the three states is the motor domain/head angle. It starts out facing the MT in post-stroke, then rotates away from the MT by 50-70 degrees into pre-1, then rotates towards the MT by 20 degrees to enter pre-2. Not entirely sure if it's all axonemal, since the PDB page for the structures says it's a cytoplasmic gene.\\
 
-Figure~\ref{fig:em_tomography_eq_angles} shows different measurements
-for equilibrium angles from the data in this paper.
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=.45\textwidth]{../figures/Post_powerstroke_tomography.jpg}
-  \includegraphics[width=.45\textwidth]{../figures/Pre_powerstroke_tomography.jpg}
-  \caption{Post- and Pre-powerstroke equilibrium angles from EM tomography. Note: Ignore binding angle, the MTBD shouldn't actually be bound to MT.}
-  \label{fig:em_tomography_eq_angles}
-\end{figure}
+%% Figure~\ref{fig:em_tomography_eq_angles} shows different measurements
+%% for equilibrium angles from the data in this paper.
+%% \begin{figure}[h!]
+%%   \centering
+%%   \includegraphics[width=.45\textwidth]{../figures/Post_powerstroke_tomography.jpg}
+%%   \includegraphics[width=.45\textwidth]{../figures/Pre_powerstroke_tomography.jpg}
+%%   \caption{Post- and Pre-powerstroke equilibrium angles from EM tomography. Note: Ignore binding angle, the MTBD shouldn't actually be bound to MT.}
+%%   \label{fig:em_tomography_eq_angles}
+%% \end{figure}
 
 \subsection{Linker position in Post-powerstroke dynein, two Post-PS states?}
 Insights into dynein motor domain function from a 3.3A crystal structure, Hugo Schmidt, Andrew P. Carter\\
@@ -1120,12 +579,12 @@ Paper claims motor angle is \textbf{160 degrees in pre-stroke and 136 degrees in
 
 \textbf{Could we use the angle distribution histograms in \ref{fig:EM-angles-burgess} fit to a boltzmann factor with a spring energy to get cm?}
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=.45\textwidth]{../figures/axonemal-motor-angles.jpg}
-  \caption{Angle histograms from EM microscopy on axonemal (not cytoplasmic) dynein.}
-  \label{fig:EM-angles-burgess}
-\end{figure}
+%% \begin{figure}[h!]
+%%   \centering
+%%   \includegraphics[width=.45\textwidth]{../figures/axonemal-motor-angles.jpg}
+%%   \caption{Angle histograms from EM microscopy on axonemal (not cytoplasmic) dynein.}
+%%   \label{fig:EM-angles-burgess}
+%% \end{figure}
 
 
 There is a difference in standard deviation of angles in pre/post-stroke. Pre-stroke has a stdev of 20 degrees, Post-stroke has a stdev of 11. The authors indicate this is due to stiffening of the stalk/foot domain. This seems like it would indicate changes in the motor spring constants between the pre/post-powerstroke states.
