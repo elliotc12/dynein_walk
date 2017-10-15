@@ -138,7 +138,6 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   if (!am_only_writing_on_crash or (am_debugging_onebound and s != BOTHBOUND)) {
     if (--num_movie_writes > 0) {
       if (num_movie_writes == 1) printf("about to exceed movie printing line #\n");
-      printf("i'm printing to file!!");
       const char *format = "%d\t"
 	"%.10g\t"
 	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"

@@ -73,8 +73,12 @@ def run(**run):
                 f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(v)) + '\n')
     os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
     out = open('runlogs/' + basename + '.out', 'w')
-    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT)
+    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
     print("Running: ", " ".join(cmd))
-    if "no-slurm" in run:
-        process_object.wait()
+    err = process_object.communicate()[1]
+
+    if (err != b''):
+        print("Simulation exited in error: \n\n", err.decode("utf-8") )
+        exit(1)
+    
     return basename

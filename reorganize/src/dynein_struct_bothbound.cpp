@@ -140,6 +140,13 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand) 
       printf("     Ls/Lt = %g/%g\n", Ls, Lt);
       printf("     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
       printf("     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
+
+      fprintf(stderr, "crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
+      fprintf(stderr, "     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
+      fprintf(stderr, "     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
+      fprintf(stderr, "     Ls/Lt = %g/%g\n", Ls, Lt);
+      fprintf(stderr, "     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
+      fprintf(stderr, "     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       exit(1);
     }
@@ -338,6 +345,11 @@ void Dynein_bothbound::update_coordinates() {
 	   cosAn, sinAn, cosAns, sinAns);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
+
+    fprintf(stderr, "DEBUG: bad nmx! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+	   cosAn, sinAn, cosAns, sinAns);
+    fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
+	   L, Ln, Lf, Lf-Ln);
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   }
@@ -374,6 +386,11 @@ void Dynein_bothbound::update_coordinates() {
 	     nba, nmy, nmx - nbx, tx, ty);
       printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
 	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+
+      fprintf(stderr, "crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
+	     nba, nmy, nmx - nbx, tx, ty);
+      fprintf(stderr, "nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
+	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       exit(1);
     }
@@ -396,6 +413,8 @@ void Dynein_bothbound::update_coordinates() {
       printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
 	     fba, fmy, fmx - (nbx + L));
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      fprintf(stderr, "crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+	     fba, fmy, fmx - (nbx + L));
       exit(1);
     }
   } else {
@@ -439,6 +458,7 @@ int Dynein_bothbound::update_velocities() {
   if (am_crashing_on_unphysical_behavior) {
     if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
       printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+      fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       exit(1);
     }
