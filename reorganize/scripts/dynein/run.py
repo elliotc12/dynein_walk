@@ -47,7 +47,7 @@ def latex_format(x):
         x = x.replace('-', '_')
     return x
 
-def run(**run):
+def sim(**run):
     if 'label' in run:
       basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                                  run["cb"], run["cm"], run["ct"], run["dt"])
