@@ -7,8 +7,7 @@ import time, signal, sys, os, matplotlib, subprocess
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-#import draw.balls as cartoon
-import draw.cartoon as cartoon
+import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle

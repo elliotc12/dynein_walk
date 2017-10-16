@@ -1,16 +1,13 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
-all: generate_stepping_data $(PAPERS) $(DRAW)
+all: generate_stepping_data public $(DRAW)
 
-.PHONY: clean elliott-thesis
-
-.PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
-
+.PHONY: clean elliott-thesis public
 
 ######### SRC stuff ##########
 src/version-info.h: SHELL:=/bin/bash
@@ -44,13 +41,9 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 
 ######### data ##########
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
-	mkdir -p data
-	mkdir -p sim-logs
 	python3 scripts/generate-thesis-data.py
 
 data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-exploration-data.py
-	mkdir -p data
-	mkdir -p sim-logs
 	python3 scripts/generate-exploration-data.py
 
 ######### plots ##########
@@ -93,6 +86,10 @@ papers/paper/paper.pdf: papers/paper/paper.tex
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
 
+public: elliott-thesis $(PAPERS)
+	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
+	cp -v $(PAPERS) public/
+
 clean:
 	rm -f build/*.o
 	rm -f src/version-info.h
@@ -102,3 +99,5 @@ clean:
 	rm -rf plots
 	$(MAKE) -C papers/elliott-thesis clean
 	rm -f $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+	rm -f public/*.pdf
+	rm -f data/thesis_* data/exploration_*

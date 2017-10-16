@@ -1,11 +1,7 @@
+image: facio/dynein_walk
+
 build:
   stage: build
-  before_script:
-    - apt-get update -qq
-    - apt-get install -y inkscape python3-matplotlib
-    - apt-get install -y texlive-full
-    - git config --global user.email "testing-on-travis@example.com"
-    - git config --global user.name "Travis Builder"
   script:
     - cd reorganize && make
   artifacts:
@@ -16,6 +12,8 @@ pages:
   stage: deploy
   script:
     - echo I already built everything...
+    - rm -rf public
+    - mv reorganize/public public
     - ls -lh public/
   artifacts:
     paths:
