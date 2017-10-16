@@ -27,7 +27,7 @@ extern char* crash_movie_file_name_global;
 bool am_making_movie = true;
 bool am_debugging_onebound = false;
 
-long num_movie_writes = 1e6;
+long num_movie_writes = 1e7;
 // bytes per movie write: 213, 2000Mb bytes max movie size
 
 static const long MAX_FILESIZE_PERMITTED = 1<<30; // <- bit shift 
@@ -138,7 +138,6 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   if (!am_only_writing_on_crash or (am_debugging_onebound and s != BOTHBOUND)) {
     if (--num_movie_writes > 0) {
       if (num_movie_writes == 1) printf("about to exceed movie printing line #\n");
-      printf("i'm printing to file!!");
       const char *format = "%d\t"
 	"%.10g\t"
 	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"

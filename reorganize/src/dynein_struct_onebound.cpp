@@ -127,8 +127,8 @@ void Dynein_onebound::update_internal_forces() {
     f.bbx += -f2x; // Equal and opposite forces!  :)
     f.bby += -f2y; // Equal and opposite forces!  :)
 
-    T = cm*((bma + M_PI - bba) - eq.bba);
-    PE_bma = 0.5*cm*((bma + M_PI - bba) - eq.bba)*((bma + M_PI - bba) - eq.bba);
+    T = cm*((bma + M_PI - bba) - eq.bma);
+    PE_bma = 0.5*cm*((bma + M_PI - bba) - eq.bma)*((bma + M_PI - bba) - eq.bma);
     f1 = T/Ls;
     f2 = T/Lt;
     f1x = f1 * sin(bba);
@@ -331,6 +331,7 @@ int Dynein_onebound::update_velocities() {
   if (am_crashing_on_unphysical_behavior) {
     if (get_bmy() < -1.5 or get_ty() < -1.5 or get_umy() < -1.5 or get_uby() < -1.5) {
       printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
+      fprintf(stderr, "A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       exit(1);
     }

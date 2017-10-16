@@ -32,7 +32,7 @@ title = data_filename[data_filename.index("data/")+5:-4]
 raw_lines = open(data_filename, 'r').readlines()
 lines = sum(1 for l in raw_lines)
 start_line = 0
-end_line = int(min(1e6, lines))
+end_line = int(min(5e6, lines))
 plot_length = end_line - start_line - 1
 
 raw_data = "".join(raw_lines[start_line:end_line])
@@ -219,13 +219,13 @@ ax0.set_yscale("log")
 ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax1.hist(onebound_times, bins=50)
-ax1.set_title("onebound times (theory: ~bb/100)")
+ax1.set_title("onebound times (theory: 6e-5)")
 ax1.set_ylabel("Frequency")
 ax1.set_yscale("log")
 ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax2.hist(bothbound_times, bins=50)
-ax2.set_title("bothbound times (theory: 0.0595s)")
+ax2.set_title("bothbound times (theory: 0.011s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
 ax2.set_yscale("log")
