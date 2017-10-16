@@ -45,7 +45,7 @@ double low_affinity_unbinding_rate = 460; //s^-1
 
 /* double binding_fraction = 1e-6; */
 
-double MICROTUBULE_REPULSION_FORCE = 30.0 * 0; // N/nm
+double MICROTUBULE_REPULSION_FORCE = 0.0; // N/nm
 double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
 
 //double REBINDING_IMMUNITY_TIME = 1e-8; // s
@@ -56,17 +56,32 @@ double RAND_INIT_SEED = 0;
 bool am_only_writing_on_crash = true;
 double stepping_movie_framerate = 1e-10;
 
+/* onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = { */
+/*    63.5 * M_PI / 180.0, */
+/*   136.0 * M_PI / 180.0, */
+/*     0.0 * M_PI / 180.0, */
+/*   160.0 * M_PI / 180.0 */
+/* }; */
+
+/* bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = { */
+/*    63.5 * M_PI / 180.0, */
+/*   136.0 * M_PI / 180.0, */
+/*     0.0 * M_PI / 180.0, */
+/*   136.0 * M_PI / 180.0, */
+/*    63.5 * M_PI / 180.0 */
+/* }; */
+
 onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
-   63.5 * M_PI / 180.0,
-  136.0 * M_PI / 180.0,
+   116.5 * M_PI / 180.0,
+  224.0 * M_PI / 180.0,
     0.0 * M_PI / 180.0,
-  160.0 * M_PI / 180.0
+  200.0 * M_PI / 180.0
 };
 
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
-   63.5 * M_PI / 180.0,
-  136.0 * M_PI / 180.0,
+  116.5 * M_PI / 180.0,
+  224.0 * M_PI / 180.0,
     0.0 * M_PI / 180.0,
-  136.0 * M_PI / 180.0,
-   63.5 * M_PI / 180.0
+  224.0 * M_PI / 180.0,
+  116.5 * M_PI / 180.0
 };
