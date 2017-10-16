@@ -5,7 +5,7 @@ import dynein.run as run
 
 l = "exploration"
 
-basename  = run.run(**{"k_b": 1e15,
+basename  = run.sim(**{"k_b": 1e15,
                        "k_ub": 1e15,
                        "cb": 0.4,
                        "cm": 1.3,
