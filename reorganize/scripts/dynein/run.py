@@ -48,14 +48,20 @@ def sim(**run):
         if key in run:
             cmd.extend(["--"+key])
 
-    os.makedirs('data', exist_ok=True) # ensure data directory exists
+    #os.makedirs('data', exist_ok=True) # ensure data directory exists
+    if not os.path.exists('data'):
+        os.makedirs('data') 
+    
     with open("data/stepping_parameters_%s.tex" % basename, "w") as f:
         for k,v in sorted(run.items()):
             if k == "label":
                 f.write(r'\newcommand\runlabel{%s}' % (latex_format(v)) + '\n')
             else:
                 f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(v)) + '\n')
-    os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
+
+    #os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
+    if not os.path.exists('runlogs'):
+        os.makedirs('runlogs') 
     out = open('runlogs/' + basename + '.out', 'w')
     process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
     print("Running: ", " ".join(cmd))
