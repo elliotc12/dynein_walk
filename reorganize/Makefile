@@ -1,7 +1,7 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf papers/elliott-thesis/latex/thesis.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/thesis.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
@@ -100,5 +100,5 @@ clean:
 	rm -f scripts/*.pyc scripts/*/*.pyc
 	rm -rf plots
 	rm -f $(ALL_FIGURES)
-	rm -f public/*.pdf
+	rm -f public/*.pdf public/*.tex
 	rm -f data/thesis_* data/exploration_*
