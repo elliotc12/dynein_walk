@@ -10,7 +10,7 @@ basename  = run.run(**{"k_b": 1e15,
                        "cb": 0.4,
                        "cm": 1.3,
                        "ct": 0.5,
-                       "dt": 1e-10, "label": l, "seed": 1, "runtime": 5e-3,
+                       "dt": 1e-10, "label": l, "seed": 1, "runtime": 5e-2,
                        "framerate": 1e-8, "constant-write": True,
                        "no-slurm": True})
 
