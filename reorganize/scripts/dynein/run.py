@@ -2,22 +2,6 @@
 import subprocess, os
 import numpy as np
 
-def read_csv(fname):
-    values = np.loadtxt(fname, delimiter=',', comments='#', dtype='string')
-    custom_runs = []
-    if values.ndim != 1:
-        for i in range(0, values.shape[0]):
-            custom_runs.append({"ls":float(values[i,0]), "lt":float(values[i,1]),
-                                "k_b":float(values[i,2]), "k_ub":float(values[i,3]),
-                                "T":float(values[i,4]), "cb":float(values[i,5]),
-                                "cm":float(values[i,6]), "ct":float(values[i,7])})
-    else:
-        custom_runs.append({"ls":float(values[0]), "lt":float(values[1]),
-                            "k_b":float(values[2]), "k_ub":float(values[3]),
-                            "T":float(values[4]), "cb":float(values[5]),
-                            "cm":float(values[6]), "ct":float(values[7])})
-    return custom_runs
-
 
 # ask professor round / elliott about this latex_format stuff - 6/26/17
 def latex_format(x):
