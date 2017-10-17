@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import matplotlib
 matplotlib.use('Agg') # to let me do this over ssh 
 import subprocess, os
@@ -44,29 +44,51 @@ if __name__ == '__main__':
         ONEBOUND = True 
     
     if VERBOSE:
-        print "Running simulations..."
+        print( "Running simulations...")
 
     os.chdir("../")   # change to folder with generate_stepping_data
+    print('current directory\t', os.getcwd())
 
     data_files = []   # 
     
     if ONEBOUND:
         if VERBOSE:
-            print "ONEBOUND - dt 1e-10"
-            print "ONEBOUND - dt 1e-11"
-            print "ONEBOUND - dt 1e-11"
+            print( "ONEBOUND - dt 1e-10")
+            print("ONEBOUND - dt 1e-11")
+            print( "ONEBOUND - dt 1e-11")
 
         l = 'oneboundAC'
         
-        basename1 = run.sim(**{"k_b": 10e-10, "k_ub": 10e20, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-10, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
-        basename2 = run.sim(**{"k_b": 10e-10, "k_ub": 10e20, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-11, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
-        basename3 = run.sim(**{"k_b": 10e-10, "k_ub": 10e20, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-12, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
+        basename1 = run.sim(**{"k_b": 10e-10,
+                               "k_ub": 10e20,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-10,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
+        basename2 = run.sim(**{"k_b": 10e-10,
+                               "k_ub": 10e20,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-11,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
+        basename3 = run.sim(**{"k_b": 10e-10,
+                               "k_ub": 10e20,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-12,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
 
         if VERBOSE:
-            print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
+            print("Saving {}, {}, {} in ../data".format(basename1, basename2, basename3))
 
         data_files.append(basename1)
         data_files.append(basename2)
@@ -74,21 +96,42 @@ if __name__ == '__main__':
 
     elif BOTHBOUND:
         if VERBOSE:
-            print "BOTHBOUND - dt 1e-10"
-            print "BOTHBOUND - dt 1e-11"
-            print "BOTHBOUND - dt 1e-12"
+            print("BOTHBOUND - dt 1e-10")
+            print("BOTHBOUND - dt 1e-11")
+            print("BOTHBOUND - dt 1e-12")
 
         l = 'bothboundAC'
 
-        basename1 = run.sim(**{"k_b": 10e20, "k_ub": 10e-10, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-10, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
-        basename2 = run.sim(**{"k_b": 10e20, "k_ub": 10e-10, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-11, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
-        basename3 = run.sim(**{"k_b": 10e20, "k_ub": 10e-10, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-12, "label": l,
-                     "constant-write": True, "runtime": 5e-4})
+        basename1 = run.sim(**{"k_b": 10e20,
+                               "k_ub": 10e-10,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-10,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
+        basename2 = run.sim(**{"k_b": 10e20,
+                               "k_ub": 10e-10,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-11,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
+        basename3 = run.sim(**{"k_b": 10e20,
+                               "k_ub": 10e-10,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-12,
+                               "label": l,
+                               "constant-write": True,
+                               "runtime": 5e-4})
 
         if VERBOSE:
-            print "Saving {}, {}, {} in ../data".format(basename1, basename2, basename3)
+            print("Saving {}, {}, {} in ../data".format( basename1, basename2, basename3))
 
 
         data_files.append(basename1)
@@ -96,19 +139,19 @@ if __name__ == '__main__':
         data_files.append(basename3)
         
     else:  
-        print "Not sure if bothbound or onebound was selected. Run again using flag -o or -b"
+        print("Not sure if bothbound or onebound was selected. Run again using flag -o or -b")
         exit(1)
 
     # process data and generate autocorrelation function
     if VERBOSE:
-        print "Simulations finished. Reading data"
+        print("Simulations finished. Reading data")
 
     usefullData = {}
     for file in data_files:
-        print file
+        print(file)
         dataTable = np.loadtxt("data/stepping_movie_data_"+file+".txt", delimiter='\t', skiprows=1)
         if VERBOSE:
-            print "{} successfully loaded".format(file)
+            print( "{} successfully loaded".format(file))
         times = dataTable[:,1]
         PE_1 = dataTable[:,2]
         PE_2 = dataTable[:,3]
@@ -117,7 +160,7 @@ if __name__ == '__main__':
         PE_5 = dataTable[:,6]
 
         if VERBOSE:
-            print "Generating autocorrelation function"
+            print("Generating autocorrelation function")
 
         Nmax = None
         rho1 = ac(PE_1, Nmax = Nmax)
@@ -127,7 +170,7 @@ if __name__ == '__main__':
         rho5 = ac(PE_5, Nmax = Nmax)
 
         if VERBOSE:
-            print "putting into data into dictionary"
+            print("putting into data into dictionary")
 
         # make dictionary of all important quantities
         dt_dict = {}
@@ -148,13 +191,13 @@ if __name__ == '__main__':
         usefullData[file] = dt_dict
         
     if VERBOSE:
-        print "graphing...\n"
+        print("graphing...\n")
 
     fig1 = plt.figure()
 
     for key in usefullData:
         if VERBOSE:
-            print key
+            print(key)
         dt_loc = key.find("dt-1e")
         dt = key[dt_loc:dt_loc+8]
 
@@ -172,7 +215,7 @@ if __name__ == '__main__':
     fig2 = plt.figure()
     for key in usefullData:
         if VERBOSE:
-            print key
+            print(key)
         dt_loc = key.find("dt-1e")
         dt = key[dt_loc:dt_loc+8]
         
@@ -190,7 +233,7 @@ if __name__ == '__main__':
     fig3 = plt.figure()
     for key in usefullData:
         if VERBOSE:
-            print key
+            print(key)
         dt_loc = key.find("dt-1e")
         dt = key[dt_loc:dt_loc+8]
         
