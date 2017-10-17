@@ -71,7 +71,7 @@ plots/exploration-movie.mp4: data/exploration_movie_data.txt scripts/movie.py $(
 ######### papers ##########
 SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
 
-ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES)) $(THESIS-PLOTS)
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
@@ -79,7 +79,7 @@ papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(FIGURES)
+papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(ALL_FIGURES)
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 
 papers/paper/paper.pdf: papers/paper/paper.tex
@@ -99,7 +99,6 @@ clean:
 	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
 	rm -rf plots
-	$(MAKE) -C papers/elliott-thesis clean
-	rm -f $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+	rm -f $(ALL_FIGURES)
 	rm -f public/*.pdf
 	rm -f data/thesis_* data/exploration_*

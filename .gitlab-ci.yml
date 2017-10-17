@@ -4,6 +4,8 @@ build:
   stage: build
   script:
     - cd reorganize && make
+    - cd reorganize && make clean
+    - cd reorganize && make
   artifacts:
     paths:
       - public

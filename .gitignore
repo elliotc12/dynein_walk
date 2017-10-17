@@ -69,3 +69,5 @@ draw/polygons.py
 .fac
 *.DS_Store
 *.gch
+motor_domain.py
+tail.py
