@@ -102,25 +102,26 @@ plt.setp(ax1.get_yticklabels(), visible=False)
 x_axes_size = ax1.get_xlim()[1] - ax1.get_xlim()[0]
 y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 
-x_scaling = 0.03
-y_scaling = 0.03
+x_scaling = 3e-6
+y_scaling = 3e-6
 
-cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
+cartoon_draw_times_x_proj = np.array([9.241e-05, 3.0*1e-4, 4.899*1e-4, 7.0155e-04, 9.0*1e-4])
 
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
-    idx = np.where(data[:,1] == t)[0][0]
-    Xs = -x_scaling*data[idx,7:16:2]
-    Xs -= Xs[4]
+    idx = np.where(data[:,1] >= t)[0][0]
+    Xs = np.abs(x_scaling*data[idx,7:16:2])
     Ys = y_scaling*data[idx,8:17:2]
     state = int(data[idx, 0])
     if state == 1:
         Xs = Xs[::-1]
         Ys = Ys[::-1]
-    Xs = Xs + t*1e6;
+    Xs -= Xs[0]
+    Xs = Xs + t;
     cartoon.draw(Xs, Ys)
+    ax1.scatter(Xs, Ys, alpha=0)
 
-ax1.add_patch(Rectangle((0, 0), data[-1,1]*1e6, 0.05))
+ax1.add_patch(Rectangle((0, 0), 1e-3, 0))
 
 # y projection
 ax2.set_xlabel("time (s)")
