@@ -1,7 +1,7 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/notes/notes.pdf papers/paper/paper.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
@@ -80,15 +80,15 @@ papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theor
 elliott-thesis: $(DRAW) $(ALL_FIGURES)
 	$(MAKE) -C papers/elliott-thesis
 
-public: elliott-thesis $(PAPERS)
-	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
-	cp -v $(PAPERS) public/
-
 papers/paper/paper.pdf: papers/paper/paper.tex
 	cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
 
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
+
+public: elliott-thesis $(PAPERS)
+	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
+	cp -v $(PAPERS) public/
 
 clean:
 	rm -f build/*.o
