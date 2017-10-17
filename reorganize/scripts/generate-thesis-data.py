@@ -7,11 +7,14 @@ l = "thesis"
 
 run.avoid_slurm = True
 
-basename = run.sim(**{"k_b": 1e16, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
-                      "seed": 8,
-                      "runtime": 1e-3,
-                      "constant-write": True,
-                      "no-slurm": True})
+basename  = run.sim(**{"k_b": 1e15,
+                       "k_ub": 1e15,
+                       "cb": 0.4,
+                       "cm": 1.3,
+                       "ct": 0.5,
+                       "dt": 1e-10, "label": l, "seed": 1, "runtime": 1e-3,
+                       "framerate": 1e-8, "constant-write": True,
+                       "no-slurm": True})
 
 #this one has a bothbound at the end
 # basename = simrunner.run_sim(**{"k_b": 1e18, "k_ub": 1e7, "cb": 2.0, "cm": 2.0, "ct": 1.0, "dt": 1e-10, "label": l,
