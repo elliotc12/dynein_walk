@@ -79,7 +79,7 @@ papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(FIGURES) $(THESIS-PLOTS)
+papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(FIGURES)
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 
 papers/paper/paper.pdf: papers/paper/paper.tex
