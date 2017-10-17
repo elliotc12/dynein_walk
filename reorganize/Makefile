@@ -1,7 +1,7 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf papers/elliott-thesis/thesis.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf papers/elliott-thesis/latex/thesis.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
@@ -79,7 +79,7 @@ papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(ALL_FIGURES)
+papers/elliott-thesis/latex/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(ALL_FIGURES)
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 
 papers/paper/paper.pdf: papers/paper/paper.tex
@@ -89,7 +89,7 @@ papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
 
 public: $(PAPERS)
-	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
+	cp -v papers/elliott-thesis/latex/thesis.pdf public/capek.pdf
 	cp -v $(PAPERS) public/
 
 clean:
