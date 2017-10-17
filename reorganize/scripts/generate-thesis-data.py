@@ -7,7 +7,7 @@ l = "thesis"
 
 run.avoid_slurm = True
 
-basename = run.run(**{"k_b": 1e16, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
+basename = run.sim(**{"k_b": 1e16, "k_ub": 1e20, "cb": 2, "cm": 2, "ct": 1, "dt": 1e-10, "label": l,
                       "seed": 8,
                       "runtime": 1e-3,
                       "constant-write": True,
