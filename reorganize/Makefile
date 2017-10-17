@@ -1,9 +1,11 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.tex papers/notes/notes.pdf papers/elliott-thesis/thesis.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
+
+THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
 all: generate_stepping_data public $(DRAW)
 
@@ -77,8 +79,8 @@ papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-elliott-thesis: $(DRAW) $(ALL_FIGURES)
-	$(MAKE) -C papers/elliott-thesis
+papers/elliott-thesis/thesis.pdf: papers/elliott-thesis/latex/thesis.tex $(FIGURES) $(THESIS-PLOTS)
+	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 
 papers/paper/paper.pdf: papers/paper/paper.tex
 	cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
@@ -86,7 +88,7 @@ papers/paper/paper.pdf: papers/paper/paper.tex
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
 
-public: elliott-thesis $(PAPERS)
+public: $(PAPERS)
 	cp -v papers/elliott-thesis/thesis.pdf public/capek.pdf
 	cp -v $(PAPERS) public/
 
