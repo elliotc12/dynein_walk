@@ -5,13 +5,22 @@ import dynein.run as run
 
 l = "exploration"
 
-basename  = run.sim(**{"k_b": 1e15,
-                       "k_ub": 1e15,
-                       "cb": 0.4,
-                       "cm": 1.3,
-                       "ct": 0.5,
+# basename  = run.sim(**{"k_b": 1e7,
+#                        "k_ub": 1e10,
+#                        "cb": 0.4,
+#                        "cm": 1.3,
+#                        "ct": 0.5,
+#                        "dt": 1e-10, "label": l, "seed": 1, "runtime": 1e-3,
+#                        "framerate": 1e-8, "constant-write": True,
+#                        "no-slurm": True})
+
+basename  = run.sim(**{"k_b": 1e7,
+                       "k_ub": 1e10,
+                       "cb": 10.0,
+                       "cm": 10.0,
+                       "ct": 10.0,
                        "dt": 1e-10, "label": l, "seed": 1, "runtime": 1e-3,
-                       "framerate": 1e-8, "constant-write": True,
+                       "framerate": 1e-7, "constant-write": True,
                        "no-slurm": True})
 
 os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/exploration_movie_data.txt")
