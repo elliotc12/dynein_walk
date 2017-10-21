@@ -68,7 +68,9 @@ def sim(**run):
     err = process_object.communicate()[1]
 
     if (err != b''):
-        print("Simulation exited in error: \n\n", err.decode("utf-8") )
-        exit(1)
+        print("\n##################################",
+              "\nSimulation exited in error: \n\n",
+              err.decode("utf-8"),
+              "##################################\n\n")
     
     return basename
