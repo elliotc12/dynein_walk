@@ -53,9 +53,10 @@ if __name__ == '__main__':
     
     if ONEBOUND:
         if VERBOSE:
-            print( "ONEBOUND - dt 1e-10")
+            print("ONEBOUND - dt 1e-10")
             print("ONEBOUND - dt 1e-11")
-            print( "ONEBOUND - dt 1e-11")
+            print("ONEBOUND - dt 1e-12")
+            print("ONEBOUND - dt 1e-9")
 
         l = 'oneboundAC'
         
@@ -86,6 +87,17 @@ if __name__ == '__main__':
                                "label": l,
                                "constant-write": True,
                                "runtime": 5e-4})
+        basename4 =  run.sim(**{"k_b": 10e-10,
+                               "k_ub": 10e20,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-9,
+                               "label": l,
+                                "framerate": 5e-10,
+                               "constant-write": True,
+                               "runtime": 5e-4}),
+                               
 
         if VERBOSE:
             print("Saving {}, {}, {} in ../data".format(basename1, basename2, basename3))
@@ -129,7 +141,18 @@ if __name__ == '__main__':
                                "label": l,
                                "constant-write": True,
                                "runtime": 5e-4})
-
+        
+        basename4 = run.sim(**{"k_b": 10e20,
+                               "k_ub": 10e-10,
+                               "cb": 2.0,
+                               "cm": 2.0,
+                               "ct": 1.0,
+                               "dt": 1e-9,
+                               "label": l,
+                               "framerate": 5e-10, 
+                               "constant-write": True,
+                               "runtime": 5e-4})
+        
         if VERBOSE:
             print("Saving {}, {}, {} in ../data".format( basename1, basename2, basename3))
 
@@ -137,6 +160,7 @@ if __name__ == '__main__':
         data_files.append(basename1)
         data_files.append(basename2)
         data_files.append(basename3)
+        data_files.append(basename4) 
         
     else:  
         print("Not sure if bothbound or onebound was selected. Run again using flag -o or -b")
