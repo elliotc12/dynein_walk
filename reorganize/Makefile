@@ -50,8 +50,8 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
 	python3 scripts/generate-thesis-data.py
 
-data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-exploration-data.py
-	python3 scripts/generate-exploration-data.py
+data/paper_stepping_data.txt data/paper_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-data.py
+	python3 scripts/generate-paper-data.py
 
 ######### plots ##########
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
@@ -63,15 +63,15 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt scripts/exploration-plt.py $(DRAW)
-	python3 scripts/exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
-	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
-	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
+plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-plt.py $(DRAW)
+	python3 scripts/paper-plt.py data/paper_movie_data.txt data/paper_stepping_data.txt
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
-plots/exploration-movie.mp4: data/exploration_movie_data.txt scripts/movie.py $(DRAW)
+plots/paper-movie.mp4: data/paper_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
-	./scripts/movie.py data/exploration_movie_data.txt speed=1 tail
-	mv plots/movie.mp4 plots/exploration-movie.mp4
+	./scripts/movie.py data/paper_movie_data.txt speed=1 tail
+	mv plots/movie.mp4 plots/paper-movie.mp4
 
 ######### papers ##########
 SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
@@ -106,4 +106,4 @@ clean:
 	rm -rf plots
 	rm -f $(ALL_FIGURES)
 	rm -f public/*.pdf public/*.tex
-	rm -f data/thesis_* data/exploration_*
+	rm -f data/thesis_* data/paper_*
