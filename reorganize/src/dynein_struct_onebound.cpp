@@ -1034,7 +1034,8 @@ double Dynein_onebound::get_binding_rate() {
   if (get_uby() < MICROTUBULE_BINDING_DISTANCE and
       get_umy() > MICROTUBULE_BINDING_DISTANCE) {
     if (am_debugging_conversions) printf("Creating bothbound from onebound to test energy\n");
-    double dG_spring = Dynein_bothbound(this, rand).get_PE() - get_PE();
+    double dG_spring = Dynein_bothbound(this, rand, true).get_PE() - get_PE();
+    if (isnan(dG_spring)) return 0.0;
     return low_affinity_binding_rate * exp(-dG_spring/kb/T);
   }
   else return 0.0;
