@@ -18,15 +18,20 @@ import io
 tail = 'tail' in sys.argv
 
 usage = '''
-Usage: python2 %s MOVIE_FILENAME STEPS_FILENAME [show]"
+Usage: python2 %s BASE_FILENAME [show]"
        show: show plot in a window
+       note: BASE_FILENAME is typically something like data/paper or data/thesis to
+             which _movie_data.txt or similar is appended.
 ''' % (sys.argv[0])
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
   print(usage)
   sys.exit(1)
 
-data_filename = sys.argv[1]
+base_filename = sys.argv[1]
+data_filename = base_filename+'_movie_data.txt'
+step_filename = base_filename+'_stepping_data.txt'
+parameters_filename = base_filename+'_stepping_parameters.tex'
 title = data_filename[data_filename.index("data/")+5:-4]
 
 raw_lines = open(data_filename, 'r').readlines()
@@ -37,7 +42,7 @@ plot_length = end_line - start_line - 1
 
 raw_data = "".join(raw_lines[start_line:end_line])
 
-run_conditions = open("data/exploration_stepping_parameters.tex").read()
+run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data = np.genfromtxt(io.BytesIO(raw_data.encode()), delimiter="\t", invalid_raise=False)
@@ -121,7 +126,7 @@ plt.savefig("plots/exploration-plot.pdf")
 plt.show()
 
 ### Histogram plots
-stepdata = np.loadtxt(sys.argv[2])
+stepdata = np.loadtxt(step_filename)
 
 bind_times = np.array(stepdata[:,1])
 unbind_times = np.array(stepdata[:,0])
