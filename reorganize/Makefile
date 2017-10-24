@@ -7,6 +7,8 @@ HEADERS = $(wildcard src/*.h) src/version-info.h
 
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
+PAPER-PLOTS = plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf
+
 all: generate_stepping_data public $(DRAW)
 
 .PHONY: clean public
@@ -76,7 +78,7 @@ plots/paper-movie.mp4: data/paper_movie_data.txt scripts/movie.py $(DRAW)
 ######### papers ##########
 SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
 
-ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES)) $(THESIS-PLOTS)
+ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES)) $(THESIS-PLOTS) $(PAPER-PLOTS)
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
@@ -88,7 +90,7 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
-papers/paper/paper.pdf: papers/paper/paper.tex
+papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
 	cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
 
 papers/notes/notes.pdf: papers/notes/notes.tex

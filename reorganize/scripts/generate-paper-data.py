@@ -5,11 +5,17 @@ import dynein.run as run
 
 l = "paper"
 
-basename  = run.sim(**{"k_b": 1e11,
-                       "k_ub": 1e10,
-                       "cb": 1.0,
-                       "cm": 1.3,
-                       "ct": 0.5,
+basename  = run.sim(**{"k_b": 1e14,
+                       "k_ub": 1e5,
+                       "cb": 2.0,
+                       "cm": 2.0,
+                       "ct": 0.2,
+                       "ls": 22.1,
+                       "lt": 10.0,
+                       "eqb": 116,
+                       "eqmpre": 224,
+                       "eqmpost": 160,
+                       "eqt": 0,
                        "dt": 1e-10, "label": l, "seed": 1, "runtime": 1e-3,
                        "framerate": 1e-8, "constant-write": True,
                        "no-slurm": True})

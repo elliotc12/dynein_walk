@@ -322,6 +322,10 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"label",    required_argument,    0, 'm'},
       {"dt",       required_argument,    0, 'n'},
       {"framerate",required_argument,    0, 'o'},
+      {"eqb",      required_argument,    0, 'p'},
+      {"eqmpre",   required_argument,    0, 'q'},
+      {"eqmpost",  required_argument,    0, 'r'},
+      {"eqt",      required_argument,    0, 's'},
       // {"runtime",  required_argument,    0, 'n'},
       // {"runtime",  required_argument,    0, 'o'},
       // {"runtime",  required_argument,    0, 'p'},
@@ -391,6 +395,23 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'o':
       stepping_movie_framerate = strtod(optarg, NULL);
+      break;
+    case 'p':
+      onebound_post_powerstroke_internal_angles.bba = strtod(optarg, NULL) * M_PI / 180.0;
+      bothbound_pre_powerstroke_internal_angles.nba = strtod(optarg, NULL) * M_PI / 180.0;
+      bothbound_pre_powerstroke_internal_angles.fba = strtod(optarg, NULL) * M_PI / 180.0;
+      break;
+    case 'q':
+      onebound_post_powerstroke_internal_angles.bma = strtod(optarg, NULL) * M_PI / 180.0;
+      bothbound_pre_powerstroke_internal_angles.nma = strtod(optarg, NULL) * M_PI / 180.0;
+      bothbound_pre_powerstroke_internal_angles.fma = strtod(optarg, NULL) * M_PI / 180.0;
+      break;
+    case 'r':
+      onebound_post_powerstroke_internal_angles.uma = strtod(optarg, NULL) * M_PI / 180.0;
+      break;
+    case 's':
+      onebound_post_powerstroke_internal_angles.ta = strtod(optarg, NULL) * M_PI / 180.0;
+      bothbound_pre_powerstroke_internal_angles.ta = strtod(optarg, NULL) * M_PI / 180.0;
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
