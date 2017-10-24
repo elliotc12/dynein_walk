@@ -231,10 +231,11 @@ while i < len(data):
   elif (data[i][0] == 3):
     title_text.set_text('State: Unbound')
 
+  plt.gca().set_xlim([X[0]-50,X[0]+50])
+
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
   t_text.set_text("Time: {:g} ns".format(data[i][1]))
   #print "i=%d, time=%g, %s" % (i, data[i][1]*1e9, "Time: {:g} ns".format(1e9*data[i][1]))
-
 
   i += speed
   # plt.pause(0.001)

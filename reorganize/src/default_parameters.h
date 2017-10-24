@@ -76,7 +76,7 @@ onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = {
   224.0 * M_PI / 180.0,
     0.0 * M_PI / 180.0,
   /* 200.0 * M_PI / 180.0 */
-   180.0 * M_PI / 180.0
+   160.0 * M_PI / 180.0
 };
 
 bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles = {
