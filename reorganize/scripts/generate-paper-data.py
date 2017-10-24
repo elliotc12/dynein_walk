@@ -10,7 +10,7 @@ if 'long' in sys.argv:
     l = 'long_paper'
 
 basename  = run.sim(**{"k_b": 1e14,
-                       "k_ub": 1e5,
+                       "k_ub": 1e4,
                        "cb": 2.0,
                        "cm": 2.0,
                        "ct": 0.2,
