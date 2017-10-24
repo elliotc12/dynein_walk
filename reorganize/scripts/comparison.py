@@ -56,7 +56,7 @@ if __name__ == '__main__':
             print("ONEBOUND - dt 1e-10")
             print("ONEBOUND - dt 1e-11")
             print("ONEBOUND - dt 1e-12")
-            print("ONEBOUND - dt 1e-9")
+            print("ONEBOUND - dt 1e-5e-10")
 
         l = 'oneboundAC'
         
@@ -92,7 +92,7 @@ if __name__ == '__main__':
                                "cb": 2.0,
                                "cm": 2.0,
                                "ct": 1.0,
-                               "dt": 1e-9,
+                               "dt": 5e-10,
                                "label": l,
                                 "framerate": 5e-10,
                                "constant-write": True,
@@ -147,7 +147,7 @@ if __name__ == '__main__':
                                "cb": 2.0,
                                "cm": 2.0,
                                "ct": 1.0,
-                               "dt": 1e-9,
+                               "dt": 5e-10,
                                "label": l,
                                "framerate": 5e-10, 
                                "constant-write": True,
