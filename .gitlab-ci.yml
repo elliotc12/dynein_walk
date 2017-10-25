@@ -9,6 +9,8 @@ build:
     - pwd
     - make clean
     - make
+    - mkdir -p ../public
+    - cp public/* ../public/
   artifacts:
     paths:
       - public
