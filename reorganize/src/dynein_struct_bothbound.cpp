@@ -457,9 +457,10 @@ int Dynein_bothbound::update_velocities() {
 
   // ******* Checking for sub-MT dynein ********
   if (am_crashing_on_unphysical_behavior) {
-    if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
+    if (nmy < 0.0 or ty < 0.0 or fmy < 0.0) {
       printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
       fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+      fprintf(stderr, "These are bad parameters; exiting.");
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       if (!ignore_nans) exit(1);
     }

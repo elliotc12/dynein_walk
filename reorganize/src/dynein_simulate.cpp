@@ -134,7 +134,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
     if (current_state == BOTHBOUND) {
       while (t < runtime or run_indefinite) { // loop as long as it is bothbound
-
         if (am_debugging_time) printf("\n==== t = %8g/%8g ====\n", t, runtime);
         double near_unbinding_prob = dyn_bb->get_near_unbinding_rate()*dt;
         double far_unbinding_prob = dyn_bb->get_far_unbinding_rate()*dt;

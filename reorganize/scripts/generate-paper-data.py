@@ -3,7 +3,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-2
+runtime = 1e-3
 l = "paper"
 if 'long' in sys.argv:
     runtime = 100e-3
