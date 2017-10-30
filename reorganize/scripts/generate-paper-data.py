@@ -3,7 +3,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-3
+runtime = 1e-2
 l = "paper"
 if 'long' in sys.argv:
     runtime = 100e-3
@@ -21,7 +21,7 @@ basename  = run.sim(**{"k_b": 1e14,
                        "eqmpost": 160,
                        "eqt": 0,
                        "dt": 1e-10, "label": l, "seed": 1, "runtime": runtime,
-                       "framerate": 1e-8, "constant-write": True,
+                       "framerate": 1e-8, "crash-movie": False,
                        "no-slurm": True})
 
 os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/%s_movie_data.txt" % l)

@@ -53,7 +53,7 @@ double REBINDING_IMMUNITY_TIME = 0; // s
 
 double RAND_INIT_SEED = 0;
 
-bool am_only_writing_on_crash = true;
+bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;
 
 /* onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = { */

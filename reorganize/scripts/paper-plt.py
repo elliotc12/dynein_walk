@@ -122,7 +122,7 @@ plt.gcf().suptitle(
     fontsize=14)
 
 os.system('mkdir -p plots')
-plt.savefig("plots/exploration-plot.pdf")
+plt.savefig("plots/paper-plot.pdf")
 plt.show()
 
 ### Histogram plots

@@ -332,7 +332,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       // {"runtime",  required_argument,    0, 'q'},
       // {"runtime",  required_argument,    0, 'r'},
       {"nomovie",  no_argument, (int*) am_making_movie, 0},
-      {"constant-write", no_argument, (int*) &am_only_writing_on_crash, false},
+      {"crash-movie", no_argument, (int*) &am_only_writing_on_crash, true},
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {0, 0, 0, 0}
     };
