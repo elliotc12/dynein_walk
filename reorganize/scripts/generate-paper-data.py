@@ -11,7 +11,7 @@ if 'long' in sys.argv:
 
 basename  = run.sim(**{"k_b": 1e14,
                        "k_ub": 1e4,
-                       "cb": 2.0,
+                       "cb": 5.0,
                        "cm": 2.0,
                        "ct": 0.2,
                        "ls": 22.1,

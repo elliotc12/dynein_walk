@@ -292,12 +292,13 @@ void Dynein_bothbound::update_internal_forces() {
 }
 
 void Dynein_bothbound::update_coordinates() {
-  double epsilon = (r.tx > 0) ? 1e-6 : -1e-6; // eps sign based on random seed, so deterministic
-  if (fabs(nma - M_PI) < 1e-7) { // nudge if in a NaN-y conformation
+  double epsilon = (r.tx > 0) ? 1e-5 : -1e-5;
+
+  if (fabs(nma - M_PI) < 5e-6) { // nudge if in a NaN-y conformation
     if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
     nma += epsilon;
   }
-  if (fabs(fma - M_PI) < 1e-7) {
+  if (fabs(fma - M_PI) < 5e-6) {
     if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
     fma += epsilon;
   }
@@ -346,11 +347,13 @@ void Dynein_bothbound::update_coordinates() {
 	   cosAn, sinAn, cosAns, sinAns);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
+    printf("DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
 
     fprintf(stderr, "DEBUG: bad nmx! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
 	   cosAn, sinAn, cosAns, sinAns);
     fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
+    fprintf(stderr, "DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     if (!ignore_nans) exit(1);
   }
