@@ -3,9 +3,14 @@ image: facio/dynein_walk
 build:
   stage: build
   script:
-    - cd reorganize && make
-    - cd reorganize && make clean
-    - cd reorganize && make
+    - cd reorganize
+    - pwd
+    - make
+    - pwd
+    - make clean
+    - make
+    - mkdir -p ../public
+    - cp public/* ../public/
   artifacts:
     paths:
       - public

@@ -1,6 +1,5 @@
 from __future__ import print_function
 import numpy as np
-import matplotlib.pyplot as plt
 import re
 
 ## outputs file with data to draw motor domain using outer_coords.txt ##

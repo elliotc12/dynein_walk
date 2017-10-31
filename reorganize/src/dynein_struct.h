@@ -217,7 +217,7 @@ public:
 		   bothbound_equilibrium_angles* eq_angles,
 		   MTRand* mtrand);
 
-  Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* rand);
+  Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* rand, bool am_cool_with_nans=false);
 
   void set_nma(double d);
   void set_fma(double d);
@@ -324,6 +324,8 @@ private:
   bothbound_forces *internal_testcase;
 
   double nba, ta, fba;
+
+  bool ignore_nans;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */

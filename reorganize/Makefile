@@ -66,7 +66,7 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-plt.py $(DRAW)
-	python3 scripts/paper-plt.py data/paper_movie_data.txt data/paper_stepping_data.txt
+	python3 scripts/paper-plt.py data/paper
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
