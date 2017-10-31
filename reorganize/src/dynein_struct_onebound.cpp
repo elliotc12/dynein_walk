@@ -332,7 +332,7 @@ int Dynein_onebound::update_velocities() {
     if (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0) {
       printf("A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
       fprintf(stderr, "A domain is under the MT! bmy, ty, umy, uby: : %g, %g, %g, %g\n", get_bmy(), get_ty(), get_umy(), get_uby());
-      fprintf(stderr, "These are bad parameters; exiting.");
+      fprintf(stderr, "These are bad parameters; exiting.\n");
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       exit(1);
     }
