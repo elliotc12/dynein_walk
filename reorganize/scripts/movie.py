@@ -248,7 +248,7 @@ while i < len(data):
 
 # avconv may not be present on non-Debian-related systems, in which
 # case you may be able to substitute ffmpeg.
-framerate = 1
+framerate = 25
 
 have_avconv = True
 
@@ -259,9 +259,9 @@ except (OSError, subprocess.CalledProcessError):
     have_avconv = False
 
 if have_avconv:
-    movie_cmd = "avconv -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k plots/movie.mp4" % framerate
+    movie_cmd = "avconv -loglevel quiet -y -vsync cfr -r %g -i PNGs/movie-%%06d.png -b 1000k plots/movie.mp4" % framerate
 else:
-    movie_cmd = "ffmpeg -loglevel quiet -y -r %g -i PNGs/movie-%%06d.png -b 1000k plots/movie.mp4" % framerate
+    movie_cmd = "ffmpeg -loglevel quiet -y -vsync cfr -r %g -i PNGs/movie-%%06d.png -b 1000k plots/movie.mp4" % framerate
 
 print(movie_cmd)
 os.system(movie_cmd) # make the movie

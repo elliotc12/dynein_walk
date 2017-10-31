@@ -83,7 +83,7 @@ const bool am_debugging_naive_corrections = true;
 
 const bool am_exiting_on_improbable_stepping = false;
 
-const bool am_crashing_on_unphysical_behavior = false; // crash when model under MT, etc
+const bool am_crashing_on_unphysical_behavior = true; // crash when model under MT, etc
 const bool am_naively_correcting_nan_errors = false; // "nudges" nan states into good states, eg if cosAn > 1, cosAn = 0.9999
 
 const bool crash_on_nan = true;
@@ -325,7 +325,7 @@ private:
 
   double nba, ta, fba;
 
-  bool ignore_nans;
+  bool am_testing_binding;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */

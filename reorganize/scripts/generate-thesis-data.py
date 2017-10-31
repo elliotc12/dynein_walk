@@ -13,7 +13,7 @@ basename  = run.sim(**{"k_b": 1e15,
                        "cm": 1.3,
                        "ct": 0.5,
                        "dt": 1e-10, "label": l, "seed": 1, "runtime": 1e-3, "framerate": 1e-8,
-                       "constant-write": True,
+                       "crash-movie": False,
                        "no-slurm": True})
 
 #this one has a bothbound at the end

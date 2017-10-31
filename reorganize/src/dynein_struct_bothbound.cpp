@@ -39,7 +39,7 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
 }
 
 Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, bool am_cool_with_nans) {
-  ignore_nans = am_cool_with_nans;
+  am_testing_binding = am_cool_with_nans;
   // out of old dyn
   double bad_nma, bad_fma;
   if (old_dynein->get_state() == NEARBOUND) {
@@ -134,7 +134,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, 
 	cosfma = -1 + 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
       printf("     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
       printf("     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
@@ -149,7 +149,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, 
       fprintf(stderr, "     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
       fprintf(stderr, "     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!ignore_nans) exit(1);
+      exit(1);
     }
   }
 
@@ -292,12 +292,13 @@ void Dynein_bothbound::update_internal_forces() {
 }
 
 void Dynein_bothbound::update_coordinates() {
-  double epsilon = (r.tx > 0) ? 1e-6 : -1e-6; // eps sign based on random seed, so deterministic
-  if (fabs(nma - M_PI) < 1e-7) { // nudge if in a NaN-y conformation
+  double epsilon = (r.tx > 0) ? 1e-1 : -1e-1;
+
+  if (fabs(nma - M_PI) < 5e-2 and !am_testing_binding) { // nudge if in a NaN-y conformation
     if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
     nma += epsilon;
   }
-  if (fabs(fma - M_PI) < 1e-7) {
+  if (fabs(fma - M_PI) < 5e-2 and !am_testing_binding) {
     if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
     fma += epsilon;
   }
@@ -340,21 +341,28 @@ void Dynein_bothbound::update_coordinates() {
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
   sinAfs = (sin(fma) > 0) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
-  nmx = nbx + Ls*(cosAn*cosAns - sinAn*sinAns);
-  if (isnan(nmx)) {
-    printf("DEBUG: bad nmx! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+  if ((isnan(cosAn) or isnan(sinAn) or isnan(cosAf) or isnan(sinAf)) and !am_testing_binding) {
+    printf("DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
 	   cosAn, sinAn, cosAns, sinAns);
+    printf("DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
+	   cosAf, sinAf, cosAfs, sinAfs);
     printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
+    printf("DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
 
-    fprintf(stderr, "DEBUG: bad nmx! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+    fprintf(stderr, "DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
 	   cosAn, sinAn, cosAns, sinAns);
+    fprintf(stderr, "DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
+	   cosAf, sinAf, cosAfs, sinAfs);
     fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
+    fprintf(stderr, "DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
+    fprintf(stderr, "This error should NOT occur; exiting.\n");
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-    if (!ignore_nans) exit(1);
+    exit(1);
   }
 
+  nmx = nbx + Ls*(cosAn*cosAns - sinAn*sinAns);
   nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns);
   tx = nbx + Ln*cosAn;
   ty = nby + Ln*sinAn;
@@ -382,7 +390,7 @@ void Dynein_bothbound::update_coordinates() {
 	nba = M_PI - 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
 	     nba, nmy, nmx - nbx, tx, ty);
       printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
@@ -392,8 +400,9 @@ void Dynein_bothbound::update_coordinates() {
 	     nba, nmy, nmx - nbx, tx, ty);
       fprintf(stderr, "nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
 	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+      fprintf(stderr, "This error should NOT occur; exiting.\n");
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!ignore_nans) exit(1);
+      exit(1);
     }
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -410,13 +419,14 @@ void Dynein_bothbound::update_coordinates() {
 	fba = M_PI - 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
 	     fba, fmy, fmx - (nbx + L));
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       fprintf(stderr, "crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
 	     fba, fmy, fmx - (nbx + L));
-      if (!ignore_nans) exit(1);
+      fprintf(stderr, "This error should NOT occur; exiting.\n");
+      exit(1);
     }
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
@@ -457,11 +467,14 @@ int Dynein_bothbound::update_velocities() {
 
   // ******* Checking for sub-MT dynein ********
   if (am_crashing_on_unphysical_behavior) {
-    if (nmy < -1.5 or ty < -1.5 or fmy < -1.5) {
-      printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-      fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!ignore_nans) exit(1);
+    if (nmy < 0.0 or ty < 0.0 or fmy < 0.0) {
+      if (!am_testing_binding) {
+	printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+	fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+	fprintf(stderr, "These are bad parameters; exiting.\n");
+	if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+	exit(1);
+      }
     }
   }
 
