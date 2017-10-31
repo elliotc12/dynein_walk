@@ -325,7 +325,7 @@ private:
 
   double nba, ta, fba;
 
-  bool ignore_nans;
+  bool am_testing_binding;
 };
 
 /* ***************************** UTILITY PROTOTYPES ****************************** */
