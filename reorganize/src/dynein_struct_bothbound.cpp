@@ -134,7 +134,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, 
 	cosfma = -1 + 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy cosnma = %g or cosfma = %g\n", cosnma, cosfma);
       printf("     tx/ty = %g/%g vs %g\n", tx, ty, old_dynein->get_ty());
       printf("     Ln/Lf = %g/%g\n", sqrt(sqrLn), sqrt(sqrLf));
@@ -149,7 +149,7 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, 
       fprintf(stderr, "     compare nma with bad_nma %g vs %g\n", nma, bad_nma);
       fprintf(stderr, "     compare fma with bad_fma %g vs %g\n", fma, bad_fma);
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!am_testing_binding) exit(1);
+      exit(1);
     }
   }
 
@@ -357,6 +357,7 @@ void Dynein_bothbound::update_coordinates() {
     fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
 	   L, Ln, Lf, Lf-Ln);
     fprintf(stderr, "DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
+    fprintf(stderr, "This error should NOT occur; exiting.\n");
     if (am_only_writing_on_crash) on_crash_write_movie_buffer();
     exit(1);
   }
@@ -389,7 +390,7 @@ void Dynein_bothbound::update_coordinates() {
 	nba = M_PI - 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
 	     nba, nmy, nmx - nbx, tx, ty);
       printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
@@ -399,8 +400,9 @@ void Dynein_bothbound::update_coordinates() {
 	     nba, nmy, nmx - nbx, tx, ty);
       fprintf(stderr, "nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
 	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+      fprintf(stderr, "This error should NOT occur; exiting.\n");
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!am_testing_binding) exit(1);
+      exit(1);
     }
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -417,13 +419,14 @@ void Dynein_bothbound::update_coordinates() {
 	fba = M_PI - 1e-6;
       }
     }
-    else {
+    else if (!am_testing_binding) {
       printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
 	     fba, fmy, fmx - (nbx + L));
       if (am_only_writing_on_crash) on_crash_write_movie_buffer();
       fprintf(stderr, "crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
 	     fba, fmy, fmx - (nbx + L));
-      if (!am_testing_binding) exit(1);
+      fprintf(stderr, "This error should NOT occur; exiting.\n");
+      exit(1);
     }
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
@@ -465,11 +468,13 @@ int Dynein_bothbound::update_velocities() {
   // ******* Checking for sub-MT dynein ********
   if (am_crashing_on_unphysical_behavior) {
     if (nmy < 0.0 or ty < 0.0 or fmy < 0.0) {
-      printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-      fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-      fprintf(stderr, "These are bad parameters; exiting.\n");
-      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      if (!am_testing_binding) exit(1);
+      if (!am_testing_binding) {
+	printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+	fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+	fprintf(stderr, "These are bad parameters; exiting.\n");
+	if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+	exit(1);
+      }
     }
   }
 
