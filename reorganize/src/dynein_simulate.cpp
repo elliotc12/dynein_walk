@@ -112,19 +112,39 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  iter++;
 
 	  // potentially faster to compute velocity here, instead of down there?
+	  double old_bba = dyn_ob->get_bba() ; 
+	  double old_bma = dyn_ob->get_bma() ; 
+	  double old_uma = dyn_ob->get_uma() ; 
+	  double old_uba = dyn_ob->get_uba() ; 
+	  
+	  bool accept_step = false; 
+	  int attempt = 0; 
+	   
+	  
+	  while(!accept_step){
+	     if(attempt > 0){
+	       dyn_ob->set_bba(old_bba);
+	       dyn_ob->set_bma(old_bma);
+	       dyn_ob->set_uma(old_uma);
+	       dyn_ob->set_uba(old_uba);
+	     }
 
-	  double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
-	  double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
-	  double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
-	  double temp_uba = dyn_ob->get_uba() + dyn_ob->get_d_uba() * dt;
+	     double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
+	     double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
+	     double temp_uma = dyn_ob->get_uma() + dyn_ob->get_d_uma() * dt;
+	     double temp_uba = dyn_ob->get_uba() + dyn_ob->get_d_uba() * dt;
 
-	  dyn_ob->set_bba(temp_bba);
-	  dyn_ob->set_bma(temp_bma);
-	  dyn_ob->set_uma(temp_uma);
-	  dyn_ob->set_uba(temp_uba);
+	     dyn_ob->set_bba(temp_bba);
+	     dyn_ob->set_bma(temp_bma);
+	     dyn_ob->set_uma(temp_uma);
+	     dyn_ob->set_uba(temp_uba);
 
-	  dyn_ob->update_velocities();
-
+	     accept_step = dyn_ob->update_velocities();
+	     
+	     
+	     attempt ++ ; 
+	  }
+	  
 	  if (crash_on_nan and (isnan(temp_bba) or isnan(temp_bma) or isnan(temp_uma) or isnan(temp_uba))) {
 	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
 	    exit(1);
