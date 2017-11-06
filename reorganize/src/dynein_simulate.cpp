@@ -144,7 +144,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  }
 	  if (attempts > 1) {
 	    printf("NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
-	    fprintf(stderr, "NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
 	  }
 	}
       }
@@ -235,7 +234,6 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  }
 	  if (attempts > 1) {
 	    printf("NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
-	    fprintf(stderr, "NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
 	  }
 	}
       }
