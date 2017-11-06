@@ -111,22 +111,21 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  t += dt;
 	  iter++;
 
-	  // potentially faster to compute velocity here, instead of down there?
 	  double old_bba = dyn_ob->get_bba() ; 
 	  double old_bma = dyn_ob->get_bma() ; 
 	  double old_uma = dyn_ob->get_uma() ; 
 	  double old_uba = dyn_ob->get_uba() ; 
 	  
 	  bool accept_step = false; 
-	  int attempt = 0; 
-	   
-	  
+	  int attempts = 0;
+
 	  while(!accept_step){
-	     if(attempt > 0){
+	     if(attempts > 0){
 	       dyn_ob->set_bba(old_bba);
 	       dyn_ob->set_bma(old_bma);
 	       dyn_ob->set_uma(old_uma);
 	       dyn_ob->set_uba(old_uba);
+	       dyn_ob->update_velocities();
 	     }
 
 	     double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
@@ -140,14 +139,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	     dyn_ob->set_uba(temp_uba);
 
 	     accept_step = dyn_ob->update_velocities();
-	     
-	     
-	     attempt ++ ; 
+
+	     attempts++; 
 	  }
-	  
-	  if (crash_on_nan and (isnan(temp_bba) or isnan(temp_bma) or isnan(temp_uma) or isnan(temp_uba))) {
-	    printf("Onebound velocity calculation generated a NaN, exiting.\n");
-	    exit(1);
+	  if (attempts > 1) {
+	    printf("NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
+	    fprintf(stderr, "NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
 	  }
 	}
       }
@@ -206,16 +203,39 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  t += dt;
 	  iter++;
 
-	  double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma()*dt;
-	  double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
-	  dyn_bb->set_nma(temp_nma);
-	  dyn_bb->set_fma(temp_fma);
+	  // double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma()*dt;
+	  // double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma()*dt;
+	  // dyn_bb->set_nma(temp_nma);
+	  // dyn_bb->set_fma(temp_fma);
 
-	  dyn_bb->update_velocities();
+	  // dyn_bb->update_velocities();
 
-	  if (crash_on_nan and (isnan(temp_nma) or isnan(temp_fma))) {
-	    printf("Bothbound velocity calculation generated a NaN, exiting.\n");
-	    exit(1);
+	  double old_nma = dyn_bb->get_nma();
+	  double old_fma = dyn_bb->get_fma();
+
+	  bool accept_step = false;
+	  int attempts = 0;
+
+	  while(!accept_step){
+	     if(attempts > 0){
+	       dyn_bb->set_nma(old_nma);
+	       dyn_bb->set_fma(old_fma);
+	       dyn_bb->update_velocities();
+	     }
+
+	     double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma() * dt;
+	     double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma() * dt;
+
+	     dyn_bb->set_nma(temp_nma);
+	     dyn_bb->set_fma(temp_fma);
+
+	     accept_step = dyn_bb->update_velocities();
+
+	     attempts++; 
+	  }
+	  if (attempts > 1) {
+	    printf("NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
+	    fprintf(stderr, "NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
 	  }
 	}
       }
