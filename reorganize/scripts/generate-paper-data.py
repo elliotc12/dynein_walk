@@ -17,8 +17,8 @@ basename  = run.sim(**{"k_b": 1e15,
                        "ls": 10.49, # from urnavicius 2015 (paper.bib)
                        "lt": 23.8,  # from urnavicius 2015
                        "eqb": 116,
-                       "eqmpre": 224,
-                       "eqmpost": 160,
+                       "eqmpre": 136, # from burgess 2002
+                       "eqmpost": 160, # from burgess 2002
                        "eqt": 0,
                        "dt": 1e-10, "label": l, "seed": 1, "runtime": runtime,
                        "framerate": 1e-8, "crash-movie": False,
