@@ -119,10 +119,13 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false; 
 	  int attempts = 0;
 
+	  const int max_attempts = 1000;
 	  while(!accept_step){
-	    if (attempts > 10) {
-	      printf("Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
-	      fprintf(stderr, "Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	    if (attempts > max_attempts) {
+	      printf("Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+                     max_attempts);
+	      fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+                      max_attempts);
 	      exit(1);
 	    }
 	    if(attempts > 0){
@@ -131,7 +134,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	      dyn_ob->set_uma(old_uma);
 	      dyn_ob->set_uba(old_uba);
 	      dyn_ob->update_velocities();
-	     }
+            }
 
 	     double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
 	     double temp_bma = dyn_ob->get_bma() + dyn_ob->get_d_bma() * dt;
@@ -220,10 +223,13 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false;
 	  int attempts = 0;
 
+	  const int max_attempts = 1000;
 	  while(!accept_step){
-	    if (attempts > 10) {
-	      printf("Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
-	      fprintf(stderr, "Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	    if (attempts > max_attempts) {
+	      printf("Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+                     max_attempts);
+	      fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+                      max_attempts);
 	      exit(1);
 	    }
 	    if(attempts > 0){
