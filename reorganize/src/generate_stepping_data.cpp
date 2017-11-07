@@ -401,13 +401,13 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       bothbound_pre_powerstroke_internal_angles.nba = strtod(optarg, NULL) * M_PI / 180.0;
       bothbound_pre_powerstroke_internal_angles.fba = strtod(optarg, NULL) * M_PI / 180.0;
       break;
-    case 'q':
+    case 'q': // pre-powerstroke
+      onebound_post_powerstroke_internal_angles.uma = strtod(optarg, NULL) * M_PI / 180.0;
+      break;
+    case 'r': // post-powerstroke
       onebound_post_powerstroke_internal_angles.bma = strtod(optarg, NULL) * M_PI / 180.0;
       bothbound_pre_powerstroke_internal_angles.nma = strtod(optarg, NULL) * M_PI / 180.0;
       bothbound_pre_powerstroke_internal_angles.fma = strtod(optarg, NULL) * M_PI / 180.0;
-      break;
-    case 'r':
-      onebound_post_powerstroke_internal_angles.uma = strtod(optarg, NULL) * M_PI / 180.0;
       break;
     case 's':
       onebound_post_powerstroke_internal_angles.ta = strtod(optarg, NULL) * M_PI / 180.0;
