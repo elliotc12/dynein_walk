@@ -94,7 +94,7 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
 papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
-	cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
+	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
 
 papers/paper/supplemental-figs.pdf: papers/paper/supplemental-figs.tex $(ALL_FIGURES)
 	cd papers/paper && xelatex supplemental-figs.tex && bibtex supplemental-figs && xelatex supplemental-figs && xelatex supplemental-figs
