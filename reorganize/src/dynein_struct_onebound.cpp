@@ -338,7 +338,8 @@ bool Dynein_onebound::update_velocities() {
   //   }
   // }
 
-  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or get_uby() < 0.0)) {
+  // if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or get_uby() < 0.0)) {
+  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {
     // printf("Onebound domain under MT, retrying...\n");
     // fprintf(stderr, "Onebound domain under MT, retrying...\n");
     return false;
