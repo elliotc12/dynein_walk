@@ -82,10 +82,8 @@ if (plot_length-2*avging_window_width-2 < num_points):
 avg_nbxs = np.array([np.mean(nbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
 avg_fbxs = np.array([np.mean(fbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
 avg_nbys = np.array([np.mean(nbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
-avg_fbys = np.array([np.mean(fbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+avg_fbys = np.array([np.mean(fbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
 avg_times = np.array([times[int(t)] for t in sample_points])
-
-print(avg_nbxs)
 
 # avg_nbxs = np.array([np.mean(nbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
 # avg_fbxs = np.array([np.mean(fbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
@@ -140,6 +138,10 @@ plt.show()
 
 ### Histogram plots
 stepdata = np.loadtxt(step_filename)
+
+if len(stepdata) < 3 or str(type(stepdata[0])) == "<class 'numpy.float64'>":
+    print("Too few steps to make histograms; exiting.")
+    exit(0)
 
 bind_times = np.array(stepdata[:,1])
 unbind_times = np.array(stepdata[:,0])
