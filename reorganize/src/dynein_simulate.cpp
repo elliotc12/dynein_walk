@@ -120,12 +120,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  int attempts = 0;
 
 	  while(!accept_step){
-	     if(attempts > 0){
-	       dyn_ob->set_bba(old_bba);
-	       dyn_ob->set_bma(old_bma);
-	       dyn_ob->set_uma(old_uma);
-	       dyn_ob->set_uba(old_uba);
-	       dyn_ob->update_velocities();
+	    if (attempts > 10) {
+	      printf("Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	      fprintf(stderr, "Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	      exit(1);
+	    }
+	    if(attempts > 0){
+	      dyn_ob->set_bba(old_bba);
+	      dyn_ob->set_bma(old_bma);
+	      dyn_ob->set_uma(old_uma);
+	      dyn_ob->set_uba(old_uba);
+	      dyn_ob->update_velocities();
 	     }
 
 	     double temp_bba = dyn_ob->get_bba() + dyn_ob->get_d_bba() * dt;
@@ -140,7 +145,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 
 	     accept_step = dyn_ob->update_velocities();
 
-	     attempts++; 
+	     attempts++;
 	  }
 	  if (attempts > 1) {
 	    printf("NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
@@ -216,21 +221,25 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  int attempts = 0;
 
 	  while(!accept_step){
-	     if(attempts > 0){
-	       dyn_bb->set_nma(old_nma);
-	       dyn_bb->set_fma(old_fma);
-	       dyn_bb->update_velocities();
+	    if (attempts > 10) {
+	      printf("Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	      fprintf(stderr, "Over 10 attempts needed to avoid a NaN state, something must be wrong. Exiting.\n");
+	      exit(1);
+	    }
+	    if(attempts > 0){
+	      dyn_bb->set_nma(old_nma);
+	      dyn_bb->set_fma(old_fma);
+	      dyn_bb->update_velocities();
 	     }
 
-	     double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma() * dt;
-	     double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma() * dt;
+	    double temp_nma = dyn_bb->get_nma() + dyn_bb->get_d_nma() * dt;
+	    double temp_fma = dyn_bb->get_fma() + dyn_bb->get_d_fma() * dt;
 
-	     dyn_bb->set_nma(temp_nma);
-	     dyn_bb->set_fma(temp_fma);
+	    dyn_bb->set_nma(temp_nma);
+	    dyn_bb->set_fma(temp_fma);
 
-	     accept_step = dyn_bb->update_velocities();
-
-	     attempts++; 
+	    accept_step = dyn_bb->update_velocities();
+	    attempts++; 
 	  }
 	  if (attempts > 1) {
 	    printf("NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
