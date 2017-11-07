@@ -16,7 +16,7 @@ basename  = run.sim(**{"k_b": 1e15,
                        "ct": 0.2,
                        "ls": 10.49, # from urnavicius 2015 (paper.bib)
                        "lt": 23.8,  # from urnavicius 2015
-                       "eqb": 116,
+                       "eqb": 120,  # from redwine 2012 supplemental
                        "eqmpre": 136, # from burgess 2002
                        "eqmpost": 160, # from burgess 2002
                        "eqt": 0,
