@@ -338,13 +338,6 @@ bool Dynein_onebound::update_velocities() {
   //   }
   // }
 
-  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or get_uby() < 0.0)) {
-  // if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {
-    // printf("Onebound domain under MT, retrying...\n");
-    // fprintf(stderr, "Onebound domain under MT, retrying...\n");
-    return false;
-  }
-
   update_internal_forces();
   update_brownian_forces();
 
@@ -1035,6 +1028,13 @@ bool Dynein_onebound::update_velocities() {
 	Power(AA,6)*Power(BB,3)*CC*JJ*OO +
 	Power(AA,6)*Power(BB,3)*CC*KK*OO -
 	Power(AA,6)*Power(BB,3)*CC*DD*VV));
+
+  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or get_uby() < 0.0)) {
+  // if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {
+    // printf("Onebound domain under MT, retrying...\n");
+    // fprintf(stderr, "Onebound domain under MT, retrying...\n");
+    return false;
+  }
   return true;
 }
 
