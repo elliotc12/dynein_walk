@@ -3,19 +3,19 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-2
+runtime = 1e-3
 l = "paper"
 if 'long' in sys.argv:
     runtime = 100e-3
     l = 'long_paper'
 
-basename  = run.sim(**{"k_b": 1e14,
+basename  = run.sim(**{"k_b": 1e15,
                        "k_ub": 1e4,
-                       "cb": 5.0,
-                       "cm": 2.0,
+                       "cb": 2.0,
+                       "cm": 0.7,
                        "ct": 0.2,
-                       "ls": 22.1,
-                       "lt": 10.0,
+                       "ls": 10.49, # from urnavicius 2015 (paper.bib)
+                       "lt": 23.8,  # from urnavicius 2015
                        "eqb": 116,
                        "eqmpre": 224,
                        "eqmpost": 160,
