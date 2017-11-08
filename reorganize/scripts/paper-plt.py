@@ -86,12 +86,12 @@ num_points = 1000
 if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
     exit(0)
-sample_points = int(np.floor(np.linspace(0, plot_length, num_points)))
+sample_points = np.floor(np.linspace(0, plot_length-1, num_points))
 
-avg_nbxs = np.array([nbxs[t] for t in sample_points])
-avg_fbxs = np.array([fbxs[t] for t in sample_points])
-avg_nbys = np.array([nbys[t] for t in sample_points])
-avg_fbys = np.array([fbys[t] for t in sample_points])
+avg_nbxs = np.array([nbxs[int(t)] for t in sample_points])
+avg_fbxs = np.array([fbxs[int(t)] for t in sample_points])
+avg_nbys = np.array([nbys[int(t)] for t in sample_points])
+avg_fbys = np.array([fbys[int(t)] for t in sample_points])
 avg_times = np.array([times[int(t)] for t in sample_points])
 
 
