@@ -47,11 +47,6 @@ raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data = np.genfromtxt(io.BytesIO(raw_data.encode()), delimiter="\t", invalid_raise=False)
 
-avging_window_width = 0.5
-if len(data) < avging_window_width:
-       print("Need at least ", avging_window_width, " data points!")
-       exit(1)
-
 nbxs =  np.zeros(plot_length)
 fbxs =  np.zeros(plot_length)
 nbys =  np.zeros(plot_length)
@@ -70,25 +65,35 @@ for i in range(plot_length):
         nbys[i] = data[i,16]
     times[i] = data[i,1]
 
-# num_windows = plot_length // avging_window_width # floor division
+# avging_window_width = 0.5
+# if len(data) < avging_window_width:
+#        print("Need at least ", avging_window_width, " data points!")
+#        exit(1)
+# num_points = 1000
+# sample_points = np.floor(np.linspace(avging_window_width+1, plot_length-avging_window_width-1, num_points))
+
+# if (plot_length-2*avging_window_width-2 < num_points):
+#     print("Error, need more data points to make trajectory plot.")
+#     exit(1)
+
+# avg_nbxs = np.array([np.mean(nbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+# avg_fbxs = np.array([np.mean(fbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+# avg_nbys = np.array([np.mean(nbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+# avg_fbys = np.array([np.mean(fbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+# avg_times = np.array([times[int(t)] for t in sample_points])
 
 num_points = 1000
-sample_points = np.floor(np.linspace(avging_window_width+1, plot_length-avging_window_width-1, num_points))
-
-if (plot_length-2*avging_window_width-2 < num_points):
+if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
-    exit(1)
+    exit(0)
+sample_points = int(np.floor(np.linspace(0, plot_length, num_points)))
 
-avg_nbxs = np.array([np.mean(nbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
-avg_fbxs = np.array([np.mean(fbxs[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
-avg_nbys = np.array([np.mean(nbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
-avg_fbys = np.array([np.mean(fbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
+avg_nbxs = np.array([nbxs[t] for t in sample_points])
+avg_fbxs = np.array([fbxs[t] for t in sample_points])
+avg_nbys = np.array([nbys[t] for t in sample_points])
+avg_fbys = np.array([fbys[t] for t in sample_points])
 avg_times = np.array([times[int(t)] for t in sample_points])
 
-# avg_nbxs = np.array([np.mean(nbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
-# avg_fbxs = np.array([np.mean(fbxs[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
-# avg_nbys = np.array([np.mean(nbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
-# avg_fbys = np.array([np.mean(fbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
 
 y_min_xproj = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
 y_max_xproj = np.max([np.max(avg_nbxs), 20])

@@ -9,9 +9,9 @@ if 'long' in sys.argv:
     runtime = 100e-3
     l = 'long_paper'
 
-basename  = run.sim(**{"k_b": 1e9,
+basename  = run.sim(**{"k_b": 1e18,
                        "k_ub": 1e7,
-                       "cb": 2.0,
+                       "cb": 0.5,
                        "cm": 0.7,
                        "ct": 0.2,
                        "ls": 10.49, # from urnavicius 2015 (paper.bib)
@@ -20,8 +20,8 @@ basename  = run.sim(**{"k_b": 1e9,
                        "eqmpre": 200, # from burgess 2002, 360-160
                        "eqmpost": 224, # from burgess 2002, 360-136
                        "eqt": 0,
-                       "dt": 1e-10, "label": l, "seed": 1, "runtime": runtime,
-                       "framerate": 1e-8, "crash-movie": False,
+                       "dt": 1e-8, "label": l, "seed": 1, "runtime": runtime,
+                       "framerate": 1e-10, "crash-movie": False,
                        "no-slurm": True})
 
 os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/%s_movie_data.txt" % l)
