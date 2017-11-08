@@ -68,8 +68,6 @@ print "Making " + str(len(data)/speed) + " frame movie out of " + str(len(data))
 
 ax = plt.gca()
 ax.set_aspect("equal", adjustable="box")
-ax.set_xlim(-view_width, view_width)
-ax.set_ylim(-view_height, view_height)
 
 microtubule_thickness = 2 # nm
 plt.gca().add_patch(Rectangle((-view_width, -microtubule_thickness),
@@ -102,6 +100,9 @@ i = 0
 savefigframe = 0
 
 signal.signal(signal.SIGINT, close_windows)
+
+ax.set_xlim(data[0][7]-view_width, data[0][7]+view_width)
+ax.set_ylim(-view_height, view_height)
 
 num_steps = 0
 previous_state = data[0][0]
@@ -231,11 +232,9 @@ while i < len(data):
   elif (data[i][0] == 3):
     title_text.set_text('State: Unbound')
 
-  plt.gca().set_xlim([X[0]-50,X[0]+50])
-
   pe_text.set_text('PE: %.2f' % (data[i][2]+data[i][3]+data[i][4]+data[i][5]+data[i][6]))
-  t_text.set_text("Time: {:g} ns".format(data[i][1]))
-  #print "i=%d, time=%g, %s" % (i, data[i][1]*1e9, "Time: {:g} ns".format(1e9*data[i][1]))
+  t_text.set_text("Time: {:g} s".format(data[i][1]))
+  #print "i=%d, time=%g, %s" % (i, data[i][1]*1e9, "Time: {:g} s".format(1e9*data[i][1]))
 
   i += speed
   # plt.pause(0.001)

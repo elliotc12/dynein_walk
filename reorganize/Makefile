@@ -72,7 +72,7 @@ plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_leng
 
 plots/paper-movie.mp4: data/paper_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
-	./scripts/movie.py data/paper_movie_data.txt speed=1 tail
+	./scripts/movie.py data/paper_movie_data.txt speed=1 tail forces
 	mv plots/movie.mp4 plots/paper-movie.mp4
 
 ######### papers ##########
