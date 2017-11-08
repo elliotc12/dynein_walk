@@ -82,7 +82,7 @@ for i in range(plot_length):
 # avg_fbys = np.array([np.mean(fbys[int(t-avging_window_width):int(t+avging_window_width)]) for t in sample_points])
 # avg_times = np.array([times[int(t)] for t in sample_points])
 
-num_points = 1000
+num_points = 100
 if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
     exit(0)
