@@ -54,7 +54,7 @@ fbys =  np.zeros(plot_length)
 
 times = np.empty(plot_length)
 
-for i in range(plot_length):
+for i in range(plot_length-1):
     if int(data[i,0]) == 0 or int(data[i,0]) == 2:
         nbxs[i] = data[i,7]
         fbxs[i] = data[i,15]
