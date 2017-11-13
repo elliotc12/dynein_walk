@@ -33,8 +33,9 @@ def latex_format(x):
 
 def sim(**run):
     if 'label' in run:
-      basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
-                                                                 run["cb"], run["cm"], run["ct"], run["dt"])
+      basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g" % \
+                 (str(run["label"]), run["k_b"], run["k_ub"], run["cb"], run["cm"],
+                  run["ct"], run["ls"], run["lt"], run["seed"], run["dt"])
     else:
       basename = "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (str(run["label"]), run["k_b"], run["k_ub"],
                                                              run["cb"], run["cm"], run["ct"], run["dt"])
@@ -73,6 +74,6 @@ def sim(**run):
         print("\n##################################",
               "\nSimulation exited in error: \n\n",
               err.decode("utf-8"),
-              "##################################\n\n")
+              "\n##################################\n\n")
     
     return basename
