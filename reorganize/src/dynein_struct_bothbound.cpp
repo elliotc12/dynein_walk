@@ -291,75 +291,80 @@ void Dynein_bothbound::update_internal_forces() {
   }
 }
 
-void Dynein_bothbound::update_coordinates() {
-  double epsilon = (r.tx > 0) ? 1e-1 : -1e-1;
+bool Dynein_bothbound::update_coordinates() {
+  // double epsilon = (r.tx > 0) ? 1e-1 : -1e-1;
 
-  if (fabs(nma - M_PI) < 5e-2 and !am_testing_binding) { // nudge if in a NaN-y conformation
-    if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
-    nma += epsilon;
-  }
-  if (fabs(fma - M_PI) < 5e-2 and !am_testing_binding) {
-    if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
-    fma += epsilon;
-  }
-
-  Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
-  Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
+  // if (fabs(nma - M_PI) < 5e-2 and !am_testing_binding) { // nudge if in a NaN-y conformation
+  //   if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
+  //   nma += epsilon;
+  // }
+  // if (fabs(fma - M_PI) < 5e-2 and !am_testing_binding) {
+  //   if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
+  //   fma += epsilon;
+  // }
 
   if (am_debugging_angles) {
     printf("nma: %g, fma: %g\n", nma, fma);
     printf("Ln: %g, Lf: %g\n", Ln, Lf);
   }
 
+  Ln = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(nma));
+  Lf = sqrt(sqr(Ls) + sqr(Lt) - 2*Ls*Lt*cos(fma));
+
   cosAn = (L*L + Ln*Ln - Lf*Lf) / (2*L*Ln);
-  if (am_naively_correcting_nan_errors) {
-    if (cosAn > 1) {
-      if (am_debugging_naive_corrections) printf("Naive correction: cosAn > 1\n");
-      cosAn = 1 - 1e-6;
-    }
-    if (cosAn < -1) {
-      if (am_debugging_naive_corrections) printf("Naive correction: cosAn < -1\n");
-      cosAn = -1 + 1e-6;
-    }
-  }
   sinAn = sqrt(1 - cosAn*cosAn);
   cosAns = (Ls*Ls + Ln*Ln - Lt*Lt) / (2*Ls*Ln);
   sinAns = (sin(nma) > 0) ? sqrt(1-cosAns*cosAns) : -sqrt(1-cosAns*cosAns);
 
   cosAf = -(L*L + Lf*Lf - Ln*Ln) / (2*L*Lf);
-  if (am_naively_correcting_nan_errors) {
-    if (cosAf > 1) {
-      if (am_debugging_naive_corrections) printf("Naive correction: cosAf > 1\n");
-      cosAf = 1 - 1e-6;
-    }
-    if (cosAf < -1) {
-      if (am_debugging_naive_corrections) printf("Naive correction: cosAf < -1\n");
-      cosAf = -1 + 1e-6;
-    }
-  }
   sinAf = sqrt(1 - cosAf*cosAf);
   cosAfs = (Ls*Ls + Lf*Lf - Lt*Lt) / (2*Ls*Lf);
   sinAfs = (sin(fma) > 0) ? sqrt(1-cosAfs*cosAfs) : -sqrt(1-cosAfs*cosAfs);
 
-  if ((isnan(cosAn) or isnan(sinAn) or isnan(cosAf) or isnan(sinAf)) and !am_testing_binding) {
-    printf("DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
-	   cosAn, sinAn, cosAns, sinAns);
-    printf("DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
-	   cosAf, sinAf, cosAfs, sinAfs);
-    printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
-	   L, Ln, Lf, Lf-Ln);
-    printf("DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
+  // if (am_naively_correcting_nan_errors) {
+  //   if (cosAn > 1) {
+  //     if (am_debugging_naive_corrections) printf("Naive correction: cosAn > 1\n");
+  //     cosAn = 1 - 1e-6;
+  //   }
+  //   if (cosAn < -1) {
+  //     if (am_debugging_naive_corrections) printf("Naive correction: cosAn < -1\n");
+  //     cosAn = -1 + 1e-6;
+  //   }
+  // }
 
-    fprintf(stderr, "DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
-	   cosAn, sinAn, cosAns, sinAns);
-    fprintf(stderr, "DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
-	   cosAf, sinAf, cosAfs, sinAfs);
-    fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
-	   L, Ln, Lf, Lf-Ln);
-    fprintf(stderr, "DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
-    fprintf(stderr, "This error should NOT occur; exiting.\n");
-    if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-    exit(1);
+  // if (am_naively_correcting_nan_errors) {
+  //   if (cosAf > 1) {
+  //     if (am_debugging_naive_corrections) printf("Naive correction: cosAf > 1\n");
+  //     cosAf = 1 - 1e-6;
+  //   }
+  //   if (cosAf < -1) {
+  //     if (am_debugging_naive_corrections) printf("Naive correction: cosAf < -1\n");
+  //     cosAf = -1 + 1e-6;
+  //   }
+  // }
+
+  if ((isnan(cosAn) or isnan(sinAn) or isnan(cosAf) or isnan(sinAf)) and !am_testing_binding) {
+    // printf("DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+    // 	   cosAn, sinAn, cosAns, sinAns);
+    // printf("DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
+    // 	   cosAf, sinAf, cosAfs, sinAfs);
+    // printf("DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
+    // 	   L, Ln, Lf, Lf-Ln);
+    // printf("DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
+
+    // fprintf(stderr, "DEBUG: bad trig! from cosAn = %g and sinAn = %g, cosAns = %g and sinAns = %g\n",
+    // 	   cosAn, sinAn, cosAns, sinAns);
+    // fprintf(stderr, "DEBUG: bad trig! from cosAf = %g and sinAf = %g, cosAfs = %g and sinAfs = %g\n",
+    // 	   cosAf, sinAf, cosAfs, sinAfs);
+    // fprintf(stderr, "DEBUG:          also L = %g, Ln = %g, and Lf = %g, Lf-Ln = %g\n",
+    // 	   L, Ln, Lf, Lf-Ln);
+    // fprintf(stderr, "DEBUG:          also |nma-pi| = %g, |fma-pi| = %g\n", fabs(nma-M_PI), fabs(fma-M_PI));
+    // fprintf(stderr, "This error should NOT occur; exiting.\n");
+    // if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+    // printf("Bothbound generated a NaN, retrying...\n");
+    // fprintf(stderr, "Bothbound generated a NaN, retrying...\n");
+    return false;
+    // exit(1);
   }
 
   nmx = nbx + Ls*(cosAn*cosAns - sinAn*sinAns);
@@ -391,18 +396,21 @@ void Dynein_bothbound::update_coordinates() {
       }
     }
     else if (!am_testing_binding) {
-      printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
-	     nba, nmy, nmx - nbx, tx, ty);
-      printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
-	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+      // printf("crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
+      // 	     nba, nmy, nmx - nbx, tx, ty);
+      // printf("nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
+      // 	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
 
-      fprintf(stderr, "crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
-	     nba, nmy, nmx - nbx, tx, ty);
-      fprintf(stderr, "nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
-	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
-      fprintf(stderr, "This error should NOT occur; exiting.\n");
-      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      exit(1);
+      // fprintf(stderr, "crazy nba, I am giving up.  %g. comes from nmy = %g and dx = %g, tx/ty = %g/%g\n",
+      // 	     nba, nmy, nmx - nbx, tx, ty);
+      // fprintf(stderr, "nmy comes from nmy = nby + Ls*(cosAn*sinAns + sinAn*cosAns) = %g + %g*(%g*%g + %g*%g)\n",
+      // 	     nby, Ls, cosAn, sinAns, sinAn,cosAns);
+      // fprintf(stderr, "This error should NOT occur; exiting.\n");
+      // if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      // exit(1);
+      // printf("Bothbound generated a NaN, retrying...\n");
+      // fprintf(stderr, "Bothbound generated a NaN, retrying...\n");
+      return false;
     }
   } else {
     if (am_debugging_angles) printf("cool nba:  %g. comes from nmy = %g and dx = %g\n",
@@ -420,13 +428,16 @@ void Dynein_bothbound::update_coordinates() {
       }
     }
     else if (!am_testing_binding) {
-      printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
-	     fba, fmy, fmx - (nbx + L));
-      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-      fprintf(stderr, "crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
-	     fba, fmy, fmx - (nbx + L));
-      fprintf(stderr, "This error should NOT occur; exiting.\n");
-      exit(1);
+      // printf("crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+      // 	     fba, fmy, fmx - (nbx + L));
+      // if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+      // fprintf(stderr, "crazy fba, I am giving up.  %g comes from fmy = %g and dx = %g\n",
+      // 	     fba, fmy, fmx - (nbx + L));
+      // fprintf(stderr, "This error should NOT occur; exiting.\n");
+      // printf("Bothbound generated a NaN, retrying...\n");
+      // fprintf(stderr, "Bothbound generated a NaN, retrying...\n");
+      return false;
+      // exit(1);
     }
   } else {
     if (am_debugging_angles) printf("cool fba:  %g. comes from fmy = %g and dx = %g\n",
@@ -456,26 +467,33 @@ void Dynein_bothbound::update_coordinates() {
   } else {
     if (am_debugging_angles) printf("nma angle is cool:      %g\n", nma);
   }
+  return true;
 }
 
 static const bool am_debugging_nans = false;
 
-int Dynein_bothbound::update_velocities() {
-  update_coordinates();
+bool Dynein_bothbound::update_velocities() {
+  if (update_coordinates() == false) return false;
   update_brownian_forces();
   update_internal_forces();
 
   // ******* Checking for sub-MT dynein ********
-  if (am_crashing_on_unphysical_behavior) {
-    if (nmy < 0.0 or ty < 0.0 or fmy < 0.0) {
-      if (!am_testing_binding) {
-	printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-	fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
-	fprintf(stderr, "These are bad parameters; exiting.\n");
-	if (am_only_writing_on_crash) on_crash_write_movie_buffer();
-	exit(1);
-      }
-    }
+  // if (am_crashing_on_unphysical_behavior) {
+  //   if (nmy < 0.0 or ty < 0.0 or fmy < 0.0) {
+  //     if (!am_testing_binding) {
+  // 	printf("A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+  // 	fprintf(stderr, "A domain is under the MT! nmy, ty, fmy: %g, %g, %g\n", nmy, ty, fmy);
+  // 	fprintf(stderr, "These are bad parameters; exiting.\n");
+  // 	if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+  // 	exit(1);
+  //     }
+  //   }
+  // }
+
+  if (am_avoiding_sub_MT and (nmy < 0.0 or ty < 0.0 or fmy < 0.0)) {
+    // printf("Bothbound domain under MT, retrying...\n");
+    // fprintf(stderr, "Bothbound under MT, retrying...\n");
+    return false;
   }
 
   if (am_debugging_nans) printf("cosAn %g\n", cosAn);
@@ -643,31 +661,9 @@ int Dynein_bothbound::update_velocities() {
      c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y -
      d*e*j*p*u*y + a*g*j*p*u*y - c*f*i*q*u*y + c*e*j*q*u*y);
 
-  if (isnan(d_Ln) or isnan(d_Lf)) {
-      printf("Bothbound velocity created a NaN.\n");
-
-      printf("nma: %.15f, fma: %.15f\n", nma, fma);
-      printf("nma - pi: %.15f, fma - pi: %.15f\n", nma - M_PI, fma - M_PI);
-
-      printf("cosAn: %g  cosAf: %g\n", cosAn, cosAf);
-      printf("sinAn: %g  sinAf: %g\n", sinAn, sinAf);
-      printf("cosAns: %g  cosAfs: %g\n", cosAns, cosAfs);
-      printf("sinAns: %g  sinAfs: %g\n", sinAns, sinAfs);
-
-      printf("dcosAn_dLn %g\n", dcosAn_dLn);
-      printf("dsinAn_dLn %g\n", dsinAn_dLn);
-      printf("dcosAns_dLn %g\n", dcosAns_dLn);
-      printf("dsinAns_dLn %g\n", dsinAns_dLn);
-
-      printf("dcosAf_dLn %g\n", dcosAf_dLn);
-      printf("dsinAf_dLn %g\n", dsinAf_dLn);
-      printf("dcosAfs_dLn %g\n", dcosAfs_dLn);
-      printf("dsinAfs_dLn %g\n", dsinAfs_dLn);
-    }
-
   if (am_debugging_nans) printf("d_Ln is %g\n", d_Ln);
   if (am_debugging_nans) printf("d_Lf is %g\n--------------\n", d_Lf);
-  return 0;
+  return true;
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {

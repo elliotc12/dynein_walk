@@ -1,7 +1,7 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/paper/supplemental-figs.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
@@ -77,10 +77,13 @@ plots/paper-movie.mp4: data/paper_movie_data.txt scripts/movie.py $(DRAW)
 
 ######### papers ##########
 SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
-
-ALL_FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES)) $(THESIS-PLOTS) $(PAPER-PLOTS)
+FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+ALL_FIGURES = $(FIGURES) $(THESIS-PLOTS) $(PAPER-PLOTS)
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
+	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
+
+papers/paper/figures/%.pdf: papers/paper/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
 
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
@@ -91,7 +94,10 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
 papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
-	cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
+	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
+
+papers/paper/supplemental-figs.pdf: papers/paper/supplemental-figs.tex $(ALL_FIGURES)
+	cd papers/paper && xelatex supplemental-figs.tex && bibtex supplemental-figs && xelatex supplemental-figs && xelatex supplemental-figs
 
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex

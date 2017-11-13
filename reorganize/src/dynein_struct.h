@@ -77,14 +77,16 @@ const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;
 const bool am_debugging_time = false;
-const bool am_debugging_state_transitions = true;
-const bool am_debugging_rates = true;
+const bool am_debugging_state_transitions = false;
+const bool am_debugging_rates = false;
 const bool am_debugging_naive_corrections = true;
 
 const bool am_exiting_on_improbable_stepping = false;
 
 const bool am_crashing_on_unphysical_behavior = true; // crash when model under MT, etc
 const bool am_naively_correcting_nan_errors = false; // "nudges" nan states into good states, eg if cosAn > 1, cosAn = 0.9999
+
+const bool am_avoiding_sub_MT = true;
 
 const bool crash_on_nan = true;
 
@@ -176,7 +178,7 @@ public:
 
   State get_state() {return state;}
 
-  int update_velocities();
+  bool update_velocities();
 
   double PE_bba, PE_bma, PE_ta, PE_uma;
   double get_PE() { return PE_bba + PE_bma + PE_ta + PE_uma; }
@@ -281,8 +283,8 @@ public:
   double get_PE();
   double PE_nba, PE_nma, PE_ta, PE_fma, PE_fba;
 
-  void update_coordinates();
-  int update_velocities();
+  bool update_coordinates();
+  bool update_velocities();
 
   //Variables which should be internal, but we need them public for test_bothbound
      // Various distances and angles useful in computations (see paper)
