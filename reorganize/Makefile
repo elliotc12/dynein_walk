@@ -65,6 +65,11 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
+plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py
+	python3 scripts/make_stepping_plots.py $*
+	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
+	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
+
 plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-plt.py $(DRAW)
 	time --format="Plotting took %E\n" python3 scripts/paper-plt.py data/paper
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf

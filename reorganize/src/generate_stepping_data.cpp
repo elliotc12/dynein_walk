@@ -428,8 +428,8 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, dt);
     }
     else {
-      sprintf(run_name, "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g", label,
-	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, dt);
+      sprintf(run_name, "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g", label,
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, Ls, Lt, RAND_INIT_SEED, dt);
     }
   }
 
@@ -456,7 +456,7 @@ void sig_handler_print_movie_buffer(int signum) {
 int main(int argc, char** argv) {
   setvbuf(stdout, 0, _IONBF, 0);
 
-  char* run_name = new char[100];
+  char* run_name = new char[200];
   am_making_movie = true;
 
   crash_movie_file_name_global = new char[1000];
