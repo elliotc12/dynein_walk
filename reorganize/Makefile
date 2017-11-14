@@ -52,9 +52,6 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
 	time --format="Data generation took %E\n"  python3 scripts/generate-thesis-data.py
 
-data/paper_stepping_data.txt data/paper_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-data.py
-	time --format="Data generation took %E\n" python3 scripts/generate-paper-data.py
-
 ######### plots ##########
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
 	time --format="Plotting took %E\n" python3 scripts/trajectory-plt.py data/thesis_movie_data.txt

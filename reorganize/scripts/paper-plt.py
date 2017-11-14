@@ -34,18 +34,12 @@ step_filename = base_filename+'_stepping_data.txt'
 parameters_filename = base_filename+'_stepping_parameters.tex'
 title = data_filename[data_filename.index("data/")+5:-4]
 
-raw_lines = open(data_filename, 'r').readlines()
-lines = sum(1 for l in raw_lines)
-start_line = 0
-end_line = int(min(5e6, lines))
-plot_length = end_line - start_line - 1
-
-raw_data = "".join(raw_lines[start_line:end_line])
-
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
-data = np.genfromtxt(io.BytesIO(raw_data.encode()), delimiter="\t", invalid_raise=False)
+data = np.loadtxt(data_filename)
+plot_length = min(int(5e6), len(data[:,0]))
+data = data[:plot_length, :]
 
 nbxs =  np.zeros(plot_length)
 fbxs =  np.zeros(plot_length)
