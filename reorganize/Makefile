@@ -1,13 +1,13 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/paper/supplemental-figs.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h) src/version-info.h
 
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
-PAPER-PLOTS = plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf
+PAPER-PLOTS = plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf
 
 all: generate_stepping_data public $(DRAW)
 
@@ -52,6 +52,10 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
 	time --format="Data generation took %E\n"  python3 scripts/generate-thesis-data.py
 
+# Taken out of make, added data file to repository:
+# data/paper_stepping_data.txt data/paper_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
+# 	time --format="Data generation took %E\n"  python3 scripts/generate-paper-trajectory-data.py
+
 ######### plots ##########
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
 	time --format="Plotting took %E\n" python3 scripts/trajectory-plt.py data/thesis_movie_data.txt
@@ -62,13 +66,19 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
+HISTOGRAM_DATA = $(wildcard data/stepping_data_paperhisto_*.txt)
+plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
+	python3 scripts/make_stepping_plots.py paperhisto
+	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
+	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
+
 plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py
 	python3 scripts/make_stepping_plots.py $*
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
-plots/paper-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-plt.py $(DRAW)
-	time --format="Plotting took %E\n" python3 scripts/paper-plt.py data/paper
+plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
+	time --format="Plotting took %E\n" python3 scripts/paper-trajectory-plt.py data/paper
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
@@ -98,9 +108,6 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
 	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
 
-papers/paper/supplemental-figs.pdf: papers/paper/supplemental-figs.tex $(ALL_FIGURES)
-	cd papers/paper && xelatex supplemental-figs.tex && bibtex supplemental-figs && xelatex supplemental-figs && xelatex supplemental-figs
-
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
 
@@ -116,4 +123,4 @@ clean:
 	rm -rf plots
 	rm -f $(ALL_FIGURES)
 	rm -f public/*.pdf public/*.tex
-	rm -f data/thesis_* data/paper_*
+	rm -f data/thesis_*
