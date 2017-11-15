@@ -29,34 +29,40 @@ if len(sys.argv) < 2:
   sys.exit(1)
 
 base_filename = sys.argv[1]
-step_filename = base_filename+'_stepping_data.txt'
 parameters_filename = base_filename+'_stepping_parameters.tex'
 
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
-fig = plt.figure()
-plt.rc('text', usetex=True)
+data_files = []
+for fname in os.listdir("data/"):
+    if os.path.isfile("data/" + fname):
+        if (base_filename in "data/" + fname) and ("stepping_data" in "data/" + fname):
+            data_files.append("data/" + fname)
 
-stepdata = np.loadtxt(step_filename)
+step_times = []
+onebound_times = []
+bothbound_times = []
+step_lengths = []
 
-if len(stepdata) < 3 or str(type(stepdata[0])) == "<class 'numpy.float64'>":
-    print("Too few steps to make histograms; exiting.")
-    exit(0)
+for data_file in data_files:
+    data = np.loadtxt(data_file)
+    if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
+        continue
 
-bind_times = np.array(stepdata[:,1])
-unbind_times = np.array(stepdata[:,0])
-near_positions = np.array(stepdata[:,2])
-far_positions = np.array(stepdata[:,3])
-near_step_idxs = near_positions[1:] != near_positions[:-1]
-far_step_idxs = far_positions[1:] != far_positions[:-1]
-near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
-far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
+    bind_times = np.array(data[:,1])
+    unbind_times = np.array(data[:,0])
+    near_positions = -1*np.array(data[:,2])
+    far_positions = -1*np.array(data[:,3])
+    near_step_idxs = near_positions[1:] != near_positions[:-1]
+    far_step_idxs = far_positions[1:] != far_positions[:-1]
+    near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
+    far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
 
-step_times = np.array(bind_times[1:] - bind_times[:-1])
-onebound_times = bind_times - unbind_times
-bothbound_times = unbind_times[1:] - bind_times[:-1]
-step_lengths = np.concatenate((near_step_lens, far_step_lens))
+    step_times = np.concatenate((step_times, np.array(bind_times[1:] - bind_times[:-1])))
+    onebound_times = np.concatenate((onebound_times, bind_times - unbind_times))
+    bothbound_times = np.concatenate((bothbound_times, bind_times[1:] - unbind_times[:-1]))
+    step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
 
 # for i in range(len(onebound_times)):
 #     print("lifted off at {}, bound at {}, ob_time: {}".format(unbind_times[i], bind_times[i], onebound_times[i]))
@@ -85,6 +91,7 @@ t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 #step length histogram
 
 fig = plt.figure()
+plt.rc('text', usetex=True)
 
 weihong_step_lengths = np.array([])
 weihong_step_lengths = np.append(weihong_step_lengths, [-35]*3)
