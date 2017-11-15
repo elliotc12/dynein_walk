@@ -18,7 +18,7 @@ else:
 
 label = "paperhisto"
 
-run.cmd(**{"k_b": 1e9,
+basename = run.cmd(**{"k_b": 1e9,
           "k_ub": 100,
           "cb": 0.1,
           "cm": 0.5,
@@ -30,8 +30,10 @@ run.cmd(**{"k_b": 1e9,
           "eqmpost": 224, # from burgess 2002, 360-136
           "eqt": 0,
           "dt": 1e-10, "label": label, "seed": seed, "runtime": runtime,
-          "framerate": 1e-5, "crash-movie": False,
-          "no-slurm": True})
+          "framerate": 1, "crash-movie": False})
 
-os.system("rm data/stepping_movie_config_paperhisto*.txt")
-os.system("rm data/stepping_config_paperhisto*.txt")
+os.system("mv data/stepping_data_paperhisto_%s.txt data/paper_histogram_stepping_data-%s.txt", basename, seed)
+os.system("mv data/stepping_parameters_paperhisto_%s.txt data/paper_histogram_stepping_parameters.tex", basename, seed)
+os.system("rm data/stepping_movie_config_paperhisto_%s.txt", basename)
+os.system("rm data/stepping_movie_data_paperhisto_%s.txt", basename)
+os.system("rm data/stepping_config_paperhisto_%s.txt", basename)

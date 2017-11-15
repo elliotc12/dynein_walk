@@ -53,8 +53,12 @@ data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py 
 	time --format="Data generation took %E\n"  python3 scripts/generate-thesis-data.py
 
 # Taken out of make, added data file to repository:
-# data/paper_stepping_data.txt data/paper_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
+# data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py
 # 	time --format="Data generation took %E\n"  python3 scripts/generate-paper-trajectory-data.py
+
+# Taken out of make, added data file to repository:
+# data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py
+# 	time --format="Data generation took %E\n"  python3 scripts/histogram-helper.py
 
 ######### plots ##########
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
@@ -66,9 +70,9 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-HISTOGRAM_DATA = $(wildcard data/stepping_data_paperhisto_*.txt)
+HISTOGRAM_DATA = $(wildcard data/stepping_histogram_data_*.txt)
 plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
-	python3 scripts/make_stepping_plots.py paperhisto
+	python3 scripts/make_stepping_plots.py paper_histogram
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
@@ -77,14 +81,14 @@ plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scrip
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
-plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
-	time --format="Plotting took %E\n" python3 scripts/paper-trajectory-plt.py data/paper
+plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
+	time --format="Plotting took %E\n" python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
-plots/paper-movie.mp4: data/paper_movie_data.txt scripts/movie.py $(DRAW)
+plots/paper-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
-	time --format="Movie generation took %E\n" ./scripts/movie.py data/paper_movie_data.txt speed=1 tail forces
+	time --format="Movie generation took %E\n" ./scripts/movie.py data/paper_trajectory_movie_data.txt speed=1 tail forces
 	mv plots/movie.mp4 plots/paper-movie.mp4
 
 ######### papers ##########

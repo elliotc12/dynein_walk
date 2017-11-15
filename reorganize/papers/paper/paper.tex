@@ -39,7 +39,7 @@ Please provide an abstract of no more than 250 words in a single paragraph. Abst
 \dates{This manuscript was compiled on \today}
 \doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
 
-\input{../../data/paper_stepping_parameters.tex}
+\input{../../data/paper_histogram_stepping_parameters.tex}
 
 \begin{document}
 
@@ -73,9 +73,16 @@ Several computational models have been created to explain dynein's motility. \te
 
 \begin{figure}%[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/paper-plot.pdf}
-\caption{Placeholder image of a frog with a long example caption to show justification setting.}
-\label{fig:trajectory}
+\includegraphics[width=\linewidth]{../../plots/stepping_length_histogram_paper.pdf}
+\caption{Histogram of size of steps taken by model.}
+\label{fig:lengthhist}
+\end{figure}
+
+\begin{figure}%[tbhp]
+\centering
+\includegraphics[width=\linewidth]{../../plots/stepping_time_histogram_paper.pdf}
+\caption{Histogram of duration of steps taken by model.}
+\label{fig:timehist}
 \end{figure}
 
 \begin{table}%[tbhp]

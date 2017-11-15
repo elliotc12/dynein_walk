@@ -3,11 +3,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-2
-l = "paper"
-if 'long' in sys.argv:
-    runtime = 100e-3
-    l = 'long_paper'
+runtime = 1e-3
 
 basename  = run.sim(**{"k_b": 1e9,
                        "k_ub": 100,
@@ -20,13 +16,13 @@ basename  = run.sim(**{"k_b": 1e9,
                        "eqmpre": 200, # from burgess 2002, 360-160
                        "eqmpost": 224, # from burgess 2002, 360-136
                        "eqt": 0,
-                       "dt": 1e-10, "label": l, "seed": 1, "runtime": runtime,
-                       "framerate": 1e-4, "crash-movie": False,
+                       "dt": 1e-10, "label": "paper", "seed": 1, "runtime": runtime,
+                       "framerate": 1e-8, "crash-movie": False,
                        "no-slurm": True})
 
-os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/%s_movie_data.txt" % l)
-os.rename("data/stepping_data_%s.txt" % (basename), "data/%s_stepping_data.txt" % l)
-os.rename("data/stepping_parameters_%s.tex" % (basename), "data/%s_stepping_parameters.tex" % l)
+os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")
+os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_trajectory_stepping_data.txt")
+os.rename("data/stepping_parameters_%s.tex" % (basename), "data/paper_trajectory_stepping_parameters.tex")
 
 os.unlink("data/stepping_movie_config_%s.txt" % basename)
 os.unlink("data/stepping_config_%s.txt" % basename)
