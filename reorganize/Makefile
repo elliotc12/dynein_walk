@@ -49,7 +49,7 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 	cd scripts/dynein/draw && python2 tailDomain.py
 
 ######### data ##########
-data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-thesis-data.py
+data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
 	time --format="Data generation took %E\n"  python3 scripts/generate-thesis-data.py
 
 # Taken out of make, added data file to repository:
