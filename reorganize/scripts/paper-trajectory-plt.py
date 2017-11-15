@@ -31,7 +31,6 @@ if len(sys.argv) < 2:
 base_filename = sys.argv[1]
 data_filename = base_filename+'_movie_data.txt'
 step_filename = base_filename+'_stepping_data.txt'
-parameters_filename = base_filename+'_stepping_parameters.tex'
 title = data_filename[data_filename.index("data/")+5:-4]
 
 run_conditions = open(parameters_filename).read()
