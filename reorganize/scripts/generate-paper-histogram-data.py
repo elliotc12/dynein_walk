@@ -18,7 +18,7 @@ else:
 
 label = "paperhisto"
 
-run.cmd(**{"k_b": 1e9,
+run.sim(**{"k_b": 1e9,
           "k_ub": 100,
           "cb": 0.1,
           "cm": 0.5,
