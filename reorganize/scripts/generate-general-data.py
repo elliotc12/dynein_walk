@@ -4,8 +4,10 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-4
+runtime = 2
 l = "generic"
+
+os.system("make generate_stepping_data")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--seed", type=int, help="Manually set the seed value, default=1")
