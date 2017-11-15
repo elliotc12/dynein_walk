@@ -71,8 +71,8 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 HISTOGRAM_DATA = $(wildcard data/stepping_histogram_data_*.txt)
-plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
-	python3 scripts/paper-histogram-plt.py paper_histogram
+plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
+	python3 scripts/paper-histogram-plt.py data/paper_histogram
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
