@@ -81,10 +81,8 @@ plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scrip
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
-plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
+plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	time --format="Plotting took %E\n" python3 scripts/paper-trajectory-plt.py data/paper_trajectory
-	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
-	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
 plots/paper-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
