@@ -4,6 +4,11 @@ import numpy as np
 import dynein.run as run
 
 runtime = 1e-1
+framerate = 1e-6
+
+if (runtime / framerate > 1e5):
+    print("Error: runtime/framerate > 1e5; this would result in a file larger than 1e5 lines. This is too big for git; please shorten.")
+    exit(1)
 
 basename  = run.sim(**{"k_b": 1e9,
                        "k_ub": 100,
@@ -17,7 +22,7 @@ basename  = run.sim(**{"k_b": 1e9,
                        "eqmpost": 224, # from burgess 2002, 360-136
                        "eqt": 0,
                        "dt": 1e-10, "label": "paper", "seed": 1, "runtime": runtime,
-                       "framerate": 1e-6, "crash-movie": False,
+                       "framerate": framerate, "crash-movie": False,
                        "no-slurm": True})
 
 os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")
