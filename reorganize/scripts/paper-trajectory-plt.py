@@ -41,42 +41,37 @@ data = np.loadtxt(data_filename)
 plot_length = min(int(5e6), len(data[:,0]))
 data = data[:plot_length, :]
 
-nbxs =  np.zeros(plot_length)
-fbxs =  np.zeros(plot_length)
-nbys =  np.zeros(plot_length)
-fbys =  np.zeros(plot_length)
-
-times = np.empty(plot_length)
-
-for i in range(plot_length-1):
-    if int(data[i,0]) == 0 or int(data[i,0]) == 2:
-        nbxs[i] = data[i,7]
-        fbxs[i] = data[i,15]
-        fbys[i] = data[i,16]
-    elif int(data[i,0]) == 1:
-        nbxs[i] = data[i,15]
-        fbxs[i] = data[i,7]
-        nbys[i] = data[i,16]
-    times[i] = data[i,1]
-
 num_points = 100
 if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
     exit(0)
-sample_points = np.floor(np.linspace(0, plot_length-1, num_points))
 
-avg_nbxs = np.array([nbxs[int(t)] for t in sample_points])
-avg_fbxs = np.array([fbxs[int(t)] for t in sample_points])
-avg_nbys = np.array([nbys[int(t)] for t in sample_points])
-avg_fbys = np.array([fbys[int(t)] for t in sample_points])
-avg_times = np.array([times[int(t)] for t in sample_points])
+sample_points = map(int, np.floor(np.linspace(0, plot_length-1, num_points)))
 
+nbxs =  np.zeros(num_points)
+fbxs =  np.zeros(num_points)
+nbys =  np.zeros(num_points)
+fbys =  np.zeros(num_points)
+times = np.empty(num_points)
 
-y_min_xproj = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
-y_max_xproj = np.max([np.max(avg_nbxs), 20])
+i = 0
+for p in sample_points:
+    if int(data[p,0]) == 0 or int(data[p,0]) == 2:
+        nbxs[i] = data[p,7]
+        fbxs[i] = data[p,15]
+        fbys[i] = data[p,16]
+    elif int(data[i,0]) == 1:
+        nbxs[i] = data[p,15]
+        fbxs[i] = data[p,7]
+        nbys[i] = data[p,16]
+    times[i] = data[p,1]
+    i += 1
 
-y_min_yproj = np.min([np.min(avg_nbys), np.min(avg_fbys)])
-y_max_yproj = np.max([np.max(avg_nbys), np.max(avg_fbys)])
+y_min_xproj = np.min([np.min(nbxs), np.min(fbxs)])
+y_max_xproj = np.max([np.max(nbxs), 20])
+
+y_min_yproj = np.min([np.min(nbys), np.min(fbys)])
+y_max_yproj = np.max([np.max(nbys), np.max(fbys)])
 
 fig = plt.figure()
 plt.rc('text', usetex=True)
@@ -93,8 +88,8 @@ ax0.set_ylabel("x-projection (nm)")
 ax0.set_ylim(y_min_xproj-1,y_max_xproj+1)
 plt.setp(ax0.get_xticklabels(), visible=False)
 
-ax0.plot(avg_times, avg_nbxs, label="near foot", c='b')
-ax0.plot(avg_times, avg_fbxs, label="far foot", c='r')
+ax0.plot(times, nbxs, label="near foot", c='b')
+ax0.plot(times, fbxs, label="far foot", c='r')
 
 ax0.legend(loc="upper right")
 
@@ -104,8 +99,8 @@ ax1.set_ylabel("y-projection (nm)")
 
 ax1.set_ylim(y_min_yproj-1,y_max_yproj+1)
 
-ax1.plot(avg_times, avg_nbys, label="near foot", c='b')
-ax1.plot(avg_times, avg_fbys, label="far foot", c='r')
+ax1.plot(times, nbys, label="near foot", c='b')
+ax1.plot(times, fbys, label="far foot", c='r')
 
 gs.tight_layout(fig, pad=2)
 
