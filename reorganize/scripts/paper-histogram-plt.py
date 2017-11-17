@@ -49,8 +49,8 @@ for data_file in data_files:
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         continue
 
-    bind_times = np.array(data[:,1])
-    unbind_times = np.array(data[:,0])
+    bind_times = np.array(data[1:,1]) # ignore first step time to make same size as step_lengths
+    unbind_times = np.array(data[1:,0])
     near_positions = np.around(np.array(data[:,2]), decimals=4)
     far_positions = np.around(np.array(data[:,3]), decimals=4)
     near_step_idxs = near_positions[1:] != near_positions[:-1]
@@ -168,9 +168,9 @@ plt.close(fig)
 
 fig = plt.figure()
 
-assert len(onebound_times[1:]) == len(step_lengths)
+assert len(onebound_times) == len(step_lengths)
 
-plt.scatter(onebound_times[1:], step_lengths)
+plt.scatter(onebound_times, step_lengths)
 plt.xlabel("Onebound time (s)")
 plt.ylabel("Step length (nm)")
 
