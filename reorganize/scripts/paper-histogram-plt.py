@@ -45,14 +45,14 @@ bothbound_times = []
 step_lengths = []
 
 for data_file in data_files:
-    data = np.loadtxt(data_file)
+    data = np.loadtxt(data_file, dtype = np.float64)
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         continue
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = -1*np.array(data[:,2])
-    far_positions = -1*np.array(data[:,3])
+    near_positions = np.around(np.array(data[:,2]), decimals=4)
+    far_positions = np.around(np.array(data[:,3]), decimals=4)
     near_step_idxs = near_positions[1:] != near_positions[:-1]
     far_step_idxs = far_positions[1:] != far_positions[:-1]
     near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
@@ -64,6 +64,12 @@ for data_file in data_files:
     step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
 
 num_steps = len(step_lengths)
+
+for i in range(len(near_step_idxs)):
+    if near_step_idxs[i] == far_step_idxs[i]:
+        print("Error. For a single step either both feet moved, or neither"\
+              " did. This indicates either an error in step logging or step reading.")
+        exit(1)
 
 t_step = []
 t_ob = []
@@ -158,4 +164,17 @@ plt.subplots_adjust(hspace=0.6)
 
 plt.show()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
+plt.close(fig)
+
+fig = plt.figure()
+
+assert len(onebound_times[1:]) == len(step_lengths)
+
+plt.scatter(onebound_times[1:], step_lengths)
+plt.xlabel("Onebound time (s)")
+plt.ylabel("Step length (nm)")
+
+plt.gca().set_xlim((0, 1.1*max(onebound_times[1:])))
+
+plt.savefig("plots/paper-stepping-dynamics-scatterplot.pdf")
 plt.close(fig)
