@@ -24,12 +24,7 @@ Usage: python2 %s BASE_FILENAME [show]"
              which _movie_data.txt or similar is appended.
 ''' % (sys.argv[0])
 
-if len(sys.argv) < 2:
-  print(usage)
-  sys.exit(1)
-
-base_filename = sys.argv[1]
-parameters_filename = base_filename+'_stepping_parameters.tex'
+parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
 
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
@@ -37,8 +32,12 @@ raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 data_files = []
 for fname in os.listdir("data/"):
     if os.path.isfile("data/" + fname):
-        if (base_filename in "data/" + fname) and ("stepping_data" in "data/" + fname):
+        if ("data/paper_histogram_stepping_data" in "data/" + fname):
             data_files.append("data/" + fname)
+
+if len(data_files) == 0:
+    print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
+    exit(1)
 
 step_times = []
 onebound_times = []
@@ -63,13 +62,6 @@ for data_file in data_files:
     onebound_times = np.concatenate((onebound_times, bind_times - unbind_times))
     bothbound_times = np.concatenate((bothbound_times, bind_times[1:] - unbind_times[:-1]))
     step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
-
-# for i in range(len(onebound_times)):
-#     print("lifted off at {}, bound at {}, ob_time: {}".format(unbind_times[i], bind_times[i], onebound_times[i]))
-
-# for j in range(len(bothbound_times)):
-#     print("bound at {}, lifted off at {}, bb_time: {}".format(
-#         bind_times[:-1][j], unbind_times[1:][j], bothbound_times[j]))
 
 num_steps = len(step_lengths)
 
@@ -118,8 +110,12 @@ weihong_step_lengths = np.append(weihong_step_lengths, [35]*8)
 weihong_step_lengths = np.append(weihong_step_lengths, [35]*4)
 weihong_step_lengths = np.append(weihong_step_lengths, [38]*2)
 
-plt.hist(weihong_step_lengths, bins=50, alpha=0.5, label="Experiment", normed=True)
-plt.hist(step_lengths, bins=50, alpha=0.5, label="Model", normed=True)
+if len(step_lengths) == 0:
+    print("No steps to put in histogram!")
+
+plt.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=True, stacked=True)
+if (len(step_lengths) > 0):
+    plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
 plt.legend(loc="upper right")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
@@ -135,17 +131,19 @@ ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1])
 ax2 = fig.add_subplot(gs[2])
 
-ax0.hist(step_times, bins=50)
+if len(step_times) > 0:
+    ax0.hist(step_times, bins=50)
+    ax1.hist(onebound_times, bins=50)
+    ax2.hist(bothbound_times, bins=50)
+
 ax0.set_title("Step times")
 ax0.set_ylabel("Frequency")
 ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-ax1.hist(onebound_times, bins=50)
 ax1.set_title("onebound times (theory: 6e-5)")
 ax1.set_ylabel("Frequency")
 ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-ax2.hist(bothbound_times, bins=50)
 ax2.set_title("bothbound times (theory: 0.011s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
