@@ -1,0 +1,35 @@
+Things to do:
+
+-Find way to clear up far-binding vs free-binding naming problem in dynein_struct
+
+-Solve matrix (ideally not using Mathematica, or at least start it out w/o Mathematica)
+
+-------------------
+
+* Find a way to get equilibrium angles of pre/post-powerstroke states.
+
+* Equilibrium angle thoughts:
+
+  - Two motor domain angles: bound angle + free angle (assume
+    instantaneous chemistry).  Hopefully assume just one stiffness for
+    the motor domain.
+
+    This could be four motor domain angles if symmetry is violated,
+    but there seems no need.  We don't think there is!
+
+  - Just one tail angle, possibly with zero torque as a
+    simplification.  Or maybe with a zero value for equilibrium angle
+    to represent symmetry.  One tail stiffness (which could be zero).
+
+  - One or two binding angles depending on our symmetry.  Let's just
+    say one binding angle for now and keep things symmetric.  We also
+    need a stiffness here ("ankle strength").
+
+Eventually:
+
+* Make movie files.
+
+Papers:
+
+* Functions and mechanics of dynein motor proteins, Nature Reviews, Roberts
+* Dynein achieves processive motion using both stochastic and coordinated stepping, Nature Struct & Molec Bio, Weihong Qiu
