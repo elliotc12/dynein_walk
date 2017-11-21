@@ -1,1 +1,0 @@
-timesteps with uby  <0.2: 0/1e+06, n = 0
