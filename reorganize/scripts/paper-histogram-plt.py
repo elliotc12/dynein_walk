@@ -51,8 +51,8 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = np.around(np.array(data[:,2]), decimals=4)
-    far_positions = np.around(np.array(data[:,3]), decimals=4)
+    near_positions = np.around(np.array(data[:,2]), decimals=7)
+    far_positions = np.around(np.array(data[:,3]), decimals=7)
     near_step_idxs = near_positions[1:] != near_positions[:-1]
     far_step_idxs = far_positions[1:] != far_positions[:-1]
     near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
