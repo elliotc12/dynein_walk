@@ -50,7 +50,6 @@ def sim(**run):
             if run[key] == True:
                 cmd.extend(["--"+key])
 
-    #os.makedirs('data', exist_ok=True) # ensure data directory exists
     if not os.path.exists('data'):
         os.makedirs('data') 
     
