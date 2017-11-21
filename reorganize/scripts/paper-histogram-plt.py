@@ -49,8 +49,8 @@ for data_file in data_files:
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
         continue
 
-    bind_times = np.array(data[1:,1]) # ignore first step time to make same size as step_lengths
-    unbind_times = np.array(data[1:,0])
+    bind_times = np.array(data[:,1])
+    unbind_times = np.array(data[:,0])
     near_positions = np.around(np.array(data[:,2]), decimals=4)
     far_positions = np.around(np.array(data[:,3]), decimals=4)
     near_step_idxs = near_positions[1:] != near_positions[:-1]
@@ -58,12 +58,13 @@ for data_file in data_files:
     near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
     far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
 
-    step_times = np.concatenate((step_times, np.array(bind_times[1:] - bind_times[:-1])))
-    onebound_times = np.concatenate((onebound_times, bind_times - unbind_times))
-    bothbound_times = np.concatenate((bothbound_times, bind_times[1:] - unbind_times[:-1]))
+    onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
+    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
     step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
 
 num_steps = len(step_lengths)
+
+step_times = onebound_times + bothbound_times
 
 for i in range(len(near_step_idxs)):
     if near_step_idxs[i] == far_step_idxs[i]:
@@ -166,15 +167,28 @@ plt.show()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
-fig = plt.figure()
-
+# OB_time vs step_length scatter
 assert len(onebound_times) == len(step_lengths)
-
+fig = plt.figure()
 plt.scatter(onebound_times, step_lengths)
+plt.gca().set_xscale('log')
 plt.xlabel("Onebound time (s)")
 plt.ylabel("Step length (nm)")
 
-plt.gca().set_xlim((0, 1.1*max(onebound_times[1:])))
+plt.gca().set_xlim((1e-7, 1e-2))
 
-plt.savefig("plots/paper-stepping-dynamics-scatterplot.pdf")
+plt.savefig("plots/paper-stepping-dynamics-scatterplot-ob.pdf")
+plt.close(fig)
+
+# BB_time vs step_length scatter
+assert len(bothbound_times) == len(step_lengths)
+fig = plt.figure()
+plt.scatter(bothbound_times, step_lengths)
+plt.gca().set_xscale('log')
+plt.xlabel("Bothbound time (s)")
+plt.ylabel("Step length (nm)")
+
+plt.gca().set_xlim((1e-5, 1))
+
+plt.savefig("plots/paper-stepping-dynamics-scatterplot-bb.pdf")
 plt.close(fig)
