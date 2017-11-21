@@ -177,6 +177,11 @@ plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-7, 1e-2))
 
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    fontsize=14)
+
 plt.savefig("plots/paper-stepping-dynamics-scatterplot-ob.pdf")
 plt.close(fig)
 
@@ -189,6 +194,11 @@ plt.xlabel("Bothbound time (s)")
 plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-5, 1))
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    fontsize=14)
 
 plt.savefig("plots/paper-stepping-dynamics-scatterplot-bb.pdf")
 plt.close(fig)
