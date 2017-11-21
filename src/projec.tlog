@@ -1,0 +1,40 @@
+Keep accidentally erasing these! .log shouldn't get erased.
+
+4/4/17
+Anything over 5e-11 timestep goes under the MT. Perhaps this means a more rigid set of spring constants is necessary? Running a trial with dt=5e-10, c=[1,5,10,15,25,100]. Named: "high-dt-high-c"
+
+4/4/17
+It looks like high-c dt=3e-10 trials have "bad nmx" errors where some transitions generate NaNs. This seems especially so for high-c (c=50 or c=100) trials; low-c runs have MTBD-under-the-MT errors.
+
+It looks like dt=1e-10 simulations don't have this issue. Low-c runs all seem to behave pretty well; high-c runs have NaN issues. Hopefully this is true for all such low-c simulations.
+
+Generating a rate contour entitled "4-4-rate-square".
+
+4/5/17
+Lots of jobs quit due to sub-MT dynein. How to fix?? Should only show up on contour if the sim quit properly.
+
+4/6/17
+Looks like things are working! Running more simulations to explore the space.
+
+4/11/17
+"4-6-rate-square" was pretty good, lots of too-slow steps
+"4-6-tiny-rate-square" was bad. Lots of NaNs were generated, which is odd - they should have been run at the same conditions as above, more or less.
+
+4/12/17
+All current onebound points in 4-12-contour are too low. Going to try some much lower kbs..."4-12-low-kb", kb=[1e-3, 1e-2, 1e-1, 1, 10, 100] kub=[1e9, 1e10, 1e11, 1e12]
+
+4/16/17
+Make a new directory called data/final-params with the updated parameters, since Ls/Lt were switched in the previous month of sims. Re-exploring the space iteratively.
+
+4/17/17
+Looks like all the low-kub simulations didn't unstep in 0.3 seconds, meaning their kubs were too low. Trying more low-kb, middle-kub simulations named "4-17"
+Possible problem: tbb plot isn't calculated properly? It seems like, since the model spends most of its time bothbound in the last simulation, that all the bothbound times should be over one, not under it. Plotting problem?
+
+4/19/17
+Running a "4-19-randint" trial with random seeds to see if weird quickstepping can be averaged out
+
+4/21/17
+Running a new "4-21" simulation set which start in onebound. This'll hopefully be more true to how the motor behaves.
+
+4/25/17
+Removed the 0.001s quick exit and added random seeds to make steps more trustworthy. Rerunning at kbs of 1e-6 and 1e-12.

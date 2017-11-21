@@ -1,0 +1,4 @@
+[package]
+name = "diffusion_figure"
+version = "0.1.0"
+authors = ["elliotc12 <elliotc12@gmail.com>"]
