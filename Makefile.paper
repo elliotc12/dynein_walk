@@ -1,8 +1,0 @@
-all: latex/paper.pdf
-
-figures/similar-bothbound.pdf : figures/similar-bothbound.svg
-	cd figures && inkscape -D --export-pdf similar-bothbound.pdf similar-bothbound.svg
-
-latex/paper.aux latex/paper.log latex/paper.pdf : figures/code-bothbound.png figures/code-onebound.png figures/similar-bothbound.pdf latex/paper.tex
-	cd latex && pdflatex paper.tex && pdflatex paper.tex
-

@@ -1,300 +1,128 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-FIGURES=$(patsubst %.svg,%.pdf,$(wildcard figures/*.svg))
-STEPPING_LENGTH_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_length_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
-STEPPING_TIME_HISTOGRAMS=$(patsubst data/stepping_data_%.txt, plots/stepping_time_histogram_%.pdf, $(wildcard data/stepping_data_*.txt))
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
+DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
+HEADERS = $(wildcard src/*.h) src/version-info.h
 
-STEPPING_MOVIES=$(patsubst data/stepping_movie_data_%.txt, movies/%.mp4, $(wildcard data/stepping_movie_data_*.txt))
+THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
-.PHONY: clean histograms thesis
+PAPER-PLOTS = plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf
 
-.PRECIOUS: data/stepping_data_%.txt data/stepping_config_%.txt data/stepping_movie_data_%.txt data/bothbound_data_%.bin data/onebound_data_%.bin data/ob_config_%.txt data/bb_config_%.txt data/exploration_movie_data.txt data/exploration_stepping_data.txt # prevent nonexistant data files from being deleted after creation+use
+all: generate_stepping_data public $(DRAW)
 
-all: test_onebound.results test_bothbound.results create_ob_plots create_ob_movie thesis_stuff.pdf generate_stepping_data thesis movies/movie.mp4
+.PHONY: clean public
 
-histogram-stuff: test_onebound.results test_bothbound.results generate_stepping_data # called by make_histograms.py
-
-version-info.h: SHELL:=/bin/bash
-version-info.h: .git/refs/heads/master $(wildcard simulation/*.cpp) Makefile
+######### SRC stuff ##########
+src/version-info.h: SHELL:=/bin/bash
+src/version-info.h: .git/refs/heads/master $(wildcard src/*.cpp) Makefile
 	UNAMESTR=$$(uname); if [[ "$$UNAMESTR" == 'Linux' ]]; then \
-	echo -n static const char '*version' = '"' > version-info.h; \
-	cat version-info.h; \
-	git describe --dirty --tags | tr -d '\n' >> version-info.h; \
-	cat version-info.h; \
-	echo -n '-=-' >> version-info.h; \
-	cat version-info.h; \
-	date -Ins | tr -d '\n' >> version-info.h; \
-	cat version-info.h; \
-	echo '";' >> version-info.h; \
-	cat version-info.h; \
+	echo -n static const char '*version' = '"' > src/version-info.h~; \
+	git describe --dirty --tags | tr -d '\n' >> src/version-info.h~; \
+	echo '";' >> src/version-info.h~; \
+	if cmp src/version-info.h src/version-info.h~; then \
+		rm src/version-info.h~; \
+	else \
+		echo new version needed; \
+		diff -u src/version-info.h src/version-info.h~; \
+		mv src/version-info.h~ src/version-info.h; \
+	fi; \
 	elif [[ "$$UNAMESTR" == 'Darwin' ]]; then \
-	    echo 'static const char *version = "mac-breaks-version-stuff";' > version-info.h; \
+	    echo 'static const char *version = "mac-breaks-version-stuff";' > src/version-info.h; \
 	fi;
 
-derivation.pdf: latex/derivation.tex $(FIGURES)
-	cd latex && pdflatex derivation.tex && mv derivation.pdf ..
+build/%.o: src/%.cpp $(HEADERS)
+	$(CXX) -c $^ $(CPPFLAGS)
+	mkdir -p build
+	mv $*.o build/
 
-derivation_confirmation.pdf: latex/derivation_confirmation.tex $(FIGURES)
-	cd latex && pdflatex derivation_confirmation.tex && mv derivation_confirmation.pdf ..
+generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
+			build/dynein_struct_onebound.o build/dynein_struct_bothbound.o \
+			build/utilities.o src/version-info.h
+	$(CXX) -o generate_stepping_data $^
 
-test_bothbound.o: test_bothbound.cpp dynein_struct.h default_parameters.h
-	$(CXX) -c test_bothbound.cpp $(CPPFLAGS)
+######### draw module stuff ##########
+scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
+	cd scripts/dynein/draw && python2 create_MD_array.py
 
-dynein_struct_onebound.o: dynein_struct_onebound.cpp dynein_struct.h default_parameters.h
-	$(CXX) -c dynein_struct_onebound.cpp $(CPPFLAGS)
+scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
+	cd scripts/dynein/draw && python2 tailDomain.py
 
-dynein_struct_bothbound.o: dynein_struct_bothbound.cpp dynein_struct.h default_parameters.h
-	$(CXX) -c dynein_struct_bothbound.cpp $(CPPFLAGS)
+######### data ##########
+data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
+	python3 scripts/generate-thesis-data.py
 
-dynein_simulate.o: dynein_simulate.cpp dynein_struct_onebound.cpp dynein_struct_bothbound.cpp default_parameters.h simulations/simulation_defaults.h dynein_struct.h
-	$(CXX) -c dynein_simulate.cpp $(CPPFLAGS)
+# Taken out of make, added data file to repository:
+# data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py
+# 	python3 scripts/generate-paper-trajectory-data.py
 
-simulations.o: simulations/simulations.cpp dynein_struct.h default_parameters.h
-	$(CXX) -c simulations/simulations.cpp $(CPPFLAGS) -o simulations.o
+# Taken out of make, added data file to repository:
+# data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py
+# 	python3 scripts/histogram-helper.py
 
-test_onebound.o: test_onebound.cpp dynein_struct.h default_parameters.h
-	$(CXX) -c test_onebound.cpp $(CPPFLAGS)
-
-figures/%.pdf: figures/Makefile figures/%.svg
-	rm -f $@
-	cd figures && $(MAKE) $(patsubst figures/%,%,$@)
-
-paper.pdf: latex/paper.tex $(FIGURES)
-	cd latex && pdflatex -interaction nonstopmode -halt-on-error paper.tex && mv paper.pdf ..
-
-test_bothbound: test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o utilities.o dynein_simulate.o
-	$(CXX) test_bothbound.o dynein_struct_bothbound.o dynein_struct_onebound.o dynein_simulate.o utilities.o -o test_bothbound
-
-test_onebound: test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o dynein_simulate.o
-	$(CXX) test_onebound.o dynein_struct_onebound.o dynein_struct_bothbound.o dynein_simulate.o utilities.o -o test_onebound
-
-test_bothbound.results: test_bothbound
-	./test_bothbound > test_bothbound.results.failed
-	mv test_bothbound.results.failed test_bothbound.results
-
-test_onebound.results: test_onebound
-	./test_onebound > test_onebound.results.failed
-	mv test_onebound.results.failed test_onebound.results
-
-utilities.o: utilities.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h
-	$(CXX) -c utilities.cpp $(CPPFLAGS)
-
-######################### SIMULATION STUFF ###############################
-TITLE = defaultplot
-
-simulations/simulation_results/binding_time_fraction.txt: simulations/get_binding_time_fraction.py generate_stepping_data
-	mkdir -p simulations/simulation_results
-	./simulations/get_binding_time_fraction.py
-
-simulations/simulation_defaults.h: simulations/custom_simulation_parameters.h
-
-simulations/custom_simulation_parameters.h:
-	touch simulations/custom_simulation_parameters.h
-
-create_ob_plots: simulations/create_ob_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
-	$(CXX) -c simulations/create_ob_plots.cpp $(CPPFLAGS)
-	$(CXX) dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_plots.o simulations.o -o create_ob_plots
-
-create_bb_plots: simulations/create_bb_plots.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o
-	$(CXX) -c simulations/create_bb_plots.cpp $(CPPFLAGS)
-	$(CXX) dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_plots.o simulations.o -o create_bb_plots
-
-create_ob_movie: simulations/create_ob_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	$(CXX) -c simulations/create_ob_movie.cpp $(CPPFLAGS)
-	$(CXX) dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_ob_movie.o -o create_ob_movie
-
-create_bb_movie: simulations/create_bb_movie.cpp dynein_struct.h default_parameters.h simulations/simulation_defaults.h simulations/plotting_defaults.h dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-	$(CXX) -c simulations/create_bb_movie.cpp $(CPPFLAGS)
-	$(CXX) dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o create_bb_movie.o -o create_bb_movie
-
-plots/OB_Force_x_%.pdf plots/OB_Force_y_%.pdf: ob_plots.sh create_ob_plots make_plot.py data/ob_config_%.txt data/onebound_data_%.bin
-	sh ob_plots.sh $*
-
-plots/BB_Force_x_%.pdf plots/BB_Force_y_%.pdf: bb_plots.sh create_bb_plots make_plot.py data/bb_config_%.txt data/bothbound_data_%.bin
-	sh bb_plots.sh $*
-
-histograms:
-	make $(STEPPING_LENGTH_HISTOGRAMS)
-	make $(STEPPING_TIME_HISTOGRAMS)
-
-generate_stepping_data: simulations/generate_stepping_data.cpp dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o test_onebound.results test_bothbound.results version-info.h
-	mkdir -p runlogs
-	mkdir -p data
-	$(CXX) -c simulations/generate_stepping_data.cpp $(CPPFLAGS)
-	$(CXX) generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_stepping_data
-
-plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: make_stepping_plots.py data/thesis_stepping_data.txt
-	python3 make_stepping_plots.py data/thesis_stepping_data.txt
-	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
-	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
-
-data/thesis_stepping_data.txt data/thesis_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-thesis-data.py
-	python3 run_scripts/generate-thesis-data.py
-# The following lets make (sort of) know that one run generates both outputs.
-data/thesis_stepping_data.txt: data/thesis_movie_data.txt
-
-data/exploration_stepping_data.txt data/exploration_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-exploration-data.py
-	python3 run_scripts/generate-exploration-data.py
-# The following lets make (sort of) know that one run generates both outputs.
-data/exploration_stepping_data.txt: data/exploration_movie_data.txt
-
-plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt trajectory-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
-	python3 trajectory-plt.py data/thesis_movie_data.txt
+######### plots ##########
+plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
+	python3 scripts/trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
-plots/exploration-plot.pdf plots/stepping_time_histogram_exploration.pdf plots/stepping_length_histogram_exploration.pdf: data/exploration_movie_data.txt exploration-plt.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
-	python3 exploration-plt.py data/exploration_movie_data.txt data/exploration_stepping_data.txt
-	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_exploration.pdf
-	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_exploration.pdf
+plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: scripts/make_stepping_plots.py data/thesis_stepping_data.txt
+	python3 scripts/make_stepping_plots.py data/thesis_stepping_data.txt
+	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
+	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-movies/thesis-movie.mp4: data/thesis_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py
-	python3 trajectory-movie.py data/thesis_movie_data.txt
-	mv movies/movie.mp4 movies/thesis-movie.mp4
+HISTOGRAM_DATA = $(wildcard data/paper_histogram_stepping_data*.txt)
+plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
+	python3 scripts/paper-histogram-plt.py
+	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
+	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
-# movies/exploration-movie.mp4: data/exploration_movie_data.txt trajectory-movie.py $(wildcard draw/*.py) draw/tail.py draw/motor_domain.py plots/exploration-plot.pdf
-# 	python3 trajectory-movie.py data/exploration_movie_data.txt
-# 	mv movies/movie.mp4 movies/exploration-movie.mp4
+plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py
+	python3 scripts/make_stepping_plots.py $*
+	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
+	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
-movies/exploration-movie.mp4: data/exploration_movie_data.txt movie.py
+plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
+	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
+
+plots/paper-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py $(DRAW)
 	mkdir -p movies
-	./movie.py data/exploration_movie_data.txt speed=1000
-	mv movies/movie.mp4 movies/exploration-movie.mp4
+	./scripts/movie.py data/paper_trajectory_movie_data.txt speed=1 tail forces
+	mv plots/movie.mp4 plots/paper-movie.mp4
 
-draw/motor_domain.py: draw/create_MD_array.py draw/outer_coords.txt
-	cd draw && python2 create_MD_array.py
+######### papers ##########
+SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
+FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
+ALL_FIGURES = $(FIGURES) $(THESIS-PLOTS) $(PAPER-PLOTS)
 
-draw/tail.py: draw/tailDomain.py
-	cd draw && python2 tailDomain.py
+papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
+	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
 
-data/fitting_stepping_data.txt data/fitting_movie_data.txt: generate_stepping_data run_scripts/simrunner.py run_scripts/generate-fitting-data.py
-	python3 run_scripts/generate-fitting-data.py
+papers/paper/figures/%.pdf: papers/paper/figures/%.svg
+	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
 
-plots/stepping_time_histogram_fitting.pdf plots/stepping_length_histogram_fitting.pdf: make_stepping_plots.py data/fitting_stepping_data.txt
-	python3 make_stepping_plots.py data/fitting_stepping_data.txt
-	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_fitting.pdf
-	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_fitting.pdf
+papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
+	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-#data/stepping_config_%.txt data/stepping_data_%.txt data/stepping_movie_data_%.txt:
-#	mkdir -p data
-#	make generate_stepping_data
-#	./generate_stepping_data $*
+papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(ALL_FIGURES)
+	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
+	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
-movies/ob_%.gif: create_ob_movie data/onebound_data_%.bin movie.py
-	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_ob_movie $*
-	mkdir -p movies
-	./movie.py $* speed=1
+papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
+	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
 
-movies/bb_%.gif: create_bb_movie data/bothbound_data_%.bin movie.py
-	@echo "Use TITLE='yourtitle' to give plot a title"
-	./create_bb_movie $*
-	mkdir -p movies
-	./movie.py $* speed=1
+papers/notes/notes.pdf: papers/notes/notes.tex
+	cd papers/notes && xelatex notes.tex
 
-movies/%.mp4: data/stepping_movie_data_%.txt movie.py
-	@echo "Use TITLE='yourtitle' to give plot a title"
-	mkdir -p movies
-	./movie.py $* speed=10 tail
-
-stepping_movies:
-	make $(STEPPING_MOVIES)
-
-data/ob_config_%.txt data/onebound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_onebound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
-	mkdir -p data
-	$(CXX) -c simulations/generate_onebound_data.cpp $(CPPFLAGS)
-	$(CXX) generate_onebound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_onebound_data
-	./generate_onebound_data $*
-
-data/bb_config_%.txt data/bothbound_data_%.bin: #dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations/generate_bothbound_data.cpp default_parameters.h dynein_struct.h simulations/simulation_defaults.h
-	mkdir -p data
-	$(CXX) -c simulations/generate_bothbound_data.cpp $(CPPFLAGS)
-	$(CXX) generate_bothbound_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o -o generate_bothbound_data
-	./generate_bothbound_data $*
-
-# ob_PE_equipartition_ratio_average_vs_spring_constant: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/simulation_defaults.h simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp
-# 	$(CXX) -c simulations/ob_PE_equipartition_ratio_average_vs_spring_constant.cpp $(CPPFLAGS)
-# 	$(CXX) ob_PE_equipartition_ratio_average_vs_spring_constant.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_spring_constant
-
-# ob_PE_equipartition_ratio_average_vs_spring_constant_plot: ob_PE_equipartition_ratio_average_vs_spring_constant
-# 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
-# 	mkdir -p plots
-# 	mkdir -p data
-# 	./ob_PE_equipartition_ratio_average_vs_spring_constant $(TITLE)
-# 	./make_plot.py --figtitle="$(TITLE)" --logx --xlabel="Spring constant (nm^2*kg/s^2)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_c_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_c_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_c_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_c_$(TITLE).txt data/config_pe_equipartition_ratio_vs_c_$(TITLE).txt
-
-# ob_PE_equipartition_ratio_average_vs_force_ratio: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp simulations/simulation_defaults.h
-# 	$(CXX) -c simulations/ob_PE_equipartition_ratio_average_vs_force_ratio.cpp $(CPPFLAGS)
-# 	$(CXX) ob_PE_equipartition_ratio_average_vs_force_ratio.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_force_ratio
-
-# ob_PE_equipartition_ratio_average_vs_force_ratio_plot: ob_PE_equipartition_ratio_average_vs_force_ratio
-# 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
-# 	mkdir -p plots
-# 	mkdir -p data
-# 	./ob_PE_equipartition_ratio_average_vs_force_ratio $(TITLE)
-# 	./make_plot.py --scatter --figtitle="$(TITLE)" --xlabel="Brownian / conformational force variance" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt data/config_pe_equipartition_ratio_vs_f_ratio_$(TITLE).txt
-
-# ob_PE_equipartition_ratio_average_vs_temperature: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp simulations/simulation_defaults.h
-# 	$(CXX) -c simulations/ob_PE_equipartition_ratio_average_vs_temperature.cpp $(CPPFLAGS)
-# 	$(CXX) ob_PE_equipartition_ratio_average_vs_temperature.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_temperature
-
-# ob_PE_equipartition_ratio_average_vs_temperature_plot: ob_PE_equipartition_ratio_average_vs_temperature
-# 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
-# 	mkdir -p plots
-# 	mkdir -p data
-# 	./ob_PE_equipartition_ratio_average_vs_temperature $(TITLE)
-# 	./make_plot.py --figtitle="$(TITLE)" --xlabel="Temp (K)" --ylabel="PE / 0.5*kb*T" --hline=1.0 data/bba_pe_equipartition_ratio_vs_T_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_T_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_T_$(TITLE).txt data/config_pe_equipartition_ratio_vs_T_$(TITLE).txt
-
-# ob_PE_equipartition_ratio_average_vs_dt: dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp
-# 	$(CXX) -c simulations/ob_PE_equipartition_ratio_average_vs_dt.cpp $(CPPFLAGS)
-# 	$(CXX) ob_PE_equipartition_ratio_average_vs_dt.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o simulations.o -o ob_PE_equipartition_ratio_average_vs_dt
-
-# ob_PE_equipartition_ratio_average_vs_dt_plot: ob_PE_equipartition_ratio_average_vs_dt
-# 	@echo "\nUse TITLE='yourtitle' to give plot a title\n"
-# 	mkdir -p plots
-# 	mkdir -p data
-# 	./ob_PE_equipartition_ratio_average_vs_dt $(TITLE)
-# 	./make_plot.py --figtitle="$(TITLE)" --xlabel="log(dt)" --ylabel="PE / 0.5*kb*T" --logx data/bba_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/bma_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/ta_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/uma_pe_equipartition_ratio_vs_dt_$(TITLE).txt data/config_pe_equipartition_ratio_vs_dt_$(TITLE).txt
-
-########################### THESIS STUFF #################################
-
-THESIS_FIGURES = plots/trajectory-plot_thesis.pdf plots/stepping_length_histogram_thesis.pdf plots/stepping_time_histogram_thesis.pdf
-
-thesis_stuff.pdf: thesis_stuff/thesis_stuff.tex thesis_stuff/thesis_stuff.bib $(FIGURES)
-	cd thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && bibtex thesis_stuff && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && xelatex -interaction nonstopmode -halt-on-error thesis_stuff.tex && mv thesis_stuff.pdf ..
-
-thesis: $(THESIS_FIGURES)
-	cd thesis && $(MAKE)
+public: $(PAPERS)
+	cp -v $(PAPERS) public/
 
 clean:
-	rm -f *.txt
-	rm -f *.o
-	rm -f plot
-	rm -f test_onebound
-	rm -f test_bothbound
-	rm -f ob_PE_correlation_vs_time
-	rm -f ob_PE_equipartition_ratio_vs_time
-	rm -f ob_PE_equipartition_ratio_average_vs_time
-	rm -f ob_PE_equipartition_ratio_average_vs_force_ratio
-	rm -f ob_PE_equipartition_ratio_average_vs_spring_constant
-	rm -f ob_PE_equipartition_ratio_average_vs_temperature
-	rm -f ob_PE_equipartition_ratio_average_vs_dt
-	rm -f ob_PE_log_equipartition_vs_log_iterations
-	rm -f onebound_PE_equipartition_correlation
-	rm -f ob_equipartition_test
+	rm -f build/*.o
+	rm -f src/version-info.h
 	rm -f generate_stepping_data
-	rm -f data.txt
-	rm -f config.txt
-	rm -f latex/*.aux
-	rm -f latex/*.log
-	rm -f latex/*.pdf
-	rm -f latex/latexlog.txt
-	rm -f *~
-	rm -f simulations/*~
-	rm -f *#
-	rm -f *.fdb_latexmk
-	rm -f *.fls
-	rm -f data/thesis_data.txt
-	rm -f data/thesis_plot.txt
-	cd figures && $(MAKE) clean
-	cd thesis && $(MAKE) clean
+	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
+	rm -f scripts/*.pyc scripts/*/*.pyc
+	rm -rf plots
+	rm -f $(ALL_FIGURES)
+	rm -f public/*.pdf public/*.tex
+	rm -f data/thesis_*
