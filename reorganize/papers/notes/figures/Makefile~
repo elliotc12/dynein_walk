@@ -1,4 +1,0 @@
-FIGURES = $(wildcard *.svg)
-
-%.pdf: %.svg
-	inkscape -D --export-pdf $@ $<
