@@ -1,0 +1,51 @@
+\errorstopmode
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb} 
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Real}{mathbb{R}}
+
+\begin{document}
+	
+\title{Convolution Theorem for Autocorrelation Speedup} 
+\author{John Waczak} 
+\date{\today}
+\maketitle
+
+\paragraph{Motivation} 	
+	In order to validate the $dt$ usage in our dynein simulation, I have run multiple simulations for the bound and unbound states (by choice of parameters) at different values of $dt$. To compare the simulations, an autocorrelation function was generated for the potential energy data by dynein domain (tail, motor, binding). This function is of the form: 
+	
+	\begin{align}
+		\rho(\tau) &= \frac{\int_{-\infty}^{\infty} [(f(t)-\mu)(f(t+\tau)-\mu)]dt}
+		{\int_{-\infty}^{\infty}(f(t)-\mu)^2}dt \\ 
+		\rho(k) &= \frac{\sum_{0}^{t_{max}-k} (f(t)-\mu)(f(t+k)-\mu)}
+		{\sum_{0}^{t_{max}-k}(f(t)-\mu)^2}
+	\end{align}
+	
+	Where (1) is the continuous version and (2) the discrete. The problem with this formula though is that it is slow. For a data set of n values we want to compute n different k's in order to generate our autocorrelation function. This is of order $n^2$ computations. To speed this up, we can employ the convolution theorem to allow us to make use of the speed Fast Fourier Transform (FFT). The following is a derivation of the equations necessary to perform this mathematical trick. 
+
+\paragraph{Derivation}	
+To begin, we will forget about the normalization term in the denominator and focus on the numerator of (1), redefining the functions involved and then redefining them again using the Fourier transform. Let $\F$ denote the Fourier transform and $\F^{-1}$ its inverse. 
+
+\begin{align*}
+	\rho(\tau) &= \int_{-\infty}^{\infty}[(f(t)-\mu)(f(t+\tau)-\mu)] dt \\
+	g(t) &\equiv f(t)-\mu \\ 
+	\rho(\tau) &= \int_{-\infty}^{\infty}g(t)\cdot g(t+\tau) dt \\ 
+	g(t) &= \F^{-1}[\widetilde{g}(\omega)] = \int_{-\infty}^{\infty} \widetilde{g}(\omega) e^{i\omega t} d\omega \\ 
+	\rho(\tau) &= \int \int \widetilde{g}(\omega) e^{i \omega t} d\omega \int \widetilde{g}(\omega') e^{i \omega' (t+\tau)} d\omega'
+\end{align*}
+
+I have stopped including the bounds for ease of typing. They will remain the same. Notice that because $\omega$ is an arbitrary choice of 'name' for the dependent variable after the transformation, we can differentiated between the transformed $g(t)$ and $g(t+\tau)$. This enables us to manipulate the integrals in the following way: 
+
+\begin{align*}
+	\rho(\tau) &= \int \int \widetilde{g}(\omega)\widetilde{g}(\omega') d\omega d\omega' \int e^{i\omega t}e^{i\omega'(t+\tau)} dt \\ 
+	&= \int \int \widetilde{g}(\omega)\widetilde{g}(\omega') e^{i \omega' \tau} d\omega d\omega' \int e^{i t (\omega + \omega')} dt \\ 
+	&= \int \int \widetilde{g}(\omega)\widetilde{g}(\omega') \delta(\omega+\omega') d\omega d\omega' \\ 
+	&= \int \widetilde{g}(\omega') \widetilde{g}(-\omega')e^{i \omega' \tau} d\omega'
+\end{align*}
+
+\end{document}

@@ -1,0 +1,520 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     22654,        511]
+NotebookOptionsPosition[     21600,        470]
+NotebookOutlinePosition[     21957,        486]
+CellTagsIndexPosition[     21914,        483]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.6621067998224163`*^9, 3.6621068307192287`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"A", " ", "=", " ", 
+   RowBox[{"{", "   ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "a", ",", " ", "b", ",", " ", "c", ",", " ", "d", ",", " ", "0", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "       ", 
+     RowBox[{"{", 
+      RowBox[{
+      "e", ",", " ", "f", ",", " ", "0", ",", " ", "g", ",", " ", "h", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "       ", 
+     RowBox[{"{", 
+      RowBox[{
+      "i", ",", " ", "j", ",", " ", "0", ",", " ", "0", ",", " ", "k", ",", 
+       " ", "l"}], "}"}], ",", "\[IndentingNewLine]", "       ", 
+     RowBox[{"{", 
+      RowBox[{
+      "m", ",", " ", "n", ",", " ", "p", ",", " ", "q", ",", " ", "0", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "       ", 
+     RowBox[{"{", 
+      RowBox[{
+      "r", ",", " ", "s", ",", " ", "0", ",", " ", "t", ",", " ", "u", ",", 
+       " ", "0"}], "}"}], ",", "\[IndentingNewLine]", "       ", 
+     RowBox[{"{", 
+      RowBox[{
+      "v", ",", " ", "w", ",", " ", "0", ",", " ", "0", ",", " ", "x", ",", 
+       " ", "y"}], "}"}]}], "\[IndentingNewLine]", "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"X", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+    "x1", ",", " ", "x2", ",", " ", "x3", ",", " ", "x4", ",", " ", "x5", ",",
+      " ", "x6"}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6569416178687487`*^9, 3.656941820981436*^9}, {
+   3.656941877038568*^9, 3.656942023535441*^9}, {3.656942101547607*^9, 
+   3.6569421049084063`*^9}, {3.661957752724674*^9, 3.661957753011133*^9}, 
+   3.663601612159568*^9, {3.663602110222822*^9, 3.663602132954121*^9}, {
+   3.663602414623946*^9, 3.663602467296089*^9}, {3.663602528165567*^9, 
+   3.663602649401771*^9}, {3.6636027695102243`*^9, 3.663602770562108*^9}, {
+   3.663603060321084*^9, 3.663603110097969*^9}, {3.663604051338892*^9, 
+   3.663604083843937*^9}, {3.663604144000749*^9, 3.663604149216453*^9}, {
+   3.663604194840556*^9, 3.6636042194875*^9}, {3.6636269015587473`*^9, 
+   3.663626972909439*^9}, {3.671921000795124*^9, 3.671921042913642*^9}, {
+   3.671921907075162*^9, 3.671922055889401*^9}, {3.671922095456477*^9, 
+   3.671922182469603*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sol", " ", "=", " ", 
+   RowBox[{"LinearSolve", "[", 
+    RowBox[{"A", ",", "X"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6569420435353117`*^9, 3.6569420556532793`*^9}, {
+   3.656942110412026*^9, 3.6569177544087*^9}, {3.656917786377181*^9, 
+   3.656917804092094*^9}, {3.656918183474106*^9, 3.6569181906673317`*^9}, {
+   3.656923777967198*^9, 3.656923784335791*^9}, {3.656924166520013*^9, 
+   3.656924168504587*^9}, {3.657318950187941*^9, 3.657318950693522*^9}, 
+   3.661959136631723*^9, {3.662107424349469*^9, 3.662107430140978*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Lndot", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Lfdot", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nsForce", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "3", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ntForce", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "4", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ftForce", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "5", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fsForce", " ", "=", " ", 
+   RowBox[{"sol", "[", 
+    RowBox[{"[", "6", "]"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.657318957649362*^9, 3.6573189899973803`*^9}, {
+  3.657320832102614*^9, 3.657320854405822*^9}, {3.661145192575598*^9, 
+  3.66114522292105*^9}, {3.661145619527684*^9, 3.6611456206216908`*^9}, {
+  3.661234244588949*^9, 3.661234250429929*^9}, {3.66195774696259*^9, 
+  3.661957749074325*^9}, {3.6619577946863623`*^9, 3.6619578818394747`*^9}, {
+  3.662107280349533*^9, 3.662107298545525*^9}, {3.662107409301261*^9, 
+  3.662107416830472*^9}, {3.662107650818408*^9, 3.6621076577496443`*^9}, {
+  3.671922210044297*^9, 3.671922250351308*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "Lndot", "]"}]], "Input",
+ CellChangeTimes->{{3.6719222534693613`*^9, 3.6719222584773817`*^9}, {
+  3.671922556532937*^9, 3.671922589584375*^9}, {3.671922626869261*^9, 
+  3.671922628328438*^9}}],
+
+Cell["\<\
+(h*l*p*t*w*x1 - g*l*p*u*w*x1 + g*l*p*s*x*x1 - f*l*p*t*x*x1 + d*l*p*u*w*x2 - \
+c*l*q*u*w*x2 - d*l*p*s*x*x2 + 
+     c*l*q*s*x*x2 - c*l*n*t*x*x2 + b*l*p*t*x*x2 - c*h*l*t*w*x4 + c*g*l*u*w*x4 \
+- c*g*l*s*x*x4 + c*f*l*t*x*x4 - 
+     d*h*l*p*w*x5 + c*h*l*q*w*x5 + c*g*l*n*x*x5 + d*f*l*p*x*x5 - b*g*l*p*x*x5 \
+- c*f*l*q*x*x5 + d*h*l*p*s*x6 - 
+     c*h*l*q*s*x6 + c*h*l*n*t*x6 - b*h*l*p*t*x6 - c*g*l*n*u*x6 - d*f*l*p*u*x6 \
++ b*g*l*p*u*x6 + c*f*l*q*u*x6 - 
+     g*k*p*s*x1*y - h*j*p*t*x1*y + f*k*p*t*x1*y + g*j*p*u*x1*y + d*k*p*s*x2*y \
+- c*k*q*s*x2*y + c*k*n*t*x2*y - 
+     b*k*p*t*x2*y - d*j*p*u*x2*y + c*j*q*u*x2*y - d*h*p*s*x3*y + c*h*q*s*x3*y \
+- c*h*n*t*x3*y + b*h*p*t*x3*y + 
+     c*g*n*u*x3*y + d*f*p*u*x3*y - b*g*p*u*x3*y - c*f*q*u*x3*y + c*g*k*s*x4*y \
++ c*h*j*t*x4*y - c*f*k*t*x4*y - 
+     c*g*j*u*x4*y - c*g*k*n*x5*y + d*h*j*p*x5*y - d*f*k*p*x5*y + b*g*k*p*x5*y \
+- c*h*j*q*x5*y + c*f*k*q*x5*y)/
+   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - \
+d*f*l*p*u*v + b*g*l*p*u*v + 
+     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + \
+c*g*l*m*u*w + d*e*l*p*u*w - 
+     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - \
+c*f*l*q*r*x - c*g*l*m*s*x - 
+     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + \
+b*e*l*p*t*x - a*f*l*p*t*x - 
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + \
+c*f*k*q*r*y + c*g*k*m*s*y - 
+     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + \
+c*h*j*m*t*y - c*f*k*m*t*y - 
+     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + \
+a*f*k*p*t*y - c*g*j*m*u*y + 
+     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - \
+c*f*i*q*u*y + c*e*j*q*u*y)\
+\>", "Output",
+ CellChangeTimes->{3.671922630164627*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "Lfdot", "]"}]], "Input",
+ CellChangeTimes->{{3.6719226343863773`*^9, 3.671922635214335*^9}}],
+
+Cell["\<\
+(-(h*l*p*t*v*x1) + g*l*p*u*v*x1 - g*l*p*r*x*x1 + e*l*p*t*x*x1 - d*l*p*u*v*x2 \
++ c*l*q*u*v*x2 + d*l*p*r*x*x2 - 
+     c*l*q*r*x*x2 + c*l*m*t*x*x2 - a*l*p*t*x*x2 + c*h*l*t*v*x4 - c*g*l*u*v*x4 \
++ c*g*l*r*x*x4 - c*e*l*t*x*x4 + 
+     d*h*l*p*v*x5 - c*h*l*q*v*x5 - c*g*l*m*x*x5 - d*e*l*p*x*x5 + a*g*l*p*x*x5 \
++ c*e*l*q*x*x5 - d*h*l*p*r*x6 + 
+     c*h*l*q*r*x6 - c*h*l*m*t*x6 + a*h*l*p*t*x6 + c*g*l*m*u*x6 + d*e*l*p*u*x6 \
+- a*g*l*p*u*x6 - c*e*l*q*u*x6 + 
+     g*k*p*r*x1*y + h*i*p*t*x1*y - e*k*p*t*x1*y - g*i*p*u*x1*y - d*k*p*r*x2*y \
++ c*k*q*r*x2*y - c*k*m*t*x2*y + 
+     a*k*p*t*x2*y + d*i*p*u*x2*y - c*i*q*u*x2*y + d*h*p*r*x3*y - c*h*q*r*x3*y \
++ c*h*m*t*x3*y - a*h*p*t*x3*y - 
+     c*g*m*u*x3*y - d*e*p*u*x3*y + a*g*p*u*x3*y + c*e*q*u*x3*y - c*g*k*r*x4*y \
+- c*h*i*t*x4*y + c*e*k*t*x4*y + 
+     c*g*i*u*x4*y + c*g*k*m*x5*y - d*h*i*p*x5*y + d*e*k*p*x5*y - a*g*k*p*x5*y \
++ c*h*i*q*x5*y - c*e*k*q*x5*y)/
+   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - \
+d*f*l*p*u*v + b*g*l*p*u*v + 
+     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + \
+c*g*l*m*u*w + d*e*l*p*u*w - 
+     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - \
+c*f*l*q*r*x - c*g*l*m*s*x - 
+     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + \
+b*e*l*p*t*x - a*f*l*p*t*x - 
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + \
+c*f*k*q*r*y + c*g*k*m*s*y - 
+     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + \
+c*h*j*m*t*y - c*f*k*m*t*y - 
+     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + \
+a*f*k*p*t*y - c*g*j*m*u*y + 
+     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - \
+c*f*i*q*u*y + c*e*j*q*u*y)\
+\>", "Output",
+ CellChangeTimes->{3.6719226358591413`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "nsForce", "]"}]], "Input",
+ CellChangeTimes->{{3.671922644000531*^9, 3.671922652047841*^9}}],
+
+Cell["\<\
+(-(h*l*q*s*v*x1) + h*l*n*t*v*x1 - g*l*n*u*v*x1 + f*l*q*u*v*x1 + h*l*q*r*w*x1 \
+- h*l*m*t*w*x1 + g*l*m*u*w*x1 - 
+     e*l*q*u*w*x1 + g*l*n*r*x*x1 - f*l*q*r*x*x1 - g*l*m*s*x*x1 + e*l*q*s*x*x1 \
++ f*l*m*t*x*x1 - e*l*n*t*x*x1 + 
+     d*l*n*u*v*x2 - b*l*q*u*v*x2 - d*l*m*u*w*x2 + a*l*q*u*w*x2 - d*l*n*r*x*x2 \
++ b*l*q*r*x*x2 + d*l*m*s*x*x2 - 
+     a*l*q*s*x*x2 - b*l*m*t*x*x2 + a*l*n*t*x*x2 + d*h*l*s*v*x4 - b*h*l*t*v*x4 \
+- d*f*l*u*v*x4 + b*g*l*u*v*x4 - 
+     d*h*l*r*w*x4 + a*h*l*t*w*x4 + d*e*l*u*w*x4 - a*g*l*u*w*x4 + d*f*l*r*x*x4 \
+- b*g*l*r*x*x4 - d*e*l*s*x*x4 + 
+     a*g*l*s*x*x4 + b*e*l*t*x*x4 - a*f*l*t*x*x4 - d*h*l*n*v*x5 + b*h*l*q*v*x5 \
++ d*h*l*m*w*x5 - a*h*l*q*w*x5 - 
+     d*f*l*m*x*x5 + b*g*l*m*x*x5 + d*e*l*n*x*x5 - a*g*l*n*x*x5 - b*e*l*q*x*x5 \
++ a*f*l*q*x*x5 + d*h*l*n*r*x6 - 
+     b*h*l*q*r*x6 - d*h*l*m*s*x6 + a*h*l*q*s*x6 + b*h*l*m*t*x6 - a*h*l*n*t*x6 \
++ d*f*l*m*u*x6 - b*g*l*m*u*x6 - 
+     d*e*l*n*u*x6 + a*g*l*n*u*x6 + b*e*l*q*u*x6 - a*f*l*q*u*x6 - g*k*n*r*x1*y \
+- h*j*q*r*x1*y + f*k*q*r*x1*y + 
+     g*k*m*s*x1*y + h*i*q*s*x1*y - e*k*q*s*x1*y + h*j*m*t*x1*y - f*k*m*t*x1*y \
+- h*i*n*t*x1*y + e*k*n*t*x1*y - 
+     g*j*m*u*x1*y + g*i*n*u*x1*y - f*i*q*u*x1*y + e*j*q*u*x1*y + d*k*n*r*x2*y \
+- b*k*q*r*x2*y - d*k*m*s*x2*y + 
+     a*k*q*s*x2*y + b*k*m*t*x2*y - a*k*n*t*x2*y + d*j*m*u*x2*y - d*i*n*u*x2*y \
++ b*i*q*u*x2*y - a*j*q*u*x2*y - 
+     d*h*n*r*x3*y + b*h*q*r*x3*y + d*h*m*s*x3*y - a*h*q*s*x3*y - b*h*m*t*x3*y \
++ a*h*n*t*x3*y - d*f*m*u*x3*y + 
+     b*g*m*u*x3*y + d*e*n*u*x3*y - a*g*n*u*x3*y - b*e*q*u*x3*y + a*f*q*u*x3*y \
++ d*h*j*r*x4*y - d*f*k*r*x4*y + 
+     b*g*k*r*x4*y - d*h*i*s*x4*y + d*e*k*s*x4*y - a*g*k*s*x4*y + b*h*i*t*x4*y \
+- a*h*j*t*x4*y - b*e*k*t*x4*y + 
+     a*f*k*t*x4*y + d*f*i*u*x4*y - b*g*i*u*x4*y - d*e*j*u*x4*y + a*g*j*u*x4*y \
+- d*h*j*m*x5*y + d*f*k*m*x5*y - 
+     b*g*k*m*x5*y + d*h*i*n*x5*y - d*e*k*n*x5*y + a*g*k*n*x5*y - b*h*i*q*x5*y \
++ a*h*j*q*x5*y + b*e*k*q*x5*y - 
+     a*f*k*q*x5*y)/(d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - \
+c*g*l*n*u*v - d*f*l*p*u*v + 
+     b*g*l*p*u*v + c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + \
+a*h*l*p*t*w + c*g*l*m*u*w + 
+     d*e*l*p*u*w - a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - \
+b*g*l*p*r*x - c*f*l*q*r*x - 
+     c*g*l*m*s*x - d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - \
+c*e*l*n*t*x + b*e*l*p*t*x - 
+     a*f*l*p*t*x - c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - \
+c*h*j*q*r*y + c*f*k*q*r*y + 
+     c*g*k*m*s*y - d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - \
+c*e*k*q*s*y + c*h*j*m*t*y - 
+     c*f*k*m*t*y - c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - \
+b*e*k*p*t*y + a*f*k*p*t*y - 
+     c*g*j*m*u*y + c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + \
+a*g*j*p*u*y - c*f*i*q*u*y + 
+     c*e*j*q*u*y)\
+\>", "Output",
+ CellChangeTimes->{3.6719226528144073`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "ntForce", "]"}]], "Input",
+ CellChangeTimes->{{3.671922659407319*^9, 3.671922663253631*^9}}],
+
+Cell["\<\
+(h*l*p*s*v*x1 - f*l*p*u*v*x1 - h*l*p*r*w*x1 + e*l*p*u*w*x1 + f*l*p*r*x*x1 - \
+e*l*p*s*x*x1 - c*l*n*u*v*x2 + 
+     b*l*p*u*v*x2 + c*l*m*u*w*x2 - a*l*p*u*w*x2 + c*l*n*r*x*x2 - b*l*p*r*x*x2 \
+- c*l*m*s*x*x2 + a*l*p*s*x*x2 - 
+     c*h*l*s*v*x4 + c*f*l*u*v*x4 + c*h*l*r*w*x4 - c*e*l*u*w*x4 - c*f*l*r*x*x4 \
++ c*e*l*s*x*x4 + c*h*l*n*v*x5 - 
+     b*h*l*p*v*x5 - c*h*l*m*w*x5 + a*h*l*p*w*x5 + c*f*l*m*x*x5 - c*e*l*n*x*x5 \
++ b*e*l*p*x*x5 - a*f*l*p*x*x5 - 
+     c*h*l*n*r*x6 + b*h*l*p*r*x6 + c*h*l*m*s*x6 - a*h*l*p*s*x6 - c*f*l*m*u*x6 \
++ c*e*l*n*u*x6 - b*e*l*p*u*x6 + 
+     a*f*l*p*u*x6 + h*j*p*r*x1*y - f*k*p*r*x1*y - h*i*p*s*x1*y + e*k*p*s*x1*y \
++ f*i*p*u*x1*y - e*j*p*u*x1*y - 
+     c*k*n*r*x2*y + b*k*p*r*x2*y + c*k*m*s*x2*y - a*k*p*s*x2*y - c*j*m*u*x2*y \
++ c*i*n*u*x2*y - b*i*p*u*x2*y + 
+     a*j*p*u*x2*y + c*h*n*r*x3*y - b*h*p*r*x3*y - c*h*m*s*x3*y + a*h*p*s*x3*y \
++ c*f*m*u*x3*y - c*e*n*u*x3*y + 
+     b*e*p*u*x3*y - a*f*p*u*x3*y - c*h*j*r*x4*y + c*f*k*r*x4*y + c*h*i*s*x4*y \
+- c*e*k*s*x4*y - c*f*i*u*x4*y + 
+     c*e*j*u*x4*y + c*h*j*m*x5*y - c*f*k*m*x5*y - c*h*i*n*x5*y + c*e*k*n*x5*y \
++ b*h*i*p*x5*y - a*h*j*p*x5*y - 
+     b*e*k*p*x5*y + a*f*k*p*x5*y)/
+   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - \
+d*f*l*p*u*v + b*g*l*p*u*v + 
+     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + \
+c*g*l*m*u*w + d*e*l*p*u*w - 
+     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - \
+c*f*l*q*r*x - c*g*l*m*s*x - 
+     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + \
+b*e*l*p*t*x - a*f*l*p*t*x - 
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + \
+c*f*k*q*r*y + c*g*k*m*s*y - 
+     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + \
+c*h*j*m*t*y - c*f*k*m*t*y - 
+     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + \
+a*f*k*p*t*y - c*g*j*m*u*y + 
+     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - \
+c*f*i*q*u*y + c*e*j*q*u*y)\
+\>", "Output",
+ CellChangeTimes->{3.671922663854577*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "ftForce", "]"}]], "Input",
+ CellChangeTimes->{{3.6719226704955*^9, 3.671922673685368*^9}}],
+
+Cell["\<\
+(-(g*l*p*s*v*x1) + f*l*p*t*v*x1 + g*l*p*r*w*x1 - e*l*p*t*w*x1 + d*l*p*s*v*x2 \
+- c*l*q*s*v*x2 + c*l*n*t*v*x2 - 
+     b*l*p*t*v*x2 - d*l*p*r*w*x2 + c*l*q*r*w*x2 - c*l*m*t*w*x2 + a*l*p*t*w*x2 \
++ c*g*l*s*v*x4 - c*f*l*t*v*x4 - 
+     c*g*l*r*w*x4 + c*e*l*t*w*x4 - c*g*l*n*v*x5 - d*f*l*p*v*x5 + b*g*l*p*v*x5 \
++ c*f*l*q*v*x5 + c*g*l*m*w*x5 + 
+     d*e*l*p*w*x5 - a*g*l*p*w*x5 - c*e*l*q*w*x5 + c*g*l*n*r*x6 + d*f*l*p*r*x6 \
+- b*g*l*p*r*x6 - c*f*l*q*r*x6 - 
+     c*g*l*m*s*x6 - d*e*l*p*s*x6 + a*g*l*p*s*x6 + c*e*l*q*s*x6 + c*f*l*m*t*x6 \
+- c*e*l*n*t*x6 + b*e*l*p*t*x6 - 
+     a*f*l*p*t*x6 - g*j*p*r*x1*y + g*i*p*s*x1*y - f*i*p*t*x1*y + e*j*p*t*x1*y \
++ d*j*p*r*x2*y - c*j*q*r*x2*y - 
+     d*i*p*s*x2*y + c*i*q*s*x2*y + c*j*m*t*x2*y - c*i*n*t*x2*y + b*i*p*t*x2*y \
+- a*j*p*t*x2*y - c*g*n*r*x3*y - 
+     d*f*p*r*x3*y + b*g*p*r*x3*y + c*f*q*r*x3*y + c*g*m*s*x3*y + d*e*p*s*x3*y \
+- a*g*p*s*x3*y - c*e*q*s*x3*y - 
+     c*f*m*t*x3*y + c*e*n*t*x3*y - b*e*p*t*x3*y + a*f*p*t*x3*y + c*g*j*r*x4*y \
+- c*g*i*s*x4*y + c*f*i*t*x4*y - 
+     c*e*j*t*x4*y - c*g*j*m*x5*y + c*g*i*n*x5*y + d*f*i*p*x5*y - b*g*i*p*x5*y \
+- d*e*j*p*x5*y + a*g*j*p*x5*y - 
+     c*f*i*q*x5*y + c*e*j*q*x5*y)/
+   (d*h*l*p*s*v - c*h*l*q*s*v + c*h*l*n*t*v - b*h*l*p*t*v - c*g*l*n*u*v - \
+d*f*l*p*u*v + b*g*l*p*u*v + 
+     c*f*l*q*u*v - d*h*l*p*r*w + c*h*l*q*r*w - c*h*l*m*t*w + a*h*l*p*t*w + \
+c*g*l*m*u*w + d*e*l*p*u*w - 
+     a*g*l*p*u*w - c*e*l*q*u*w + c*g*l*n*r*x + d*f*l*p*r*x - b*g*l*p*r*x - \
+c*f*l*q*r*x - c*g*l*m*s*x - 
+     d*e*l*p*s*x + a*g*l*p*s*x + c*e*l*q*s*x + c*f*l*m*t*x - c*e*l*n*t*x + \
+b*e*l*p*t*x - a*f*l*p*t*x - 
+     c*g*k*n*r*y + d*h*j*p*r*y - d*f*k*p*r*y + b*g*k*p*r*y - c*h*j*q*r*y + \
+c*f*k*q*r*y + c*g*k*m*s*y - 
+     d*h*i*p*s*y + d*e*k*p*s*y - a*g*k*p*s*y + c*h*i*q*s*y - c*e*k*q*s*y + \
+c*h*j*m*t*y - c*f*k*m*t*y - 
+     c*h*i*n*t*y + c*e*k*n*t*y + b*h*i*p*t*y - a*h*j*p*t*y - b*e*k*p*t*y + \
+a*f*k*p*t*y - c*g*j*m*u*y + 
+     c*g*i*n*u*y + d*f*i*p*u*y - b*g*i*p*u*y - d*e*j*p*u*y + a*g*j*p*u*y - \
+c*f*i*q*u*y + c*e*j*q*u*y)\
+\>", "Output",
+ CellChangeTimes->{3.671922674166737*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CForm", "[", "fsForce", "]"}]], "Input",
+ CellChangeTimes->{{3.671922678097207*^9, 3.671922678869096*^9}}],
+
+Cell["\<\
+(-(((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+           (-(c*i*(-((b*i - a*j)*k*m) + a*k*(-(j*m) + i*n))*(-(j*v) + i*w)) - \
+
+             (-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(a*k*(-(j*v) + i*w) + \
+(b*i - a*j)*(-(k*v) + i*x))) - 
+          (d*i*(-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(-(j*v) + i*w) - 
+             c*i*(-(d*i*(-(j*m) + i*n)) + i*(b*i - a*j)*q)*(-(j*v) + i*w))*
+           (-(c*i*(a*k*(-(j*r) + i*s) + (b*i - a*j)*(-(k*r) + i*u))*(-(j*v) + \
+i*w)) + 
+             c*i*(-(j*r) + i*s)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + \
+i*x))))*
+        ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+           (-(c*i*(-(j*v) + i*w)*(-((f*i - e*j)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(i*x2 - e*x3))) + 
+             c*i*(f*i - e*j)*(-((-(j*v) + i*w)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(v*x3) + i*x6))) - 
+          (-(c*d*Power(i,2)*(f*i - e*j)*(-(j*v) + i*w)) - 
+             c*i*(g*i*(b*i - a*j) - d*i*(f*i - e*j))*(-(j*v) + i*w))*
+           (-(c*i*(-(j*v) + i*w)*(-((-(j*r) + i*s)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(r*x3) + i*x5))) + 
+             c*i*(-(j*r) + i*s)*(-((-(j*v) + i*w)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(v*x3) + i*x6))))) + 
+     ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+         (-(c*i*(a*(f*i - e*j)*k + (b*i - a*j)*(h*i - e*k))*(-(j*v) + i*w)) + \
+
+           c*i*(f*i - e*j)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + i*x))) \
+- 
+        (-(c*d*Power(i,2)*(f*i - e*j)*(-(j*v) + i*w)) - c*i*(g*i*(b*i - a*j) \
+- d*i*(f*i - e*j))*(-(j*v) + i*w))*
+         (-(c*i*(a*k*(-(j*r) + i*s) + (b*i - a*j)*(-(k*r) + i*u))*(-(j*v) + \
+i*w)) + 
+           c*i*(-(j*r) + i*s)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + \
+i*x))))*
+      ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+         (-(c*i*(-(j*v) + i*w)*(-((-(j*m) + i*n)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(m*x3) + i*x4))) - 
+           (-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*
+            (-((-(j*v) + i*w)*(i*x1 - a*x3)) + (b*i - a*j)*(-(v*x3) + i*x6))) \
+- 
+        (d*i*(-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(-(j*v) + i*w) - 
+           c*i*(-(d*i*(-(j*m) + i*n)) + i*(b*i - a*j)*q)*(-(j*v) + i*w))*
+         (-(c*i*(-(j*v) + i*w)*(-((-(j*r) + i*s)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(r*x3) + i*x5))) + 
+           c*i*(-(j*r) + i*s)*(-((-(j*v) + i*w)*(i*x1 - a*x3)) + (b*i - \
+a*j)*(-(v*x3) + i*x6)))))/
+   (-(((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+           (-(c*i*(-((b*i - a*j)*k*m) + a*k*(-(j*m) + i*n))*(-(j*v) + i*w)) - \
+
+             (-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(a*k*(-(j*v) + i*w) + \
+(b*i - a*j)*(-(k*v) + i*x))) - 
+          (d*i*(-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(-(j*v) + i*w) - 
+             c*i*(-(d*i*(-(j*m) + i*n)) + i*(b*i - a*j)*q)*(-(j*v) + i*w))*
+           (-(c*i*(a*k*(-(j*r) + i*s) + (b*i - a*j)*(-(k*r) + i*u))*(-(j*v) + \
+i*w)) + 
+             c*i*(-(j*r) + i*s)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + \
+i*x))))*
+        ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+           (-(c*i*(-(e*(b*i - a*j)*l) + a*(f*i - e*j)*l)*(-(j*v) + i*w)) + 
+             c*i*(f*i - e*j)*(a*l*(-(j*v) + i*w) + (b*i - a*j)*(-(l*v) + \
+i*y))) - 
+          (-(c*d*Power(i,2)*(f*i - e*j)*(-(j*v) + i*w)) - 
+             c*i*(g*i*(b*i - a*j) - d*i*(f*i - e*j))*(-(j*v) + i*w))*
+           (-(c*i*(-((b*i - a*j)*l*r) + a*l*(-(j*r) + i*s))*(-(j*v) + i*w)) + \
+
+             c*i*(-(j*r) + i*s)*(a*l*(-(j*v) + i*w) + (b*i - a*j)*(-(l*v) + \
+i*y))))) + 
+     ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+         (-(c*i*(a*(f*i - e*j)*k + (b*i - a*j)*(h*i - e*k))*(-(j*v) + i*w)) + \
+
+           c*i*(f*i - e*j)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + i*x))) \
+- 
+        (-(c*d*Power(i,2)*(f*i - e*j)*(-(j*v) + i*w)) - c*i*(g*i*(b*i - a*j) \
+- d*i*(f*i - e*j))*(-(j*v) + i*w))*
+         (-(c*i*(a*k*(-(j*r) + i*s) + (b*i - a*j)*(-(k*r) + i*u))*(-(j*v) + \
+i*w)) + 
+           c*i*(-(j*r) + i*s)*(a*k*(-(j*v) + i*w) + (b*i - a*j)*(-(k*v) + \
+i*x))))*
+      ((b*c*Power(i,3)*j*t*v - a*c*Power(i,2)*Power(j,2)*t*v - \
+b*c*Power(i,4)*t*w + a*c*Power(i,3)*j*t*w)*
+         (-(c*i*(-((b*i - a*j)*l*m) + a*l*(-(j*m) + i*n))*(-(j*v) + i*w)) - 
+           (-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(a*l*(-(j*v) + i*w) + \
+(b*i - a*j)*(-(l*v) + i*y))) - 
+        (d*i*(-(c*i*(-(j*m) + i*n)) + i*(b*i - a*j)*p)*(-(j*v) + i*w) - 
+           c*i*(-(d*i*(-(j*m) + i*n)) + i*(b*i - a*j)*q)*(-(j*v) + i*w))*
+         (-(c*i*(-((b*i - a*j)*l*r) + a*l*(-(j*r) + i*s))*(-(j*v) + i*w)) + 
+           c*i*(-(j*r) + i*s)*(a*l*(-(j*v) + i*w) + (b*i - a*j)*(-(l*v) + \
+i*y)))))\
+\>", "Output",
+ CellChangeTimes->{3.671922679514188*^9}]
+}, Open  ]]
+},
+WindowSize->{1211, 705},
+WindowMargins->{{23, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 146, 2, 28, "Input"],
+Cell[706, 24, 2206, 47, 148, "Input"],
+Cell[2915, 73, 577, 10, 28, "Input"],
+Cell[3495, 85, 1392, 32, 114, "Input"],
+Cell[CellGroupData[{
+Cell[4912, 121, 230, 4, 28, "Input"],
+Cell[5145, 127, 1811, 34, 265, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6993, 166, 130, 2, 28, "Input"],
+Cell[7126, 170, 1816, 34, 265, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8979, 209, 130, 2, 28, "Input"],
+Cell[9112, 213, 2856, 53, 415, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12005, 271, 130, 2, 28, "Input"],
+Cell[12138, 275, 2073, 39, 310, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14248, 319, 128, 2, 28, "Input"],
+Cell[14379, 323, 2076, 39, 310, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16492, 367, 130, 2, 28, "Input"],
+Cell[16625, 371, 4959, 96, 850, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
