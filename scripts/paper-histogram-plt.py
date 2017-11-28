@@ -126,6 +126,12 @@ if (len(step_lengths) > 0):
 plt.legend(loc="upper right")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    fontsize=14)
+
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
