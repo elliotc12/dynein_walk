@@ -89,20 +89,11 @@ else:
 ##....................## 
 
 
-
-
-def getBins(x):
-    xmin = np.min(x)
-    xmax = np.max(x)
-    return np.linspace(xmin, xmax, NUM_BINS)
-
 def getBinIndex(p, bins):
-    index = 0
-    for i in range(0, len(bins)):
-        if p <= bins[i]: 
-            index = i
-            break 
-    return index 
+    for i in range(0, len(bins)-1):
+        if p >= bins[i] and p <= bins[i+1]:
+            return i
+    assert(False)
 
 def getCounts(X,Y):
     if (len(X)!=len(Y)):
@@ -110,8 +101,8 @@ def getCounts(X,Y):
         exit(1)
         
     if VERBOSE: print("binning data") 
-    xbins = getBins(X)
-    ybins = getBins(Y)
+    xbins = np.linspace(0, X.max(), NUM_BINS+1)
+    ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
     
     if VERBOSE: print("counting") 
     counts = np.zeros((len(xbins),len(ybins)))
@@ -119,19 +110,22 @@ def getCounts(X,Y):
     for k in range(0, len(X)):
         i = getBinIndex(X[k], xbins)
         j = getBinIndex(Y[k], ybins)
-        counts[i,j] += 1
+        counts[j,i] += 1
+        print(X[k], Y[k], i, j, 'versus', xbins[i], ybins[j])
     return xbins, ybins, counts
 
 def plotCounts(x,y, graph_label, x_label, y_label):
     x_bins, y_bins, counts = getCounts(x,y)
+    print('counts', np.sum(counts), len(x))
     
     if VERBOSE: print("graphing")
     plt.figure()
     print(counts.shape)
-    print(len(x_bins), len(y_bins))
-    plt.pcolor(x_bins, y_bins, counts) 
+    print(x_bins.shape, y_bins.shape)
+    plt.pcolor(x_bins, y_bins, counts)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
+    print(x_bins)
     plt.title(graph_label)
     cb = plt.colorbar()
     cb.set_label('counts') 
@@ -148,12 +142,15 @@ def plotCounts(x,y, graph_label, x_label, y_label):
 seed_label = ''
 if ALL:
     seed_label = '(multiple seeds)' 
-plotCounts(onebound_times, step_lengths, "OB times vs Step Lengths {}".format(seed_label), "t_ob", "step length")
-plotCounts(bothbound_times, step_lengths, "BB times vs Step Lengths {}".format(seed_label), "t_bb", "step length")
-plotCounts(step_times, step_lengths, "total step time vs step length {}".format(seed_label), 'step time', 'step length') 
+plotCounts(onebound_times, step_lengths, "OB times vs Step Lengths {}".format(seed_label),
+           "$t_{ob}$", "step length")
+plotCounts(bothbound_times, step_lengths, "BB times vs Step Lengths {}".format(seed_label),
+           "$t_{bb}$", "step length")
+plotCounts(step_times, step_lengths, "total step time vs step length {}".format(seed_label),
+           'step time', 'step length')
 plt.figure()
 plt.hist2d(step_times,step_lengths, NUM_BINS)
-plt.title("what it should look like") 
+plt.title("what it should look like")
 if SHOW: plt.show() 
 if VERBOSE: print("finished")
 
