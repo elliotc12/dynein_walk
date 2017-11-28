@@ -91,17 +91,15 @@ else:
 
 def getBinIndex(p, bins):
     for i in range(0, len(bins)-1):
-        if p >= bins[i] and p <= bins[i+1]:
+        if p >= bins[i] and p <= bins[i+1]: # deal with case for p=bins[0], p=bins[-1] 
             return i
-    assert(False)
+    assert(False) # throw exception if we can't find a bin for a value 
 
 def getCounts(X,Y):
-    if (len(X)!=len(Y)):
-        print('axis do not have same length. Make sure you are using stepping_data not stepping_movie_data')
-        exit(1)
+    assert len(X)!=len(Y) 
         
     if VERBOSE: print("binning data") 
-    xbins = np.linspace(0, X.max(), NUM_BINS+1)
+    xbins = np.linspace(0, X.max(), NUM_BINS+1) # insure that times start at zero and not the min time
     ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
     
     if VERBOSE: print("counting") 
@@ -110,8 +108,7 @@ def getCounts(X,Y):
     for k in range(0, len(X)):
         i = getBinIndex(X[k], xbins)
         j = getBinIndex(Y[k], ybins)
-        counts[j,i] += 1
-        print(X[k], Y[k], i, j, 'versus', xbins[i], ybins[j])
+        counts[j,i] += 1 # rows are y values, columns are x values
     return xbins, ybins, counts
 
 def plotCounts(x,y, graph_label, x_label, y_label):
@@ -132,25 +129,18 @@ def plotCounts(x,y, graph_label, x_label, y_label):
     plt.savefig('plots/'+graph_label.replace(' ','_')+".pdf")
 
 
-
-# x = np.linspace(0,2*np.pi, 1000)
-# y = np.sin(x)
-
-# plotCounts(x,y,'test graph', 'x', 'y')
-# plt.show() 
+ 
 
 seed_label = ''
 if ALL:
     seed_label = '(multiple seeds)' 
-plotCounts(onebound_times, step_lengths, "OB times vs Step Lengths {}".format(seed_label),
-           "$t_{ob}$", "step length")
-plotCounts(bothbound_times, step_lengths, "BB times vs Step Lengths {}".format(seed_label),
-           "$t_{bb}$", "step length")
 plotCounts(step_times, step_lengths, "total step time vs step length {}".format(seed_label),
            'step time', 'step length')
 plt.figure()
 plt.hist2d(step_times,step_lengths, NUM_BINS)
 plt.title("what it should look like")
+
+
 if SHOW: plt.show() 
 if VERBOSE: print("finished")
 
