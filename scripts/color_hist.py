@@ -23,8 +23,10 @@ SHOW = args.show
 ALL = args.All 
 
 if VERBOSE: print("moving to root") 
-# navigate to root directory 
-os.chdir('../')
+
+if os.path.exists('color_hist.py'):
+    # navigate to root directory
+    os.chdir('../')
 
 step_times = []
 onebound_times = []
