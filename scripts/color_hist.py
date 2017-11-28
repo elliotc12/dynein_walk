@@ -98,7 +98,7 @@ def getBins(x):
 def getBinIndex(p, bins):
     index = 0
     for i in range(0, len(bins)):
-        if p < bins[i]: #need to think about logic for element equal to a bin value 
+        if p <= bins[i]: 
             index = i
             break 
     return index 
@@ -118,14 +118,17 @@ def getCounts(X,Y):
     for k in range(0, len(X)):
         i = getBinIndex(X[k], xbins)
         j = getBinIndex(Y[k], ybins)
-        counts[i,j] += 1 
+        counts[i,j] += 1
     return xbins, ybins, counts
 
 def plotCounts(x,y, graph_label, x_label, y_label):
     x_bins, y_bins, counts = getCounts(x,y)
-    if VERBOSE: print("graphing") 
+    
+    if VERBOSE: print("graphing")
     plt.figure()
-    plt.pcolor(x_bins,y_bins,counts, cmap='plasma')
+    print(counts.shape)
+    print(len(x_bins), len(y_bins))
+    plt.pcolor(x_bins, y_bins, counts) 
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.title(graph_label)
@@ -133,14 +136,23 @@ def plotCounts(x,y, graph_label, x_label, y_label):
     cb.set_label('counts') 
     plt.savefig('figs/'+graph_label.replace(' ','_')+".pdf")
 
-    
+
+
+# x = np.linspace(0,2*np.pi, 1000)
+# y = np.sin(x)
+
+# plotCounts(x,y,'test graph', 'x', 'y')
+# plt.show() 
+
 seed_label = ''
 if ALL:
     seed_label = '(multiple seeds)' 
 plotCounts(onebound_times, step_lengths, "OB times vs Step Lengths {}".format(seed_label), "t_ob", "step length")
 plotCounts(bothbound_times, step_lengths, "BB times vs Step Lengths {}".format(seed_label), "t_bb", "step length")
 plotCounts(step_times, step_lengths, "total step time vs step length {}".format(seed_label), 'step time', 'step length') 
-
+plt.figure()
+plt.hist2d(step_times,step_lengths, NUM_BINS)
+plt.title("what it should look like") 
 if SHOW: plt.show() 
 if VERBOSE: print("finished")
 
