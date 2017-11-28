@@ -7,11 +7,16 @@ import os
 
 parser = argparse.ArgumentParser(description = 'Script to generate 2 dimensional histogram from dynein stepping data')
 
-parser.add_argument('-d', '--datafile', dest = 'data_file', action='store', type= str,default='data/paper_histogram_stepping_data-1.txt', help='path to data file')
-parser.add_argument('-b', '--bins', dest = 'bins', action='store', type = int, default=20, help='number of bins for x and y axes')
-parser.add_argument('-v', '--verbose', dest = 'verbose', action='store_true', default = False, help = 'see prints in console')
-parser.add_argument('-s', '--show', dest = 'show', action='store_true', default = False, help = 'show graphs in matplotib windows') 
-parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False, help = 'generate plots for all paper_histogram_stepping_data files')
+parser.add_argument('-d', '--datafile', dest = 'data_file', action='store', type= str,
+                    default='data/paper_histogram_stepping_data-1.txt', help='path to data file')
+parser.add_argument('-b', '--bins', dest = 'bins', action='store', type = int, default=20,
+                    help='number of bins for x and y axes')
+parser.add_argument('-v', '--verbose', dest = 'verbose', action='store_true', default = False,
+                    help = 'see prints in console')
+parser.add_argument('-s', '--show', dest = 'show', action='store_true', default = False,
+                    help = 'show graphs in matplotib windows') 
+parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False,
+                    help = 'generate plots for all paper_histogram_stepping_data files')
 
 
 args = parser.parse_args()
@@ -22,10 +27,8 @@ NUM_BINS = args.bins
 SHOW = args.show
 ALL = args.All 
 
-if VERBOSE: print("moving to root") 
-
 if os.path.exists('color_hist.py'):
-    # navigate to root directory
+    if VERBOSE: print("navigating to root directory")
     os.chdir('../')
 
 step_times = []
@@ -33,15 +36,13 @@ onebound_times = []
 bothbound_times = []
 step_lengths = []
 
-print("ALL value:", ALL) 
-
 if not ALL:
     if not os.path.isfile(DATAFILE):
         print("Could not find data file. Please specify path using -d")
-        exit(1) 
+        exit(1)
         #load in data
     if VERBOSE: print("Data file found- loading data...")
-    data = np.loadtxt(DATAFILE, skiprows=1, comments='#', dtype=np.float64)
+    data = np.loadtxt(DATAFILE)
     if VERBOSE: print("Data loaded- formatting...")
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
@@ -51,7 +52,7 @@ if not ALL:
     far_step_idxs = far_positions[1:] != far_positions[:-1]
     near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
     far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
-        
+
     onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
     bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
     step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
@@ -69,7 +70,7 @@ else:
 
 
     for data_file in data_files:
-        data = np.loadtxt(data_file, dtype = np.float64)
+        data = np.loadtxt(data_file)
         if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
             continue
 
@@ -136,7 +137,7 @@ def plotCounts(x,y, graph_label, x_label, y_label):
     plt.title(graph_label)
     cb = plt.colorbar()
     cb.set_label('counts') 
-    plt.savefig('figs/'+graph_label.replace(' ','_')+".pdf")
+    plt.savefig('plots/'+graph_label.replace(' ','_')+".pdf")
 
 
 
