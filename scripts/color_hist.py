@@ -17,6 +17,8 @@ parser.add_argument('-s', '--show', dest = 'show', action='store_true', default 
                     help = 'show graphs in matplotib windows') 
 parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False,
                     help = 'generate plots for all paper_histogram_stepping_data files')
+parser.add_argument('-c', '--colormap', dest = 'cmap', action='store', type=str,
+                    default='plasma', help='set color map for plots') 
 
 
 args = parser.parse_args()
@@ -25,7 +27,8 @@ VERBOSE = args.verbose
 DATAFILE = args.data_file
 NUM_BINS = args.bins
 SHOW = args.show
-ALL = args.All 
+ALL = args.All
+CMAP = args.cmap
 
 if os.path.exists('color_hist.py'):
     if VERBOSE: print("navigating to root directory")
@@ -96,7 +99,8 @@ def getBinIndex(p, bins):
     assert(False) # throw exception if we can't find a bin for a value 
 
 def getCounts(X,Y):
-    assert len(X)!=len(Y) 
+    if VERBOSE: print(X.shape, Y.shape) 
+    assert X.shape == Y.shape  
         
     if VERBOSE: print("binning data") 
     xbins = np.linspace(0, X.max(), NUM_BINS+1) # insure that times start at zero and not the min time
@@ -119,7 +123,7 @@ def plotCounts(x,y, graph_label, x_label, y_label):
     plt.figure()
     print(counts.shape)
     print(x_bins.shape, y_bins.shape)
-    plt.pcolor(x_bins, y_bins, counts)
+    plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     print(x_bins)
@@ -137,7 +141,9 @@ if ALL:
 plotCounts(step_times, step_lengths, "total step time vs step length {}".format(seed_label),
            'step time', 'step length')
 plt.figure()
-plt.hist2d(step_times,step_lengths, NUM_BINS)
+plt.hist2d(step_times,step_lengths, NUM_BINS, cmap=CMAP)
+cb = plt.colorbar()
+cb.set_label('counts')
 plt.title("what it should look like")
 
 
