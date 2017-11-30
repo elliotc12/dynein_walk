@@ -53,8 +53,10 @@ if __name__ == '__main__':
         ONEBOUND = True
 
     
-    #navigate to root and ensure needed directories exist 
-    os.chdir("../")
+    #navigate to root and ensure needed directories exist
+    if os.path.exists('comparison_2.0.py'):
+        print("navigating to root directory") 
+        os.chdir("../")
     if VERBOSE:
         print(os.getcwd(), '\nChecking if data data dir exists:', os.path.exists('data'))
         print('Checking if figs dir exists:', os.path.exists('figs'))
