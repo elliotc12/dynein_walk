@@ -49,13 +49,13 @@ if not ALL:
     if VERBOSE: print("Data loaded- formatting...")
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = np.around(np.array(data[:,2]), decimals=7)
+    near_positions = np.around(np.array(data[:,2]), decimals=7) #need to figure out why fixing number of decimals is necessary
     far_positions = np.around(np.array(data[:,3]), decimals=7)
-    near_step_lens = near_positions[1:] - near_positions[:-1]
+    near_step_lens = near_positions[1:] - near_positions[:-1] #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_positions[1:] - far_positions[:-1]
-
-    onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
-    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
+    
+    onebound_times = bind_times[1:]-unbind_times[1:]
+    bothbound_times = unbind_times[1:]-bind_times[:-1]
     step_lengths = near_step_lens + far_step_lens
     step_times = onebound_times + bothbound_times 
 else:
@@ -64,7 +64,6 @@ else:
         if os.path.isfile("data/" + fname):
             if ("data/paper_histogram_stepping_data" in "data/" + fname):
                 data_files.append("data/" + fname)
-
                 if len(data_files) == 0:
                     print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
                     exit(1)
@@ -72,23 +71,21 @@ else:
 
     for data_file in data_files:
         data = np.loadtxt(data_file)
-        if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
-            continue
 
         bind_times = np.array(data[:,1])
         unbind_times = np.array(data[:,0])
         near_positions = np.around(np.array(data[:,2]), decimals=7)
         far_positions = np.around(np.array(data[:,3]), decimals=7)
-        near_step_idxs = near_positions[1:] != near_positions[:-1]
-        far_step_idxs = far_positions[1:] != far_positions[:-1]
-        near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
-        far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
-
+        # near_step_idxs = near_positions[1:] != near_positions[:-1]  
+        # far_step_idxs = far_positions[1:] != far_positions[:-1]
+        near_step_lens = (near_positions[1:] - near_positions[:-1]) #still want zero step lengths  
+        far_step_lens = (far_positions[1:] - far_positions[:-1])
         onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
         bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
-        step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
-
-    step_times = onebound_times + bothbound_times   
+        step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
+    # times are already concentated in order so all we need to do is add them together
+    step_times = onebound_times + bothbound_times
+ 
 ##....................## 
 
 
@@ -121,8 +118,6 @@ def plotCounts(x,y, graph_label, x_label, y_label):
     
     if VERBOSE: print("graphing")
     plt.figure()
-    print(counts.shape)
-    print(x_bins.shape, y_bins.shape)
     plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
