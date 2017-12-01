@@ -134,11 +134,11 @@ if ALL:
 plotCounts(step_times, step_lengths,
            "total step time vs step length {}".format(seed_label),
            'step time', 'step length')
-plt.figure()
-plt.hist2d(step_times, step_lengths, NUM_BINS, cmap=CMAP)
-cb = plt.colorbar()
-cb.set_label('counts')
-plt.title("what it should look like")
+# plt.figure()
+# plt.hist2d(step_times, step_lengths, NUM_BINS, cmap=CMAP)
+# cb = plt.colorbar()
+# cb.set_label('counts')
+# plt.title("what it should look like")
 
 
 if SHOW: plt.show()
