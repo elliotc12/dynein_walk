@@ -7,7 +7,7 @@ HEADERS = $(wildcard src/*.h) src/version-info.h
 
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
-PAPER-PLOTS = plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf
+PAPER-PLOTS = plots/paper-trajectory-plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/total_step_time_vs_step_length_multiple_seeds.pdf
 
 all: generate_stepping_data public $(DRAW)
 
@@ -76,10 +76,13 @@ plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pd
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
-plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py
+plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
 	python3 scripts/make_stepping_plots.py $*
 	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
 	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
+
+plots/total_step_time_vs_step_length_multiple_seeds.pdf: scripts/color_hist.py $(HISTOGRAM_DATA)
+	python scripts/color_hist.py -v -a
 
 plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory

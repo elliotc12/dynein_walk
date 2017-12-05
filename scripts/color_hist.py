@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
-import os
+import os, glob
 
 parser = argparse.ArgumentParser(description = 'Script to generate 2 dimensional histogram from dynein stepping data')
 
@@ -59,13 +59,11 @@ if not ALL:
     step_times = onebound_times + bothbound_times
 else:
     data_files = []
-    for fname in os.listdir("data/"):
-        if os.path.isfile("data/" + fname):
-            if ("data/paper_histogram_stepping_data" in "data/" + fname):
-                data_files.append("data/" + fname)
-                if len(data_files) == 0:
-                    print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
-                    exit(1)
+    for fname in glob.glob("data/paper_histogram_stepping_data*.txt"):
+        data_files.append(fname)
+    if len(data_files) == 0:
+        print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
+        exit(1)
 
 
     for data_file in data_files:
@@ -130,7 +128,7 @@ def plotCounts(x, y, graph_label, x_label, y_label):
 
 seed_label = ''
 if ALL:
-    seed_label = '(multiple seeds)'
+    seed_label = 'multiple_seeds'
 plotCounts(step_times, step_lengths,
            "total step time vs step length {}".format(seed_label),
            'step time', 'step length')
