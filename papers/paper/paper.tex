@@ -61,7 +61,17 @@ There are many relevant details about dynein which this simple model doesn't acc
 
 Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
-\subsection*{Results}
+\section{Results}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../../plots/time-vs-length-multiple-seeds}
+\caption{Histogram of duration and length of steps taken by model.}
+\label{fig:duration-length}
+\end{figure}
+
+Figure~\ref{fig:duration-length} shows the frequency of steps with
+various combination of step length and step time.  We can see that...
 
 \begin{figure}%[tbhp]
 \centering
@@ -84,12 +94,7 @@ Several computational models have been created to explain dynein's motility. \te
 \label{fig:timehist}
 \end{figure}
 
-\begin{figure}%[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/time-vs-length-multiple-seeds}
-\caption{Histogram of duration and length of steps taken by model.}
-\label{fig:timehist}
-\end{figure}
+
 
 \begin{table}%[tbhp]
 \centering
@@ -150,8 +155,6 @@ $\theta_t$ & $\eqt$ &  & \\
     \textbf{nativestructure}.}
 \label{fig:modelangles}
 \end{figure}
-
-See schematic in Figure~\ref{fig:modelangles}.
 
 % \pnasbreak splits and balances the columns before the references.
 % If you see unexpected formatting errors, try commenting out this line
