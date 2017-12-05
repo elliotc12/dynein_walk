@@ -108,7 +108,7 @@ def getCounts(X, Y):
     return xbins, ybins, counts
 
 
-def plotCounts(x, y, graph_label, x_label, y_label):
+def plotCounts(x, y, graph_label, x_label, y_label, filename=None):
     x_bins, y_bins, counts = getCounts(x, y)
     print('counts', np.sum(counts), len(x))
 
@@ -123,15 +123,18 @@ def plotCounts(x, y, graph_label, x_label, y_label):
     plt.title(graph_label)
     cb = plt.colorbar()
     cb.set_label('counts')
-    plt.savefig('plots/'+graph_label.replace(' ',  '_')+".pdf")
+    if filename is None:
+        filename = 'plots/'+graph_label.replace(' ',  '_')+".pdf"
+    plt.savefig(filename)
 
 
 seed_label = ''
 if ALL:
-    seed_label = 'multiple_seeds'
+    seed_label = '-multiple-seeds'
 plotCounts(step_times, step_lengths,
-           "total step time vs step length {}".format(seed_label),
-           'step time', 'step length')
+           "total step time vs step length",
+           'step time', 'step length',
+           filename = 'plots/time-vs-length{}.pdf'.format(seed_label))
 # plt.figure()
 # plt.hist2d(step_times, step_lengths, NUM_BINS, cmap=CMAP)
 # cb = plt.colorbar()
