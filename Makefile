@@ -67,22 +67,22 @@ plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-
 
 plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: scripts/make_stepping_plots.py data/thesis_stepping_data.txt
 	python3 scripts/make_stepping_plots.py data/thesis_stepping_data.txt
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 HISTOGRAM_DATA = $(wildcard data/paper_histogram_stepping_data*.txt)
 plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
 	python3 scripts/paper-histogram-plt.py
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
 plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
 	python3 scripts/make_stepping_plots.py $*
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
 plots/time-vs-length-multiple-seeds.pdf: scripts/color_hist.py $(HISTOGRAM_DATA)
-	python scripts/color_hist.py -v -a
+	python3 scripts/color_hist.py -v -a
 
 plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory

@@ -17,7 +17,7 @@ parser.add_argument('-s', '--show', dest = 'show', action='store_true', default 
 parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False,
                     help = 'generate plots for all paper_histogram_stepping_data files')
 parser.add_argument('-c', '--colormap', dest = 'cmap', action='store', type=str,
-                    default='plasma', help='set color map for plots')
+                    default='viridis', help='set color map for plots')
 
 
 args = parser.parse_args()
