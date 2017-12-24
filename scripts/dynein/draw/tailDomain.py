@@ -14,4 +14,4 @@ with open("tail.py", "w") as f:
     f.write("from numpy import array \n")
     f.write("array= %s" %repr(tail))
 
-print 'All done!'
+print('All done!')

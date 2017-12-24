@@ -43,10 +43,10 @@ generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
 
 ######### draw module stuff ##########
 scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
-	cd scripts/dynein/draw && python2 create_MD_array.py
+	cd scripts/dynein/draw && python create_MD_array.py
 
 scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
-	cd scripts/dynein/draw && python2 tailDomain.py
+	cd scripts/dynein/draw && python tailDomain.py
 
 ######### data ##########
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
