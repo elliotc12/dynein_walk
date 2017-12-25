@@ -3,26 +3,20 @@ image: facio/dynein_walk
 build:
   stage: build
   script:
-    - cd reorganize
     - pwd
     - make
     - pwd
     - make clean
     - make
-    - mkdir -p ../public
-    - cp public/* ../public/
   artifacts:
     paths:
       - public
-      - reorganize/public
 
 pages:
   stage: deploy
   script:
     - echo I already built everything...
-    - rm -rf public
-    - mv reorganize/public public
-    - ls -lh public/
+    - ls -lh public
   artifacts:
     paths:
       - public

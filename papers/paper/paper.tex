@@ -1,4 +1,4 @@
-\documentclass[9pt,twocolumn,twoside,lineno]{pnas-new}
+\documentclass[9pt,twocolumn,twoside]{pnas-new}
 % Use the lineno option to display guide line numbers if required.
 % Note that the use of elements such as single-column equations
 % may affect the guide line number alignment.
@@ -61,28 +61,40 @@ There are many relevant details about dynein which this simple model doesn't acc
 
 Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
-\subsection*{Results}
+\section{Results}
 
-\begin{figure*}%[tbhp]
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../../plots/time-vs-length-multiple-seeds}
+\caption{Histogram of duration and length of steps taken by model.}
+\label{fig:duration-length}
+\end{figure}
+
+Figure~\ref{fig:duration-length} shows the frequency of steps with
+various combination of step length and step time.  We can see that...
+
+\begin{figure}%[tbhp]
 \centering
 \includegraphics[width=\linewidth]{../../plots/paper-trajectory-plot.pdf}
 \caption{Placeholder image of a frog with a long example caption to show justification setting.}
 \label{fig:trajectory}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}%[tbhp]
+\begin{figure}%[tbhp]
 \centering
 \includegraphics[width=\linewidth]{../../plots/stepping_length_histogram_paper.pdf}
 \caption{Histogram of size of steps taken by model.}
 \label{fig:lengthhist}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}%[tbhp]
+\begin{figure}%[tbhp]
 \centering
 \includegraphics[width=\linewidth]{../../plots/stepping_time_histogram_paper.pdf}
 \caption{Histogram of duration of steps taken by model.}
 \label{fig:timehist}
-\end{figure*}
+\end{figure}
+
+
 
 \begin{table}%[tbhp]
 \centering
@@ -109,66 +121,38 @@ $\theta_t$ & $\eqt$ &  & \\
 \end{table}
 
 \begin{figure}%[tbhp]
-\centering
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-1-cryoem}
-   \label{fig:modlengths}
- \end{minipage}%
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-1-superimposed}
-   \label{fig:modlengths}
- \end{minipage}%
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-1-model}
-   \label{fig:explengths}
- \end{minipage}
- %
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-2-cryoem}
-   \label{fig:modlengths}
- \end{minipage}%
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-2-superimposed}
-   \label{fig:modlengths}
- \end{minipage}%
- \begin{minipage}{.3\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-2-model}
-   \label{fig:explengths}
- \end{minipage}
-\caption{\textbf{Model schematic superimposed on cryo-EM images of native dynein.} Native cryo-EM images of the full dimerized dynein complex composed of light, intermediate and heavy chains, from \cite{nativestructure}. Model schematics are superimposed for illustrative purpose; shown angles to not represent expected \textit{in vivo} equilibria. Schematics are shown docked to a microtubule for illustrative purposes.}
-\label{fig:modelparams}
+  \centering
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-1-cryoem}
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-1-superimposed}
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-1-model}
+
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-2-cryoem}
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-2-superimposed}
+   \includegraphics[width=0.3\columnwidth]{figures/schematic-2-model}
+   \caption{\textbf{Model schematic superimposed on cryo-EM images of
+       native dynein.} Native cryo-EM images of the full dimerized
+     dynein complex composed of light, intermediate and heavy chains,
+     from \cite{nativestructure}. Model schematics are superimposed
+     for illustrative purpose; shown angles to not represent expected
+     \textit{in vivo} equilibria. Schematics are shown docked to a
+     microtubule for illustrative purposes.}
+   \label{fig:modelparams}
 \end{figure}
 
 \begin{figure}%[tbhp]
-\centering
- \begin{minipage}{0.5\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-prestroke}
-   \label{fig:prestrokeangle}
- \end{minipage}%
- \begin{minipage}{0.5\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-poststroke}
-   \label{fig:poststrokeangle}
- \end{minipage}
- %
- \begin{minipage}{\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-binding-angle}
-   \label{fig:bindingangle}
- \end{minipage}
- \begin{minipage}{\textwidth}
-   \centering
-   \includegraphics[width=0.5\linewidth]{figures/schematic-full}
-   \label{fig:allangles}
- \end{minipage}
-\caption{\textbf{Schematic of model equilibrium angles over cryo-EM images.} \textbf{a.)} Prestroke and \textbf{b.)} poststroke dynein heavy chains superimposed with model motor angles, both from \cite{burgess-paper}. \textbf{c.)} Axonemal dynein bound to MT with model binding angle superimposed, from \cite{leschziner}. \textbf{d.} Full native dynein cryo-EM image bound to an MT with model superimposed, from \textbf{nativestructure}.}
+  \centering
+\includegraphics[width=0.5\columnwidth]{figures/schematic-prestroke}%
+\includegraphics[width=0.5\columnwidth]{figures/schematic-poststroke}\\
+\includegraphics[width=0.5\columnwidth]{figures/schematic-binding-angle}%
+\includegraphics[width=0.5\columnwidth]{figures/schematic-full}
+  \caption{\textbf{Schematic of model equilibrium angles over cryo-EM
+      images.} \textbf{a.)} Prestroke and \textbf{b.)} poststroke
+    dynein heavy chains superimposed with model motor angles, both
+    from \cite{burgess-paper}. \textbf{c.)} Axonemal dynein bound to
+    MT with model binding angle superimposed, from
+    \cite{leschziner}. \textbf{d.} Full native dynein cryo-EM image
+    bound to an MT with model superimposed, from
+    \textbf{nativestructure}.}
 \label{fig:modelangles}
 \end{figure}
 
