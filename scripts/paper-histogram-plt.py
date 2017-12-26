@@ -43,6 +43,7 @@ step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
+run_velocities = []
 
 for data_file in data_files:
     data = np.loadtxt(data_file, dtype = np.float64)
@@ -61,6 +62,10 @@ for data_file in data_files:
     onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
     bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
     step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
+
+    run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
+
+print("velocities: ", run_velocities)
 
 num_steps = len(step_lengths)
 
@@ -138,18 +143,20 @@ plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
 #step time histogram
-fig = plt.figure()
+fig = plt.figure(figsize=(8, 8), dpi=300)
 plt.rc('text', usetex=True)
 
-gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1])
 ax2 = fig.add_subplot(gs[2])
+ax3 = fig.add_subplot(gs[3])
 
 if len(step_times) > 0:
     ax0.hist(step_times, bins=50)
     ax1.hist(onebound_times, bins=50)
     ax2.hist(bothbound_times, bins=50)
+    ax3.hist(run_velocities, bins=50)
 
 ax0.set_title("Step times")
 ax0.set_ylabel("Frequency")
@@ -163,6 +170,10 @@ ax2.set_title("bothbound times (theory: 0.011s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
 ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+ax3.set_title("velocities (theory: 700nm/s)")
+ax3.set_xlabel("velocity (nm/s)")
+ax3.set_ylabel("Frequency")
 
 plt.gcf().suptitle(
     raw_run_conditions +
