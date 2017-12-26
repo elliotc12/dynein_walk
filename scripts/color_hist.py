@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import argparse
 import os, glob
@@ -110,7 +112,7 @@ def getCounts(X, Y):
 
 def plotCounts(x, y, graph_label, x_label, y_label, filename=None):
     x_bins, y_bins, counts = getCounts(x, y)
-    print('counts', np.sum(counts), len(x))
+    # print('counts', np.sum(counts), len(x))
 
     if VERBOSE: print("graphing")
     plt.figure()

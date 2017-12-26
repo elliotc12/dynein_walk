@@ -82,7 +82,7 @@ plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scrip
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
 plots/time-vs-length-multiple-seeds.pdf: scripts/color_hist.py $(HISTOGRAM_DATA)
-	python3 scripts/color_hist.py -v -a
+	python3 scripts/color_hist.py -a
 
 plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory

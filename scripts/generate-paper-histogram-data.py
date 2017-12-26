@@ -4,7 +4,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 0.8
+runtime = 1e-3
 
 os.system("make generate_stepping_data")
 
@@ -19,9 +19,9 @@ else:
 label = "paperhisto"
 
 basename = run.sim(**{"k_b": 1e10,
-                      "k_ub": 100,
+                      "k_ub": 1e10,
                       "cb": 0.1,
-                      "cm": 0.5,
+                      "cm": 0.4,
                       "ct": 0.2,
                       "ls": 10.49, # from urnavicius 2015 (paper.bib)
                       "lt": 23.8,  # from urnavicius 2015
