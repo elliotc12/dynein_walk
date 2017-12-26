@@ -65,8 +65,6 @@ for data_file in data_files:
 
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
-print("velocities: ", run_velocities)
-
 num_steps = len(step_lengths)
 
 step_times = onebound_times + bothbound_times
