@@ -75,10 +75,9 @@ else:
         unbind_times = np.array(data[:,0])
         near_positions = np.around(np.array(data[:,2]), decimals=7)
         far_positions = np.around(np.array(data[:,3]), decimals=7)
-        # near_step_idxs = near_positions[1:] != near_positions[:-1]
-        # far_step_idxs = far_positions[1:] != far_positions[:-1]
         near_step_lens = (near_positions[1:] - near_positions[:-1])  #still want zero step lengths
         far_step_lens = (far_positions[1:] - far_positions[:-1])
+
         onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
         bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
         step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))

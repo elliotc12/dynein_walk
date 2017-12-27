@@ -43,6 +43,7 @@ step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
+step_times = []
 run_velocities = []
 
 for data_file in data_files:
@@ -52,28 +53,26 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = np.around(np.array(data[:,2]), decimals=7)
+    near_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
     far_positions = np.around(np.array(data[:,3]), decimals=7)
-    near_step_idxs = near_positions[1:] != near_positions[:-1]
-    far_step_idxs = far_positions[1:] != far_positions[:-1]
-    near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
-    far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
+    near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
+    far_step_lens = far_positions[1:] - far_positions[:-1]
 
-    onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
-    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
-    step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
-
+    onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
+    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
+    step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
+    step_times = np.concatenate((step_times, onebound_times + bothbound_times))
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
-num_steps = len(step_lengths)
-
-step_times = onebound_times + bothbound_times
-
-for i in range(len(near_step_idxs)):
-    if near_step_idxs[i] == far_step_idxs[i]:
-        print("Error. For a single step either both feet moved, or neither"\
+    for i in range(len(near_step_lens)):
+        if (near_step_lens[i]==0.0) == (far_step_lens[i]==0):
+            print("near_step_lens[i]: ", near_step_lens[i])
+            print("far_step_lens[i]: ", far_step_lens[i])
+            print("Error. For a single step either both feet moved, or neither"\
               " did. This indicates either an error in step logging or step reading.")
-        exit(1)
+            exit(1)
+
+num_steps = len(step_lengths)
 
 t_step = []
 t_ob = []
