@@ -8,6 +8,7 @@ if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
 #import draw.balls as cartoon
+import datetime
 import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
@@ -125,15 +126,16 @@ if len(step_lengths) == 0:
 plt.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=True, stacked=True)
 if (len(step_lengths) > 0):
     plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+
+plt.scatter([np.mean(step_lengths)], [0], label=raw_run_conditions + r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
+
 plt.legend(loc="upper right")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 
-plt.scatter([np.mean(step_lengths)], [0])
-
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
@@ -174,7 +176,7 @@ ax3.set_ylabel("Frequency")
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
 plt.subplots_adjust(hspace=0.6)
@@ -195,7 +197,7 @@ plt.gca().set_xlim((1e-7, 1e-2))
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
 plt.savefig("plots/paper-stepping-dynamics-scatterplot-ob.pdf")
@@ -213,7 +215,7 @@ plt.gca().set_xlim((1e-5, 1))
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
 plt.savefig("plots/paper-stepping-dynamics-scatterplot-bb.pdf")

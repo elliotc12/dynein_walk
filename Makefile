@@ -76,6 +76,13 @@ plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pd
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
 
+testplots: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
+	python3 scripts/paper-histogram-plt.py
+	mv plots/stepping_length_histogram.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-length.pdf
+	mv plots/stepping_time_histogram.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-time.pdf
+	mv plots/paper-stepping-dynamics-scatterplot-ob.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-obblen.pdf
+	mv plots/paper-stepping-dynamics-scatterplot-bb.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-bblen.pdf
+
 plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
 	python3 scripts/make_stepping_plots.py $*
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
