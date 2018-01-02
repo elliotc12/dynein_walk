@@ -18,7 +18,7 @@ parser.add_argument("-p", "--notpaper", help="Not making paper plot", action="st
 args = parser.parse_args()
 
 basename = run.sim(**{"k_b": 1e9, # 1e9
-                      "k_ub": 1e8, # 100
+                      "k_ub": 100, # 100
                       "cb": args.cb, # 0.1
                       "cm": args.cm, # 0.4
                       "ct": args.ct, # 0.2
