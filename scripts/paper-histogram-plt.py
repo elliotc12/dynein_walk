@@ -7,7 +7,7 @@ import time, signal, sys, os, matplotlib, subprocess, re
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-#import draw.balls as cartoon
+import argparse
 import datetime
 import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
@@ -16,28 +16,45 @@ from matplotlib.patches import Rectangle
 
 import io
 
-tail = 'tail' in sys.argv
+parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
-usage = '''
-Usage: python2 %s BASE_FILENAME [show]"
-       show: show plot in a window
-       note: BASE_FILENAME is typically something like data/paper or data/thesis to
-             which _movie_data.txt or similar is appended.
-''' % (sys.argv[0])
+parser.add_argument('-b', '--basename', dest = 'custom_basename', action='store', type= str,
+                    default="", help='data file basename')
 
-parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
+args = parser.parse_args()
+
+parameters_filename = ""
+if args.custom_basename != "":
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("stepping_parameters_" + args.custom_basename in fname):
+                parameters_filename = "data/" + fname
+                break
+    assert(parameters_filename != "")
+    print("found filename: ", parameters_filename)
+else:
+    parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
 
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data_files = []
-for fname in os.listdir("data/"):
-    if os.path.isfile("data/" + fname):
-        if ("data/paper_histogram_stepping_data" in "data/" + fname):
-            data_files.append("data/" + fname)
+if args.custom_basename != "":
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("stepping_data_" + args.custom_basename in fname):
+                data_files.append("data/" + fname)
+else:
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("paper_histogram_stepping_data" in fname):
+                data_files.append("data/" + fname)
 
 if len(data_files) == 0:
-    print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
+    if args.custom_basename != "":
+        print("No files of form data/stepping_data_" + args.custom_basename + "*.txt found. Exiting.")
+    else:
+        print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
     exit(1)
 
 step_times = []
@@ -138,7 +155,10 @@ plt.gcf().suptitle(
     r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_stepping_length_histogram.pdf", format="pdf")
+else:
+    plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
 #step time histogram
@@ -182,7 +202,10 @@ plt.gcf().suptitle(
 plt.subplots_adjust(hspace=0.6)
 
 plt.show()
-plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_stepping_time_histogram.pdf", format="pdf")
+else:
+    plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
 # OB_time vs step_length scatter
@@ -200,7 +223,10 @@ plt.gcf().suptitle(
     r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/paper-stepping-dynamics-scatterplot-ob.pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_ob-vs-length-scatter.pdf", format="pdf")
+else:
+    plt.savefig("plots/ob-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
 
 # BB_time vs step_length scatter
@@ -218,5 +244,8 @@ plt.gcf().suptitle(
     r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/paper-stepping-dynamics-scatterplot-bb.pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_bb-vs-length-scatter.pdf", format="pdf")
+else:
+    plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
