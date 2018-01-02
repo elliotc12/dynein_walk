@@ -14,7 +14,7 @@ parser.add_argument("-b", "--cb", type=float, help="Manually set the cb value, d
 parser.add_argument("-m", "--cm", type=float, help="Manually set the cm value, default=0.4", default=0.4)
 parser.add_argument("-t", "--ct", type=float, help="Manually set the ct value, default=0.2", default=0.2)
 parser.add_argument("-l", "--label", type=str, help="Manually set the label", default="paperhisto")
-parser.add_argument("-p", "--notpaper", type=bool, help="Not making paper plot", default=False)
+parser.add_argument("-p", "--notpaper", help="Not making paper plot", action="store_true")
 args = parser.parse_args()
 
 basename = run.sim(**{"k_b": 1e9, # 1e9

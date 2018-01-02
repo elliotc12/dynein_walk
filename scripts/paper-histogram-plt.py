@@ -31,7 +31,6 @@ if args.custom_basename != "":
                 parameters_filename = "data/" + fname
                 break
     assert(parameters_filename != "")
-    print("found filename: ", parameters_filename)
 else:
     parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
 
