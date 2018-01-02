@@ -6,8 +6,11 @@ os.system("mkdir -p plots/springsearch")
 seeds = [1, 2, 3, 4]
 
 sims = []
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.01"})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.1"})
 sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.2"})
-sims.append({"cb" : "0.01", "cm" : "0.4", "ct" : "0.2"})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.3"})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.4"})
 
 simnum = 0
 
