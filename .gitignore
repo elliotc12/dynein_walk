@@ -25,6 +25,8 @@
 *motor_domain.py
 *tail.py
 
+*~
+
 generate_stepping_data
 
 data/*.txt
