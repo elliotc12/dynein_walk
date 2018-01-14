@@ -6,16 +6,16 @@ os.system("mkdir -p plots/springsearch")
 seeds = [1, 2, 3, 4]
 
 sims = []
-sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.05", "num" : 5})
-sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.8" , "num" : 6})
-sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.12" , "num" : 7})
-sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.15" , "num" : 8})
-sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.6" , "num" : 9})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.6", "kub" : "1000",  "num" : 19})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.6", "kub" : "3000",  "num" : 20})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.6", "kub" : "5000",  "num" : 21})
+sims.append({"cb" : "0.1", "cm" : "0.4", "ct" : "0.6", "kub" : "10000", "num" : 22})
 
 for sim in sims:
     for s in seeds:
         os.system("rq run --job-name springsearch-" + str(sim["num"]) \
                   + " python3 scripts/generate-paper-histogram-data.py" \
+                  + " --kub " + sim["kub"] \
                   + " --cb " + sim["cb"] \
                   + " --cm " + sim["cm"] \
                   + " --ct " + sim["ct"] \

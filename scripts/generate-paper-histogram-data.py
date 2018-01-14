@@ -14,14 +14,16 @@ parser.add_argument("-b", "--cb", type=float, help="Manually set the cb value, d
 parser.add_argument("-m", "--cm", type=float, help="Manually set the cm value, default=0.4", default=0.4)
 parser.add_argument("-t", "--ct", type=float, help="Manually set the ct value, default=0.2", default=0.2)
 parser.add_argument("-l", "--label", type=str, help="Manually set the label", default="paperhisto")
+parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=3e9)
+parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding rate", default=1000)
 parser.add_argument("-p", "--notpaper", help="Not making paper plot", action="store_true")
 args = parser.parse_args()
 
-basename = run.sim(**{"k_b": 1e9, # 1e9
-                      "k_ub": 100, # 100
-                      "cb": args.cb, # 0.1
-                      "cm": args.cm, # 0.4
-                      "ct": args.ct, # 0.2
+basename = run.sim(**{"k_b": args.kb, # 3e9?
+                      "k_ub": args.kub, # 1000?
+                      "cb": args.cb, # 0.1?
+                      "cm": args.cm, # 0.4?
+                      "ct": args.ct, # 0.2?
                       "ls": 10.49, # from urnavicius 2015 (paper.bib)
                       "lt": 23.8,  # from urnavicius 2015
                       "eqb": 120,  # from redwine 2012 supplemental
