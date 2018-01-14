@@ -14,12 +14,9 @@ all: generate_stepping_data public $(DRAW)
 .PHONY: clean public
 
 ######### SRC stuff ##########
-src/version-info.h: SHELL:=/bin/bash
 src/version-info.h: .git/refs/heads/master $(wildcard src/*.cpp) Makefile
-	UNAMESTR=$$(uname); if [[ "$$UNAMESTR" == 'Linux' ]]; then \
 	echo -n static const char '*version' = '"' > src/version-info.h~; \
-	git describe --dirty --tags | tr -d '\n' >> src/version-info.h~; \
-	echo '";' >> src/version-info.h~; \
+	echo -n `date` '";' >> src/version-info.h~; \
 	if cmp src/version-info.h src/version-info.h~; then \
 		rm src/version-info.h~; \
 	else \
@@ -27,9 +24,6 @@ src/version-info.h: .git/refs/heads/master $(wildcard src/*.cpp) Makefile
 		diff -u src/version-info.h src/version-info.h~; \
 		mv src/version-info.h~ src/version-info.h; \
 	fi; \
-	elif [[ "$$UNAMESTR" == 'Darwin' ]]; then \
-	    echo 'static const char *version = "mac-breaks-version-stuff";' > src/version-info.h; \
-	fi;
 
 build/%.o: src/%.cpp $(HEADERS)
 	$(CXX) -c $^ $(CPPFLAGS)
