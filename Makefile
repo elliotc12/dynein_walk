@@ -3,7 +3,7 @@ LIBRARIES = -lm
 
 PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
-HEADERS = $(wildcard src/*.h) src/version-info.h
+HEADERS = $(wildcard src/*.h)
 
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
@@ -14,17 +14,6 @@ all: generate_stepping_data public $(DRAW)
 .PHONY: clean public
 
 ######### SRC stuff ##########
-src/version-info.h: .git/refs/heads/master $(wildcard src/*.cpp) Makefile
-	echo -n static const char '*version' = '"' > src/version-info.h~; \
-	echo -n `date` '";' >> src/version-info.h~; \
-	if cmp src/version-info.h src/version-info.h~; then \
-		rm src/version-info.h~; \
-	else \
-		echo new version needed; \
-		diff -u src/version-info.h src/version-info.h~; \
-		mv src/version-info.h~ src/version-info.h; \
-	fi; \
-
 build/%.o: src/%.cpp $(HEADERS)
 	$(CXX) -c $^ $(CPPFLAGS)
 	mkdir -p build
@@ -32,7 +21,7 @@ build/%.o: src/%.cpp $(HEADERS)
 
 generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
 			build/dynein_struct_onebound.o build/dynein_struct_bothbound.o \
-			build/utilities.o src/version-info.h
+			build/utilities.o
 	$(CXX) -o generate_stepping_data $^
 
 ######### draw module stuff ##########
@@ -122,7 +111,6 @@ public: $(PAPERS)
 
 clean:
 	rm -f build/*.o
-	rm -f src/version-info.h
 	rm -f generate_stepping_data
 	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc

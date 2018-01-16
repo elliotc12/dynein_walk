@@ -12,7 +12,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "version-info.h"
 #include "default_parameters.h"
 #include "dynein_struct.h"
 #include "simulation_defaults.h"
@@ -531,7 +530,6 @@ int main(int argc, char** argv) {
   }
 
   printf("\n\n\n*********%s*********\n", run_name);
-  fprintf(job_msg.stepping_data_file, "\n# version: %s\n", version);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
   fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
 
