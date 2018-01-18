@@ -70,7 +70,7 @@ else:
 
     for data_file in data_files:
         data = np.loadtxt(data_file)
-
+        if VERBOSE: print("file found: ", data_file)
         bind_times = np.array(data[:,1])
         unbind_times = np.array(data[:,0])
         near_positions = np.around(np.array(data[:,2]), decimals=7)
