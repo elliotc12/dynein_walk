@@ -17,6 +17,8 @@ double variable_ts_checkpoint_time;
 int variable_ts_rewinding_state = false;
 double variable_ts_base_dt;
 
+double total_attempts = 0;
+
 void simulate(double runtime, double rand_seed, State init_state, double* init_position,
 	      void (*job)(void* dyn, State s, void *job_msg, data_union* job_data,
 	      long long iteration), void *job_msg, data_union* job_data) {
@@ -149,10 +151,11 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	     accept_step = dyn_ob->update_velocities();
 
 	     attempts++;
+	     total_attempts += 1;
 	  }
-	  if (attempts > 1) {
-	    printf("NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
-	  }
+	  // if (attempts > 1) {
+	  //   printf("NaN avoiding code: (onebound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
+	  // }
 	}
       }
 
@@ -245,11 +248,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	    dyn_bb->set_fma(temp_fma);
 
 	    accept_step = dyn_bb->update_velocities();
-	    attempts++; 
+	    attempts++;
+	    total_attempts += 1;
 	  }
-	  if (attempts > 1) {
-	    printf("NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
-	  }
+	  // if (attempts > 1) {
+	  //   printf("NaN avoiding code: (bothbound) At time t=%g, took %d attempts to timestep without NaNs\n", t, attempts);
+	  // }
 	}
       }
     }
@@ -260,6 +264,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   }
 
   printf("Simulation exited successfully.\n");
+  printf("Executed %f NaN retries.\n", total_attempts);
 
  end_simulation:
   delete rand;
