@@ -90,6 +90,14 @@ const bool am_avoiding_sub_MT = true;
 
 const bool crash_on_nan = true;
 
+typedef enum {
+  STATIC,
+  GIBBS_FULL,
+  GIBBS_BD
+} TRANSITION_MODES;
+
+extern TRANSITION_MODES binding_mode;
+
 #ifdef __APPLE__    // OSX <fenv.h> does not have feenableexcept
 void feenableexcept(int x);
 #endif

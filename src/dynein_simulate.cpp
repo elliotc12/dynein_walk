@@ -27,12 +27,12 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
     feenableexcept(FE_ALL_EXCEPT);      // NaN generation kills program
     signal(SIGFPE, FPE_signal_handler);
   }
-  
+
   MTRand* rand = new MTRand(rand_seed);
 
   Dynein_onebound *dyn_ob;
   Dynein_bothbound *dyn_bb;
-  
+
   if (init_state == BOTHBOUND) {
     dyn_ob = NULL;
     dyn_bb = new Dynein_bothbound(

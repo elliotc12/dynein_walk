@@ -325,14 +325,10 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"eqmpre",   required_argument,    0, 'q'},
       {"eqmpost",  required_argument,    0, 'r'},
       {"eqt",      required_argument,    0, 's'},
-      // {"runtime",  required_argument,    0, 'n'},
-      // {"runtime",  required_argument,    0, 'o'},
-      // {"runtime",  required_argument,    0, 'p'},
-      // {"runtime",  required_argument,    0, 'q'},
-      // {"runtime",  required_argument,    0, 'r'},
       {"nomovie",  no_argument, (int*) am_making_movie, 0},
       {"crash-movie", no_argument, (int*) &am_only_writing_on_crash, true},
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
+      {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {0, 0, 0, 0}
     };
 
