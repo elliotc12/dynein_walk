@@ -16,6 +16,11 @@ from matplotlib.patches import Rectangle
 
 import io
 
+EPSILON = 1e-7
+
+def equal(f1, f2):
+    return abs(f1-f2) < EPSILON
+
 parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
 parser.add_argument('-b', '--basename', dest = 'custom_basename', action='store', type= str,
@@ -63,6 +68,11 @@ step_lengths = []
 step_times = []
 run_velocities = []
 
+alternating_passing = 0
+alternating_not_passing = 0
+not_alternating_passing = 0
+not_alternating_not_passing = 0
+
 for data_file in data_files:
     data = np.loadtxt(data_file, dtype = np.float64)
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
@@ -81,8 +91,36 @@ for data_file in data_files:
     step_times = np.concatenate((step_times, onebound_times + bothbound_times))
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
+    assert(len(near_positions) > 10)
+    for s in range(2, len(near_positions)):
+        if equal(near_positions[s], near_positions[s-1]) == equal(far_positions[s], far_positions[s-1]):
+            print("Error, either neither or both feet moved in a step")
+            exit(1)
+        elif not equal(near_positions[s], near_positions[s-1]): #must've been a near step
+            if not equal(near_positions[s-1], near_positions[s-2]): # not alternating
+                if near_positions[s-1] < far_positions[s-1] and near_positions[s] > far_positions[s]:
+                    not_alternating_passing += 1
+                else:
+                    not_alternating_not_passing += 1
+            else:
+                if near_positions[s-1] < far_positions[s-1] and near_positions[s] > far_positions[s]:
+                    alternating_passing += 1
+                else:
+                    alternating_not_passing += 1
+        else: # far step
+            if not equal(far_positions[s-1], far_positions[s-2]): # not alternating
+                if far_positions[s-1] < near_positions[s-1] and far_positions[s] > near_positions[s]:
+                    not_alternating_passing += 1
+                else:
+                    not_alternating_not_passing += 1
+            else:
+                if far_positions[s-1] < near_positions[s-1] and far_positions[s] > near_positions[s]:
+                    alternating_passing += 1
+                else:
+                    alternating_not_passing += 1
+
     for i in range(len(near_step_lens)):
-        if (near_step_lens[i]==0.0) == (far_step_lens[i]==0):
+        if (near_step_lens[i]==0.0) == (far_step_lens[i]==0.0):
             print("near_step_lens[i]: ", near_step_lens[i])
             print("far_step_lens[i]: ", far_step_lens[i])
             print("Error. For a single step either both feet moved, or neither"\
@@ -247,4 +285,34 @@ if args.custom_basename != "":
     plt.savefig("plots/springsearch/" + args.custom_basename + "_bb-vs-length-scatter.pdf", format="pdf")
 else:
     plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
+plt.close(fig)
+
+fig = plt.figure(figsize=(8, 6), dpi=300)
+plt.rc('text', usetex=True)
+
+gs = gridspec.GridSpec(1, 3, width_ratios=[1, 1, 1])
+ax1 = fig.add_subplot(gs[0])
+ax2 = fig.add_subplot(gs[1])
+ax3 = fig.add_subplot(gs[2])
+
+width = 0.5
+
+ax1.bar([0, 1], [alternating_passing + alternating_not_passing, not_alternating_passing + not_alternating_not_passing,], width)
+ax1.set_ylabel('frequency')
+ax1.set_xticks([0, 1])
+ax1.set_xticklabels(('alternating', 'not\nalternating'), rotation=45)
+
+ax2.bar([0, 1], [alternating_passing + not_alternating_passing, alternating_not_passing + not_alternating_not_passing,], width)
+ax2.set_ylabel('frequency')
+ax2.set_xticks([0, 1])
+ax2.set_xticklabels(('passing', 'not passing'), rotation=45)
+
+ax3.bar([0, 1, 2, 3], [alternating_passing, alternating_not_passing, not_alternating_passing, not_alternating_not_passing,], width)
+ax3.set_ylabel('frequency')
+ax3.set_xticks([0, 1, 2, 3])
+ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'not alternating,\n passing', 'not alternating,\n not passing'), rotation=45)
+
+plt.tight_layout()
+
+plt.savefig("plots/stepping_analysis.pdf", format="pdf")
 plt.close(fig)
