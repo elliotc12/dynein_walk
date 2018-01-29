@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import argparse
 import os
@@ -20,7 +22,7 @@ parser.add_argument('-s', '--show', dest = 'show', action='store_true', default 
 parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False,
                     help = 'generate plots for all paper_histogram_stepping_data files')
 parser.add_argument('-c', '--colormap', dest = 'cmap', action='store', type=str,
-                    default='plasma', help='set color map for plots')
+                    default='viridis', help='set color map for plots')
 
 
 args = parser.parse_args()
@@ -71,15 +73,14 @@ else:
 
     for data_file in data_files:
         data = np.loadtxt(data_file)
-
+        if VERBOSE: print("file found: ", data_file)
         bind_times = np.array(data[:,1])
         unbind_times = np.array(data[:,0])
         near_positions = np.around(np.array(data[:,2]), decimals=7)
         far_positions = np.around(np.array(data[:,3]), decimals=7)
-        # near_step_idxs = near_positions[1:] != near_positions[:-1]
-        # far_step_idxs = far_positions[1:] != far_positions[:-1]
         near_step_lens = (near_positions[1:] - near_positions[:-1])  #still want zero step lengths
         far_step_lens = (far_positions[1:] - far_positions[:-1])
+
         onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
         bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
         step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
@@ -113,7 +114,7 @@ def getCounts(X, Y):
 
 def plotCounts(x, y, graph_label, x_label, y_label, filename=None):
     x_bins, y_bins, counts = getCounts(x, y)
-    print('counts', np.sum(counts), len(x))
+    # print('counts', np.sum(counts), len(x))
 
     if VERBOSE: print("graphing")
     plt.figure()

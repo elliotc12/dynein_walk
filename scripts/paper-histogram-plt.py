@@ -7,7 +7,8 @@ import time, signal, sys, os, matplotlib, subprocess, re
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
 
-#import draw.balls as cartoon
+import argparse
+import datetime
 import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
@@ -15,34 +16,52 @@ from matplotlib.patches import Rectangle
 
 import io
 
-tail = 'tail' in sys.argv
+parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
-usage = '''
-Usage: python2 %s BASE_FILENAME [show]"
-       show: show plot in a window
-       note: BASE_FILENAME is typically something like data/paper or data/thesis to
-             which _movie_data.txt or similar is appended.
-''' % (sys.argv[0])
+parser.add_argument('-b', '--basename', dest = 'custom_basename', action='store', type= str,
+                    default="", help='data file basename')
 
-parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
+args = parser.parse_args()
+
+parameters_filename = ""
+if args.custom_basename != "":
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("stepping_parameters_" + args.custom_basename in fname):
+                parameters_filename = "data/" + fname
+                break
+    assert(parameters_filename != "")
+else:
+    parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
 
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data_files = []
-for fname in os.listdir("data/"):
-    if os.path.isfile("data/" + fname):
-        if ("data/paper_histogram_stepping_data" in "data/" + fname):
-            data_files.append("data/" + fname)
+if args.custom_basename != "":
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("stepping_data_" + args.custom_basename in fname):
+                data_files.append("data/" + fname)
+else:
+    for fname in os.listdir("data/"):
+        if os.path.isfile("data/" + fname):
+            if ("paper_histogram_stepping_data" in fname):
+                data_files.append("data/" + fname)
 
 if len(data_files) == 0:
-    print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
+    if args.custom_basename != "":
+        print("No files of form data/stepping_data_" + args.custom_basename + "*.txt found. Exiting.")
+    else:
+        print("Error, no files of form data/paper_histogram_stepping_data*.txt found. Exiting.")
     exit(1)
 
 step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
+step_times = []
+run_velocities = []
 
 for data_file in data_files:
     data = np.loadtxt(data_file, dtype = np.float64)
@@ -51,26 +70,26 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = np.around(np.array(data[:,2]), decimals=7)
+    near_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
     far_positions = np.around(np.array(data[:,3]), decimals=7)
-    near_step_idxs = near_positions[1:] != near_positions[:-1]
-    far_step_idxs = far_positions[1:] != far_positions[:-1]
-    near_step_lens = (near_positions[1:] - near_positions[:-1])[near_step_idxs]
-    far_step_lens = (far_positions[1:] - far_positions[:-1])[far_step_idxs]
+    near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
+    far_step_lens = far_positions[1:] - far_positions[:-1]
 
-    onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
-    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
-    step_lengths = np.concatenate((step_lengths, near_step_lens, far_step_lens))
+    onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
+    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
+    step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
+    step_times = np.concatenate((step_times, onebound_times + bothbound_times))
+    run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
+
+    for i in range(len(near_step_lens)):
+        if (near_step_lens[i]==0.0) == (far_step_lens[i]==0):
+            print("near_step_lens[i]: ", near_step_lens[i])
+            print("far_step_lens[i]: ", far_step_lens[i])
+            print("Error. For a single step either both feet moved, or neither"\
+              " did. This indicates either an error in step logging or step reading.")
+            exit(1)
 
 num_steps = len(step_lengths)
-
-step_times = onebound_times + bothbound_times
-
-for i in range(len(near_step_idxs)):
-    if near_step_idxs[i] == far_step_idxs[i]:
-        print("Error. For a single step either both feet moved, or neither"\
-              " did. This indicates either an error in step logging or step reading.")
-        exit(1)
 
 t_step = []
 t_ob = []
@@ -123,33 +142,39 @@ if len(step_lengths) == 0:
 plt.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=True, stacked=True)
 if (len(step_lengths) > 0):
     plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+
+plt.scatter([np.mean(step_lengths)], [0], label=raw_run_conditions + r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
+
 plt.legend(loc="upper right")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 
-plt.scatter([np.mean(step_lengths)], [0])
-
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_stepping_length_histogram.pdf", format="pdf")
+else:
+    plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
 #step time histogram
-fig = plt.figure()
+fig = plt.figure(figsize=(8, 8), dpi=300)
 plt.rc('text', usetex=True)
 
-gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1])
 ax2 = fig.add_subplot(gs[2])
+ax3 = fig.add_subplot(gs[3])
 
 if len(step_times) > 0:
     ax0.hist(step_times, bins=50)
     ax1.hist(onebound_times, bins=50)
     ax2.hist(bothbound_times, bins=50)
+    ax3.hist(run_velocities, bins=50)
 
 ax0.set_title("Step times")
 ax0.set_ylabel("Frequency")
@@ -164,15 +189,22 @@ ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
 ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
+ax3.set_title("velocities (theory: 700nm/s)")
+ax3.set_xlabel("velocity (nm/s)")
+ax3.set_ylabel("Frequency")
+
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
 plt.subplots_adjust(hspace=0.6)
 
 plt.show()
-plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_stepping_time_histogram.pdf", format="pdf")
+else:
+    plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
 # OB_time vs step_length scatter
@@ -187,10 +219,13 @@ plt.gca().set_xlim((1e-7, 1e-2))
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/paper-stepping-dynamics-scatterplot-ob.pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_ob-vs-length-scatter.pdf", format="pdf")
+else:
+    plt.savefig("plots/ob-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
 
 # BB_time vs step_length scatter
@@ -205,8 +240,11 @@ plt.gca().set_xlim((1e-5, 1))
 
 plt.gcf().suptitle(
     raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, runtime: \runtime$',
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
 
-plt.savefig("plots/paper-stepping-dynamics-scatterplot-bb.pdf")
+if args.custom_basename != "":
+    plt.savefig("plots/springsearch/" + args.custom_basename + "_bb-vs-length-scatter.pdf", format="pdf")
+else:
+    plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)

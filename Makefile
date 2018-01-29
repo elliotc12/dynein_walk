@@ -3,7 +3,7 @@ LIBRARIES = -lm
 
 PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
-HEADERS = $(wildcard src/*.h) src/version-info.h
+HEADERS = $(wildcard src/*.h)
 
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
@@ -14,23 +14,6 @@ all: generate_stepping_data public $(DRAW)
 .PHONY: clean public
 
 ######### SRC stuff ##########
-src/version-info.h: SHELL:=/bin/bash
-src/version-info.h: .git/refs/heads/master $(wildcard src/*.cpp) Makefile
-	UNAMESTR=$$(uname); if [[ "$$UNAMESTR" == 'Linux' ]]; then \
-	echo -n static const char '*version' = '"' > src/version-info.h~; \
-	git describe --dirty --tags | tr -d '\n' >> src/version-info.h~; \
-	echo '";' >> src/version-info.h~; \
-	if cmp src/version-info.h src/version-info.h~; then \
-		rm src/version-info.h~; \
-	else \
-		echo new version needed; \
-		diff -u src/version-info.h src/version-info.h~; \
-		mv src/version-info.h~ src/version-info.h; \
-	fi; \
-	elif [[ "$$UNAMESTR" == 'Darwin' ]]; then \
-	    echo 'static const char *version = "mac-breaks-version-stuff";' > src/version-info.h; \
-	fi;
-
 build/%.o: src/%.cpp $(HEADERS)
 	$(CXX) -c $^ $(CPPFLAGS)
 	mkdir -p build
@@ -38,15 +21,15 @@ build/%.o: src/%.cpp $(HEADERS)
 
 generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
 			build/dynein_struct_onebound.o build/dynein_struct_bothbound.o \
-			build/utilities.o src/version-info.h
+			build/utilities.o
 	$(CXX) -o generate_stepping_data $^
 
 ######### draw module stuff ##########
 scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
-	cd scripts/dynein/draw && python2 create_MD_array.py
+	cd scripts/dynein/draw && python create_MD_array.py
 
 scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
-	cd scripts/dynein/draw && python2 tailDomain.py
+	cd scripts/dynein/draw && python tailDomain.py
 
 ######### data ##########
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
@@ -67,22 +50,29 @@ plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-
 
 plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: scripts/make_stepping_plots.py data/thesis_stepping_data.txt
 	python3 scripts/make_stepping_plots.py data/thesis_stepping_data.txt
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 HISTOGRAM_DATA = $(wildcard data/paper_histogram_stepping_data*.txt)
 plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
 	python3 scripts/paper-histogram-plt.py
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
+
+testplots: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
+	python3 scripts/paper-histogram-plt.py
+	mv plots/stepping_length_histogram.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-length.pdf
+	mv plots/stepping_time_histogram.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-time.pdf
+	mv plots/paper-stepping-dynamics-scatterplot-ob.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-obblen.pdf
+	mv plots/paper-stepping-dynamics-scatterplot-bb.pdf plots/`date '+%Y-%m-%d-%H:%M:%S'`-bblen.pdf
 
 plots/stepping_time_histogram_%.pdf plots/stepping_length_histogram_%.pdf: scripts/make_stepping_plots.py $(HISTOGRAM_DATA)
 	python3 scripts/make_stepping_plots.py $*
-	mv -u plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
-	mv -u plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
+	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_$*.pdf
+	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_$*.pdf
 
 plots/time-vs-length-multiple-seeds.pdf: scripts/color_hist.py $(HISTOGRAM_DATA)
-	python scripts/color_hist.py -v -a
+	python3 scripts/color_hist.py -a
 
 plots/paper-trajectory-plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
@@ -121,7 +111,6 @@ public: $(PAPERS)
 
 clean:
 	rm -f build/*.o
-	rm -f src/version-info.h
 	rm -f generate_stepping_data
 	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
