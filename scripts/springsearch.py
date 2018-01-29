@@ -3,10 +3,10 @@ import os
 
 os.system("mkdir -p plots/springsearch")
 
-seeds = [1, 2, 3, 4, 5, 6, 7]
+seeds = [1]
 
 sims = []
-sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "1e16", "kub" : "4250",  "num" : 47})
+sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "1e16", "kub" : "4250",  "num" : 48})
 
 for sim in sims:
     for s in seeds:
