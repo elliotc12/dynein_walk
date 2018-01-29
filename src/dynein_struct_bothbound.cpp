@@ -669,12 +669,20 @@ bool Dynein_bothbound::update_velocities() {
 double Dynein_bothbound::get_near_unbinding_rate() {
   if (binding_mode == GIBBS_FULL) {
     if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
-    double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
+    double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
     double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
     return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
   }
   else if (binding_mode == STATIC) {
     return low_affinity_unbinding_rate;
+  }
+  else if (binding_mode == GIBBS_BD) {
+    if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
+    double dG_spring_BD;
+    double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
+    dG_spring_BD = pow(get_nma() - bb_binding_equilibrium, 2)*cm/2.0;
+    if (isnan(dG_spring_BD)) return 0.0;
+    return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);
   }
   return 0.0;
 }
@@ -682,12 +690,20 @@ double Dynein_bothbound::get_near_unbinding_rate() {
 double Dynein_bothbound::get_far_unbinding_rate() {
   if (binding_mode == GIBBS_FULL) {
     if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
-    double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
+    double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
     double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
     return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
   }
   else if (binding_mode == STATIC) {
     return low_affinity_unbinding_rate;
+  }
+  else if (binding_mode == GIBBS_BD) {
+    if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
+    double dG_spring_BD;
+    double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
+    dG_spring_BD = pow(get_fma() - bb_binding_equilibrium, 2)*cm/2.0;
+    if (isnan(dG_spring_BD)) return 0.0;
+    return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);
   }
   return 0.0;
 }

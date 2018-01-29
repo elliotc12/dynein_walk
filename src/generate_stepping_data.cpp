@@ -537,7 +537,7 @@ int main(int argc, char** argv) {
   onebound_equilibrium_angles eq = onebound_post_powerstroke_internal_angles;
   double init_position[] = {eq.bba,
 			    eq.bma - M_PI + eq.bba,
-			    eq.ta + eq.bma - M_PI + eq.bba,
+			    eq.ta + eq.bma - M_PI + eq.bba + 0.00001,
 			    eq.ta + eq.bma + eq.bba - eq.uma,
 			    0.0, 0.0};
 

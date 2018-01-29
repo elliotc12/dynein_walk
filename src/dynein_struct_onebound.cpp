@@ -1029,6 +1029,8 @@ bool Dynein_onebound::update_velocities() {
 	Power(AA,6)*Power(BB,3)*CC*KK*OO -
 	Power(AA,6)*Power(BB,3)*CC*DD*VV));
 
+  // printf("specs: nby: %g, nmy: %g, ty: %g, umy: %g, uby: %g\n", get_bby(), get_bmy(), get_ty(), get_umy(), get_uby());
+
   if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or get_uby() < 0.0)) {
   // if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {
     // printf("Onebound domain under MT, retrying...\n");
@@ -1049,6 +1051,17 @@ double Dynein_onebound::get_binding_rate() {
     }
     else if (binding_mode == STATIC) {
       return low_affinity_binding_rate;
+    }
+    else if (binding_mode == GIBBS_BD) {
+      if (am_debugging_conversions) printf("Creating bothbound from onebound to test energy\n");
+      double dG_spring_BD;
+      double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
+      if (state == NEARBOUND)
+	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_fma() - bb_binding_equilibrium), 2)*cm/2.0;
+      else
+	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_nma() - bb_binding_equilibrium), 2)*cm/2.0;
+      if (isnan(dG_spring_BD)) return 0.0;
+      return low_affinity_binding_rate * exp(-dG_spring_BD/kb/T);
     }
   }
   return 0.0;

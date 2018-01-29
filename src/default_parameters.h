@@ -53,7 +53,7 @@ double REBINDING_IMMUNITY_TIME = 0; // s
 
 double RAND_INIT_SEED = 0;
 
-TRANSITION_MODES binding_mode = STATIC;
+TRANSITION_MODES binding_mode = GIBBS_BD;
 
 bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;
