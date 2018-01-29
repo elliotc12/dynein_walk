@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
-import os, glob
+import os
+import glob
+
 
 parser = argparse.ArgumentParser(description = 'Script to generate 2 dimensional histogram from dynein stepping data')
 
