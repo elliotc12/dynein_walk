@@ -668,16 +668,18 @@ bool Dynein_bothbound::update_velocities() {
 
 double Dynein_bothbound::get_near_unbinding_rate() {
   if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
-  double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
-  double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
-  return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
+  //double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
+  //double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
+  //return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
+  return low_affinity_unbinding_rate;
 }
 
 double Dynein_bothbound::get_far_unbinding_rate() {
   if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
-  double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
-  double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
-  return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
+  // double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
+  // double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
+  // return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
+  return low_affinity_unbinding_rate;
 }
 
 /*** Set positions, velocities and forces ***/
