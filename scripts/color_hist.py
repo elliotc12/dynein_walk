@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import argparse
 import os
@@ -146,5 +146,6 @@ plotCounts(step_times, step_lengths,
 # plt.title("what it should look like")
 
 
-if SHOW: plt.show()
+if SHOW:
+    plt.show()
 if VERBOSE: print("finished")
