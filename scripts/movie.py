@@ -101,8 +101,10 @@ savefigframe = 0
 
 signal.signal(signal.SIGINT, close_windows)
 
-ax.set_xlim(data[0][7]-view_width, data[0][7]+view_width)
+ax.set_xlim(data[-1][7]-view_width, data[-1][7]+view_width)
 ax.set_ylim(-view_height, view_height)
+
+print("setting view to: %d, %g" % (data[0][7]-view_width, data[0][7]+view_width))
 
 num_steps = 0
 previous_state = data[0][0]
@@ -118,6 +120,8 @@ while i < len(data):
   fma_scaling = min(max(1 - (data[i][5]) / (kbT), 0), 1)
   fba_scaling = min(max(1 - (data[i][6]) / (kbT), 0), 1)
 
+  print("time: %g, zx[0]: %g" % (data[i][1], data[i][7]))
+
   if (pe_coloring == True):
     binding1.set_color((nba_scaling, 1, nba_scaling))
     motor1.set_color((nma_scaling, 1, nma_scaling))
@@ -130,10 +134,10 @@ while i < len(data):
   Fx = data[i][17:27:2]
   Fy = data[i][18:28:2]
 
-  if X[0] > view_width:
-      X = X - view_width
-  elif X[0] < -view_width:
-      X = X + view_width
+  # if X[0] > view_width:
+  #     X = X - view_width
+  # elif X[0] < -view_width:
+  #     X = X + view_width
 
   stalk1.set_data([ X[0], X[1] ], [ Y[0], Y[1] ])
   tail1.set_data([ X[1], X[2] ], [ Y[1], Y[2] ])
