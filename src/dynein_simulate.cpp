@@ -121,15 +121,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false; 
 	  int attempts = 0;
 
-	  const int max_attempts = 100000;
+	  // const int max_attempts = 1000000000;
 	  while(!accept_step){
-	    if (attempts > max_attempts) {
-	      printf("Over %d attempts needed to avoid a NaN state in onebound, something must be wrong. Exiting.\n",
-                     max_attempts);
-	      fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
-                      max_attempts);
-	      exit(1);
-	    }
+	    // if (attempts > max_attempts) {
+	    //   printf("Over %d attempts needed to avoid a NaN state in onebound, something must be wrong. Exiting.\n",
+            //          max_attempts);
+	    //   fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+            //           max_attempts);
+	    //   if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+	    //   exit(1);
+	    // }
+	    if (attempts % 1000 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
 	    if(attempts > 0){
 	      dyn_ob->set_bba(old_bba);
 	      dyn_ob->set_bma(old_bma);
@@ -226,15 +228,17 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false;
 	  int attempts = 0;
 
-	  const int max_attempts = 100000;
+	  // const int max_attempts = 1000000000;
 	  while(!accept_step){
-	    if (attempts > max_attempts) {
-	      printf("Over %d attempts needed to avoid a NaN state in bothbound, something must be wrong. Exiting.\n",
-                     max_attempts);
-	      fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
-                      max_attempts);
-	      exit(1);
-	    }
+	    // if (attempts > max_attempts) {
+	    //   printf("Over %d attempts needed to avoid a NaN state in bothbound, something must be wrong. Exiting.\n",
+            //          max_attempts);
+	    //   fprintf(stderr, "Over %d attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
+            //           max_attempts);
+	    //   if (am_only_writing_on_crash) on_crash_write_movie_buffer();
+	    //   exit(1);
+	    // }
+	    if (attempts % 1000 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
 	    if(attempts > 0){
 	      dyn_bb->set_nma(old_nma);
 	      dyn_bb->set_fma(old_fma);
