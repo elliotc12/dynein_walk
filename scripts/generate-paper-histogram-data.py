@@ -4,7 +4,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1
+runtime = 3e-3
 
 os.system("make generate_stepping_data")
 
@@ -31,7 +31,7 @@ basename = run.sim(**{"k_b": args.kb, # 6e9?
                       "eqmpost": 224, # from burgess 2002, 360-136
                       "eqt": 0,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": runtime,
-                      "framerate": 1, "crash-movie": False})
+                      "framerate": 1e-10, "crash-movie": False, "nomovie": True})
 
 if not args.notpaper:
     os.system("mv data/stepping_data_%s.txt data/paper_histogram_stepping_data-%s.txt" % (basename, args.seed))

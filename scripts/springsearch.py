@@ -6,7 +6,7 @@ os.system("mkdir -p plots/springsearch")
 seeds = [1]
 
 sims = []
-sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "1e16", "kub" : "4250",  "num" : 48})
+sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "4e10", "kub" : "1000",  "num" : 55})
 
 for sim in sims:
     for s in seeds:
