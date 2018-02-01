@@ -680,7 +680,7 @@ double Dynein_bothbound::get_near_unbinding_rate() {
     if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
     double dG_spring_BD;
     double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
-    dG_spring_BD = pow(get_nba() - bb_binding_equilibrium, 2)*cm/2.0;
+    dG_spring_BD = pow(get_nba() - bb_binding_equilibrium, 2)*cb/2.0;
     // printf("near unbinding energy = %g, probability per ts = %g\n", dG_spring_BD, low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T)*dt);
     if (isnan(dG_spring_BD)) return 0.0;
     return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);
@@ -702,7 +702,7 @@ double Dynein_bothbound::get_far_unbinding_rate() {
     if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
     double dG_spring_BD;
     double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
-    dG_spring_BD = pow(get_fba() - bb_binding_equilibrium, 2)*cm/2.0;
+    dG_spring_BD = pow(get_fba() - bb_binding_equilibrium, 2)*cb/2.0;
     // printf("far unbinding energy = %g, probability per ts = %g\n", dG_spring_BD, low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T)*dt);
     if (isnan(dG_spring_BD)) return 0.0;
     return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);
