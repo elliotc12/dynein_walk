@@ -64,9 +64,11 @@ def sim(**run):
     if not os.path.exists('runlogs'):
         os.makedirs('runlogs') 
     out = open('runlogs/' + basename + '.out', 'w')
+    print("Running: ", " ".join(cmd), file=out)
+    out.flush()
+    print("Running: ", " ".join(cmd))
     process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
     # process_object = subprocess.Popen(cmd, stdout=out, stderr=out)
-    print("Running: ", " ".join(cmd))
     err = process_object.communicate()[1]
 
     if (err != b''):
