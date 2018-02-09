@@ -1049,7 +1049,7 @@ double Dynein_onebound::get_binding_rate() {
       if (isnan(dG_spring)) return 0.0;
       return low_affinity_binding_rate * exp(-dG_spring/kb/T);
     }
-    else if (binding_mode == STATIC) {
+    else if (binding_mode == EXPONENTIAL_UNBINDING) {
       return low_affinity_binding_rate;
     }
     else if (binding_mode == GIBBS_BD) {
