@@ -40,6 +40,8 @@ double dt = 1e-10;
 
 double low_affinity_binding_rate = 180; //s^-1
 double low_affinity_unbinding_rate = 460; //s^-1
+
+double exponential_unbinding_angle_constant = 1; // radian^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
 
@@ -53,7 +55,7 @@ double REBINDING_IMMUNITY_TIME = 0; // s
 
 double RAND_INIT_SEED = 0;
 
-TRANSITION_MODES binding_mode = GIBBS_BD;
+TRANSITION_MODES binding_mode = EXPONENTIAL_UNBINDING;
 
 bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;

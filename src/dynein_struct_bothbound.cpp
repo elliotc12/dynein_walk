@@ -667,20 +667,18 @@ bool Dynein_bothbound::update_velocities() {
 }
 
 double Dynein_bothbound::get_near_unbinding_rate() {
+  const double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
   if (binding_mode == GIBBS_FULL) {
     if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
     double dG_spring = Dynein_onebound(this, rand, FARBOUND).get_PE() - get_PE();
     double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
     return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
-  }
-  else if (binding_mode == STATIC) {
-    return low_affinity_unbinding_rate;
-  }
-  else if (binding_mode == GIBBS_BD) {
+  } else if (binding_mode == EXPONENTIAL_UNBINDING) {
+    return low_affinity_unbinding_rate
+      *exp(exponential_unbinding_angle_constant*(get_nba() - bb_binding_equilibrium));
+  } else if (binding_mode == GIBBS_BD) {
     if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
-    double dG_spring_BD;
-    double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
-    dG_spring_BD = pow(get_nba() - bb_binding_equilibrium, 2)*cm/2.0;
+    double dG_spring_BD = pow(get_nba() - bb_binding_equilibrium, 2)*cb/2.0;
     // printf("near unbinding energy = %g, probability per ts = %g\n", dG_spring_BD, low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T)*dt);
     if (isnan(dG_spring_BD)) return 0.0;
     return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);
@@ -689,20 +687,18 @@ double Dynein_bothbound::get_near_unbinding_rate() {
 }
 
 double Dynein_bothbound::get_far_unbinding_rate() {
+  const double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
   if (binding_mode == GIBBS_FULL) {
     if (am_debugging_conversions) printf("Creating a onebound from bothbound to test energy\n");
     double dG_spring = Dynein_onebound(this, rand, NEARBOUND).get_PE() - get_PE();
     double low_affinity_unbinding_preexponential_factor = low_affinity_unbinding_rate / exp(1.0);
     return low_affinity_unbinding_preexponential_factor*exp(-dG_spring/kb/T);
-  }
-  else if (binding_mode == STATIC) {
-    return low_affinity_unbinding_rate;
-  }
-  else if (binding_mode == GIBBS_BD) {
+  } else if (binding_mode == EXPONENTIAL_UNBINDING) {
+    return low_affinity_unbinding_rate
+      *exp(exponential_unbinding_angle_constant*(get_fba() - bb_binding_equilibrium));
+  } else if (binding_mode == GIBBS_BD) {
     if (am_debugging_conversions) printf("Creating onebound from bothbound to test energy\n");
-    double dG_spring_BD;
-    double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
-    dG_spring_BD = pow(get_fba() - bb_binding_equilibrium, 2)*cm/2.0;
+    double dG_spring_BD = pow(get_fba() - bb_binding_equilibrium, 2)*cb/2.0;
     // printf("far unbinding energy = %g, probability per ts = %g\n", dG_spring_BD, low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T)*dt);
     if (isnan(dG_spring_BD)) return 0.0;
     return low_affinity_unbinding_rate * exp(dG_spring_BD/kb/T);

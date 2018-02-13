@@ -209,23 +209,26 @@ ax2 = fig.add_subplot(gs[2])
 ax3 = fig.add_subplot(gs[3])
 
 if len(step_times) > 0:
-    ax0.hist(step_times, bins=50)
-    ax1.hist(onebound_times, bins=50)
-    ax2.hist(bothbound_times, bins=50)
+    ax0.hist(step_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+    ax1.hist(onebound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+    ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
     ax3.hist(run_velocities, bins=50)
 
 ax0.set_title("Step times")
 ax0.set_ylabel("Frequency")
-ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax0.set_xscale('log')
+# ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax1.set_title("onebound times (theory: 6e-5)")
 ax1.set_ylabel("Frequency")
-ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax1.set_xscale('log')
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax2.set_title("bothbound times (theory: 0.011s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
-ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax2.set_xscale('log')
+# ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 ax3.set_title("velocities (theory: 700nm/s)")
 ax3.set_xlabel("velocity (nm/s)")

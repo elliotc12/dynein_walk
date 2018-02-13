@@ -1049,7 +1049,7 @@ double Dynein_onebound::get_binding_rate() {
       if (isnan(dG_spring)) return 0.0;
       return low_affinity_binding_rate * exp(-dG_spring/kb/T);
     }
-    else if (binding_mode == STATIC) {
+    else if (binding_mode == EXPONENTIAL_UNBINDING) {
       return low_affinity_binding_rate;
     }
     else if (binding_mode == GIBBS_BD) {
@@ -1057,9 +1057,9 @@ double Dynein_onebound::get_binding_rate() {
       double dG_spring_BD;
       double bb_binding_equilibrium = bothbound_pre_powerstroke_internal_angles.nba;
       if (state == NEARBOUND)
-	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_fma() - bb_binding_equilibrium), 2)*cm/2.0;
+	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_fba() - bb_binding_equilibrium), 2)*cb/2.0;
       else
-	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_nma() - bb_binding_equilibrium), 2)*cm/2.0;
+	dG_spring_BD = Power((Dynein_bothbound(this, rand, true).get_nba() - bb_binding_equilibrium), 2)*cb/2.0;
       if (isnan(dG_spring_BD)) return 0.0;
       return low_affinity_binding_rate * exp(-dG_spring_BD/kb/T);
     }

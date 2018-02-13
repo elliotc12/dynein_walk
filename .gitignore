@@ -34,3 +34,6 @@ data/*.tex
 
 plots/*
 runlogs/*
+
+.#*
+.nfs*
