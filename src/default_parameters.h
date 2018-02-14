@@ -48,7 +48,7 @@ double exponential_unbinding_angle_constant = 1; // radian^-1
 /* double binding_fraction = 1e-6; */
 
 double MICROTUBULE_REPULSION_FORCE = 0.0; // N/nm
-double MICROTUBULE_BINDING_DISTANCE = 0.2; // nm
+double MICROTUBULE_BINDING_DISTANCE = 0.01; // nm
 
 //double REBINDING_IMMUNITY_TIME = 1e-8; // s
 double REBINDING_IMMUNITY_TIME = 0; // s
