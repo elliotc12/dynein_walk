@@ -1,0 +1,13 @@
+# File for keeping track of simulation parameters we have tried to fit
+# and some data about each one. Hashtag is to keep the file loadable as a
+# csv file
+#
+#
+# Parameters used but not changed
+#--ls 10.49 --lt 23.8 --cb 0.1 --cm 0.4 --ct 0.2 --dt 1e-10  --seed 1 --framerate 1e-10 --eqb 120 --eqmpre 200 --eqmpost 224 --eqt 0 --nomovie
+#
+#
+# k_b,    k_ub,    runtime,   exp_binding_constant,    max ob time,    min ob time,    max bb time,    min bb time,    max nb step,    min nb step,    max fb step,    min fb step, total steps, nbx disp, fbx disp
+#
+#
+#
