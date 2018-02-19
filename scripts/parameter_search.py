@@ -6,9 +6,9 @@ import glob
 import numpy as np
 
 
-k_b = 1e20
-k_ub = 1e20
-runtime = 0.01
+k_b = 300000000.0
+k_ub = 50
+runtime = 0.5
 exp_binding_constant = 0
 
 if os.path.exists('parameter_search.py'):
