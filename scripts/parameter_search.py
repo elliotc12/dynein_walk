@@ -75,6 +75,11 @@ fb_disp = far_positions[-1]-far_positions[0]
 
 print("Writing to testedParameters.txt")
 
+if not os.path.exists("data/testedParameters.txt"):
+    os.chdir("/data")
+    os.system("touch testedParameters.txt")
+    os.chdir("../")
+
 with open("data/testedParameters.txt", "a") as file:
     file.write(k_b, k_ub, runtime, exp_binding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp)
 
