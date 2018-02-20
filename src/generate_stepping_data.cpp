@@ -94,7 +94,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if ((last_state == NEARBOUND or last_state == FARBOUND) and !am_in_initial_partial_step) {
-      fprintf(data_file, "%.15e %.15e %.15e %.15e\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      fprintf(data_file, "%13.10g %13.10g %18.15g %18.15g\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
       fflush(data_file);
       NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
@@ -330,6 +330,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {"exp-binding", no_argument, (int*) &binding_mode, EXPONENTIAL_UNBINDING},
+      {"exp-binding-constant",      required_argument,    0, 't'},
       {0, 0, 0, 0}
     };
 
@@ -408,6 +409,10 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     case 's':
       onebound_post_powerstroke_internal_angles.ta = strtod(optarg, NULL) * M_PI / 180.0;
       bothbound_pre_powerstroke_internal_angles.ta = strtod(optarg, NULL) * M_PI / 180.0;
+      break;
+    case 't':
+      exponential_unbinding_angle_constant = strtod(optarg, NULL);
+      printf("unbinding exponential constant: %g\n", exponential_unbinding_angle_constant);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
