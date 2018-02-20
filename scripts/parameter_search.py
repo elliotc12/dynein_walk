@@ -6,8 +6,8 @@ import glob
 import numpy as np
 
 
-k_b = 1e9
-k_ub = 10
+k_b = 1e8
+k_ub = 100
 runtime = 0.5
 exp_binding_constant = 0
 
