@@ -83,7 +83,7 @@ if not os.path.exists("data/testedParameters.txt"):
 
 
 with open("data/testedParameters.txt", "a") as file:
-    file.write("{0}, \t{1}, \t{2}, \t{3}, \t{4}, \t{5}, \t{6}, \t{7}, \t{8}, \t{9}, \t{10}, \t{11}, \t{12}, \t{13}, \t{14}".format(k_b, k_ub, runtime, exp_binding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
+    file.write("{0}, \t{1}, \t{2}, \t{3}, \t{4}, \t{5}, \t{6}, \t{7}, \t{8}, \t{9}, \t{10}, \t{11}, \t{12}, \t{13}, \t{14}\n".format(k_b, k_ub, runtime, exp_binding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
 
 print(os.getcwd())
 os.chdir("data/")
