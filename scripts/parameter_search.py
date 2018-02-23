@@ -9,7 +9,7 @@ import numpy as np
 k_b = 1e8
 k_ub = 100
 runtime = 1.0
-exp_binding_constant = 10.0
+exp_binding_constant = 100.0
 
 if os.path.exists('parameter_search.py'):
     os.chdir('../')
