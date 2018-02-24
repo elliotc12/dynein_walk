@@ -6,19 +6,19 @@ import glob
 import numpy as np
 import argparse
 
-parser = argparse.ArgumentParser(description="script to generate stepping"
+parser = argparse.ArgumentParser(description="script to generate stepping "
                                  "data for specified parameters and record stepping statistics")
 
 parser.add_argument('-k_b', '--binding', dest='k_b', action='store', type=float,
-                    default=1e8)
+                    default=1e8, help="pre-exponential binding constant", metavar='')
 parser.add_argument('-k_ub', '--unbinding', dest='k_ub', action='store', type=float,
-                    default=100)
+                    default=100, help="pre-exponential unbinding constant", metavar='')
 parser.add_argument('-t', '--runtime', dest='runtime', action='store', type=float,
-                    default=1.0, help='total runtime for simulation in seconds')
+                    default=1.0, help='total runtime for simulation in seconds', metavar='')
 parser.add_argument('-exp', '--exp-unbinding-constant', dest='exp_unbinding_constant',
-                    action='store', type=float, default=0.0)
+                    action='store', type=float, default=0.0, help="exponential unbinding constant", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
-                    default='data/testedParameters.txt')
+                    default='data/testedParameters.txt', help=".txt file for logging stepping statistics", metavar='')
 
 args = parser.parse_args()
 
