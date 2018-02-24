@@ -35,9 +35,8 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
 	python3 scripts/generate-thesis-data.py
 
-# Taken out of make, added data file to repository:
-# data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py
-# 	python3 scripts/generate-paper-trajectory-data.py
+data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py
+	python3 scripts/generate-paper-trajectory-data.py
 
 # Taken out of make, added data file to repository:
 # data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py
@@ -53,8 +52,10 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
-HISTOGRAM_DATA = $(wildcard data/paper_histogram_stepping_data*.txt)
-plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/stepping_analysis_paper.pdf: scripts/paper-histogram-plt.py $(HISTOGRAM_DATA)
+STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
+PAPER_DATA = $(STATIC_DATA)
+
+plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/stepping_analysis_paper.pdf: scripts/paper-histogram-plt.py $(STATIC_DATA)
 	python3 scripts/paper-histogram-plt.py
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
@@ -84,9 +85,8 @@ plots/paper-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py $(D
 	mv plots/movie.mp4 plots/paper-movie.mp4
 
 ######### papers ##########
-SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
-FIGURES = $(patsubst %.svg,%.pdf,$(SVG_FIGURES))
-ALL_FIGURES = $(FIGURES) $(THESIS-PLOTS) $(PAPER-PLOTS)
+PAPER_SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
+PAPER-FIGURES = $(patsubst %.svg,%.pdf,$(PAPER_SVG_FIGURES))
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
@@ -97,11 +97,11 @@ papers/paper/figures/%.pdf: papers/paper/figures/%.svg
 papers/fft_speedup/convolution_theorem.pdf: papers/fft_speedup/convolution_theorem.tex
 	cd papers/fft_speedup && pdflatex convolution_theorem &&  pdflatex convolution_theorem
 
-papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(ALL_FIGURES)
+papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(THESIS-PLOTS)
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
-papers/paper/paper.pdf: papers/paper/paper.tex $(ALL_FIGURES)
+papers/paper/paper.pdf: papers/paper/paper.tex $(PAPER-FIGURES) $(PAPER-PLOTS)
 	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
 
 papers/notes/notes.pdf: papers/notes/notes.tex
@@ -116,6 +116,6 @@ clean:
 	rm -f scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 	rm -f scripts/*.pyc scripts/*/*.pyc
 	rm -rf plots
-	rm -f $(ALL_FIGURES)
+	rm -f $(PAPER-FIGURES) $(THESIS-PLOTS) $(PAPER-PLOTS)
 	rm -f public/*.pdf public/*.tex
 	rm -f data/thesis_*

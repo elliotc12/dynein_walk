@@ -37,7 +37,7 @@ if args.custom_basename != "":
                 break
     assert(parameters_filename != "")
 else:
-    parameters_filename = 'data/paper_histogram_stepping_parameters.tex'
+    parameters_filename = 'data/paper_static_stepping_parameters.tex'
 
 run_conditions = open(parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
@@ -51,7 +51,7 @@ if args.custom_basename != "":
 else:
     for fname in os.listdir("data/"):
         if os.path.isfile("data/" + fname):
-            if ("paper_histogram_stepping_data" in fname):
+            if ("paper_static_stepping_data" in fname):
                 data_files.append("data/" + fname)
 
 if len(data_files) == 0:
