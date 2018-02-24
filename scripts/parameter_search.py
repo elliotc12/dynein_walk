@@ -34,7 +34,7 @@ basename = run.sim(**{"k_b": k_b,
                       "framerate": 1e-10,
                       "crash-movie": False,
                       "nomovie": True,
-                      "exp_binding_constant": exp_binding_constant})
+                      "exp-binding-constant": exp_binding_constant})
 
 
 os.chdir("data/")
