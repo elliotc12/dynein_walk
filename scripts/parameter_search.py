@@ -48,9 +48,10 @@ basename = run.sim(**{"k_b": args.k_b,
                       "nomovie": True,
                       "exp-unbinding-constant": args.exp_unbinding_constant})
 
-
+print(os.getcwd())
 dataFile = glob.glob("data/stepping_data_paramSearch*.txt")
 if len(dataFile) is not 1:
+    print(len(dataFile))
     print("Something went wrong. Make sure data was generated and that old paramSearch files have been deleted or renamed")
 
 step_times = []
