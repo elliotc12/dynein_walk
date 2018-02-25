@@ -90,7 +90,7 @@ print("logging stepping statistics")
 
 if not os.path.exists(args.logfile):
     os.system("touch {0}".format(args.logfile))
-    with open(args.logfile) as file:
+    with open(args.logfile, 'a') as file:
         s = "--ls 10.49, --lt 23.8, --cb 0.1, --cm 0.4, --ct 0.2, --dt 1e-10,  --seed 1, --framerate 1e-10, --eqb 120, --eqmpre 200, --eqmpost 224, --eqt 0, --nomovie"\
             "\n\nk_b,\tk_ub,\truntime,\texp_binding_constant,\tmax ob time,\tmin ob time,\tmax bb time,\tmin bb time,\tmax nb step,\tmin nb step,\tmax fb step,\t"\
             "min fb step,\ttotal steps,\tnbx disp,\tfbx disp"
