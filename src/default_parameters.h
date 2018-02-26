@@ -41,7 +41,7 @@ double dt = 1e-10;
 double low_affinity_binding_rate = 180; //s^-1
 double low_affinity_unbinding_rate = 460; //s^-1
 
-double exponential_unbinding_angle_constant = 1; // radian^-1
+double exponential_unbinding_angle_constant = 0; // radian^-1
 //double high_affinity_unbinding_rate = ; //s^-1
 //double high_affinity_binding_rate = ; //s^-1
 
