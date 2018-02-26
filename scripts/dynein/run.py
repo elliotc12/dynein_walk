@@ -31,6 +31,7 @@ def latex_format(x):
         x = x.replace('-', '_')
     return x
 
+
 def sim(**run):
     if 'label' in run:
       basename = "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g" % \
@@ -42,17 +43,22 @@ def sim(**run):
 
     cmd = ["./generate_stepping_data"]
 
-    for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie", "framerate", "eqb", "eqmpre", "eqmpost", "eqt"]:
-        if key in run:
+    # for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie", "framerate", "eqb", "eqmpre", "eqmpost", "eqt"]:
+    #     if key in run:
+    #         cmd.extend(["--"+key, str(run[key])])
+    # for key in ["nomovie", "onebound-debugging", "crash-movie"]:
+    #     if key in run:
+    #         if run[key] == True:
+    #             cmd.extend(["--"+key])
+    for key in run:
+        if key in ["nomovie", "onebound-debugging", "crash-movie"]:
+            cmd.extend(["--"+key])
+        else:
             cmd.extend(["--"+key, str(run[key])])
-    for key in ["nomovie", "onebound-debugging", "crash-movie"]:
-        if key in run:
-            if run[key] == True:
-                cmd.extend(["--"+key])
 
     if not os.path.exists('data'):
-        os.makedirs('data') 
-    
+        os.makedirs('data')
+
     with open("data/stepping_parameters_%s.tex" % basename, "w") as f:
         for k,v in sorted(run.items()):
             if k == "label":
