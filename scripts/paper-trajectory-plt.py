@@ -110,5 +110,5 @@ plt.gcf().suptitle(
     fontsize=14)
 
 os.system('mkdir -p plots')
-plt.savefig("plots/paper-trajectory-plot.pdf")
+plt.savefig("plots/paper_trajectory_plot.pdf")
 plt.show()
