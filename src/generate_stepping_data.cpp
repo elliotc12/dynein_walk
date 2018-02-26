@@ -29,7 +29,7 @@ bool am_debugging_onebound = false;
 long num_movie_writes = 1e7;
 // bytes per movie write: 213, 2000Mb bytes max movie size
 
-static const long MAX_FILESIZE_PERMITTED = 1<<30; // <- bit shift 
+static const long MAX_FILESIZE_PERMITTED = 1<<30; // <- bit shift
 static int NUM_STEPS = 0;
 
 void on_crash_write_movie_buffer();
@@ -212,12 +212,12 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 
       new_movie_buffer[buffer_position].fx_1 = dyn_ob_f.bbx;
       new_movie_buffer[buffer_position].fx_2 = dyn_ob_f.bmx;
-      new_movie_buffer[buffer_position].fx_3 = dyn_ob_f.tx;	
+      new_movie_buffer[buffer_position].fx_3 = dyn_ob_f.tx;
       new_movie_buffer[buffer_position].fx_4 = dyn_ob_f.umx;
       new_movie_buffer[buffer_position].fx_5 = dyn_ob_f.ubx;
       new_movie_buffer[buffer_position].fy_1 = dyn_ob_f.bby;
       new_movie_buffer[buffer_position].fy_2 = dyn_ob_f.bmy;
-      new_movie_buffer[buffer_position].fy_3 = dyn_ob_f.ty;	
+      new_movie_buffer[buffer_position].fy_3 = dyn_ob_f.ty;
       new_movie_buffer[buffer_position].fy_4 = dyn_ob_f.umy;
       new_movie_buffer[buffer_position].fy_5 = dyn_ob_f.uby;
     }
@@ -244,12 +244,12 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 
       new_movie_buffer[buffer_position].fx_1 = dyn_bb_f.nbx;
       new_movie_buffer[buffer_position].fx_2 = dyn_bb_f.nmx;
-      new_movie_buffer[buffer_position].fx_3 = dyn_bb_f.tx;	
+      new_movie_buffer[buffer_position].fx_3 = dyn_bb_f.tx;
       new_movie_buffer[buffer_position].fx_4 = dyn_bb_f.fmx;
       new_movie_buffer[buffer_position].fx_5 = dyn_bb_f.fbx;
       new_movie_buffer[buffer_position].fy_1 = dyn_bb_f.nby;
       new_movie_buffer[buffer_position].fy_2 = dyn_bb_f.nmy;
-      new_movie_buffer[buffer_position].fy_3 = dyn_bb_f.ty;	
+      new_movie_buffer[buffer_position].fy_3 = dyn_bb_f.ty;
       new_movie_buffer[buffer_position].fy_4 = dyn_bb_f.fmy;
       new_movie_buffer[buffer_position].fy_5 = dyn_bb_f.fby;
     }
@@ -330,7 +330,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {"exp-binding", no_argument, (int*) &binding_mode, EXPONENTIAL_UNBINDING},
-      {"exp-binding-constant",      required_argument,    0, 't'},
+      {"exp-unbinding-constant",      required_argument,    0, 't'},
       {0, 0, 0, 0}
     };
 
@@ -518,7 +518,7 @@ int main(int argc, char** argv) {
     job_msg.movie_data_file = fopen(movie_data_fname, "w");
     if (!job_msg.movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
-      exit(1); 
+      exit(1);
     }
     setvbuf(job_msg.movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering
     fprintf(job_msg.movie_data_file, "#State\ttime\tPE_b1\tPE_m1\tPE_t\tPE_m2\tPE_b2\t"
