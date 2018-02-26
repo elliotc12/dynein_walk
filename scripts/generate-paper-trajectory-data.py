@@ -22,7 +22,7 @@ basename  = run.sim(**{"k_b": 1e9,
                        "eqmpost": 224, # from burgess 2002, 360-136
                        "eqt": 0,
                        "dt": 1e-10, "label": "paper", "seed": 1, "runtime": runtime,
-                       "framerate": framerate, "crash-movie": False, "nomovie": False, "no-slurm": True})
+                       "framerate": framerate, "crash-movie": False, "nomovie": False})
 
 os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")
 os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_trajectory_stepping_data.txt")
