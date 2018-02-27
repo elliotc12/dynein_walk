@@ -5,10 +5,6 @@ PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf paper
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h)
 
-THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
-
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/paper_static_time_vs_length.pdf
-
 all: generate_stepping_data public $(DRAW)
 
 .PHONY: clean public
@@ -58,6 +54,8 @@ STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
 EXPONENTIAL_DATA = $(wildcard data/paper_exponential_stepping_data*.txt)
 PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf
+
 plots/paper_static_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b static
 	mv plots/stepping_length_histogram.pdf plots/paper_static_step_length_histogram.pdf
@@ -82,6 +80,8 @@ plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/pa
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 
 ######### thesis plots ##########
+THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
+
 plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-plt.py $(DRAW)
 	python3 scripts/trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
