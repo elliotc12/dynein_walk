@@ -43,16 +43,10 @@ def sim(**run):
 
     cmd = ["./generate_stepping_data"]
 
-    # for key in ["ls", "lt", "k_b", "k_ub", "cb", "cm", "ct", "T", "dt", "label", "seed", "runtime", "movie", "framerate", "eqb", "eqmpre", "eqmpost", "eqt"]:
-    #     if key in run:
-    #         cmd.extend(["--"+key, str(run[key])])
-    # for key in ["nomovie", "onebound-debugging", "crash-movie"]:
-    #     if key in run:
-    #         if run[key] == True:
-    #             cmd.extend(["--"+key])
     for key in run:
         if key in ["nomovie", "onebound-debugging", "crash-movie"]:
-            cmd.extend(["--"+key])
+            if run[key] == True:
+                cmd.extend(["--"+key])
         else:
             cmd.extend(["--"+key, str(run[key])])
 
