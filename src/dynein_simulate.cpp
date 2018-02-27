@@ -131,7 +131,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	    //   if (am_only_writing_on_crash) on_crash_write_movie_buffer();
 	    //   exit(1);
 	    // }
-	    if (attempts > 0 and attempts % 1000 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
+	    if (attempts > 0 and attempts % 10 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
 	    if(attempts > 0){
 	      dyn_ob->set_bba(old_bba);
 	      dyn_ob->set_bma(old_bma);
@@ -238,7 +238,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	    //   if (am_only_writing_on_crash) on_crash_write_movie_buffer();
 	    //   exit(1);
 	    // }
-	    if (attempts > 0 and attempts % 1000 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
+	    if (attempts > 0 and attempts % 10 == 0) printf("Taking %g rerolls to avoid a NaN velocity at time %g\n", (double) attempts, t);
 	    if(attempts > 0){
 	      dyn_bb->set_nma(old_nma);
 	      dyn_bb->set_fma(old_fma);
