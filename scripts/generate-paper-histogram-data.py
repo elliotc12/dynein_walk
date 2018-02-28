@@ -4,7 +4,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-1
+runtime = 1e-3
 
 os.system("make generate_stepping_data")
 
@@ -37,6 +37,4 @@ if not args.notpaper:
     os.system("mv data/stepping_data_%s.txt data/paper_histogram_stepping_data-%s.txt" % (basename, args.seed))
     os.system("mv data/stepping_parameters_%s.tex data/paper_histogram_stepping_parameters.tex" % basename)
 
-os.system("rm data/stepping_movie_config_%s.txt" % basename)
-os.system("rm data/stepping_movie_data_%s.txt" % basename)
 os.system("rm data/stepping_config_%s.txt" % basename)

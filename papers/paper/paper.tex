@@ -3,6 +3,8 @@
 % Note that the use of elements such as single-column equations
 % may affect the guide line number alignment.
 
+\usepackage{subcaption}
+
 % the follow ing causes latex to not wait interactively
 \nonstopmode
 
@@ -39,7 +41,7 @@ Please provide an abstract of no more than 250 words in a single paragraph. Abst
 \dates{This manuscript was compiled on \today}
 \doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
 
-\input{../../data/paper_histogram_stepping_parameters.tex}
+\input{../../data/paper_static_stepping_parameters.tex}
 
 \begin{document}
 
@@ -63,49 +65,56 @@ Several computational models have been created to explain dynein's motility. \te
 
 \section{Results}
 
-\begin{figure}
+\begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/time-vs-length-multiple-seeds}
-\caption{Histogram of duration and length of steps taken by model.}
+\includegraphics[width=\linewidth]{../../plots/paper_static_time_vs_length}
+\caption{Heatmap of relationship between step length and time.}
 \label{fig:duration-length}
 \end{figure}
 
-Figure~\ref{fig:duration-length} shows the frequency of steps with
-various combination of step length and step time.  We can see that...
-
-\begin{figure}%[tbhp]
+\begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/paper-trajectory-plot.pdf}
+\includegraphics[width=\linewidth]{../../plots/paper_trajectory_plot.pdf}
 \caption{Placeholder image of a frog with a long example caption to show justification setting.}
 \label{fig:trajectory}
 \end{figure}
 
-\begin{figure}%[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/stepping_length_histogram_paper.pdf}
-\caption{Histogram of size of steps taken by model.}
+%% \begin{figure}%[tbhp]
+%% \centering
+%% \includegraphics[width=\linewidth]{../../plots/stepping_analysis_paper.pdf}
+%% \caption{Histogram of duration of steps taken by model.}
+%% \label{fig:timehist}
+%% \end{figure}
+
+\begin{figure*}[tbhp]
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_static_step_length_histogram}
+    \subcaption{Static unbinding rate}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_exponential_step_length_histogram}
+    \subcaption{Exponential unbinding rate}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_static_foot_order_histogram}
+    \subcaption{Static unbinding rate}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_exponential_foot_order_histogram}
+    \subcaption{Exponential unbinding rate}
+  \end{subfigure}
+\caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
 \label{fig:lengthhist}
-\end{figure}
+\end{figure*}
 
-\begin{figure}%[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/stepping_time_histogram_paper.pdf}
-\caption{Histogram of duration of steps taken by model.}
-\label{fig:timehist}
-\end{figure}
-
-\begin{figure}%[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/stepping_analysis_paper.pdf}
-\caption{Histogram of duration of steps taken by model.}
-\label{fig:timehist}
-\end{figure}
-
-
-
-\begin{table}%[tbhp]
+\begin{table}[tbhp]
 \centering
 \caption{Parameters used in model simulation.}
+\label{tab:staticparams}
 \begin{tabular}{lrrr}
 Parameter & Model & Experimental & Source \\
 \midrule
@@ -114,8 +123,8 @@ $c_m$ & $\cb \Delta G_{ATP}$ &  & \\
 $c_t$ & $\ct \Delta G_{ATP}$ &  & \\
 $k_b$ & $\kb s^{-1}$&  & \\
 $k_{ub}$ & $\kub s^{-1}$ & 2.0 & \\
-$L_s$ & $\ls nm$ & \cite{nativestructure} & \\
-$L_t$ & $\lt nm$ & \cite{nativestructure} & \\
+$L_s$ & $\ls nm$ & & \cite{nativestructure}\\
+$L_t$ & $\lt nm$ & & \cite{nativestructure}\\
 $\theta_b$ & $\eqb$ &  & \\
 $\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  & \\
 $\theta_m^{\mbox{post}}$ & $\eqmpost$ &  & \\
@@ -127,7 +136,7 @@ $\theta_t$ & $\eqt$ &  & \\
 %% \addtabletext{nomenclature for the TSs refers to the numbered species in the table.}
 \end{table}
 
-\begin{figure}%[tbhp]
+\begin{figure}[tbhp]
   \centering
    \includegraphics[width=0.3\columnwidth]{figures/schematic-1-cryoem}
    \includegraphics[width=0.3\columnwidth]{figures/schematic-1-superimposed}
@@ -146,7 +155,7 @@ $\theta_t$ & $\eqt$ &  & \\
    \label{fig:modelparams}
 \end{figure}
 
-\begin{figure}%[tbhp]
+\begin{figure}[tbhp]
   \centering
 \includegraphics[width=0.5\columnwidth]{figures/schematic-prestroke}%
 \includegraphics[width=0.5\columnwidth]{figures/schematic-poststroke}\\
