@@ -54,7 +54,7 @@ STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
 EXPONENTIAL_DATA = $(wildcard data/paper_exponential_stepping_data*.txt)
 PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf
 
 plots/paper_static_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b static
@@ -63,6 +63,14 @@ plots/paper_static_step_length_histogram.pdf: scripts/make_paper_stepping_histog
 plots/paper_exponential_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b exponential
 	mv plots/stepping_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf
+
+plots/paper_static_displacement_vs_step_length.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
+	python3 scripts/make_paper_stepping_histograms.py -b static
+	mv plots/displacement_vs_step_length.pdf plots/paper_static_displacement_vs_step_length.pdf
+
+plots/paper_exponential_displacement_vs_step_length.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
+	python3 scripts/make_paper_stepping_histograms.py -b exponential
+	mv plots/displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf
 
 plots/paper_static_foot_order_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b static
