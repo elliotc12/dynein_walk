@@ -80,52 +80,52 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
-    far_positions = np.around(np.array(data[:,3]), decimals=7)
-    near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
-    far_step_lens = far_positions[1:] - far_positions[:-1]
+    near_foot_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
+    far_foot_positions = np.around(np.array(data[:,3]), decimals=7)
+    near_step_lens = near_foot_positions[1:] - near_foot_positions[:-1]  #reduces total length by one. Will include 0 step lengths
+    far_step_lens = far_foot_positions[1:] - far_foot_positions[:-1]
+
+    for s in range(1,len(near_foot_positions)):
+        assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
+        assert(not equal(near_foot_positions[s-1],near_foot_positions[s]) or not equal(far_foot_positions[s-1],far_foot_positions[s]))
+
+        if not equal(near_foot_positions[s-1],near_foot_positions[s]):
+            step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
+        if not equal(far_foot_positions[s-1],far_foot_positions[s]):
+            step_lengths.append(data[s,7]-data[s,5])
 
     onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
     bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
-    step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
     step_times = np.concatenate((step_times, onebound_times + bothbound_times))
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
-    assert(len(near_positions) > 10)
-    for s in range(2, len(near_positions)):
-        if equal(near_positions[s], near_positions[s-1]) == equal(far_positions[s], far_positions[s-1]):
+    assert(len(near_foot_positions) > 10)
+    for s in range(2, len(near_foot_positions)):
+        if equal(near_foot_positions[s], near_foot_positions[s-1]) == equal(far_foot_positions[s], far_foot_positions[s-1]):
             print("Error, either neither or both feet moved in a step")
             exit(1)
-        elif not equal(near_positions[s], near_positions[s-1]): #must've been a near step
-            if not equal(near_positions[s-1], near_positions[s-2]): # not alternating
-                if near_positions[s-1] < far_positions[s-1] and near_positions[s] > far_positions[s]:
+        elif not equal(near_foot_positions[s], near_foot_positions[s-1]): #must've been a near step
+            if not equal(near_foot_positions[s-1], near_foot_positions[s-2]): # not alternating
+                if near_foot_positions[s-1] < far_foot_positions[s-1] and near_foot_positions[s] > far_foot_positions[s]:
                     not_alternating_passing += 1
                 else:
                     not_alternating_not_passing += 1
             else:
-                if near_positions[s-1] < far_positions[s-1] and near_positions[s] > far_positions[s]:
+                if near_foot_positions[s-1] < far_foot_positions[s-1] and near_foot_positions[s] > far_foot_positions[s]:
                     alternating_passing += 1
                 else:
                     alternating_not_passing += 1
         else: # far step
-            if not equal(far_positions[s-1], far_positions[s-2]): # not alternating
-                if far_positions[s-1] < near_positions[s-1] and far_positions[s] > near_positions[s]:
+            if not equal(far_foot_positions[s-1], far_foot_positions[s-2]): # not alternating
+                if far_foot_positions[s-1] < near_foot_positions[s-1] and far_foot_positions[s] > near_foot_positions[s]:
                     not_alternating_passing += 1
                 else:
                     not_alternating_not_passing += 1
             else:
-                if far_positions[s-1] < near_positions[s-1] and far_positions[s] > near_positions[s]:
+                if far_foot_positions[s-1] < near_foot_positions[s-1] and far_foot_positions[s] > near_foot_positions[s]:
                     alternating_passing += 1
                 else:
                     alternating_not_passing += 1
-
-    for i in range(len(near_step_lens)):
-        if (near_step_lens[i]==0.0) == (far_step_lens[i]==0.0):
-            print("near_step_lens[i]: ", near_step_lens[i])
-            print("far_step_lens[i]: ", far_step_lens[i])
-            print("Error. For a single step either both feet moved, or neither"\
-              " did. This indicates either an error in step logging or step reading.")
-            exit(1)
 
 num_steps = len(step_lengths)
 
