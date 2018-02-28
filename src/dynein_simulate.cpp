@@ -65,7 +65,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
   long long iter = 0;
   State current_state = init_state;
 
-  double rebinding_immune_until = 0; // to prevent immediate rebinding in BB->OB transitions
+  // double rebinding_immune_until = 0; // to prevent immediate rebinding in BB->OB transitions
 
   bool run_indefinite;
   if (runtime == 0) {
@@ -95,7 +95,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  current_state = UNBOUND;
 	  break;
 	}
-	else if (rand->rand() < binding_prob and t > rebinding_immune_until) { // switch to bothbound
+	else if (rand->rand() < binding_prob) { // switch to bothbound
 	  dyn_bb = new Dynein_bothbound(dyn_ob, rand);
 	  if (am_debugging_state_transitions) printf("Transitioning from onebound to bothbound\n");
 	  if (am_debugging_state_transitions) printf("just bound b/c binding probability was: %g, boltzmann factor: %g\n",
@@ -193,7 +193,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  iter++;
-	  rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
+	  // rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
 	  break;
 	}
 	else if (unbind_far) { // switch to nearbound
@@ -207,7 +207,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  job(dyn_ob, current_state, job_msg, job_data, iter);
 	  t += dt;
 	  iter++;
-	  rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
+	  // rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
 	  break;
 	}
 	else { // move like normal
