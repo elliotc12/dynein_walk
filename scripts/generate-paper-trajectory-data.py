@@ -3,15 +3,15 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-4
-framerate = 1e-7
+runtime = 1e-5
+framerate = 1e-10
 
 if (runtime / framerate > 1e5):
     print("Error: runtime/framerate > 1e5; this would result in a file larger than 1e5 lines. This is too big for git; please shorten.")
     exit(1)
 
-basename  = run.sim(**{"k_b": 1e9,
-                       "k_ub": 100,
+basename  = run.sim(**{"k_b": 1e25,
+                       "k_ub": 1e9,
                        "cb": 0.1,
                        "cm": 0.5,
                        "ct": 0.2,

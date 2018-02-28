@@ -41,7 +41,7 @@ data = np.loadtxt(data_filename)
 plot_length = min(int(5e6), len(data[:,0]))
 data = data[:plot_length, :]
 
-num_points = 100
+num_points = 300
 if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
     exit(0)
@@ -60,7 +60,7 @@ for p in sample_points:
         nbxs[i] = data[p,7]
         fbxs[i] = data[p,15]
         fbys[i] = data[p,16]
-    elif int(data[i,0]) == 1:
+    elif int(data[p,0]) == 1:
         nbxs[i] = data[p,15]
         fbxs[i] = data[p,7]
         nbys[i] = data[p,16]
@@ -85,7 +85,8 @@ plt.setp([ax0.get_xticklabels()], visible=False)
 
 # x projection
 ax0.set_ylabel("x-projection (nm)")
-ax0.set_ylim(y_min_xproj-1,y_max_xproj+1)
+# ax0.set_ylim(y_min_xproj-1,y_max_xproj+1)
+ax0.set_ylim(-150,150)
 plt.setp(ax0.get_xticklabels(), visible=False)
 
 ax0.plot(times, nbxs, label="near foot", c='b')
@@ -101,6 +102,7 @@ ax1.set_ylim(y_min_yproj-1,y_max_yproj+1)
 
 ax1.plot(times, nbys, label="near foot", c='b')
 ax1.plot(times, fbys, label="far foot", c='r')
+ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 gs.tight_layout(fig, pad=2)
 

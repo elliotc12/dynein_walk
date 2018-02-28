@@ -4,7 +4,7 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-1
+runtime = 1e-3
 
 os.system("make generate_stepping_data")
 
