@@ -75,7 +75,7 @@ not_alternating_not_passing = 0
 
 for data_file in data_files:
     data = np.loadtxt(data_file, dtype = np.float64)
-    if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
+    if len(data) < 6 or str(type(data[0])) == "<type 'numpy.float64'>":
         continue
 
     bind_times = np.array(data[:,1])
@@ -89,9 +89,10 @@ for data_file in data_files:
     bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
     step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
     step_times = np.concatenate((step_times, onebound_times + bothbound_times))
-    run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
+    run_velocities.append((data[-1,2] + data[-1,3]) / 2.0 / data[-1,1])
+    print("latest position: %g, %g, time: %g, velocity: %g" % (data[-1,2], data[-1,3], data[-1,1], (data[-1,2] + data[-1,3]) / 2.0 / data[-1,1]))
 
-    assert(len(near_positions) > 10)
+    assert(len(near_positions) > 5)
     for s in range(2, len(near_positions)):
         if equal(near_positions[s], near_positions[s-1]) == equal(far_positions[s], far_positions[s-1]):
             print("Error, either neither or both feet moved in a step")
