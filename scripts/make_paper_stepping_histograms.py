@@ -65,6 +65,7 @@ step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
+initial_displacements = []
 step_times = []
 run_velocities = []
 
@@ -91,8 +92,10 @@ for data_file in data_files:
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):
             step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
+            initial_displacements.append(data[s,5]-data[s,4])
         if not equal(far_foot_positions[s-1],far_foot_positions[s]):
             step_lengths.append(data[s,7]-data[s,5])
+            initial_displacements.append(data[s,4]-data[s,5])
 
     onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
     bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
@@ -276,6 +279,20 @@ plt.gcf().suptitle(
     fontsize=14)
 
 plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
+plt.close(fig)
+
+# initial displacement vs motor step length scatter
+fig = plt.figure()
+plt.scatter(initial_displacements, step_lengths)
+plt.xlabel("Initial motor displacement (stepping - unstepping) (nm)")
+plt.ylabel("Step length (nm)")
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
+    fontsize=14)
+
+plt.savefig("plots/displacement_vs_step_length.pdf", format="pdf")
 plt.close(fig)
 
 fig = plt.figure(figsize=(8, 6), dpi=300)
