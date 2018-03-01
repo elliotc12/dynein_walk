@@ -90,22 +90,37 @@ Several computational models have been created to explain dynein's motility. \te
   \begin{subfigure}{0.5\textwidth}
     \centering
     \includegraphics[width=\linewidth]{../../plots/paper_static_step_length_histogram}
-    \subcaption{Static unbinding rate}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \centering
     \includegraphics[width=\linewidth]{../../plots/paper_exponential_step_length_histogram}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_static_foot_order_histogram}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_exponential_foot_order_histogram}
+  \end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_vs_step_length}
+    \subcaption{Static unbinding rate}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_vs_step_length}
     \subcaption{Exponential unbinding rate}
   \end{subfigure}
-\caption{Histogram of size of steps taken by model.}
+\caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
 \label{fig:lengthhist}
 \end{figure*}
-
-
 
 \begin{table}[tbhp]
 \centering
 \caption{Parameters used in model simulation.}
+\label{tab:staticparams}
 \begin{tabular}{lrrr}
 Parameter & Model & Experimental & Source \\
 \midrule
@@ -114,8 +129,8 @@ $c_m$ & $\cb \Delta G_{ATP}$ &  & \\
 $c_t$ & $\ct \Delta G_{ATP}$ &  & \\
 $k_b$ & $\kb s^{-1}$&  & \\
 $k_{ub}$ & $\kub s^{-1}$ & 2.0 & \\
-$L_s$ & $\ls nm$ & \cite{nativestructure} & \\
-$L_t$ & $\lt nm$ & \cite{nativestructure} & \\
+$L_s$ & $\ls nm$ & & \cite{nativestructure}\\
+$L_t$ & $\lt nm$ & & \cite{nativestructure}\\
 $\theta_b$ & $\eqb$ &  & \\
 $\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  & \\
 $\theta_m^{\mbox{post}}$ & $\eqmpost$ &  & \\

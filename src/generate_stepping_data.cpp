@@ -89,12 +89,15 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   static State  last_state = NEARBOUND;
   static double first_bothbound_iteration = 0;
   static double last_bothbound_iteration = 0;
+  static double last_bothbound_nmx = 0;
+  static double last_bothbound_fmx = 0;
   static bool am_in_initial_partial_step = true;
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if ((last_state == NEARBOUND or last_state == FARBOUND) and !am_in_initial_partial_step) {
-      fprintf(data_file, "%13.10g %13.10g %18.15g %18.15g\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx());
+      fprintf(data_file, "%13.10g %13.10g %18.15g %18.15g %18.15g %18.15g %18.15g %18.15g\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx(),
+	      last_bothbound_nmx, last_bothbound_fmx, dyn_bb->get_nmx(), dyn_bb->get_fmx());
       fflush(data_file);
       NUM_STEPS++;
       if (display_step_info) printf("\nSwitched to BB at %.1f%%!\n", ((double)iteration)/max_iteration*100);
@@ -106,6 +109,8 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
     }
 
     last_bothbound_iteration = iteration;
+    last_bothbound_nmx = dyn_bb->get_nmx();
+    last_bothbound_fmx = dyn_bb->get_fmx();
     last_state = BOTHBOUND;
   }
   else if (s == NEARBOUND) {
@@ -533,8 +538,7 @@ int main(int argc, char** argv) {
 
   printf("\n\n\n*********%s*********\n", run_name);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
-  fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx, fbx\n");
-
+  fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind\n");
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
     exit(errno);
