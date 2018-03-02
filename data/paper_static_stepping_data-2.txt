@@ -1,7 +1,0 @@
-# command line: ./generate_stepping_data --k_b 40000000000.0 --k_ub 1000.0 --cb 0.1 --cm 1.5 --ct 0.6 --ls 10.49 --lt 23.8 --eqb 120 --eqmpre 200 --eqmpost 224 --eqt 0 --dt 1e-10 --label springsearch-57 --seed 2 --runtime 0.1 --framerate 1e-10 --nomovie
-
-
-
-#********springsearch-57__k_b-4e+10,k_ub-1000,cb-0.1,cm-1.5,ct-0.6,ls-10.49,lt-23.8,seed-2,dt-1e-10********
-#time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind
-#[time: 0]
