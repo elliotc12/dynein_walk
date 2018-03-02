@@ -62,6 +62,18 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, S
     uba = old_dynein->get_nba();
   }
 
+  while (bba < 0)      bba += 2*M_PI;
+  while (bba > 2*M_PI) bba -= 2*M_PI;
+
+  while (bma < 0)      bma += 2*M_PI;
+  while (bma > 2*M_PI) bma -= 2*M_PI;
+
+  while (uma < 0)      uma += 2*M_PI;
+  while (uma > 2*M_PI) uma -= 2*M_PI;
+
+  while (uba < 0)      uba += 2*M_PI;
+  while (uba > 2*M_PI) uba -= 2*M_PI;
+
   internal_testcase = NULL;
   brownian_testcase = NULL;
 

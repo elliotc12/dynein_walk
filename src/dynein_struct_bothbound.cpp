@@ -115,6 +115,12 @@ Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, 
 	   nma, fma, sin(fma), sin(bad_fma));
   }
 
+  while (nma < 0) nma += 2*M_PI;
+  while (nma > 2*M_PI) nma -= 2*M_PI;
+
+  while (fma < 0) fma += 2*M_PI;
+  while (fma > 2*M_PI) fma -= 2*M_PI;
+
   if (fabs(cosnma) > 1 or fabs(cosfma) > 1) {
     if (am_naively_correcting_nan_errors) {
       if (cosnma > 1) {
