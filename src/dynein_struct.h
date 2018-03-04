@@ -194,10 +194,10 @@ public:
   double get_PE() { return PE_bba + PE_bma + PE_ta + PE_uma; }
 
 private:
+  onebound_equilibrium_angles eq;      //Equilibrium angles
+
   void update_brownian_forces();
   void update_internal_forces();
-
-  onebound_equilibrium_angles eq;      //Equilibrium angles
 
   double bba;    //Onebound coordinates
   double bma;
@@ -316,10 +316,11 @@ public:
     dXfm_dLn, dYfm_dLn, dXt_dLn, dYt_dLn, dXt_dLf, dYt_dLf;
 
 private:
+  bothbound_equilibrium_angles eq;  //Equilibrium angles
+
   void update_brownian_forces();
   void update_internal_forces();
 
-  bothbound_equilibrium_angles eq;  //Equilibrium angles
   MTRand *rand;
 
   double nma, fma;  //Bothbound coordinates
