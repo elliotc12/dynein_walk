@@ -17,6 +17,8 @@ parser.add_argument('-t', '--runtime', dest='runtime', action='store', type=floa
                     default=1.0, help='total runtime for simulation in seconds', metavar='')
 parser.add_argument('-exp', '--exp-unbinding-constant', dest='exp_unbinding_constant',
                     action='store', type=float, default=0.0, help="exponential unbinding constant", metavar='')
+parser.add_argument('-s', '--seed', dest ='seed', action='store', type=float,
+                    default=1.0, help ="random number seed", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
                     default='data/testedParameters.txt', help=".txt file for logging stepping statistics", metavar='')
 
@@ -41,7 +43,7 @@ basename = run.sim(**{"k_b": args.k_b,
                       "eqt": 0,
                       "dt": 1e-10,
                       "label": "paramSearch",
-                      "seed": 1,
+                      "seed": args.seed,
                       "runtime": args.runtime,
                       "framerate": 1e-10,
                       "crash-movie": False,
@@ -49,17 +51,20 @@ basename = run.sim(**{"k_b": args.k_b,
                       "exp-unbinding-constant": args.exp_unbinding_constant})
 
 print(os.getcwd())
-dataFile = glob.glob("data/stepping_data_paramSearch*.txt")
-if len(dataFile) is not 1:
-    print(len(dataFile))
-    print("Something went wrong. Make sure data was generated and that old paramSearch files have been deleted or renamed")
+# dataFile = glob.glob("data/stepping_data_paramSearch*.txt")
+# if len(dataFile) is not 1:
+#     print(len(dataFile))
+#     print("Something went wrong. Make sure data was generated and that old paramSearch files have been deleted or renamed")
+dataFile = "data/stepping_data_"+basename
+print(basename)
+print(dataFile)
 
 step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
 
-data = np.loadtxt(dataFile[0])
+data = np.loadtxt(dataFile)
 print("Data loaded...")
 bind_times = np.array(data[:, 1])
 unbind_times = np.array(data[:, 0])
@@ -101,6 +106,6 @@ with open("data/testedParameters.txt", "a") as file:
     file.write("{0},\t{1},\t{2},\t{3},\t{4},\t{5},\t{6},\t{7},\t{8},\t{9},\t{10}, \t{11}, \t{12}, \t{13}, \t{14}\n".format(args.k_b, args.k_ub, args.runtime, args.exp_unbinding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
 
 print(os.getcwd())
-os.system("mv ./{3} data/kb{0}_kub{1}_expbc{2}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile[0]))
+os.system("mv ./{3} data/kb{0}_kub{1}_expbc{2}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile))
 
 print("All done.")
