@@ -47,7 +47,7 @@ if sys.argv[2][:6] != 'speed=':
 speed =  float(sys.argv[2][6:])
 
 if tail and sys.stdin.isatty():
-    skiplen = sum(1 for line in open(data_file)) - 100
+    skiplen = sum(1 for line in open(data_file)) - 10000
     if skiplen < 0:
 	skiplen = 1
 
