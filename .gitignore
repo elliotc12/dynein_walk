@@ -11,6 +11,7 @@
 *.fls
 *.fdb_latexmk
 *.dSYM
+*.tex
 *.toc
 *.equ
 *.lof
