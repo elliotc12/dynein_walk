@@ -4,11 +4,11 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-3
+runtime = 5
 seeds = [1, 2, 3, 4]
 
 sims = []
-sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "4e10", "kub" : "1e3",  "num" : 57})
+sims.append({"cb" : "0.1", "cm" : "1.5", "ct" : "0.6", "kb" : "100000000", "kub" : "100"})
 
 for sim in sims:
     for s in seeds:
@@ -20,6 +20,7 @@ for sim in sims:
                   + " --cm " + sim["cm"] \
                   + " --ct " + sim["ct"] \
                   + " --seed " + str(s) \
+                  + " --unbindingconst 5.0" \
                   + " --label paperexponentialhisto-" + str(s)\
                   + " --renameexponential"\
                   + " --runtime " + str(runtime))

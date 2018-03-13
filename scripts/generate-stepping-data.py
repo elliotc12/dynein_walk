@@ -15,6 +15,7 @@ parser.add_argument("-m", "--cm", type=float, help="Manually set the cm value, d
 parser.add_argument("-t", "--ct", type=float, help="Manually set the ct value, default=0.2", default=0.2)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=3e9)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding rate", default=1000)
+parser.add_argument("-x", "--unbindingconst", type=float, help="Manually set the unbinding const", default=0.0)
 parser.add_argument("-r", "--runtime", type=float, help="Manually set the runtime value, default=0.1", default=0.1)
 parser.add_argument("-f", "--framerate", type=float, help="Manually set the frame rate, default=1e-10", default=1)
 parser.add_argument("-l", "--label", type=str, help="Manually set the label", default="default")
@@ -40,6 +41,7 @@ basename = run.sim(**{"k_b": args.kb,
                       "eqmpre": 200, # from burgess 2002, 360-160
                       "eqmpost": 224, # from burgess 2002, 360-136
                       "eqt": 0,
+                      "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
                       "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie})
 
