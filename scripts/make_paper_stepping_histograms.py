@@ -81,33 +81,37 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_foot_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
-    far_foot_positions = np.around(np.array(data[:,3]), decimals=7)
+    near_foot_positions = np.around(np.array(data[:,2]), decimals=12)  #need to figure out why fixing number of decimals is necessary
+    far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
     near_step_lens = near_foot_positions[1:] - near_foot_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_foot_positions[1:] - far_foot_positions[:-1]
 
     for s in range(1,len(near_foot_positions)):
+        # print("near foot positions s-1, s: ", near_foot_positions[s-1], near_foot_positions[s])
+        # print("far foot positions s-1, s: ", far_foot_positions[s-1], far_foot_positions[s])
         assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
-        assert(not equal(near_foot_positions[s-1],near_foot_positions[s]) or not equal(far_foot_positions[s-1],far_foot_positions[s]))
+        if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
+            continue
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):
             step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
             initial_displacements.append(data[s,5]-data[s,4])
-        if not equal(far_foot_positions[s-1],far_foot_positions[s]):
+        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):
             step_lengths.append(data[s,7]-data[s,5])
             initial_displacements.append(data[s,4]-data[s,5])
 
-    onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
-    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
-    step_times = np.concatenate((step_times, onebound_times + bothbound_times))
+        onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
+        bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
+        step_times = np.concatenate((step_times, onebound_times + bothbound_times))
+
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
     assert(len(near_foot_positions) > 10)
     for s in range(2, len(near_foot_positions)):
-        if equal(near_foot_positions[s], near_foot_positions[s-1]) == equal(far_foot_positions[s], far_foot_positions[s-1]):
-            print("Error, either neither or both feet moved in a step")
+        if not equal(near_foot_positions[s], near_foot_positions[s-1]) and not equal(far_foot_positions[s], far_foot_positions[s-1]):
+            print("Error, both feet moved in a step.")
             exit(1)
-        elif not equal(near_foot_positions[s], near_foot_positions[s-1]): #must've been a near step
+        if not equal(near_foot_positions[s], near_foot_positions[s-1]): #must've been a near step
             if not equal(near_foot_positions[s-1], near_foot_positions[s-2]): # not alternating
                 if near_foot_positions[s-1] < far_foot_positions[s-1] and near_foot_positions[s] > far_foot_positions[s]:
                     not_alternating_passing += 1
@@ -118,7 +122,7 @@ for data_file in data_files:
                     alternating_passing += 1
                 else:
                     alternating_not_passing += 1
-        else: # far step
+        elif not equal(near_foot_positions[s], near_foot_positions[s-1]): #must've been a far step
             if not equal(far_foot_positions[s-1], far_foot_positions[s-2]): # not alternating
                 if far_foot_positions[s-1] < near_foot_positions[s-1] and far_foot_positions[s] > near_foot_positions[s]:
                     not_alternating_passing += 1
