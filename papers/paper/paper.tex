@@ -97,14 +97,6 @@ Several computational models have been created to explain dynein's motility. \te
   \end{subfigure}
   \begin{subfigure}{0.5\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_static_foot_order_histogram}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_exponential_foot_order_histogram}
-  \end{subfigure}
-  \begin{subfigure}{0.5\textwidth}
-    \centering
     \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_vs_step_length}
     \subcaption{Static unbinding rate}
   \end{subfigure}%
@@ -115,6 +107,16 @@ Several computational models have been created to explain dynein's motility. \te
   \end{subfigure}
 \caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
 \label{fig:lengthhist}
+\end{figure*}
+
+\begin{figure*}[tbhp]
+    \includegraphics[width=0.5\linewidth]{../../plots/paper_static_foot_order_histogram}
+    \includegraphics[width=0.5\linewidth]{../../plots/paper_exponential_foot_order_histogram}
+\caption{The left plot is the $C=0$ case where the unbinding rate is
+  independent of angle.  Here ``alternating'' means that the binding
+  domain which did not move last time moved this time.  Passing means
+  that the moving foot was behind, and ended up in front.}
+\label{fig:steppingorder}
 \end{figure*}
 
 \begin{table}[tbhp]

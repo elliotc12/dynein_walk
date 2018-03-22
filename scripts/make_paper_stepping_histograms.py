@@ -74,6 +74,9 @@ alternating_not_passing = 0
 not_alternating_passing = 0
 not_alternating_not_passing = 0
 
+leading_foot_steps = 0
+trailing_foot_steps = 0
+
 for data_file in data_files:
     data = np.loadtxt(data_file, dtype = np.float64)
     if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
@@ -81,51 +84,59 @@ for data_file in data_files:
 
     bind_times = np.array(data[:,1])
     unbind_times = np.array(data[:,0])
-    near_foot_positions = np.around(np.array(data[:,2]), decimals=7)  #need to figure out why fixing number of decimals is necessary
-    far_foot_positions = np.around(np.array(data[:,3]), decimals=7)
+    near_foot_positions = np.around(np.array(data[:,2]), decimals=12)  #need to figure out why fixing number of decimals is necessary
+    far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
     near_step_lens = near_foot_positions[1:] - near_foot_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_foot_positions[1:] - far_foot_positions[:-1]
 
     for s in range(1,len(near_foot_positions)):
+        # print("near foot positions s-1, s: ", near_foot_positions[s-1], near_foot_positions[s])
+        # print("far foot positions s-1, s: ", far_foot_positions[s-1], far_foot_positions[s])
         assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
-        assert(not equal(near_foot_positions[s-1],near_foot_positions[s]) or not equal(far_foot_positions[s-1],far_foot_positions[s]))
+        if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
+            continue
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):
             step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
             initial_displacements.append(data[s,5]-data[s,4])
-        if not equal(far_foot_positions[s-1],far_foot_positions[s]):
+        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):
             step_lengths.append(data[s,7]-data[s,5])
             initial_displacements.append(data[s,4]-data[s,5])
 
-    onebound_times = np.concatenate((onebound_times, bind_times[1:]-unbind_times[1:]))
-    bothbound_times = np.concatenate((bothbound_times, unbind_times[1:]-bind_times[:-1]))
-    step_times = np.concatenate((step_times, onebound_times + bothbound_times))
+        onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
+        bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
+        step_times = np.concatenate((step_times, onebound_times + bothbound_times))
+
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
     assert(len(near_foot_positions) > 10)
     for s in range(2, len(near_foot_positions)):
-        if equal(near_foot_positions[s], near_foot_positions[s-1]) == equal(far_foot_positions[s], far_foot_positions[s-1]):
-            print("Error, either neither or both feet moved in a step")
+        if near_foot_positions[s-1] < far_foot_positions[s-1]:
+            trailing_foot = near_foot_positions
+            leading_foot = far_foot_positions
+        else:
+            trailing_foot = far_foot_positions
+            leading_foot = near_foot_positions
+        if not equal(near_foot_positions[s], near_foot_positions[s-1]) and not equal(far_foot_positions[s], far_foot_positions[s-1]):
+            print("Error, both feet moved in a step.")
             exit(1)
-        elif not equal(near_foot_positions[s], near_foot_positions[s-1]): #must've been a near step
-            if not equal(near_foot_positions[s-1], near_foot_positions[s-2]): # not alternating
-                if near_foot_positions[s-1] < far_foot_positions[s-1] and near_foot_positions[s] > far_foot_positions[s]:
+        if not equal(trailing_foot[s], trailing_foot[s-1]): #must've been a leading foot step
+            leading_foot_steps += 1
+            if not equal(trailing_foot[s-1], trailing_foot[s-2]): # not alternating, the last was the same foot
+                # the leading foot moved twice in a row, that makes this "not alternating"
+                not_alternating_not_passing += 1
+            else:
+                # It is alternating because leading foot moved, but before that the other foot moved.
+                alternating_not_passing += 1
+        else: # must've been a trailing foot step
+            trailing_foot_steps += 1
+            if equal(trailing_foot[s-1], trailing_foot[s-2]): # alternating, other foot moved last time
+                if trailing_foot[s] > leading_foot[s]:
                     not_alternating_passing += 1
                 else:
                     not_alternating_not_passing += 1
             else:
-                if near_foot_positions[s-1] < far_foot_positions[s-1] and near_foot_positions[s] > far_foot_positions[s]:
-                    alternating_passing += 1
-                else:
-                    alternating_not_passing += 1
-        else: # far step
-            if not equal(far_foot_positions[s-1], far_foot_positions[s-2]): # not alternating
-                if far_foot_positions[s-1] < near_foot_positions[s-1] and far_foot_positions[s] > near_foot_positions[s]:
-                    not_alternating_passing += 1
-                else:
-                    not_alternating_not_passing += 1
-            else:
-                if far_foot_positions[s-1] < near_foot_positions[s-1] and far_foot_positions[s] > near_foot_positions[s]:
+                if trailing_foot[s] > leading_foot[s]:
                     alternating_passing += 1
                 else:
                     alternating_not_passing += 1
@@ -295,7 +306,7 @@ plt.gcf().suptitle(
 plt.savefig("plots/displacement_vs_step_length.pdf", format="pdf")
 plt.close(fig)
 
-fig = plt.figure(figsize=(8, 6), dpi=300)
+fig = plt.figure(figsize=(8*.6, 6*.6), dpi=300)
 plt.rc('text', usetex=True)
 
 gs = gridspec.GridSpec(1, 3, width_ratios=[1, 1, 1])
