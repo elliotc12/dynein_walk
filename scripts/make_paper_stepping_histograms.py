@@ -295,7 +295,7 @@ plt.close(fig)
 # initial displacement vs motor step length scatter
 fig = plt.figure()
 plt.scatter(initial_displacements, step_lengths)
-plt.xlabel("Initial foot displacement (unstepping - stepping) (nm)")
+plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
 
 plt.gcf().suptitle(
@@ -339,8 +339,8 @@ plt.close(fig)
 
 
 fig = plt.figure()
-plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
-plt.xlabel("Initial foot displacement (unstepping - stepping) (nm)")
+plt.hist(initial_displacements, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Frequency")
 
 plt.gcf().suptitle(
