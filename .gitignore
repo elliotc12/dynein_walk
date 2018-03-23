@@ -35,5 +35,6 @@ data/*.txt
 plots/*
 runlogs/*
 
+#*
 .#*
 .nfs*
