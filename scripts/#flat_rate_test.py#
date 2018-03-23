@@ -1,6 +1,0 @@
-import os, sys
-import numpy as np
-import dynein.run as run
-
-runtime = 1
-
