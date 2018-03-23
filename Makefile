@@ -54,7 +54,7 @@ STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
 EXPONENTIAL_DATA = $(wildcard data/paper_exponential_stepping_data*.txt)
 PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_static_displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
 
 plots/paper_static_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b static
@@ -83,6 +83,14 @@ plots/paper_exponential_foot_order_histogram.pdf: scripts/make_paper_stepping_hi
 plots/paper_static_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
 	python3 scripts/color_hist.py -a
 	mv plots/time-vs-length-multiple-seeds.pdf plots/paper_static_time_vs_length.pdf
+
+plots/paper_static_displacement_histogram.pdf: scripts/color_hist.py $(STATIC_DATA)
+	python3 scripts/make_paper_stepping_histograms.py -b static
+	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
+
+plots/paper_exponential_displacement_histogram.pdf: scripts/color_hist.py $(EXPONENTIAL_DATA)
+	python3 scripts/make_paper_stepping_histograms.py -b exponential
+	mv plots/displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
 
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory

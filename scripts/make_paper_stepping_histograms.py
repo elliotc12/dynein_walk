@@ -295,7 +295,7 @@ plt.close(fig)
 # initial displacement vs motor step length scatter
 fig = plt.figure()
 plt.scatter(initial_displacements, step_lengths)
-plt.xlabel("Initial motor displacement (stepping - unstepping) (nm)")
+plt.xlabel("Initial foot displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
 
 plt.gcf().suptitle(
@@ -334,4 +334,19 @@ ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'no
 plt.tight_layout()
 
 plt.savefig("plots/stepping_analysis.pdf", format="pdf")
+plt.close(fig)
+
+
+
+fig = plt.figure()
+plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+plt.xlabel("Initial foot displacement (unstepping - stepping) (nm)")
+plt.ylabel("Frequency")
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
+    fontsize=14)
+
+plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 plt.close(fig)
