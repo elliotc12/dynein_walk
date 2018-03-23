@@ -339,8 +339,26 @@ plt.close(fig)
 
 
 fig = plt.figure()
-plt.hist(initial_displacements, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
-plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
+
+initial_displacements = np.array(initial_displacements)
+indices = np.argsort(np.abs(initial_displacements))
+sorted_displacements = initial_displacements[indices]
+
+Nbin = 50
+L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
+ntrailing = np.zeros_like(L)
+nleading = np.zeros_like(L)
+for i in range(len(L)):
+    bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
+    ntrailing[i] = (bunch < 0).sum()
+    nleading[i] = (bunch > 0).sum()
+    L[i] = np.abs(bunch).mean()
+
+fraction_trailing = ntrailing / (ntrailing + nleading)
+plt.plot(L, fraction_trailing, 'o-')
+
+# plt.hist(initial_displacements, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Frequency")
 
 plt.gcf().suptitle(
