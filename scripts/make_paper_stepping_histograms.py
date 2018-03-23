@@ -97,11 +97,11 @@ for data_file in data_files:
             continue
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):
-            step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
-            initial_displacements.append(data[s,5]-data[s,4])
+            step_lengths.append(data[s,2]-data[s-1,2])
+            initial_displacements.append(data[s-1,2]-data[s-1,3])
         elif not equal(far_foot_positions[s-1],far_foot_positions[s]):
-            step_lengths.append(data[s,7]-data[s,5])
-            initial_displacements.append(data[s,4]-data[s,5])
+            step_lengths.append(data[s,3]-data[s-1,3])
+            initial_displacements.append(data[s-1,3]-data[s-1,2])
 
         onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
         bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
