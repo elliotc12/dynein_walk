@@ -56,41 +56,23 @@ PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
 PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_static_displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
 
-plots/paper_static_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
+plots/paper_static_step_length_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_static_displacement_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b static
 	mv plots/stepping_length_histogram.pdf plots/paper_static_step_length_histogram.pdf
+	mv plots/displacement_vs_step_length.pdf plots/paper_static_displacement_vs_step_length.pdf
+	mv plots/stepping_analysis.pdf plots/paper_static_foot_order_histogram.pdf
+	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
 
-plots/paper_exponential_step_length_histogram.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
+plots/paper_exponential_step_length_histogram.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_exponential_displacement_histogram.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
 	python3 scripts/make_paper_stepping_histograms.py -b exponential
 	mv plots/stepping_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf
-
-plots/paper_static_displacement_vs_step_length.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b static
-	mv plots/displacement_vs_step_length.pdf plots/paper_static_displacement_vs_step_length.pdf
-
-plots/paper_exponential_displacement_vs_step_length.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b exponential
 	mv plots/displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf
-
-plots/paper_static_foot_order_histogram.pdf: scripts/make_paper_stepping_histograms.py $(STATIC_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b static
-	mv plots/stepping_analysis.pdf plots/paper_static_foot_order_histogram.pdf
-
-plots/paper_exponential_foot_order_histogram.pdf: scripts/make_paper_stepping_histograms.py $(EXPONENTIAL_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b exponential
 	mv plots/stepping_analysis.pdf plots/paper_exponential_foot_order_histogram.pdf
+	mv plots/displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
 
 plots/paper_static_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
 	python3 scripts/color_hist.py -a
 	mv plots/time-vs-length-multiple-seeds.pdf plots/paper_static_time_vs_length.pdf
-
-plots/paper_static_displacement_histogram.pdf: scripts/color_hist.py $(STATIC_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b static
-	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
-
-plots/paper_exponential_displacement_histogram.pdf: scripts/color_hist.py $(EXPONENTIAL_DATA)
-	python3 scripts/make_paper_stepping_histograms.py -b exponential
-	mv plots/displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
 
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
@@ -102,8 +84,8 @@ plots/trajectory-plot_thesis.pdf: data/thesis_movie_data.txt scripts/trajectory-
 	python3 scripts/trajectory-plt.py data/thesis_movie_data.txt
 	mv plots/trajectory-plot.pdf plots/trajectory-plot_thesis.pdf
 
-plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: scripts/make_stepping_plots.py data/thesis_stepping_data.txt
-	python3 scripts/make_stepping_plots.py data/thesis_stepping_data.txt
+plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf: scripts/make_thesis_stepping_plots.py data/thesis_stepping_data.txt
+	python3 scripts/make_thesis_stepping_plots.py data/thesis_stepping_data.txt
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_thesis.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
