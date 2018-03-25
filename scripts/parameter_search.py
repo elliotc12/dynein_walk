@@ -20,7 +20,7 @@ parser.add_argument('-exp', '--exp-unbinding-constant', dest='exp_unbinding_cons
 parser.add_argument('-s', '--seed', dest ='seed', action='store', type=float,
                     default=1.0, help ="random number seed", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
-                    default='data/testedParameters.txt', help=".txt file for logging stepping statistics", metavar='')
+                    default='data/parameterSearch/testedParameters.csv', help=".txt file for logging stepping statistics", metavar='')
 
 args = parser.parse_args()
 
@@ -104,10 +104,10 @@ if not os.path.exists(args.logfile):
         file.write(s)
 
 
-with open("data/testedParameters.csv", "a") as file:
+with open("data/parameterSearch/testedParameters.csv", "a") as file:
     file.write("{0},\t{1},\t{2},\t{3},\t{4},\t{5},\t{6},\t{7},\t{8},\t{9},\t{10}, \t{11}, \t{12}, \t{13}, \t{14}\n".format(args.k_b, args.k_ub, args.runtime, args.exp_unbinding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
 
 print(os.getcwd())
-os.system("mv ./{3} data/kb{0}_kub{1}_expbc{2}_t{4}_seed{5}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile, args.runtime, args.seed))
+os.system("mv ./{3} data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{4}_seed{5}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile, args.runtime, args.seed))
 
 print("All done.")
