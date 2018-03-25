@@ -97,11 +97,11 @@ for data_file in data_files:
             continue
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):
-            step_lengths.append(data[s,6]-data[s,4]) # use motor positions, not foot positions
-            initial_displacements.append(data[s,5]-data[s,4])
+            step_lengths.append(data[s,2]-data[s-1,2])
+            initial_displacements.append(data[s-1,2]-data[s-1,3])
         elif not equal(far_foot_positions[s-1],far_foot_positions[s]):
-            step_lengths.append(data[s,7]-data[s,5])
-            initial_displacements.append(data[s,4]-data[s,5])
+            step_lengths.append(data[s,3]-data[s-1,3])
+            initial_displacements.append(data[s-1,3]-data[s-1,2])
 
         onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
         bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
@@ -295,7 +295,7 @@ plt.close(fig)
 # initial displacement vs motor step length scatter
 fig = plt.figure()
 plt.scatter(initial_displacements, step_lengths)
-plt.xlabel("Initial motor displacement (stepping - unstepping) (nm)")
+plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
 
 plt.gcf().suptitle(
@@ -334,4 +334,37 @@ ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'no
 plt.tight_layout()
 
 plt.savefig("plots/stepping_analysis.pdf", format="pdf")
+plt.close(fig)
+
+
+
+fig = plt.figure()
+
+initial_displacements = np.array(initial_displacements)
+indices = np.argsort(np.abs(initial_displacements))
+sorted_displacements = initial_displacements[indices]
+
+Nbin = 50
+L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
+ntrailing = np.zeros_like(L)
+nleading = np.zeros_like(L)
+for i in range(len(L)):
+    bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
+    ntrailing[i] = (bunch < 0).sum()
+    nleading[i] = (bunch > 0).sum()
+    L[i] = np.abs(bunch).mean()
+
+fraction_trailing = ntrailing / (ntrailing + nleading)
+plt.plot(L, fraction_trailing, 'o-')
+
+# plt.hist(initial_displacements, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
+plt.ylabel("Frequency")
+
+plt.gcf().suptitle(
+    raw_run_conditions +
+    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
+    fontsize=14)
+
+plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 plt.close(fig)
