@@ -1,0 +1,40 @@
+
+Dynein To-Do list
+   to add a bullet point type M-return
+   type M-right arrow for sub bullets
+   use M-up/down arrow to change ordering
+   Shift-right arrow marks TODO
+   make a checkbock with - [ ]
+   type C-c C-c to check box with x
+   place cursor to far left and type Tab to expand bullet point
+
+* TODO Fix Plots From Meeting 					    :Elliott:
+
+
+* TODO Plot N(L) vs |L| to go with to go with ^ 		    :Elliott:
+
+
+* TODO Run Simulations with new |c|  				       :John:
+** in pars of +/-
+** Run new simulation for expbc = 0
+**  run for longer time (10 - 15 seconds
+*** Double check how long dynein stays on microtubule (is there an upper limit to total time?)
+
+
+
+* TODO Write methods section 					    :Elliott:
+
+
+* TODO Organize data & put into repo 				       :John:
+
+
+* TODO New Plots: [0%]						       :John:
+  - [ ] initial displacement vs final displacement (pre and post step)
+  - [ ] initial displacement vs bb time
+  - [ ] pseudo-trajectory plot using stepping data NOT movie data
+** initial displacement
+** final displacement
+** step length (+/-)
+** bb time
+** ob time
+** step time
