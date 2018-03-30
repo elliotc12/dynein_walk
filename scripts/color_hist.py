@@ -2,26 +2,26 @@
 
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import argparse
 import os
 import glob
 
 
-parser = argparse.ArgumentParser(description = 'Script to generate 2 dimensional histogram from dynein stepping data')
+parser = argparse.ArgumentParser(description='Script to generate 2 dimensional histogram from dynein stepping data')
 
-parser.add_argument('-d', '--datafile', dest = 'data_file', action='store', type= str,
-                    default='data/paper_static_stepping_data-1.txt', help='path to data file')
-parser.add_argument('-b', '--bins', dest = 'bins', action='store', type = int, default=20,
-                    help='number of bins for x and y axes')
-parser.add_argument('-v', '--verbose', dest = 'verbose', action='store_true', default = False,
-                    help = 'see prints in console')
-parser.add_argument('-s', '--show', dest = 'show', action='store_true', default = False,
-                    help = 'show graphs in matplotib windows')
-parser.add_argument('-a', '--all', dest = 'All', action='store_true', default = False,
-                    help = 'generate plots for all paper_static_stepping_data files')
-parser.add_argument('-c', '--colormap', dest = 'cmap', action='store', type=str,
+parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_static_stepping_data-1.txt',
+                    help='path to data file', type=str)
+parser.add_argument('-b', '--bins', dest='bins', action='store', default=20,
+                    help='number of bins for x and y axes', type=int)
+parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', default=False,
+                    help='see prints in console')
+parser.add_argument('-s', '--show', dest='show', action='store_true', default=False,
+                    help='show graphs in matplotib windows')
+parser.add_argument('-a', '--all', dest='All', action='store_true', default=False,
+                    help='generate plots for all paper_static_stepping_data files')
+parser.add_argument('-c', '--colormap', dest='cmap', action='store', type=str,
                     default=None, help='set color map for plots')
 
 
@@ -42,6 +42,8 @@ step_times = []
 onebound_times = []
 bothbound_times = []
 step_lengths = []
+initial_displacements = []
+final_displacements = []
 
 if not ALL:
     if not os.path.isfile(DATAFILE):
@@ -57,7 +59,10 @@ if not ALL:
     far_positions = np.around(np.array(data[:,3]), decimals=7)
     near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_positions[1:] - far_positions[:-1]
-
+    L = np.abs(near_step_lens-far_step_lens)
+    initial_displacements = L[:-1]
+    final_displacements = L[1:]
+    
     onebound_times = bind_times[1:]-unbind_times[1:]
     bothbound_times = unbind_times[1:]-bind_times[:-1]
     step_lengths = near_step_lens + far_step_lens
@@ -80,7 +85,10 @@ else:
         far_positions = np.around(np.array(data[:,3]), decimals=7)
         near_step_lens = (near_positions[1:] - near_positions[:-1])  #still want zero step lengths
         far_step_lens = (far_positions[1:] - far_positions[:-1])
+        L = np.abs(near_step_lens-far_step_lens)
 
+        initial_displacements = np.concatenate((initial_displacements, L[:-1]))
+        final_displacements = np.concatenate((final_displacements, L[1:]))
         onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
         bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
         step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
@@ -94,13 +102,23 @@ def getBinIndex(p, bins):
             return i
     assert(False)  # throw exception if we can't find a bin for a value
 
-def getCounts(X, Y):
+
+def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
+    # insure that times start at zero and not the min time
     if VERBOSE: print(X.shape, Y.shape)
     assert X.shape == Y.shape
 
     if VERBOSE: print("binning data")
-    xbins = np.linspace(0, X.max(), NUM_BINS+1) # insure that times start at zero and not the min time
-    ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
+    
+    if xIsTimeValue is True:
+        xbins = np.linspace(0, X.max(), NUM_BINS+1)
+    else:
+        xbins = np.linspace(X.min(), X.max(), NUM_BINS+1)
+
+    if yIsTimeValue is True:
+        ybins = np.linspace(0, Y.max(), NUM_BINS+1)
+    else:
+        ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
 
     if VERBOSE: print("counting")
     counts = np.zeros((len(xbins),len(ybins)))
@@ -112,8 +130,9 @@ def getCounts(X, Y):
     return xbins, ybins, counts
 
 
-def plotCounts(x, y, graph_label, x_label, y_label, filename=None):
-    x_bins, y_bins, counts = getCounts(x, y)
+def plotCounts(x, y, graph_label, x_label, y_label,
+               filename=None, xIsTimeValue=True, yIsTimeValue=False):
+    x_bins, y_bins, counts = getCounts(x, y, xIsTimeValue, yIsTimeValue)
     # print('counts', np.sum(counts), len(x))
 
     if VERBOSE: print("graphing")
@@ -138,13 +157,15 @@ if ALL:
 plotCounts(step_times, step_lengths,
            "total step time vs step length",
            'step time', 'step length',
-           filename = 'plots/time-vs-length{}.pdf'.format(seed_label))
-# plt.figure()
-# plt.hist2d(step_times, step_lengths, NUM_BINS, cmap=CMAP)
-# cb = plt.colorbar()
-# cb.set_label('counts')
-# plt.title("what it should look like")
+           filename='plots/time-vs-length{}.pdf'.format(seed_label))
 
+plotCounts(initial_displacements, final_displacements,
+           "initial disp vs final disp",
+           "initial displacement",
+           "final displacement",
+           filename='plots/inital-vs-final{}.pdf'.format(seed_label),
+           xIsTimeValue=False,
+           yIsTimeValue=False)
 
 if SHOW:
     plt.show()
