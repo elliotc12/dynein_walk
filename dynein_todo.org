@@ -9,10 +9,9 @@ Dynein To-Do list
    Shift-right arrow marks TODO
    make a checkbock with - [ ]
    type C-c C-c to check box with x
-   place cursor to far left and type Tab to expand bullet point
+   place cursor to far left and type Tab to un/expand bullet point
 
 * TODO Fix Plots From Meeting 					    :Elliott:
-
 
 * TODO Plot N(L) vs |L| to go with to go with ^ 		    :Elliott:
 
