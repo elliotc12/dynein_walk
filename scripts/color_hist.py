@@ -59,7 +59,7 @@ if not ALL:
     far_positions = np.around(np.array(data[:,3]), decimals=7)
     near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_positions[1:] - far_positions[:-1]
-    L = np.abs(near_step_lens-far_step_lens)
+    L = np.array(near_step_lens-far_step_lens)
     initial_displacements = L[:-1]
     final_displacements = L[1:]
     
@@ -85,7 +85,7 @@ else:
         far_positions = np.around(np.array(data[:,3]), decimals=7)
         near_step_lens = (near_positions[1:] - near_positions[:-1])  #still want zero step lengths
         far_step_lens = (far_positions[1:] - far_positions[:-1])
-        L = np.abs(near_step_lens-far_step_lens)
+        L = np.array(near_step_lens-far_step_lens)
 
         initial_displacements = np.concatenate((initial_displacements, L[:-1]))
         final_displacements = np.concatenate((final_displacements, L[1:]))
@@ -105,6 +105,8 @@ def getBinIndex(p, bins):
 
 def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     # insure that times start at zero and not the min time
+    if VERBOSE: print(xIsTimeValue, yIsTimeValue) 
+
     if VERBOSE: print(X.shape, Y.shape)
     assert X.shape == Y.shape
 
@@ -120,6 +122,7 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     else:
         ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
 
+        
     if VERBOSE: print("counting")
     counts = np.zeros((len(xbins),len(ybins)))
 
@@ -131,16 +134,16 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
 
 
 def plotCounts(x, y, graph_label, x_label, y_label,
-               filename=None, xIsTimeValue=True, yIsTimeValue=False):
+               xIsTimeValue, yIsTimeValue,filename=None, ):
+ 
     x_bins, y_bins, counts = getCounts(x, y, xIsTimeValue, yIsTimeValue)
     # print('counts', np.sum(counts), len(x))
-
     if VERBOSE: print("graphing")
     plt.figure()
     plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    plt.xlim(0, x_bins[-1])
+    plt.xlim(x_bins[0], x_bins[-1])
     plt.ylim(y_bins[0], y_bins[-1])
     # print(x_bins)
     plt.title(graph_label)
@@ -154,18 +157,24 @@ def plotCounts(x, y, graph_label, x_label, y_label,
 seed_label = ''
 if ALL:
     seed_label = '-multiple-seeds'
-plotCounts(step_times, step_lengths,
+
+plotCounts(step_times,
+           step_lengths,
            "total step time vs step length",
-           'step time', 'step length',
+           'step time',
+           'step length',
+           xIsTimeValue=True,
+           yIsTimeValue=False,
            filename='plots/time-vs-length{}.pdf'.format(seed_label))
 
-plotCounts(initial_displacements, final_displacements,
+plotCounts(initial_displacements,
+           final_displacements,
            "initial disp vs final disp",
            "initial displacement",
            "final displacement",
-           filename='plots/inital-vs-final{}.pdf'.format(seed_label),
            xIsTimeValue=False,
-           yIsTimeValue=False)
+           yIsTimeValue=False,
+           filename='plots/initial-vs-final{}.pdf'.format(seed_label))
 
 if SHOW:
     plt.show()
