@@ -355,16 +355,28 @@ for i in range(len(L)):
     L[i] = np.abs(bunch).mean()
 
 fraction_trailing = ntrailing / (ntrailing + nleading)
-plt.plot(L, fraction_trailing, 'o-')
 
-# plt.hist(initial_displacements, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
-plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
-plt.ylabel("Frequency")
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+
+trailing_plot = ax1.plot(L, fraction_trailing, 'o-', label="Fraction trailing")
+num_hist = ax2.hist(np.abs(initial_displacements), bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+
+ax1.set_xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
+ax1.set_ylabel("Frequency")
+ax2.set_ylabel("N")
+
+# plt.legend([trailing_plot, num_hist], ["Fraction trailing", "Number"])
+# ax1.legend()
+# ax2.legend()
+fig.legend()
 
 plt.gcf().suptitle(
     raw_run_conditions +
     r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
     fontsize=14)
+
+# plt.tight_layout()
 
 plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 plt.close(fig)
