@@ -63,6 +63,18 @@ There are many relevant details about dynein which this simple model doesn't acc
 
 Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
+\section*{Model}
+\subsection*{Model layout}
+The dynein model used in this paper consists of two systems meant to mimic the motor's dynamics in its post-powerstroke and pre-powerstroke states. These systems, shown in Figure \ref{fig:model-cartoon},
+
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=0.49\linewidth]{figures/onebound-cartoon.pdf}
+\includegraphics[width=0.49\linewidth]{figures/bothbound-cartoon.pdf}
+\caption{Cartoon representation of model systems. \textbf{Left}: Post-powerstroke, \textbf{right}: pre-powerstroke.}
+\label{fig:duration-length}
+\end{figure}
+
 \section{Results}
 
 \begin{figure}[tbhp]
