@@ -356,20 +356,16 @@ for i in range(len(L)):
 
 fraction_trailing = ntrailing / (ntrailing + nleading)
 
-fig, ax1 = plt.subplots()
-ax2 = ax1.twinx()
+yildiz_displacements = [10, 20, 30, 40, 50]
+yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 
-trailing_plot = ax1.plot(L, fraction_trailing, 'o-', label="Fraction trailing")
-num_hist = ax2.hist(np.abs(initial_displacements), bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+plt.plot(L, fraction_trailing, 'o-', label="Model")
+plt.plot(yildiz_displacements, yildiz_fractions, 'o-', label="Experimental (Yildiz 2012)")
 
-ax1.set_xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
-ax1.set_ylabel("Frequency")
-ax2.set_ylabel("N")
+plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
+plt.ylabel("Fraction trailing")
 
-# plt.legend([trailing_plot, num_hist], ["Fraction trailing", "Number"])
-# ax1.legend()
-# ax2.legend()
-fig.legend()
+plt.legend()
 
 plt.gcf().suptitle(
     raw_run_conditions +
