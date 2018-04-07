@@ -40,3 +40,7 @@ Dynein To-Do list
 ** bb time
 ** ob time
 ** step time
+
+* TODO Add to dynein module 
+  Computing pretty data in terms of leading and trailing feet (stepping / standing feet) 
+  - module to take stepping data and return back the pretty stuff in nice numpy array 
