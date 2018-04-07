@@ -23,42 +23,26 @@ def equal(f1, f2):
 
 parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
-parser.add_argument('-b', '--basename', dest = 'custom_basename', action='store', type= str,
-                    default="", help='data file basename')
+parser.add_argument('-d', '--data-directory', dest = 'data_directory', action='store', type = str,
+                    default="", help='data file directory', required = True)
+parser.add_argument('-b', '--data-basename', dest = 'data_basename', action='store', type = str,
+                    default="", help='data file basename', required = True)
+parser.add_argument('-p', '--param-file', dest = 'parameters_filename', action='store', type = str,
+                    default="", help='parameter filename (.tex)', required = True)
 
 args = parser.parse_args()
 
-parameters_filename = ""
-if args.custom_basename != "":
-    for fname in os.listdir("data/"):
-        if os.path.isfile("data/" + fname):
-            if ("paper_" + args.custom_basename + "_stepping_parameters.tex" in fname):
-                parameters_filename = "data/" + fname
-                break
-    assert(parameters_filename != "")
-else:
-    parameters_filename = 'data/paper_static_stepping_parameters.tex'
-
-run_conditions = open(parameters_filename).read()
+run_conditions = open(args.parameters_filename).read()
 raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
 
 data_files = []
-if args.custom_basename != "":
-    for fname in os.listdir("data/"):
-        if os.path.isfile("data/" + fname):
-            if ("paper_" + args.custom_basename + "_stepping_data" in fname):
-                data_files.append("data/" + fname)
-else:
-    for fname in os.listdir("data/"):
-        if os.path.isfile("data/" + fname):
-            if ("paper_static_stepping_data" in fname):
-                data_files.append("data/" + fname)
+for fname in os.listdir(args.data_directory):
+    if os.path.isfile(args.data_directory + fname):
+        if (args.data_basename in fname and ".txt" in fname):
+            data_files.append(args.data_directory + fname)
 
 if len(data_files) == 0:
-    if args.custom_basename != "":
-        print("No files of form paper_" + args.custom_basename + "_stepping_data" "*.txt found. Exiting.")
-    else:
-        print("Error, no files of form data/paper_static_stepping_data*.txt found. Exiting.")
+    print("No files of form " + args.data_directory + "*" + args.data_basename + "*.txt found. Exiting.")
     exit(1)
 
 step_times = []
