@@ -101,7 +101,7 @@ plots/parameterSearch/%.pdf: data/parameterSearch/%.txt scripts/make_all_steppin
 	cd plots/parameterSearch && xelatex display_template.tex
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf
 	rm plots/stepping_length_histogram.pdf plots/displacement_vs_step_length.pdf plots/stepping_analysis.pdf plots/displacement_histogram.pdf
-	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final-multiple-seeds.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length-multiple-seeds.pdf
+	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final-multiple-seeds.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length-multiple-seeds.pdf plots/stepping_trajectory.pdf
 # rm plots/parameterSearch/search_parameters.tex
 
 ######### papers ##########

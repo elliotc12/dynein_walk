@@ -364,3 +364,37 @@ if args.parameters_filename != "":
 
 plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 plt.close(fig)
+
+plt.figure()
+
+data = np.loadtxt(data_files[0], dtype = np.float64)
+bind_times = np.array(data[:,1])
+near_foot_positions = np.around(np.array(data[:,2]), decimals=12)
+far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
+
+bind_times_duplicated = np.zeros(len(bind_times)*2-1)
+near_positions_duplicated = np.zeros(len(bind_times)*2-1)
+far_positions_duplicated = np.zeros(len(bind_times)*2-1)
+
+for t in range(1, len(bind_times)):
+    bind_times_duplicated[2*t-1] = bind_times[t]
+    bind_times_duplicated[2*t] = bind_times[t]
+    near_positions_duplicated[2*t-1] = near_foot_positions[t-1]
+    near_positions_duplicated[2*t] = near_foot_positions[t]
+    far_positions_duplicated[2*t-1] = far_foot_positions[t-1]
+    far_positions_duplicated[2*t] = far_foot_positions[t]
+
+bind_times_duplicated[0] = bind_times[0]
+near_positions_duplicated[0] = near_foot_positions[0]
+far_positions_duplicated[0] = far_foot_positions[0]
+
+plt.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Near BD", markersize=1)
+plt.plot(bind_times_duplicated, far_positions_duplicated, 'o-', label="Far BD", markersize=1)
+
+plt.xlabel("time (s)")
+plt.ylabel("Position (nm)")
+
+plt.legend()
+
+plt.savefig("plots/stepping_trajectory.pdf", format="pdf")
+plt.close(fig)
