@@ -1,0 +1,61 @@
+\documentclass[]{article}
+
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\usepackage[margin=1cm]{geometry}
+
+\nonstopmode
+
+\input{search_parameters.tex}
+
+\begin{document}
+
+\begin{table}[tbhp]
+  \centering
+  \begin{tabular}{|lr|lr|lr|lr|}
+    \toprule
+    $c_b$ & $\cb$ &
+    $c_m$ & $\cm$ &
+    $c_t$ & $\ct$ & &\\
+    \midrule
+    $k_b$ & $\kb$ &
+    $k_{ub}$ & $\kub$ & & & &\\
+    \midrule
+    max nb step: & $\maxnbstep$ &
+    min nb step: & $\minnbstep$ &
+    max fb step: & $\maxfbstep$ &
+    min fb step: & $\minfbstep$\\
+    \midrule
+    max ob time: & $\maxobt$ &
+    min ob time: & $\minobt$ &
+    max bb time: & $\maxbbt$ &
+    min bb time: & $\minbbt$\\
+    \midrule
+    np disp & $\nbdisp$ &
+    fb disp & $\fbdisp$ & & & &\\
+    \midrule
+    runtime & $\runtime$ &
+    c & $\cexp$ &
+    steps & $\totalsteps$ & &\\
+    \midrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[tbhp]
+  \centering
+  \includegraphics[width=0.5\columnwidth]{../displacement_histogram.pdf}%
+  \includegraphics[width=0.5\columnwidth]{../stepping_analysis.pdf}\\
+  \includegraphics[width=0.5\columnwidth]{../displacement_vs_step_length.pdf}%
+  \includegraphics[width=0.5\columnwidth]{../stepping_length_histogram.pdf}
+\end{figure}
+
+\begin{figure}[tbhp]
+  \includegraphics[width=0.5\columnwidth]{../initial-vs-final-multiple-seeds.pdf}%
+  \includegraphics[width=0.5\columnwidth]{../time-vs-length-multiple-seeds.pdf}
+  \includegraphics[width=0.5\columnwidth]{../ob-vs-length-scatter.pdf}%
+  \includegraphics[width=0.5\columnwidth]{../bb-vs-length-scatter.pdf}
+\end{figure}
+
+\end{document}

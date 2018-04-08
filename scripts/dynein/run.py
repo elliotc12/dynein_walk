@@ -2,7 +2,6 @@
 import subprocess, os
 import numpy as np
 
-
 # ask professor round / elliott about this latex_format stuff - 6/26/17
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
@@ -30,7 +29,6 @@ def latex_format(x):
     if isinstance(x, str):
         x = x.replace('-', '_')
     return x
-
 
 def sim(**run):
     if 'label' in run:
