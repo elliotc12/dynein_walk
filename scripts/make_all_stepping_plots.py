@@ -28,21 +28,21 @@ parser.add_argument('-d', '--data-directory', dest = 'data_directory', action='s
 parser.add_argument('-b', '--data-basename', dest = 'data_basename', action='store', type = str,
                     default="", help='data file basename', required = True)
 parser.add_argument('-p', '--param-file', dest = 'parameters_filename', action='store', type = str,
-                    default="", help='parameter filename (.tex)', required = True)
+                    default="", help='parameter filename (.tex)')
 
 args = parser.parse_args()
 
-run_conditions = open(args.parameters_filename).read()
-raw_run_conditions = run_conditions.replace("\n", " ").replace("\\\\", "\\")
+if args.parameters_filename != "":
+    run_conditions = open(args.parameters_filename).read().replace("\n", " ").replace("\\\\", "\\")
 
 data_files = []
 for fname in os.listdir(args.data_directory):
-    if os.path.isfile(args.data_directory + fname):
+    if os.path.isfile(args.data_directory + "/" + fname):
         if (args.data_basename in fname and ".txt" in fname):
-            data_files.append(args.data_directory + fname)
+            data_files.append(args.data_directory + "/" + fname)
 
 if len(data_files) == 0:
-    print("No files of form " + args.data_directory + "*" + args.data_basename + "*.txt found. Exiting.")
+    print("No files of form " + args.data_directory + "/*" + args.data_basename + "*.txt found. Exiting.")
     exit(1)
 
 step_times = []
@@ -180,16 +180,14 @@ plt.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=Tr
 if (len(step_lengths) > 0):
     plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
 
-plt.scatter([np.mean(step_lengths)], [0], label=raw_run_conditions + r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
+plt.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
 
 plt.legend(loc="upper right")
 plt.xlabel("Step length (nm)")
 plt.ylabel("Frequency")
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
@@ -230,10 +228,8 @@ ax3.set_title("velocities (theory: 700nm/s)")
 ax3.set_xlabel("velocity (nm/s)")
 ax3.set_ylabel("Frequency")
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.subplots_adjust(hspace=0.6)
 
@@ -251,10 +247,8 @@ plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-7, 1e-2))
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.savefig("plots/ob-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
@@ -269,10 +263,8 @@ plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-5, 1))
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
@@ -283,10 +275,8 @@ plt.scatter(initial_displacements, step_lengths)
 plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.savefig("plots/displacement_vs_step_length.pdf", format="pdf")
 plt.close(fig)
@@ -367,10 +357,8 @@ plt.ylim([0,1.1])
 
 plt.legend()
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$',
-    fontsize=14)
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 # plt.tight_layout()
 
