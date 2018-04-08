@@ -93,7 +93,7 @@ for data_file in data_files:
 
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
-    assert(len(near_foot_positions) > 10)
+    assert(len(near_foot_positions) > 5)
     for s in range(2, len(near_foot_positions)):
         if near_foot_positions[s-1] < far_foot_positions[s-1]:
             trailing_foot = near_foot_positions

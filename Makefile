@@ -5,6 +5,9 @@ PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf paper
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h)
 
+PARAMSEARCH_DATAFILES = $(wildcard data/parameterSearch/*.txt)
+PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%.pdf,$(PARAMSEARCH_DATAFILES))
+
 all: generate_stepping_data public $(DRAW) $(PARAMSEARCH_PDFS)
 
 .PHONY: clean public
@@ -90,9 +93,6 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 ######### parameterSearch PDFs ##########
-PARAMSEARCH_DATAFILES = $(wildcard data/parameterSearch/*.txt)
-PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%.pdf,$(PARAMSEARCH_DATAFILES))
-
 plots/parameterSearch/%.pdf: data/parameterSearch/%.txt scripts/make_all_stepping_plots.py scripts/color_hist.py plots/parameterSearch/display_template.tex
 	mkdir -p plots/parameterSearch/searchplots
 	python3 scripts/make_all_stepping_plots.py -d data/parameterSearch -b $*

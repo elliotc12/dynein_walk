@@ -143,7 +143,8 @@ tex_dict = {"kb": args.k_b, "kub": args.k_ub, "runtime": args.runtime,
             "cexp": args.exp_unbinding_constant, "max_ob_t": max_ob_t,
             "min_ob_t": min_ob_t, "max_bb_t": max_bb_t, "min_bb_t": min_bb_t, "max_nb_step": max_nb_step,
             "min_nb_step": min_nb_step, "max_fb_step": max_fb_step, "min_fb_step": min_fb_step,
-            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct}
+            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct
+            "velocity": (nb_disp+fb_disp)/2.0/args.runtime}
 
 texfile = "data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{3}_seed{4}.tex".format(args.k_b, args.k_ub, args.exp_unbinding_constant, args.runtime, args.seed)
 
