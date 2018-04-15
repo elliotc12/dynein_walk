@@ -29,8 +29,8 @@ def latex_format(x):
             if m == '1':
                 return r'10^{'+e+'}'
             return m + r'\times 10^{' + e+ '}'
-    if isinstance(x, str):
-        x = x.replace('-', '_')
+    # if isinstance(x, str):
+    #     x = x.replace('-', '_')
     return x
 
 parser = argparse.ArgumentParser(description="script to generate stepping "
@@ -93,7 +93,6 @@ bothbound_times = []
 step_lengths = []
 
 data = np.loadtxt(dataFile)
-print("Data loaded...")
 bind_times = np.array(data[:, 1])
 unbind_times = np.array(data[:, 0])
 near_positions = np.around(np.array(data[:, 2]), decimals=7)
@@ -110,7 +109,6 @@ bothbound_times = unbind_times[1:]-bind_times[:-1]
 step_lengths = near_step_lens + far_step_lens
 step_times = onebound_times + bothbound_times
 
-print("Calculating...")
 max_ob_t = np.amax(onebound_times)
 min_ob_t = np.amin(onebound_times)
 max_bb_t = np.amax(bothbound_times)
@@ -123,7 +121,6 @@ total_steps = len(bind_times)
 nb_disp = near_positions[-1]-near_positions[0]
 fb_disp = far_positions[-1]-far_positions[0]
 
-print("logging stepping statistics")
 
 if not os.path.exists(args.logfile):
     os.system("touch {0}".format(args.logfile))
@@ -136,14 +133,14 @@ if not os.path.exists(args.logfile):
 with open("data/parameterSearch/testedParameters.csv", "a") as file:
     file.write("{0},\t{1},\t{2},\t{3},\t{4},\t{5},\t{6},\t{7},\t{8},\t{9},\t{10}, \t{11}, \t{12}, \t{13}, \t{14}\n".format(args.k_b, args.k_ub, args.runtime, args.exp_unbinding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
 
-print(os.getcwd())
+
 os.system("mv ./{3} data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{4}_seed{5}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile, args.runtime, args.seed))
 
 tex_dict = {"kb": args.k_b, "kub": args.k_ub, "runtime": args.runtime,
             "cexp": args.exp_unbinding_constant, "max_ob_t": max_ob_t,
             "min_ob_t": min_ob_t, "max_bb_t": max_bb_t, "min_bb_t": min_bb_t, "max_nb_step": max_nb_step,
             "min_nb_step": min_nb_step, "max_fb_step": max_fb_step, "min_fb_step": min_fb_step,
-            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct
+            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct,
             "velocity": (nb_disp+fb_disp)/2.0/args.runtime}
 
 texfile = "data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{3}_seed{4}.tex".format(args.k_b, args.k_ub, args.exp_unbinding_constant, args.runtime, args.seed)
@@ -151,5 +148,3 @@ texfile = "data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{3}_seed{4}.tex".format(a
 with open(texfile, "w") as f:
     for k in tex_dict.keys():
         f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(tex_dict[k])) + '\n')
-
-print("All done.")
