@@ -30,6 +30,8 @@
 generate_stepping_data
 
 data/*.txt
+data/*.tex
+!data/parameterSearch/*.tex
 
 plots/*
 runlogs/*

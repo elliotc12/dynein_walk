@@ -48,9 +48,10 @@ parser.add_argument('-s', '--seed', dest ='seed', action='store', type=float,
                     default=1.0, help ="random number seed", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
                     default='data/parameterSearch/testedParameters.csv', help=".txt file for logging stepping statistics", metavar='')
+parser.add_argument('-l', '--label', dest='label', action='store', type=str,
+                    default='default', help="label for run", metavar='')
 
 args = parser.parse_args()
-
 
 if os.path.exists('parameter_search.py'):
     os.chdir('../')
@@ -72,7 +73,7 @@ basename = run.sim(**{"k_b": args.k_b,
                       "eqmpost": 224,
                       "eqt": 0,
                       "dt": 1e-10,
-                      "label": "paramSearch",
+                      "label": "paramSearch-" + args.label,
                       "seed": args.seed,
                       "runtime": args.runtime,
                       "framerate": 1e-10,
@@ -93,6 +94,8 @@ bothbound_times = []
 step_lengths = []
 
 data = np.loadtxt(dataFile)
+print(data.size)
+assert(data.size>8)
 bind_times = np.array(data[:, 1])
 unbind_times = np.array(data[:, 0])
 near_positions = np.around(np.array(data[:, 2]), decimals=7)
@@ -133,8 +136,7 @@ if not os.path.exists(args.logfile):
 with open("data/parameterSearch/testedParameters.csv", "a") as file:
     file.write("{0},\t{1},\t{2},\t{3},\t{4},\t{5},\t{6},\t{7},\t{8},\t{9},\t{10}, \t{11}, \t{12}, \t{13}, \t{14}\n".format(args.k_b, args.k_ub, args.runtime, args.exp_unbinding_constant, max_ob_t, min_ob_t, max_bb_t, min_bb_t, max_nb_step, min_nb_step, max_fb_step, min_fb_step, total_steps, nb_disp, fb_disp))
 
-
-os.system("mv ./{3} data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{4}_seed{5}.txt".format(args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile, args.runtime, args.seed))
+os.system("mv ./{4} data/parameterSearch/{0}_kb{1}_kub{2}_expbc{3}_t{5}_seed{6}.txt".format(args.label, args.k_b, args.k_ub, args.exp_unbinding_constant, dataFile, args.runtime, args.seed))
 
 tex_dict = {"kb": args.k_b, "kub": args.k_ub, "runtime": args.runtime,
             "cexp": args.exp_unbinding_constant, "max_ob_t": max_ob_t,
@@ -143,7 +145,7 @@ tex_dict = {"kb": args.k_b, "kub": args.k_ub, "runtime": args.runtime,
             "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct,
             "velocity": (nb_disp+fb_disp)/2.0/args.runtime}
 
-texfile = "data/parameterSearch/kb{0}_kub{1}_expbc{2}_t{3}_seed{4}.tex".format(args.k_b, args.k_ub, args.exp_unbinding_constant, args.runtime, args.seed)
+texfile = "data/parameterSearch/{0}_kb{1}_kub{2}_expbc{3}_t{4}_seed{5}.tex".format(args.label, args.k_b, args.k_ub, args.exp_unbinding_constant, args.runtime, args.seed)
 
 with open(texfile, "w") as f:
     for k in tex_dict.keys():
