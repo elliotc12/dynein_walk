@@ -430,12 +430,14 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
 
   if (*run_name == 0) {
     if (label == 0) {
-      sprintf(run_name, "k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,dt-%g",
-	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, dt);
+      sprintf(run_name, "k_b-%g,k_ub-%g,c-%g,cb-%g,cm-%g,ct-%g,dt-%g",
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, exponential_unbinding_angle_constant,
+	      cb, cm, ct, dt);
     }
     else {
-      sprintf(run_name, "%s__k_b-%g,k_ub-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g", label,
-	      low_affinity_binding_rate, low_affinity_unbinding_rate, cb, cm, ct, Ls, Lt, RAND_INIT_SEED, dt);
+      sprintf(run_name, "%s__k_b-%g,k_ub-%g,c-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g", label,
+	      low_affinity_binding_rate, low_affinity_unbinding_rate, exponential_unbinding_angle_constant,
+	      cb, cm, ct, Ls, Lt, RAND_INIT_SEED, dt);
     }
   }
 
