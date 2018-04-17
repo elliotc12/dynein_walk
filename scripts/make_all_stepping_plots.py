@@ -39,7 +39,8 @@ data_files = []
 for fname in os.listdir(args.data_directory):
     if os.path.isfile(args.data_directory + "/" + fname):
         if (args.data_basename in fname and ".txt" in fname):
-            data_files.append(args.data_directory + "/" + fname)
+            if ("~" not in fname):
+                data_files.append(args.data_directory + "/" + fname)
 
 if len(data_files) == 0:
     print("No files of form " + args.data_directory + "/*" + args.data_basename + "*.txt found. Exiting.")
