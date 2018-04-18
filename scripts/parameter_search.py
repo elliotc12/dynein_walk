@@ -46,6 +46,12 @@ parser.add_argument('-exp', '--exp-unbinding-constant', dest='exp_unbinding_cons
                     action='store', type=float, default=0.0, help="exponential unbinding constant", metavar='')
 parser.add_argument('-s', '--seed', dest ='seed', action='store', type=float,
                     default=1.0, help ="random number seed", metavar='')
+parser.add_argument('-cb', '--cb', dest ='cb', action='store', type=float,
+                    default=0.1, help ="cb", metavar='')
+parser.add_argument('-cm', '--cm', dest ='cm', action='store', type=float,
+                    default=0.4, help ="cm", metavar='')
+parser.add_argument('-ct', '--ct', dest ='ct', action='store', type=float,
+                    default=0.2, help ="ct", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
                     default='data/parameterSearch/testedParameters.csv', help=".txt file for logging stepping statistics", metavar='')
 parser.add_argument('-l', '--label', dest='label', action='store', type=str,
@@ -57,15 +63,11 @@ if os.path.exists('parameter_search.py'):
     os.chdir('../')
 os.system("make generate_stepping_data")
 
-cb = 0.1
-cm = 0.4
-ct = 0.2
-
 basename = run.sim(**{"k_b": args.k_b,
                       "k_ub": args.k_ub,
-                      "cb": cb,
-                      "cm": cm,
-                      "ct": ct,
+                      "cb": args.cb,
+                      "cm": args.cm,
+                      "ct": args.ct,
                       "ls": 10.49,
                       "lt": 23.8,
                       "eqb": 120,
@@ -128,7 +130,7 @@ fb_disp = far_positions[-1]-far_positions[0]
 if not os.path.exists(args.logfile):
     os.system("touch {0}".format(args.logfile))
     with open(args.logfile, 'a') as file:
-        s = "--ls 10.49, --lt 23.8, --cb 0.1, --cm 0.4, --ct 0.2, --dt 1e-10,  --seed 1, --framerate 1e-10, --eqb 120, --eqmpre 200, --eqmpost 224, --eqt 0, --nomovie"\
+        s = "--ls 10.49, --lt 23.8, --dt 1e-10,  --seed 1, --framerate 1e-10, --eqb 120, --eqmpre 200, --eqmpost 224, --eqt 0, --nomovie"\
             "\n\nk_b,\tk_ub,\truntime,\texp_binding_constant,\tmax ob time,\tmin ob time,\tmax bb time,\tmin bb time,\tmax nb step,\tmin nb step,\tmax fb step,\t"\
             "min fb step,\ttotal steps,\tnbx disp,\tfbx disp"
         file.write(s)
@@ -142,7 +144,7 @@ tex_dict = {"kb": args.k_b, "kub": args.k_ub, "runtime": args.runtime,
             "cexp": args.exp_unbinding_constant, "max_ob_t": max_ob_t,
             "min_ob_t": min_ob_t, "max_bb_t": max_bb_t, "min_bb_t": min_bb_t, "max_nb_step": max_nb_step,
             "min_nb_step": min_nb_step, "max_fb_step": max_fb_step, "min_fb_step": min_fb_step,
-            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": cb, "cm": cm, "ct": ct,
+            "total_steps": total_steps, "nb_disp": nb_disp, "fb_disp": fb_disp, "cb": args.cb, "cm": args.cm, "ct": args.ct,
             "velocity": (nb_disp+fb_disp)/2.0/args.runtime}
 
 texfile = "data/parameterSearch/{0}_kb{1}_kub{2}_expbc{3}_t{4}_seed{5}.tex".format(args.label, args.k_b, args.k_ub, args.exp_unbinding_constant, args.runtime, args.seed)
