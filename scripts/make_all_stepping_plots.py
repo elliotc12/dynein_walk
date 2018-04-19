@@ -81,13 +81,19 @@ for data_file in data_files:
         if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
             continue
 
-        if not equal(near_foot_positions[s-1],near_foot_positions[s]):
-            step_lengths.append(data[s,2]-data[s-1,2])
-            initial_displacements.append(data[s-1,2]-data[s-1,3])
-        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):
-            step_lengths.append(data[s,3]-data[s-1,3])
-            initial_displacements.append(data[s-1,3]-data[s-1,2])
 
+        # for meeting tomorrow: If I'm reading this correctly then initial displacements will be negative if the stepping foot
+        # is behind the stationary foot and positive if in front ... (we might want to flip this so that it would be positive
+        # if the step comes from a trailing foot) 
+
+        if not equal(near_foot_positions[s-1],near_foot_positions[s]):  # i.e. if near foot stepped 
+            step_lengths.append(data[s,2]-data[s-1,2])
+            initial_displacements.append(data[s-1,2]-data[s-1,3])  #near_foot_positions[s-1]-far_foot_positions[s-1]
+            #final_displacements.append(near_foot_positions[s]-far_foot_positions[s])
+        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):  # i.e. if far foot stepped 
+            step_lengths.append(data[s,3]-data[s-1,3])
+            initial_displacements.append(data[s-1,3]-data[s-1,2])  # far_foot_positions[s-1]-near_foot_positions[s-1]
+            #final_displacements.append(far_foot_positions[s]-near_foot_positions[s]) 
         onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
         bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
         step_times = np.concatenate((step_times, onebound_times + bothbound_times))
