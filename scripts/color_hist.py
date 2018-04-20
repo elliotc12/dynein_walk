@@ -59,10 +59,21 @@ if not ALL:
     far_positions = np.around(np.array(data[:,3]), decimals=7)
     near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_positions[1:] - far_positions[:-1]
-    L = np.array(near_step_lens-far_step_lens)
-    initial_displacements = L[:-1]
-    final_displacements = L[1:]
     
+    assert(equal(len(near_foot_positions),len(far_foot_positions)))
+    for s in range(1, len(near_foot_positions)):
+        assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
+        if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
+            continue
+        if not equal(near_foot_positions[s-1],near_foot_positions[s]):  # i.e. if near foot stepped 
+            initial_displacements.append(near_foot_positions[s-1]-far_foot_positions[s-1]) 
+            final_displacements.append(near_foot_positions[s]-far_foot_positions[s])
+        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):  # i.e. if far foot stepped 
+            initial_displacements.append(far_foot_positions[s-1]-near_foot_positions[s-1]) 
+            final_displacements.append(far_foot_positions[s]-near_foot_positions[s]) 
+
+
+         
     onebound_times = bind_times[1:]-unbind_times[1:]
     bothbound_times = unbind_times[1:]-bind_times[:-1]
     step_lengths = near_step_lens + far_step_lens
