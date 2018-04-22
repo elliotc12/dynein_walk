@@ -60,20 +60,20 @@ if not ALL:
     near_step_lens = near_positions[1:] - near_positions[:-1]  #reduces total length by one. Will include 0 step lengths
     far_step_lens = far_positions[1:] - far_positions[:-1]
     
-    assert(equal(len(near_foot_positions),len(far_foot_positions)))
-    for s in range(1, len(near_foot_positions)):
-        assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
-        if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
+    assert (len(near_positions) == len(far_positions))
+    for s in range(1, len(near_positions)):
+        assert((near_positions[s-1] == near_positions[s]) or (far_positions[s-1] == far_positions[s]))
+        if (near_positions[s-1] == near_positions[s]) and (far_positions[s-1] == far_positions[s]):
             continue
-        if not equal(near_foot_positions[s-1],near_foot_positions[s]):  # i.e. if near foot stepped 
-            initial_displacements.append(near_foot_positions[s-1]-far_foot_positions[s-1]) 
-            final_displacements.append(near_foot_positions[s]-far_foot_positions[s])
-        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):  # i.e. if far foot stepped 
-            initial_displacements.append(far_foot_positions[s-1]-near_foot_positions[s-1]) 
-            final_displacements.append(far_foot_positions[s]-near_foot_positions[s]) 
+        if not (near_positions[s-1] == near_positions[s]):  # i.e. if near foot stepped 
+            initial_displacements.append(near_positions[s-1]-far_positions[s-1]) 
+            final_displacements.append(near_positions[s]-far_positions[s])
+        elif not (far_positions[s-1] == far_positions[s]):  # i.e. if far foot stepped 
+            initial_displacements.append(far_positions[s-1]-near_positions[s-1]) 
+            final_displacements.append(far_positions[s]-near_positions[s]) 
+        
 
-
-         
+  
     onebound_times = bind_times[1:]-unbind_times[1:]
     bothbound_times = unbind_times[1:]-bind_times[:-1]
     step_lengths = near_step_lens + far_step_lens
@@ -86,7 +86,6 @@ else:
         print("Error, no files of form data/paper_static_stepping_data*.txt found. Exiting.")
         exit(1)
 
-
     for data_file in data_files:
         data = np.loadtxt(data_file)
         if VERBOSE: print("file found: ", data_file)
@@ -94,12 +93,22 @@ else:
         unbind_times = np.array(data[:,0])
         near_positions = np.around(np.array(data[:,2]), decimals=7)
         far_positions = np.around(np.array(data[:,3]), decimals=7)
-        near_step_lens = (near_positions[1:] - near_positions[:-1])  #still want zero step lengths
+        near_step_lens = (near_positions[1:] - near_positions[:-1])  # still want zero step lengths
         far_step_lens = (far_positions[1:] - far_positions[:-1])
-        L = np.array(near_step_lens-far_step_lens)
 
-        initial_displacements = np.concatenate((initial_displacements, L[:-1]))
-        final_displacements = np.concatenate((final_displacements, L[1:]))
+        assert (len(near_positions)==len(far_positions))
+        for s in range(1, len(near_positions)):
+            assert((near_positions[s-1] == near_positions[s]) or (far_positions[s-1] == far_positions[s]))
+            if(near_positions[s-1] == near_positions[s] and far_positions[s-1] == far_positions[s]): 
+                continue
+            if not(near_positions[s-1] == near_positions[s]):
+                initial_displacements.append(near_positions[s-1]-far_positions[s-1])
+                final_displacements.append(near_positions[s]-far_positions[s])
+            elif not(far_positions[s-1] == far_positions[s]):
+                initial_displacements.append(far_positions[s-1] - near_positions[s-1])
+                final_displacements.append(far_positions[s]-near_positions[s])
+ 
+
         onebound_times = np.concatenate((onebound_times, bind_times[1:] - unbind_times[1:]))
         bothbound_times = np.concatenate((bothbound_times, unbind_times[1:] - bind_times[:-1]))
         step_lengths = np.concatenate((step_lengths, near_step_lens + far_step_lens))
@@ -116,6 +125,8 @@ def getBinIndex(p, bins):
 
 def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     # insure that times start at zero and not the min time
+    X = np.asarray(X)
+    Y = np.asarray(Y)
     if VERBOSE: print(xIsTimeValue, yIsTimeValue) 
 
     if VERBOSE: print(X.shape, Y.shape)
