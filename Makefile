@@ -96,7 +96,7 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.tex scripts/make_all_stepping_plots.py scripts/color_hist.py plots/parameterSearch/display_template.tex
 	mkdir -p plots/parameterSearch/searchplots
 	python3 scripts/make_all_stepping_plots.py -d data/parameterSearch -b $*
-	python3 scripts/color_hist.py -a -d data/parameterSearch/$*.txt
+	python3 scripts/color_hist.py -d data/parameterSearch/$*.txt
 	cp data/parameterSearch/$*.tex plots/parameterSearch/search_parameters.tex
 	cd plots/parameterSearch && xelatex display_template.tex
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf

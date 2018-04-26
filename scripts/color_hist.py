@@ -171,6 +171,7 @@ def plotCounts(x, y, graph_label, x_label, y_label,
     plt.title(graph_label)
     cb = plt.colorbar()
     cb.set_label('counts')
+    plt.axes().set_aspect('equal')
     if filename is None:
         filename = 'plots/'+graph_label.replace(' ',  '_')+".pdf"
     plt.savefig(filename)
@@ -197,6 +198,16 @@ plotCounts(initial_displacements,
            xIsTimeValue=False,
            yIsTimeValue=False,
            filename='plots/initial-vs-final{}.pdf'.format(seed_label))
+
+print(len(initial_displacements), len(step_lengths))
+plotCounts(initial_displacements,
+           np.array(final_displacements) - np.array(initial_displacements),
+           "initial disp vs step length",
+           "initial displacement",
+           "step length",
+           xIsTimeValue=False,
+           yIsTimeValue=False,
+           filename='plots/initial-vs-length{}.pdf'.format(seed_label))
 
 if SHOW:
     plt.show()

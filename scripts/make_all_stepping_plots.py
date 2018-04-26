@@ -278,9 +278,11 @@ plt.close(fig)
 
 # initial displacement vs motor step length scatter
 fig = plt.figure()
-plt.scatter(initial_displacements, step_lengths)
+plt.plot(initial_displacements, initial_displacements+step_lengths, '.', alpha=0.1)
 plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
+plt.ylabel("Final displacement (nm)")
+plt.axes().set_aspect('equal')
 
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
