@@ -96,12 +96,12 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.tex scripts/make_all_stepping_plots.py scripts/color_hist.py plots/parameterSearch/display_template.tex
 	mkdir -p plots/parameterSearch/searchplots
 	python3 scripts/make_all_stepping_plots.py -d data/parameterSearch -b $*
-	python3 scripts/color_hist.py -a -d data/parameterSearch/$*.txt
+	python3 scripts/color_hist.py -d data/parameterSearch/$*.txt
 	cp data/parameterSearch/$*.tex plots/parameterSearch/search_parameters.tex
 	cd plots/parameterSearch && xelatex display_template.tex
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf
 	rm plots/stepping_length_histogram.pdf plots/displacement_vs_step_length.pdf plots/stepping_analysis.pdf plots/displacement_histogram.pdf
-	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final-multiple-seeds.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length-multiple-seeds.pdf plots/stepping_trajectory.pdf
+	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length.pdf plots/stepping_trajectory.pdf
 # rm plots/parameterSearch/search_parameters.tex
 
 ######### papers ##########
