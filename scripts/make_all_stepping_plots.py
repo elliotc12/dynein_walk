@@ -247,9 +247,9 @@ plt.close(fig)
 # OB_time vs step_length scatter
 assert len(onebound_times) == len(step_lengths)
 fig = plt.figure()
-plt.scatter(onebound_times, step_lengths)
+plt.scatter(onebound_times, step_lengths, alpha=0.3)
 plt.gca().set_xscale('log')
-plt.xlabel("Onebound time (s)")
+plt.xlabel("Onebound time (s), theory= 2.5e-5s")
 plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-7, 1e-2))
@@ -263,9 +263,9 @@ plt.close(fig)
 # BB_time vs step_length scatter
 assert len(bothbound_times) == len(step_lengths)
 fig = plt.figure()
-plt.scatter(bothbound_times, step_lengths)
+plt.scatter(bothbound_times, step_lengths, alpha=0.3)
 plt.gca().set_xscale('log')
-plt.xlabel("Bothbound time (s)")
+plt.xlabel("Bothbound time (s), theory= 5e-3s")
 plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-5, 1))
