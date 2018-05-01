@@ -278,7 +278,7 @@ plt.close(fig)
 
 # initial displacement vs motor step length scatter
 fig = plt.figure()
-plt.plot(initial_displacements, initial_displacements+step_lengths, '.', alpha=0.1)
+plt.plot(initial_displacements, initial_displacements+step_lengths, '.', alpha=0.3)
 plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Step length (nm)")
 plt.ylabel("Final displacement (nm)")
@@ -397,8 +397,8 @@ bind_times_duplicated[0] = bind_times[0]
 near_positions_duplicated[0] = near_foot_positions[0]
 far_positions_duplicated[0] = far_foot_positions[0]
 
-plt.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Near BD", markersize=1)
-plt.plot(bind_times_duplicated, far_positions_duplicated, 'o-', label="Far BD", markersize=1)
+plt.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Near BD", markersize=.01, linewidth=0.5)
+plt.plot(bind_times_duplicated, far_positions_duplicated, 'o-', label="Far BD", markersize=.01, linewidth=0.5)
 
 plt.xlabel("time (s)")
 plt.ylabel("Position (nm)")
