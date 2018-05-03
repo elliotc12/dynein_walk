@@ -8,7 +8,7 @@ import argparse
 
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
-        x = '{:g}'.format(x)
+        x = '{:e}'.format(x)
         if 'e+0' in x:
             m,e = x.split('e+0')
             if m == '1':
