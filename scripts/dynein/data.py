@@ -2,19 +2,18 @@ import numpy as np
 
 
 class SteppingData(object):
-    'FIXME Documentation string'
     def __init__(self, dataFile):
         self.dataFile = dataFile
         self.rawData = np.loadtxt(self.dataFile)
         # assert(np.shape(self.rawData)[1] == 4)  # guarantee 4 columns in data file
         self.bindTimes = self.rawData[:, 1]
         self.unbindTimes = self.rawData[:, 0]
-        self.nbx_bind = self.rawData[:, 2] 
-        self.fbx_bind = self.rawData[:, 3]
-        self.nmx_unbind = self.rawData[:, 4]
-        self.fmx_unbind = self.rawData[:, 5]
-        self.nmx_bind = self.rawData[:, 6]
-        self.fmx_bind = self.rawData[:, 7]
+        self.nbx_bind = np.around(self.rawData[:, 2], decimals=7)
+        self.fbx_bind = np.around(self.rawData[:, 3], decimals=7)
+        self.nmx_unbind = np.around(self.rawData[:, 4], decimals=7)
+        self.fmx_unbind = np.around(self.rawData[:, 5], decimals=7)
+        self.nmx_bind = np.around(self.rawData[:, 6], decimals=7)
+        self.fmx_bind = np.around(self.rawData[:, 7], decimals=7)
 
         self.near_step_len = self.nbx_bind[1:]-self.nbx_bind[:-1]
         self.far_step_len = self.fbx_bind[1:]-self.fbx_bind[:-1]
@@ -27,6 +26,7 @@ class SteppingData(object):
 
         assert(len(self.nbx_bind)==len(self.fbx_bind))
         for s in range(1, len(self.nbx_bind)):
+            # print(self.nbx_bind[s-1]-self.nbx_bind[s], self.fbx_bind[s-1]-self.fbx_bind[s])
             assert((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s]))
             if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.nbx_bind[s]):
                 continue
