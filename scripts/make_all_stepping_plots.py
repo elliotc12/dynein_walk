@@ -324,40 +324,29 @@ plt.close(fig)
 
 fig = plt.figure()
 
-# initial_displacements = np.array(initial_displacements)
-# indices = np.argsort(np.abs(initial_displacements))
-# sorted_displacements = initial_displacements[indices]
+initial_displacements = np.array(initial_displacements)
+indices = np.argsort(np.abs(initial_displacements))
+sorted_displacements = initial_displacements[indices]
 
-# Nbin = 50
-# L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
-# ntrailing = np.zeros_like(L)
-# nleading = np.zeros_like(L)
-# for i in range(len(L)):
-#     bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
-#     ntrailing[i] = (bunch < 0).sum()
-#     nleading[i] = (bunch > 0).sum()
-#     L[i] = np.abs(bunch).mean()
+Nbin = 50
+L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
+ntrailing = np.zeros_like(L)
+nleading = np.zeros_like(L)
+for i in range(len(L)):
+    bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
+    ntrailing[i] = (bunch < 0).sum()
+    nleading[i] = (bunch > 0).sum()
+    L[i] = np.abs(bunch).mean()
 
-# fraction_trailing = ntrailing / (ntrailing + nleading)
-
-model_displacements = [10, 20, 30, 40, 50]
-model_fraction_trailing = []
-model_fraction_trailing_variance = []
-plot_model_L = []
-for i, bin_center in enumerate(model_displacements):
-    displacements = initial_displacements[np.abs(np.abs(initial_displacements) - bin_center) < 5]
-    if len(displacements) == 0:
-        continue
-    model_fraction_trailing.append(np.mean([disp < 0 for disp in displacements]))
-    model_fraction_trailing_variance.append(np.var([disp < 0 for disp in displacements])/np.sqrt(len(displacements)))
-    plot_model_L.append(bin_center)
+fraction_trailing = ntrailing / (ntrailing + nleading)
 
 yildiz_displacements = [10, 20, 30, 40, 50]
 yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-plt.errorbar(plot_model_L, model_fraction_trailing, yerr=model_fraction_trailing_variance, fmt='o-', label="Model")
+plt.plot(L, fraction_trailing, 'o-', label="Model")
 plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
+plt.ylim(0,1)
 
 plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
 plt.ylabel("Fraction trailing")
