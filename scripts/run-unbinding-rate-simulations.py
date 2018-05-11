@@ -53,7 +53,7 @@ parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
 
 parser.add_argument('-l', '--label', dest='label', action='store', type=str, default='default', help="label for run", metavar='')
 
-parser.add_argument('-w', '--writerate', dest='writerate', action='store', type=str, default=1e6, help="writes per second", metavar='')
+parser.add_argument('-w', '--writerate', dest='write_rate', action='store', type=str, default=1e6, help="writes per second", metavar='')
 
 args = parser.parse_args()
 
@@ -64,31 +64,14 @@ os.system("make simulate_unbinding_rates")
 if not os.path.exists('data/unbinding-probability/'):
         os.makedirs('data/unbinding-probability/')
 
-basename = run.sim(**{"k_b": args.k_b,
-                      "k_ub": args.k_ub,
-                      "cb": args.cb,
-                      "cm": args.cm,
-                      "ct": args.ct,
-                      "ls": 10.49,
-                      "lt": 23.8,
-                      "eqb": 120,
-                      "eqmpre": 200,
-                      "eqmpost": 224,
-                      "eqt": 0,
-                      "dt": 1e-10,
-                      "label": "unbinding-rate-" + args.label,
-                      "seed": args.seed,
-                      "runtime": args.runtime,
-                      "exp-unbinding-constant": args.exp_unbinding_constant})
-
 for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
-    basename = "%s__L-%g,s-%d" % (label, str(L))
+    basename = "%s__L-%s,s-%s" % (args.label, str(L), args.seed)
 
-    cmd = ["rq run ./simulate_unbinding_rates --label up-%s --binding %g --unbinding %g --exp-unbinding-constant %g"\
-           "--cb %g --cm %g --ct %g --ls 10.49 --lt 23.8 --eqb 120 --eqmpre 200 --eqmpost 224 --eqt 0 --writerate %g"\
-           "--runtime %g --framerate 1e-10 --nomovie --sed %g --dt 1e-10 --L %g" %
-           (str(args.label) + "L" + str(L), str(args.kb), str(args.kub), str(args.exp_unbinding_constant), str(args.cb),
-            str(args.cm), str(args.ct), str(args.writerate), str(args.runtime), seed, str(L))]
+    cmd = ["rq run ./simulate_unbinding_rates --label %s --k_b %g --k_ub %g --c %g "\
+           "--cb %g --cm %g --ct %g --ls 10.49 --lt 23.8 --eqb 120 --eqmpre 200 --eqmpost 224 --eqt 0 --write_rate %g "\
+           "--runtime %g --seed %g --dt 1e-10 --L %g" %
+           (str(args.label), float(args.k_b), float(args.k_ub), float(args.exp_unbinding_constant), float(args.cb),
+            float(args.cm), float(args.ct), float(args.write_rate), float(args.runtime), args.seed, float(L))]
 
     if not os.path.exists('runlogs'):
         os.makedirs('runlogs')
@@ -96,22 +79,22 @@ for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
 
     print("Running: ", " ".join(cmd), out)
     out.flush()
-    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
-    err = process_object.communicate()[1]
-    if (err != b''):
-        print("\n##################################",
-              "\nSimulation exited in error: \n\n",
-              err.decode("utf-8"),
-              "\n##################################\n\n")
+    # process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
+    # err = process_object.communicate()[1]
+    # if (err != b''):
+    #     print("\n##################################",
+    #           "\nSimulation exited in error: \n\n",
+    #           err.decode("utf-8"),
+    #           "\n##################################\n\n")
 
-with open("data/unbinding-probability/parameters_%s.tex" % label, "w") as f:
+with open("data/unbinding-probability/parameters_%s.tex" % args.label, "w") as f:
     f.write(r'\newcommand\%s{%s}' % (latex_format("label").replace("_",""), latex_format(args.label)) + '\n')
-    f.write(r'\newcommand\%s{%s}' % (latex_format("kb").replace("_",""), latex_format(args.kb)) + '\n')
-    f.write(r'\newcommand\%s{%s}' % (latex_format("kub").replace("_",""), latex_format(args.kub)) + '\n')
-    f.write(r'\newcommand\%s{%s}\n' %(latex_format("c").replace("_",""), latex_format(args.exp-unbinding-constant)))
+    f.write(r'\newcommand\%s{%s}' % (latex_format("kb").replace("_",""), latex_format(args.k_b)) + '\n')
+    f.write(r'\newcommand\%s{%s}' % (latex_format("kub").replace("_",""), latex_format(args.k_ub)) + '\n')
+    f.write(r'\newcommand\%s{%s}\n' %(latex_format("c").replace("_",""), latex_format(args.exp_unbinding_constant)))
     f.write(r'\newcommand\%s{%s}' % (latex_format("cb").replace("_",""), latex_format(args.cb))+ '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("cm").replace("_",""), latex_format(args.cm))+ '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("ct").replace("_",""), latex_format(args.ct))+ '\n')
-    f.write(r'\newcommand\%s{%s}' % (latex_format("ls").replace("_",""), latex_format(args.ls))+ '\n')
-    f.write(r'\newcommand\%s{%s}' % (latex_format("lt").replace("_",""), latex_format(args.lt))+ '\n')
+    f.write(r'\newcommand\%s{%s}' % (latex_format("ls").replace("_",""), latex_format(10.49))+ '\n')
+    f.write(r'\newcommand\%s{%s}' % (latex_format("lt").replace("_",""), latex_format(23.8))+ '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("w_rate").replace("_",""), latex_format(args.write_rate))+ '\n')

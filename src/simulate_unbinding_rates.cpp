@@ -42,9 +42,9 @@ struct job_msg_t {
 };
 
 void log_unbinding_probability_data(FILE* data_file, void* dyn, long long iteration, int write_rate) {
-  if (iteration % write_rate == 0) {
+  if (iteration %  (int) (1.0/(write_rate*dt)) == 0) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
-    fprintf(data_file, "%13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g %13.10g\n",
+    fprintf(data_file, "%13.10g %10.2g %10.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g %7.2g\n",
 	    iteration*dt,
 	    dyn_bb->get_near_unbinding_rate(),
 	    dyn_bb->get_far_unbinding_rate(),
@@ -101,7 +101,7 @@ void set_input_variables(int argc, char** argv, char* run_name, double* runtime,
       {"eqmpost",                     required_argument,    0, 'r'},
       {"eqt",                         required_argument,    0, 's'},
       {"write_rate",                  required_argument,    0, 't'},
-      {"exp-unbinding-constant",      required_argument,    0, 'u'},
+      {"c",                           required_argument,    0, 'u'},
       {"L",                           required_argument,    0, 'v'},
       {0, 0, 0, 0}
     };
@@ -237,8 +237,8 @@ int main(int argc, char** argv) {
 
   printf("\n\n\n*********%s*********\n", run_name);
   fprintf(job_msg.data_file, "\n\n\n\n#********%s********\n", run_name);
-  fprintf(job_msg.data_file, "#%13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s, %13s\n",
-	  "time", "near_unbinding_rate", "far_unbinding_rate", "nma", "fma", "nbx", "nmx", "tx", "fmx", "fbx", "nby", "nmy", "ty", "fmy", "fby");
+  fprintf(job_msg.data_file, "#%12s, %9s, %9s, %6s, %6s, %6s, %6s, %6s, %6s, %6s, %6s, %6s, %6s, %6s, %6s\n",
+	  "t", "near_p_ub", "far_p_ub", "nma", "fma", "nbx", "nmx", "tx", "fmx", "fbx", "nby", "nmy", "ty", "fmy", "fby");
 
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
