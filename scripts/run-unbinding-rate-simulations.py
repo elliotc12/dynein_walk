@@ -76,12 +76,9 @@ basename = run.sim(**{"k_b": args.k_b,
                       "eqmpost": 224,
                       "eqt": 0,
                       "dt": 1e-10,
-                      "label": "paramSearch-" + args.label,
+                      "label": "unbinding-rate-" + args.label,
                       "seed": args.seed,
                       "runtime": args.runtime,
-                      "framerate": 1e-10,
-                      "crash-movie": False,
-                      "nomovie": True,
                       "exp-unbinding-constant": args.exp_unbinding_constant})
 
 for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:

@@ -75,6 +75,8 @@ extern bool am_only_writing_on_crash;
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;
 
+extern bool frozen_in_bothbound;
+
 const bool FP_EXCEPTION_FATAL = false;
 const bool am_debugging_conversions = false;
 const bool am_debugging_angles = false;

@@ -28,6 +28,7 @@
 *~
 
 generate_stepping_data
+simulate_unbinding_rates
 
 data/*.txt
 data/*.tex

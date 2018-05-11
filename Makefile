@@ -23,6 +23,11 @@ generate_stepping_data: build/generate_stepping_data.o build/dynein_simulate.o \
 			build/utilities.o
 	$(CXX) -o generate_stepping_data $^
 
+simulate_unbinding_rates: build/simulate_unbinding_rates.o build/dynein_simulate.o \
+			build/dynein_struct_onebound.o build/dynein_struct_bothbound.o \
+			build/utilities.o
+	$(CXX) -o simulate_unbinding_rates $^
+
 ######### draw module stuff ##########
 scripts/dynein/draw/motor_domain.py: scripts/dynein/draw/create_MD_array.py scripts/dynein/draw/outer_coords.txt
 	cd scripts/dynein/draw && python create_MD_array.py

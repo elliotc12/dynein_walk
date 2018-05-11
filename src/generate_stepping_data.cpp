@@ -23,6 +23,8 @@ extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;
 extern char* crash_movie_file_name_global;
 
+const bool frozen_in_bothbound = false;
+
 bool am_making_movie = true;
 bool am_debugging_onebound = false;
 

@@ -182,7 +182,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  if (iter % 2 == 0) unbind_far = false;
 	  else unbind_near = false;
 	}
-	if (unbind_near) { // switch to farbound
+	if (unbind_near and not frozen_in_bothbound) { // switch to farbound
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, FARBOUND);
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to farbound\n");
 	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %g, roll was: %g, boltzmann factor: %g\n",
@@ -196,7 +196,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  // rebinding_immune_until = t + REBINDING_IMMUNITY_TIME;
 	  break;
 	}
-	else if (unbind_far) { // switch to nearbound
+	else if (unbind_far and not frozen_in_bothbound) { // switch to nearbound
 	  dyn_ob = new Dynein_onebound(dyn_bb, rand, NEARBOUND);
 	  if (am_debugging_state_transitions) printf("Transitioning from bothbound to nearbound\n");
 	  if (am_debugging_state_transitions) printf("just unbound b/c unbinding probability was: %g, roll as: %g, boltzmann factor: %g\n",
