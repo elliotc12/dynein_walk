@@ -49,8 +49,6 @@ parser.add_argument('-cb', '--cb', dest ='cb', action='store', type=float, defau
 parser.add_argument('-cm', '--cm', dest ='cm', action='store', type=float, default=0.4, help ="cm", metavar='')
 parser.add_argument('-ct', '--ct', dest ='ct', action='store', type=float, default=0.2, help ="ct", metavar='')
 
-parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str, default='data/parameterSearch/testedParameters.csv', help=".txt file for logging stepping statistics", metavar='')
-
 parser.add_argument('-l', '--label', dest='label', action='store', type=str, default='default', help="label for run", metavar='')
 
 parser.add_argument('-w', '--writerate', dest='write_rate', action='store', type=str, default=1e6, help="writes per second", metavar='')
@@ -87,11 +85,11 @@ for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
     #           err.decode("utf-8"),
     #           "\n##################################\n\n")
 
-with open("data/unbinding-probability/parameters_%s.tex" % args.label, "w") as f:
-    f.write(r'\newcommand\%s{%s}' % (latex_format("label").replace("_",""), latex_format(args.label)) + '\n')
+with open("data/unbinding-probability/%s.tex" % args.label, "w") as f:
+    f.write(r'\newcommand\%s{%s}' % (latex_format("runlabel").replace("_",""), latex_format(args.label)) + '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("kb").replace("_",""), latex_format(args.k_b)) + '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("kub").replace("_",""), latex_format(args.k_ub)) + '\n')
-    f.write(r'\newcommand\%s{%s}\n' %(latex_format("c").replace("_",""), latex_format(args.exp_unbinding_constant)))
+    f.write(r'\newcommand\%s{%s}' %(latex_format("cexp").replace("_",""), latex_format(args.exp_unbinding_constant)) + '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("cb").replace("_",""), latex_format(args.cb))+ '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("cm").replace("_",""), latex_format(args.cm))+ '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("ct").replace("_",""), latex_format(args.ct))+ '\n')

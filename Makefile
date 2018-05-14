@@ -8,7 +8,9 @@ HEADERS = $(wildcard src/*.h)
 PARAMSEARCH_DATAFILES = $(wildcard data/parameterSearch/*.txt)
 PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%.pdf,$(PARAMSEARCH_DATAFILES))
 
-all: generate_stepping_data public $(DRAW) $(PARAMSEARCH_PDFS)
+UNBINDING_PROBABILITY_PDFS = $(patsubst data/unbinding_probability/%.tex,plots/unbinding_probability/%.pdf, $(wildcard data/unbinding_probability/*.tex))
+
+all: generate_stepping_data public $(DRAW) $(UNBINDING_PROBABILITY_PDFS) $(PARAMSEARCH_PDFS)
 
 .PHONY: clean public
 
@@ -107,7 +109,14 @@ plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.t
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf
 	rm plots/stepping_length_histogram.pdf plots/displacement_vs_step_length.pdf plots/stepping_analysis.pdf plots/displacement_histogram.pdf
 	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length.pdf plots/stepping_trajectory.pdf
-# rm plots/parameterSearch/search_parameters.tex
+
+######### unbinding probability PDFs ##########
+plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/$*__*.txt) scripts/make_all_unbinding_probability_plots.py plots/unbinding_probability/display_template.tex data/unbinding_probability/myfirstrun.tex
+	mkdir -p plots/unbinding_probability/plots_for_latex
+	python3 scripts/make_all_unbinding_probability_plots.py -d data/unbinding_probability -b $*
+	cp data/unbinding_probability/$*.tex plots/unbinding_probability/parameters.tex
+	cd plots/unbinding_probability && xelatex display_template.tex
+	mv plots/unbinding_probability/display_template.pdf plots/unbinding_probability/$*.pdf
 
 ######### papers ##########
 PAPER_SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
