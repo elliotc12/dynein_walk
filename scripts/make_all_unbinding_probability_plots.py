@@ -60,12 +60,12 @@ for data_file in data_files:
     end_L_idx = data_file[start_L_idx:].find(',') + start_L_idx
     L = float(data_file[start_L_idx:end_L_idx])
 
-    times = data[0,:]
-    near_unbinding_probabilities = data[1,:]
-    far_unbinding_probabilities = data[2,:]
+    times = data[:,0]
+    near_unbinding_probabilities = data[:,1]
+    far_unbinding_probabilities = data[:,2]
 
-    near_binding_xs = data[5,:]
-    far_binding_xs = data[9,:]
+    near_binding_xs = data[:,5]
+    far_binding_xs = data[:,9]
 
     lagging_unbinding_probabilities = np.array([far_unbinding_probabilities[s] if near_binding_xs[s] > far_binding_xs[s] else near_unbinding_probabilities[s] for s in range(len(times))])
     leading_unbinding_probabilities = np.array([near_unbinding_probabilities[s] if near_binding_xs[s] > far_binding_xs[s] else far_unbinding_probabilities[s] for s in range(len(times))])
@@ -85,7 +85,7 @@ lagging_probabilities_vs_time = np.array(lagging_probabilities_vs_time)
 fig = plt.figure()
 plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L))
 plt.xlabel("|L| (nm)")
-plt.ylabel("Lagging P(unbinding) fraction")
+plt.ylabel("Lagging $k_{ub}$ fraction")
 
 plt.savefig("plots/unbinding_probability/plots_for_latex/lagging_fraction_vs_L.pdf", format="pdf")
 plt.close(fig)
@@ -96,20 +96,20 @@ fig = plt.figure()
 plt.scatter(Ls, mean_lagging_probability_per_L, label="lagging")
 plt.scatter(Ls, mean_leading_probability_per_L, label="leading")
 plt.xlabel("|L| (nm)")
-plt.ylabel("P(unbinding)")
+plt.ylabel("<$k_{ub}$>")
 plt.legend()
 
-plt.savefig("plots/unbinding_probability/plots_for_latex/unbinding_probability_vs_L.pdf", format="pdf")
+plt.savefig("plots/unbinding_probability/plots_for_latex/unbinding_rate_vs_L.pdf", format="pdf")
 plt.close(fig)
 
 ### Probability vs t
 fig = plt.figure()
-for s in range(len(leading_probabilities_vs_time)):
-    plt.scatter(times, leading_probabilities_vs_time[s], label = "leading, L = " + str(Ls[s]))
-    plt.scatter(times, lagging_probabilities_vs_time[s], label = "lagging, L = " + str(Ls[s]))
+# for s in range(len(leading_probabilities_vs_time)):
+#     plt.scatter(times, leading_probabilities_vs_time[s], label = "leading, L = " + str(Ls[s]))
+#     plt.scatter(times, lagging_probabilities_vs_time[s], label = "lagging, L = " + str(Ls[s]))
 plt.legend()
 plt.xlabel("t (s)")
-plt.ylabel("P(unbinding)")
+plt.ylabel("$k_{ub}$")
 
-plt.savefig("plots/unbinding_probability/plots_for_latex/probability_vs_t.pdf", format="pdf")
+plt.savefig("plots/unbinding_probability/plots_for_latex/rate_vs_t.pdf", format="pdf")
 plt.close(fig)

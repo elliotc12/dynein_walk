@@ -59,8 +59,8 @@ if os.path.exists('run-unbinding-rate-simulations.py'):
     os.chdir('../')
 os.system("make simulate_unbinding_rates")
 
-if not os.path.exists('data/unbinding-probability/'):
-        os.makedirs('data/unbinding-probability/')
+if not os.path.exists('data/unbinding_probability/'):
+        os.makedirs('data/unbinding_probability/')
 
 for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
     basename = "%s__L-%s,s-%s" % (args.label, str(L), args.seed)
@@ -85,7 +85,7 @@ for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
     #           err.decode("utf-8"),
     #           "\n##################################\n\n")
 
-with open("data/unbinding-probability/%s.tex" % args.label, "w") as f:
+with open("data/unbinding_probability/%s.tex" % args.label, "w") as f:
     f.write(r'\newcommand\%s{%s}' % (latex_format("runlabel").replace("_",""), latex_format(args.label)) + '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("kb").replace("_",""), latex_format(args.k_b)) + '\n')
     f.write(r'\newcommand\%s{%s}' % (latex_format("kub").replace("_",""), latex_format(args.k_ub)) + '\n')
