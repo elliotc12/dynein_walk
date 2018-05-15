@@ -69,7 +69,7 @@ for data_file in data_files:
 
     lagging_unbinding_probabilities = np.array([far_unbinding_probabilities[s] if near_binding_xs[s] > far_binding_xs[s] else near_unbinding_probabilities[s] for s in range(len(times))])
     leading_unbinding_probabilities = np.array([near_unbinding_probabilities[s] if near_binding_xs[s] > far_binding_xs[s] else far_unbinding_probabilities[s] for s in range(len(times))])
-
+    
     Ls.append(L)
     mean_lagging_probability_per_L.append(np.mean(lagging_unbinding_probabilities))
     mean_leading_probability_per_L.append(np.mean(leading_unbinding_probabilities))
@@ -83,9 +83,17 @@ lagging_probabilities_vs_time = np.array(lagging_probabilities_vs_time)
 
 ### lagging fraction vs L
 fig = plt.figure()
-plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L))
+
+yildiz_displacements = [10, 20, 30, 40, 50]
+yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
+yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
+
+plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
+
+plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L), label="simulation")
 plt.xlabel("|L| (nm)")
 plt.ylabel("Lagging $k_{ub}$ fraction")
+plt.legend()
 
 plt.savefig("plots/unbinding_probability/plots_for_latex/lagging_fraction_vs_L.pdf", format="pdf")
 plt.close(fig)
@@ -104,9 +112,13 @@ plt.close(fig)
 
 ### Probability vs t
 fig = plt.figure()
-# for s in range(len(leading_probabilities_vs_time)):
-#     plt.scatter(times, leading_probabilities_vs_time[s], label = "leading, L = " + str(Ls[s]))
-#     plt.scatter(times, lagging_probabilities_vs_time[s], label = "lagging, L = " + str(Ls[s]))
+
+# for s in range(len(Ls)):
+#     plt.plot(times, leading_probabilities_vs_time[s], label = "leading, L = " + str(Ls[s]), alpha=0.1)
+#     plt.plot(times, lagging_probabilities_vs_time[s], label = "lagging, L = " + str(Ls[s]), alpha=0.1)
+
+plt.plot(times, leading_probabilities_vs_time[0], label = "leading, L = " + str(Ls[0]))
+
 plt.legend()
 plt.xlabel("t (s)")
 plt.ylabel("$k_{ub}$")

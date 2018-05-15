@@ -175,7 +175,6 @@ void set_input_variables(int argc, char** argv, char* run_name, double* runtime,
       break;
     case 'u':
       exponential_unbinding_angle_constant = strtod(optarg, NULL);
-      printf("unbinding exponential constant: %g\n", exponential_unbinding_angle_constant);
       break;
     case 'v':
       *L_init = strtod(optarg, NULL);
@@ -212,6 +211,7 @@ void sig_handler_print_movie_buffer(int signum) {
 }
 
 int main(int argc, char** argv) {
+  fflush(stdout);
   setvbuf(stdout, 0, _IONBF, 0);
 
   char* run_name = new char[200];
@@ -220,8 +220,9 @@ int main(int argc, char** argv) {
   double L_init = 0;
   set_input_variables(argc, argv, run_name, &runtime, &write_rate, &L_init);
 
+
   char *data_fname = new char[200];
-  sprintf(data_fname, "data/unbinding-probability/%s.txt", run_name);
+  sprintf(data_fname, "data/unbinding_probability/%s.txt", run_name);
 
   job_msg_t job_msg;
   job_msg.max_iteration = 0;

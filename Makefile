@@ -111,7 +111,7 @@ plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.t
 	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length.pdf plots/stepping_trajectory.pdf
 
 ######### unbinding probability PDFs ##########
-plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/$*__*.txt) scripts/make_all_unbinding_probability_plots.py plots/unbinding_probability/display_template.tex data/unbinding_probability/myfirstrun.tex
+plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/%*) data/unbinding_probability/%.tex scripts/make_all_unbinding_probability_plots.py plots/unbinding_probability/display_template.tex
 	mkdir -p plots/unbinding_probability/plots_for_latex
 	python3 scripts/make_all_unbinding_probability_plots.py -d data/unbinding_probability -b $*
 	cp data/unbinding_probability/$*.tex plots/unbinding_probability/parameters.tex

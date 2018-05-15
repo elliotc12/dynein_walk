@@ -5,6 +5,7 @@ import dynein.run as run
 import glob
 import numpy as np
 import argparse
+import subprocess
 
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
@@ -62,14 +63,28 @@ os.system("make simulate_unbinding_rates")
 if not os.path.exists('data/unbinding_probability/'):
         os.makedirs('data/unbinding_probability/')
 
-for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
+for L in [1, 5, 10, 15, 20, 25, 30, 35, 40]:
     basename = "%s__L-%s,s-%s" % (args.label, str(L), args.seed)
 
-    cmd = ["rq run ./simulate_unbinding_rates --label %s --k_b %g --k_ub %g --c %g "\
-           "--cb %g --cm %g --ct %g --ls 10.49 --lt 23.8 --eqb 120 --eqmpre 200 --eqmpost 224 --eqt 0 --write_rate %g "\
-           "--runtime %g --seed %g --dt 1e-10 --L %g" %
-           (str(args.label), float(args.k_b), float(args.k_ub), float(args.exp_unbinding_constant), float(args.cb),
-            float(args.cm), float(args.ct), float(args.write_rate), float(args.runtime), args.seed, float(L))]
+    cmd = ["./simulate_unbinding_rates",
+           "--label", "%s" % str(args.label),
+           "--k_b", "%g" % float(args.k_b),
+           "--k_ub", "%g" % float(args.k_ub),
+           "--c", "%g" % float(args.exp_unbinding_constant),
+           "--cb", "%g" % float(args.cb),
+           "--cm", "%g" % float(args.cm),
+           "--ct", "%g" % float(args.ct),
+           "--ls", "10.49",
+           "--lt", "23.8",
+           "--eqb", "120",
+           "--eqmpre", "200",
+           "--eqmpost", "224",
+           "--eqt", "0",
+           "--write_rate", "%g" % float(args.write_rate),
+           "--runtime", "%g" % float(args.runtime),
+           "--seed", "%g" % float(args.seed),
+           "--dt", "1e-10",
+           "--L", "%g" % float(L)]
 
     if not os.path.exists('runlogs'):
         os.makedirs('runlogs')
@@ -77,13 +92,13 @@ for L in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
 
     print("Running: ", " ".join(cmd), out)
     out.flush()
-    # process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
-    # err = process_object.communicate()[1]
-    # if (err != b''):
-    #     print("\n##################################",
-    #           "\nSimulation exited in error: \n\n",
-    #           err.decode("utf-8"),
-    #           "\n##################################\n\n")
+    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
+    err = process_object.communicate()[1]
+    if (err != b''):
+        print("\n##################################",
+              "\nSimulation exited in error: \n\n",
+              err.decode("utf-8"),
+              "\n##################################\n\n")
 
 with open("data/unbinding_probability/%s.tex" % args.label, "w") as f:
     f.write(r'\newcommand\%s{%s}' % (latex_format("runlabel").replace("_",""), latex_format(args.label)) + '\n')
