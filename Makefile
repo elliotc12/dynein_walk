@@ -1,7 +1,7 @@
 CPPFLAGS = -std=c++98 -g -Werror -O2 -Wall
 LIBRARIES = -lm
 
-PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf papers/elliott-thesis/latex/capek.pdf
+PAPERS = papers/fft_speedup/convolution_theorem.pdf papers/paper/paper.pdf papers/notes/notes.pdf
 DRAW = scripts/dynein/draw/motor_domain.py scripts/dynein/draw/tail.py
 HEADERS = $(wildcard src/*.h)
 
