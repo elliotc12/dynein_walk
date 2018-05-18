@@ -13,22 +13,22 @@ def latex_format(x):
             m,e = x.split('e+0')
             if m == '1':
                 return r'10^{'+e+'}'
-            return m + r'\times 10^{' + e+ '}'
+            return ("%.1f" % float(m)) + r'\times 10^{' + e+ '}'
         if 'e+' in x:
             m,e = x.split('e+')
             if m == '1':
                 return r'10^{'+e+'}'
-            return m + r'\times 10^{' + e+ '}'
+            return ("%.1f" % float(m)) + r'\times 10^{' + e+ '}'
         if 'e-0' in x:
             m,e = x.split('e-0')
             if m == '1':
                 return r'10^{-'+e+'}'
-            return m + r'\times 10^{-' + e+ '}'
+            return ("%.1f" % float(m)) + r'\times 10^{-' + e+ '}'
         if 'e' in x:
             m,e = x.split('e')
             if m == '1':
                 return r'10^{'+e+'}'
-            return m + r'\times 10^{' + e+ '}'
+            return ("%.1f" % float(m)) + r'\times 10^{' + e+ '}'
     # if isinstance(x, str):
     #     x = x.replace('-', '_')
     return x
