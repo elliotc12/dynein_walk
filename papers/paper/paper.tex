@@ -72,16 +72,46 @@ Several computational models have been created to explain dynein's motility. \te
 %% Figure X.B: Cryo-EM visualizations of how we get equilibrium angles
 %% Add rod vectors connecting each domain
 
-\begin{figure}[tbhp]
+\begin{figure*}[tbhp]
 \centering
-\includegraphics[width=0.49\linewidth]{figures/onebound-cartoon.pdf}
-\includegraphics[width=0.49\linewidth]{figures/bothbound-cartoon.pdf}
-\caption{Cartoon representation of model systems. \textbf{Left}: Post-powerstroke, \textbf{right}: pre-powerstroke.}
+\includegraphics[width=0.3\linewidth]{figures/onebound-cartoon.pdf}%
+\includegraphics[width=0.3\linewidth]{figures/bothbound-cartoon.pdf}%
+\includegraphics[width=0.3\linewidth]{figures/schematic-1-superimposed}\\
+\includegraphics[width=0.15\linewidth]{../../plots/poststroke-figure.pdf}%
+\includegraphics[width=0.15\linewidth]{../../plots/prestroke-figure.pdf}%
+\includegraphics[width=0.3\linewidth]{figures/schematic-binding-angle}
+\caption{}
 \label{fig:duration-length}
-\end{figure}
+\end{figure*}
 
 \subsection*{Elastic hinge model}~\\
 Our model is designed to capture the course-grained dynamics of the dynein protein while remaining mathematically tractable. We capture the structure of the full dynein complex by treating the protein as a set of spheres connected by rigid rods. Geometric properties of the model, such as rod length $L_s$ and $L_t$, and sphere radii $R_b$, $R_m$ and $R_t$, are calculated from electron microscopy and crystallography data, as pictured in Fig X.A. Each sphere acts as a hinge, and the angle between connected rods, or the MT, is free to vary. The model is constrained to remain in the plane of the microtubule, so transverse motion is not allowed. The model exists in two states: one called the poststroke state with both binding domain positions constant, as in Figure X.1, and one called the prestroke state with one binding domain free to move, as in Figure X.2.
+
+\begin{table}[tbhp]
+\centering
+\caption{Parameters used in model simulation.}
+\label{tab:staticparams}
+\begin{tabular}{lrrr}
+Parameter & Model & Experimental & Source \\
+\midrule
+$c_b$ & $\cm \Delta G_{ATP}$ &  & \\
+$c_m$ & $\cb \Delta G_{ATP}$ &  & \\
+$c_t$ & $\ct \Delta G_{ATP}$ &  & \\
+$k_b$ & $\kb s^{-1}$&  & \\
+$k_{ub}$ & $\kub s^{-1}$ & 2.0 & \\
+$L_s$ & $\ls nm$ & & \cite{nativestructure}\\
+$L_t$ & $\lt nm$ & & \cite{nativestructure}\\
+$\theta_b$ & $\eqb$ &  & \\
+$\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  & \\
+$\theta_m^{\mbox{post}}$ & $\eqmpost$ &  & \\
+$\theta_t$ & $\eqt$ &  & \\
+$D$ & 0.2 nm &  & \\
+
+\bottomrule
+\end{tabular}
+
+%% \addtabletext{nomenclature for the TSs refers to the numbered species in the table.}
+\end{table}
 
 \subsection*{Model dynamics}~\\
 The model experiences internal and external forces. The internal forces are due to elastic restoring forces for each hinge angle ($\left[\theta_{bb}, \theta_{bm}, \theta_{t}, \theta_{um},\right]$ for prestroke, $\left[\theta_{nb}, \theta_{nm}, \theta_{t}, \theta_{fm}, \theta_{fb},\right]$ for poststroke) compared to its equilibrium ($\left[\Theta_{bb}, \Theta_{bm}, \Theta_{t}, \Theta_{um},\right]$ for prestroke, $\left[\Theta_{nb}, \Theta_{nm}, \Theta_{t}, \Theta_{fm}, \Theta_{fb},\right]$ for postsroke). These equilibrium angles are determined from cryo-EM micrographs of ATP-Vi-bound and ADP-bound dynein monomers, indicated in Figure X.B.\\
@@ -178,32 +208,6 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
   that the moving foot was behind, and ended up in front.}
 \label{fig:steppingorder}
 \end{figure*}
-
-\begin{table}[tbhp]
-\centering
-\caption{Parameters used in model simulation.}
-\label{tab:staticparams}
-\begin{tabular}{lrrr}
-Parameter & Model & Experimental & Source \\
-\midrule
-$c_b$ & $\cm \Delta G_{ATP}$ &  & \\
-$c_m$ & $\cb \Delta G_{ATP}$ &  & \\
-$c_t$ & $\ct \Delta G_{ATP}$ &  & \\
-$k_b$ & $\kb s^{-1}$&  & \\
-$k_{ub}$ & $\kub s^{-1}$ & 2.0 & \\
-$L_s$ & $\ls nm$ & & \cite{nativestructure}\\
-$L_t$ & $\lt nm$ & & \cite{nativestructure}\\
-$\theta_b$ & $\eqb$ &  & \\
-$\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  & \\
-$\theta_m^{\mbox{post}}$ & $\eqmpost$ &  & \\
-$\theta_t$ & $\eqt$ &  & \\
-$D$ & 0.2 nm &  & \\
-
-\bottomrule
-\end{tabular}
-
-%% \addtabletext{nomenclature for the TSs refers to the numbered species in the table.}
-\end{table}
 
 \begin{figure}[tbhp]
   \centering
