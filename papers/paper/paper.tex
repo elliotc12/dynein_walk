@@ -245,6 +245,55 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 \label{fig:modelangles}
 \end{figure}
 
+\section{To do items}
+
+\subsection{Elliott}
+\begin{enumerate}
+\item Document carefully where all figures and data comes from.
+\item Make our cool figures presentable, e.g. trajectory plot.
+\item Describe our algorithm in sufficient detail.
+\item Ensure our experimental figures have at least one version with
+  scale bars.
+\item Write script to generate figures with cartoon on top of
+  microscopy images.
+\item Store our preferred geometric (and non-geometric) parameters in
+  a python module, which is used both for creating figures (see above)
+  and for running simulations.
+\item Python script to write out latex with parameters.
+\item Fix stepping analysis python module to categorize zero-length
+  steps separately from other steps, particularly in terms of stepping
+  times.  Alternately, change C++ to make it possible to identify
+  which foot lifted if it didn't move.
+\item Update plotting scripts to use stepping analysis python module,
+  or other modules.
+\item Write up how we estimate one-bound/bothbound time ratio from
+  processivity.  Ensure simulation obeys this?
+\item Keep trying to get data from Yildiz.
+\end{enumerate}
+
+\subsection{John}
+\begin{enumerate}
+\item Proofread the algorithm description, improve its writing, and
+  check against code.
+\item Figure out how to do no-unbinding simulations to get Yildiz
+  comparison data.  Also this gives us unbinding rates that will agree
+  with our stepping time, etc. \verb!src/simulate_unbinding_rates.cpp!
+\item Play with parameters to get stepping length histogram more
+  reasonable (this automatically gives us the velocity).
+\item Run long/many simulations with final parameters.
+\item Run a low-ATP simulation for comparison data.
+\item Nice final version of stepping length histogram.
+\item Nice final version of tension-gating Yildiz comparison.
+\item Consider a no-binding simulation and a separable model.  Create
+  a figure demonstrating/testing whether the histogram of final
+  displacement is independent of initial displacement.
+\item Consider a simple Monte Carlo that just uses our no-unbinding
+  and no-binding simulations to model dynein (like Yildiz).
+\end{enumerate}
+
+\section{Papers we should cite}
+This paper says something interesting~\cite{leschziner}.
+
 % \pnasbreak splits and balances the columns before the references.
 % If you see unexpected formatting errors, try commenting out this line
 % as it can run into problems with floats and footnotes on the final page.
