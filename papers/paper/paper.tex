@@ -4,6 +4,7 @@
 % may affect the guide line number alignment.
 
 \usepackage{subcaption}
+\usepackage{breqn}
 
 % the follow ing causes latex to not wait interactively
 \nonstopmode
@@ -64,8 +65,12 @@ There are many relevant details about dynein which this simple model doesn't acc
 Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
 \section*{Model}
-\subsection*{Model layout}
-The dynein model used in this paper consists of two systems meant to mimic the motor's dynamics in its post-powerstroke and pre-powerstroke states. These systems, shown in Figure \ref{fig:model-cartoon},
+
+%% Figure X.1 - poststroke
+%% FIgure X.2 - prestroke
+%% Figure X.A: Model of the protein superimposed over cryo-EM data (with length data)
+%% Figure X.B: Cryo-EM visualizations of how we get equilibrium angles
+%% Add rod vectors connecting each domain
 
 \begin{figure}[tbhp]
 \centering
@@ -74,6 +79,41 @@ The dynein model used in this paper consists of two systems meant to mimic the m
 \caption{Cartoon representation of model systems. \textbf{Left}: Post-powerstroke, \textbf{right}: pre-powerstroke.}
 \label{fig:duration-length}
 \end{figure}
+
+\subsection*{Elastic hinge model}~\\
+Our model is designed to capture the course-grained dynamics of the dynein protein while remaining mathematically tractable. We capture the structure of the full dynein complex by treating the protein as a set of spheres connected by rigid rods. Geometric properties of the model, such as rod length $L_s$ and $L_t$, and sphere radii $R_b$, $R_m$ and $R_t$, are calculated from electron microscopy and crystallography data, as pictured in Fig X.A. Each sphere acts as a hinge, and the angle between connected rods, or the MT, is free to vary. The model is constrained to remain in the plane of the microtubule, so transverse motion is not allowed. The model exists in two states: one called the poststroke state with both binding domain positions constant, as in Figure X.1, and one called the prestroke state with one binding domain free to move, as in Figure X.2.
+
+\subsection*{Model dynamics}~\\
+The model experiences internal and external forces. The internal forces are due to elastic restoring forces for each hinge angle ($\left[\theta_{bb}, \theta_{bm}, \theta_{t}, \theta_{um},\right]$ for prestroke, $\left[\theta_{nb}, \theta_{nm}, \theta_{t}, \theta_{fm}, \theta_{fb},\right]$ for poststroke) compared to its equilibrium ($\left[\Theta_{bb}, \Theta_{bm}, \Theta_{t}, \Theta_{um},\right]$ for prestroke, $\left[\Theta_{nb}, \Theta_{nm}, \Theta_{t}, \Theta_{fm}, \Theta_{fb},\right]$ for postsroke). These equilibrium angles are determined from cryo-EM micrographs of ATP-Vi-bound and ADP-bound dynein monomers, indicated in Figure X.B.\\
+
+The torque on each domain is given by:
+%
+\begin{equation}
+  \vec{\tau}_{i} = c_i\left(\theta_{i}-\Theta_{i}\right)\hat{z}
+\end{equation}
+%
+The external forces on the model are random Brownian forces $\vec{R_i} = R_i\hat{x} + R_i\hat{y}$, where $R_i$ is a Gaussian random variable with $\mu_R = 0$ and $\sigma^2_R = 2kbT\gamma_i/dt$, where drag factor $\gamma_i = 6\pi\nu R_i$ with dynamic viscosity $\nu$. Brownian dynamics is used to calculate the velocity on each domain, where velocity is given by:
+%
+\begin{dmath}
+  \vec{v}_i = \gamma_i^{-1}\left(\frac{\vec{\tau}_{i-1}}{L_{i-1}}\left(\hat{z}\times\hat{r}_{i-1}\right)
+  + \frac{\vec{\tau}_{i+1}}{L_{i+1}}\left(\hat{z}\times\hat{r}_{i+1}\right)
+  - \vec{\tau}_{i}\left(\frac{\hat{z}\times\hat{r}_{i-1}}{L_{i-1}}+\frac{\hat{z}\times\hat{r}_{i+1}}{L_{i+1}}\right) + \vec{R_i}\right)
+  \label{eq:motionequation}
+\end{dmath}
+%
+\subsection*{Powerstroke model}~\\
+The dynein powerstroke is the hypothetical process whereby a motor unbinds from the microtubule, undergoes a linker remodel which pushes the motor forward, binds to the microtubule, and undergoes the opposite linker remodel, pulling the rest of the motor forward in a ``powerstroke.'' Our model simplifies the powerstroke cycle by alternating between two states: a two-foot-bound post-powerstroke state similar to the apo dynein, and a one-foot-bound pre-powerstroke state similar to the post-hydrolysis ADP-Pi dynein. Our model captures the prestroke kick of the unbound MTBD through different motor hinge equilibrium angles, as calculated from Figure X.B. The larger prestroke motor hinge angle causes a forward diffusion of the unbound binding domain on transition to one-foot-bound, followed by another forward diffusion of the whole motor as the MTBD binds and transitions back to post-stroke hinge angles.\\
+
+Dynein's MTBD unbinding dynamics are known to be tension-dependent, where at high interhead separations unbinding favors the lagging MTBD, but no preference between leading and lagging is seen for small interhead separations \cite{yildizpaper}. To capture this, the microtubule unbinding rate $k_{ub}$ takes into account absolute binding angle:
+%
+\begin{equation}
+  k_{ub} = k_{ub}^0e^{-c\left(\theta_{xb}-\Theta{xb}\right)}
+\end{equation}
+%
+where $k_{ub}^0$ is the default unbinding rate and $c$ the unbinding exponential factor. Each timestep unbinding occurs with probability $k_{ub}dt$. On unbinding, the both-foot-bound model transitions to a one-foot-bound model with identical domain positions, but new equilibrium hinge angles. Microtubule binding occurs with probability $k_{b}^0dt$ if the binding domain is within $D$ nm of the microtubule. On binding, the one-foot-bound model transitions to a both-feet-bound with identical domain positions, but with both MTBDs constrained on the microtubule.\\
+
+\subsection*{Simulating the model}~\\
+The model was simulated using Euler's method to time evolve Equation \ref{eq:motionequation} using a timestep $dt$, transitioning freely between the poststroke and prestroke states.
 
 \section{Results}
 
@@ -157,6 +197,7 @@ $\theta_b$ & $\eqb$ &  & \\
 $\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  & \\
 $\theta_m^{\mbox{post}}$ & $\eqmpost$ &  & \\
 $\theta_t$ & $\eqt$ &  & \\
+$D$ & 0.2 nm &  & \\
 
 \bottomrule
 \end{tabular}
