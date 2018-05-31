@@ -87,6 +87,9 @@ plots/paper_static_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 
+plots/poststroke-figure.pdf plots/prestroke-figure.pdf: scripts/generate-paper-model-figures.py
+	python3 scripts/generate-paper-model-figures.py
+
 ######### thesis plots ##########
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
@@ -120,7 +123,7 @@ plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/%*) dat
 
 ######### papers ##########
 PAPER_SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
-PAPER-FIGURES = $(patsubst %.svg,%.pdf,$(PAPER_SVG_FIGURES))
+PAPER-FIGURES = $(patsubst %.svg,%.pdf,$(PAPER_SVG_FIGURES)) plots/poststroke-figure.pdf plots/prestroke-figure.pdf
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<
