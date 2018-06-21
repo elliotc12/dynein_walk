@@ -6,7 +6,7 @@ import time, signal, sys, os, matplotlib, subprocess, re
 import dynein.draw.cartoon as cartoon
 
 sys.path.insert(0, os.getcwd() + "/data/")
-import parameters as params
+import paper_params as params
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
