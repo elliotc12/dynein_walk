@@ -47,7 +47,7 @@ def plot_dynein_equilibrium_onebound(fig, start_x_px, start_y_px, px_per_nm, sta
     plt.plot(Xs, Ys)
     plt.scatter(Xs, Ys, s=Rs*Rs)
 
-merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.jpg')
+merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png')
 
 px_per_nm = 4.13
 
