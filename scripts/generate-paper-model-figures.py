@@ -3,6 +3,10 @@
 from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess, re
+import dynein.draw.cartoon as cartoon
+
+sys.path.insert(0, os.getcwd() + "/data/")
+import parameters as params
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -16,7 +20,10 @@ import matplotlib.image as mpimg
 poststroke = mpimg.imread('papers/paper/figures/schematic-poststroke.png')
 prestroke = mpimg.imread('papers/paper/figures/schematic-prestroke.png')
 
+fig = plt.figure()
+px_per_nm = 10
 plt.imshow(poststroke)
+cartoon.draw(fig, [0,1,2,3,4], [0,1,2,3,4])
 plt.axis('off')
 plt.savefig("plots/poststroke-figure.pdf", bbox_inches='tight', format="pdf")
 
