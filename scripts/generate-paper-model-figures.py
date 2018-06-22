@@ -44,10 +44,12 @@ def plot_dynein_equilibrium_onebound(fig, start_x_px, start_y_px, px_per_nm, sta
     Rs = np.array([params.radius_b, params.radius_m, params.radius_t, params.radius_m, params.radius_b])*px_per_nm
 
     plt.figure(fig.number)
-    plt.plot(Xs, Ys)
-    plt.scatter(Xs, Ys, s=Rs*Rs)
+    plt.plot(Xs, Ys, c="black", zorder=1)
+    plt.scatter(Xs, Ys, s=Rs*Rs, zorder=2)
 
 merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png')
+merged_chowdhury_img = mpimg.imread('papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png')
+merged_redwine_img = mpimg.imread('papers/paper/figures/model-raw-images/redwine-supplemental-cropped.png')
 
 px_per_nm = 4.13
 
@@ -58,3 +60,27 @@ plt.plot([57, 57+15*px_per_nm], [10, 10])
 
 plt.axis('off')
 plt.savefig("plots/burgess-model-figure.pdf", bbox_inches='tight', format="pdf")
+
+
+
+
+px_per_nm = 4.13
+
+fig = plt.figure()
+plt.imshow(merged_chowdhury_img)
+plot_dynein_equilibrium_onebound(fig, 50, 25, px_per_nm, np.pi*1.23)
+
+plt.axis('off')
+plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf")
+
+
+
+
+px_per_nm = 4.13
+
+fig = plt.figure()
+plt.imshow(merged_redwine_img)
+plot_dynein_equilibrium_onebound(fig, 50, 25, px_per_nm, np.pi*1.23)
+
+plt.axis('off')
+plt.savefig("plots/redwine-model-figure.pdf", bbox_inches='tight', format="pdf")
