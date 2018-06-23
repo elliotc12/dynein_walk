@@ -21,7 +21,6 @@ from scipy import ndimage
 
 
 def plot_dynein_equilibrium_onebound(fig, start_x_px, start_y_px, px_per_nm, start_bb_angle):
-    print(px_per_nm)
     Xs = [0, 0, 0, 0, 0]
     Ys = [0, 0, 0, 0, 0]
     bba_abs = start_bb_angle + params.eqb*np.pi/180.0
@@ -45,7 +44,7 @@ def plot_dynein_equilibrium_onebound(fig, start_x_px, start_y_px, px_per_nm, sta
 
     plt.figure(fig.number)
     plt.plot(Xs, Ys, c="black", zorder=1)
-    plt.scatter(Xs, Ys, s=Rs*Rs, zorder=2)
+    plt.scatter(Xs, Ys, s=Rs*Rs, c="#aeaae5", zorder=2, edgecolor='black')
 
 merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png')
 merged_chowdhury_img = mpimg.imread('papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png')
@@ -64,11 +63,12 @@ plt.savefig("plots/burgess-model-figure.pdf", bbox_inches='tight', format="pdf")
 
 
 
-px_per_nm = 4.13
+px_per_nm = 2.78
 
 fig = plt.figure()
 plt.imshow(merged_chowdhury_img) # angles rotate cw
 plot_dynein_equilibrium_onebound(fig, 68, 122, px_per_nm, np.pi)
+plt.plot([142, 142+25*px_per_nm], [175, 175])
 
 plt.axis('off')
 plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf")
