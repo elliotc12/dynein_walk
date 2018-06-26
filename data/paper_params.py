@@ -6,7 +6,7 @@ k_ub = 75 # s^-1
 trajectory_k_b  = 1e25 # s^-1
 trajectory_k_ub = 1e9 # s^-1
 
-c = -0.35
+cexp = -0.35
 
 cb = 0.1 # kbT
 cm = 0.4 # kbT

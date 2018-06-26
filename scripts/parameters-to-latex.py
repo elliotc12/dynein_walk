@@ -29,8 +29,6 @@ def latex_format(x):
             if m == '1':
                 return r'10^{'+e+'}'
             return m + r'\times 10^{' + e+ '}'
-    if isinstance(x, str):
-        x = x.replace('-', '_')
     return x
 
 parameters = {
@@ -38,7 +36,7 @@ parameters = {
 "k_ub" :              params.k_ub,
 "trajectory_k_b" :    params.trajectory_k_b,
 "trajectory_k_ub" :   params.trajectory_k_ub,
-"c" :                 params.c,
+"cexp" :              params.cexp,
 "cb" :                params.cb,
 "cm" :                params.cm,
 "ct" :                params.ct,

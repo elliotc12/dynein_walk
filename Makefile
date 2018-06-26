@@ -90,7 +90,7 @@ plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/pa
 plots/burgess-model-figure.pdf plots/chowdury-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png
 	python3 scripts/generate-paper-model-figures.py
 
-data/paper_params.tex: data/paper_params.py
+data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py
 	python3 scripts/parameters-to-latex.py
 
 ######### thesis plots ##########
