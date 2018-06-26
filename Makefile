@@ -90,6 +90,9 @@ plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/pa
 plots/burgess-model-figure.pdf plots/chowdury-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png
 	python3 scripts/generate-paper-model-figures.py
 
+data/paper_params.tex: data/paper_params.py
+	python3 scripts/parameters-to-latex.py
+
 ######### thesis plots ##########
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
 
@@ -138,7 +141,7 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
-papers/paper/paper.pdf: papers/paper/paper.tex $(PAPER-FIGURES) $(PAPER-PLOTS)
+papers/paper/paper.pdf: papers/paper/paper.tex $(PAPER-FIGURES) $(PAPER-PLOTS) data/paper_params.tex
 	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
 
 papers/notes/notes.pdf: papers/notes/notes.tex
