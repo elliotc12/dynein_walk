@@ -43,37 +43,39 @@ def plot_dynein_equilibrium_onebound(fig, start_x_px, start_y_px, px_per_nm, sta
     Rs = np.array([params.radius_b, params.radius_m, params.radius_t, params.radius_m, params.radius_b])*px_per_nm
 
     plt.figure(fig.number)
-    plt.plot(Xs, Ys, c="black", zorder=1)
-    plt.scatter(Xs, Ys, s=Rs*Rs, c="#aeaae5", zorder=2, edgecolor='black')
+    plt.plot(Xs, Ys, c="white", zorder=1)
+    plt.scatter(Xs, Ys, s=Rs, c="#aeaae5", zorder=2, edgecolor='white')
 
 merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png')
 merged_chowdhury_img = mpimg.imread('papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png')
 merged_redwine_img = mpimg.imread('papers/paper/figures/model-raw-images/redwine-supplemental-cropped.png')
+merged_crystalstruct_img = mpimg.imread('papers/paper/figures/model-raw-images/pymol-cytoplasmic-superimpose.png')
 
 px_per_nm = 4.13
-
 fig = plt.figure()
 plt.imshow(merged_burgess_img, origin="lower") # angles rotate ccw
 plot_dynein_equilibrium_onebound(fig, 57, 29, px_per_nm, 60*np.pi/180.0-params.eqb*np.pi/180.0)
 plt.plot([57, 57+15*px_per_nm], [10, 10])
-
 plt.axis('off')
 plt.savefig("plots/burgess-model-figure.pdf", bbox_inches='tight', format="pdf")
 
 
-
-
 px_per_nm = 2.78
-
 fig = plt.figure()
 plt.imshow(merged_chowdhury_img) # angles rotate cw
 plot_dynein_equilibrium_onebound(fig, 68, 122, px_per_nm, np.pi)
 plt.plot([142, 142+25*px_per_nm], [175, 175])
-
 plt.axis('off')
 plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf")
 
 
+px_per_nm = 25
+fig = plt.figure()
+plt.imshow(merged_crystalstruct_img) # angles rotate cw
+plot_dynein_equilibrium_onebound(fig, 1000, 734, px_per_nm, np.pi*0.7)
+plt.plot([204, 204+28.8*px_per_nm], [734, 734])
+plt.axis('off')
+plt.savefig("plots/crystal-model-figure.pdf", bbox_inches='tight', format="pdf")
 
 
 # px_per_nm = 4.13

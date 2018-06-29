@@ -17,7 +17,7 @@ eqmpre = 200 # 204.5 from burgess
 eqmpost = 224 # 222.5 from burgess, but as much as 234.5 -- they say 15nm difference for pre/post ub domain, so maybe latter is better
 eqt = 0
 
-ls = 10.49 # nm
+ls = 19 # nm
 lt = 23.8 # nm
 
 radius_t = 2.16 # nm
