@@ -1,0 +1,9 @@
+3VKH: D. discoideum cytoplasmic dynein, apo, "The 2.8 A ̊ crystal structure of the dynein motor domain"
+      Tail: 1-1388, from paper
+      Linker: 1388-1935
+      Overlap linker: 1523-1612
+
+4RH7: human cytoplasmic dynein, ADP.Vi-bound, "Structure of human cytoplasmic dynein-2 primed for its power stroke"
+      Tail: 1-1091
+      Linker: 1091-1650 (guess)
+      Overlap linker: 1257-1349
