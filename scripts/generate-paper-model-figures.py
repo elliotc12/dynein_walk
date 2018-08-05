@@ -22,10 +22,10 @@ import matplotlib.image as mpimg
 from scipy import ndimage
 
 
-def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_per_nm, start_bb_angle):
+def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_per_nm, mt_angle):
     Xs = [0, 0, 0, 0, 0]
     Ys = [0, 0, 0, 0, 0]
-    bba_abs = start_bb_angle + params.eqb*np.pi/180.0
+    bba_abs = mt_angle + params.eqb*np.pi/180.0
     bma_abs = bba_abs - np.pi + params.eqmpost*np.pi/180.0
     ta_abs = bma_abs - np.pi
     uma_abs = bma_abs - params.eqmpre*np.pi/180.0
@@ -52,7 +52,9 @@ def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_pe
 
     plt.figure(fig.number)
     plt.plot(Xs, Ys, c="white", zorder=1)
-    plt.scatter(Xs, Ys, s=Rs*Rs, c="#aeaae5", zorder=2, edgecolor='white')
+    plt.plot([Xs[0], Xs[0] + 5*units_per_nm*np.cos(mt_angle)], [Ys[0], Ys[0] + 5*units_per_nm*np.sin(mt_angle)], c="red", linewidth=1, zorder=5)
+    plt.scatter(Xs, Ys, c="#aeaae5", s=Rs*Rs, zorder=2, edgecolor='white', alpha=0.3)
+    plt.scatter(Xs, Ys, s=Rs*Rs, zorder=3, edgecolor='white', facecolors="none", linewidth=1)
 
 def plot_image(img, org, dpi):
     fig = plt.figure(figsize = (5,5), dpi=dpi)
@@ -81,7 +83,7 @@ scalebar_nm = 15
 fig = plot_image(merged_burgess_img, "lower", dpi=100)
 plt.plot([57, 57+scalebar_nm*units_per_nm], [10, 10])
 plt.axis('off')
-plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, 60*np.pi/180.0-params.eqb*np.pi/180.0)
+plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, -np.pi*0.35)
 plt.savefig("plots/burgess-model-figure.pdf", format="pdf", interpolation='none', dpi=100, bbox_inches='tight')
 
 # chowdhury fig
@@ -98,8 +100,7 @@ plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf
 units_per_nm = 35
 scalebar_nm = 28.8
 fig = plot_image(merged_crystalstruct_img, "upper", dpi=600)
-
-plot_dynein_equilibrium_onebound(fig, 1720, 1542, units_per_nm, np.pi*0.7)
+plot_dynein_equilibrium_onebound(fig, 1720, 1542, units_per_nm, np.pi*0.64)
 plt.plot([692, 692+scalebar_nm*units_per_nm], [1480, 1480])
 plt.axis('off')
 plt.savefig("plots/crystal-model-figure.pdf", bbox_inches='tight', format="pdf", interpolation='none', dpi=600)
