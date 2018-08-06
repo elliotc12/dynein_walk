@@ -3,8 +3,8 @@
 k_b = 9e7 # s^-1
 k_ub = 75 # s^-1
 
-trajectory_k_b  = 1e25 # s^-1
-trajectory_k_ub = 1e9 # s^-1
+trajectory_k_b  = 9.5e9 # s^-1
+trajectory_k_ub = 1e20 # s^-1
 
 cexp = -0.35
 
