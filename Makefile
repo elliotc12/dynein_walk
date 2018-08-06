@@ -41,7 +41,7 @@ scripts/dynein/draw/tail.py: scripts/dynein/draw/tailDomain.py
 data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py scripts/generate-thesis-data.py
 	python3 scripts/generate-thesis-data.py
 
-data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py
+data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py data/paper_params.py
 	python3 scripts/generate-paper-trajectory-data.py
 
 # Taken out of make, added data file to repository:

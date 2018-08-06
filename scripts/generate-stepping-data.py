@@ -4,8 +4,6 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-runtime = 1e-1
-
 os.system("make generate_stepping_data")
 
 parser = argparse.ArgumentParser()
@@ -15,6 +13,12 @@ parser.add_argument("-m", "--cm", type=float, help="Manually set the cm value, d
 parser.add_argument("-t", "--ct", type=float, help="Manually set the ct value, default=0.2", default=0.2)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=3e9)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding rate", default=1000)
+parser.add_argument("-y", "--ls", type=float, help="", default=10)
+parser.add_argument("-w", "--lt", type=float, help="", default=10)
+parser.add_argument("-aa", "--eqb", type=float, help="", default=10)
+parser.add_argument("-bb", "--eqt", type=float, help="", default=10)
+parser.add_argument("-cc", "--eqmpre", type=float, help="", default=10)
+parser.add_argument("-dd", "--eqmpost", type=float, help="", default=10)
 parser.add_argument("-x", "--unbindingconst", type=float, help="Manually set the unbinding const", default=0.0)
 parser.add_argument("-r", "--runtime", type=float, help="Manually set the runtime value, default=0.1", default=0.1)
 parser.add_argument("-f", "--framerate", type=float, help="Manually set the frame rate, default=1e-10", default=1)
@@ -35,12 +39,12 @@ basename = run.sim(**{"k_b": args.kb,
                       "cb": args.cb, # 0.1?
                       "cm": args.cm, # 0.4?
                       "ct": args.ct, # 0.2?
-                      "ls": 10.49, # from urnavicius 2015 (paper.bib)
-                      "lt": 23.8,  # from urnavicius 2015
-                      "eqb": 120,  # from redwine 2012 supplemental
-                      "eqmpre": 200, # from burgess 2002, 360-160
-                      "eqmpost": 224, # from burgess 2002, 360-136
-                      "eqt": 0,
+                      "ls": args.ls,
+                      "lt": args.lt,
+                      "eqb": args.eqb,  # from redwine 2012 supplemental
+                      "eqmpre": args.eqmpre, # from burgess 2002, 360-160
+                      "eqmpost": args.eqmpost, # from burgess 2002, 360-136
+                      "eqt": args.eqt,
                       "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
                       "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie})

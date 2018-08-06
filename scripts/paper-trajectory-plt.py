@@ -12,6 +12,7 @@ import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
+from matplotlib.ticker import ScalarFormatter
 
 import io
 
@@ -89,27 +90,37 @@ ax0.set_ylabel("x-projection (nm)")
 ax0.set_ylim(-150,150)
 plt.setp(ax0.get_xticklabels(), visible=False)
 
-ax0.plot(times, nbxs, label="near foot", c='b')
-ax0.plot(times, fbxs, label="far foot", c='r')
+ax0.plot(times*1e6, nbxs, label="near foot", c='b')
+ax0.plot(times*1e6, fbxs, label="far foot", c='r')
 
-ax0.legend(loc="upper right")
+ax0.legend(loc="lower right")
+ax0.axes.get_xaxis().set_visible(False)
+
+# ax = plt.gca().xaxis
+# ax.set_major_formatter(ScalarFormatter()) 
+# ax0.set_xticklabels([])
 
 # y projection
-ax1.set_xlabel("time (s)")
+ax1.set_xlabel("time ($\mu s$)")
 ax1.set_ylabel("y-projection (nm)")
 
 ax1.set_ylim(y_min_yproj-1,y_max_yproj+1)
 
-ax1.plot(times, nbys, label="near foot", c='b')
-ax1.plot(times, fbys, label="far foot", c='r')
-ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax1.plot(times*1e6, nbys, label="near foot", c='b')
+ax1.plot(times*1e6, fbys, label="far foot", c='r')
+
+ax1.set_ylim(-20,65)
+
+# ax = plt.gca().xaxis
+# ax.set_major_formatter(ScalarFormatter())
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 gs.tight_layout(fig, pad=2)
 
-plt.gcf().suptitle(
-    raw_run_conditions +
-    r' $k_{b}: \kb, k_{ub}: \kub$',
-    fontsize=14)
+# plt.gcf().suptitle(
+#     raw_run_conditions +
+#     r' $k_{b}: \kb, k_{ub}: \kub$',
+#     fontsize=14)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/paper_trajectory_plot.pdf")
