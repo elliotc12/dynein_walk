@@ -6,8 +6,7 @@ import dynein.draw.tail as tail
 
 physical_stalk_length = 22.1 # nm
 
-def draw(fig, x_coords, y_coords, alpha=1):
-    ax = fig.add_subplot(111, aspect='equal')
+def draw(ax, x_coords, y_coords, alpha=1):
     dyneinPolygon(x_coords[0], y_coords[0], x_coords[1], y_coords[1], x_coords[2], y_coords[2], 'blue', alpha, ax)
     dyneinPolygon(x_coords[4], y_coords[4], x_coords[3], y_coords[3], x_coords[2], y_coords[2], 'red', alpha, ax)
 
