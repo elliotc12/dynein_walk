@@ -5,6 +5,7 @@ k_ub = 75 # s^-1
 
 trajectory_k_b  = 9.5e9 # s^-1
 trajectory_k_ub = 1e20 # s^-1
+trajectory_seed = 14 # 1 and 10 and 14 and 17 20 are okay
 
 cexp = -0.35
 

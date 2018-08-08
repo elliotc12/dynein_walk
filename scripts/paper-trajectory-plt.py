@@ -47,7 +47,7 @@ if (plot_length < num_points):
     print("Error, need more data points to make trajectory plot.")
     exit(0)
 
-sample_points = map(int, np.floor(np.linspace(0, plot_length-1, num_points)))
+sample_points = list(map(int, np.floor(np.linspace(0, plot_length-1, num_points))))
 
 nbxs =  np.zeros(num_points)
 fbxs =  np.zeros(num_points)
@@ -77,24 +77,13 @@ y_max_yproj = np.max([np.max(nbys), np.max(fbys)])
 fig = plt.figure()
 plt.rc('text', usetex=True)
 
-gs = gridspec.GridSpec(3, 1, height_ratios=[4, 1, 4])
+gs = gridspec.GridSpec(3, 1, height_ratios=[6, 2, 5])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1], sharex=ax0)
 ax2 = fig.add_subplot(gs[2], sharex=ax0)
 plt.setp([ax0.get_xticklabels(), ax1.get_xticklabels()], visible=False)
 
 ### Trajectory plots
-
-# x projection
-ax0.set_ylabel("x-projection (nm)")
-ax0.set_ylim(-50,150)
-plt.setp(ax0.get_xticklabels(), visible=False)
-
-ax0.plot(times*1e6, nbxs, label="near foot", c='b')
-ax0.plot(times*1e6, fbxs, label="far foot", c='r')
-
-ax0.legend(loc="lower right")
-ax0.axes.get_xaxis().set_visible(False)
 
 # cartoons
 # ax1.axis('off')
@@ -108,7 +97,10 @@ y_axes_size = ax1.get_ylim()[1] - ax1.get_ylim()[0]
 x_scaling = 2e-2 #
 y_scaling = 2e-2
 
-cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
+
+# cartoon_draw_times_x_proj = np.array([9.241e-07, 3.0*1e-6, 4.899*1e-6, 7.0155e-06, 9.0*1e-6])
+cartoon_draw_times_idxs = [sample_points[num_points*1//10], sample_points[num_points*3//10], sample_points[num_points*5//10], sample_points[num_points*7//10], sample_points[num_points*9//10]]
+cartoon_draw_times_x_proj = data[:,1][cartoon_draw_times_idxs]
 
 plt.sca(ax1)
 for t in cartoon_draw_times_x_proj:
@@ -131,6 +123,17 @@ for t in cartoon_draw_times_x_proj:
 
 ax1.axis('off')
 
+# x projection
+ax0.set_ylabel("x-projection (nm)")
+ax0.set_ylim(-30,110)
+plt.setp(ax0.get_xticklabels(), visible=False)
+
+ax0.plot(times*1e6, nbxs, label="far foot", c='b')
+ax0.plot(times*1e6, fbxs, label="near foot", c='r')
+
+ax0.legend(loc="lower right")
+ax0.axes.get_xaxis().set_visible(False)
+
 # y projection
 ax2.set_xlabel("time ($\mu s$)")
 ax2.set_ylabel("y-projection (nm)")
@@ -140,9 +143,16 @@ ax2.set_ylim(y_min_yproj-1,y_max_yproj+1)
 ax2.plot(times*1e6, nbys, label="near foot", c='b')
 ax2.plot(times*1e6, fbys, label="far foot", c='r')
 
-ax2.set_ylim(-20,65)
+ax2.set_ylim(-10,75)
 
-gs.tight_layout(fig)
+for t in cartoon_draw_times_x_proj:
+    idx = np.where(data[:,1] >= t)[0][0]
+    X = np.min([data[idx,7], data[idx,15]])
+    Y = np.max([data[idx,8], data[idx,16]])
+    ax0.annotate('', xy=(t*1e6, X-10), xytext=(t*1e6, X-10.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
+    ax2.annotate('', xy=(t*1e6, Y+10), xytext=(t*1e6, Y+10.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
+
+gs.tight_layout(fig, pad=0.01)
 
 os.system('mkdir -p plots')
 plt.savefig("plots/paper_trajectory_plot.pdf")

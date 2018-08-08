@@ -23,6 +23,7 @@ os.system("python3 scripts/generate-stepping-data.py" \
           + " --eqmpost " + str(params.eqmpost)\
           + " --runtime " + str(runtime)\
           + " --framerate " + str(framerate)\
+          + " --seed " + str(params.trajectory_seed)\
           + " --movie"\
           + " --label papertrajecto"\
           + " --renametrajectory")
