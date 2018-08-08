@@ -148,9 +148,9 @@ ax2.set_ylim(-10,75)
 for t in cartoon_draw_times_x_proj:
     idx = np.where(data[:,1] >= t)[0][0]
     X = np.min([data[idx,7], data[idx,15]])
-    Y = np.max([data[idx,8], data[idx,16]])
-    ax0.annotate('', xy=(t*1e6, X-10), xytext=(t*1e6, X-10.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
-    ax2.annotate('', xy=(t*1e6, Y+10), xytext=(t*1e6, Y+10.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
+    Y = np.min([data[idx,8], data[idx,16]])
+    ax0.annotate('', xy=(t*1e6, X-7), xytext=(t*1e6, X-7.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
+    ax2.annotate('', xy=(t*1e6, Y-3), xytext=(t*1e6, Y-3.01), arrowprops=dict(facecolor='black', width=1, headwidth=3, headlength=3, shrink=0))
 
 gs.tight_layout(fig, pad=0.01)
 
