@@ -44,6 +44,9 @@ data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py 
 data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py data/paper_params.py
 	python3 scripts/generate-paper-trajectory-data.py
 
+data/paper_unbinding_probability__L-5,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py
+	python3 scripts/generate-paper-unbinding-rate-data.py
+
 # Taken out of make, added data file to repository:
 # data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py
 # 	python3 scripts/histogram-helper.py
@@ -64,7 +67,7 @@ STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
 EXPONENTIAL_DATA = $(wildcard data/paper_exponential_stepping_data*.txt)
 PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_static_displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_static_displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf plots/paper_unbinding_probability_vs_L.pdf
 
 plots/paper_static_step_length_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_static_displacement_histogram.pdf: scripts/make_all_stepping_plots.py $(STATIC_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_static -p data/paper_static_stepping_parameters.tex
@@ -92,6 +95,9 @@ plots/burgess-model-figure.pdf plots/chowdury-model-figure.pdf: scripts/generate
 
 data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py
 	python3 scripts/parameters-to-latex.py
+
+plots/paper_unbinding_probability_vs_L.pdf: data/paper_unbinding_probability__L-5,s-1.txt scripts/make_paper_unbinding_probability_plot.py
+	python3 scripts/make_paper_unbinding_probability_plot.py
 
 ######### thesis plots ##########
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf

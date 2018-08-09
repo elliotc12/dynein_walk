@@ -222,7 +222,7 @@ int main(int argc, char** argv) {
 
 
   char *data_fname = new char[200];
-  sprintf(data_fname, "data/unbinding_probability/%s.txt", run_name);
+  sprintf(data_fname, "data/%s.txt", run_name);
 
   job_msg_t job_msg;
   job_msg.max_iteration = 0;
