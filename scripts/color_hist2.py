@@ -13,7 +13,7 @@ import dynein.data as data
 
 parser = argparse.ArgumentParser(description='Script to generate 2 dimensional histogram from dynein stepping data')
 
-parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_static_stepping_data-1.txt',
+parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_exponential_stepping_data-1.txt',
                     help='path to data file', type=str)
 parser.add_argument('-b', '--bins', dest='bins', action='store', default=20,
                     help='number of bins for x and y axes', type=int)
@@ -22,7 +22,7 @@ parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', defa
 parser.add_argument('-s', '--show', dest='show', action='store_true', default=False,
                     help='show graphs in matplotib windows')
 # parser.add_argument('-a', '--all', dest='All', action='store_true', default=False,
-#                     help='generate plots for all paper_static_stepping_data files')
+#                     help='generate plots for all paper_exponential_stepping_data files')
 parser.add_argument('-c', '--colormap', dest='cmap', action='store', type=str,
                     default=None, help='set color map for plots')
 
@@ -128,14 +128,24 @@ seed_label = ''
 
 plotCounts(Data.initial_displacements,
            Data.final_displacements,
-           "initial disp vs final disp",
-           "initial displacement",
-           "final displacement",
+           "",
+           "Initial displacement (nm)",
+           "Final displacement (nm)",
            xIsTimeValue=False,
            yIsTimeValue=False,
-           filename='plots/initial-vs-final{}.pdf'.format(seed_label))
+           filename='plots/initial-vs-final-displacement{}.pdf'.format(seed_label))
 
-print(len(Data.initial_displacements), len(Data.step_lengths))
+print(len(Data.onebound_times), len(Data.step_lengths))
+
+plotCounts(Data.onebound_times[1:len(Data.step_lengths)+1],
+           Data.step_lengths,
+           "",
+           "Onebound time (s)",
+           "Step length (nm)",
+           xIsTimeValue=False,
+           yIsTimeValue=False,
+           filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
+
 plotCounts(Data.initial_displacements,
            Data.step_lengths,
            "initial disp vs step length",
@@ -143,7 +153,7 @@ plotCounts(Data.initial_displacements,
            "step length",
            xIsTimeValue=False,
            yIsTimeValue=False,
-           filename='plots/initial-vs-length{}.pdf'.format(seed_label))
+           filename='plots/initial-displacement-vs-step-length{}.pdf'.format(seed_label))
 
 if SHOW:
     plt.show()
