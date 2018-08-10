@@ -21,6 +21,8 @@ EPSILON = 1e-7
 def equal(f1, f2):
     return abs(f1-f2) < EPSILON
 
+plt.rcParams.update({'font.size': 14})
+
 parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
 parser.add_argument('-d', '--data-directory', dest = 'data_directory', action='store', type = str,
@@ -196,6 +198,10 @@ plt.ylabel("Frequency")
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
+
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -215,23 +221,19 @@ if len(step_times) > 0:
     ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
     ax3.hist(run_velocities, bins=50)
 
-ax0.set_title("Step times")
 ax0.set_ylabel("Frequency")
 ax0.set_xscale('log')
 # ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-ax1.set_title("onebound times (theory: 6e-5)")
 ax1.set_ylabel("Frequency")
 ax1.set_xscale('log')
 # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-ax2.set_title("bothbound times (theory: 0.011s)")
 ax2.set_xlabel("Step time (s)")
 ax2.set_ylabel("Frequency")
 ax2.set_xscale('log')
 # ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-ax3.set_title("velocities (theory: 700nm/s)")
 ax3.set_xlabel("velocity (nm/s)")
 ax3.set_ylabel("Frequency")
 
@@ -241,6 +243,9 @@ if args.parameters_filename != "":
 plt.subplots_adjust(hspace=0.6)
 
 plt.show()
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -249,13 +254,13 @@ fig = plt.figure(dpi=300)
 plt.rc('text', usetex=True)
 
 if len(step_times) > 0:
-    plt.gca().hist(onebound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+    plt.gca().hist(onebound_times, bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
 else:
     print("Error, no step_times")
     exit(1)
 
-plt.gca().set_title("onebound times (theory: 6e-5)")
 plt.gca().set_ylabel("Frequency")
+plt.gca().set_xlabel("Onebound time (s)")
 plt.gca().set_xscale('log')
 # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
@@ -263,6 +268,9 @@ if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
 plt.show()
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -271,16 +279,19 @@ fig = plt.figure(dpi=300)
 plt.rc('text', usetex=True)
 
 if len(step_times) > 0:
-    plt.gca().hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+    plt.gca().hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
 
-plt.gca().set_title("bothbound times")
 plt.gca().set_ylabel("Frequency")
+plt.gca().set_xlabel("Bothbound time (s)")
 plt.gca().set_xscale('log')
 # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
+plt.tight_layout()
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
 plt.savefig("plots/bothbound_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -289,7 +300,7 @@ assert len(onebound_times) == len(step_lengths)
 fig = plt.figure()
 plt.scatter(onebound_times, step_lengths, alpha=0.1)
 plt.gca().set_xscale('log')
-plt.xlabel("Onebound time (s), theory= 6e-6s")
+plt.xlabel("Onebound time (s)")
 plt.ylabel("Step length (nm)")
 
 plt.gca().set_xlim((1e-7, 1e-2))
@@ -297,6 +308,9 @@ plt.gca().set_xlim((1e-7, 1e-2))
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
+plt.tight_layout()
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
 plt.savefig("plots/ob-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
 
@@ -313,13 +327,16 @@ plt.gca().set_xlim((1e-5, 1))
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
 plt.close(fig)
 
 # initial displacement vs motor step length scatter
 fig = plt.figure()
 plt.plot(initial_displacements, initial_displacements+step_lengths, '.', alpha=0.3)
-plt.xlabel("Initial foot x-displacement (unstepping - stepping) (nm)")
+plt.xlabel("Initial displacement (nm)")
 plt.ylabel("Step length (nm)")
 plt.ylabel("Final displacement (nm)")
 plt.axes().set_aspect('equal')
@@ -327,6 +344,9 @@ plt.axes().set_aspect('equal')
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/displacement_vs_step_length.pdf", format="pdf")
 plt.close(fig)
 
@@ -356,7 +376,8 @@ ax3.set_xticks([0, 1, 2, 3])
 ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'not alternating,\n passing', 'not alternating,\n not passing'), rotation=45)
 
 plt.tight_layout()
-
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
 plt.savefig("plots/stepping_analysis.pdf", format="pdf")
 plt.close(fig)
 
@@ -398,8 +419,10 @@ plt.legend()
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
-# plt.tight_layout()
 
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -434,5 +457,8 @@ plt.ylabel("Position (nm)")
 
 plt.legend()
 
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/stepping_trajectory.pdf", format="pdf")
 plt.close(fig)

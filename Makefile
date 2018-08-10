@@ -84,7 +84,7 @@ plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf p
 	mv plots/ob-vs-length-scatter.pdf plots/paper_onebound_vs_steplength.pdf
 	mv plots/onebound_time_histogram.pdf plots/paper_onebound_histogram.pdf
 	cp plots/stepping_length_histogram.pdf plots/paper_initial_vs_final_displacement.pdf
-	mv plots/stepping_length_histogram.pdf plots/paper_foot_order_histogram.pdf
+	mv plots/stepping_analysis.pdf plots/paper_foot_order_histogram.pdf
 
 plots/paper_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
 	python3 scripts/color_hist.py -a

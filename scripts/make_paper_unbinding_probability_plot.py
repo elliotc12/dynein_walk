@@ -81,5 +81,8 @@ plt.xlabel("|L| (nm)")
 plt.ylabel("Lagging $k_{ub}$ fraction")
 plt.legend()
 
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+plt.tight_layout()
 plt.savefig("plots/paper_unbinding_probability_vs_L.pdf", format="pdf")
 plt.close(fig)
