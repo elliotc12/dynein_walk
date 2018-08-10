@@ -154,7 +154,7 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/paper_static_time_vs_length}
+\includegraphics[width=\linewidth]{../../plots/paper_time_vs_length}
 \caption{Heatmap of relationship between step length and time.}
 \label{fig:duration-length}
 \end{figure}
@@ -166,40 +166,58 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 %% \label{fig:timehist}
 %% \end{figure}
 
-\begin{figure*}[tbhp]
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_static_step_length_histogram}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_exponential_step_length_histogram}
-  \end{subfigure}
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_histogram}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_histogram}
-  \end{subfigure}
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_vs_step_length}
-    \subcaption{Static unbinding rate}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_vs_step_length}
-    \subcaption{Exponential unbinding rate}
-  \end{subfigure}
-\caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
-\label{fig:lengthhist}
-\end{figure*}
+%% \begin{figure*}[tbhp]
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_static_step_length_histogram}
+%%   \end{subfigure}%
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_step_length_histogram}
+%%   \end{subfigure}
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_histogram}
+%%   \end{subfigure}%
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_histogram}
+%%   \end{subfigure}
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_vs_step_length}
+%%     \subcaption{Static unbinding rate}
+%%   \end{subfigure}%
+%%   \begin{subfigure}{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_vs_step_length}
+%%     \subcaption{Exponential unbinding rate}
+%%   \end{subfigure}
+%% \caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
+%% \label{fig:lengthhist}
+%% \end{figure*}
+
+\begin{figure}[tbhp]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_stepping_length_histogram}
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_dwell_time_histogram}
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_displacement_vs_step_length.pdf}
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_unbinding_probability_vs_L.pdf}
+\caption{\textbf{Basic behavior of our model}}
+\label{fig:}
+\end{figure}
+
+\begin{figure}[tbhp]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_onebound_vs_steplength.pdf}
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_onebound_histogram.pdf}
+  \includegraphics[width=0.5\linewidth]{../../plots/paper_initial_vs_final_displacement.pdf}
+\caption{\textbf{Does our model capture dynamics a markov model wouldn't?}}
+\label{fig:}
+\end{figure}
 
 \begin{figure*}[tbhp]
-    \includegraphics[width=0.5\linewidth]{../../plots/paper_static_foot_order_histogram}
-    \includegraphics[width=0.5\linewidth]{../../plots/paper_exponential_foot_order_histogram}
+    \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
 \caption{The left plot is the $C=0$ case where the unbinding rate is
   independent of angle.  Here ``alternating'' means that the binding
   domain which did not move last time moved this time.  Passing means
@@ -247,13 +265,6 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 \centering
 \includegraphics[width=\linewidth]{../../plots/paper_trajectory_plot.pdf}
 \caption{\textbf{Model achieves forward-directed processivity.} \textit{Top view:} x-position of near and far binding domains during a 10 $\mu s$ simulation at high kinetic parameters of $k_b = \trajectorykb s^{-1}$ and $k_{ub} = \trajectorykub s^{-1}$. \textit{Middle view:} Cartoon snapshot of model at time indicated by bound binding domain. Teal lines correspond to the microtubule. \textit{Bottom view:} y-projection. Arrows on top and bottom plots correspond to respective snapshot times.}
-\label{fig:trajectory}
-\end{figure}
-
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/paper_unbinding_probability_vs_L.pdf}
-\caption{\textbf{}}
 \label{fig:trajectory}
 \end{figure}
 

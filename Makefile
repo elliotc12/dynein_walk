@@ -10,7 +10,7 @@ PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%
 
 UNBINDING_PROBABILITY_PDFS = $(patsubst data/unbinding_probability/%.tex,plots/unbinding_probability/%.pdf, $(wildcard data/unbinding_probability/*.tex))
 
-all: generate_stepping_data public $(DRAW) $(UNBINDING_PROBABILITY_PDFS) $(PARAMSEARCH_PDFS)
+all: generate_stepping_data public $(DRAW) $(PAPERS)
 
 .PHONY: clean public
 
@@ -67,25 +67,28 @@ STATIC_DATA = $(wildcard data/paper_static_stepping_data*.txt)
 EXPONENTIAL_DATA = $(wildcard data/paper_exponential_stepping_data*.txt)
 PAPER_DATA = $(STATIC_DATA) $(EXPONENTIAL_DATA)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_static_time_vs_length.pdf plots/paper_static_step_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_static_displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf plots/paper_unbinding_probability_vs_L.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf
 
-plots/paper_static_step_length_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_static_displacement_histogram.pdf: scripts/make_all_stepping_plots.py $(STATIC_DATA)
-	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_static -p data/paper_static_stepping_parameters.tex
-	mv plots/stepping_length_histogram.pdf plots/paper_static_step_length_histogram.pdf
-	mv plots/displacement_vs_step_length.pdf plots/paper_static_displacement_vs_step_length.pdf
-	mv plots/stepping_analysis.pdf plots/paper_static_foot_order_histogram.pdf
-	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
+# plots/paper_static_step_length_histogram.pdf plots/paper_static_displacement_vs_step_length.pdf plots/paper_static_foot_order_histogram.pdf plots/paper_static_displacement_histogram.pdf: scripts/make_all_stepping_plots.py $(STATIC_DATA)
+# 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_static -p data/paper_static_stepping_parameters.tex
+# 	mv plots/stepping_length_histogram.pdf plots/paper_static_step_length_histogram.pdf
+# 	mv plots/displacement_vs_step_length.pdf plots/paper_static_displacement_vs_step_length.pdf
+# 	mv plots/stepping_analysis.pdf plots/paper_static_foot_order_histogram.pdf
+# 	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
 
-plots/paper_exponential_step_length_histogram.pdf plots/paper_exponential_displacement_vs_step_length.pdf plots/paper_exponential_foot_order_histogram.pdf plots/paper_exponential_displacement_histogram.pdf: scripts/make_all_stepping_plots.py $(EXPONENTIAL_DATA)
+plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(EXPONENTIAL_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_exponential -p data/paper_exponential_stepping_parameters.tex
-	mv plots/stepping_length_histogram.pdf plots/paper_exponential_step_length_histogram.pdf
-	mv plots/displacement_vs_step_length.pdf plots/paper_exponential_displacement_vs_step_length.pdf
-	mv plots/stepping_analysis.pdf plots/paper_exponential_foot_order_histogram.pdf
-	mv plots/displacement_histogram.pdf plots/paper_exponential_displacement_histogram.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_stepping_length_histogram.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_displacement_vs_step_length.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_onebound_vs_steplength.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_onebound_histogram.pdf
+	cp plots/stepping_length_histogram.pdf plots/paper_initial_vs_final_displacement.pdf
+	mv plots/stepping_length_histogram.pdf plots/paper_foot_order_histogram.pdf
 
-plots/paper_static_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
+plots/paper_time_vs_length.pdf: scripts/color_hist.py $(STATIC_DATA)
 	python3 scripts/color_hist.py -a
-	mv plots/time-vs-length-multiple-seeds.pdf plots/paper_static_time_vs_length.pdf
+	mv plots/time-vs-length-multiple-seeds.pdf plots/paper_time_vs_length.pdf
 
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory

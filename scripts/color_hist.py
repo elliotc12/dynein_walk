@@ -11,7 +11,7 @@ import glob
 
 parser = argparse.ArgumentParser(description='Script to generate 2 dimensional histogram from dynein stepping data')
 
-parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_static_stepping_data-1.txt',
+parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_exponential_stepping_data-1.txt',
                     help='path to data file', type=str)
 parser.add_argument('-b', '--bins', dest='bins', action='store', default=20,
                     help='number of bins for x and y axes', type=int)
@@ -20,7 +20,7 @@ parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', defa
 parser.add_argument('-s', '--show', dest='show', action='store_true', default=False,
                     help='show graphs in matplotib windows')
 parser.add_argument('-a', '--all', dest='All', action='store_true', default=False,
-                    help='generate plots for all paper_static_stepping_data files')
+                    help='generate plots for all paper_exponential_stepping_data files')
 parser.add_argument('-c', '--colormap', dest='cmap', action='store', type=str,
                     default=None, help='set color map for plots')
 
@@ -80,10 +80,10 @@ if not ALL:
     step_times = onebound_times + bothbound_times
 else:
     data_files = []
-    for fname in glob.glob("data/paper_static_stepping_data*.txt"):
+    for fname in glob.glob("data/paper_exponential_stepping_data*.txt"):
         data_files.append(fname)
     if len(data_files) == 0:
-        print("Error, no files of form data/paper_static_stepping_data*.txt found. Exiting.")
+        print("Error, no files of form data/paper_exponential_stepping_data*.txt found. Exiting.")
         exit(1)
 
     for data_file in data_files:
