@@ -200,7 +200,7 @@ plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 plt.close(fig)
 
 #step time histogram
-fig = plt.figure(figsize=(8, 8), dpi=300)
+fig = plt.figure(dpi=300)
 plt.rc('text', usetex=True)
 
 gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
@@ -242,6 +242,46 @@ plt.subplots_adjust(hspace=0.6)
 
 plt.show()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
+plt.close(fig)
+
+# OB time histogram
+fig = plt.figure(dpi=300)
+plt.rc('text', usetex=True)
+
+if len(step_times) > 0:
+    plt.gca().hist(onebound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+else:
+    print("Error, no step_times")
+    exit(1)
+
+plt.gca().set_title("onebound times (theory: 6e-5)")
+plt.gca().set_ylabel("Frequency")
+plt.gca().set_xscale('log')
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+
+plt.show()
+plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
+plt.close(fig)
+
+# BB (dwell) time histogram
+fig = plt.figure(dpi=300)
+plt.rc('text', usetex=True)
+
+if len(step_times) > 0:
+    plt.gca().hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
+
+plt.gca().set_title("bothbound times")
+plt.gca().set_ylabel("Frequency")
+plt.gca().set_xscale('log')
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+
+plt.savefig("plots/bothbound_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
 # OB_time vs step_length scatter

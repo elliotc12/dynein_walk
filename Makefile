@@ -77,12 +77,12 @@ PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_
 # 	mv plots/displacement_histogram.pdf plots/paper_static_displacement_histogram.pdf
 
 plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(EXPONENTIAL_DATA)
-	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_exponential -p data/paper_exponential_stepping_parameters.tex
+	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_exponential
 	cp plots/stepping_length_histogram.pdf plots/paper_stepping_length_histogram.pdf
-	cp plots/stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf
-	cp plots/stepping_length_histogram.pdf plots/paper_displacement_vs_step_length.pdf
-	cp plots/stepping_length_histogram.pdf plots/paper_onebound_vs_steplength.pdf
-	cp plots/stepping_length_histogram.pdf plots/paper_onebound_histogram.pdf
+	mv plots/bothbound_time_histogram.pdf plots/paper_dwell_time_histogram.pdf
+	mv plots/displacement_vs_step_length.pdf plots/paper_displacement_vs_step_length.pdf
+	mv plots/ob-vs-length-scatter.pdf plots/paper_onebound_vs_steplength.pdf
+	mv plots/onebound_time_histogram.pdf plots/paper_onebound_histogram.pdf
 	cp plots/stepping_length_histogram.pdf plots/paper_initial_vs_final_displacement.pdf
 	mv plots/stepping_length_histogram.pdf plots/paper_foot_order_histogram.pdf
 
