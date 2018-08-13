@@ -15,18 +15,23 @@ parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rat
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding rate", default=1000)
 parser.add_argument("-y", "--ls", type=float, help="", default=10)
 parser.add_argument("-w", "--lt", type=float, help="", default=10)
+
+parser.add_argument("-ee", "--rt", type=float, help="", default=8)
+parser.add_argument("-ff", "--rm", type=float, help="", default=11)
+parser.add_argument("-gg", "--rb", type=float, help="", default=3.5)
+
 parser.add_argument("-aa", "--eqb", type=float, help="", default=10)
 parser.add_argument("-bb", "--eqt", type=float, help="", default=10)
 parser.add_argument("-cc", "--eqmpre", type=float, help="", default=10)
 parser.add_argument("-dd", "--eqmpost", type=float, help="", default=10)
+
 parser.add_argument("-x", "--unbindingconst", type=float, help="Manually set the unbinding const", default=0.0)
 parser.add_argument("-r", "--runtime", type=float, help="Manually set the runtime value, default=0.1", default=0.1)
 parser.add_argument("-f", "--framerate", type=float, help="Manually set the frame rate, default=1e-10", default=1)
 parser.add_argument("-l", "--label", type=str, help="Manually set the label", default="default")
 parser.add_argument("-v", "--movie", help="Movie flag", action="store_true")
 parser.add_argument("-n", "--renametrajectory", help="Rename outputs to paper trajectory files", action="store_true")
-parser.add_argument("-o", "--renamestatic", help="Rename outputs to paper static histogram files", action="store_true")
-parser.add_argument("-p", "--renameexponential", help="Rename outputs to paper exponential histogram files", action="store_true")
+parser.add_argument("-o", "--renamepaper", help="Rename outputs to paper exponential histogram files", action="store_true")
 args = parser.parse_args()
 
 if args.movie:
@@ -45,17 +50,16 @@ basename = run.sim(**{"k_b": args.kb,
                       "eqmpre": args.eqmpre, # from burgess 2002, 360-160
                       "eqmpost": args.eqmpost, # from burgess 2002, 360-136
                       "eqt": args.eqt,
+                      "rt": args.rt,
+                      "rm": args.rm,
+                      "rb": args.rb,
                       "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
                       "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie})
 
-if args.renamestatic:
-    os.system("mv data/stepping_data_%s.txt data/paper_static_stepping_data-%s.txt" % (basename, args.seed))
-    os.system("mv data/stepping_parameters_%s.tex data/paper_static_stepping_parameters.tex" % basename)
-
-if args.renameexponential:
-    os.system("mv data/stepping_data_%s.txt data/paper_exponential_stepping_data-%s.txt" % (basename, args.seed))
-    os.system("mv data/stepping_parameters_%s.tex data/paper_exponential_stepping_parameters.tex" % basename)
+if args.renamepaper:
+    os.system("mv data/stepping_data_%s.txt data/paper_main_stepping_data-%s.txt" % (basename, args.seed))
+    os.system("mv data/stepping_parameters_%s.tex data/paper_main_stepping_parameters.tex" % basename)
 
 if args.renametrajectory:
     os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")

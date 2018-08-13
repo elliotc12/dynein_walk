@@ -332,6 +332,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"eqmpre",   required_argument,    0, 'q'},
       {"eqmpost",  required_argument,    0, 'r'},
       {"eqt",      required_argument,    0, 's'},
+      {"rt",       required_argument,    0, 'u'},
+      {"rm",       required_argument,    0, 'v'},
+      {"rb",       required_argument,    0, 'w'},
       {"nomovie",  no_argument, (int*) am_making_movie, 0},
       {"crash-movie", no_argument, (int*) &am_only_writing_on_crash, true},
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
@@ -420,6 +423,15 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
     case 't':
       exponential_unbinding_angle_constant = strtod(optarg, NULL);
       printf("unbinding exponential constant: %g\n", exponential_unbinding_angle_constant);
+      break;
+    case 'u':
+      fake_radius_t = strtod(optarg, NULL);
+      break;
+    case 'v':
+      fake_radius_m = strtod(optarg, NULL);
+      break;
+    case 'w':
+      fake_radius_b = strtod(optarg, NULL);
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
