@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description='Script to generate 2 dimensional h
 
 parser.add_argument('-d', '--datawildcard', dest='data_wc', action='store', default='paper_main',
                     help='data file wildcard', type=str)
-parser.add_argument('-b', '--bins', dest='bins', action='store', default=20,
+parser.add_argument('-b', '--bins', dest='bins', action='store', default=50,
                     help='number of bins for x and y axes', type=int)
 parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', default=False,
                     help='see prints in console')
@@ -100,7 +100,7 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
 
 
 def plotCounts(x, y, graph_label, x_label, y_label,
-               xIsTimeValue, yIsTimeValue,filename=None, ):
+               xIsTimeValue, yIsTimeValue,filename=None, drawline=False):
 
     x_bins, y_bins, counts = getCounts(x, y, xIsTimeValue, yIsTimeValue)
     if VERBOSE: print("graphing")
@@ -109,13 +109,23 @@ def plotCounts(x, y, graph_label, x_label, y_label,
     plt.ylabel(y_label)
     plt.xlim(x_bins[0], x_bins[-1])
     plt.ylim(y_bins[0], y_bins[-1])
-    plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
-    if xIsTimeValue:
-        plt.gca().set_xscale('log')
     plt.title(graph_label)
+    plt.axes().set_aspect('equal')
+
+    plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     cb = plt.colorbar()
     cb.set_label('counts')
-    plt.axes().set_aspect('equal')
+
+    if xIsTimeValue:
+        plt.gca().set_xscale('log')
+
+    if drawline:
+        A = np.vstack([x, np.ones(len(x))]).T
+        m, c = np.linalg.lstsq(A, y)[0]
+        eq = "Y = {:.2}x + {:.2}".format(m, c)
+        plt.plot([x_bins[0], x_bins[-1]], [x_bins[0]*m, x_bins[-1]*m]+c, label=eq, linestyle=":")
+        plt.legend()
+
     if filename is None:
         filename = 'plots/'+graph_label.replace(' ',  '_')+".pdf"
     plt.savefig(filename)
@@ -157,13 +167,15 @@ plotCounts(onebound_times,
            yIsTimeValue=False,
            filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
 
+
 plotCounts(initial_displacements,
            step_lengths,
-           "initial disp vs step length",
+           "",
            "initial displacement",
            "step length",
            xIsTimeValue=False,
            yIsTimeValue=False,
+           drawline=True,
            filename='plots/initial-displacement-vs-step-length{}.pdf'.format(seed_label))
 
 if SHOW:

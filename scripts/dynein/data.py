@@ -26,12 +26,11 @@ class SteppingData(object):
         self.initial_displacements = []
         self.final_displacements = []
 
-        print("made it this far")
         assert(len(self.nbx_bind)==len(self.fbx_bind))
         for s in range(1, len(self.nbx_bind)):
             assert((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s]))
             if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
-                print("nostep")
+                #print("Zero-length step")
                 continue
             if not (self.nbx_bind[s-1] == self.nbx_bind[s]):
                 self.initial_displacements.append(self.nbx_bind[s-1]-self.fbx_bind[s-1])
@@ -45,8 +44,6 @@ class SteppingData(object):
                 exit(1)
             self.bothbound_times.append(self.unbindTimes[s]-self.bindTimes[s-1])
 
-        print("final_displacements length: ", len(self.final_displacements))
-        print("ob time len: ", len(self.onebound_times))
         self.initial_displacements = np.asarray(self.initial_displacements)
         self.final_displacements = np.asarray(self.final_displacements)
 
