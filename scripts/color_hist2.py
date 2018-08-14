@@ -13,8 +13,8 @@ import dynein.data as data
 
 parser = argparse.ArgumentParser(description='Script to generate 2 dimensional histogram from dynein stepping data')
 
-parser.add_argument('-d', '--datafile', dest='data_file', action='store', default='data/paper_exponential_stepping_data-1.txt',
-                    help='path to data file', type=str)
+parser.add_argument('-d', '--datawildcard', dest='data_wc', action='store', default='paper_main',
+                    help='data file wildcard', type=str)
 parser.add_argument('-b', '--bins', dest='bins', action='store', default=20,
                     help='number of bins for x and y axes', type=int)
 parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', default=False,
@@ -30,24 +30,31 @@ parser.add_argument('-c', '--colormap', dest='cmap', action='store', type=str,
 args = parser.parse_args()
 
 VERBOSE = args.verbose
-DATAFILE = args.data_file
+DATAWC = args.data_wc
 NUM_BINS = args.bins
 SHOW = args.show
 #ALL = args.All
 CMAP = args.cmap
 
-if os.path.exists('color_hist.py'):
+if os.path.exists('color_hist2.py'):
     if VERBOSE: print("navigating to root directory")
     os.chdir('../')
 
+data_files = []
+for fname in os.listdir("data/"):
+    if os.path.isfile("data/" + fname):
+        if (DATAWC in fname and "stepping_data" in fname and ".txt" in fname and "~" not in fname):
+            data_files.append("data/" + fname)
 
-if not os.path.isfile(DATAFILE):
-    print("Could not find data file. Please specify path using -d")
+if len(data_files) == 0:
+    print("No files matching wildcard " + args.data_wc)
     exit(1)
-        # load in data
+
+# load in data
 if VERBOSE: print("Data file found- loading data...")
-Data = data.SteppingData(DATAFILE)
-   
+datasets = []
+for df in data_files:
+    datasets.append(data.SteppingData(df))
 
 
 #--------------------------------------------------------------------------------------#
@@ -126,8 +133,13 @@ seed_label = ''
 #            yIsTimeValue=False,
 #            filename='plots/time-vs-length{}.pdf'.format(seed_label))
 
-plotCounts(Data.initial_displacements,
-           Data.final_displacements,
+initial_displacements = np.concatenate([s.initial_displacements for s in datasets])
+final_displacements = np.concatenate([s.final_displacements for s in datasets])
+onebound_times = np.concatenate([s.onebound_times for s in datasets])
+step_lengths = np.concatenate([s.step_lengths for s in datasets])
+
+plotCounts(initial_displacements,
+           final_displacements,
            "",
            "Initial displacement (nm)",
            "Final displacement (nm)",
@@ -135,10 +147,8 @@ plotCounts(Data.initial_displacements,
            yIsTimeValue=False,
            filename='plots/initial-vs-final-displacement{}.pdf'.format(seed_label))
 
-print(len(Data.onebound_times), len(Data.step_lengths))
-
-plotCounts(Data.onebound_times[1:len(Data.step_lengths)+1],
-           Data.step_lengths,
+plotCounts(onebound_times,#[1:len(step_lengths)+1],
+           step_lengths,
            "",
            "Onebound time (s)",
            "Step length (nm)",
@@ -146,8 +156,8 @@ plotCounts(Data.onebound_times[1:len(Data.step_lengths)+1],
            yIsTimeValue=False,
            filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
 
-plotCounts(Data.initial_displacements,
-           Data.step_lengths,
+plotCounts(initial_displacements,
+           step_lengths,
            "initial disp vs step length",
            "initial displacement",
            "step length",

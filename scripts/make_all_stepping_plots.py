@@ -77,16 +77,9 @@ for data_file in data_files:
     far_step_lens = far_foot_positions[1:] - far_foot_positions[:-1]
 
     for s in range(1,len(near_foot_positions)):
-        # print("near foot positions s-1, s: ", near_foot_positions[s-1], near_foot_positions[s])
-        # print("far foot positions s-1, s: ", far_foot_positions[s-1], far_foot_positions[s])
         assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
         if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
             continue
-
-
-        # for meeting tomorrow: If I'm reading this correctly then initial displacements will be negative if the stepping foot
-        # is behind the stationary foot and positive if in front ... (we might want to flip this so that it would be positive
-        # if the step comes from a trailing foot) 
 
         if not equal(near_foot_positions[s-1],near_foot_positions[s]):  # i.e. if near foot stepped 
             step_lengths.append(data[s,2]-data[s-1,2])

@@ -18,20 +18,20 @@ class SteppingData(object):
         self.near_step_len = self.nbx_bind[1:]-self.nbx_bind[:-1]
         self.far_step_len = self.fbx_bind[1:]-self.fbx_bind[:-1]
 
-        self.onebound_times = self.bindTimes[1:]-self.unbindTimes[1:]
-        self.bothbound_times = self.unbindTimes[1:]-self.bindTimes[:-1]
+        # self.onebound_times = self.bindTimes[1:]-self.unbindTimes[1:]
+        # self.bothbound_times = self.unbindTimes[1:]-self.bindTimes[:-1]
+        self.onebound_times = []
+        self.bothbound_times = []
 
         self.initial_displacements = []
         self.final_displacements = []
 
+        print("made it this far")
         assert(len(self.nbx_bind)==len(self.fbx_bind))
         for s in range(1, len(self.nbx_bind)):
-            # print('near', self.nbx_bind[s-1], self.nbx_bind[s],  self.nbx_bind[s-1]-self.nbx_bind[s])
-            # print('far', '%.19g' % self.fbx_bind[s-1], '%.19g' % self.fbx_bind[s],
-            #       self.fbx_bind[s-1]-self.fbx_bind[s])
-            assert((self.nbx_bind[s-1] == self.nbx_bind[s])
-                   or (self.fbx_bind[s-1] == self.fbx_bind[s]))
-            if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.nbx_bind[s]):
+            assert((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s]))
+            if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
+                print("nostep")
                 continue
             if not (self.nbx_bind[s-1] == self.nbx_bind[s]):
                 self.initial_displacements.append(self.nbx_bind[s-1]-self.fbx_bind[s-1])
@@ -39,23 +39,24 @@ class SteppingData(object):
             elif not (self.fbx_bind[s-1] == self.fbx_bind[s]):
                 self.initial_displacements.append(self.fbx_bind[s-1]-self.nbx_bind[s-1])
                 self.final_displacements.append(self.fbx_bind[s] - self.nbx_bind[s])
+            self.onebound_times.append(self.bindTimes[s]-self.unbindTimes[s])
+            self.bothbound_times.append(self.unbindTimes[s]-self.bindTimes[s-1])
+
+        print("final_displacements length: ", len(self.final_displacements))
+        print("ob time len: ", len(self.onebound_times))
         self.initial_displacements = np.asarray(self.initial_displacements)
         self.final_displacements = np.asarray(self.final_displacements)
 
         self.step_lengths = self.final_displacements - self.initial_displacements
         self.step_times = self.onebound_times + self.bothbound_times
 
-
-class MovieData: 
-    pass
-
-
 if __name__ == "__main__":
     import sys
     if len(sys.argv) == 2:
         data = SteppingData(sys.argv[1])
     else:
-        data = SteppingData("data/parameterSearch/kb100000000.0_kub100_expbc-0.5_t5.0_seed1.0.txt")
+        print("dynein.data error: no stepping file provided")
+        exit(1)
     print(data.rawData)
     print(data.initial_displacements)
     print(data.final_displacements)
