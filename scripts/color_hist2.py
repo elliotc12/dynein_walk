@@ -147,6 +147,7 @@ seed_label = ''
 initial_displacements = np.concatenate([s.initial_displacements for s in datasets])
 final_displacements = np.concatenate([s.final_displacements for s in datasets])
 onebound_times = np.concatenate([s.onebound_times for s in datasets])
+bothbound_times = np.concatenate([s.bothbound_times for s in datasets])
 step_lengths = np.concatenate([s.step_lengths for s in datasets])
 
 plotCounts(initial_displacements,
@@ -166,6 +167,15 @@ plotCounts(onebound_times,
            xIsTimeValue=True,
            yIsTimeValue=False,
            filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
+
+plotCounts(bothbound_times,
+           step_lengths,
+           "",
+           "Bothbound time (s)",
+           "Step length (nm)",
+           xIsTimeValue=True,
+           yIsTimeValue=False,
+           filename='plots/bothbound-time-vs-step-length{}.pdf'.format(seed_label))
 
 
 plotCounts(initial_displacements,

@@ -6,6 +6,10 @@ import glob
 import numpy as np
 import argparse
 
+import sys
+sys.path.insert(0, os.getcwd() + "/data/")
+import paper_params as params
+
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
         x = '{:e}'.format(x)
@@ -37,21 +41,21 @@ parser = argparse.ArgumentParser(description="script to generate stepping "
                                  "data for specified parameters and record stepping statistics")
 
 parser.add_argument('-k_b', '--binding', dest='k_b', action='store', type=float,
-                    default=1e8, help="pre-exponential binding constant", metavar='')
+                    default=params.k_b, help="pre-exponential binding constant", metavar='')
 parser.add_argument('-k_ub', '--unbinding', dest='k_ub', action='store', type=float,
-                    default=100, help="pre-exponential unbinding constant", metavar='')
+                    default=params.k_ub, help="pre-exponential unbinding constant", metavar='')
 parser.add_argument('-t', '--runtime', dest='runtime', action='store', type=float,
                     default=1.0, help='total runtime for simulation in seconds', metavar='')
 parser.add_argument('-exp', '--exp-unbinding-constant', dest='exp_unbinding_constant',
-                    action='store', type=float, default=0.0, help="exponential unbinding constant", metavar='')
+                    action='store', type=float, default=params.cexp, help="exponential unbinding constant", metavar='')
 parser.add_argument('-s', '--seed', dest ='seed', action='store', type=float,
                     default=1.0, help ="random number seed", metavar='')
 parser.add_argument('-cb', '--cb', dest ='cb', action='store', type=float,
-                    default=0.1, help ="cb", metavar='')
+                    default=params.cb, help ="cb", metavar='')
 parser.add_argument('-cm', '--cm', dest ='cm', action='store', type=float,
-                    default=0.4, help ="cm", metavar='')
+                    default=params.cm, help ="cm", metavar='')
 parser.add_argument('-ct', '--ct', dest ='ct', action='store', type=float,
-                    default=0.2, help ="ct", metavar='')
+                    default=params.ct, help ="ct", metavar='')
 parser.add_argument('-f', '--logfile', dest='logfile', action='store', type=str,
                     default='data/parameterSearch/testedParameters.csv', help=".txt file for logging stepping statistics", metavar='')
 parser.add_argument('-l', '--label', dest='label', action='store', type=str,
@@ -68,12 +72,15 @@ basename = run.sim(**{"k_b": args.k_b,
                       "cb": args.cb,
                       "cm": args.cm,
                       "ct": args.ct,
-                      "ls": 10.49,
-                      "lt": 23.8,
-                      "eqb": 120,
-                      "eqmpre": 200,
-                      "eqmpost": 224,
-                      "eqt": 0,
+                      "ls": params.ls,
+                      "lt": params.lt,
+                      "eqb": params.eqb,
+                      "eqmpre": params.eqmpre,
+                      "eqmpost": params.eqmpost,
+                      "eqt": params.eqt,
+                      "rb": params.radius_b,
+                      "rm": params.radius_m,
+                      "rt": params.radius_t,
                       "dt": 1e-10,
                       "label": "paramSearch-" + args.label,
                       "seed": args.seed,
@@ -96,7 +103,6 @@ bothbound_times = []
 step_lengths = []
 
 data = np.loadtxt(dataFile)
-print(data.size)
 assert(data.size>8)
 bind_times = np.array(data[:, 1])
 unbind_times = np.array(data[:, 0])
