@@ -98,7 +98,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
     if ((last_state == NEARBOUND or last_state == FARBOUND) and !am_in_initial_partial_step) {
-      fprintf(data_file, "%13.10g %13.10g %18.15g %18.15g %18.15g %18.15g %18.15g %18.15g\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx(),
+      fprintf(data_file, "%14.12g %14.12g %18.15g %18.15g %18.15g %18.15g %18.15g %18.15g\n", last_bothbound_iteration*dt, iteration*dt, dyn_bb->get_nbx(), dyn_bb->get_fbx(),
 	      last_bothbound_nmx, last_bothbound_fmx, dyn_bb->get_nmx(), dyn_bb->get_fmx());
       fflush(data_file);
       NUM_STEPS++;
