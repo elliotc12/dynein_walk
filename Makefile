@@ -10,7 +10,7 @@ PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%
 
 UNBINDING_PROBABILITY_PDFS = $(patsubst data/unbinding_probability/%.tex,plots/unbinding_probability/%.pdf, $(wildcard data/unbinding_probability/*.tex))
 
-all: generate_stepping_data public $(DRAW) $(PAPERS)
+all: generate_stepping_data public $(DRAW) $(PAPERS) $(PARAMSEARCH_PDFS)
 
 .PHONY: clean public
 
@@ -65,7 +65,7 @@ plots/stepping_time_histogram_%.pdf: scripts/make_stepping_plots.py
 ######### paper plots ##########
 PAPER_DATA = $(wildcard data/paper_main_stepping_data*.txt)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf plots/paper-trajectory-movie.mp4
 
 plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_onebound_histogram.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_main
@@ -91,6 +91,10 @@ data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py
 
 plots/paper_unbinding_probability_vs_L.pdf: data/paper_unbinding_probability__L-5,s-1.txt scripts/make_paper_unbinding_probability_plot.py
 	python3 scripts/make_paper_unbinding_probability_plot.py
+
+plots/paper-trajectory-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py
+	python2.7 scripts/movie.py data/paper_trajectory_movie_data.txt speed=1000
+	mv plots/movie.mp4 plots/paper-trajectory-movie.mp4
 
 ######### thesis plots ##########
 THESIS-PLOTS = plots/trajectory-plot_thesis.pdf plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.pdf
