@@ -63,6 +63,7 @@ def getBinIndex(p, bins):
     for i in range(0, len(bins)-1):
         if p >= bins[i] and p <= bins[i+1]:  # deal with case for p=bins[0], p=bins[-1]
             return i
+    print("Couldn't put the following value in a bin: ", p)
     assert(False)  # throw exception if we can't find a bin for a value
 
 
@@ -76,9 +77,10 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     assert X.shape == Y.shape
 
     if VERBOSE: print("binning data")
-    
+
     if xIsTimeValue is True:
-        xbins = np.linspace(0, X.max(), NUM_BINS+1)
+        xbins = np.logspace(-10, np.log10(X.max()), NUM_BINS+1)
+
     else:
         xbins = np.linspace(X.min(), X.max(), NUM_BINS+1)
 
@@ -87,7 +89,6 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     else:
         ybins = np.linspace(Y.min(), Y.max(), NUM_BINS+1)
 
-        
     if VERBOSE: print("counting")
     counts = np.zeros((len(xbins),len(ybins)))
 
@@ -100,17 +101,17 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
 
 def plotCounts(x, y, graph_label, x_label, y_label,
                xIsTimeValue, yIsTimeValue,filename=None, ):
- 
+
     x_bins, y_bins, counts = getCounts(x, y, xIsTimeValue, yIsTimeValue)
-    # print('counts', np.sum(counts), len(x))
     if VERBOSE: print("graphing")
     plt.figure()
-    plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.xlim(x_bins[0], x_bins[-1])
     plt.ylim(y_bins[0], y_bins[-1])
-    # print(x_bins)
+    plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
+    if xIsTimeValue:
+        plt.gca().set_xscale('log')
     plt.title(graph_label)
     cb = plt.colorbar()
     cb.set_label('counts')
@@ -147,12 +148,12 @@ plotCounts(initial_displacements,
            yIsTimeValue=False,
            filename='plots/initial-vs-final-displacement{}.pdf'.format(seed_label))
 
-plotCounts(onebound_times,#[1:len(step_lengths)+1],
+plotCounts(onebound_times,
            step_lengths,
            "",
            "Onebound time (s)",
            "Step length (nm)",
-           xIsTimeValue=False,
+           xIsTimeValue=True,
            yIsTimeValue=False,
            filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
 
