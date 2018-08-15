@@ -375,49 +375,47 @@ plt.savefig("plots/stepping_analysis.pdf", format="pdf")
 plt.close(fig)
 
 
+# fig = plt.figure()
 
-fig = plt.figure()
+# initial_displacements = np.array(initial_displacements)
+# indices = np.argsort(np.abs(initial_displacements))
+# sorted_displacements = initial_displacements[indices]
 
-initial_displacements = np.array(initial_displacements)
-indices = np.argsort(np.abs(initial_displacements))
-sorted_displacements = initial_displacements[indices]
+# Nbin = 50
+# L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
+# ntrailing = np.zeros_like(L)
+# nleading = np.zeros_like(L)
+# for i in range(len(L)):
+#     bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
+#     ntrailing[i] = (bunch < 0).sum()
+#     nleading[i] = (bunch > 0).sum()
+#     L[i] = np.abs(bunch).mean()
 
-Nbin = 50
-L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
-ntrailing = np.zeros_like(L)
-nleading = np.zeros_like(L)
-for i in range(len(L)):
-    bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
-    ntrailing[i] = (bunch < 0).sum()
-    nleading[i] = (bunch > 0).sum()
-    L[i] = np.abs(bunch).mean()
+# fraction_trailing = ntrailing / (ntrailing + nleading)
 
-fraction_trailing = ntrailing / (ntrailing + nleading)
+# yildiz_displacements = [10, 20, 30, 40, 50]
+# yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
+# yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-yildiz_displacements = [10, 20, 30, 40, 50]
-yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
-yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
+# plt.plot(L, fraction_trailing, 'o-', label="Model")
+# plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
+# plt.ylim(0,1)
 
-plt.plot(L, fraction_trailing, 'o-', label="Model")
-plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
-plt.ylim(0,1)
+# plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
+# plt.ylabel("Fraction trailing")
 
-plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
-plt.ylabel("Fraction trailing")
+# plt.ylim([0,1.1])
 
-plt.ylim([0,1.1])
+# plt.legend()
 
-plt.legend()
+# if args.parameters_filename != "":
+#     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
-if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
-
-
-plt.gca().spines["top"].set_visible(False)
-plt.gca().spines["right"].set_visible(False)
-plt.tight_layout()
-plt.savefig("plots/displacement_histogram.pdf", format="pdf")
-plt.close(fig)
+# plt.gca().spines["top"].set_visible(False)
+# plt.gca().spines["right"].set_visible(False)
+# plt.tight_layout()
+# plt.savefig("plots/displacement_histogram.pdf", format="pdf")
+# plt.close(fig)
 
 plt.figure()
 

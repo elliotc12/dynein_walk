@@ -10,6 +10,7 @@ import glob
 
 import dynein.data as data
 
+plt.rcParams.update({'font.size': 14})
 
 parser = argparse.ArgumentParser(description='Script to generate 2 dimensional histogram from dynein stepping data')
 
@@ -110,7 +111,7 @@ def plotCounts(x, y, graph_label, x_label, y_label,
     plt.xlim(x_bins[0], x_bins[-1])
     plt.ylim(y_bins[0], y_bins[-1])
     plt.title(graph_label)
-    plt.axes().set_aspect('equal')
+    # plt.axes().set_aspect('equal')
 
     plt.pcolor(x_bins, y_bins, counts, cmap=CMAP)
     cb = plt.colorbar()

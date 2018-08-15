@@ -16,6 +16,8 @@ from matplotlib.patches import Rectangle
 
 import io
 
+plt.rcParams.update({'font.size': 14})
+
 EPSILON = 1e-7
 
 def equal(f1, f2):
