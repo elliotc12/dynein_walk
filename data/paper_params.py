@@ -13,7 +13,7 @@ cb = 0.1 # kbT
 cm = 0.4 # kbT
 ct = 0.2 # kbT
 
-eqb = 128
+eqb = 120
 eqmpre = 197 # 204.5 from burgess
 eqmpost = 242 # 222.5 from burgess, but as much as 234.5 -- they say 15nm difference for pre/post ub domain, so maybe latter is better
 eqt = 0

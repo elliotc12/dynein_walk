@@ -83,7 +83,7 @@ scalebar_nm = 15
 fig = plot_image(merged_burgess_img, "lower", dpi=100)
 plt.plot([57, 57+scalebar_nm*units_per_nm], [10, 10])
 plt.axis('off')
-plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, -np.pi*0.35)
+plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, -np.pi*0.31)
 plt.savefig("plots/burgess-model-figure.pdf", format="pdf", interpolation='none', dpi=100, bbox_inches='tight')
 
 # chowdhury fig
@@ -100,7 +100,7 @@ plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf
 units_per_nm = 35
 scalebar_nm = 28.8
 fig = plot_image(merged_crystalstruct_img, "upper", dpi=600)
-plot_dynein_equilibrium_onebound(fig, 1720, 1542, units_per_nm, np.pi*0.64)
+plot_dynein_equilibrium_onebound(fig, 1720, 1542, units_per_nm, np.pi*0.67)
 plt.plot([692, 692+scalebar_nm*units_per_nm], [1480, 1480])
 plt.axis('off')
 plt.savefig("plots/crystal-model-figure.pdf", bbox_inches='tight', format="pdf", interpolation='none', dpi=600)
