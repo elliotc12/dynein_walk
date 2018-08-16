@@ -22,13 +22,20 @@ import matplotlib.image as mpimg
 from scipy import ndimage
 
 
-def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_per_nm, mt_angle):
+def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_per_nm, mt_angle, flipx=False):
     Xs = [0, 0, 0, 0, 0]
     Ys = [0, 0, 0, 0, 0]
+
     bba_abs = mt_angle + params.eqb*np.pi/180.0
     bma_abs = bba_abs - np.pi + params.eqmpost*np.pi/180.0
     ta_abs = bma_abs - np.pi
     uma_abs = bma_abs - params.eqmpre*np.pi/180.0
+
+    if flipx:
+        bba_abs = np.pi - bba_abs
+        bma_abs = np.pi - bma_abs
+        ta_abs = np.pi - ta_abs
+        uma_abs = np.pi - uma_abs
 
     Xs[0] = start_x_units
     Xs[1] = Xs[0] + params.ls*np.cos(bba_abs)*units_per_nm
@@ -73,7 +80,8 @@ def plot_image(img, org, dpi):
     return fig
 
 merged_burgess_img = mpimg.imread('papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png')
-merged_chowdhury_img = mpimg.imread('papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png')
+# merged_chowdhury_img = mpimg.imread('papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png')
+grotjahn_img = mpimg.imread('papers/paper/figures/model-raw-images/grotjahn-model-figure.png')
 merged_redwine_img = mpimg.imread('papers/paper/figures/model-raw-images/redwine-supplemental-cropped.png')
 merged_crystalstruct_img = mpimg.imread('papers/paper/figures/model-raw-images/pymol-cytoplasmic-superimpose.png')
 
@@ -86,15 +94,15 @@ plt.axis('off')
 plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, -np.pi*0.31)
 plt.savefig("plots/burgess-model-figure.pdf", format="pdf", interpolation='none', dpi=100, bbox_inches='tight')
 
-# chowdhury fig
-units_per_nm = 2.78
-scalebar_nm = 25
-fig = plot_image(merged_chowdhury_img, "upper", dpi=100)
-plt.imshow(merged_chowdhury_img) # angles rotate cw
-plot_dynein_equilibrium_onebound(fig, 68, 122, units_per_nm, np.pi)
-plt.plot([142, 142+scalebar_nm*units_per_nm], [175, 175])
+# grotjahn fig
+units_per_nm = 19.6
+scalebar_nm = 26.3 # using tip-to-tip distance between MTBD and AAA1, known from 3VKH crystal structure of the exact protein used in this EM map
+fig = plot_image(grotjahn_img, "upper", dpi=100)
+plt.imshow(grotjahn_img) # angles rotate cw
+plot_dynein_equilibrium_onebound(fig, 850, 667.5, units_per_nm, np.pi, flipx=True)
+plt.plot([850, 850+scalebar_nm*units_per_nm*np.cos(-params.eqb*np.pi/180.0)], [667.5, 667.5+scalebar_nm*units_per_nm*np.sin(-params.eqb*np.pi/180.0)])
 plt.axis('off')
-plt.savefig("plots/chowdhury-model-figure.pdf", bbox_inches='tight', format="pdf", interpolation='none', dpi=100)
+plt.savefig("plots/grotjahn-model-figure.pdf", bbox_inches='tight', format="pdf", interpolation='none', dpi=100)
 
 # crystal struct fig
 units_per_nm = 35
