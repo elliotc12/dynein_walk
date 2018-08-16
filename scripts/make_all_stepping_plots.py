@@ -260,10 +260,12 @@ plt.gca().set_xscale('log')
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
 
-plt.show()
+ob_theory_avg = 6e-6
+plt.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1, label="Theory")
 plt.gca().spines["top"].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
 plt.tight_layout()
+plt.legend()
 plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
@@ -274,9 +276,12 @@ plt.rc('text', usetex=True)
 if len(step_times) > 0:
     plt.gca().hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
 
+bb_theory_avg = 2.5e-3
+plt.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1, label="Theory")
 plt.gca().set_ylabel("Frequency")
 plt.gca().set_xlabel("Bothbound time (s)")
 plt.gca().set_xscale('log')
+plt.legend()
 # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 if args.parameters_filename != "":
