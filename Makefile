@@ -65,7 +65,7 @@ plots/stepping_time_histogram_%.pdf: scripts/make_stepping_plots.py
 ######### paper plots ##########
 PAPER_DATA = $(wildcard data/paper_main_stepping_data*.txt)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf plots/paper-trajectory-movie.mp4 plots/paper_model_behavior.pdf
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper-trajectory-movie.mp4 plots/paper_model_behavior.pdf
 
 plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_main
@@ -81,7 +81,7 @@ plots/paper_initial_vs_final_displacement.pdf plots/paper_onebound_vs_steplength
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 
-plots/burgess-model-figure.pdf plots/chowdury-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/chowdhury-fig-1-cropped.png
+plots/burgess-model-figure.pdf plots/grotjahn-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/grotjahn-model-figure.png
 	python3 scripts/generate-paper-model-figures.py
 
 data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py
@@ -107,15 +107,13 @@ plots/stepping_time_histogram_thesis.pdf plots/stepping_length_histogram_thesis.
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_thesis.pdf
 
 ######### parameterSearch PDFs ##########
-plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.tex scripts/make_all_stepping_plots.py scripts/color_hist.py plots/parameterSearch/display_template.tex
+plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.tex scripts/make_all_stepping_plots.py scripts/color_hist2.py plots/parameterSearch/display_template.tex
 	mkdir -p plots/parameterSearch/searchplots
 	python3 scripts/make_all_stepping_plots.py -d data/parameterSearch -b $*
-	python3 scripts/color_hist.py -d data/parameterSearch/$*.txt
+	python3 scripts/color_hist2.py -r data/parameterSearch/ -d $*
 	cp data/parameterSearch/$*.tex plots/parameterSearch/search_parameters.tex
 	cd plots/parameterSearch && xelatex display_template.tex
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf
-	rm plots/stepping_length_histogram.pdf plots/displacement_vs_step_length.pdf plots/stepping_analysis.pdf plots/displacement_histogram.pdf
-	rm plots/bb-vs-length-scatter.pdf plots/initial-vs-final.pdf plots/ob-vs-length-scatter.pdf plots/time-vs-length.pdf plots/stepping_trajectory.pdf
 
 ######### unbinding probability PDFs ##########
 plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/%*) data/unbinding_probability/%.tex scripts/make_all_unbinding_probability_plots.py plots/unbinding_probability/display_template.tex
@@ -127,7 +125,7 @@ plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/%*) dat
 
 ######### papers ##########
 PAPER_SVG_FIGURES = $(wildcard papers/*/figures/*.svg)
-PAPER-FIGURES = $(patsubst %.svg,%.pdf,$(PAPER_SVG_FIGURES)) plots/burgess-model-figure.pdf plots/chowdury-model-figure.pdf
+PAPER-FIGURES = $(patsubst %.svg,%.pdf,$(PAPER_SVG_FIGURES)) plots/burgess-model-figure.pdf plots/grotjahn-model-figure.pdf
 
 papers/elliott-thesis/figures/%.pdf: papers/elliott-thesis/figures/%.svg
 	inkscape -D --export-pdf $(shell pwd)/$@ $(shell pwd)/$<

@@ -16,6 +16,8 @@ parser = argparse.ArgumentParser(description='Script to generate 2 dimensional h
 
 parser.add_argument('-d', '--datawildcard', dest='data_wc', action='store', default='paper_main',
                     help='data file wildcard', type=str)
+parser.add_argument('-r', '--datadir', dest='data_dir', action='store', default='data/',
+                    help='data file src directory', type=str)
 parser.add_argument('-b', '--bins', dest='bins', action='store', default=50,
                     help='number of bins for x and y axes', type=int)
 parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', default=False,
@@ -42,10 +44,10 @@ if os.path.exists('color_hist2.py'):
     os.chdir('../')
 
 data_files = []
-for fname in os.listdir("data/"):
-    if os.path.isfile("data/" + fname):
-        if (DATAWC in fname and "stepping_data" in fname and ".txt" in fname and "~" not in fname):
-            data_files.append("data/" + fname)
+for fname in os.listdir(args.data_dir):
+    if os.path.isfile(args.data_dir + fname):
+        if (DATAWC in fname and ".txt" in fname and "~" not in fname and ("stepping_data" in fname or args.data_dir != "data/")):
+            data_files.append(args.data_dir + fname)
 
 if len(data_files) == 0:
     print("No files matching wildcard " + args.data_wc)
@@ -61,10 +63,15 @@ for df in data_files:
 #--------------------------------------------------------------------------------------#
 
 def getBinIndex(p, bins):
+    if p <= bins[0]:
+        return 0
+    elif p >= bins[len(bins)-1]:
+        return len(bins)-1
     for i in range(0, len(bins)-1):
-        if p >= bins[i] and p <= bins[i+1]:  # deal with case for p=bins[0], p=bins[-1]
+        if p > bins[i] and p <= bins[i+1]:  # deal with case for p=bins[0], p=bins[-1]
             return i
     print("Couldn't put the following value in a bin: ", p)
+    print("Bins: ", bins)
     assert(False)  # throw exception if we can't find a bin for a value
 
 
