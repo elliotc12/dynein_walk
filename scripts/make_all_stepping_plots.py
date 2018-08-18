@@ -16,12 +16,14 @@ from matplotlib.patches import Rectangle
 
 import io
 
+plt.rc('text', usetex=True)
+
 EPSILON = 1e-7
 
 def equal(f1, f2):
     return abs(f1-f2) < EPSILON
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 8})
 
 parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
@@ -145,10 +147,16 @@ t_proc.append(t_step[-1]*t_bb[-1]/t_ob[-1])
 t_ob_uncertainty.append(np.std(onebound_times)/np.sqrt(num_steps)*1.645) # 95% chance of true average being 1.645 stdevs from the sample average
 t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 
-#step length histogram
+#####
+## Model behavior plot
+#####
+fig = plt.figure(figsize=(4,4))
+gs = gridspec.GridSpec(3, 2)
+ax0 = fig.add_subplot(gs[0:2, 0:2])
+ax1 = fig.add_subplot(gs[2, 0])
+ax2 = fig.add_subplot(gs[2, 1], sharey=ax1)
 
-fig = plt.figure()
-plt.rc('text', usetex=True)
+#step length histogram
 
 weihong_step_lengths = np.array([])
 weihong_step_lengths = np.append(weihong_step_lengths, [-35]*3)
@@ -178,30 +186,70 @@ weihong_step_lengths = np.append(weihong_step_lengths, [38]*2)
 if len(step_lengths) == 0:
     print("No steps to put in histogram!")
 
-plt.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=True, stacked=True)
+ax0.hist(weihong_step_lengths, bins=20, alpha=0.5, label="Experiment", normed=True, stacked=True)
 if (len(step_lengths) > 0):
-    plt.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+    ax0.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
 
-plt.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
+ax0.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
 
-plt.legend(loc="upper right")
-plt.xlabel("Step length (nm)")
-plt.ylabel("Frequency")
+ax0.legend(loc="upper right")
+ax0.set_xlabel("Step length (nm)")
+ax0.set_ylabel("Frequency")
 
 if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
+ax0.spines["top"].set_visible(False)
+ax0.spines["right"].set_visible(False)
+# plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 
-plt.gca().spines["top"].set_visible(False)
-plt.gca().spines["right"].set_visible(False)
-plt.tight_layout()
-plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
-plt.close(fig)
+# OB time histogram
+if len(step_times) > 0:
+    ax1.hist(onebound_times, bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
+else:
+    print("Error, no step_times")
+    exit(1)
+
+ax1.set_ylabel("Frequency")
+ax1.set_xlabel("Onebound time (s)")
+ax1.set_xscale('log')
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
+
+ob_theory_avg = 6e-6
+ax1.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1)
+ax1.spines["top"].set_visible(False)
+ax1.spines["right"].set_visible(False)
+# ax1.legend()
+# ax1.tight_layout()
+# plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
+
+# BB (dwell) time histogram
+if len(step_times) > 0:
+    ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
+
+bb_theory_avg = 2.5e-3
+ax2.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1)
+# ax2.spines["left"].set_visible(False)
+plt.setp([ax2.get_yticklabels()], visible=False)
+ax2.tick_params(axis='y', which="both", left=False, right=False, labelbottom=False)
+ax2.set_xlabel("Bothbound time (s)")
+ax2.set_xscale('log')
+# ax2.legend()
+# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+if args.parameters_filename != "":
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
+
+ax2.spines["top"].set_visible(False)
+ax2.spines["right"].set_visible(False)
+
+plt.tight_layout(w_pad=2, h_pad=0.5)
+plt.savefig("plots/model_behavior.pdf", format="pdf")
 
 #step time histogram
-fig = plt.figure(dpi=300)
-plt.rc('text', usetex=True)
-
 gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
 ax0 = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs[1])
@@ -231,66 +279,15 @@ ax3.set_xlabel("velocity (nm/s)")
 ax3.set_ylabel("Frequency")
 
 if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 plt.subplots_adjust(hspace=0.6)
 
 plt.show()
 plt.gca().spines["top"].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
-plt.tight_layout()
+# plt.tight_layout()
 plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
-plt.close(fig)
-
-# OB time histogram
-fig = plt.figure(dpi=300)
-plt.rc('text', usetex=True)
-
-if len(step_times) > 0:
-    plt.gca().hist(onebound_times, bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
-else:
-    print("Error, no step_times")
-    exit(1)
-
-plt.gca().set_ylabel("Frequency")
-plt.gca().set_xlabel("Onebound time (s)")
-plt.gca().set_xscale('log')
-# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
-if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
-
-ob_theory_avg = 6e-6
-plt.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1, label="Theory")
-plt.gca().spines["top"].set_visible(False)
-plt.gca().spines["right"].set_visible(False)
-plt.tight_layout()
-plt.legend()
-plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
-plt.close(fig)
-
-# BB (dwell) time histogram
-fig = plt.figure(dpi=300)
-plt.rc('text', usetex=True)
-
-if len(step_times) > 0:
-    plt.gca().hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
-
-bb_theory_avg = 2.5e-3
-plt.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1, label="Theory")
-plt.gca().set_ylabel("Frequency")
-plt.gca().set_xlabel("Bothbound time (s)")
-plt.gca().set_xscale('log')
-plt.legend()
-# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
-if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
-
-plt.tight_layout()
-plt.gca().spines["top"].set_visible(False)
-plt.gca().spines["right"].set_visible(False)
-plt.savefig("plots/bothbound_time_histogram.pdf", format="pdf")
 plt.close(fig)
 
 # OB_time vs step_length scatter
@@ -304,7 +301,7 @@ plt.ylabel("Step length (nm)")
 plt.gca().set_xlim((1e-7, 1e-2))
 
 if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 plt.tight_layout()
 plt.gca().spines["top"].set_visible(False)
@@ -323,7 +320,7 @@ plt.ylabel("Step length (nm)")
 plt.gca().set_xlim((1e-5, 1))
 
 if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 plt.gca().spines["top"].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
@@ -340,7 +337,7 @@ plt.ylabel("Final displacement (nm)")
 plt.axes().set_aspect('equal')
 
 if args.parameters_filename != "":
-    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+    plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 plt.gca().spines["top"].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
@@ -414,7 +411,7 @@ plt.close(fig)
 # plt.legend()
 
 # if args.parameters_filename != "":
-#     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$', fontsize=14)
+#     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 # plt.gca().spines["top"].set_visible(False)
 # plt.gca().spines["right"].set_visible(False)

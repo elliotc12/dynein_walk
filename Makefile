@@ -65,14 +65,12 @@ plots/stepping_time_histogram_%.pdf: scripts/make_stepping_plots.py
 ######### paper plots ##########
 PAPER_DATA = $(wildcard data/paper_main_stepping_data*.txt)
 
-PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_onebound_histogram.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf plots/paper-trajectory-movie.mp4
+PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper_time_vs_length.pdf plots/paper-trajectory-movie.mp4 plots/paper_model_behavior.pdf
 
-plots/paper_stepping_length_histogram.pdf plots/paper_dwell_time_histogram.pdf plots/paper_onebound_histogram.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA)
+plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_main
-	mv plots/stepping_length_histogram.pdf plots/paper_stepping_length_histogram.pdf
-	mv plots/bothbound_time_histogram.pdf plots/paper_dwell_time_histogram.pdf
-	mv plots/onebound_time_histogram.pdf plots/paper_onebound_histogram.pdf
 	mv plots/stepping_analysis.pdf plots/paper_foot_order_histogram.pdf
+	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf
 
 plots/paper_initial_vs_final_displacement.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_displacement_vs_step_length.pdf: scripts/color_hist2.py $(PAPER_DATA)
 	python3 scripts/color_hist2.py -d paper_main
