@@ -81,7 +81,7 @@ plots/paper_initial_vs_final_displacement.pdf plots/paper_onebound_vs_steplength
 plots/paper_trajectory_plot.pdf: data/paper_trajectory_movie_data.txt scripts/paper-trajectory-plt.py $(DRAW)
 	python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 
-plots/burgess-model-figure.pdf plots/grotjahn-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/grotjahn-model-figure.png
+plots/burgess-model-figure.pdf plots/grotjahn-model-figure.pdf: scripts/generate-paper-model-figures.py papers/paper/figures/model-raw-images/burgess-fig-4-cropped.png papers/paper/figures/model-raw-images/grotjahn-model-figure.png data/paper_params.tex
 	python3 scripts/generate-paper-model-figures.py
 
 data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py

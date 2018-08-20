@@ -239,9 +239,10 @@ yildiz_step_lengths = np.append(yildiz_step_lengths, [47]*1)
 if len(step_lengths) == 0:
     print("No steps to put in histogram!")
 
-ax0.hist(yildiz_step_lengths, bins=20, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
-if (len(step_lengths) > 0):
-    ax0.hist(step_lengths, bins=20, alpha=0.5, label="Model", normed=True, stacked=True)
+bins = np.histogram(np.hstack((yildiz_step_lengths, step_lengths)), bins=20)[1]
+
+ax0.hist(yildiz_step_lengths, bins, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
+ax0.hist(step_lengths, bins, alpha=0.5, label="Model", normed=True, stacked=True)
 
 ax0.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
 
