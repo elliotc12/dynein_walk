@@ -154,6 +154,29 @@ where $k_{ub}^0$ is the default unbinding rate and $c$ the unbinding exponential
 \subsection*{Simulating the model}~\\
 The model was simulated using Euler's method to time evolve Equation \ref{eq:motionequation} using a timestep $dt$, transitioning freely between the poststroke and prestroke states.
 
+\matmethods{
+
+  \subsection*{Onebound motion equations}
+  Brownian Dynamics was used to describe the motion of each domain:
+
+  \begin{equation}
+    \dot{X_i} = \frac{1}{\gamma_i}\left(F^x_i + R^x_i\right)
+  \end{equation}
+
+  where $F^x_i$ is the force projection on coordinate $x$ of domain $i$, and $R^x_i$ the Brownian force. Expanding the force term and transforming position variables to polar coordinates yields the following:
+
+  \begin{multline}
+    \dot{X_i}\left(\theta_1, ..., \theta_n, \dot{\theta_1}, ..., \dot{\theta_n}\right) = \frac{1}{\gamma_i}\big(F(\theta_1, ..., \theta_n) + \\
+    \lambda_i\left(X_{i+1}-X_i\right) + \lambda_{i-1}\left(X_i-X_{i-1}\right)R^x_i\big)
+    \label{eq:ob-system}
+  \end{multline}
+
+  where the $\lambda$ terms are tension terms needed to maintain the rigid rod constraints. Each $X_i$ coordinate is related to the $\theta_j$ coordinates via the recursive formulas $X_1 = L_1\cos(\theta_1)$ and $X_{i>1} = L_i\cos(\theta_i)+L_{i-1}$ for x-coordinates and $Y_1 = 0$ and $Y_{i>1} = L_i\sin(\theta_i)+L_{i-1}$. Thus, each $\dot{X_i}$ term is linearly related to all $\dot{\theta_j}$ terms.\\
+
+  There are $n$ unknown $\theta_j$ values and n unknown $\lambda$ values, totaling $2n$ unknown variables. There are $2n$ equations linear in $\dot{theta_j}$ and $\lambda_q$, $n$ each from the X and Y equations. The system of equations provided by Equation $\ref{eq:ob-system}$ was solved in Matlab, yielding equations for all $\dot{\theta_j}$.
+}
+
+
 \section{Results}
 
 %% \begin{figure}%[tbhp]
@@ -262,6 +285,8 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 \caption{\textbf{Model achieves forward-directed processivity.} \textit{Top view:} x-position of near and far binding domains during a 10 $\mu s$ simulation at high kinetic parameters of $k_b = \trajectorykb s^{-1}$ and $k_{ub} = \trajectorykub s^{-1}$. \textit{Middle view:} Cartoon snapshot of model at time indicated by bound binding domain. Teal lines correspond to the microtubule. \textit{Bottom view:} y-projection. Arrows on top and bottom plots correspond to respective snapshot times.}
 \label{fig:trajectory}
 \end{figure}
+
+\showmatmethods
 
 \section{To do items}
 
