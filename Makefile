@@ -140,8 +140,9 @@ papers/elliott-thesis/latex/capek.pdf: papers/elliott-thesis/latex/thesis.tex $(
 	cd papers/elliott-thesis/latex && xelatex thesis.tex && bibtex thesis && xelatex thesis.tex && xelatex thesis.tex
 	mv papers/elliott-thesis/latex/thesis.pdf papers/elliott-thesis/latex/capek.pdf
 
-papers/paper/paper.pdf: papers/paper/paper.tex $(PAPER-FIGURES) $(PAPER-PLOTS) data/paper_params.tex
+papers/paper/paper.pdf: papers/paper/paper.tex papers/paper/paper-supplemental.tex $(PAPER-FIGURES) $(PAPER-PLOTS) data/paper_params.tex
 	(cd papers/paper && xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex) || (rm -f $@ && false)
+	# (cd papers/paper && xelatex paper-supplemental.tex && bibtex paper-supplemental && xelatex paper-supplemental.tex && xelatex paper-supplemental.tex) || (rm -f $@ && false)
 
 papers/notes/notes.pdf: papers/notes/notes.tex
 	cd papers/notes && xelatex notes.tex
