@@ -191,13 +191,28 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 }
 
 \section{Results}
--Briefly how we simulated the model
--Model is forwards-directed and processive (trajectory plot)
--Tuning the parameters to Yildiz data (kb/kub from theoretical OB/BB time and step length histograms for cm/cb/ct and leading/lagging fractions for c)
--Does the tuned model walk similarly to Yildiz dynein? (also the lagging vs step length)
+
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=\linewidth]{../../plots/paper_trajectory_plot.pdf}
+\caption{\textbf{Model achieves forward-directed processivity.} \textit{Top view:} x-position of near and far binding domains during a 10 $\mu s$ simulation at high kinetic parameters of $k_b = \trajectorykb s^{-1}$ and $k_{ub} = \trajectorykub s^{-1}$. \textit{Middle view:} Cartoon snapshot of model at time indicated by bound binding domain. Teal lines correspond to the microtubule. \textit{Bottom view:} y-projection. Arrows on top and bottom plots correspond to respective snapshot times.}
+\label{fig:trajectory}
+\end{figure}
+
+\textbf{Processive, forward-directed motility}\\
+The model was time-evolved using Euler's method. When simulated, the model produces processive, forward-directed motion. Figure \ref{fig:trajectory} shows a short time window of the model's dynamics. The model is capable of taking both forward and backwards steps, but is biased in the forward direction.\\
+
+\textbf{Stepping dynamics}
+The stepping dynamics of the model reproduce experimental results. The model is capable of producing a wide variety of step lengths, from 48nm forward to 40nm backwards, as in Figure \ref{fig:behavior}.a. The onebound and bothbound times correspond well to the theoretical values, as in \ref{fig:behavior}.b and c. The tension-gating mechanism is capable of producing a lagging-head favor, as shown in \ref{fig:behavior}.d.
 
 
--Impact of initial unbinding position on step dynamics: whether we need geometry or could use a Markov model
+%% -Briefly how we simulated the model
+%% -Model is forwards-directed and processive (trajectory plot)
+%% -Tuning the parameters to Yildiz data (kb/kub from theoretical OB/BB time and step length histograms for cm/cb/ct and leading/lagging fractions for c)
+%% -Does the tuned model walk similarly to Yildiz dynein? (also the lagging vs step length)
+
+
+%% -Impact of initial unbinding position on step dynamics: whether we need geometry or could use a Markov model
 
 
 
@@ -206,7 +221,7 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
   \includegraphics[width=\linewidth]{../../plots/paper_model_behavior}
   \includegraphics[width=\linewidth]{../../plots/paper_unbinding_probability_vs_L.pdf}
 \caption{\textbf{Basic behavior of our model}}
-\label{fig:}
+\label{fig:behavior}
 \end{figure}
 
 \begin{figure}[tbhp]
@@ -262,13 +277,6 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 %%     \textbf{nativestructure}.}
 %% \label{fig:modelangles}
 %% \end{figure}
-
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/paper_trajectory_plot.pdf}
-\caption{\textbf{Model achieves forward-directed processivity.} \textit{Top view:} x-position of near and far binding domains during a 10 $\mu s$ simulation at high kinetic parameters of $k_b = \trajectorykb s^{-1}$ and $k_{ub} = \trajectorykub s^{-1}$. \textit{Middle view:} Cartoon snapshot of model at time indicated by bound binding domain. Teal lines correspond to the microtubule. \textit{Bottom view:} y-projection. Arrows on top and bottom plots correspond to respective snapshot times.}
-\label{fig:trajectory}
-\end{figure}
 
 \showmatmethods
 
