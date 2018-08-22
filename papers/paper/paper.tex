@@ -156,7 +156,7 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 
 \matmethods{
 
-  \section*{Onebound motion equations}
+  \section*{Onebound motion equations derivation}
   Brownian Dynamics was used to describe the motion of each domain, indexing with $i \in \{bb, bm, t, um, ub\}$, corresponding to bound-binding, bound-motor, tail, unbound-motor, unbound-binding:
 
   \begin{align}
@@ -164,16 +164,16 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
     \dot{Y_i} &= \frac{1}{\gamma_i}\left(F^y_i + R^y_i\right)
   \end{align}
 
-  where $F^{x/y}_i$ is the force projection on coordinate $x/y$ of domain $i$, and $R^x_i$ the Brownian force. Transforming position variables to polar coordinates results in four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um} and \theta_{ub}$. Performing this transformation and expanding the force term yields the following equations:
+  where $F^{x/y}_i$ is the force projection on coordinate $x/y$ of domain $i$, and $R^x_i$ the Brownian force, a Gaussian zero-mean force with variance $R_{\sigma^2} = \sqrt{\frac{2k_bT\gamma}{\delta t}}$ \cite{einstein}. Transforming position variables to polar coordinates results in four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um} and \theta_{ub}$. Performing this transformation and expanding the force term yields the following equations:
 
   \begin{multline}
-    \dot{X_i}\left(\theta_1, ..., \theta_n, \dot{\theta_1}, ..., \dot{\theta_n}\right) = \frac{1}{\gamma_i}\big(F^{spr}_x(\theta_1, ..., \theta_n) + \\
+    \dot{X_i}\left(\theta_{bb}, ..., \theta_{ub}, \dot{\theta}_{bb}, ..., \dot{\theta}_{ub}\right) = \frac{1}{\gamma_i}\big(F^{spr}_x(\theta_{bb}, ..., \theta_{ub}) + \\
     \lambda_i\left(X_{i+1}-X_i\right) + \lambda_{i-1}\left(X_i-X_{i-1}\right)R^x_i\big)
     \label{eq:ob-system}
   \end{multline}
 
   \begin{multline}
-    \dot{Y_i}\left(\theta_1, ..., \theta_n, \dot{\theta_1}, ..., \dot{\theta_n}\right) = \frac{1}{\gamma_i}\big(F^{spr}_y(\theta_1, ..., \theta_n) + \\
+    \dot{Y_i}\left(\theta_{bb}, ..., \theta_{ub}, \dot{\theta}_{bb}, ..., \dot{\theta}_{ub}\right) = \frac{1}{\gamma_i}\big(F^{spr}_y(\theta_{bb}, ..., \theta_{ub}) + \\
     \lambda_i\left(Y_{i+1}-Y_i\right) + \lambda_{i-1}\left(Y_i-Y_{i-1}\right)R^y_i\big)
     \label{eq:ob-system}
   \end{multline}
@@ -182,7 +182,7 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
 
   There are $n$ unknown $\theta_j$ values and n unknown $\lambda$ values, totaling $2n$ unknown variables. There are $2n$ equations linear in $\dot{theta_j}$ and $\lambda_q$, $n$ each from the X and Y equations. The system of equations provided by Equation $\ref{eq:ob-system}$ was solved in Matlab, yielding equations for all $\dot{\theta_j}$.
 
-  \section*{Bothbound motion equations}
+  \section*{Bothbound motion equations derivation}
   Brownian dynamics was also used for the bothbound case. Due to the added constraint of both binding domains being fixed to the microtubule, the model is fully described by angles $\theta_{nm}$ and $\theta_{fm}$; see Figure \ref{fig:model}. The positions of non-bound domains are defined by the following equation for $i \in \{nb, nm, t, fm, fb\}$, corresponding to near-binding, near-motor, tail, far-motor and far-binding domains:
 
   \begin{multline}
@@ -198,6 +198,9 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
   \end{multline}
 
   Coordinate velocities are similarly linear with $\dot{\theta_{nm}}$ and $\dot{\theta_{fm}}$. This system has six independent equations and six unknowns $\dot{\theta_{nm}}, \dot{\theta_{fm}}, \lambda_{nb}, \lambda_{nm}, \lambda_{t}, \lambda_{fm}$. Analytic solutions were acquired using Mathematica.
+
+  \section*{Simulating the model}
+  Simulations began in the bothbound equilibrium state. The model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{bb}, \dot{\theta}_{bm}, \dot{\theta}_{um}, \dot{\theta}_{ub}\}$, using a timestep of $dt = 10^{-10}s$. In the onebound state, during each timestep the model had a $k_b*dt$ probability of transitioning into the bothbound state, where $k_b = k_b^0\left(1-H\left(X_{uby}-0.1\right)\right)$, where H is the Heaviside function. On transition to bothbound, proper $\theta_{nm}$ and $\theta_{fm}$ angles and proper interhead separation $L$ were calculated to yield a bothbound model with identical cartesian positions to the old bothbound, except with the previously unbound binding domain moved to $y=0$. Once in bothbound, the model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{nm}$ and $\dot{\theta}_{fm}\}$ and a timestep of $dt=10^{-10}s$. Each timestep, the bothbound model had a $k_{ub}*dt$ chance of transitioning to onebound, where $k_{ub} = k^0_{ub}e^{-c(\theta-\theta_{eq})}$. On transitioning, proper values of $\{\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub}\}$ were calculated to create a onebound model with identical cartesian positions to the old bothbound model.\\
 }
 
 

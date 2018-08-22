@@ -266,6 +266,12 @@ The matrix version of this system looks like:
 %
 This system of equations is then solved and used to calculate $\dot{L}_n$ and $\dot{L}_f$, as shown in Appendix (\ref{sec:AppendixBothboundEquations}). These intermediate velocities can then be used to calculate $\dot{\theta_{nm}}$ and $\dot{\theta_{fm}}$.\\
 
+\section*{Simulation special cases}
+Model time evolution led to certain special cases which required attention:\\
+
+\textbf{Domain below microtubule:} When a domain's velocity would result in the domain's y value becoming negative, the velocity was rejected and a new one calculated. The stochastic nature of $R$ guarentees that eventually a velocity would be selected which doesn't lead to a negative y value.\\
+
+\textbf{$\theta_{nm}$ or $\theta_{fm}$ approach $\pi/2$:} Bothbound velocity calculations would yield NaNs when motor angles approached $\pi/2$. To prevent this, random perturbations of $1e-5$ were added to each motor angle when it was sufficiently close to $\pi/2$.
 
 %%% Each figure should be on its own page
 %% \begin{figure}
