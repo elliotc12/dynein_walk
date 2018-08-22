@@ -8,9 +8,12 @@ HEADERS = $(wildcard src/*.h)
 PARAMSEARCH_DATAFILES = $(wildcard data/parameterSearch/*.txt)
 PARAMSEARCH_PDFS = $(patsubst data/parameterSearch/%.txt,plots/parameterSearch/%.pdf,$(PARAMSEARCH_DATAFILES))
 
+RANDOMSEARCH_DATAFILES = $(wildcard data/stepping_data_randomsearch__*.txt)
+RANDOMSEARCH_PDFS = $(patsubst data/stepping_data_randomsearch__%.txt, plots/randomsearch/%.pdf,$(RANDOMSEARCH_DATAFILES))
+
 UNBINDING_PROBABILITY_PDFS = $(patsubst data/unbinding_probability/%.tex,plots/unbinding_probability/%.pdf, $(wildcard data/unbinding_probability/*.tex))
 
-all: generate_stepping_data public $(DRAW) $(PAPERS) $(PARAMSEARCH_PDFS)
+all: generate_stepping_data public $(DRAW) $(PAPERS) $(RANDOMSEARCH_PDFS) # $(PARAMSEARCH_PDFS)
 
 .PHONY: clean public
 
@@ -68,7 +71,7 @@ PAPER_DATA = $(wildcard data/paper_main_stepping_data*.txt)
 PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_unbinding_probability_vs_L.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper-trajectory-movie.mp4 plots/paper_model_behavior.pdf
 
 plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA)
-	python3 scripts/make_all_stepping_plots.py -d data/ -b paper_main
+	python3 scripts/make_all_stepping_plots.py -d data -b paper_main
 	mv plots/stepping_analysis.pdf plots/paper_foot_order_histogram.pdf
 	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf
 
@@ -114,6 +117,11 @@ plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.t
 	cp data/parameterSearch/$*.tex plots/parameterSearch/search_parameters.tex
 	cd plots/parameterSearch && xelatex display_template.tex
 	mv plots/parameterSearch/display_template.pdf plots/parameterSearch/$*.pdf
+
+plots/randomsearch/%.pdf: data/stepping_data_randomsearch__%.txt scripts/make_all_stepping_plots.py scripts/color_hist2.py plots/parameterSearch/display_template.tex
+	mkdir -p plots/randomsearch/
+	python3 scripts/make_all_stepping_plots.py -d data -b $*
+	mv plots/model_behavior.pdf plots/randomsearch/$*.pdf
 
 ######### unbinding probability PDFs ##########
 plots/unbinding_probability/%.pdf: $(wildcard data/unbinding_probability/%*) data/unbinding_probability/%.tex scripts/make_all_unbinding_probability_plots.py plots/unbinding_probability/display_template.tex

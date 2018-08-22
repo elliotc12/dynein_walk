@@ -46,7 +46,7 @@ if os.path.exists('color_hist2.py'):
 data_files = []
 for fname in os.listdir(args.data_dir):
     if os.path.isfile(args.data_dir + fname):
-        if (DATAWC in fname and ".txt" in fname and "~" not in fname and ("stepping_data" in fname or args.data_dir != "data/")):
+        if (DATAWC in fname and ".txt" in fname and "~" not in fname and ("stepping_data" in fname or args.data_dir != "data")):
             data_files.append(args.data_dir + fname)
 
 if len(data_files) == 0:
