@@ -66,17 +66,12 @@ Several computational models have been created to explain dynein's motility. \te
 
 \section*{Model}
 
-%% Figure X.1 - poststroke
-%% FIgure X.2 - prestroke
-%% Figure X.A: Model of the protein superimposed over cryo-EM data (with length data)
-%% Figure X.B: Cryo-EM visualizations of how we get equilibrium angles
-%% Add rod vectors connecting each domain
-
 \begin{figure}[tbhp]
 \centering
 \includegraphics[width=0.49\linewidth]{figures/onebound-cartoon.pdf}%
 \includegraphics[width=0.49\linewidth]{figures/bothbound-cartoon.pdf}
-\caption{}
+\caption{TODO: make this more schematic-y and add transition arrows with rates}
+\label{fig:model}
 \end{figure}
 
 \begin{figure}[tbhp]
@@ -84,19 +79,13 @@ Several computational models have been created to explain dynein's motility. \te
 \includegraphics[width=0.6\linewidth]{../../plots/grotjahn-model-figure.pdf}%
 %% \includegraphics[width=0.3\linewidth]{../../plots/crystal-model-figure.pdf}%
 \caption{\textbf{Hinge model compared with dynein micrographs.} \textit{Left:} Model at equilibrium angles superimposed over an axonemal dynein c micrograph consisting of an apo and and ADP-Pi-bound dynein monomer \cite{burgess-paper}; axonemal and cytoplasmic dynein have comparable size and architecture \cite{dynein-c-paper}. \textit{Right:} Model at equilibrium superimposed over full-length dimerized dynein bound to accessory proteins, (map ID EMD-7000) \cite{grotjahn}. Left figure has a scale bar of 15nm, right 26.3nm between MTBD and AAA1 of motor domain.}
-\label{fig:duration-length}
+\label{fig:micrographs}
 \end{figure}
-
-
-%% \textit{Black bg:} Model superimposed over crystal structures of two monomers, pink being the ADP-Pi-bound cytoplasmic dynein-2 monomer from human (PDB ID 4RH7), yellow being an apo cytoplasmic dynein monomer from yeast (PDB ID 3VKH), docked together using linkers as a reference point. Orange indicates the linker region used to dock the two monomers. 
-
-\subsection*{Elastic hinge model}~\\
-Our model is designed to capture the course-grained dynamics of the dynein protein while remaining mathematically tractable. We capture the structure of the full dynein complex by treating the protein as a set of spheres connected by rigid rods. Geometric properties of the model, such as rod length $L_s$ and $L_t$, and sphere radii $R_b$, $R_m$ and $R_t$, are calculated from electron microscopy and crystallography data, as pictured in Fig X.A. Each sphere acts as a hinge, and the angle between connected rods, or the MT, is free to vary. The model is constrained to remain in the plane of the microtubule, so transverse motion is not allowed. The model exists in two states: one called the poststroke state with both binding domain positions constant, as in Figure X.1, and one called the prestroke state with one binding domain free to move, as in Figure X.2.
 
 \begin{table}[tbhp]
 \centering
 \caption{Parameters used in model simulation.}
-\label{tab:staticparams}
+\label{tab:params}
 \begin{tabular}{lrrr}
 Parameter & Model & Experimental & Source \\
 \midrule
@@ -122,39 +111,37 @@ $R_b$ & $\radiusb$ & 3.5nm & \cite{burgess-paper}\\
 %% \addtabletext{nomenclature for the TSs refers to the numbered species in the table.}
 \end{table}
 
-\subsection*{Model dynamics}~\\
-The model experiences internal and external forces. The internal forces are due to elastic restoring forces for each hinge angle ($\left[\theta_{bb}, \theta_{bm}, \theta_{t}, \theta_{um},\right]$ for prestroke, $\left[\theta_{nb}, \theta_{nm}, \theta_{t}, \theta_{fm}, \theta_{fb},\right]$ for poststroke) compared to its equilibrium ($\left[\Theta_{bb}, \Theta_{bm}, \Theta_{t}, \Theta_{um},\right]$ for prestroke, $\left[\Theta_{nb}, \Theta_{nm}, \Theta_{t}, \Theta_{fm}, \Theta_{fb},\right]$ for postsroke). These equilibrium angles are determined from cryo-EM micrographs of ATP-Vi-bound and ADP-bound dynein monomers, indicated in Figure X.B.\\
+\section{Model}
+This dynein model is meant to capture the coarse-grained structural, dynamical and chemical properties of the full dynein complex while remaining mathematically simple. The structural features of dynein are captured through a two-dimensional geometric model of circular domains connected by rigid rods, shown in Figure \ref{fig:model}. The dynamics of dynein are captured by imposing both equilibrium and Brownian forces on each circular domain of the model. The chemical properties of dynein are captured by sporadically transitioning the model between two states: a ``bothbound'' state where both binding domains are fixed to the microtubule, and a ``onebound'' state where one foot is free to diffuse. Each state feels equilibrium forces meant to mimic the structural changes which occur through dynein's chemical cycle. This transitioning is meant to capture the powerstroke of dynein, between the apo ``post-powerstroke'' state and the ADP-Pi-bound ``pre-powerstroke'' state.
 
-The torque on each domain is given by:
-%
-\begin{equation}
-  \vec{\tau}_{i} = c_i\left(\theta_{i}-\Theta_{i}\right)\hat{z}
-\end{equation}
-%
-The external forces on the model are random Brownian forces $\vec{R_i} = R_i\hat{x} + R_i\hat{y}$, where $R_i$ is a Gaussian random variable with $\mu_R = 0$ and $\sigma^2_R = 2kbT\gamma_i/dt$, where drag factor $\gamma_i = 6\pi\nu R_i$ with dynamic viscosity $\nu$. Brownian dynamics is used to calculate the velocity on each domain, where velocity is given by:
-%
-\begin{dmath}
-  \vec{v}_i = \gamma_i^{-1}\left(\frac{\vec{\tau}_{i-1}}{L_{i-1}}\left(\hat{z}\times\hat{r}_{i-1}\right)
-  + \frac{\vec{\tau}_{i+1}}{L_{i+1}}\left(\hat{z}\times\hat{r}_{i+1}\right)
-  - \vec{\tau}_{i}\left(\frac{\hat{z}\times\hat{r}_{i-1}}{L_{i-1}}+\frac{\hat{z}\times\hat{r}_{i+1}}{L_{i+1}}\right) + \vec{R_i}\right)
-  \label{eq:motionequation}
-\end{dmath}
-%
-\subsection*{Powerstroke model}~\\
-The dynein powerstroke is the hypothetical process whereby a motor unbinds from the microtubule, undergoes a linker remodel which pushes the motor forward, binds to the microtubule, and undergoes the opposite linker remodel, pulling the rest of the motor forward in a ``powerstroke.'' Our model simplifies the powerstroke cycle by alternating between two states: a two-foot-bound post-powerstroke state similar to the apo dynein, and a one-foot-bound pre-powerstroke state similar to the post-hydrolysis ADP-Pi dynein. Our model captures the prestroke kick of the unbound MTBD through different motor hinge equilibrium angles, as calculated from Figure X.B. The larger prestroke motor hinge angle causes a forward diffusion of the unbound binding domain on transition to one-foot-bound, followed by another forward diffusion of the whole motor as the MTBD binds and transitions back to post-stroke hinge angles.\\
+\subsection*{Model geometry}
+The dynein model represents a full dynein complex consisting of two dynein heavy chains dimerized by a large tail domain. The model accounts for the following domains within the complex: two microtubule binding domains (``MTBD''), two AAA+ heptad motor domains, and a tail domain consisting of many dynein light chains and a dimerization site. MTBDs, motor domains and the tail are all represented by circles of radius $R_b$, $R_m$ and $R_t$, respectively. Each MTBD is connected to a motor domain via a rigid rod of length $L_s$, meant to represent the stalk domain. Each motor domain is connected to the tail domain via a rigid rod of length $L_t$; this rod represents the heavy chain linker and intermediate/light chains which connect the motor to the dimerization site.\\
 
-Dynein's MTBD unbinding dynamics are known to be tension-dependent, where at high interhead separations unbinding favors the lagging MTBD, but no preference between leading and lagging is seen for small interhead separations \cite{yildizpaper}. To capture this, the microtubule unbinding rate $k_{ub}$ takes into account absolute binding angle:
-%
-\begin{equation}
-  k_{ub} = k_{ub}^0e^{-c\left(\theta_{xb}-\Theta{xb}\right)}
-\end{equation}
-%
-where $k_{ub}^0$ is the default unbinding rate and $c$ the unbinding exponential factor. Each timestep unbinding occurs with probability $k_{ub}dt$. On unbinding, the both-foot-bound model transitions to a one-foot-bound model with identical domain positions, but new equilibrium hinge angles. Microtubule binding occurs with probability $k_{b}^0dt$ if the binding domain is within $D$ nm of the microtubule. On binding, the one-foot-bound model transitions to a both-feet-bound with identical domain positions, but with both MTBDs constrained on the microtubule.\\
+Values for $R$ and $L$ were acquired by aligning the dynein model with EM micrographs of the full dynein complex \cite{burgess-paper,grotjahn}, as shown in Figure \ref{fig:micrographs}. See Table \ref{table:params} for these values.\\
 
-\subsection*{Simulating the model}~\\
-The model was simulated using Euler's method to time evolve Equation \ref{eq:motionequation} using a timestep $dt$, transitioning freely between the poststroke and prestroke states.
+\subsection*{Equilibrium forces}
+The onebound model has four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um}$ and $\theta_{ub}$. The bothbound model has two: $\theta_{nm}$ and $\theta_{fm}$. The model is free to vary across all of these degrees of freedom, barring steric interactions with the microtubule. These angles describe a planar model which is not capable of transverse motion. To capture the gross dynamics and interdomain oscillations of the protein, restoring forces are imposed on each angle about equilibrium angles $\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for onebound and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for bothbound. Each domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$ which exerts a restoring force pushing it back to equilibrium, where $c_b$, $c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles are taken to be the average angle occupied by the protein in solution, and are thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. Electron microscopy studies using ADP-Vi to freeze dynein in the pre-powerstroke state allow for both pre- and post-stroke equilibrium angles to be found \cite{burgess-paper}.\\
+
+\subsection*{Brownian dynamics}
+Brownian dynamics is used to study the model's dynamics in a biophysical manner. In the Brownian regime, protein motion is given by $\dot{\vec{X}} = \frac{1}{\gamma}\left(\vec{F}+\vec{R}\right)$. In the model, each circular domain has its own associated $\gamma$ factor given by Stokes' Law as $\gamma_i = 6\pi\nu R_i$ with dynamic viscosity $\nu$ \cite{stokeslaw}. The force on each domain is given by $\vec{F} = \vec{F}_{spr} + \vec{T}$, where $\vec{T}$ is the tension force between domains maintaining the rigid rod constraint. Each domain feels not only a harmonic restoring force, but also a Brownian force $\vec{R}$. This force is a Gaussian-distributed zero-mean magnitude with variance $R_{\sigma^2} = \sqrt{\frac{2k_bT\gamma}{\delta t}}$ \cite{einstein} and uniformly random direction.
+
+\subsection*{Binding}
+Conformational changes on nucleotide binding, also known as the mechanochemical cycle \cite{cianfrocco}, are captured by transitioning the model between the onebound and bothbound states. Binding can occur when the onebound model's unbound foot diffuses near enough the microtubule. When within a distance of $1 A$, binding occurs at a rate of $k_b$ (Table \ref{table:params}). On binding, the onebound model changes state to a bothbound model while retaining the positions of its domains. The previously unbound domain is transported to the microtubule.
+
+\subsection*{Unbinding}
+Unbinding occurs when a bothbound MTBD unbinds from the microtubule. This event can occur for either MTBD, and each domain has its own unbinding rate $k_{ub}$. To account for the tension-gating proposed by Yildiz \textit{et al} \cite{yildiz} to allow for interhead communication and bias the motor forward, the parameter $c$ is used to alter the unbinding rates of either MTBD. For domain $i \in \{n, f\}$ with binding domain angle $\theta_{ib}\left(\theta_{nm}, \theta_{fm}\right)$, unbinding rate is given by $k_{ub} = k^0_{ub}e^{-c\left(\theta_{ib}-\theta^{eq}_{ib}\right)}$. This will bias the model to unbind more preferentially for the lagging MTBD due to a higher likelihood for $\theta^{eq}_{ib} > \theta_{ib}$ for the lagging head. Values used for parameters $k^0_{ub}$ and $c$, along with $k_b$, are shown in Table \ref{table:params}.\\
+
+The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{cianfrocco} are captured by different motor equilibrium angles between the onebound and bothbound states. The onebound ``prestroke'' state has an unbound motor angle closer to $\pi$ than the bothbound motor\cite{burgess-paper}; thus, on unbinding, the unbound MTBD should experience a restoring force effecting the ``prestroke'' conformational change. On rebinding, the motors transition back to the poststroke equilibrium, producing restoring forces in the direction of the ``powerstroke.''
 
 \matmethods{
+
+  \section*{Fitting $k_b$ and $k_{ub}$}
+  To fit the binding and unbinding rate constants $k^0_b$ and $k^0_{ub}$, a simple theoretical model for stepping was used. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{<t_{ob}}{t_{step}} * \frac{1}{<t_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the onebound state, $<t_{ob}>$ and $<t_{bb}>$ are the expected durations for a onebound and bothbound state, and $<t_{step}> = <t_{ob}> + <t_{bb}>$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{<t_{step}> - <t_{bb}}{<t_{step}><t_{bb}>}$. Introducing a new variable $<t_{run}>$, the average run length of in vivo dynein, and using the relation $<t_{run}> = k_{dis}^{-1}$, a new relation is found for bothbound time: $<t_{bb}> = \frac{<t_{run}><t_{step}>}{<t_{run}>+<t_{step}>}$. Using the definition of $<t_{step}>$ a similar relation is found for onebound time: $<t_{ob}> = \frac{<t_{step}>^2}{<t_{step}>+<t_{run}>}$. Finally, using the relation $<t_{step}> = \frac{v}{<L_{step}>}$ for dynein velocity $v$ and expected step length $<L_{step}>$, the following equations are found for onebound and bothbound time in terms of experimental observables of velocity, run time and step length:
+
+  \begin{align}
+    <t_{ob}> &= \frac{v^2}{L_{step}^2\left(v/L_{step}+<t_{run}>\right)}\\
+    <t_{bb}> &= \frac{v<t_{run}>}{L_{step}\left(<t_{run}>+v/L_{step}\right)}
+  \end{align}
 
   \section*{Onebound motion equations derivation}
   Brownian Dynamics was used to describe the motion of each domain, indexing with $i \in \{bb, bm, t, um, ub\}$, corresponding to bound-binding, bound-motor, tail, unbound-motor, unbound-binding:
@@ -203,46 +190,16 @@ The model was simulated using Euler's method to time evolve Equation \ref{eq:mot
   Simulations began in the bothbound equilibrium state. The model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{bb}, \dot{\theta}_{bm}, \dot{\theta}_{um}, \dot{\theta}_{ub}\}$, using a timestep of $dt = 10^{-10}s$. In the onebound state, during each timestep the model had a $k_b*dt$ probability of transitioning into the bothbound state, where $k_b = k_b^0\left(1-H\left(X_{uby}-0.1\right)\right)$, where H is the Heaviside function. On transition to bothbound, proper $\theta_{nm}$ and $\theta_{fm}$ angles and proper interhead separation $L$ were calculated to yield a bothbound model with identical cartesian positions to the old bothbound, except with the previously unbound binding domain moved to $y=0$. Once in bothbound, the model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{nm}$ and $\dot{\theta}_{fm}\}$ and a timestep of $dt=10^{-10}s$. Each timestep, the bothbound model had a $k_{ub}*dt$ chance of transitioning to onebound, where $k_{ub} = k^0_{ub}e^{-c(\theta-\theta_{eq})}$. On transitioning, proper values of $\{\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub}\}$ were calculated to create a onebound model with identical cartesian positions to the old bothbound model.\\
 }
 
-
 \section{Results}
+-Briefly how we simulated the model
+-Model is forwards-directed and processive (trajectory plot)
+-Tuning the parameters to Yildiz data (kb/kub from theoretical OB/BB time and step length histograms for cm/cb/ct and leading/lagging fractions for c)
+-Does the tuned model walk similarly to Yildiz dynein? (also the lagging vs step length)
 
-%% \begin{figure}%[tbhp]
-%% \centering
-%% \includegraphics[width=\linewidth]{../../plots/stepping_analysis_paper.pdf}
-%% \caption{Histogram of duration of steps taken by model.}
-%% \label{fig:timehist}
-%% \end{figure}
 
-%% \begin{figure*}[tbhp]
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_static_step_length_histogram}
-%%   \end{subfigure}%
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_step_length_histogram}
-%%   \end{subfigure}
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_histogram}
-%%   \end{subfigure}%
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_histogram}
-%%   \end{subfigure}
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_static_displacement_vs_step_length}
-%%     \subcaption{Static unbinding rate}
-%%   \end{subfigure}%
-%%   \begin{subfigure}{0.5\textwidth}
-%%     \centering
-%%     \includegraphics[width=\linewidth]{../../plots/paper_exponential_displacement_vs_step_length}
-%%     \subcaption{Exponential unbinding rate}
-%%   \end{subfigure}
-%% \caption{Stepping behavior of static and exponential models, with parameters shown in Table \ref{tab:staticparams}.}
-%% \label{fig:lengthhist}
-%% \end{figure*}
+-Impact of initial unbinding position on step dynamics: whether we need geometry or could use a Markov model
+
+
 
 \begin{figure}[tbhp]
   \centering
