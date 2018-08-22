@@ -28,7 +28,7 @@ plt.rcParams.update({'font.size': 8})
 parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
 
 parser.add_argument('-d', '--data-directory', dest = 'data_directory', action='store', type = str,
-                    default="", help='data file directory', required = True)
+                    default="data/", help='data file directory', required = False)
 parser.add_argument('-b', '--data-basename', dest = 'data_basename', action='store', type = str,
                     default="", help='data file basename', required = True)
 parser.add_argument('-p', '--param-file', dest = 'parameters_filename', action='store', type = str,
@@ -43,7 +43,7 @@ data_files = []
 for fname in os.listdir(args.data_directory):
     if os.path.isfile(args.data_directory + "/" + fname):
         if (args.data_basename in fname and ".txt" in fname):
-            if ("~" not in fname):
+            if ("~" not in fname and "movie" not in fname and "config" not in fname):
                 data_files.append(args.data_directory + "/" + fname)
 
 if len(data_files) == 0:
