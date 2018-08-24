@@ -12,10 +12,10 @@ sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
 write_rate = 1e5
-runtime = 1e-4
+runtime = 7e-4
 seed = 1
 
-for L in [1, 5, 10, 15, 20, 25, 30, 35, 40]:
+for L in [10, 15, 20, 25, 30, 35, 40, 45, 50]:
     basename = "paper_unbinding_probability__L-%s,s-%s" % (str(L), seed)
 
     cmd = ["./simulate_unbinding_rates",

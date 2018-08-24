@@ -88,7 +88,7 @@ yildiz_displacements = [10, 20, 30, 40, 50]
 yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
+plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Yildiz 2012", fmt='o-',)
 
 plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L), label="simulation")
 plt.xlabel("|L| (nm)")
