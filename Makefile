@@ -120,7 +120,7 @@ plots/parameterSearch/%.pdf: data/parameterSearch/%.txt data/parameterSearch/%.t
 
 plots/randomsearch/%.pdf: data/stepping_data_randomsearch__%.txt scripts/make_all_stepping_plots.py scripts/color_hist2.py plots/parameterSearch/display_template.tex
 	mkdir -p plots/randomsearch/
-	python3 scripts/make_all_stepping_plots.py -d data -b $*
+	python3 scripts/make_all_stepping_plots.py -q -d data -b $*
 	mv plots/model_behavior.pdf plots/randomsearch/$*.pdf
 
 ######### unbinding probability PDFs ##########

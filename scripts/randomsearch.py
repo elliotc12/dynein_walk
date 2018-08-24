@@ -14,8 +14,8 @@ if os.path.exists('parameter_search.py'):
     os.chdir('../')
 os.system("make generate_stepping_data")
 
-runtime = 1e-1
-kb = 1e9
+runtime = 2e-1
+kb = 1e8
 kub = 1e9
 
 def get_rand_spring(minn, maxx):
@@ -26,7 +26,7 @@ def get_rand_spring(minn, maxx):
         p = 2*(maxx - x ) / (maxx - minn)**2
     return x
 
-for _ in range(5):
+for _ in range(100):
     cm = get_rand_spring(0.01, 2)
     cb = get_rand_spring(0.01, 2)
     ct = get_rand_spring(0.01, 2)
