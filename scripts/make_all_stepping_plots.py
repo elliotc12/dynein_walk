@@ -33,6 +33,8 @@ parser.add_argument('-b', '--data-basename', dest = 'data_basename', action='sto
                     default="", help='data file basename', required = True)
 parser.add_argument('-p', '--param-file', dest = 'parameters_filename', action='store', type = str,
                     default="", help='parameter filename (.tex)')
+parser.add_argument('-q', '--quick', dest='quick', action='store_true', default=False,
+                    help='Only make the stepping length histogram')
 
 args = parser.parse_args()
 
@@ -97,6 +99,8 @@ for data_file in data_files:
 
     run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
 
+    if args.quick:
+        continue
     assert(len(near_foot_positions) > 5)
     for s in range(2, len(near_foot_positions)):
         if near_foot_positions[s-1] < far_foot_positions[s-1]:
@@ -338,6 +342,9 @@ ax3.spines["right"].set_visible(False)
 
 plt.tight_layout(w_pad=2, h_pad=0.5)
 plt.savefig("plots/model_behavior.pdf", format="pdf")
+
+if args.quick:
+    exit()
 
 #step time histogram
 gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
