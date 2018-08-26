@@ -47,7 +47,8 @@ data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py 
 data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py data/paper_params.py
 	python3 scripts/generate-paper-trajectory-data.py
 
-data/paper_unbinding_probability__L-5,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py
+data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py data/paper_params.py
+	rm data/paper_unbinding_probability__*
 	python3 scripts/generate-paper-unbinding-rate-data.py
 
 # Taken out of make, added data file to repository:
@@ -90,7 +91,7 @@ plots/burgess-model-figure.pdf plots/grotjahn-model-figure.pdf: scripts/generate
 data/paper_params.tex: data/paper_params.py scripts/parameters-to-latex.py
 	python3 scripts/parameters-to-latex.py
 
-plots/paper_unbinding_probability_vs_L.pdf: data/paper_unbinding_probability__L-5,s-1.txt scripts/make_paper_unbinding_probability_plot.py
+plots/paper_unbinding_probability_vs_L.pdf: data/paper_unbinding_probability__L-10,s-1.txt scripts/make_paper_unbinding_probability_plot.py
 	python3 scripts/make_paper_unbinding_probability_plot.py
 
 plots/paper-trajectory-movie.mp4: data/paper_trajectory_movie_data.txt scripts/movie.py

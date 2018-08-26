@@ -154,11 +154,47 @@ t_bb_uncertainty.append(np.std(bothbound_times)/np.sqrt(num_steps)*1.645)
 #####
 ## Model behavior plot
 #####
-fig = plt.figure(figsize=(4,4))
-gs = gridspec.GridSpec(3, 2)
+fig = plt.figure(figsize=(4,6))
+gs = gridspec.GridSpec(5, 2)
 ax0 = fig.add_subplot(gs[0:2, 0:2])
-ax1 = fig.add_subplot(gs[2, 0])
-ax2 = fig.add_subplot(gs[2, 1], sharey=ax1)
+ax1 = fig.add_subplot(gs[2:4, 0:2])
+ax2 = fig.add_subplot(gs[4, 0])
+ax3 = fig.add_subplot(gs[4, 1], sharey=ax2)
+
+# model position trace
+
+data = np.loadtxt(data_files[0], dtype = np.float64)
+bind_times = np.array(data[:,1])
+near_foot_positions = np.around(np.array(data[:,2]), decimals=12)
+far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
+
+bind_times_duplicated = np.zeros(len(bind_times)*2-1)
+near_positions_duplicated = np.zeros(len(bind_times)*2-1)
+far_positions_duplicated = np.zeros(len(bind_times)*2-1)
+
+for t in range(1, len(bind_times)):
+    bind_times_duplicated[2*t-1] = bind_times[t]
+    bind_times_duplicated[2*t] = bind_times[t]
+    near_positions_duplicated[2*t-1] = near_foot_positions[t-1]
+    near_positions_duplicated[2*t] = near_foot_positions[t]
+    far_positions_duplicated[2*t-1] = far_foot_positions[t-1]
+    far_positions_duplicated[2*t] = far_foot_positions[t]
+
+bind_times_duplicated[0] = bind_times[0]
+near_positions_duplicated[0] = near_foot_positions[0]
+far_positions_duplicated[0] = far_foot_positions[0]
+
+ax0.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Model", markersize=0, linewidth=0.5)
+# ax0.plot(bind_times_duplicated, far_positions_duplicated, 'o-', label="Far BD", markersize=0, linewidth=0.5)
+
+ax0.set_xlabel("time (s)")
+ax0.set_ylabel("Position (nm)")
+
+ax0.legend()
+
+ax0.spines["top"].set_visible(False)
+ax0.spines["right"].set_visible(False)
+# ax0.tight_layout()
 
 #step length histogram
 
@@ -245,64 +281,64 @@ if len(step_lengths) == 0:
 
 bins = np.histogram(np.hstack((yildiz_step_lengths, step_lengths)), bins=20)[1]
 
-ax0.hist(yildiz_step_lengths, bins, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
-ax0.hist(step_lengths, bins, alpha=0.5, label="Model", normed=True, stacked=True)
+ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
+ax1.hist(step_lengths, bins, alpha=0.5, label="Model", normed=True, stacked=True)
 
-ax0.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
+ax1.scatter([np.mean(step_lengths)], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(step_lengths), decimals=2)) + r'$ \textit{nm}')
 
-ax0.legend(loc="upper right")
-ax0.set_xlabel("Step length (nm)")
-ax0.set_ylabel("Frequency")
+ax1.legend(loc="upper right")
+ax1.set_xlabel("Step length (nm)")
+ax1.set_ylabel("Frequency")
 
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
-ax0.spines["top"].set_visible(False)
-ax0.spines["right"].set_visible(False)
+ax1.spines["top"].set_visible(False)
+ax1.spines["right"].set_visible(False)
 # plt.savefig("plots/stepping_length_histogram.pdf", format="pdf")
 
 # OB time histogram
 if len(step_times) > 0:
-    ax1.hist(onebound_times, bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
+    ax2.hist(onebound_times, bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
 else:
     print("Error, no step_times")
     exit(1)
 
-ax1.set_ylabel("Frequency")
-ax1.set_xlabel("Onebound time (s)")
-ax1.set_xscale('log')
-# ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax2.set_ylabel("Frequency")
+ax2.set_xlabel("Onebound time (s)")
+ax2.set_xscale('log')
+# ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
 ob_theory_avg = 6e-6
-ax1.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1)
-ax1.spines["top"].set_visible(False)
-ax1.spines["right"].set_visible(False)
-# ax1.legend()
-# ax1.tight_layout()
+ax2.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1)
+ax2.spines["top"].set_visible(False)
+ax2.spines["right"].set_visible(False)
+# ax2.legend()
+# ax2.tight_layout()
 # plt.savefig("plots/onebound_time_histogram.pdf", format="pdf")
 
 # BB (dwell) time histogram
 if len(step_times) > 0:
-    ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
+    ax3.hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
 
 bb_theory_avg = 2.5e-3
-ax2.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1)
-# ax2.spines["left"].set_visible(False)
-plt.setp([ax2.get_yticklabels()], visible=False)
-ax2.tick_params(axis='y', which="both", left=False, right=False, labelbottom=False)
-ax2.set_xlabel("Bothbound time (s)")
-ax2.set_xscale('log')
-# ax2.legend()
+ax3.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1)
+# ax3.spines["left"].set_visible(False)
+plt.setp([ax3.get_yticklabels()], visible=False)
+ax3.tick_params(axis='y', which="both", left=False, right=False, labelbottom=False)
+ax3.set_xlabel("Bothbound time (s)")
+ax3.set_xscale('log')
+# ax3.legend()
 # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
-ax2.spines["top"].set_visible(False)
-ax2.spines["right"].set_visible(False)
+ax3.spines["top"].set_visible(False)
+ax3.spines["right"].set_visible(False)
 
 plt.tight_layout(w_pad=2, h_pad=0.5)
 plt.savefig("plots/model_behavior.pdf", format="pdf")
@@ -479,40 +515,3 @@ plt.close(fig)
 # plt.tight_layout()
 # plt.savefig("plots/displacement_histogram.pdf", format="pdf")
 # plt.close(fig)
-
-plt.figure()
-
-data = np.loadtxt(data_files[0], dtype = np.float64)
-bind_times = np.array(data[:,1])
-near_foot_positions = np.around(np.array(data[:,2]), decimals=12)
-far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
-
-bind_times_duplicated = np.zeros(len(bind_times)*2-1)
-near_positions_duplicated = np.zeros(len(bind_times)*2-1)
-far_positions_duplicated = np.zeros(len(bind_times)*2-1)
-
-for t in range(1, len(bind_times)):
-    bind_times_duplicated[2*t-1] = bind_times[t]
-    bind_times_duplicated[2*t] = bind_times[t]
-    near_positions_duplicated[2*t-1] = near_foot_positions[t-1]
-    near_positions_duplicated[2*t] = near_foot_positions[t]
-    far_positions_duplicated[2*t-1] = far_foot_positions[t-1]
-    far_positions_duplicated[2*t] = far_foot_positions[t]
-
-bind_times_duplicated[0] = bind_times[0]
-near_positions_duplicated[0] = near_foot_positions[0]
-far_positions_duplicated[0] = far_foot_positions[0]
-
-plt.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Near BD", markersize=.01, linewidth=0.5)
-plt.plot(bind_times_duplicated, far_positions_duplicated, 'o-', label="Far BD", markersize=.01, linewidth=0.5)
-
-plt.xlabel("time (s)")
-plt.ylabel("Position (nm)")
-
-plt.legend()
-
-plt.gca().spines["top"].set_visible(False)
-plt.gca().spines["right"].set_visible(False)
-plt.tight_layout()
-plt.savefig("plots/stepping_trajectory.pdf", format="pdf")
-plt.close(fig)

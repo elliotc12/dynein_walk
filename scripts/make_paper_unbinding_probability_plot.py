@@ -16,7 +16,7 @@ from matplotlib.patches import Rectangle
 
 import io
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 8})
 
 EPSILON = 1e-7
 
@@ -70,17 +70,17 @@ leading_probabilities_vs_time = np.array(leading_probabilities_vs_time)
 lagging_probabilities_vs_time = np.array(lagging_probabilities_vs_time)
 
 ### lagging fraction vs L
-fig = plt.figure()
+fig = plt.figure(figsize=(4,2), dpi=300)
 
 yildiz_displacements = [10, 20, 30, 40, 50]
 yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
+plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Yildiz 2012", fmt='o-', c='b', markersize=4, linestyle='')
 
-plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L), label="simulation")
-plt.xlabel("|L| (nm)")
-plt.ylabel("Lagging $k_{ub}$ fraction")
+plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L), c='r', label="Model", zorder=2, s=4**2)
+plt.xlabel("Binding domain separation (nm)")
+plt.ylabel("P(lagging step)")
 plt.legend()
 
 plt.gca().spines["top"].set_visible(False)
