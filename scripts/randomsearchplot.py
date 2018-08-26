@@ -114,12 +114,17 @@ def plot_steps(ct, cm, cb):
     data_file = "data/stepping_data_randomsearch__k_b-1e+08,k_ub-1e+09,c--0.35,cb-{},cm-{},ct-{},ls-20.75,lt-23,seed-1,dt-1e-10.txt".format(cb, cm, ct)
     step_lengths = get_step_lengths(data_file)
 
-    bins = np.histogram(np.hstack((yildiz_step_lengths, step_lengths)), bins=20)[1]
+    bins = np.histogram(np.hstack((yildiz_step_lengths)), bins=20)[1]
 
     plt.figure()
     plt.hist(yildiz_step_lengths, bins, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
     plt.hist(step_lengths, bins, alpha=0.5, label="Model", normed=True, stacked=True)
-    plt.savefig("plots/{},{},{}.pdf".format(ct, cm, cb), format="pdf")
+
+    plt.legend(loc="upper right")
+    plt.xlabel("Step length (nm)")
+    plt.ylabel("Frequency")
+    
+    plt.savefig("plots/rs-{},{},{}.pdf".format(ct, cm, cb), format="pdf")
 
 
 ## get Yildiz stepping histogram
@@ -246,8 +251,7 @@ plt.colorbar(plot)
 plt.show()
 plt.savefig("plots/randomsearchplot.png")
 
-best_error_idxs = np.where(errors < np.sort(errors)[5])
-
+best_error_idxs = np.where(errors < np.sort(errors)[15])
 for n, i in enumerate(best_error_idxs[0]):
     print("i: {}, ct: {}, cm: {}, cb: {}, error: {}".format(i, cts[i], cms[i], cbs[i], errors[i]))
     plot_steps(cts[i], cms[i], cbs[i])

@@ -9,9 +9,11 @@ trajectory_seed = 14 # 1 and 10 and 14 and 17 20 are okay
 
 cexp = -0.35
 
-cb = 0.1 # kbT
-cm = 0.4 # kbT
-ct = 0.2 # kbT
+cb = 0.08 # kbT
+cm = 1.05 # kbT
+ct = 0.36 # kbT
+
+# other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09
 
 eqb = 120
 eqmpre = 197 # 204.5 from burgess
