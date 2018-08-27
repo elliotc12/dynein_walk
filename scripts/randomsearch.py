@@ -27,8 +27,8 @@ def get_rand_spring(minn, maxx):
     return x
 
 for _ in range(100):
-    cm = get_rand_spring(0.01, 2)
-    cb = get_rand_spring(0.01, 2)
+    cm = get_rand_spring(0.8, 1.4)
+    cb = get_rand_spring(0.001, 0.2)
     ct = get_rand_spring(0.01, 2)
 
     os.system("rq run --job-name randomsearch"\
