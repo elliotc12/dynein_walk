@@ -7,8 +7,8 @@ import dynein.run as run
 sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
-runtime = 1e-1
-seeds = [1, 2, 3, 4, 5, 6, 7, 8]
+runtime = 5
+seeds = [5, 6, 7, 8]
 
 for s in seeds:
     os.system("rq run --job-name papermain-" + str(s) \

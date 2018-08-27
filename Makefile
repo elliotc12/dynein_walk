@@ -48,7 +48,7 @@ data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: ge
 	python3 scripts/generate-paper-trajectory-data.py
 
 data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py data/paper_params.py
-	rm data/paper_unbinding_probability__*
+	rm -f data/paper_unbinding_probability__*
 	python3 scripts/generate-paper-unbinding-rate-data.py
 
 # Taken out of make, added data file to repository:

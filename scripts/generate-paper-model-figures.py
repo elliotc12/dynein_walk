@@ -4,8 +4,8 @@ from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess, re
 
-# if 'show' not in sys.argv:
-#     matplotlib.use('Agg')
+if 'show' not in sys.argv:
+    matplotlib.use('Agg')
 
 import dynein.draw.cartoon as cartoon
 

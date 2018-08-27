@@ -2,7 +2,11 @@
 
 import numpy as np
 import matplotlib
-#matplotlib.use('Agg')
+import sys
+
+if 'show' not in sys.argv:
+    matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import argparse
 import os

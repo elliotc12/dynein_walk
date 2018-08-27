@@ -121,7 +121,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false; 
 	  int attempts = 0;
 
-	  const int max_attempts = 1e3;
+	  const int max_attempts = 1e6;
 	  while(!accept_step){
 	    if (attempts > max_attempts) {
 	      printf("Over %d attempts needed to avoid a NaN state in onebound, something must be wrong. Exiting.\n",
@@ -228,7 +228,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  bool accept_step = false;
 	  int attempts = 0;
 
-	  const int max_attempts = 1e3;
+	  const int max_attempts = 1e6;
 	  while(!accept_step){
 	    if (attempts > max_attempts) {
 	      printf("Over %d attempts needed to avoid a NaN state in bothbound, something must be wrong. Exiting.\n",
