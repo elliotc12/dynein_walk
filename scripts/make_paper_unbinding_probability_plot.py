@@ -76,7 +76,7 @@ yildiz_displacements = [10, 20, 30, 40, 50]
 yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Yildiz 2012", fmt='o-', c='b', markersize=4, linestyle='')
+plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Yildiz 2012", fmt='o-', c='b', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
 
 plt.scatter(Ls, mean_lagging_probability_per_L / (mean_lagging_probability_per_L + mean_leading_probability_per_L), c='r', label="Model", zorder=2, s=4**2)
 plt.xlabel("Binding domain separation (nm)")
