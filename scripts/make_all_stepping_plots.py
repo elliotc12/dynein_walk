@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
 
+import dynein.data as datalib
+
 import io
 
 plt.rc('text', usetex=True)
@@ -52,86 +54,25 @@ if len(data_files) == 0:
     print("No files of form " + args.data_directory + "/*" + args.data_basename + "*.txt found. Exiting.")
     exit(1)
 
-step_times = []
-onebound_times = []
-bothbound_times = []
-step_lengths = []
-initial_displacements = []
-step_times = []
-run_velocities = []
-
-alternating_passing = 0
-alternating_not_passing = 0
-not_alternating_passing = 0
-not_alternating_not_passing = 0
-
-leading_foot_steps = 0
-trailing_foot_steps = 0
+data_objects = []
 
 for data_file in data_files:
-    data = np.loadtxt(data_file, dtype = np.float64)
-    if len(data) < 3 or str(type(data[0])) == "<type 'numpy.float64'>":
-        continue
+    data_objects.append(datalib.SteppingData(data_file))
 
-    bind_times = np.array(data[:,1])
-    unbind_times = np.array(data[:,0])
-    near_foot_positions = np.around(np.array(data[:,2]), decimals=12)  #need to figure out why fixing number of decimals is necessary
-    far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
-    near_step_lens = near_foot_positions[1:] - near_foot_positions[:-1]  #reduces total length by one. Will include 0 step lengths
-    far_step_lens = far_foot_positions[1:] - far_foot_positions[:-1]
+onebound_times = np.concatenate([d.onebound_times for d in data_objects])
+bothbound_times = np.concatenate([d.bothbound_times for d in data_objects])
+step_times = onebound_times + bothbound_times
+step_lengths = np.concatenate([d.step_lengths for d in data_objects])
+initial_displacements = np.concatenate([d.initial_displacements for d in data_objects])
+# run_velocities = []
 
-    for s in range(1,len(near_foot_positions)):
-        assert(equal(near_foot_positions[s-1],near_foot_positions[s]) or equal(far_foot_positions[s-1],far_foot_positions[s]))
-        if equal(near_foot_positions[s-1],near_foot_positions[s]) and equal(far_foot_positions[s-1],far_foot_positions[s]):
-            continue
+alternating_passing = sum([d.alternating_passing for d in data_objects])
+alternating_not_passing = sum([d.alternating_not_passing for d in data_objects])
+not_alternating_passing = sum([d.not_alternating_passing for d in data_objects])
+not_alternating_not_passing = sum([d.not_alternating_not_passing for d in data_objects])
 
-        if not equal(near_foot_positions[s-1],near_foot_positions[s]):  # i.e. if near foot stepped 
-            step_lengths.append(data[s,2]-data[s-1,2])
-            initial_displacements.append(data[s-1,2]-data[s-1,3])  #near_foot_positions[s-1]-far_foot_positions[s-1]
-            #final_displacements.append(near_foot_positions[s]-far_foot_positions[s])
-        elif not equal(far_foot_positions[s-1],far_foot_positions[s]):  # i.e. if far foot stepped 
-            step_lengths.append(data[s,3]-data[s-1,3])
-            initial_displacements.append(data[s-1,3]-data[s-1,2])  # far_foot_positions[s-1]-near_foot_positions[s-1]
-            #final_displacements.append(far_foot_positions[s]-near_foot_positions[s]) 
-        onebound_times = np.concatenate((onebound_times, [bind_times[s]-unbind_times[s]]))
-        bothbound_times = np.concatenate((bothbound_times, [unbind_times[s]-bind_times[s-1]]))
-        step_times = np.concatenate((step_times, onebound_times + bothbound_times))
-
-    run_velocities.append((data[-1,2] + data[-1,2]) / 2 / data[-1,1])
-
-    if args.quick:
-        continue
-    assert(len(near_foot_positions) > 5)
-    for s in range(2, len(near_foot_positions)):
-        if near_foot_positions[s-1] < far_foot_positions[s-1]:
-            trailing_foot = near_foot_positions
-            leading_foot = far_foot_positions
-        else:
-            trailing_foot = far_foot_positions
-            leading_foot = near_foot_positions
-        if not equal(near_foot_positions[s], near_foot_positions[s-1]) and not equal(far_foot_positions[s], far_foot_positions[s-1]):
-            print("Error, both feet moved in a step.")
-            exit(1)
-        if not equal(trailing_foot[s], trailing_foot[s-1]): #must've been a leading foot step
-            leading_foot_steps += 1
-            if not equal(trailing_foot[s-1], trailing_foot[s-2]): # not alternating, the last was the same foot
-                # the leading foot moved twice in a row, that makes this "not alternating"
-                not_alternating_not_passing += 1
-            else:
-                # It is alternating because leading foot moved, but before that the other foot moved.
-                alternating_not_passing += 1
-        else: # must've been a trailing foot step
-            trailing_foot_steps += 1
-            if equal(trailing_foot[s-1], trailing_foot[s-2]): # alternating, other foot moved last time
-                if trailing_foot[s] > leading_foot[s]:
-                    not_alternating_passing += 1
-                else:
-                    not_alternating_not_passing += 1
-            else:
-                if trailing_foot[s] > leading_foot[s]:
-                    alternating_passing += 1
-                else:
-                    alternating_not_passing += 1
+leading_foot_steps = np.sum([d.leading_foot_steps for d in data_objects])
+trailing_foot_steps = np.sum([d.trailing_foot_steps for d in data_objects])
 
 num_steps = len(step_lengths)
 initial_displacements = np.array(initial_displacements)
@@ -165,7 +106,8 @@ ax3 = fig.add_subplot(gs[4, 1], sharey=ax2)
 
 for i in [1, 2, 3, 4, 5, 6, 7, 8]:
     df = "data/paper_main_stepping_data-{}.txt".format(i)
-    assert(df in data_files)
+    if df not in data_files:
+        continue
     data = np.loadtxt(df, dtype = np.float64)
     bind_times = np.array(data[:,1])
     near_foot_positions = np.around(np.array(data[:,2]), decimals=12)
@@ -364,7 +306,7 @@ if len(step_times) > 0:
     ax0.hist(step_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
     ax1.hist(onebound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
     ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
-    ax3.hist(run_velocities, bins=50)
+    # ax3.hist(run_velocities, bins=50)
 
 ax0.set_ylabel("Frequency")
 ax0.set_xscale('log')
