@@ -163,8 +163,10 @@ ax3 = fig.add_subplot(gs[4, 1], sharey=ax2)
 
 # model position trace
 
-for i in [0, 1, 2, 3]:
-    data = np.loadtxt(data_files[i], dtype = np.float64)
+for i in [1, 2, 3, 4, 5, 6, 7, 8]:
+    df = "data/paper_main_stepping_data-{}.txt".format(i)
+    assert(df in data_files)
+    data = np.loadtxt(df, dtype = np.float64)
     bind_times = np.array(data[:,1])
     near_foot_positions = np.around(np.array(data[:,2]), decimals=12)
     far_foot_positions = np.around(np.array(data[:,3]), decimals=12)
@@ -186,7 +188,7 @@ for i in [0, 1, 2, 3]:
         far_positions_duplicated[0] = far_foot_positions[0]
 
     # ax0.plot(bind_times_duplicated, near_positions_duplicated, 'o-', label="Model", markersize=0, linewidth=0.5)
-    ax0.plot(bind_times, near_foot_positions, 'o-', label="Model", markersize=0, linewidth=0.5)
+    ax0.plot(bind_times, near_foot_positions, 'o-', label="Model "+str(i), markersize=0, linewidth=0.5)
 
 yildiz_data = np.loadtxt("data/yildiz_tracking_data.txt", dtype = np.float64)
 ax0.plot(yildiz_data[:,0]/1e3, yildiz_data[:,1], 'o-', label="Yildiz dynein", markersize=0, linewidth=0.5)
@@ -317,7 +319,7 @@ ax2.set_xscale('log')
 if args.parameters_filename != "":
     plt.gcf().suptitle(run_conditions + r' $k_{b}: \kb, k_{ub}: \kub, cb: \cb, cm: \cm, ct: \ct, runtime: \runtime$')
 
-ob_theory_avg = 6e-6
+ob_theory_avg = 5.2e-4
 ax2.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1)
 ax2.spines["top"].set_visible(False)
 ax2.spines["right"].set_visible(False)
@@ -329,7 +331,7 @@ ax2.spines["right"].set_visible(False)
 if len(step_times) > 0:
     ax3.hist(bothbound_times, bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
 
-bb_theory_avg = 2.5e-3
+bb_theory_avg = 6.4e-2
 ax3.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1)
 # ax3.spines["left"].set_visible(False)
 plt.setp([ax3.get_yticklabels()], visible=False)
