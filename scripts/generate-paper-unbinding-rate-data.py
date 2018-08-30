@@ -15,7 +15,7 @@ write_rate = 1e5
 runtime = 7e-4
 seed = 1
 
-for L in [10, 15, 20, 25, 30, 35, 40, 45, 50]:
+for L in [10, 20, 30, 40, 50]:
     basename = "paper_unbinding_probability__L-%s,s-%s" % (str(L), seed)
 
     cmd = ["./simulate_unbinding_rates",
