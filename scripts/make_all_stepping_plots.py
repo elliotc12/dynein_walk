@@ -106,7 +106,44 @@ def get_unbinding_probability_data(args):
     return up_data
 
 def get_force_data(args):
-    return
+    data_files = []
+    for fname in os.listdir("data"):
+        if os.path.isfile("data/" + fname):
+            if ("paper_force_stepping_data" in fname and ".txt" in fname):
+                if ("~" not in fname):
+                    data_files.append("data/" + fname)
+
+    if len(data_files) == 0:
+        print("No files of form data/stepping_data_paper_force__*.txt found. Exiting.")
+        exit(1)
+
+    force_data = {}
+    force_data["forces"] = []
+    force_data["velocities"] = []
+    force_data["seeds"] = []
+
+    for data_file in data_files:
+        data = np.loadtxt(data_file, dtype = np.float64)
+        if len(data) == 15:
+            continue
+        start_F_idx = data_file.find('F-')+2
+        end_F_idx = data_file[start_F_idx:].find(',') + start_F_idx
+        F = float(data_file[start_F_idx:end_F_idx])
+
+        start_s_idx = data_file.find(',s-')+3
+        end_s_idx = data_file[start_s_idx:].find('.') + start_s_idx
+        s = float(data_file[start_s_idx:end_s_idx])
+
+        final_nbx = float(data[-1,2])
+        final_fbx = float(data[-1,3])
+        final_t   = float(data[-1,1])
+        velocity = (final_nbx + final_fbx) / (2 * final_t)
+
+        force_data["forces"].append([F])
+        force_data["seeds"].append([s])
+        force_data["velocities"].append([velocity])
+    print(force_data)
+    return force_data
 
 def get_cli_arguments():
     parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
@@ -291,6 +328,7 @@ def make_force_plot(args, force_data):
     gennerich_velocities = [50.76, 45.38, 43.07, 36.92, 22.3, 8.46, 4.6, 3.07, -.6, -5.38, -15.38]
     gennerich_errors = [2.3, 1.8, 3, 3, 1.6, 1.4, 1.5, 1.5, 1.4, 1.4, 2.3]
     plt.errorbar(gennerich_forces, gennerich_velocities, yerr=gennerich_errors, label="Gennerich 2007", fmt='o-', c='b', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
+    plt.scatter(force_data["forces"], force_data["velocities"], c='r', label="Model", zorder=2, s=4**2)
     plt.xlabel("$\hat{x}$ Force (pN)")
     plt.ylabel("Velocity (nm/s)")
     plt.legend()
@@ -305,6 +343,7 @@ def main():
     args = get_cli_arguments()
     stepping_data = get_stepping_data(args)
     unbinding_probability_data = get_unbinding_probability_data(args)
+    force_data = get_force_data(args)
     make_behavior_plot(args, stepping_data, unbinding_probability_data)
     if args.quick:
         exit()
