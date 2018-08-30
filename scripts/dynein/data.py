@@ -9,8 +9,9 @@ class SteppingData(object):
     def __init__(self, dataFile):
         self.dataFile = dataFile
         self.rawData = np.loadtxt(self.dataFile)
-        assert(len(self.rawData[:,1]) > 5)
-        # assert(np.shape(self.rawData)[1] == 4)  # guarantee 4 columns in data file
+        if len(self.rawData[:,1]) <= 5:
+            print("Error. File {} has less than six steps. Exiting.".format(dataFile))
+            exit(1)
         self.bindTimes = self.rawData[:, 1]
         self.unbindTimes = self.rawData[:, 0]
         self.nbx_bind = np.around(self.rawData[:, 2], decimals=12)
