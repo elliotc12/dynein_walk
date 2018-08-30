@@ -285,6 +285,18 @@ def make_analysis_plot(args, stepping_data):
     plt.savefig("plots/stepping_analysis.pdf", format="pdf")
     plt.close(fig)
 
+def make_force_plot(args, force_data):
+    fig = plt.figure(figsize=(4, 2.2), dpi=300)
+    gennerich_forces = [4, 0, -1, -2, -3, -4, -5, -6, -7, -8, -10]
+    gennerich_velocities = [50.76, 45.38, 43.07, 36.92, 22.3, 8.46, 4.6, 3.07, -.6, -5.38, -15.38]
+    gennerich_errors = [2.3, 1.8, 3, 3, 1.6, 1.4, 1.5, 1.5, 1.4, 1.4, 2.3]
+    plt.errorbar(gennerich_forces, gennerich_velocities, yerr=gennerich_errors, label="Gennerich 2007", fmt='o-', c='b', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
+    plt.xlabel("$\hat{x}$ Force (pN)")
+    plt.ylabel("Velocity (nm/s)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("plots/force_vs_velocity.pdf", format="pdf")
+
 def initialize():
     plt.rcParams.update({'font.size': 8})
 
@@ -298,6 +310,7 @@ def main():
         exit()
     make_analysis_plot(args, stepping_data)
     force_data = get_force_data(args)
+    make_force_plot(args, force_data)
 
 if __name__ == "__main__":
     main()
