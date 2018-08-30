@@ -66,7 +66,9 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
   low_affinity_binding_rate,
   /* binding_fraction, */
   DELTA_G_FORMATION_BINDING,
-  REBINDING_IMMUNITY_TIME;
+  REBINDING_IMMUNITY_TIME,
+  tail_force,
+  atp_in_kJ_per_mol;
 
 extern double exponential_unbinding_angle_constant;
 

@@ -204,6 +204,7 @@ void Dynein_bothbound::update_brownian_forces() {
     rand->gauss2(gm*sqrt(2*kb*T/(gm*dt)), &r.fmx, &r.fmy);
     rand->gauss2(gb*sqrt(2*kb*T/(gb*dt)), &r.fbx, &r.fby);
   }
+  printf("brownian force: %g\n", r.fbx);
 }
 
 const bool am_debugging_torques = false;
@@ -290,6 +291,9 @@ void Dynein_bothbound::update_internal_forces() {
     f.fmy += f1y;
     f.fbx += -f1x;
     f.fby += -f1y;
+
+    printf("f.tx before: %g, after: %g\n", f.tx, f.tx+tail_force);
+    f.tx += tail_force;
 
     if (get_nmy() < 0) f.nmy += MICROTUBULE_REPULSION_FORCE * fabs(get_nmy());
     if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());

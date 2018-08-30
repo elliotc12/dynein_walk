@@ -1,7 +1,7 @@
 #include "dynein_struct.h"
 
 // double kb = 1.3806e-5; // nm^2 * kg / (s^2 * K)
-const double atp_in_kJ_per_mol = 30.5; // energy stored in 1 ATP in kJ/mol
+double atp_in_kJ_per_mol = 30.5; // energy stored in 1 ATP in kJ/mol
 const double eV_per_kJ_per_mol = .01036410; // 1 kJ/mol = .01 eV
 const double kb_eV = 8.61733034e-5; // eV/K
 double kb = kb_eV / (atp_in_kJ_per_mol * eV_per_kJ_per_mol); // kB in ATP energies per K
@@ -59,6 +59,8 @@ TRANSITION_MODES binding_mode = EXPONENTIAL_UNBINDING;
 
 bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;
+
+double tail_force = 0;
 
 /* onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = { */
 /*    63.5 * M_PI / 180.0, */

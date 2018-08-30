@@ -332,15 +332,16 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"eqmpre",   required_argument,    0, 'q'},
       {"eqmpost",  required_argument,    0, 'r'},
       {"eqt",      required_argument,    0, 's'},
+      {"exp-unbinding-constant",      required_argument,    0, 't'},
       {"rt",       required_argument,    0, 'u'},
       {"rm",       required_argument,    0, 'v'},
       {"rb",       required_argument,    0, 'w'},
+      {"force",    required_argument,    0, 'x'},
       {"nomovie",  no_argument, (int*) am_making_movie, 0},
       {"crash-movie", no_argument, (int*) &am_only_writing_on_crash, true},
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {"exp-binding", no_argument, (int*) &binding_mode, EXPONENTIAL_UNBINDING},
-      {"exp-unbinding-constant",      required_argument,    0, 't'},
       {0, 0, 0, 0}
     };
 
@@ -432,6 +433,9 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'w':
       fake_radius_b = strtod(optarg, NULL);
+      break;
+    case 'x':
+      tail_force = strtod(optarg, NULL) * 0.6022 / atp_in_kJ_per_mol; // conversion for our force units: 1 (dG ATP kJ / mol / nm) = atp_in_kJ_per_mol * 1e-11 / 6.022 N
       break;
     case '?':
       printf("Some other unknown getopt error.\n");
