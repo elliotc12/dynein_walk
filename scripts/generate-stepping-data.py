@@ -16,6 +16,8 @@ parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding 
 parser.add_argument("-y", "--ls", type=float, help="", default=10)
 parser.add_argument("-w", "--lt", type=float, help="", default=10)
 
+parser.add_argument("-F", "--force", type=float, help="", default=0)
+
 parser.add_argument("-ee", "--rt", type=float, help="", default=8)
 parser.add_argument("-ff", "--rm", type=float, help="", default=11)
 parser.add_argument("-gg", "--rb", type=float, help="", default=3.5)
@@ -32,6 +34,7 @@ parser.add_argument("-l", "--label", type=str, help="Manually set the label", de
 parser.add_argument("-v", "--movie", help="Movie flag", action="store_true")
 parser.add_argument("-n", "--renametrajectory", help="Rename outputs to paper trajectory files", action="store_true")
 parser.add_argument("-o", "--renamepaper", help="Rename outputs to paper exponential histogram files", action="store_true")
+parser.add_argument("-R", "--renameforce", help="Rename outputs to force files", action="store_true")
 args = parser.parse_args()
 
 if args.movie:
@@ -53,6 +56,7 @@ basename = run.sim(**{"k_b": args.kb,
                       "rt": args.rt,
                       "rm": args.rm,
                       "rb": args.rb,
+                      "force": args.force,
                       "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
                       "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie})
@@ -60,6 +64,12 @@ basename = run.sim(**{"k_b": args.kb,
 if args.renamepaper:
     os.system("mv data/stepping_data_%s.txt data/paper_main_stepping_data-%s.txt" % (basename, args.seed))
     os.system("mv data/stepping_parameters_%s.tex data/paper_main_stepping_parameters.tex" % basename)
+
+if args.renameforce:
+    os.system("mv data/stepping_data_{}.txt data/paper_force_stepping_data-F-{},s-{}.txt".format(basename, args.force, args.seed))
+    os.system("rm -f data/stepping_parameters_{}.tex".format(basename))
+    os.system("rm -f data/stepping_movie_data_{}.tex".format(basename))
+    os.system("rm -f data/stepping_parameters_{}.tex".format(basename))
 
 if args.renametrajectory:
     os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")

@@ -1,11 +1,17 @@
 import numpy as np
 
+EPSILON = 1e-7
+
+def equal(f1, f2):
+    return abs(f1-f2) < EPSILON
 
 class SteppingData(object):
     def __init__(self, dataFile):
         self.dataFile = dataFile
         self.rawData = np.loadtxt(self.dataFile)
-        # assert(np.shape(self.rawData)[1] == 4)  # guarantee 4 columns in data file
+        if len(self.rawData[:,1]) <= 5:
+            print("Error. File {} has less than six steps. Exiting.".format(dataFile))
+            exit(1)
         self.bindTimes = self.rawData[:, 1]
         self.unbindTimes = self.rawData[:, 0]
         self.nbx_bind = np.around(self.rawData[:, 2], decimals=12)
@@ -26,6 +32,14 @@ class SteppingData(object):
         self.initial_displacements = []
         self.final_displacements = []
 
+        self.leading_foot_steps = 0
+        self.trailing_foot_steps = 0
+
+        self.alternating_passing = 0
+        self.alternating_not_passing = 0
+        self.not_alternating_passing = 0
+        self.not_alternating_not_passing = 0
+
         assert(len(self.nbx_bind)==len(self.fbx_bind))
         for s in range(1, len(self.nbx_bind)):
             assert((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s]))
@@ -43,6 +57,37 @@ class SteppingData(object):
                 print("bind and unbind are same: ", self.bindTimes[s], self.unbindTimes[s])
                 exit(1)
             self.bothbound_times.append(self.unbindTimes[s]-self.bindTimes[s-1])
+
+        for s in range(2, len(self.nbx_bind)):
+            if self.nbx_bind[s-1] < self.fbx_bind[s-1]:
+                self.trailing_foot = self.nbx_bind
+                self.leading_foot = self.fbx_bind
+            else:
+                self.trailing_foot = self.fbx_bind
+                self.leading_foot = self.nbx_bind
+            if not equal(self.nbx_bind[s], self.nbx_bind[s-1]) and not equal(self.fbx_bind[s], self.fbx_bind[s-1]):
+                print("Error, both feet moved in a step.")
+                exit(1)
+            if not equal(self.trailing_foot[s], self.trailing_foot[s-1]): #must've been a leading foot step
+                self.leading_foot_steps += 1
+                if not equal(self.trailing_foot[s-1], self.trailing_foot[s-2]): # not alternating, the last was the same foot
+                    # the leading foot moved twice in a row, that makes this "not alternating"
+                    self.not_alternating_not_passing += 1
+                else:
+                    # It is alternating because leading foot moved, but before that the other foot moved.
+                    self.alternating_not_passing += 1
+            else: # must've been a trailing foot step
+                self.trailing_foot_steps += 1
+                if equal(self.trailing_foot[s-1], self.trailing_foot[s-2]): # alternating, other foot moved last time
+                    if self.trailing_foot[s] > self.leading_foot[s]:
+                        self.not_alternating_passing += 1
+                    else:
+                        self.not_alternating_not_passing += 1
+                else:
+                    if self.trailing_foot[s] > self.leading_foot[s]:
+                        self.alternating_passing += 1
+                    else:
+                        self.alternating_not_passing += 1
 
         self.initial_displacements = np.asarray(self.initial_displacements)
         self.final_displacements = np.asarray(self.final_displacements)
