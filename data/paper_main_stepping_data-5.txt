@@ -1,15 +1,14 @@
-# command line: ./generate_stepping_data --cb 0.08 --rm 11.0 --ct 0.36 --eqmpre 197.0 --lt 23.0 --k_b 3000000.0 --eqt 0.0 --eqb 120.0 --rt 12.0 --cm 1.05 --label papermain-5 --runtime 5.0 --ls 20.75 --nomovie --dt 1e-10 --exp-unbinding-constant -0.35 --rb 3.5 --framerate 1 --seed 5 --k_ub 35.0 --eqmpost 242.0
+# command line: ./generate_stepping_data --label papermain-5 --nomovie --rt 12.0 --lt 23.0 --exp-unbinding-constant -0.35 --ls 20.75 --seed 5 --rb 3.5 --runtime 5.0 --rm 11.0 --eqt 0.0 --eqmpost 242.0 --k_ub 30.0 --eqb 120.0 --k_b 3000000.0 --ct 0.36 --cm 1.05 --dt 1e-10 --framerate 1 --cb 0.08 --eqmpre 197.0
 
 
 
-#********papermain-5__k_b-3e+06,k_ub-35,c--0.35,cb-0.08,cm-1.05,ct-0.36,ls-20.75,lt-23,seed-5,dt-1e-10********
+#********papermain-5__k_b-3e+06,k_ub-30,c--0.35,cb-0.08,cm-1.05,ct-0.36,ls-20.75,lt-23,seed-5,dt-1e-10********
 #time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind
 #[time: 0]
 #[time: 0.01]
 #[time: 0.02]
 #[time: 0.03]
-  0.0297812062   0.0302685383                  0  -1.96561532243072   12.0278313722903   13.3976328142756   15.1635225154713   12.6142967156643
-  0.0315574554   0.0323533543                  0     15.53970389036   6.05239507781806   5.62382169290601    9.6107983498264   12.4964060364778
+  0.0316115018   0.0324071289                  0     15.53970389036   8.63516593945403   9.56452674174027    9.6107983498264   12.4964060364778
 #[time: 0.04]
 #[time: 0.05]
 #[time: 0.06]

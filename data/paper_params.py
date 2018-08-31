@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 k_b = 3e6 # s^-1
-k_ub = 35 # s^-1
+k_ub = 30 # s^-1
 
 trajectory_k_b  = 9.5e9 # s^-1
 trajectory_k_ub = 1e20 # s^-1
