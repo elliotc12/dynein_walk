@@ -124,7 +124,7 @@ def get_force_data(args):
 
     for data_file in data_files:
         data = np.loadtxt(data_file, dtype = np.float64)
-        if len(data) == 15:
+        if len(data) == 15 or len(data[1, :]) <= 5:
             continue
         start_F_idx = data_file.find('F-')+2
         end_F_idx = data_file[start_F_idx:].find(',') + start_F_idx
