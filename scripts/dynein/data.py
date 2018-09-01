@@ -9,7 +9,7 @@ class SteppingData(object):
     def __init__(self, dataFile):
         self.dataFile = dataFile
         self.rawData = np.loadtxt(self.dataFile)
-        if len(self.rawData[:,1]) <= 5:
+        if len(self.rawData) == 8 or len(self.rawData[:,1]) <= 5:
             print("Error. File {} has less than six steps. Exiting.".format(dataFile))
             exit(1)
         self.bindTimes = self.rawData[:, 1]
