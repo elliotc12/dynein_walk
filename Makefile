@@ -13,7 +13,7 @@ RANDOMSEARCH_PDFS = $(patsubst data/stepping_data_randomsearch__%.txt, plots/ran
 
 UNBINDING_PROBABILITY_PDFS = $(patsubst data/unbinding_probability/%.tex,plots/unbinding_probability/%.pdf, $(wildcard data/unbinding_probability/*.tex))
 
-all: generate_stepping_data public $(DRAW) $(PAPERS) $(RANDOMSEARCH_PDFS) # $(PARAMSEARCH_PDFS)
+all: generate_stepping_data public $(DRAW) $(PAPERS)
 
 .PHONY: clean public
 
