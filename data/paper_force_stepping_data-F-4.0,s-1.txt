@@ -1,0 +1,8 @@
+# command line: ./generate_stepping_data --k_b 3000000.0 --k_ub 35.0 --cb 0.08 --cm 1.05 --ct 0.36 --ls 20.75 --lt 23.0 --eqb 120.0 --eqmpre 197.0 --eqmpost 242.0 --eqt 0.0 --rt 12.0 --rm 11.0 --rb 3.5 --force 4.0 --exp-unbinding-constant -0.35 --dt 1e-10 --label paperforce_F-4,s-1 --seed 1 --runtime 2.0 --framerate 1 --nomovie
+
+
+
+#********paperforce_F-4,s-1__k_b-3e+06,k_ub-35,c--0.35,cb-0.08,cm-1.05,ct-0.36,ls-20.75,lt-23,seed-1,dt-1e-10********
+#time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind
+#[time: 0]
+#[time: 0.01]

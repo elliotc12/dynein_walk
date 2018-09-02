@@ -134,7 +134,7 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 
 \matmethods{
 
-  \section*{Fitting $k_b$ and $k_{ub}$}
+  \section*{Fitting $k_b$ and $k_{ub}$}\\
   To fit the binding and unbinding rate constants $k^0_b$ and $k^0_{ub}$, a simple theoretical model for stepping was used. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the onebound state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a onebound and bothbound state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for bothbound time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for onebound time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for onebound and bothbound time in terms of experimental observables of velocity, run time and step length:
 
   \begin{align}
@@ -144,7 +144,7 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 
   For estimating onebound and bothbound times from Yildiz \textit{et al}\cite{yildiz}, a velocity of $124 nm/s$ is used. A study with a similar velocity is used to estimate $\bar{t}_{run} = 1060 nm / 134 nm / s = 7.9s$ \cite{weihongpaper}. These observables, along with $\bar{L} = 8nm$, yield estimations $\bar{t}_{ob} = 5.2*10^{-4}s$ and $\bar{t}_{bb} = 6.4 * 10^{-2}s$.\\
 
-  \section*{Onebound motion equations derivation}
+  \section*{Onebound motion equations derivation}\\
   Brownian Dynamics was used to describe the motion of each domain, indexing with $i \in \{bb, bm, t, um, ub\}$, corresponding to bound-binding, bound-motor, tail, unbound-motor, unbound-binding:
 
   \begin{align}
@@ -170,7 +170,7 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 
   There are $n$ unknown $\theta_j$ values and n unknown $\lambda$ values, totaling $2n$ unknown variables. There are $2n$ equations linear in $\dot{theta_j}$ and $\lambda_q$, $n$ each from the X and Y equations. The system of equations provided by Equation $\ref{eq:ob-system}$ was solved in Matlab, yielding equations for all $\dot{\theta_j}$.
 
-  \section*{Bothbound motion equations derivation}
+  \section*{Bothbound motion equations derivation}\\
   Brownian dynamics was also used for the bothbound case. Due to the added constraint of both binding domains being fixed to the microtubule, the model is fully described by angles $\theta_{nm}$ and $\theta_{fm}$; see Figure \ref{fig:model}. The positions of non-bound domains are defined by the following equation for $i \in \{nb, nm, t, fm, fb\}$, corresponding to near-binding, near-motor, tail, far-motor and far-binding domains:
 
   \begin{multline}
@@ -187,8 +187,12 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 
   Coordinate velocities are similarly linear with $\dot{\theta_{nm}}$ and $\dot{\theta_{fm}}$. This system has six independent equations and six unknowns $\dot{\theta_{nm}}, \dot{\theta_{fm}}, \lambda_{nb}, \lambda_{nm}, \lambda_{t}, \lambda_{fm}$. Analytic solutions were acquired using Mathematica.
 
-  \section*{Simulating the model}
+  \section*{Simulating the model}\\
   Simulations began in the bothbound equilibrium state. The model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{bb}, \dot{\theta}_{bm}, \dot{\theta}_{um}, \dot{\theta}_{ub}\}$, using a timestep of $dt = 10^{-10}s$. In the onebound state, during each timestep the model had a $k_b*dt$ probability of transitioning into the bothbound state, where $k_b = k_b^0\left(1-H\left(X_{uby}-0.1\right)\right)$, where H is the Heaviside function. On transition to bothbound, proper $\theta_{nm}$ and $\theta_{fm}$ angles and proper interhead separation $L$ were calculated to yield a bothbound model with identical cartesian positions to the old bothbound, except with the previously unbound binding domain moved to $y=0$. Once in bothbound, the model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{nm}$ and $\dot{\theta}_{fm}\}$ and a timestep of $dt=10^{-10}s$. Each timestep, the bothbound model had a $k_{ub}*dt$ chance of transitioning to onebound, where $k_{ub} = k^0_{ub}e^{-c(\theta-\theta_{eq})}$. On transitioning, proper values of $\{\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub}\}$ were calculated to create a onebound model with identical cartesian positions to the old bothbound model.\\
+
+  \section*{Calculating leading/lagging probability vs displacement}\\
+
+  \section*{Calculating force-dependent velocities}\\
 }
 
 \section{Results}
@@ -248,6 +252,16 @@ The stepping dynamics of the model reproduce experimental results. The model is 
   that the moving foot was behind, and ended up in front.}
 \label{fig:steppingorder}
 \end{figure*}
+
+\section{Discussion}
+
+\begin{enumerate}
+\item \cite{lippert} is a 2017 PNAS paper claiming the powerstroke model is wrong since angular displacement of the dynein ring is weak (+- 7 degrees) and weakly correlated with stepping. However, their camera records at 50ms resolution, which is 100x slower than our average onebound time. Thus their whole experiment is somewhat flawed. This is relevant since the oneboudn time duration may not be well known, and our theoretical results may be relevant.
+\item No need for being guided to Mt binding sites, the motor naturally can take 16nm steps through a powerstroke
+\item Is tension gating necessary for our model? Could run simulations without it to see how the model changes
+\item Dynein's adjacent step step length correlation is low; thus the motor is a memory-less process which could be simulated by a Markov model. Also look at ob and bb time covariance and displacement covariance
+\end{enumerate}
+
 
 %% \begin{figure}[tbhp]
 %%   \centering
