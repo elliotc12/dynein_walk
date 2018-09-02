@@ -241,14 +241,23 @@ for df in range(len(data_files)):
         error += (fraction-yildiz_fraction_per_bin[b])**2
     errors[df] = error
 
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-plot = ax.scatter(cbs, cms, cts, c=errors, cmap='viridis')
-ax.set_xlabel("cbs")
-ax.set_ylabel("cms")
-ax.set_zlabel("cts")
+fig = plt.figure(figsize=(4,8))
+gs = gridspec.GridSpec(5, 1)
+ax0 = fig.add_subplot(gs[0:2, 0], projection='3d')
+ax1 = fig.add_subplot(gs[2, 0])
+ax2 = fig.add_subplot(gs[3, 0])
+ax3 = fig.add_subplot(gs[4, 0])
+
+plot = ax0.scatter(cbs, cms, cts, c=errors, cmap='viridis')
+ax0.set_xlabel("cbs")
+ax0.set_ylabel("cms")
+ax0.set_zlabel("cts")
 plt.colorbar(plot)
-plt.show()
+
+ax1.scatter(cbs, errors, label="cbs")
+ax2.scatter(cbs, errors, label="cms")
+ax3.scatter(cbs, errors, label="cts")
+
 plt.savefig("plots/randomsearchplot.png")
 
 best_error_idxs = np.where(errors < np.sort(errors)[15])
