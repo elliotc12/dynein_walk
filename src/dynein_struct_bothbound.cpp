@@ -300,16 +300,16 @@ void Dynein_bothbound::update_internal_forces() {
 }
 
 bool Dynein_bothbound::update_coordinates() {
-  // double epsilon = (r.tx > 0) ? 1e-1 : -1e-1;
+  double epsilon = (r.tx > 0) ? 1e-1 : -1e-1;
 
-  // if (fabs(nma - M_PI) < 5e-2 and !am_testing_binding) { // nudge if in a NaN-y conformation
-  //   if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
-  //   nma += epsilon;
-  // }
-  // if (fabs(fma - M_PI) < 5e-2 and !am_testing_binding) {
-  //   if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
-  //   fma += epsilon;
-  // }
+  if (fabs(nma - M_PI) < 5e-2 and !am_testing_binding) { // nudge if in a NaN-y conformation
+    if (am_debugging_state_transitions) printf("nudging nma from %.15g to %.15g\n", nma, nma + epsilon);
+    nma += epsilon;
+  }
+  if (fabs(fma - M_PI) < 5e-2 and !am_testing_binding) {
+    if (am_debugging_state_transitions) printf("nudging fma from %.15g to %.15g\n", fma, fma + epsilon);
+    fma += epsilon;
+  }
 
   if (am_debugging_angles) {
     printf("nma: %g, fma: %g\n", nma, fma);

@@ -124,10 +124,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  const long long max_attempts = 1e6;
 	  while(!accept_step){
 	    if (attempts > max_attempts) {
-	      printf("Over %lld attempts needed to avoid a NaN state in onebound, something must be wrong. Exiting.\n",
-                     max_attempts);
-	      fprintf(stderr, "Over %lld attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
-                      max_attempts);
+	      printf("Over %lld attempts needed to avoid a NaN state in onebound at time %g, something must be wrong. Exiting.\n",
+                     max_attempts, t);
+	      fprintf(stderr, "Over %lld attempts needed to avoid a NaN state at time %g, something must be wrong. Exiting.\n",
+                      max_attempts, t);
 	      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
 	      exit(1);
 	    }
@@ -231,10 +231,10 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 	  const long long max_attempts = 1e6;
 	  while(!accept_step){
 	    if (attempts > max_attempts) {
-	      printf("Over %lld attempts needed to avoid a NaN state in bothbound, something must be wrong. Exiting.\n",
-                     max_attempts);
-	      fprintf(stderr, "Over %lld attempts needed to avoid a NaN state, something must be wrong. Exiting.\n",
-                      max_attempts);
+	      printf("Over %lld attempts needed to avoid a NaN state in bothbound at time %g, something must be wrong. Exiting.\n",
+                     max_attempts, t);
+	      fprintf(stderr, "Over %lld attempts needed to avoid a NaN state at time %g, something must be wrong. Exiting.\n",
+                      max_attempts, t);
 	      if (am_only_writing_on_crash) on_crash_write_movie_buffer();
 	      exit(1);
 	    }

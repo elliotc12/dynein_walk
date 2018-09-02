@@ -254,9 +254,30 @@ ax0.set_ylabel("cms")
 ax0.set_zlabel("cts")
 plt.colorbar(plot)
 
+cbs_smoothed = np.linspace(np.min(cbs), np.max(cbs), 10)[1:-2]
+cms_smoothed = np.linspace(np.min(cms), np.max(cms), 10)[1:-2]
+cts_smoothed = np.linspace(np.min(cts), np.max(cts), 10)[1:-2]
+
+errors_cb_smoothed = np.ones_like(cbs_smoothed)
+errors_cm_smoothed = np.ones_like(cms_smoothed)
+errors_ct_smoothed = np.ones_like(cts_smoothed)
+
+for i, cb in enumerate(cbs_smoothed):
+    errors_cb_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cbs[s]-cbs_smoothed[i]) < cbs_smoothed[1] - cbs_smoothed[0]])
+
+for i, cm in enumerate(cms_smoothed):
+    errors_cm_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cms[s]-cms_smoothed[i]) < cms_smoothed[1] - cms_smoothed[0]])
+
+for i, ct in enumerate(cts_smoothed):
+    errors_ct_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cts[s]-cts_smoothed[i]) < cts_smoothed[1] - cts_smoothed[0]])
+
 ax1.scatter(cbs, errors, label="cbs")
-ax2.scatter(cbs, errors, label="cms")
-ax3.scatter(cbs, errors, label="cts")
+ax2.scatter(cms, errors, label="cms")
+ax3.scatter(cts, errors, label="cts")
+
+ax1.scatter(cbs_smoothed, errors_cs_smoothed, label="cbs")
+ax2.scatter(cms_smoothed, errors_cm_smoothed, label="cms")
+ax3.scatter(cts_smoothed, errors_ct_smoothed, label="cts")
 
 plt.savefig("plots/randomsearchplot.png")
 
