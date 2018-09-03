@@ -241,47 +241,65 @@ for df in range(len(data_files)):
         error += (fraction-yildiz_fraction_per_bin[b])**2
     errors[df] = error
 
-fig = plt.figure(figsize=(4,8))
+fig = plt.figure(figsize=(4,8), dpi=400)
 gs = gridspec.GridSpec(5, 1)
 ax0 = fig.add_subplot(gs[0:2, 0], projection='3d')
 ax1 = fig.add_subplot(gs[2, 0])
 ax2 = fig.add_subplot(gs[3, 0])
 ax3 = fig.add_subplot(gs[4, 0])
 
-plot = ax0.scatter(cbs, cms, cts, c=errors, cmap='viridis')
+plot = ax0.scatter(cbs, cms, cts, c=errors, cmap='viridis', s=0.5)
 ax0.set_xlabel("cbs")
 ax0.set_ylabel("cms")
 ax0.set_zlabel("cts")
-plt.colorbar(plot)
+fig.colorbar(plot, ax=ax0, pad=0.1)
 
-cbs_smoothed = np.linspace(np.min(cbs), np.max(cbs), 10)[1:-2]
-cms_smoothed = np.linspace(np.min(cms), np.max(cms), 10)[1:-2]
-cts_smoothed = np.linspace(np.min(cts), np.max(cts), 10)[1:-2]
+cbs_smoothed = np.sort(cbs)[[int(s) for s in np.linspace(0, len(cbs)-1, 25)]]
+cms_smoothed = np.sort(cms)[[int(s) for s in np.linspace(0, len(cms)-1, 12)]]
+cts_smoothed = np.sort(cts)[[int(s) for s in np.linspace(0, len(cts)-1, 12)]]
 
 errors_cb_smoothed = np.ones_like(cbs_smoothed)
 errors_cm_smoothed = np.ones_like(cms_smoothed)
 errors_ct_smoothed = np.ones_like(cts_smoothed)
 
 for i, cb in enumerate(cbs_smoothed):
-    errors_cb_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cbs[s]-cbs_smoothed[i]) < cbs_smoothed[1] - cbs_smoothed[0]])
+    if (i != 0 and i != len(cbs_smoothed)-1):
+        errors_cb_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if cbs[s] > np.mean(cbs_smoothed[[i,i-1]]) and cbs[s] <= np.mean(cbs_smoothed[[i,i+1]])])
+errors_cb_smoothed[0] = np.mean([errors[s] for s in range(len(errors)) if cbs[s] < np.mean(cbs_smoothed[[0,1]])])
+errors_cb_smoothed[-1] = np.mean([errors[s] for s in range(len(errors)) if cbs[s] > np.mean(cbs_smoothed[[len(cbs_smoothed)-2, len(cbs_smoothed)-1]])])
 
 for i, cm in enumerate(cms_smoothed):
-    errors_cm_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cms[s]-cms_smoothed[i]) < cms_smoothed[1] - cms_smoothed[0]])
+    if (i != 0 and i != len(cms_smoothed)-1):
+        errors_cm_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if cms[s] > np.mean(cms_smoothed[[i,i-1]]) and cms[s] <= np.mean(cms_smoothed[[i,i+1]])])
+errors_cm_smoothed[0] = np.mean([errors[s] for s in range(len(errors)) if cms[s] < np.mean(cms_smoothed[[0,1]])])
+errors_cm_smoothed[-1] = np.mean([errors[s] for s in range(len(errors)) if cms[s] > np.mean(cms_smoothed[[len(cms_smoothed)-2, len(cms_smoothed)-1]])])
 
 for i, ct in enumerate(cts_smoothed):
-    errors_ct_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if np.abs(cts[s]-cts_smoothed[i]) < cts_smoothed[1] - cts_smoothed[0]])
+    if (i != 0 and i != len(cts_smoothed)-1):
+        errors_ct_smoothed[i] = np.mean([errors[s] for s in range(len(errors)) if cts[s] > np.mean(cts_smoothed[[i,i-1]]) and cts[s] <= np.mean(cts_smoothed[[i,i+1]])])
+errors_ct_smoothed[0] = np.mean([errors[s] for s in range(len(errors)) if cts[s] < np.mean(cts_smoothed[[0,1]])])
+errors_ct_smoothed[-1] = np.mean([errors[s] for s in range(len(errors)) if cts[s] > np.mean(cts_smoothed[[len(cts_smoothed)-2, len(cts_smoothed)-1]])])
 
-ax1.scatter(cbs, errors, label="cbs")
-ax2.scatter(cms, errors, label="cms")
-ax3.scatter(cts, errors, label="cts")
+ax1.scatter(cbs, errors, label="cbs", s=0.5)
+ax2.scatter(cms, errors, label="cms", s=0.5)
+ax3.scatter(cts, errors, label="cts", s=0.5)
 
-ax1.scatter(cbs_smoothed, errors_cs_smoothed, label="cbs")
-ax2.scatter(cms_smoothed, errors_cm_smoothed, label="cms")
-ax3.scatter(cts_smoothed, errors_ct_smoothed, label="cts")
+ax1.scatter(cbs_smoothed, errors_cb_smoothed, s=3)
+ax2.scatter(cms_smoothed, errors_cm_smoothed, s=3)
+ax3.scatter(cts_smoothed, errors_ct_smoothed, s=3)
 
-plt.savefig("plots/randomsearchplot.png")
+ax1.set_xlabel("cb")
+ax2.set_xlabel("cm")
+ax3.set_xlabel("ct")
+
+ax1.set_ylabel("error")
+ax2.set_ylabel("error")
+ax3.set_ylabel("error")
+
+plt.tight_layout()
+plt.savefig("plots/randomsearchplot.pdf", format='pdf')
 
 best_error_idxs = np.where(errors < np.sort(errors)[15])
 for n, i in enumerate(best_error_idxs[0]):
-    print("i: {}, ct: {}, cm: {}, cb: {}, error: {}".format(i, cts[i], cms[i], cbs[i], errors[i]))
+    # print("i: {}, ct: {}, cm: {}, cb: {}, error: {}".format(i, cts[i], cms[i], cbs[i], errors[i]))
     plot_steps(cts[i], cms[i], cbs[i])
