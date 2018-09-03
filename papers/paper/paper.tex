@@ -305,33 +305,21 @@ The stepping dynamics of the model reproduce experimental results. The model is 
 
 \subsection{Elliott}
 \begin{enumerate}
-\item Document carefully where all figures and data comes from.
-\item Describe our algorithm in sufficient detail.
 \item Fix stepping analysis python module to categorize zero-length
   steps separately from other steps, particularly in terms of stepping
   times.  Alternately, change C++ to make it possible to identify
   which foot lifted if it didn't move.
-\item Update plotting scripts to use stepping analysis python module,
-  or other modules.
-\item Write up how we estimate one-bound/bothbound time ratio from
-  processivity.  Ensure simulation obeys this?
-\item Keep trying to get data from Yildiz.
-\item Add force-dependent plots to compare with yildiz?
+\item When we have all data, write discussion
+\item Rewrite introduction
+\item Possibly sample stalk angles at high resolution and also 50ms, to show why the low time resolution in Lessinger prevented them from seeing the powerstroke?
+\item Test suite for paper plots to see if there aren't subtle bugs?
 \end{enumerate}
 
 \subsection{John}
 \begin{enumerate}
 \item Proofread the algorithm description, improve its writing, and
   check against code.
-\item Figure out how to do no-unbinding simulations to get Yildiz
-  comparison data.  Also this gives us unbinding rates that will agree
-  with our stepping time, etc. \verb!src/simulate_unbinding_rates.cpp!
-\item Play with parameters to get stepping length histogram more
-  reasonable (this automatically gives us the velocity).
-\item Run long/many simulations with final parameters.
 \item Run a low-ATP simulation for comparison data.
-\item Nice final version of stepping length histogram.
-\item Nice final version of tension-gating Yildiz comparison.
 \item Consider a no-binding simulation and a separable model.  Create
   a figure demonstrating/testing whether the histogram of final
   displacement is independent of initial displacement.
