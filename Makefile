@@ -71,7 +71,7 @@ PAPER_DATA = $(wildcard data/paper_main_stepping_data*.txt)
 
 PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_displacement_vs_step_length.pdf plots/paper_onebound_vs_steplength.pdf plots/paper_initial_vs_final_displacement.pdf plots/paper_foot_order_histogram.pdf plots/paper-trajectory-movie.mp4 plots/paper_model_behavior.pdf plots/paper_force_vs_velocity.pdf
 
-plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf plots/paper_force_vs_velocity.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA) data/paper_unbinding_probability__L-10,s-1.txt
+plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf plots/paper_force_vs_velocity.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA) data/paper_unbinding_probability__L-10,s-1.txt data/paper_force_stepping_data-F-4.0,s-1.txt
 	python3 scripts/make_all_stepping_plots.py -d data -b paper_main
 	mv plots/stepping_analysis.pdf plots/paper_foot_order_histogram.pdf
 	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf
