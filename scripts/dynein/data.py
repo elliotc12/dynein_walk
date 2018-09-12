@@ -42,7 +42,10 @@ class SteppingData(object):
 
         assert(len(self.nbx_bind)==len(self.fbx_bind))
         for s in range(1, len(self.nbx_bind)):
-            assert((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s]))
+            if not ((self.nbx_bind[s-1] == self.nbx_bind[s]) or (self.fbx_bind[s-1] == self.fbx_bind[s])):
+                print("Error, one step had both feet move")
+                print(self.nbx_bind[s-1], self.nbx_bind[s], self.fbx_bind[s-1], self.fbx_bind[s])
+                exit(1)
             if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
                 #print("Zero-length step")
                 continue
