@@ -8,7 +8,7 @@ sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
 runtime = 5
-seeds = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+seeds = range(1, 32+1)
 
 for s in seeds:
     os.system("rq run --job-name papermain-" + str(s) \
