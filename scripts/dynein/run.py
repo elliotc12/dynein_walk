@@ -59,13 +59,13 @@ def sim(**run):
                 f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(v)) + '\n')
 
     #os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
-    if not os.path.exists('runlogs'):
-        os.makedirs('runlogs')
-    out = open('runlogs/' + basename + '.out', 'w')
-    print("Running: ", " ".join(cmd), out)
-    out.flush()
-    process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
-    # process_object = subprocess.Popen(cmd, stdout=out, stderr=out)
+    # if not os.path.exists('runlogs'):
+    #     os.makedirs('runlogs')
+    # out = open('runlogs/' + basename + '.out', 'w')
+    # print("Running: ", " ".join(cmd), out)
+    # out.flush()
+    # process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
+    process_object = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     err = process_object.communicate()[1]
 
     if (err != b''):

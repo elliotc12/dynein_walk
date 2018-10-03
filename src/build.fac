@@ -1,8 +1,1 @@
-# | python2 configure.py > .fac
-# > .fac
-# c .pyc
-
-| make
-C ~/.config/inkscape
-
-| touch simulations/custom_simulation_parameters.h
+# | touch simulations/custom_simulation_parameters.h

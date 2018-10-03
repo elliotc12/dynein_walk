@@ -5,6 +5,9 @@
 
 \usepackage{subcaption}
 \usepackage{breqn}
+\usepackage{color}
+
+\newcommand\davidsays[1]{{\em\color{blue} {\bf DR:} #1}}
 
 % the follow ing causes latex to not wait interactively
 \nonstopmode
@@ -230,10 +233,10 @@ The stepping dynamics of the model reproduce experimental results. The model is 
 
 \begin{figure}[tbhp]
   \centering
-  \includegraphics[width=\linewidth]{../../plots/paper_displacement_vs_step_length.pdf}
-  \includegraphics[width=\linewidth]{../../plots/paper_onebound_vs_steplength.pdf}
-  \includegraphics[width=\linewidth]{../../plots/paper_initial_vs_final_displacement.pdf}
-\caption{\textbf{Does our model capture dynamics a markov model wouldn't?}}
+  a)\includegraphics[width=\linewidth]{../../plots/paper_displacement_vs_step_length.pdf}
+  b)\includegraphics[width=\linewidth]{../../plots/paper_onebound_vs_steplength.pdf}
+  c)\includegraphics[width=\linewidth]{../../plots/paper_initial_vs_final_displacement.pdf}
+\caption{\davidsays{Look up Yildiz figure for (a)}\textbf{Does our model capture dynamics a markov model wouldn't?}}
 \label{fig:}
 \end{figure}
 
