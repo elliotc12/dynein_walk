@@ -1,27 +1,2 @@
-| g++ -c dynein_simulate.cpp -std=c++98 -g -Werror -O2 -Wall
-
-| g++ -c dynein_struct_onebound.cpp -std=c++98 -g -Werror -O2 -Wall
-
-| g++ -c dynein_struct_bothbound.cpp -std=c++98 -g -Werror -O2 -Wall
-
-| g++ -c utilities.cpp -std=c++98 -g -Werror -O2 -Wall
-
-# Below are the executables
-
-| g++ -c generate_stepping_data.cpp -std=c++98 -g -Werror -O2 -Wall
-
-| g++ -o ../generate_stepping_data generate_stepping_data.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-< generate_stepping_data.o
-< dynein_simulate.o
-< dynein_struct_onebound.o
-< dynein_struct_bothbound.o
-< utilities.o
-
-| g++ -c simulate_unbinding_rates.cpp -std=c++98 -g -Werror -O2 -Wall
-
-| g++ -o ../simulate_unbinding_rates simulate_unbinding_rates.o dynein_simulate.o dynein_struct_onebound.o dynein_struct_bothbound.o utilities.o
-< simulate_unbinding_rates.o
-< dynein_simulate.o
-< dynein_struct_onebound.o
-< dynein_struct_bothbound.o
-< utilities.o
+| python3 configure.py > .fac
+> .fac
