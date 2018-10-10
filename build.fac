@@ -1,1 +1,7 @@
-| make generate_stepping_data
+| python3 scripts/generate-paper-trajectory-data.py
+c .pyc
+< generate_stepping_data
+
+| rm -f data/paper_unbinding_probability__* && python3 scripts/generate-paper-unbinding-rate-data.py
+c .pyc
+< simulate_unbinding_rates
