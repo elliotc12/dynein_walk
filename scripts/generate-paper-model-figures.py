@@ -67,6 +67,10 @@ def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_pe
                           Xs[1], Ys[1], params.radius_m*units_per_nm,
                           Xs[2], Ys[2], params.radius_t*units_per_nm,
                           'red', 0.75, fig.gca())
+    cartoon.dyneinCircles(Xs[4], Ys[4], params.radius_b*units_per_nm,
+                          Xs[3], Ys[3], params.radius_m*units_per_nm,
+                          Xs[2], Ys[2], params.radius_t*units_per_nm,
+                          'blue', 0.25, fig.gca())
 
 def plot_image(img, org, dpi):
     fig = plt.figure(figsize = (5,5), dpi=dpi)
