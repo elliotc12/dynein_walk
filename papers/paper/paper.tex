@@ -19,7 +19,7 @@
 % {pnasmathematics} = Template for a one-column mathematics article
 % {pnasinvited} = Template for a PNAS invited submission
 
-\title{Brownian dynamics simulation of cytoplasmic dynein reproduces bidirectional stepping}
+\title{Brownian dynamics simulation of cytoplasmic dynein's powerstroke reproduces bidirectional stepping}
 
 % Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
 \author[a,c,1]{Author One}
@@ -57,24 +57,26 @@ Please provide an abstract of no more than 250 words in a single paragraph. Abst
 \thispagestyle{firststyle}
 \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
 
-\dropcap{D}ynein is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
+%% \dropcap{C}ytoplasmic dynein-1 is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
 
-Dynein is unique in that it has a widely varied step size. Dynein's average step is 8 \textit{nm} in the forwards direction, but it is capable of taking 32 \textit{nm} steps in the forwards and reverse directions \cite{weihongpaper} \cite{yildizpaper}. This stochastic, varied stepping is contrasted with the much more regular 8 \textit{nm} step size of kinesin, another bipedal motor protein \cite{kinesin-step-size}. It has been suggested that the long separation between dynein's MTBD and dimerization sites facilitates larger diffusive searches, allowing dynein to take larger steps than kinesin \cite{cargotransport}.\\
+%% Dynein is unique in that it has a widely varied step size. Dynein's average step is 8 \textit{nm} in the forwards direction, but it is capable of taking 32 \textit{nm} steps in the forwards and reverse directions \cite{weihongpaper} \cite{yildizpaper}. This stochastic, varied stepping is contrasted with the much more regular 8 \textit{nm} step size of kinesin, another bipedal motor protein \cite{kinesin-step-size}. It has been suggested that the long separation between dynein's MTBD and dimerization sites facilitates larger diffusive searches, allowing dynein to take larger steps than kinesin \cite{cargotransport}.\\
 
-A simple explanation for dynein's stepping pattern can be given based on only a few facts about the protein. It is known that on treatment with ATP, the tail-head-MTBD angle of a dynein monomer alters, moving the MTBD closer to the tail \cite{carteradpprimed} \cite{burgess-paper}. It is also known that the nucleotide state of the head communicates with the MTBD. ATP binding at a head ATPase shifts the MTBD from a strong to weak MT-bound state. And vice-versa, whether the MTBD is bound or unbound from the MT changes the ATPase rate at the head. From this it is possible to infer a simple model for the dynein stepping cycle. This model, known as the mechanochemical cycle \cite{cianfroccoreview}, has dynein unbind MT, kick forward, diffuse to the next MT binding site, rebind MT, then repeat. Whether a model this simple can explain dynein's behavior needs to be tested.\\
+%% A simple explanation for dynein's stepping pattern can be given based on only a few facts about the protein. It is known that on treatment with ATP, the tail-head-MTBD angle of a dynein monomer alters, moving the MTBD closer to the tail \cite{carteradpprimed} \cite{burgess-paper}. It is also known that the nucleotide state of the head communicates with the MTBD. ATP binding at a head ATPase shifts the MTBD from a strong to weak MT-bound state. And vice-versa, whether the MTBD is bound or unbound from the MT changes the ATPase rate at the head. From this it is possible to infer a simple model for the dynein stepping cycle. This model, known as the mechanochemical cycle \cite{cianfroccoreview}, has dynein unbind MT, kick forward, diffuse to the next MT binding site, rebind MT, then repeat. Whether a model this simple can explain dynein's behavior needs to be tested.\\
 
-There are many relevant details about dynein which this simple model doesn't account for. Dynein is known to have low interhead communication at low separation, but to have a tension-gated stepping pattern at high separations \cite{yildizpaper}. It is also suggested that dynein's MTBD doesn't conduct an undirected search for its next MT binding site, but rather is guided by long-range electrostatic interactions from each MT binding site \cite{longrangemt}. Dynein has several cofactors which alter its dynamics. For example, the motor's stall force is tripled when exposed to dynactin and Bic2D \cite{yildizdynactin}. This is odd, since the dynactin- and Bic2D-binding site on dynein is on the tail, far from the motor heads. Many of these details suggest a complicated picture of dynein motility than a simple forward kick and pull mechanism.\\
+%% Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
-Several computational models have been created to explain dynein's motility. \textit{Imamula et. al.} define a chemical transition model which defines all the MT- and nucleotide-bound states dynein goes through as it walks \cite{imamulamodel}. \textit{Sarlah et. al} simulate a model obeying rate constants from \textit{Imamula}, and replicate dynein's stepping trajectory \cite{sarlahmodel}. \textit{Zheng} uses normal mode analysis to simulate the dynein motor's transition from pre to post-powerstroke \cite{normalmodes}. To our knowledge, no computational model exists which takes into account the microscopic dynamics of protein-water interactions to test whether diffusion is enough for dynein motility. Here we show how a simple Brownian dynamics model can be used to test the mechanochemical cycle picture of dynein processivity.\\
 
-\textbf{New intro}\\
+%% Dynein has several cofactors which alter its dynamics. For example, the motor's stall force is tripled when exposed to dynactin and Bic2D \cite{yildizdynactin}. This is odd, since the dynactin- and Bic2D-binding site on dynein is on the tail, far from the motor heads.
 
---Background on dynein
---Evidence for dynein's powerstroke
+\dropcap{D}ynein is a motor protein which generates motion for various cellular processes. Cytoplasmic dynein-1, here referred to as ``dynein,'' is a motor which performs cargo transport and aids in nuclear division. The protein consists of a ring structure of six AAA+ domains known as the ``head'' which connect via a long stalk to a microtubule binding domain (MTBD). The AAA+ region is responsible for hydrolyzing ATP to drive dynein's motion. The head is connected via a linker to a large tail domain responsible for binding various cargos and accessory proteins. The tail is also the site of dimerization, where two dynein monomers join to form a homodimeric unit capable of motion.\\
 
-However, to our knowledge, no work has been done to study dynein dynamics computationally. Existing models use chemical rate transitions and assume independence of steps \cite{sarlahmodel}. No models exist which account for the diffusion dynamics or conformational changes of dynein as it walks along the microtubule. Understanding the coordinated dynamics of dynein's domains is necessary to fully describe the protein's motility. Testing whether the current powerstroke model is capable of generating processive motion would be a good first step to understanding dynein's dynamics.\\
+Dynein's mechanism of motion generation is the least understood of all motor proteins. Kinesin and myosin both take periodic, consistent steps of 8nm. In contrast, dynein is known to take highly variant steps both forwards and backwards, but averaging 16nm \cite{yildizpaper, weihongpaper}. Another interesting feature of dynein is the 20nm separation between its ATP hydrolysis and the site and MT binding site \cite{3vkh-cite}. The protein must transmit information about ATP binding across this distance in order to coordinate its steps \cite{mt-atp-coupling}. Explaining these phenomena is necessary to fully understand dynein's mechanism.\\
 
-Here we present a course-grained model of cytoplasmic dynein which treats its domains as connected rigid bodies. Chemical transitions and conformational changes consistent with the powerstroke model are accounted for via elastic forces. The dynamics are determined using Brownian dynamics. The model is capable of generating directed motility at rates similar to experiment. Further, we show that the model displays further complex behavior, such as tension gating and force-mediated bidirectionality.\\
+Studies over the past 15 years have shed much light on dynein's stepping mechanism. The motor is known to switch between two conformational states depending on its ATP hydrolysis state \cite{burgess-paper, FRETstatepaper, carter-paper, nicastro, schmidt-carter}. It is also known that ATP binding can induce structural changes within the motor which increase unbinding rate \cite{leschziner, carter-paper}, and similarly that microtubule rebinding can influence nucleotide unbinding rate \cite{mt-atp-coupling}. Taken together this evidence is synthesized into a powerstroke model \cite{cianfroccoreview, imamulamodel}. In the powerstroke model, dynein binds ATP, causing structural changes which eventually lead to microtubule unbinding at its MTBD. These structural changes transition the motor into a more open position, causing the MTBD to diffuse forwards on the microtubule. This biased search is known as the prestroke. Eventually the MTBD rebinds the microtubule, causing structural changes inducing the ejection of hydrolyzed ADP and transitioning back to the closed position. This causes the motor to lurch forward in a process called the powerstroke. The protein is now ready to re-bind ATP and take another step.\\
+
+Ample evidence exists that dynein engages in an ATP-induced prestroke and MT-binding-induced powerstroke. However, to our knowledge, no work has been done to test whether a structural model of dynein obeying the proposed mechanochemical cycle is sufficient to reproduce experimental stepping data. Existing computational models use chemical rate transitions and assume independence of steps, without simulating the entire mechanochemical cycle \cite{sarlahmodel}. No models have combined structural and kinetic data to simulate a dynein model in a biophysically realistic way. It is necessary to do so to properly test the powerstroke hypothesis. Such a study would determine if the powerstroke mechanism is sufficient to explain dynein's walk, or if further explanation is necessary. Others have theorized that elements such as electrostatic interactions with the microtubule \cite{longrangemt}, tension-gating between the two heads \cite{yildizcleary}, or elasticity of the stalk \cite{burgess-paper} are important for dynein's walk. Such a study would be able to find the minimum criteria for generating dynein's motion.\\
+
+Here we present a course-grained model of cytoplasmic dynein which treats its domains as connected rigid bodies. Chemical transitions and conformational changes consistent with the powerstroke model are accounted for via elastic forces. The dynamics are determined using Brownian dynamics. The model is capable of generating directed motility at rates similar to experiment. Further, we show that the model displays more complex behavior, such as tension gating and force-mediated bidirectionality.\\
 
 \section*{Model}
 
@@ -228,11 +230,6 @@ The stepping dynamics of the model reproduce experimental results. The model is 
 %% -Tuning the parameters to Yildiz data (kb/kub from theoretical OB/BB time and step length histograms for cm/cb/ct and leading/lagging fractions for c)
 %% -Does the tuned model walk similarly to Yildiz dynein? (also the lagging vs step length)
 
-
-%% -Impact of initial unbinding position on step dynamics: whether we need geometry or could use a Markov model
-
-
-
 \begin{figure}[tbhp]
   \centering
   \includegraphics[width=\linewidth]{../../plots/paper_model_behavior}
@@ -245,7 +242,7 @@ The stepping dynamics of the model reproduce experimental results. The model is 
   a)\includegraphics[width=\linewidth]{../../plots/paper_displacement_vs_step_length.pdf}
   b)\includegraphics[width=\linewidth]{../../plots/paper_onebound_vs_steplength.pdf}
   c)\includegraphics[width=\linewidth]{../../plots/paper_initial_vs_final_displacement.pdf}
-\caption{\davidsays{Look up Yildiz figure for (a)}\textbf{Does our model capture dynamics a markov model wouldn't?}}
+  \caption{\davidsays{Look up Yildiz figure for (a)}\textbf{Does our model capture dynamics a markov model wouldn't?}}
 \label{fig:}
 \end{figure}
 
@@ -256,14 +253,14 @@ The stepping dynamics of the model reproduce experimental results. The model is 
 \label{fig:}
 \end{figure}
 
-\begin{figure*}[tbhp]
-    \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
-\caption{The left plot is the $C=0$ case where the unbinding rate is
-  independent of angle.  Here ``alternating'' means that the binding
-  domain which did not move last time moved this time.  Passing means
-  that the moving foot was behind, and ended up in front.}
-\label{fig:steppingorder}
-\end{figure*}
+%% \begin{figure*}[tbhp]
+%%     \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
+%% \caption{The left plot is the $C=0$ case where the unbinding rate is
+%%   independent of angle.  Here ``alternating'' means that the binding
+%%   domain which did not move last time moved this time.  Passing means
+%%   that the moving foot was behind, and ended up in front.}
+%% \label{fig:steppingorder}
+%% \end{figure*}
 
 \section{Discussion}
 
