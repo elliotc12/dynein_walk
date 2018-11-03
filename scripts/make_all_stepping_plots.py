@@ -178,6 +178,9 @@ def make_behavior_plot(args, stepping_data, up_data):
         print("No files of form " + args.data_directory + "/*" + args.data_basename + "*.txt found. Exiting.")
         exit(1)
 
+    yildiz_data = np.loadtxt("data/yildiz_tracking_data.txt", dtype = np.float64)
+    ax0.plot(yildiz_data[:,0]/1e3, yildiz_data[:,1], 'o-', label="Experiment", markersize=0, linewidth=0.5, color="C0", alpha=0.8)
+
     # model position trace
     for i in [1, 2, 3, 4, 5, 6, 7, 8]:
         df = "data/paper_main_stepping_data-{}.txt".format(i)
@@ -204,13 +207,13 @@ def make_behavior_plot(args, stepping_data, up_data):
             near_positions_duplicated[0] = near_foot_positions[0]
             far_positions_duplicated[0] = far_foot_positions[0]
 
-        ax0.plot(bind_times, near_foot_positions, 'o-', label="Model "+str(i), markersize=0, linewidth=0.5)
-
-    yildiz_data = np.loadtxt("data/yildiz_tracking_data.txt", dtype = np.float64)
-    ax0.plot(yildiz_data[:,0]/1e3, yildiz_data[:,1], 'o-', label="Yildiz dynein", markersize=0, linewidth=0.5)
+        if (i == 1):
+            ax0.plot(bind_times, near_foot_positions, 'o-', label="Model", markersize=0, linewidth=0.5, c="C1", alpha=0.8)
+        else:
+            ax0.plot(bind_times, near_foot_positions, 'o-', markersize=0, linewidth=0.5, c="C1", alpha=0.8)
 
     ax0.set_xlabel("time (s)")
-    ax0.set_ylabel("Position (nm)")
+    ax0.set_ylabel("Foot $\hat{x}$ position (nm)")
 
     ax0.legend()
 
@@ -229,10 +232,10 @@ def make_behavior_plot(args, stepping_data, up_data):
 
     bins = np.histogram(np.hstack((yildiz_step_lengths, stepping_data["step_lengths"])), bins=20)[1]
 
-    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Yildiz 2012", normed=True, stacked=True)
-    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", normed=True, stacked=True)
+    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", normed=True, stacked=True, color="C0")
+    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", normed=True, stacked=True, color="C1")
 
-    ax1.scatter([np.mean(stepping_data["step_lengths"])], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(stepping_data["step_lengths"]), decimals=2)) + r'$ \textit{nm}')
+    # ax1.scatter([np.mean(stepping_data["step_lengths"])], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(stepping_data["step_lengths"]), decimals=2)) + r'$ \textit{nm}')
 
     ax1.legend(loc="upper right")
     ax1.set_xlabel("Step length (nm)")
@@ -276,9 +279,9 @@ def make_behavior_plot(args, stepping_data, up_data):
     yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
     yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-    ax4.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Yildiz 2012", fmt='o-', c='b', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
+    ax4.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
 
-    ax4.scatter(up_data["Ls"], up_data["mean_lagging_probability_per_L"] / (up_data["mean_lagging_probability_per_L"] + up_data["mean_leading_probability_per_L"]), c='r', label="Model", zorder=2, s=4**2)
+    ax4.scatter(up_data["Ls"], up_data["mean_lagging_probability_per_L"] / (up_data["mean_lagging_probability_per_L"] + up_data["mean_leading_probability_per_L"]), c='C1', label="Model", zorder=2, s=4**2)
     ax4.set_xlabel("Binding domain separation (nm)")
     ax4.set_ylabel("P(lagging step)")
     ax4.legend()
