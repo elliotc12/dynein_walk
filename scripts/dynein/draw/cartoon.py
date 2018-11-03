@@ -10,6 +10,10 @@ def draw(ax, x_coords, y_coords, alpha=1):
     dyneinPolygon(x_coords[0], y_coords[0], x_coords[1], y_coords[1], x_coords[2], y_coords[2], 'blue', alpha, ax)
     dyneinPolygon(x_coords[4], y_coords[4], x_coords[3], y_coords[3], x_coords[2], y_coords[2], 'red', alpha, ax)
 
+def _draw_circle(x,y,R, color, alpha):
+    angles = np.linspace(0, np.pi, 1000)
+    plt.fill_between(x + R*np.cos(angles), y + R*np.sin(angles), y - R*np.sin(angles), color=color, alpha=alpha)
+
 def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     stalk_length = np.sqrt((xm-xb)**2+(ym-yb)**2)
     r1 = 0.1*stalk_length
@@ -64,6 +68,14 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             alpha = a
             )
         )
+
+def dyneinCircles(xb, yb, Rb, xm, ym, Rm, xt, yt, Rt, color, alpha, ax):
+    stalk_length = np.sqrt((xm-xb)**2+(ym-yb)**2)
+
+    for (x,y,R) in [(xb,yb,Rb), (xm,ym,Rm), (xt,yt,Rt)]:
+        # circle for domain
+        _draw_circle(x,y,R, color, alpha)
+    plt.plot([xb,xm,xt], [yb,ym,yt], color=color, alpha=alpha)
 
 if __name__ == "__main__":
     dyneinPolygon(0,5,10,25,30,35,'blue',1.0,ax)
