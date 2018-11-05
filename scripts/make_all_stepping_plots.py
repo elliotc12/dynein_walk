@@ -159,13 +159,12 @@ def get_cli_arguments():
     return parser.parse_args()
 
 def make_behavior_plot(args, stepping_data, up_data):
-    fig = plt.figure(figsize=(4,8))
-    gs = gridspec.GridSpec(7, 2)
+    fig = plt.figure(figsize=(4,6))
+    gs = gridspec.GridSpec(5, 2)
     ax0 = fig.add_subplot(gs[0:2, 0:2])
     ax1 = fig.add_subplot(gs[2:4, 0:2])
     ax2 = fig.add_subplot(gs[4, 0])
     ax3 = fig.add_subplot(gs[4, 1], sharey=ax2)
-    ax4 = fig.add_subplot(gs[5:7, 0:2])
 
     data_files = []
     for fname in os.listdir(args.data_directory):
@@ -274,23 +273,27 @@ def make_behavior_plot(args, stepping_data, up_data):
     ax3.spines["top"].set_visible(False)
     ax3.spines["right"].set_visible(False)
 
+    plt.tight_layout(w_pad=2, h_pad=0.5)
+    plt.savefig("plots/model_behavior.pdf", format="pdf")
+
     # unbinding probability vs L plot
+    fig = plt.figure(figsize=(4,2))
     yildiz_displacements = [10, 20, 30, 40, 50]
     yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
     yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 
-    ax4.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
+    plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
 
-    ax4.scatter(up_data["Ls"], up_data["mean_lagging_probability_per_L"] / (up_data["mean_lagging_probability_per_L"] + up_data["mean_leading_probability_per_L"]), c='C1', label="Model", zorder=2, s=4**2)
-    ax4.set_xlabel("Binding domain separation (nm)")
-    ax4.set_ylabel("P(lagging step)")
-    ax4.legend()
+    plt.scatter(up_data["Ls"], up_data["mean_lagging_probability_per_L"] / (up_data["mean_lagging_probability_per_L"] + up_data["mean_leading_probability_per_L"]), c='C1', label="Model", zorder=2, s=4**2)
+    plt.gca().set_xlabel("Binding domain separation (nm)")
+    fig.gca().set_ylabel("P(lagging step)")
+    plt.legend()
 
-    ax4.spines["top"].set_visible(False)
-    ax4.spines["right"].set_visible(False)
+    fig.gca().spines["top"].set_visible(False)
+    fig.gca().spines["right"].set_visible(False)
 
-    plt.tight_layout(w_pad=2, h_pad=0.5)
-    plt.savefig("plots/model_behavior.pdf", format="pdf")
+    plt.tight_layout()
+    plt.savefig("plots/unbinding_probability_vs_displacement.pdf")
 
 def make_analysis_plot(args, stepping_data):
     fig = plt.figure(figsize=(8*.6, 6*.6), dpi=300)

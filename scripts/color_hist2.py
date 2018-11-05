@@ -171,23 +171,23 @@ plotCounts(initial_displacements,
            yIsTimeValue=False,
            filename='plots/initial-vs-final-displacement{}.pdf'.format(seed_label))
 
-plotCounts(onebound_times,
-           step_lengths,
-           "",
-           "Onebound time (s)",
-           "Step length (nm)",
-           xIsTimeValue=True,
-           yIsTimeValue=False,
-           filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
+# plotCounts(onebound_times,
+#            step_lengths,
+#            "",
+#            "Onebound time (s)",
+#            "Step length (nm)",
+#            xIsTimeValue=True,
+#            yIsTimeValue=False,
+#            filename='plots/onebound-time-vs-step-length{}.pdf'.format(seed_label))
 
-plotCounts(bothbound_times,
-           step_lengths,
-           "",
-           "Bothbound time (s)",
-           "Step length (nm)",
-           xIsTimeValue=True,
-           yIsTimeValue=False,
-           filename='plots/bothbound-time-vs-step-length{}.pdf'.format(seed_label))
+# plotCounts(bothbound_times,
+#            step_lengths,
+#            "",
+#            "Bothbound time (s)",
+#            "Step length (nm)",
+#            xIsTimeValue=True,
+#            yIsTimeValue=False,
+#            filename='plots/bothbound-time-vs-step-length{}.pdf'.format(seed_label))
 
 
 plotCounts(initial_displacements,
