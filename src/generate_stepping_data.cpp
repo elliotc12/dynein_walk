@@ -427,12 +427,15 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       break;
     case 'u':
       fake_radius_t = strtod(optarg, NULL);
+      gt = fake_radius_t*6*M_PI*water_viscosity_mu; // kg / s
       break;
     case 'v':
       fake_radius_m = strtod(optarg, NULL);
+      gm = fake_radius_m*6*M_PI*water_viscosity_mu; // kg / s
       break;
     case 'w':
       fake_radius_b = strtod(optarg, NULL);
+      gb = fake_radius_b*6*M_PI*water_viscosity_mu; // kg / s
       break;
     case 'x':
       tail_force = strtod(optarg, NULL) * 0.6022 / atp_in_kJ_per_mol; // conversion for our force units: 1 (dG ATP kJ / mol / nm) = atp_in_kJ_per_mol * 1e-11 / 6.022 N
@@ -532,6 +535,15 @@ int main(int argc, char** argv) {
 
   write_config_file(stepping_config_fname, 0, "");
 
+  printf("fake_radius_t: %g\n", fake_radius_t);
+  printf("gt should be : %g\n", fake_radius_t*6*M_PI*water_viscosity_mu);
+  printf("gt: %g\n\n", gt);
+  printf("fake_radius_m: %g\n", fake_radius_m);
+  printf("gm should be : %g\n", fake_radius_m*6*M_PI*water_viscosity_mu);
+  printf("gm: %g\n\n", gm);
+  printf("fake_radius_b: %g\n", fake_radius_b);
+  printf("gb should be : %g\n", fake_radius_b*6*M_PI*water_viscosity_mu);
+  printf("gb: %g\n\n", gb);
   job_msg_t job_msg;
   job_msg.max_iteration = 0;
   job_msg.start_time = clock();
