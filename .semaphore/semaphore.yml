@@ -14,9 +14,9 @@ blocks:
           - install-package texlive-latex-extra texlive-xetex texlive-full python3-matplotlib python-matplotlib g++ git inkscape make dvipng
           - curl https://sh.rustup.rs -sSf | sh -s -- -y
           - echo $PATH
-          - ln -s ~/.cargo/bin/cargo /usr/local/bin/
+          - sudo ln -s ~/.cargo/bin/cargo /usr/local/bin/
           - git clone https://github.com/droundy/fac
-          - cd fac && cargo build --release && cp target/release/fac /usr/local/bin/
+          - cd fac && cargo build --release && sudo cp target/release/fac /usr/local/bin/
           - echo "done with prologue"
       jobs:
       - name: Build with fac
