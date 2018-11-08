@@ -11,7 +11,7 @@ blocks:
       jobs:
       - name: Install requirements
         commands:
-          - sudo apt-get update
+          - echo I will not yet    sudo apt-get update
           - sudo apt-get -y install apt-utils time
           - sudo apt-get -y install texlive-latex-extra texlive-xetex texlive-full python3-matplotlib python-matplotlib g++ git inkscape make dvipng
           - curl https://sh.rustup.rs -sSf | sh -s -- -y
