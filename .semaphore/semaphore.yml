@@ -1,23 +1,33 @@
 version: v1.0
-name: First pipeline example
+name: Dynein walk
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
 
 blocks:
+  - name: "Configure environment"
+    task:
+      jobs:
+      - name: Install requirements
+        commands:
+          - sudo apt-get update
+          - sudo apt-get -y install apt-utils time
+          - sudo apt-get -y install texlive-latex-extra texlive-xetex texlive-full python3-matplotlib python-matplotlib g++ git inkscape make dvipng
+          - curl https://sh.rustup.rs -sSf | sh -s -- -y
+          - echo $PATH
+          - ln -s ~/.cargo/bin/cargo /usr/local/bin/
+          - git clone https://github.com/droundy/fac
+          - cd fac && cargo build --release && cp target/release/fac /usr/local/bin/
+          - echo "done"
+
   - name: "Build"
     task:
-      env_vars:
-        - name: APP_ENV
-          value: prod
       jobs:
       - name: Docker build
         commands:
           - checkout
-          - ls -1
-          - echo $APP_ENV
-          - echo "Docker build..."
+          - fac
           - echo "done"
 
   - name: "Smoke tests"
