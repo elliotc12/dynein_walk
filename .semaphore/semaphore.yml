@@ -6,23 +6,18 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Configure environment"
+  - name: "Build"
     task:
-      jobs:
-      - name: Install requirements
+      prologue:
         commands:
-          - echo I will not yet    sudo apt-get update
-          - sudo apt-get -y install apt-utils time
-          - sudo apt-get -y install texlive-latex-extra texlive-xetex texlive-full python3-matplotlib python-matplotlib g++ git inkscape make dvipng
+          - install-package apt-utils time
+          - install-package texlive-latex-extra texlive-xetex texlive-full python3-matplotlib python-matplotlib g++ git inkscape make dvipng
           - curl https://sh.rustup.rs -sSf | sh -s -- -y
           - echo $PATH
           - ln -s ~/.cargo/bin/cargo /usr/local/bin/
           - git clone https://github.com/droundy/fac
           - cd fac && cargo build --release && cp target/release/fac /usr/local/bin/
-          - echo "done"
-
-  - name: "Build"
-    task:
+          - echo "done with prologue"
       jobs:
       - name: Docker build
         commands:
