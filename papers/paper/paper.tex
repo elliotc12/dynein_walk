@@ -74,9 +74,11 @@ Dynein's mechanism of motion generation is the least understood of all motor pro
 
 Studies over the past 15 years have shed much light on dynein's stepping mechanism. The motor is known to switch between two conformational states depending on its ATP hydrolysis state \cite{burgess-paper, FRETstatepaper, carter-paper, nicastro, schmidt-carter}. It is also known that ATP binding can induce structural changes within the motor which increase unbinding rate \cite{leschziner, carter-paper}, and similarly that microtubule rebinding can influence nucleotide unbinding rate \cite{mt-atp-coupling}. Taken together this evidence is synthesized into a powerstroke model \cite{cianfroccoreview, imamulamodel}. In the powerstroke model, dynein binds ATP, causing structural changes which eventually lead to microtubule unbinding at its MTBD. These structural changes transition the motor into a more open position, causing the MTBD to diffuse forwards on the microtubule. This biased search is known as the prestroke. Eventually the MTBD rebinds the microtubule, causing structural changes inducing the ejection of hydrolyzed ADP and transitioning back to the closed position. This causes the motor to lurch forward in a process called the powerstroke. The protein is now ready to re-bind ATP and take another step.\\
 
-Ample evidence exists that dynein engages in an ATP-induced prestroke and MT-binding-induced powerstroke. However, to our knowledge, no work has been done to test whether a structural model of dynein obeying the proposed mechanochemical cycle is sufficient to reproduce experimental stepping data. Existing computational models use chemical rate transitions and assume independence of steps, without simulating the entire mechanochemical cycle \cite{sarlahmodel}. No models have combined structural and kinetic data to simulate a dynein model in a biophysically realistic way. It is necessary to do so to properly test the powerstroke hypothesis. Such a study would determine if the powerstroke mechanism is sufficient to explain dynein's walk, or if further explanation is necessary. Others have theorized that elements such as electrostatic interactions with the microtubule \cite{longrangemt}, tension-gating between the two heads \cite{yildizcleary}, or elasticity of the stalk \cite{burgess-paper} are important for dynein's walk. Such a study would be able to find the minimum criteria for generating dynein's motion.\\
+Ample evidence exists that dynein engages in an ATP-induced prestroke and MT-binding-induced powerstroke. However, to our knowledge, no work has been done to test whether a structural model of dynein obeying the proposed mechanochemical cycle is sufficient to reproduce experimental stepping data. Existing computational models use chemical rate transitions and assume independence of steps, without simulating the entire mechanochemical cycle \cite{sarlahmodel}. No models have combined structural and kinetic data to simulate a dynein model in a biophysically realistic way. It is necessary to do so to properly test the powerstroke hypothesis. Such a study would determine if the powerstroke mechanism is sufficient to explain dynein's walk, or if further explanation is necessary. Others have theorized that elements such as electrostatic interactions with the microtubule \cite{longrangemt}, tension-gating between the two heads \cite{yildizcleary}, ring stacking \cite{sarlahmodel}, discrete microtubule binding sites \cite{trottmodel}, or elasticity of the stalk \cite{burgess-paper} are important for dynein's walk. Such a study would be able to find the minimum criteria for generating dynein's motion.\\
 
 Here we present a course-grained model of cytoplasmic dynein which treats its domains as connected rigid bodies. Chemical transitions and conformational changes consistent with the powerstroke model are accounted for via elastic forces. The dynamics are determined using Brownian dynamics. The model is capable of generating directed motility at rates similar to experiment. Further, we show that the model displays more complex behavior, such as tension gating and force-mediated bidirectionality.\\
+
+%% just say that we included tension gating
 
 \section*{Model}
 
@@ -156,7 +158,7 @@ The ``prestroke'' and ``powerstroke'' events in the mechanochemical cycle \cite{
 \matmethods{
 
   \section*{Fitting $k_b$ and $k_{ub}$}
-  To fit the binding and unbinding rate constants $k^0_b$ and $k^0_{ub}$, a simple theoretical model for stepping was used. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the onebound state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a onebound and bothbound state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for bothbound time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for onebound time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for onebound and bothbound time in terms of experimental observables of velocity, run time and step length:
+  To fit the binding and unbinding rate constants $k^0_b$ and $k^0_{ub}$, a simple theoretical model for stepping was used. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD, that is, that there is no inter-head coordination. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the onebound state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a onebound and bothbound state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for bothbound time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for onebound time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for onebound and bothbound time in terms of experimental observables of velocity, run time and step length:
 
   \begin{align}
     \bar{t}_{ob} &= \frac{\bar{L}^2}{\bar{v}^2\left(\bar{L}/v+\bar{t}_{run}\right)}\\
@@ -326,10 +328,7 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
 
 \subsection{Elliott}
 \begin{enumerate}
-\item Fix stepping analysis python module to categorize zero-length
-  steps separately from other steps, particularly in terms of stepping
-  times.  Alternately, change C++ to make it possible to identify
-  which foot lifted if it didn't move.
+\item Fix stepping analysis python module to categorize zero-length steps separately from other steps, particularly in terms of stepping imes.  Alternately, change C++ to make it possible to identify which foot lifted if it didn't move.
 \item When we have all data, write discussion
 \item Rewrite introduction
 \item Possibly sample stalk angles at high resolution and also 50ms, to show why the low time resolution in Lessinger prevented them from seeing the powerstroke?
@@ -337,6 +336,10 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
 \item Re-run velocity vs force simulation at a much lower rate to match the Gennerich velocity at pN=0
 \item \davidsays{Look up Yildiz figure} for initial displacement vs step length fig
 \item Calculate mutual information or pearson's R for initial/final displacement
+\item Add spring symbols to angles to make it more obvious where the springs are
+\item Add more stuff to supplemental methods, like how our drag forces and stuff are calculated and how we calculate unbinding rate
+\item Make clear that we are comparing to artificially-dimerized molecules in our experiment
+\item Run simulations with/without interhead coordination, use a passing/no-passing chart with both models and experiment to demonstrate that tension-gating helps
 \end{enumerate}
 
 \subsection{John}
@@ -362,3 +365,9 @@ This paper says something interesting~\cite{leschziner}.
 \bibliography{paper}
 
 \end{document}
+
+-Dynein's two feet take different steps according to yildiz/qiu
+-Carter 2008 says that dynein's MTBD decides directionaolity, whereas Redwine 2012 thinks its linker motion (clarify)
+-Imai 2015 has lots to say criticizing the step length studies of qiu/yildiz and have something to say about domain movement MT search
+-Someone else referred to the Cianfrocco model, so maybe it's a good one to refer to (well accepted)
+-The winch model is also referred to as the 

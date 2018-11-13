@@ -104,7 +104,8 @@
   number={107},
   pages={662-671},
   year={2014},
-  publisher={Elsevier}
+  publisher={Elsevier},
+  notes={Modeling paper which accounts for stalk elasticity, linker repulsion, ring-ring interaction. It uses a chemical model to transition through fixed Imamula states, calculating the system state through a MC minimum-energy method. Doesn't do any dynamics stuff or even conclusively test whether the winch model would work, it just assumes the MTBD angle doesn't change. This doesn't support or test the winch model at all.}
 }
 
 @article{cellular-atp,
@@ -158,7 +159,8 @@
   number={},
   year={2014},
   pages={479-485},
-  publisher={Nature}
+  publisher={Nature},
+  notes={Apparently this paper says something about dynein not rotating its stalk during the pre-powerstroke?}
 }
 
 @article{schmidt-carter,
@@ -448,3 +450,75 @@
   number={4587},
   publisher={Nature}
 }
+
+@article{trottmodel,
+  title={A mathematical understanding of how cytoplasmic dynein walks on microtubules},
+  author={Trott, L and Hafezparast, M and Madzvamuse, A},
+  journal={R. Soc. open sci.},
+  volume={5},
+  year={2018},
+  pages={},
+  number={171568},
+  publisher={Royal Society},
+  notes={A one-dimensional model which tracks the position of cargo, tail, heads and MTBDs. It doesn't take into account y, only x. Uses springy rods, not springy angles. This model is winch-like in that it doesn't allow its stalk or tail angles to change, which is a weakness. It is also a pro-winch model. They also have predetermined binding sites, which is an advantage of our model. The model domains are effectively projeted into 1D, which is unphysical. They use a weird dashpot-spring force mechanism to force steps, which seems very unphysical. We allow stepping to happen naturally, whereas they force the model to step a certain length. Also makes assumptions about stepping order in a wird way, doesn't do tension-gating. Doesn't have any bothbound dynamics, which make up most of the dynamics of dynein, according to our theory. Their unbinding rates don't take into account conformational information or tension-gating, whereas ours do. No brownian forces. No conformational changes, very artificial foot movement. Main issues: lack of any biophysical step mechanism, no Brownian dynamics, 1D, assumes winch model.}
+}
+
+@article{mdstalk,
+  title={Elastic properties of dynein motor domain obtained from all-atom molecular dynamics simulations},
+  author={Kamiya, N and Mashimo, T and Takano, Y and Kon, T and Kurisu, G and Nakamura, H},
+  journal={Protein Engineering, Design and Selection},
+  volume={29},
+  year={2016},
+  pages={317-326},
+  number={},
+  publisher={Oxford Publishing},
+  notes={MD simulation which reveals that during the ATP-bound post-stroke state the stalk is more flexible, but in the ADP-bound pre-stroke state the stalk is less flexible. This reveals that flexibility of the stalk is an important feature during the bothbound state. This is something we do not take into account.}
+}
+
+@article{mdstroke,
+  title={Allosteric conformational change cascade in cytoplasmic dynein revealed by structurebased molecular simulations},
+  author={Kubo, S and Li, W and Takada, S},
+  journal={PLOS Computational Biology},
+  volume={13},
+  year={2017},
+  pages={e1005748},
+  number={9},
+  publisher={},
+  notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order.}
+}
+
+@COMMENT: -------------Unread papers---------------
+
+@article{,
+  title={Is the dynein motor a winch?},
+  author={Burgess, S and Knight, P},
+  journal={Current Opinion in Structural Biology},
+  volume={14},
+  year={2004},
+  pages={138-146},
+  number={},
+  publisher={Elsevier},
+  notes={This paper is describing the winch mechanism theoretically.}
+}
+
+@article{,
+  title={Cytoplasmic dynein functions as a gear in response to load},
+  author={Mallik, R and Carter, B and Lex, S and King, S and Gross, S},
+  journal={Nature Letters},
+  volume={427},
+  year={2004},
+  pages={},
+  number={649-652},
+  publisher={},
+  notes={This paper theoretically outlines the powerstroke model.}
+}
+
+Pro-powerstroke papers
+Direct observation shows superposition and large scale flexibility within cytoplasmic dynein motors moving along microtubules
+AAA+ Ring and linker swing mechanism in the dynein motor
+Dynein structure and power stroke
+
+Pro-winch papers
+Dynein pulls microtubules without rotating its stalk (dynein no rotate)
+Structural mechanism of the dynein power stroke (dynein no rotate)
+The 2.8 Å crystal structure of the dynein motor domain
