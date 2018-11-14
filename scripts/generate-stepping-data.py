@@ -35,6 +35,8 @@ parser.add_argument("-v", "--movie", help="Movie flag", action="store_true")
 parser.add_argument("-n", "--renametrajectory", help="Rename outputs to paper trajectory files", action="store_true")
 parser.add_argument("-o", "--renamepaper", help="Rename outputs to paper exponential histogram files", action="store_true")
 parser.add_argument("-R", "--renameforce", help="Rename outputs to force files", action="store_true")
+parser.add_argument("-M", "--renameangles", help="Rename outputs to angles files", action="store_true")
+parser.add_argument("-T", "--anglemode", help="Rename outputs to angles files", action="store_true", default=False)
 args = parser.parse_args()
 
 if args.movie:
@@ -44,14 +46,14 @@ if args.movie:
 
 basename = run.sim(**{"k_b": args.kb,
                       "k_ub": args.kub,
-                      "cb": args.cb, # 0.1?
-                      "cm": args.cm, # 0.4?
-                      "ct": args.ct, # 0.2?
+                      "cb": args.cb,
+                      "cm": args.cm,
+                      "ct": args.ct,
                       "ls": args.ls,
                       "lt": args.lt,
-                      "eqb": args.eqb,  # from redwine 2012 supplemental
-                      "eqmpre": args.eqmpre, # from burgess 2002, 360-160
-                      "eqmpost": args.eqmpost, # from burgess 2002, 360-136
+                      "eqb": args.eqb,
+                      "eqmpre": args.eqmpre,
+                      "eqmpost": args.eqmpost,
                       "eqt": args.eqt,
                       "rt": args.rt,
                       "rm": args.rm,
@@ -59,7 +61,8 @@ basename = run.sim(**{"k_b": args.kb,
                       "force": args.force,
                       "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
-                      "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie})
+                      "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie,
+                      "angle-logging-mode": args.anglemode})
 
 if args.renamepaper:
     os.system("mv data/stepping_data_%s.txt data/paper_main_stepping_data-%s.txt" % (basename, args.seed))
@@ -68,13 +71,18 @@ if args.renamepaper:
 if args.renameforce:
     os.system("mv data/stepping_data_{}.txt data/paper_force_stepping_data-F-{},s-{}.txt".format(basename, args.force, args.seed))
     os.system("rm -f data/stepping_parameters_{}.tex".format(basename))
-    os.system("rm -f data/stepping_movie_data_{}.tex".format(basename))
-    os.system("rm -f data/stepping_parameters_{}.tex".format(basename))
+    os.system("rm -f data/stepping_movie_data_{}.txt".format(basename))
+    os.system("rm -f data/stepping_parameters_{}.txt".format(basename))
 
 if args.renametrajectory:
     os.rename("data/stepping_movie_data_%s.txt" % (basename), "data/paper_trajectory_movie_data.txt")
     os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_trajectory_stepping_data.txt")
     os.rename("data/stepping_parameters_%s.tex" % (basename), "data/paper_trajectory_stepping_parameters.tex")
+    os.unlink("data/stepping_movie_config_%s.txt" % basename)
+
+if args.renameangles:
+    os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_stroke_angle_data.txt")
+    os.unlink("data/stepping_parameters_%s.tex" % (basename))
     os.unlink("data/stepping_movie_config_%s.txt" % basename)
 
 os.system("rm data/stepping_config_%s.txt" % basename)

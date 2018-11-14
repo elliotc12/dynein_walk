@@ -60,6 +60,8 @@ TRANSITION_MODES binding_mode = EXPONENTIAL_UNBINDING;
 bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;
 
+bool angle_logging_mode = false;
+
 double tail_force = 0;
 
 /* onebound_equilibrium_angles onebound_post_powerstroke_internal_angles = { */

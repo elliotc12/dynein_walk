@@ -72,7 +72,7 @@ extern double runtime, dt, kb, T, Lt, Ls, fake_radius_t,
 
 extern double exponential_unbinding_angle_constant;
 
-extern bool am_only_writing_on_crash;
+extern bool am_only_writing_on_crash, angle_logging_mode;
 
 extern onebound_equilibrium_angles onebound_post_powerstroke_internal_angles;
 extern bothbound_equilibrium_angles bothbound_pre_powerstroke_internal_angles;

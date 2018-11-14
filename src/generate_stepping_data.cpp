@@ -139,6 +139,56 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   check_for_quitting_conditions(iteration*dt, data_file, first_bothbound_iteration*dt, last_bothbound_iteration*dt);
 }
 
+void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
+  static State last_state = BOTHBOUND;
+  static bool am_in_initial_partial_step = true;
+  static int last_bothbound_iteration = 0;
+  static State last_onebound_state = BOTHBOUND;
+
+  int BBLOGDURATION = 1e3;
+
+  if (s == BOTHBOUND) {
+    Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
+
+    if ((last_state == NEARBOUND or last_state == FARBOUND)) {
+      fprintf(data_file, "NEWBINDING\n");
+      fflush(data_file);
+      if (am_in_initial_partial_step) am_in_initial_partial_step = false;
+    }
+
+    if (last_onebound_state == NEARBOUND and iteration - last_bothbound_iteration < BBLOGDURATION) {
+      fprintf(data_file, "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n", "BBFROMNB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_nbx(), dyn_bb->get_ty(), dyn_bb->get_fma(), dyn_bb->get_fba());
+      fflush(data_file);
+    }
+
+    else if (last_onebound_state == FARBOUND and iteration - last_bothbound_iteration < BBLOGDURATION) {
+      fprintf(data_file, "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n", "BBFROMFB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_fbx(), dyn_bb->get_ty(), dyn_bb->get_nma(), dyn_bb->get_nba());
+      fflush(data_file);
+    }
+
+    last_state = BOTHBOUND;
+    last_bothbound_iteration = iteration;
+  }
+
+  else if (s == NEARBOUND) {
+    last_state = NEARBOUND;
+    last_onebound_state = NEARBOUND;
+  }
+
+  else if (s == FARBOUND) {
+    last_state = FARBOUND;
+    last_onebound_state = FARBOUND;
+  }
+
+}
+
+// bb, far stepped, from nearbound: "bb", tx - nbx, ty, fma, fba
+// bb, near stepped, from farbound: "bb", tx - fbx, ty, nma, fba
+// print "STEP" to begin a new bothbound stroke
+// only print the first 1e4 timesteps = 1us of the bothbound stroke
+// if necessary, downsample the printing
+// can set kub higher once we figure out the interesting timescale of the recently-bound angle
+
 void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
   static int buffer_position = 0;
   if (!am_only_writing_on_crash or (am_debugging_onebound and s != BOTHBOUND)) {
@@ -278,7 +328,11 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
     }
   }
 
-  log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
+  if (angle_logging_mode) {
+    log_angle_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
+  } else {
+    log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
+  }
 
   if ((am_making_movie or am_debugging_onebound) && iteration % int(stepping_movie_framerate/dt) == 0)
     log_stepping_movie_data(job_msg.movie_data_file, dyn, s, iteration);
@@ -342,6 +396,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"onebound-debugging", no_argument, (int*) &am_debugging_onebound, true},
       {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {"exp-binding", no_argument, (int*) &binding_mode, EXPONENTIAL_UNBINDING},
+      {"angle-logging-mode", no_argument, (int*) &angle_logging_mode, true},
       {0, 0, 0, 0}
     };
 
@@ -558,7 +613,8 @@ int main(int argc, char** argv) {
 
   printf("\n\n\n*********%s*********\n", run_name);
   fprintf(job_msg.stepping_data_file, "\n\n\n\n#********%s********\n", run_name);
-  fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind\n");
+  if (angle_logging_mode) fprintf(job_msg.stepping_data_file, "#state, time, tx displacement, ty displacement, recently bound motor angle, recently bound binding angle\n");
+  else fprintf(job_msg.stepping_data_file, "#time_unbind, time_bind, nbx_bind, fbx_bind, nmx_unbind, fmx_unbind, nmx_bind, fmx_bind\n");
   if (errno) {
     perror("Error opening stepping data or movie file.\n");
     exit(errno);
