@@ -198,7 +198,7 @@ plotCounts(initial_displacements,
            "step length (nm)",
            xIsTimeValue=False,
            yIsTimeValue=False,
-           drawline=True,
+           drawline=False,
            filename='plots/initial-displacement-vs-step-length{}.pdf'.format(seed_label))
 
 if SHOW:
