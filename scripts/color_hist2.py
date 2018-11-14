@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 import numpy as np
 import matplotlib
 import sys
@@ -133,7 +134,7 @@ def plotCounts(x, y, graph_label, x_label, y_label,
 
     if drawline:
         A = np.vstack([x, np.ones(len(x))]).T
-        m, c = np.linalg.lstsq(A, y)[0]
+        m, c = np.linalg.lstsq(A, y, rcond=None)[0]
         eq = "Y = {:.2}x + {:.2}".format(m, c)
         plt.plot([x_bins[0], x_bins[-1]], [x_bins[0]*m, x_bins[-1]*m]+c, label=eq, linestyle=":")
         plt.legend()
