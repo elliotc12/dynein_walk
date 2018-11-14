@@ -112,6 +112,7 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
     return xbins, ybins, counts
 
 
+# x_name, x_units, y_name, y_units
 def plotCounts(x, y, graph_label, x_label, y_label,
                xIsTimeValue, yIsTimeValue,filename=None, drawline=False):
 
@@ -135,7 +136,7 @@ def plotCounts(x, y, graph_label, x_label, y_label,
     if drawline:
         A = np.vstack([x, np.ones(len(x))]).T
         m, c = np.linalg.lstsq(A, y)[0]
-        eq = "y = {:.2} + {:.2}x".format(m, c)
+        eq = "y = {:.2} + {:.2}x".format(c, m)
         plt.plot([x_bins[0], x_bins[-1]], [x_bins[0]*m, x_bins[-1]*m]+c, label=eq, linestyle=":", color='w')
         plt.legend()
 
