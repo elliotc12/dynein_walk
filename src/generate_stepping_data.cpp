@@ -142,45 +142,88 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
 void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
   static State last_state = BOTHBOUND;
   static bool am_in_initial_partial_step = true;
+  static int last_onebound_iteration = 0;
   static int last_bothbound_iteration = 0;
   static State last_onebound_state = BOTHBOUND;
+  static int iters_in_this_step = 0;
+  static double last_sum_foot_positions = 0;
 
-  int BBLOGDURATION = 1e3;
+  int BBLOGDURATION = 1e5;
+  int BYTES_PER_LINE = 80;
+
+  static char* print_buffer = (char*) malloc((2*BBLOGDURATION+1) * BYTES_PER_LINE * sizeof(char));
+
+  if (iters_in_this_step > 2*BBLOGDURATION) {
+    perror("Error, somehow print buffer exceeded.");
+  }
 
   if (s == BOTHBOUND) {
     Dynein_bothbound* dyn_bb = (Dynein_bothbound*) dyn;
 
     if ((last_state == NEARBOUND or last_state == FARBOUND)) {
-      fprintf(data_file, "NEWBINDING\n");
-      fflush(data_file);
+      sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "NEWBINDING\n"); // where should this be?
+      iters_in_this_step++;
       if (am_in_initial_partial_step) am_in_initial_partial_step = false;
     }
 
-    if (last_onebound_state == NEARBOUND and iteration - last_bothbound_iteration < BBLOGDURATION) {
-      fprintf(data_file, "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n", "BBFROMNB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_nbx(), dyn_bb->get_ty(), dyn_bb->get_fma(), dyn_bb->get_fba());
-      fflush(data_file);
+    if (last_onebound_state == NEARBOUND and iteration - last_onebound_iteration < BBLOGDURATION) {
+      sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
+	      "BBFROMNB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_nbx(), dyn_bb->get_ty(), dyn_bb->get_fma(), dyn_bb->get_fba());
+      iters_in_this_step++;
     }
 
-    else if (last_onebound_state == FARBOUND and iteration - last_bothbound_iteration < BBLOGDURATION) {
-      fprintf(data_file, "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n", "BBFROMFB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_fbx(), dyn_bb->get_ty(), dyn_bb->get_nma(), dyn_bb->get_nba());
-      fflush(data_file);
+    else if (last_onebound_state == FARBOUND and iteration - last_onebound_iteration < BBLOGDURATION) {
+      sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
+	      "BBFROMFB", iteration*dt, dyn_bb->get_tx() - dyn_bb->get_fbx(), dyn_bb->get_ty(), dyn_bb->get_nma(), dyn_bb->get_nba());
+      iters_in_this_step++;
     }
 
     last_state = BOTHBOUND;
     last_bothbound_iteration = iteration;
   }
 
-  else if (s == NEARBOUND) {
-    last_state = NEARBOUND;
-    last_onebound_state = NEARBOUND;
-  }
+  else if (s == NEARBOUND or s == FARBOUND) {
+    Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+    if (last_state == BOTHBOUND) {
+      if (dyn_ob->get_bbx() + dyn_ob->get_ubx() - last_sum_foot_positions > 10) {
+	for (int i = 0; i < iters_in_this_step; i++) {
+	  fprintf(data_file, "%s", &print_buffer[i*BYTES_PER_LINE]);
+	}
+	fflush(data_file);
+      }
+      iters_in_this_step = 0;
+      sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "NEWUNBINDING\n"); // where should this be?
+      iters_in_this_step++;
+      last_sum_foot_positions = dyn_ob->get_bbx() + dyn_ob->get_ubx();
+    }
+    if (s == NEARBOUND) {
+      last_state = NEARBOUND;
+      last_onebound_state = NEARBOUND;
+      last_onebound_iteration = iteration;
 
-  else if (s == FARBOUND) {
-    last_state = FARBOUND;
-    last_onebound_state = FARBOUND;
-  }
+      if (iteration - last_bothbound_iteration < BBLOGDURATION) {
+	sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
+		"NEARBOUN", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), dyn_ob->get_uma(), 0.0);
+	iters_in_this_step++;
+      }
+    }
+    if (s == FARBOUND) {
+      last_state = FARBOUND;
+      last_onebound_state = FARBOUND;
+      last_onebound_iteration = iteration;
 
+      if (iteration - last_bothbound_iteration < BBLOGDURATION) {
+	sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
+		"FARBOUND", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), dyn_ob->get_uma(), 0.0);
+	iters_in_this_step++;
+      }
+    }
+  }
 }
+
+// on unbinding, print the past ob and bb log if the past step was > 10nm
+// on unbinding, compare the current feet positions to the past unbinding positions to see if the past ob period created a large displacement
+// when entering BB, compare the stored 
 
 // bb, far stepped, from nearbound: "bb", tx - nbx, ty, fma, fba
 // bb, near stepped, from farbound: "bb", tx - fbx, ty, nma, fba
