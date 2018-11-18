@@ -171,8 +171,11 @@ def get_stroke_angles_data(args):
     bothbound_angles_data["d_ma"] = []
     bothbound_angles_data["ba"] = []
 
-    longest_run_length = 0
-    longest_run_times = []
+    onebound_longest_run_length = 0
+    onebound_longest_run_times = []
+
+    bothbound_longest_run_length = 0
+    bothbound_longest_run_times = []
 
     onebound_data_txt = ""
     bothbound_data_txt = ""
@@ -205,16 +208,16 @@ def get_stroke_angles_data(args):
         onebound_angles_data["dtaily"].append(stroke_data[:,3] - stroke_data[0,3])
         onebound_angles_data["ma"].append(stroke_data[:,4])
         onebound_angles_data["d_ma"].append(stroke_data[:,4] - stroke_data[0,4])
-        if len(stroke_data[:,1]) > longest_run_length:
-            longest_run_length = len(stroke_data[:,1])
-            longest_run_times = stroke_data[:,1] - stroke_data[0,1]
+        if len(stroke_data[:,1]) > onebound_longest_run_length:
+            onebound_longest_run_length = len(stroke_data[:,1])
+            onebound_longest_run_times = stroke_data[:,1] - stroke_data[0,1]
 
-    onebound_angles_data["times"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["times"]])
-    onebound_angles_data["dtailx"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["dtailx"]])
-    onebound_angles_data["dtaily"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["dtaily"]])
-    onebound_angles_data["ma"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["ma"]])
-    onebound_angles_data["d_ma"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["d_ma"]])
-    onebound_angles_data["longest_times"] = longest_run_times
+    onebound_angles_data["times"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["times"]])
+    onebound_angles_data["dtailx"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["dtailx"]])
+    onebound_angles_data["dtaily"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["dtaily"]])
+    onebound_angles_data["ma"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["ma"]])
+    onebound_angles_data["d_ma"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["d_ma"]])
+    onebound_angles_data["longest_times"] = onebound_longest_run_times
 
     while (bothbound_data_txt.find("NEWBINDING") != -1):
         step_idx = bothbound_data_txt.find("NEWBINDING")
@@ -239,17 +242,17 @@ def get_stroke_angles_data(args):
         bothbound_angles_data["ma"].append(stroke_data[:,4])
         bothbound_angles_data["d_ma"].append(stroke_data[:,4] - stroke_data[0,4])
         bothbound_angles_data["ba"].append(stroke_data[:,5])
-        if len(stroke_data[:,1]) > longest_run_length:
-            longest_run_length = len(stroke_data[:,1])
-            longest_run_times = stroke_data[:,1] - stroke_data[0,1]
+        if len(stroke_data[:,1]) > bothbound_longest_run_length:
+            bothbound_longest_run_length = len(stroke_data[:,1])
+            bothbound_longest_run_times = stroke_data[:,1] - stroke_data[0,1]
 
-    bothbound_angles_data["times"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["times"]])
-    bothbound_angles_data["dtailx"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["dtailx"]])
-    bothbound_angles_data["dtaily"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["dtaily"]])
-    bothbound_angles_data["ma"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ma"]])
-    bothbound_angles_data["d_ma"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["d_ma"]])
-    bothbound_angles_data["ba"] = np.array([np.pad(s, (0,longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ba"]])
-    bothbound_angles_data["longest_times"] = longest_run_times
+    bothbound_angles_data["times"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["times"]])
+    bothbound_angles_data["dtailx"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["dtailx"]])
+    bothbound_angles_data["dtaily"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["dtaily"]])
+    bothbound_angles_data["ma"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ma"]])
+    bothbound_angles_data["d_ma"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["d_ma"]])
+    bothbound_angles_data["ba"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ba"]])
+    bothbound_angles_data["longest_times"] = bothbound_longest_run_times
 
     return (onebound_angles_data, bothbound_angles_data)
 
@@ -481,7 +484,7 @@ def make_stroke_plots(args, angles_data):
     plt.gca().axhline(197 / 180 * np.pi, color='red', linestyle='dashed', linewidth=1)
     plt.gca().axhline(242 / 180 * np.pi, color='blue', linestyle='dashed', linewidth=1)
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
-    plt.savefig("plots/stroke_angles.pdf", format="pdf")
+    plt.savefig("plots/bothbound_stroke_angles.pdf", format="pdf")
 
     plt.figure()
     for num, dtailx in enumerate(bothbound_angles_data["dtailx"]):
@@ -494,7 +497,7 @@ def make_stroke_plots(args, angles_data):
     plt.ylabel("tail x")
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
     plt.gca().axhline(0, color='black', linestyle='dashed', linewidth=1)
-    plt.savefig("plots/stroke_tail_positions.pdf", format="pdf")
+    plt.savefig("plots/bothbound_stroke_tail_positions.pdf", format="pdf")
 
     plt.figure()
     for num, ba in enumerate(bothbound_angles_data["ba"]):
@@ -507,7 +510,38 @@ def make_stroke_plots(args, angles_data):
     plt.ylabel("BD angle")
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
     plt.gca().axhline(120 / 180 * np.pi, color='blue', linestyle='dashed', linewidth=1)
-    plt.savefig("plots/stroke_angles_bd.pdf", format="pdf")
+    plt.savefig("plots/bothbound_stroke_angles_bd.pdf", format="pdf")
+
+    dtailx_avg = np.nanmean(onebound_angles_data["dtailx"], axis=0)
+    dtaily_avg = np.nanmean(onebound_angles_data["dtaily"], axis=0)
+    ma_avg = np.nanmean(onebound_angles_data["ma"], axis=0)
+
+    plt.figure()
+    for num, ma in enumerate(onebound_angles_data["ma"]):
+        w_times, w_ma = window_avg(onebound_angles_data["times"][num], ma, 1e2)
+        plt.scatter(0, ma[0], zorder=3, color="k")
+        plt.plot(w_times, w_ma, zorder=1)
+    w_times_avg, w_ma_avg = window_avg(onebound_angles_data["longest_times"], ma_avg, 1e2)
+    plt.plot(w_times_avg, w_ma_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (s)")
+    plt.ylabel("motor angle")
+    plt.gca().axhline(197 / 180 * np.pi, color='red', linestyle='dashed', linewidth=1)
+    plt.gca().axhline(242 / 180 * np.pi, color='blue', linestyle='dashed', linewidth=1)
+    plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])
+    plt.savefig("plots/onebound_stroke_angles.pdf", format="pdf")
+
+    plt.figure()
+    for num, dtailx in enumerate(onebound_angles_data["dtailx"]):
+        w_times, w_dtailx = window_avg(onebound_angles_data["times"][num], dtailx, 1e2)
+        plt.scatter(0, dtailx[0], zorder=3, color="k")
+        plt.plot(w_times, w_dtailx, zorder=1)
+    w_times_avg, w_dtailx_avg = window_avg(onebound_angles_data["longest_times"], dtailx_avg, 1e2)
+    plt.plot(w_times_avg, w_dtailx_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (s)")
+    plt.ylabel("tail x")
+    plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])
+    plt.gca().axhline(0, color='black', linestyle='dashed', linewidth=1)
+    plt.savefig("plots/onebound_stroke_tail_positions.pdf", format="pdf")
 
 # is it possible that our current results are true, and that dynein moves mostly on its prestroke, not poststroke?
 # the best way to figure out this would be to get the average x-displacement during onebound and bothbound

@@ -11,7 +11,7 @@ import sys
 sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
-runtime = 1e-3
+runtime = 1e-2
 framerate = 1e-10
 
 basename = "paper_stroke_angles"

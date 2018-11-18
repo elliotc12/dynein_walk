@@ -151,9 +151,9 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
   int BBLOGDURATION = 1e5;
   int BYTES_PER_LINE = 80;
 
-  static char* print_buffer = (char*) malloc((2*BBLOGDURATION+1) * BYTES_PER_LINE * sizeof(char));
+  static char* print_buffer = (char*) malloc((2*BBLOGDURATION+2) * BYTES_PER_LINE * sizeof(char));
 
-  if (iters_in_this_step > 2*BBLOGDURATION) {
+  if (iters_in_this_step > 2*BBLOGDURATION+1) {
     perror("Error, somehow print buffer exceeded.");
   }
 
@@ -202,8 +202,9 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
       last_onebound_iteration = iteration;
 
       if (iteration - last_bothbound_iteration < BBLOGDURATION) {
+	double uma = dyn_ob->get_uma() + M_PI - dyn_ob->get_uba();
 	sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
-		"NEARBOUN", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), dyn_ob->get_uma(), 0.0);
+		"NEARBOUN", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), uma, 0.0);
 	iters_in_this_step++;
       }
     }
@@ -213,8 +214,9 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
       last_onebound_iteration = iteration;
 
       if (iteration - last_bothbound_iteration < BBLOGDURATION) {
+	double uma = dyn_ob->get_uma() + M_PI - dyn_ob->get_uba();
 	sprintf(&print_buffer[iters_in_this_step*BYTES_PER_LINE], "%s\t%14.12f%8.3f\t%8.3f\t%8.6f\t%8.6f\n",
-		"FARBOUND", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), dyn_ob->get_uma(), 0.0);
+		"FARBOUND", iteration*dt, dyn_ob->get_tx() - dyn_ob->get_bbx(), dyn_ob->get_ty(), uma, 0.0);
 	iters_in_this_step++;
       }
     }
