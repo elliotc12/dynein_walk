@@ -148,7 +148,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
   static int iters_in_this_step = 0;
   static double last_sum_foot_positions = 0;
 
-  int BBLOGDURATION = 1e5;
+  int BBLOGDURATION = 1e4;
   int BYTES_PER_LINE = 80;
 
   static char* print_buffer = (char*) malloc((2*BBLOGDURATION+2) * BYTES_PER_LINE * sizeof(char));
