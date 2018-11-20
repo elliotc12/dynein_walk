@@ -149,7 +149,8 @@ def get_stroke_angles_data(args):
     data_file = "data/paper_stroke_angle_data.txt"
 
     if (not os.path.isfile(data_file)):
-        print("Please run 'python3 scripts/generate-angle-data.py' to generate data first")
+        print("Please run 'python3 scripts/generate-angle-data.py' to generate angle data. Replacing angle figures with dummies.")
+        return "NODATAFILE"
 
     with open(data_file, 'r') as fd:
         data_txt = fd.read()
@@ -466,6 +467,21 @@ def window_avg(times, array, width):
 def make_stroke_plots(args, angles_data):
     plt.figure()
 
+    if (angles_data == "NODATAFILE"):
+        plt.figure(figsize=(4,4))
+        plt.text(0.5, 0.5, "No data file \ndata/paper\_stroke\_angle\_data.txt.\n Run \nscripts/generate-angle-data.py \nto generate.",
+                 horizontalalignment="center", verticalalignment="center", fontsize=17)
+
+        plt.axis("off")
+        plt.savefig("plots/onebound_stroke_taily_positions.pdf", format="pdf")
+        plt.savefig("plots/onebound_stroke_tailx_positions.pdf", format="pdf")
+        plt.savefig("plots/onebound_stroke_angles.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_angles_bd.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_taily_positions.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_tailx_positions.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
+        return
+
     (onebound_angles_data, bothbound_angles_data) = angles_data
 
     dtailx_avg = np.nanmean(bothbound_angles_data["dtailx"], axis=0)
@@ -484,7 +500,7 @@ def make_stroke_plots(args, angles_data):
     plt.gca().axhline(197 / 180 * np.pi, color='red', linestyle='dashed', linewidth=1)
     plt.gca().axhline(242 / 180 * np.pi, color='blue', linestyle='dashed', linewidth=1)
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
-    plt.savefig("plots/bothbound_stroke_angles.pdf", format="pdf")
+    plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
 
     plt.figure()
     for num, dtailx in enumerate(bothbound_angles_data["dtailx"]):
