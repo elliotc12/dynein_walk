@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
 
-from basic_units import radians, degrees
+from basic_units import radians
 
 import dynein.data as datalib
 
@@ -493,26 +493,35 @@ def make_stroke_plots(args, angles_data):
     ma_avg = np.nanmean(bothbound_angles_data["ma"], axis=0)
     ba_avg = np.nanmean(bothbound_angles_data["ba"], axis=0)
 
-    for num, ma in enumerate(bothbound_angles_data["ma"]):
-        w_times, w_ma = window_avg(bothbound_angles_data["times"][num], ma, 1e2)
-        # plt.scatter(0, ma[0]*radians, zorder=3, color="k", yunits=radians)
-        plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
+    # for num, ma in enumerate(bothbound_angles_data["ma"]):
+    #     w_times, w_ma = window_avg(bothbound_angles_data["times"][num], ma, 1e2)
+    #     plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
     w_times_avg, w_ma_avg = window_avg(bothbound_angles_data["longest_times"], ma_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ma"]]))# / (len(bothbound_angles_data["ma"]) - 1)
+    plt.fill_between(w_times_avg, (w_ma_avg+stds)*radians, (w_ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(w_times_avg, w_ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
     plt.ylabel(r"$\theta_{um}$ poststroke")
-    plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1)
-    plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
+    plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1, yunits=radians)
+    plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1, yunits=radians)
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
     plt.tight_layout()
     plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
 
     plt.figure()
-    for num, dtailx in enumerate(bothbound_angles_data["dtailx"]):
-        w_times, w_dtailx = window_avg(bothbound_angles_data["times"][num], dtailx, 1e2)
-        # plt.scatter(0, dtailx[0], zorder=3, color="k")
-        plt.plot(w_times, w_dtailx, zorder=1)
+    # for num, dtailx in enumerate(bothbound_angles_data["dtailx"]):
+    #     w_times, w_dtailx = window_avg(bothbound_angles_data["times"][num], dtailx, 1e2)
+    #     # plt.scatter(0, dtailx[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_dtailx, zorder=1)
     w_times_avg, w_dtailx_avg = window_avg(bothbound_angles_data["longest_times"], dtailx_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["dtailx"]]))
+    plt.fill_between(w_times_avg, w_dtailx_avg+stds, w_dtailx_avg-stds, zorder=2, alpha=0.5)
     plt.plot(w_times_avg, w_dtailx_avg, linewidth=3, zorder=2)
     plt.xlabel("time (ns)")
     plt.ylabel("tail x poststroke (nm)")
@@ -521,11 +530,16 @@ def make_stroke_plots(args, angles_data):
     plt.savefig("plots/bothbound_stroke_tailx_positions.pdf", format="pdf")
 
     plt.figure()
-    for num, taily in enumerate(bothbound_angles_data["taily"]):
-        w_times, w_taily = window_avg(bothbound_angles_data["times"][num], taily, 1e2)
-        # plt.scatter(0, taily[0], zorder=3, color="k")
-        plt.plot(w_times, w_taily, zorder=1)
+    # for num, taily in enumerate(bothbound_angles_data["taily"]):
+    #     w_times, w_taily = window_avg(bothbound_angles_data["times"][num], taily, 1e2)
+    #     # plt.scatter(0, taily[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_taily, zorder=1)
     w_times_avg, w_taily_avg = window_avg(bothbound_angles_data["longest_times"], taily_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["taily"]]))# / (len(bothbound_angles_data["ma"]) - 1)
+    plt.fill_between(w_times_avg, w_taily_avg+stds, w_taily_avg-stds, zorder=2, alpha=0.5)
     plt.plot(w_times_avg, w_taily_avg, linewidth=3, zorder=2)
     plt.xlabel("time (ns)")
     plt.ylabel("tail y poststroke (nm)")
@@ -534,11 +548,16 @@ def make_stroke_plots(args, angles_data):
     plt.savefig("plots/bothbound_stroke_taily_positions.pdf", format="pdf")
 
     plt.figure()
-    for num, ba in enumerate(bothbound_angles_data["ba"]):
-        w_times, w_ba = window_avg(bothbound_angles_data["times"][num], ba, 1e2)
-        # plt.scatter(0, ba[0]*radians, zorder=3, color="k", yunits=radians)
-        plt.plot(w_times, w_ba*radians, zorder=1, yunits=radians)
+    # for num, ba in enumerate(bothbound_angles_data["ba"]):
+    #     w_times, w_ba = window_avg(bothbound_angles_data["times"][num], ba, 1e2)
+    #     # plt.scatter(0, ba[0]*radians, zorder=3, color="k", yunits=radians)
+    #     plt.plot(w_times, w_ba*radians, zorder=1, yunits=radians)
     w_times_avg, w_ba_avg = window_avg(bothbound_angles_data["longest_times"], ba_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ba"]]))
+    plt.fill_between(w_times_avg, (w_ba_avg+stds)*radians, (w_ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(w_times_avg, w_ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
     plt.ylabel(r"$\theta_{ub}$ poststroke")
@@ -552,11 +571,16 @@ def make_stroke_plots(args, angles_data):
     ma_avg = np.nanmean(onebound_angles_data["ma"], axis=0)
 
     plt.figure()
-    for num, ma in enumerate(onebound_angles_data["ma"]):
-        w_times, w_ma = window_avg(onebound_angles_data["times"][num], ma, 1e2)
-        # plt.scatter(0, ma[0]*radians, zorder=3, color="k", yunits=radians)
-        plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
+    # for num, ma in enumerate(onebound_angles_data["ma"]):
+    #     w_times, w_ma = window_avg(onebound_angles_data["times"][num], ma, 1e2)
+    #     # plt.scatter(0, ma[0]*radians, zorder=3, color="k", yunits=radians)
+    #     plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
     w_times_avg, w_ma_avg = window_avg(onebound_angles_data["longest_times"], ma_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in onebound_angles_data["ma"]]))
+    plt.fill_between(w_times_avg, (w_ma_avg+stds)*radians, (w_ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(w_times_avg, w_ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
     plt.ylabel(r"$\theta_{um}$ prestroke")
@@ -567,11 +591,16 @@ def make_stroke_plots(args, angles_data):
     plt.savefig("plots/onebound_stroke_angles.pdf", format="pdf")
 
     plt.figure()
-    for num, dtailx in enumerate(onebound_angles_data["dtailx"]):
-        w_times, w_dtailx = window_avg(onebound_angles_data["times"][num], dtailx, 1e2)
-        # plt.scatter(0, dtailx[0], zorder=3, color="k")
-        plt.plot(w_times, w_dtailx, zorder=1)
+    # for num, dtailx in enumerate(onebound_angles_data["dtailx"]):
+    #     w_times, w_dtailx = window_avg(onebound_angles_data["times"][num], dtailx, 1e2)
+    #     # plt.scatter(0, dtailx[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_dtailx, zorder=1)
     w_times_avg, w_dtailx_avg = window_avg(onebound_angles_data["longest_times"], dtailx_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.nanstd(np.array([arr[int(t_idx)] for arr in onebound_angles_data["dtailx"]])) # nanstd fixes this but why is it diff than others?
+    plt.fill_between(w_times_avg, w_dtailx_avg+stds, w_dtailx_avg-stds, zorder=2, alpha=0.5)
     plt.plot(w_times_avg, w_dtailx_avg, linewidth=3, zorder=2)
     plt.xlabel("time (ns)")
     plt.ylabel("tail x prestroke (nm)")
@@ -580,11 +609,15 @@ def make_stroke_plots(args, angles_data):
     plt.savefig("plots/onebound_stroke_tailx_positions.pdf", format="pdf")
 
     plt.figure()
-    for num, taily in enumerate(onebound_angles_data["taily"]):
-        w_times, w_taily = window_avg(onebound_angles_data["times"][num], taily, 1e2)
-        # plt.scatter(0, taily[0], zorder=3, color="k")
-        plt.plot(w_times, w_taily, zorder=1)
+    # for num, taily in enumerate(onebound_angles_data["taily"]):
+    #     w_times, w_taily = window_avg(onebound_angles_data["times"][num], taily, 1e2)
+    #     plt.plot(w_times, w_taily, zorder=1)
     w_times_avg, w_taily_avg = window_avg(onebound_angles_data["longest_times"], taily_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in onebound_angles_data["taily"]]))
+    plt.fill_between(w_times_avg, w_taily_avg+stds, w_taily_avg-stds, zorder=2, alpha=0.5)
     plt.plot(w_times_avg, w_taily_avg, linewidth=3, zorder=2)
     plt.xlabel("time (ns)")
     plt.ylabel("tail y prestroke (nm)")
