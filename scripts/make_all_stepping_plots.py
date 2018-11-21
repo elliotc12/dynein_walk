@@ -3,6 +3,7 @@
 from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess, re
+from io import StringIO
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -13,6 +14,8 @@ import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
+
+from basic_units import radians
 
 import dynein.data as datalib
 
@@ -143,6 +146,118 @@ def get_force_data(args):
         force_data["seeds"].append([s])
         force_data["velocities"].append([velocity])
     return force_data
+
+def get_stroke_angles_data(args):
+    data_file = "data/paper_stroke_angle_data.txt"
+
+    if (not os.path.isfile(data_file)):
+        print("Please run 'python3 scripts/generate-angle-data.py' to generate angle data. Replacing angle figures with dummies.")
+        return "NODATAFILE"
+
+    with open(data_file, 'r') as fd:
+        data_txt = fd.read()
+
+    onebound_angles_data = {}
+    onebound_angles_data["state"] = []
+    onebound_angles_data["times"] = []
+    onebound_angles_data["dtailx"] = []
+    onebound_angles_data["taily"] = []
+    onebound_angles_data["ma"] = []
+    onebound_angles_data["d_ma"] = []
+
+    bothbound_angles_data = {}
+    bothbound_angles_data["state"] = []
+    bothbound_angles_data["times"] = []
+    bothbound_angles_data["dtailx"] = []
+    bothbound_angles_data["taily"] = []
+    bothbound_angles_data["ma"] = []
+    bothbound_angles_data["d_ma"] = []
+    bothbound_angles_data["ba"] = []
+
+    onebound_longest_run_length = 0
+    onebound_longest_run_times = []
+
+    bothbound_longest_run_length = 0
+    bothbound_longest_run_times = []
+
+    onebound_data_txt = ""
+    bothbound_data_txt = ""
+
+    for line in data_txt.split('\n'):
+        if "NEARBOUN" in line or "FARBOUND" in line or "NEWUNBINDING" in line:
+            onebound_data_txt += line + '\n'
+        elif '#' not in line:
+            bothbound_data_txt += line + '\n'
+
+    while (onebound_data_txt.find("NEWUNBINDING") != -1):
+        step_idx = onebound_data_txt.find("NEWUNBINDING")
+        if (onebound_data_txt[step_idx+13:].find("NEWUNBINDING") != -1):
+            next_step_idx = onebound_data_txt[step_idx+13:].find("NEWUNBINDING")
+            stroke_onebound_data_txt = onebound_data_txt[step_idx+13:step_idx+13+next_step_idx]
+            onebound_data_txt = onebound_data_txt[step_idx+13+next_step_idx:]
+        else:
+            stroke_onebound_data_txt = onebound_data_txt[step_idx+13:]
+            onebound_data_txt = ""
+
+        state = stroke_onebound_data_txt[0:9]
+        stroke_data = np.genfromtxt(StringIO(stroke_onebound_data_txt))
+
+        if (stroke_data.size < 7):
+            continue
+
+        onebound_angles_data["state"].append(state)
+        onebound_angles_data["times"].append(stroke_data[:,1] - stroke_data[0,1])
+        onebound_angles_data["dtailx"].append(stroke_data[:,2] - stroke_data[0,2])
+        onebound_angles_data["taily"].append(stroke_data[:,3])
+        onebound_angles_data["ma"].append(stroke_data[:,4])
+        onebound_angles_data["d_ma"].append(stroke_data[:,4] - stroke_data[0,4])
+        if len(stroke_data[:,1]) > onebound_longest_run_length:
+            onebound_longest_run_length = len(stroke_data[:,1])
+            onebound_longest_run_times = stroke_data[:,1] - stroke_data[0,1]
+
+    onebound_angles_data["times"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["times"]]) / 1e-9
+    onebound_angles_data["dtailx"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["dtailx"]])
+    onebound_angles_data["taily"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["taily"]])
+    onebound_angles_data["ma"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["ma"]])
+    onebound_angles_data["d_ma"] = np.array([np.pad(s, (0,onebound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in onebound_angles_data["d_ma"]])
+    onebound_angles_data["longest_times"] = onebound_longest_run_times / 1e-9
+
+    while (bothbound_data_txt.find("NEWBINDING") != -1):
+        step_idx = bothbound_data_txt.find("NEWBINDING")
+        if (bothbound_data_txt[step_idx+10:].find("NEWBINDING") != -1):
+            next_step_idx = bothbound_data_txt[step_idx+10:].find("NEWBINDING")
+            stroke_bothbound_data_txt = bothbound_data_txt[step_idx+10:step_idx+10+next_step_idx]
+            bothbound_data_txt = bothbound_data_txt[step_idx+10+next_step_idx:]
+        else:
+            stroke_bothbound_data_txt = bothbound_data_txt[step_idx+10:]
+            bothbound_data_txt = ""
+
+        state = stroke_bothbound_data_txt[0:9]
+        stroke_data = np.genfromtxt(StringIO(stroke_bothbound_data_txt))
+
+        if (stroke_data.size < 7):
+            continue
+
+        bothbound_angles_data["state"].append(state)
+        bothbound_angles_data["times"].append(stroke_data[:,1] - stroke_data[0,1])
+        bothbound_angles_data["dtailx"].append(stroke_data[:,2] - stroke_data[0,2])
+        bothbound_angles_data["taily"].append(stroke_data[:,3])
+        bothbound_angles_data["ma"].append(stroke_data[:,4])
+        bothbound_angles_data["d_ma"].append(stroke_data[:,4] - stroke_data[0,4])
+        bothbound_angles_data["ba"].append(stroke_data[:,5])
+        if len(stroke_data[:,1]) > bothbound_longest_run_length:
+            bothbound_longest_run_length = len(stroke_data[:,1])
+            bothbound_longest_run_times = stroke_data[:,1] - stroke_data[0,1]
+
+    bothbound_angles_data["times"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["times"]]) / 1e-9
+    bothbound_angles_data["dtailx"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["dtailx"]])
+    bothbound_angles_data["taily"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["taily"]])
+    bothbound_angles_data["ma"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ma"]])
+    bothbound_angles_data["d_ma"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["d_ma"]])
+    bothbound_angles_data["ba"] = np.array([np.pad(s, (0,bothbound_longest_run_length-len(s)), mode="constant", constant_values=np.nan) for s in bothbound_angles_data["ba"]])
+    bothbound_angles_data["longest_times"] = bothbound_longest_run_times / 1e-9
+
+    return (onebound_angles_data, bothbound_angles_data)
 
 def get_cli_arguments():
     parser = argparse.ArgumentParser(description = 'script to generate various histograms from stepping data.')
@@ -340,6 +455,189 @@ def make_force_plot(args, force_data):
     plt.tight_layout()
     plt.savefig("plots/force_vs_velocity.pdf", format="pdf")
 
+def window_avg(times, array, width):
+    if len(times) < width*3:
+        return [], []
+    indices = np.arange(0, len(times), width)
+    w_times = np.zeros(len(indices)-2)
+    w_array = np.zeros(len(indices)-2)
+    for i, n in enumerate(indices[1:-1]):
+        w_times[i] = times[int(n-width//2)]
+        w_array[i] = np.mean(array[int(n-width):int(n)])
+    return w_times, w_array
+
+def make_stroke_plots(args, angles_data):
+    plt.figure()
+
+    if (angles_data == "NODATAFILE"):
+        plt.figure(figsize=(4,4))
+        plt.text(0.5, 0.5, "No data file \ndata/paper\_stroke\_angle\_data.txt.\n Run \nscripts/generate-angle-data.py \nto generate.",
+                 horizontalalignment="center", verticalalignment="center", fontsize=17)
+
+        plt.axis("off")
+        plt.savefig("plots/onebound_stroke_taily_positions.pdf", format="pdf")
+        plt.savefig("plots/onebound_stroke_tailx_positions.pdf", format="pdf")
+        plt.savefig("plots/onebound_stroke_angles.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_angles_bd.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_taily_positions.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_tailx_positions.pdf", format="pdf")
+        plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
+        return
+
+    (onebound_angles_data, bothbound_angles_data) = angles_data
+
+    plt.rcParams.update({'font.size': 21})
+
+    dtailx_avg = np.nanmean(bothbound_angles_data["dtailx"], axis=0)
+    taily_avg = np.nanmean(bothbound_angles_data["taily"], axis=0)
+    ma_avg = np.nanmean(bothbound_angles_data["ma"], axis=0)
+    ba_avg = np.nanmean(bothbound_angles_data["ba"], axis=0)
+
+    # for num, ma in enumerate(bothbound_angles_data["ma"]):
+    #     w_times, w_ma = window_avg(bothbound_angles_data["times"][num], ma, 1e2)
+    #     plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
+    w_times_avg, w_ma_avg = window_avg(bothbound_angles_data["longest_times"], ma_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ma"]]))# / (len(bothbound_angles_data["ma"]) - 1)
+    plt.fill_between(w_times_avg, (w_ma_avg+stds)*radians, (w_ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
+    plt.plot(w_times_avg, w_ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
+    plt.xlabel("time (ns)")
+    plt.ylabel(r"$\theta_{um}$ poststroke")
+    plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1, yunits=radians)
+    plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1, yunits=radians)
+    plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
+
+    plt.figure()
+    # for num, dtailx in enumerate(bothbound_angles_data["dtailx"]):
+    #     w_times, w_dtailx = window_avg(bothbound_angles_data["times"][num], dtailx, 1e2)
+    #     # plt.scatter(0, dtailx[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_dtailx, zorder=1)
+    w_times_avg, w_dtailx_avg = window_avg(bothbound_angles_data["longest_times"], dtailx_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["dtailx"]]))
+    plt.fill_between(w_times_avg, w_dtailx_avg+stds, w_dtailx_avg-stds, zorder=2, alpha=0.5)
+    plt.plot(w_times_avg, w_dtailx_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (ns)")
+    plt.ylabel("tail x poststroke (nm)")
+    plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/bothbound_stroke_tailx_positions.pdf", format="pdf")
+
+    plt.figure()
+    # for num, taily in enumerate(bothbound_angles_data["taily"]):
+    #     w_times, w_taily = window_avg(bothbound_angles_data["times"][num], taily, 1e2)
+    #     # plt.scatter(0, taily[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_taily, zorder=1)
+    w_times_avg, w_taily_avg = window_avg(bothbound_angles_data["longest_times"], taily_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["taily"]]))# / (len(bothbound_angles_data["ma"]) - 1)
+    plt.fill_between(w_times_avg, w_taily_avg+stds, w_taily_avg-stds, zorder=2, alpha=0.5)
+    plt.plot(w_times_avg, w_taily_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (ns)")
+    plt.ylabel("tail y poststroke (nm)")
+    plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/bothbound_stroke_taily_positions.pdf", format="pdf")
+
+    plt.figure()
+    # for num, ba in enumerate(bothbound_angles_data["ba"]):
+    #     w_times, w_ba = window_avg(bothbound_angles_data["times"][num], ba, 1e2)
+    #     # plt.scatter(0, ba[0]*radians, zorder=3, color="k", yunits=radians)
+    #     plt.plot(w_times, w_ba*radians, zorder=1, yunits=radians)
+    w_times_avg, w_ba_avg = window_avg(bothbound_angles_data["longest_times"], ba_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ba"]]))
+    plt.fill_between(w_times_avg, (w_ba_avg+stds)*radians, (w_ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
+    plt.plot(w_times_avg, w_ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
+    plt.xlabel("time (ns)")
+    plt.ylabel(r"$\theta_{ub}$ poststroke")
+    plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+    plt.gca().axhline(120 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
+    plt.tight_layout()
+    plt.savefig("plots/bothbound_stroke_angles_bd.pdf", format="pdf")
+
+    dtailx_avg = np.nanmean(onebound_angles_data["dtailx"], axis=0)
+    taily_avg = np.nanmean(onebound_angles_data["taily"], axis=0)
+    ma_avg = np.nanmean(onebound_angles_data["ma"], axis=0)
+
+    plt.figure()
+    # for num, ma in enumerate(onebound_angles_data["ma"]):
+    #     w_times, w_ma = window_avg(onebound_angles_data["times"][num], ma, 1e2)
+    #     # plt.scatter(0, ma[0]*radians, zorder=3, color="k", yunits=radians)
+    #     plt.plot(w_times, w_ma*radians, zorder=1, yunits=radians)
+    w_times_avg, w_ma_avg = window_avg(onebound_angles_data["longest_times"], ma_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in onebound_angles_data["ma"]]))
+    plt.fill_between(w_times_avg, (w_ma_avg+stds)*radians, (w_ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
+    plt.plot(w_times_avg, w_ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
+    plt.xlabel("time (ns)")
+    plt.ylabel(r"$\theta_{um}$ prestroke")
+    plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1)
+    plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
+    plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/onebound_stroke_angles.pdf", format="pdf")
+
+    plt.figure()
+    # for num, dtailx in enumerate(onebound_angles_data["dtailx"]):
+    #     w_times, w_dtailx = window_avg(onebound_angles_data["times"][num], dtailx, 1e2)
+    #     # plt.scatter(0, dtailx[0], zorder=3, color="k")
+    #     plt.plot(w_times, w_dtailx, zorder=1)
+    w_times_avg, w_dtailx_avg = window_avg(onebound_angles_data["longest_times"], dtailx_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.nanstd(np.array([arr[int(t_idx)] for arr in onebound_angles_data["dtailx"]])) # nanstd fixes this but why is it diff than others?
+    plt.fill_between(w_times_avg, w_dtailx_avg+stds, w_dtailx_avg-stds, zorder=2, alpha=0.5)
+    plt.plot(w_times_avg, w_dtailx_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (ns)")
+    plt.ylabel("tail x prestroke (nm)")
+    plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/onebound_stroke_tailx_positions.pdf", format="pdf")
+
+    plt.figure()
+    # for num, taily in enumerate(onebound_angles_data["taily"]):
+    #     w_times, w_taily = window_avg(onebound_angles_data["times"][num], taily, 1e2)
+    #     plt.plot(w_times, w_taily, zorder=1)
+    w_times_avg, w_taily_avg = window_avg(onebound_angles_data["longest_times"], taily_avg, 1e2)
+    stds = np.zeros_like(w_times_avg)
+    for i, time in enumerate(w_times_avg):
+        t_idx = np.where(onebound_angles_data["longest_times"] == time)[0]
+        stds[i] = np.std(np.array([arr[int(t_idx)] for arr in onebound_angles_data["taily"]]))
+    plt.fill_between(w_times_avg, w_taily_avg+stds, w_taily_avg-stds, zorder=2, alpha=0.5)
+    plt.plot(w_times_avg, w_taily_avg, linewidth=3, zorder=2)
+    plt.xlabel("time (ns)")
+    plt.ylabel("tail y prestroke (nm)")
+    plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])
+    plt.tight_layout()
+    plt.savefig("plots/onebound_stroke_taily_positions.pdf", format="pdf")
+
+# is it possible that our current results are true, and that dynein moves mostly on its prestroke, not poststroke?
+# the best way to figure out this would be to get the average x-displacement during onebound and bothbound
+# perhaps just measure the tx-displacement histogram for onebound and bothbound and see if there are interesting trends
+# make ba plot
+# augment the stepping data files to also show the ob vs bb tail displacement
+
+# Maybe have make automatically make the data file since it's pretty small; have it in the repository
+# Make an alternate trajectory movie which is smaller so you can see steps better
+
+# at the current sim conditions (1e5 logging iterations, kb 1e8 kub 1e4), tailx displaces about 17.6nm in about .5us per step during the powerstroke, suggesting a max speed of 35 mm/s
+# the binding domain during powerstroke reliably changes by about pi/6 or 30 degrees, suggesting a partial powerstroke mechanism (as opposed to winch)
+# the tail actually increases its y coordinate by about 10nm, in opposition to the winch mechanism
+
 def initialize():
     plt.rcParams.update({'font.size': 8})
 
@@ -349,136 +647,14 @@ def main():
     stepping_data = get_stepping_data(args)
     unbinding_probability_data = get_unbinding_probability_data(args)
     force_data = get_force_data(args)
+    angles_data = get_stroke_angles_data(args)
     make_behavior_plot(args, stepping_data, unbinding_probability_data)
     if args.quick:
         exit()
     make_analysis_plot(args, stepping_data)
     force_data = get_force_data(args)
     make_force_plot(args, force_data)
+    make_stroke_plots(args, angles_data)
 
 if __name__ == "__main__":
     main()
-
-# #step time histogram
-# gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
-# ax0 = fig.add_subplot(gs[0])
-# ax1 = fig.add_subplot(gs[1])
-# ax2 = fig.add_subplot(gs[2])
-# ax3 = fig.add_subplot(gs[3])
-
-# if len(step_times) > 0:
-#     ax0.hist(step_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
-#     ax1.hist(onebound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
-#     ax2.hist(bothbound_times, bins=np.logspace(np.log10(1e-10),np.log10(1e-2), 50))
-#     # ax3.hist(run_velocities, bins=50)
-
-# ax0.set_ylabel("Frequency")
-# ax0.set_xscale('log')
-# # ax0.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
-# ax1.set_ylabel("Frequency")
-# ax1.set_xscale('log')
-# # ax1.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
-# ax2.set_xlabel("Step time (s)")
-# ax2.set_ylabel("Frequency")
-# ax2.set_xscale('log')
-# # ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-
-# ax3.set_xlabel("velocity (nm/s)")
-# ax3.set_ylabel("Frequency")
-
-# plt.subplots_adjust(hspace=0.6)
-
-# plt.show()
-# plt.gca().spines["top"].set_visible(False)
-# plt.gca().spines["right"].set_visible(False)
-# # plt.tight_layout()
-# plt.savefig("plots/stepping_time_histogram.pdf", format="pdf")
-# plt.close(fig)
-
-# # OB_time vs step_length scatter
-# assert len(onebound_times) == len(step_lengths)
-# fig = plt.figure()
-# plt.scatter(onebound_times, step_lengths, alpha=0.1)
-# plt.gca().set_xscale('log')
-# plt.xlabel("Onebound time (s)")
-# plt.ylabel("Step length (nm)")
-
-# plt.gca().set_xlim((1e-7, 1e-2))
-
-# plt.tight_layout()
-# plt.gca().spines["top"].set_visible(False)
-# plt.gca().spines["right"].set_visible(False)
-# plt.savefig("plots/ob-vs-length-scatter.pdf", format="pdf")
-# plt.close(fig)
-
-# # BB_time vs step_length scatter
-# assert len(bothbound_times) == len(step_lengths)
-# fig = plt.figure()
-# plt.scatter(bothbound_times, step_lengths, alpha=0.1)
-# plt.gca().set_xscale('log')
-# plt.xlabel("Bothbound time (s), theory= 5e-3s")
-# plt.ylabel("Step length (nm)")
-
-# plt.gca().set_xlim((1e-5, 1))
-
-# plt.gca().spines["top"].set_visible(False)
-# plt.gca().spines["right"].set_visible(False)
-# plt.tight_layout()
-# plt.savefig("plots/bb-vs-length-scatter.pdf", format="pdf")
-# plt.close(fig)
-
-# # initial displacement vs motor step length scatter
-# fig = plt.figure()
-# plt.plot(initial_displacements, initial_displacements+step_lengths, '.', alpha=0.3)
-# plt.xlabel("Initial displacement (nm)")
-# plt.ylabel("Step length (nm)")
-# plt.ylabel("Final displacement (nm)")
-# plt.axes().set_aspect('equal')
-
-# plt.gca().spines["top"].set_visible(False)
-# plt.gca().spines["right"].set_visible(False)
-# plt.tight_layout()
-# plt.savefig("plots/displacement_vs_step_length.pdf", format="pdf")
-# plt.close(fig)
-
-
-# fig = plt.figure()
-
-# initial_displacements = np.array(initial_displacements)
-# indices = np.argsort(np.abs(initial_displacements))
-# sorted_displacements = initial_displacements[indices]
-
-# Nbin = 50
-# L = np.zeros(int((len(sorted_displacements)-1)/Nbin)+1)
-# ntrailing = np.zeros_like(L)
-# nleading = np.zeros_like(L)
-# for i in range(len(L)):
-#     bunch = sorted_displacements[i*Nbin:(i+1)*Nbin]
-#     ntrailing[i] = (bunch < 0).sum()
-#     nleading[i] = (bunch > 0).sum()
-#     L[i] = np.abs(bunch).mean()
-
-# fraction_trailing = ntrailing / (ntrailing + nleading)
-
-# yildiz_displacements = [10, 20, 30, 40, 50]
-# yildiz_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
-# yildiz_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
-
-# plt.plot(L, fraction_trailing, 'o-', label="Model")
-# plt.errorbar(yildiz_displacements, yildiz_fractions, yerr=yildiz_uncertainty, label="Experimental (Yildiz 2012)", fmt='o-',)
-# plt.ylim(0,1)
-
-# plt.xlabel("FIXME Initial foot x-displacement (unstepping - stepping) (nm)")
-# plt.ylabel("Fraction trailing")
-
-# plt.ylim([0,1.1])
-
-# plt.legend()
-
-# plt.gca().spines["top"].set_visible(False)
-# plt.gca().spines["right"].set_visible(False)
-# plt.tight_layout()
-# plt.savefig("plots/displacement_histogram.pdf", format="pdf")
-# plt.close(fig)
