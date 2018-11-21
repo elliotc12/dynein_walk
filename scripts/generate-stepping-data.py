@@ -81,7 +81,7 @@ if args.renametrajectory:
     os.unlink("data/stepping_movie_config_%s.txt" % basename)
 
 if args.renameangles:
-    os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_stroke_angle_data.txt")
+    os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_stroke_angle_data_%s.txt" % str(args.seed))
     os.unlink("data/stepping_parameters_%s.tex" % (basename))
     os.unlink("data/stepping_movie_config_%s.txt" % basename)
 

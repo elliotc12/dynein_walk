@@ -148,14 +148,21 @@ def get_force_data(args):
     return force_data
 
 def get_stroke_angles_data(args):
-    data_file = "data/paper_stroke_angle_data.txt"
+    data_files = []
+    for fname in os.listdir("data"):
+        if os.path.isfile("data/" + fname):
+            if ("paper_stroke_angle_data" in fname and ".txt" in fname):
+                if ("~" not in fname):
+                    data_files.append("data/" + fname)
 
-    if (not os.path.isfile(data_file)):
+    if len(data_files) == 0:
         print("Please run 'python3 scripts/generate-angle-data.py' to generate angle data. Replacing angle figures with dummies.")
         return "NODATAFILE"
 
-    with open(data_file, 'r') as fd:
-        data_txt = fd.read()
+    data_txt = ""
+    for data_file in data_files:
+        with open(data_file, 'r') as fd:
+            data_txt = data_txt + fd.read()
 
     onebound_angles_data = {}
     onebound_angles_data["state"] = []
