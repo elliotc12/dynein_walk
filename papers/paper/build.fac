@@ -1,4 +1,7 @@
 | xelatex paper.tex && bibtex paper && xelatex paper.tex && xelatex paper.tex
-
-
-
+< ../../plots/paper_force_vs_velocity.pdf
+< ../../data/paper_params.tex
+< ../../plots/grotjahn-model-figure.pdf
+< ../../plots/paper_trajectory_plot.pdf
+< ../../plots/paper_initial_vs_final_displacement.pdf
+< ../../papers/paper/figures/model-cartoon-simple.pdf
