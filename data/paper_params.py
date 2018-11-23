@@ -20,8 +20,8 @@ ct = 0.36 # kbT
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09
 
 eqb = 120
-eqmpre = 197 # 204.5 from burgess
-eqmpost = 242 # 222.5 from burgess, but as much as 234.5 -- they say 15nm difference for pre/post ub domain, so maybe latter is better
+eqmpre = 197
+eqmpost = 242
 eqt = 0
 
 ls = 20.75 # nm
