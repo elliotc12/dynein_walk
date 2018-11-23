@@ -3,6 +3,7 @@
 % Note that the use of elements such as single-column equations
 % may affect the guide line number alignment.
 
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{breqn}
 \usepackage{color}
@@ -13,6 +14,8 @@
 \nonstopmode
 
 \setboolean{displaywatermark}{false}
+
+\captionsetup[subfigure]{singlelinecheck=off,justification=raggedright, margin=0pt, parskip=0, skip=0pt}
 
 \templatetype{pnasresearcharticle} % Choose template 
 % {pnasresearcharticle} = Template for a two-column research article
@@ -307,13 +310,12 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
 
 \begin{figure}[tbhp]
   \centering
-  \includegraphics[width=0.5\columnwidth]{figures/model-cartoon-simple}%
-  \includegraphics[width=0.5\columnwidth]{../../plots/bothbound_stroke_angles_bd.pdf}\\
-  \includegraphics[width=0.5\columnwidth]{../../plots/bothbound_stroke_taily_positions}%
-  \includegraphics[width=0.5\columnwidth]{../../plots/bothbound_stroke_tailx_positions}\\
-  \includegraphics[width=0.5\columnwidth]{../../plots/onebound_stroke_tailx_positions}%
-  \includegraphics[width=0.5\columnwidth]{../../plots/bothbound_stroke_angles_md}\\
-  \caption{\textbf{Model behavior during power stroke.}}
+  \begin{subfigure}[]{0.8\columnwidth}\caption{}\includegraphics[width=\columnwidth]{figures/winch-powerstroke-cartoon}\end{subfigure}\vspace{10pt}\\
+  \begin{subfigure}[]{0.5\columnwidth}\caption{}\includegraphics[width=\columnwidth]{../../plots/bothbound_stroke_angles_bd.pdf}\end{subfigure}%
+  \begin{subfigure}[]{0.5\columnwidth}\caption{}\includegraphics[width=\columnwidth]{../../plots/bothbound_stroke_angles_md}\end{subfigure}\\
+  \begin{subfigure}[]{0.5\columnwidth}\caption{}\includegraphics[width=\columnwidth]{../../plots/bothbound_stroke_tailx_positions}\end{subfigure}%
+  \begin{subfigure}[]{0.5\columnwidth}\caption{}\includegraphics[width=\columnwidth]{../../plots/bothbound_stroke_taily_positions}\end{subfigure}
+  \caption{\textbf{Dynein model exhibits powerstroke, not winch, dynamics.} \textit{A. left: } Schematic of the winch mechanism. On free MTBD binding, linker swing in the just-bound head pulls the tail and cargo in the direction of the just-bound MTBD. \textit{A. right: } Schematic of the powerstroke mechanism. On free MTBD binding, linker swing pushes the just-bound head and tail domains towards the minus-end of the MT and alters the just-bound stalk domain's angle with the MT. \textit{b.) } Just-bound MTBD angle relative to MT axis as a function of time since MTBD binding along with MTBD angle equilibrium (blue dotted line). \textit{c.) } Just-bound head angle, along with prestroke equilibrium (red dotted line) and poststroke equilibrium (blue dotted line). \textit{d.) } Change in tail domain x coordinate since MTBD binding. \textit{e.) } Value of tail domain y coordinate. All values sampled every $10 ns$ and plotted as mean $\pm$ SD.}
 \label{fig:stroke}
 \end{figure}
 
