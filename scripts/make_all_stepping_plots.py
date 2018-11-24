@@ -3,7 +3,7 @@
 from __future__ import division
 import numpy as np
 import time, signal, sys, os, matplotlib, subprocess, re
-from io import StringIO
+from io import BytesIO
 
 if 'show' not in sys.argv:
     matplotlib.use('Agg')
@@ -206,8 +206,11 @@ def get_stroke_angles_data(args):
             stroke_onebound_data_txt = onebound_data_txt[step_idx+13:]
             onebound_data_txt = ""
 
+        if (len(stroke_onebound_data_txt) == 0):
+            continue
+
         state = stroke_onebound_data_txt[0:9]
-        stroke_data = np.genfromtxt(StringIO(stroke_onebound_data_txt))
+        stroke_data = np.genfromtxt(BytesIO(stroke_onebound_data_txt.encode()))
 
         if (stroke_data.size < 7):
             continue
@@ -239,8 +242,11 @@ def get_stroke_angles_data(args):
             stroke_bothbound_data_txt = bothbound_data_txt[step_idx+10:]
             bothbound_data_txt = ""
 
+        if (len(stroke_bothbound_data_txt) < 5):
+            continue
+
         state = stroke_bothbound_data_txt[0:9]
-        stroke_data = np.genfromtxt(StringIO(stroke_bothbound_data_txt))
+        stroke_data = np.genfromtxt(BytesIO(stroke_bothbound_data_txt.encode()))
 
         if (stroke_data.size < 7):
             continue
