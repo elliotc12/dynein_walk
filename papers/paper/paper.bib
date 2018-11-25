@@ -535,4 +535,13 @@
 
 @Comment Find how long it takes for the ba angle to return to equilibrium, which, if small, would explain why it's hard to detect the powerstroke. It currently seems to take a while.
 @Comment Add an angle figure of the onebound state to show the motor doesn't walk during this time. This is probably a supplemental figure.
-@Comment 
+@Comment Tension gating was added to the model as a biophysical way to account for unbinding
+@Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
+@Comment       possibly do a randomsearch with c=0 to see how the best ungated dynein behaves, whether gating is necessary or just helpful
+@Comment       alternatively, just do a run identical to the paper-params run except with c=0 to see how gating helps motility, put this in supplemental
+@Comment The point of the initial displacement vs step length plot is that it shows more information than just the initial-disp vs lagging-probability plot - it shows that the model's geometry and powerstroke are right and the model can reproduce hte displacement-step curve --without being fit--
+@Comment       Add Yildiz line fit to displacement-vs-step-length plot
+@Comment Increase the time on the just-bound bd angle plot in the angle plot - quantify how long it takes bd to return to equilibrium (assuming it does) - potentially make this a supplemental figure. This could probably be done using the same code by giving the get_stroke_data function a flag
+@Comment Add commented makefile entry for how to make stroke data
+@Comment Calculate most probable step distance, put in stepping length histogram
+@Comment Read more papers and add them to discussion, particularly those that are relevant to the points you make: powerstroke/winch, MTBD guidance, models, theories on motility
