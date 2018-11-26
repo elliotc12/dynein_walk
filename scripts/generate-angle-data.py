@@ -11,12 +11,17 @@ import sys
 sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
-runtime = 5e-3
+if 'long' in sys.argv:
+    mode = " --longanglemode"
+else:
+    mode = " --anglemode"
+
+runtime = 5e-2
 framerate = 1e-10
 
 basename = "paper_stroke_angles"
 
-seeds = [1, 2, 3]
+seeds = [1]
 
 for seed in seeds:
     os.system("python3 scripts/generate-stepping-data.py" \
@@ -37,4 +42,4 @@ for seed in seeds:
               + " --seed " + str(seed)\
               + " --label paper_stroke_angles_" + str(seed)\
               + " --renameangles"\
-              + " --anglemode")
+              + mode)

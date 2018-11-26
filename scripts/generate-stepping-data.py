@@ -37,6 +37,7 @@ parser.add_argument("-o", "--renamepaper", help="Rename outputs to paper exponen
 parser.add_argument("-R", "--renameforce", help="Rename outputs to force files", action="store_true")
 parser.add_argument("-M", "--renameangles", help="Rename outputs to angles files", action="store_true")
 parser.add_argument("-T", "--anglemode", help="Rename outputs to angles files", action="store_true", default=False)
+parser.add_argument("-L", "--longanglemode", help="Rename outputs to long angles files", action="store_true", default=False)
 args = parser.parse_args()
 
 if args.movie:
@@ -62,7 +63,7 @@ basename = run.sim(**{"k_b": args.kb,
                       "exp-unbinding-constant": args.unbindingconst,
                       "dt": 1e-10, "label": args.label, "seed": args.seed, "runtime": args.runtime,
                       "framerate": args.framerate, "crash-movie": False, "nomovie": not args.movie,
-                      "angle-logging-mode": args.anglemode})
+                      "angle-logging-mode": args.anglemode, "long-angle-logging-mode": args.longanglemode})
 
 if args.renamepaper:
     os.system("mv data/stepping_data_%s.txt data/paper_main_stepping_data-%s.txt" % (basename, args.seed))
@@ -80,8 +81,13 @@ if args.renametrajectory:
     os.rename("data/stepping_parameters_%s.tex" % (basename), "data/paper_trajectory_stepping_parameters.tex")
     os.unlink("data/stepping_movie_config_%s.txt" % basename)
 
-if args.renameangles:
+if args.anglemode:
     os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_stroke_angle_data_%s.txt" % str(args.seed))
+    os.unlink("data/stepping_parameters_%s.tex" % (basename))
+    os.unlink("data/stepping_movie_config_%s.txt" % basename)
+
+if args.longanglemode:
+    os.rename("data/stepping_data_%s.txt" % (basename), "data/paper_long_stroke_angle_data_%s.txt" % str(args.seed))
     os.unlink("data/stepping_parameters_%s.tex" % (basename))
     os.unlink("data/stepping_movie_config_%s.txt" % basename)
 

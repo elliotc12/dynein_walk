@@ -147,11 +147,16 @@ def get_force_data(args):
         force_data["velocities"].append([velocity])
     return force_data
 
-def get_stroke_angles_data(args):
+def get_stroke_angles_data(args, longrun=False):
+    if longrun:
+        basename = "paper_long_stroke_angle_data"
+    else:
+        basename = "paper_stroke_angle_data"
+
     data_files = []
     for fname in os.listdir("data"):
         if os.path.isfile("data/" + fname):
-            if ("paper_stroke_angle_data" in fname and ".txt" in fname):
+            if (basename in fname and ".txt" in fname):
                 if ("~" not in fname):
                     data_files.append("data/" + fname)
 
@@ -479,7 +484,7 @@ def window_avg(times, array, width):
         w_array[i] = np.mean(array[int(n-width):int(n)])
     return w_times, w_array
 
-def make_stroke_plots(args, angles_data):
+def make_stroke_plots(args, angles_data, longrun=False):
     plt.figure()
 
     if (angles_data == "NODATAFILE"):
@@ -509,6 +514,22 @@ def make_stroke_plots(args, angles_data):
     taily_avg = np.nanmean(bothbound_angles_data["taily"], axis=0)
     ma_avg = np.nanmean(bothbound_angles_data["ma"], axis=0)
     ba_avg = np.nanmean(bothbound_angles_data["ba"], axis=0)
+
+    if longrun:
+        plt.figure()
+        stds = np.zeros_like(bothbound_angles_data["longest_times"])
+        for i, time in enumerate(bothbound_angles_data["longest_times"]):
+            t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+            stds[i] = np.nanstd(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ba"]]))
+        plt.fill_between(bothbound_angles_data["longest_times"], (ba_avg+stds)*radians, (ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
+        plt.plot(bothbound_angles_data["longest_times"], ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
+        plt.xlabel("time (ns)")
+        plt.ylabel(r"$\theta_{ub}$ poststroke")
+        plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+        plt.gca().axhline(120 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
+        plt.tight_layout()
+        plt.savefig("plots/bothbound_long_stroke_angles_bd.pdf", format="pdf")
+        return
 
     # for num, ma in enumerate(bothbound_angles_data["ma"]):
     #     w_times, w_ma = window_avg(bothbound_angles_data["times"][num], ma, 1e2)
@@ -658,6 +679,7 @@ def main():
     unbinding_probability_data = get_unbinding_probability_data(args)
     force_data = get_force_data(args)
     angles_data = get_stroke_angles_data(args)
+    long_angles_data = get_stroke_angles_data(args, longrun=True)
     make_behavior_plot(args, stepping_data, unbinding_probability_data)
     if args.quick:
         exit()
@@ -665,6 +687,7 @@ def main():
     force_data = get_force_data(args)
     make_force_plot(args, force_data)
     make_stroke_plots(args, angles_data)
+    make_stroke_plots(args, long_angles_data, longrun=True)
 
 if __name__ == "__main__":
     main()

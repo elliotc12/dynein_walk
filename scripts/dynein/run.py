@@ -42,7 +42,7 @@ def sim(**run):
     cmd = ["./generate_stepping_data"]
 
     for key in run:
-        if key in ["nomovie", "onebound-debugging", "crash-movie", "full-gibbs-transitions", "angle-logging-mode"]:
+        if key in ["nomovie", "onebound-debugging", "crash-movie", "full-gibbs-transitions", "angle-logging-mode", "long-angle-logging-mode"]:
             if run[key] == True:
                 cmd.extend(["--"+key])
         else:

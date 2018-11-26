@@ -139,7 +139,7 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
   check_for_quitting_conditions(iteration*dt, data_file, first_bothbound_iteration*dt, last_bothbound_iteration*dt);
 }
 
-void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s) {
+void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s, bool longmode) {
   static State last_state = BOTHBOUND;
   static bool am_in_initial_partial_step = true;
   static int last_onebound_iteration = 0;
@@ -151,7 +151,14 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
 
   int SKIPITERS = 100;
 
-  int BBLOGDURATION = 1e4;
+  int BBLOGDURATION;
+  if (longmode) {
+    BBLOGDURATION = std::numeric_limits<int>::infinity();
+    SKIPITERS = 1e4;
+  }
+  else
+    BBLOGDURATION = 1e4;
+
   int BYTES_PER_LINE = 80;
 
   static char* print_buffer = (char*) malloc((2*BBLOGDURATION/SKIPITERS+2) * BYTES_PER_LINE * sizeof(char));
@@ -379,7 +386,9 @@ void stepping_data_callback(void* dyn, State s, void *job_msg_, data_union *job_
   }
 
   if (angle_logging_mode) {
-    log_angle_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
+    log_angle_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s, false);
+  } else if (long_angle_logging_mode) {
+    log_angle_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s, true);
   } else {
     log_stepping_data(job_msg.stepping_data_file, dyn, iteration, job_msg.max_iteration, s);
   }
@@ -447,6 +456,7 @@ void set_input_variables(int argc, char** argv, char* run_name, bool* am_making_
       {"full-gibbs-transitions", no_argument, (int*) &binding_mode, GIBBS_FULL},
       {"exp-binding", no_argument, (int*) &binding_mode, EXPONENTIAL_UNBINDING},
       {"angle-logging-mode", no_argument, (int*) &angle_logging_mode, true},
+      {"long-angle-logging-mode", no_argument, (int*) &long_angle_logging_mode, true},
       {0, 0, 0, 0}
     };
 
