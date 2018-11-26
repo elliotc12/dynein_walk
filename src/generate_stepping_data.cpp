@@ -153,7 +153,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
 
   int BBLOGDURATION;
   if (longmode) {
-    BBLOGDURATION = std::numeric_limits<int>::infinity();
+    BBLOGDURATION = 1e7;
     SKIPITERS = 1e4;
   }
   else

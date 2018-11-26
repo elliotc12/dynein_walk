@@ -16,15 +16,15 @@ if 'long' in sys.argv:
 else:
     mode = " --anglemode"
 
-runtime = 5e-2
+runtime = 2
 framerate = 1e-10
 
 basename = "paper_stroke_angles"
 
-seeds = [1]
+seeds = [1, 2, 3, 4, 5]
 
 for seed in seeds:
-    os.system("python3 scripts/generate-stepping-data.py" \
+    os.system("rq run python3 scripts/generate-stepping-data.py" \
               + " --ls " + str(params.ls)\
               + " --lt " + str(params.lt)\
               + " --kub " + str(params.stroke_angle_k_ub)\
