@@ -269,44 +269,6 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
 \label{fig:independence}
 \end{figure}
 
-%% \begin{figure*}[tbhp]
-%%     \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
-%% \caption{The left plot is the $C=0$ case where the unbinding rate is
-%%   independent of angle.  Here ``alternating'' means that the binding
-%%   domain which did not move last time moved this time.  Passing means
-%%   that the moving foot was behind, and ended up in front.}
-%% \label{fig:steppingorder}
-%% \end{figure*}
-
-\section{Discussion}
-
-\begin{enumerate}
-\item \cite{lippert} is a 2017 PNAS paper claiming the powerstroke model is wrong since angular displacement of the dynein ring is weak (+- 7 degrees) and weakly correlated with stepping. However, their camera records at 50ms resolution, which is 100x slower than our average onebound time. Thus their whole experiment is somewhat flawed. This is relevant since the oneboudn time duration may not be well known, and our theoretical results may be relevant.
-\item No need for being guided to Mt binding sites, the motor naturally can take 16nm steps through a powerstroke
-\item Is tension gating necessary for our model? Could run simulations without it to see how the model changes
-\item Dynein's adjacent step step length correlation is low; thus the motor is a memory-less process which could be simulated by a Markov model. Also look at ob and bb time covariance and displacement covariance
-\end{enumerate}
-
-
-%% \begin{figure}[tbhp]
-%%   \centering
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-1-cryoem}
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-1-superimposed}
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-1-model}
-
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-2-cryoem}
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-2-superimposed}
-%%    \includegraphics[width=0.3\columnwidth]{figures/schematic-2-model}
-%%    \caption{\textbf{Model schematic superimposed on cryo-EM images of
-%%        native dynein.} Native cryo-EM images of the full dimerized
-%%      dynein complex composed of light, intermediate and heavy chains,
-%%      from \cite{nativestructure}. Model schematics are superimposed
-%%      for illustrative purpose; shown angles to not represent expected
-%%      \textit{in vivo} equilibria. Schematics are shown docked to a
-%%      microtubule for illustrative purposes.}
-%%    \label{fig:modelparams}
-%% \end{figure}
-
 \begin{figure}[tbhp]
   \centering
   \begin{subfigure}[]{0.8\columnwidth}\caption{}\vspace{5pt}\includegraphics[width=\columnwidth]{figures/winch-powerstroke-cartoon}\end{subfigure}\vspace{10pt}\\
@@ -317,6 +279,31 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
   \caption{\textbf{Dynein model exhibits powerstroke, not winch, dynamics.} \textit{A. left: } Schematic of the winch mechanism. On free MTBD binding, linker swing in the just-bound head pulls the tail and cargo in the direction of the just-bound MTBD. \textit{A. right: } Schematic of the powerstroke mechanism. On free MTBD binding, linker swing pushes the just-bound head and tail domains towards the minus-end of the MT and alters the just-bound stalk domain's angle with the MT. \textit{b.) } Just-bound MTBD angle relative to MT axis as a function of time since MTBD binding along with MTBD angle equilibrium (blue dotted line). \textit{c.) } Just-bound head angle, along with prestroke equilibrium (red dotted line) and poststroke equilibrium (blue dotted line). \textit{d.) } Change in tail domain x coordinate since MTBD binding. \textit{e.) } Value of tail domain y coordinate. All values sampled every $10 ns$ and plotted as mean $\pm$ SD.}
 \label{fig:stroke}
 \end{figure}
+
+%% \begin{figure*}[tbhp]
+%%     \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
+%% \caption{The left plot is the $C=0$ case where the unbinding rate is
+%%   independent of angle.  Here ``alternating'' means that the binding
+%%   domain which did not move last time moved this time.  Passing means
+%%   that the moving foot was behind, and ended up in front.}
+%% \label{fig:steppingorder}
+%% \end{figure*}
+
+\section{Discussion}
+In this study we sought to study dynein's dynamics using a simple model. We used imaging data to construct a structurally realistic goemetric model for the motor, then used Brownian dynamics to explore how such a model would behave in a cell. We used experimental data on dynein's step length distribution and unbinding likelihood to fit the model's spring and tension-gating constants. We used arguments about dynein's run length and velocity to predict the average time the motor spent in the pre-powerstroke and post-powerstroke states, and fit the model's binding and unbinding rates to these predictions. We tested the dynamics of this fit model, and found that the model displayed a high level of agreement with the data used to fit; the simulation's velocity and stepping histogram in Figure \ref{fig:behavior} match experiment quite well. In addition the model can predict new data it was not fit with, such as force output in Figure \ref{fig:force} and effects of foot displacement on step length in Figure \ref{fig:tensiongating}. We then examined the mechanism our model used to walk by studying domain positions over many steps. We found that the majority of forward displacement occured immediately after a free binding domain bound to the microtubule, when the just-bound stalk swung forward, pulling the attached motor and tail domains toward the minus-end of the microtubule.\\
+
+One of the main advantages of our study is that it provides high spatial and temporal information about the model's behavior, which is currently unavailable for real dynein. This allows us to study mechanistic questions about how dynein walks. Our model appears to generate motion using the powerstroke mechanism long-theorized to account for dynein's motion\cite{mallikps} (CITE MORE). As our model transitions from the so-called pre-powerstroke to post-powerstroke state it increases its head angular spring energy from a shifting motor equilibrium angle; it relaxes this high motor energy by rotating its stalk towards the minus-end of the MT, pulling the motor and tail domains with it. This increase in head spring energy is roughly analogous to the high-energy state of the head of real dynein after MTBD binding induces Pi rejection and linker swing \cite{MANY CITATIONS HERE}. Our simulations support the idea that a powerstroke-like mechanism also occurs in real dynein, where angular displacement of the just-bound stalk pulls the motor and tail domains forward.\\
+
+This model contrasts with another theory on the dynein step called the winch mechanism \cite{uenoem, sarlahmodel}. According to this model, on MTBD rebinding, linker swing puts the just-bound head in a high energy state, just like in the powerstroke mdoel. However, to relieve this tension the motor instead ``winches'' its tail domain downwards in the direction of the stalk, resulting in a tail which is closer to the MT and further forward. To our knowledge, no previous simulation has tested the physical feasibility of either the winch or powerstroke models. Although our model is a minimal depiction which does not take into account the acute dynamics of the whole motor, its ability to reproduce the dynamics of the real dynein suggests that it may have some bearing on how the real dynein walks. In particular, this model spontaneously exhibits the powerstroke mechanism, suggesting that the powerstroke mechanism is both feasible for the dynein complex to generate and sufficient to explain much experimental data. Although this does not rule out the winch mechanism as an explanation, we believe that the lack of any winch-like behavior in our simulation is meaningful. Indeed during displacement our model's tail domain actually moves away from the microtubule, the opposite of the winch's prediction. Further theoretical studies demonstrating the feasibility and sufficiency of the winch mechanism are needed.\\
+
+Recent experimental studies have had strong implications for the winch vs powerstroke mechanisms. A key question is whether the just-bound stalk experiences angular displacement as the motor moves forward, as this is necessary for the powerstroke and not the winch. This angular displacement was not found by Lippert \textit{et. al.} \cite{lippert}, who used polTIRF to study the angle dynein's stalk made with the MT in freely-walking dynein. Another study showed that there is no difference in stalk angle between motors locked in the pre- and post-powerstroke state using special nucleotides and cryo-electron microscopy \cite{uenoem}. One key finding of our study which reconciles the powerstroke mechanism with these experimental findings is the timescale on which it occurs. We find that the average duration of the angular displacement of the just-bound stalk is XYZ $\mu s$ (see Figure \ref{fig:stroke}). This time is much faster than the 50 $ms$ time resolution of the polTIRF experiment of Lippert \textit{et. al.} \cite{lippert}, which may explain why the angular displacement was not detected. Furthermore we note that in our model the stalk angle deviates from equilibrium as the motor and tail move forwards; only much later does the stalk return to equilibrium. This suggests that the stsalk angular displacement is a non-equilibrium phenomena which could not be detected through cryo-EM, which resolves equilibrium structures. This explains why cryo-EM studies have not been able to find the angular displacement \cite{uenoem}. We suggest that the powerstroke mechanism has not been disproven by these studies, and that in order to show the powerstroke doesn't exist, an experiment must be done with high enough time-resolution to resolve the fast XYZ $\mu s$ phenomena.\\
+
+Our study demonstrates other interesting findings. Similar to past simulation work \cite{sarlahmodel}, we demonstrate that our model is capable of achieving minus-end directed motility merely through the way it binds to the microtubule. Also interestingly, we demonstrate that our model is capable of taking 12$nm$ (CHANGE ON RERUN) steps in the absence of explicit microtubule binding sites. Merely through the size of its stalk and tail and through the magnitude of angular displacement induced by linker swing, our model is capable of taking the right step size. It is interesting that in our model a single step is slightly shorter than the experimental 16nm step \cite{find citation}. This suggests that perhaps the motor requires a diffusive search along the microtubule to find the next binding site. Alternatively, as has been recently demonstrated, perhaps an electrostatic mechanism is used to guide the MTBD to the next binding site using long-range interactions \cite{longrangemt}.\\
+
+Our theoretical work draws upon and extends several past models \cite{sarlahmodel, trottmodel}. This paper's approach of using Brownian dynamics to realistically predict the diffusion dynamics of a structural model of dynein is a useful technique for testing mechanistic theories for biological feasibility and sufficiency. Our minimal assumptions simplify the model and rule out overfitting. However, our model neglects many features which may be important for real dynein's walk. For example, some have proposed that stalk flexibility is an important aspect of dynein's mechanism \cite{mdstalk, lippert, find that other possibly burgess paper}. Other features like microtubule electrostatic interactions \cite{longrangemt}, X, Y and Z are also neglected. Although our work successfully demonstrates the sufficiency of our minimal set of assumptions for generating motion, a more biologically realistic model would need to take these listed features into account.\\
+
+In conclusion, our study demonstrates that the powerstroke mechanism is sufficient to explain dynein's velocity, step length histogram, displacement-vs-step length relationship, and force output. We demonstrate that the powerstroke arises naturally from minimal structural information about the protein, suggesting it is likely possible for real dynein to exhibit a powerstroke. Further, we explain why past studies may have failed to detect this powerstroke. We hope that this evidence is sufficient to maintain the powerstroke mechanism as a viable hypothesis for how dynein walks. We further hope that experiments with higher spatial and temporal resolution can be conducted in the near future to shed more light on the precise nature of dynein's stepping mechanism.\\
+
 
 \showmatmethods
 
