@@ -500,6 +500,7 @@ def make_stroke_plots(args, angles_data, longrun=False):
         plt.savefig("plots/bothbound_stroke_taily_positions.pdf", format="pdf")
         plt.savefig("plots/bothbound_stroke_tailx_positions.pdf", format="pdf")
         plt.savefig("plots/bothbound_stroke_angles_md.pdf", format="pdf")
+        plt.savefig("plots/bothbound_long_stroke_angles_bd.pdf", format="pdf")
         return
 
     (onebound_angles_data, bothbound_angles_data) = angles_data
