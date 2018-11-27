@@ -21,7 +21,7 @@ framerate = 1e-10
 
 basename = "paper_stroke_angles"
 
-seeds = [1]
+seeds = [1, 2, 3, 4]
 
 for seed in seeds:
     os.system("python3 scripts/generate-stepping-data.py" \

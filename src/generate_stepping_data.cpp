@@ -147,7 +147,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
   static State last_onebound_state = BOTHBOUND;
   static int iters_in_this_step = 0;
   static double last_sum_foot_positions = 0;
-  static int maxlines = 1e8;
+  static int maxlines = 1e9;
 
   int SKIPITERS = 100;
 
