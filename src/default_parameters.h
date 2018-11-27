@@ -61,6 +61,7 @@ bool am_only_writing_on_crash = false;
 double stepping_movie_framerate = 1e-10;
 
 bool angle_logging_mode = false;
+bool long_angle_logging_mode = false;
 
 double tail_force = 0;
 

@@ -7,8 +7,8 @@ trajectory_k_b  = 9.5e9 # s^-1
 trajectory_k_ub = 1e20 # s^-1
 trajectory_seed = 14 # 1 and 10 and 14 and 17 20 are okay
 
-stroke_angle_k_b  = 1e8 # s^-1
-stroke_angle_k_ub = 1e4 # s^-1
+stroke_angle_k_b  = k_b # s^-1
+stroke_angle_k_ub = k_ub # s^-1
 stroke_angle_seed = 1
 
 cexp = -0.35
@@ -20,8 +20,8 @@ ct = 0.36 # kbT
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09
 
 eqb = 120
-eqmpre = 197 # 204.5 from burgess
-eqmpost = 242 # 222.5 from burgess, but as much as 234.5 -- they say 15nm difference for pre/post ub domain, so maybe latter is better
+eqmpre = 197
+eqmpost = 242
 eqt = 0
 
 ls = 20.75 # nm

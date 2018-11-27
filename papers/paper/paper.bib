@@ -499,7 +499,7 @@
   notes={This paper is describing the winch mechanism theoretically.}
 }
 
-@article{,
+@article{mallikps,
   title={Cytoplasmic dynein functions as a gear in response to load},
   author={Mallik, R and Carter, B and Lex, S and King, S and Gross, S},
   journal={Nature Letters},
@@ -508,7 +508,19 @@
   pages={},
   number={649-652},
   publisher={},
-  notes={This paper theoretically outlines the powerstroke model.}
+  notes={This paper theoretically outlines the powerstroke model. It says that dynein can modulate the radius of the head, which would change the torque vs displacement of the motor. They use this as evidence that the head works like a gear, where rotation of the gear (aka head+stalk) is what pulls the protein forward.}
+}
+
+@article{uenoem,
+  title={Dynein pulls microtubules without rotating its stalk},
+  author={Ueno, H and Yasunaga, T and Shingyoji, C and Hirose, K},
+  journal={PNAS},
+  volume={105},
+  year={2008},
+  pages={19702-19707},
+  number={50},
+  publisher={PNAS},
+  notes={This paper supports the winch model by using a special type of stained cryo-EM to find the orientations of the axonemal dynein stalks relative to MT. They find that between apo and ADP-Vi-bound dynein, there is no significant change in the angle of the stalk domain. This is interesting, but the angle change is fairly small and maybe the linker swing doesn't happen properly in two-foot-bound ADP-Vi dynein.}
 }
 
 @Comment Pro-powerstroke papers
@@ -520,3 +532,21 @@
 @Comment Dynein pulls microtubules without rotating its stalk (dynein no rotate)
 @Comment Structural mechanism of the dynein power stroke (dynein no rotate)
 @Comment The 2.8 Å crystal structure of the dynein motor domain
+
+@Comment Find how long it takes for the ba angle to return to equilibrium, which, if small, would explain why it's hard to detect the powerstroke. It currently seems to take a while.
+@Comment Add an angle figure of the onebound state to show the motor doesn't walk during this time. This is probably a supplemental figure.
+@Comment Tension gating was added to the model as a biophysical way to account for unbinding
+@Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
+@Comment       possibly do a randomsearch with c=0 to see how the best ungated dynein behaves, whether gating is necessary or just helpful
+@Comment       alternatively, just do a run identical to the paper-params run except with c=0 to see how gating helps motility, put this in supplemental
+@Comment The point of the initial displacement vs step length plot is that it shows more information than just the initial-disp vs lagging-probability plot - it shows that the model's geometry and powerstroke are right and the model can reproduce hte displacement-step curve --without being fit--
+@Comment       Add Yildiz line fit to displacement-vs-step-length plot
+@Comment Increase the time on the just-bound bd angle plot in the angle plot - quantify how long it takes bd to return to equilibrium (assuming it does) - potentially make this a supplemental figure. This could probably be done using the same code by giving the get_stroke_data function a flag
+@Comment Add commented makefile entry for how to make stroke data
+@Comment Calculate most probable step distance, put in stepping length histogram
+@Comment Read more papers and add them to discussion, particularly those that are relevant to the points you make: powerstroke/winch, MTBD guidance, models, theories on motility
+@Comment Make sure results section describes how the parameters were fit and in what order
+@Comment Should we move to using the onebound and bothbound labels in the paper text, to avoid partiality by using the term 'powerstroke'?
+@Comment Rerun simulations with the fixed radii bug
+@Comment Question: if the bb angle is always away from equilibrium, would you expect to detect a change in angle? also since this is nonequilibrium maybe it is different than the cryo-em case
+@Comment Maybe need to amend how we justify the cryo-em no-angle-change results
