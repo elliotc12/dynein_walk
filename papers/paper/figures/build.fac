@@ -1,1 +1,2 @@
-| inkscape -D --export-pdf model-cartoon-simple.pdf model-cartoon-simple.svg
+| python3 fac-svgs.py > svg.fac
+> svg.fac
