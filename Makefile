@@ -59,6 +59,10 @@ data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts
 # data/paper_stroke_angle_data_*.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-angle-data.py
 # 	python3 scripts/generate-angle-data.py
 
+# Taken out of make, added data file to repository:
+# data/paper_long_stroke_angle_data_*.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-angle-data.py
+# 	python3 scripts/generate-angle-data.py long
+
 ######### fun plots ##########
 plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/stepping_analysis_paper.pdf: scripts/paper-histogram-plt.py $(STATIC_DATA)
 	python3 scripts/paper-histogram-plt.py
