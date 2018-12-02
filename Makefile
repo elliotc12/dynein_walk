@@ -47,13 +47,17 @@ data/thesis_stepping_data.txt data/thesis_movie_data.txt: scripts/dynein/run.py 
 data/paper_trajectory_stepping_data.txt data/paper_trajectory_movie_data.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-paper-trajectory-data.py data/paper_params.py
 	python3 scripts/generate-paper-trajectory-data.py
 
-data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py data/paper_params.py
+data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts/generate-paper-unbinding-rate-data.py data/paper_params.py scripts/dynein/run.py
 	rm -f data/paper_unbinding_probability__*
 	python3 scripts/generate-paper-unbinding-rate-data.py
 
 # Taken out of make, added data file to repository:
-# data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py
+# data/paper_histogram_stepping_data.txt: generate_stepping_data scripts/dynein/run.py scripts/histogram-helper.py scripts/dynein/run.py
 # 	python3 scripts/histogram-helper.py
+
+# Taken out of make, added data file to repository:
+# data/paper_stroke_angle_data_*.txt: generate_stepping_data scripts/dynein/run.py scripts/generate-angle-data.py
+# 	python3 scripts/generate-angle-data.py
 
 ######### fun plots ##########
 plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/stepping_analysis_paper.pdf: scripts/paper-histogram-plt.py $(STATIC_DATA)

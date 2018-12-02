@@ -58,20 +58,16 @@ def sim(**run):
             else:
                 f.write(r'\newcommand\%s{%s}' % (latex_format(k).replace("_",""), latex_format(v)) + '\n')
 
-    #os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
-    # if not os.path.exists('runlogs'):
-    #     os.makedirs('runlogs')
-    # out = open('runlogs/' + basename + '.out', 'w')
+    os.makedirs('runlogs', exist_ok=True) # ensure runlogs directory exists
+    out = open('runlogs/' + basename + '.out', 'w')
     print("Running: ", " ".join(cmd))
-    # out.flush()
-    # process_object = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE)
-    process_object = subprocess.Popen(cmd, stderr=subprocess.PIPE)
-    err = process_object.communicate()[1]
+    out.flush()
+    rc = subprocess.run(cmd, stdout=out, stderr=out).returncode
+    out.flush()
 
-    if (err != b''):
+    if (rc != 0):
         print("\n##################################",
-              "\nSimulation exited in error: \n\n",
-              err.decode("utf-8"),
+              "\nSimulation exited in error! See {}".format('runlogs/' + basename + '.out'),
               "\n##################################\n\n")
-    
+
     return basename
