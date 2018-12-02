@@ -114,7 +114,7 @@ def getCounts(X, Y, xIsTimeValue, yIsTimeValue):
 
 # x_name, x_units, y_name, y_units
 def plotCounts(x, y, graph_label, x_label, y_label,
-               xIsTimeValue, yIsTimeValue,filename=None, drawline=False):
+               xIsTimeValue, yIsTimeValue,filename=None, drawline=False, drawyildizline=False):
 
     x_bins, y_bins, counts = getCounts(x, y, xIsTimeValue, yIsTimeValue)
     if VERBOSE: print("graphing")
@@ -136,10 +136,17 @@ def plotCounts(x, y, graph_label, x_label, y_label,
     if drawline:
         A = np.vstack([x, np.ones(len(x))]).T
         m, c = np.linalg.lstsq(A, y)[0]
-        eq = "y = {:.2} + {:.2}x".format(c, m)
+        eq = "Model: y = {:.2} + {:.2}x".format(c, m)
         if m < 0:
-            eq = "y = {:.2} - {:.2}x".format(c, -m)
-        plt.plot([x_bins[0], x_bins[-1]], [x_bins[0]*m, x_bins[-1]*m]+c, label=eq, linestyle=":", color='w')
+            eq = "Model: y = {:.2} - {:.2}x".format(c, -m)
+        plt.plot([x_bins[0], x_bins[-1]], [x_bins[0]*m, x_bins[-1]*m]+c, label=eq, linestyle=":", color='C1')
+        plt.legend()
+
+    if drawyildizline:
+        m = -0.4 # yildiz 2012
+        c = 9.05 # yildiz 2012
+        eq = "Experiment: y = {:.2} - {:.2}x".format(c, -m)
+        plt.plot(np.array([x_bins[0], x_bins[-1]]), np.array([x_bins[0]*m, x_bins[-1]*m])+c, label=eq, linestyle=":", color='C0')
         plt.legend()
 
     if filename is None:
@@ -202,6 +209,7 @@ plotCounts(initial_displacements,
            xIsTimeValue=False,
            yIsTimeValue=False,
            drawline=True,
+           drawyildizline=True,
            filename='plots/initial-displacement-vs-step-length{}.pdf'.format(seed_label))
 
 if SHOW:
