@@ -142,16 +142,16 @@ void log_stepping_data(FILE* data_file, void* dyn, long long iteration, long lon
 void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long max_iteration, State s, bool longmode) {
   static State last_state = BOTHBOUND;
   static bool am_in_initial_partial_step = true;
-  static int last_onebound_iteration = 0;
-  static int last_bothbound_iteration = 0;
+  static long long int last_onebound_iteration = 0;
+  static long long int last_bothbound_iteration = 0;
   static State last_onebound_state = BOTHBOUND;
-  static int iters_in_this_step = 0;
+  static long long int iters_in_this_step = 0;
   static double last_sum_foot_positions = 0;
-  static int maxlines = 1e9;
+  static long long int maxlines = 1e9;
 
-  int SKIPITERS = 100;
+  long long int SKIPITERS = 100;
 
-  int BBLOGDURATION;
+  long long int BBLOGDURATION;
   if (longmode) {
     BBLOGDURATION = 1e7;
     SKIPITERS = 1e4;
@@ -159,7 +159,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
   else
     BBLOGDURATION = 1e4;
 
-  int BYTES_PER_LINE = 80;
+  long long int BYTES_PER_LINE = 80;
 
   static char* print_buffer = (char*) malloc((2*BBLOGDURATION/SKIPITERS+2) * BYTES_PER_LINE * sizeof(char));
 
