@@ -16,12 +16,12 @@ if 'long' in sys.argv:
 else:
     mode = " --anglemode"
 
-runtime = 2
+runtime = 1e-3
 framerate = 1e-10
 
 basename = "paper_stroke_angles"
 
-seeds = [1, 2, 3, 4]
+seeds = [1]
 
 for seed in seeds:
     os.system("rq run python3 scripts/generate-stepping-data.py" \
