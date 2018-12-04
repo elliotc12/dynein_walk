@@ -165,6 +165,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
 
   if (iters_in_this_step > 2*BBLOGDURATION/SKIPITERS+1) {
     perror("Error, somehow print buffer exceeded.");
+    exit(1);
   }
 
   if (s == BOTHBOUND) {

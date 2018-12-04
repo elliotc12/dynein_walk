@@ -24,7 +24,7 @@ basename = "paper_stroke_angles"
 seeds = [1, 2, 3, 4]
 
 for seed in seeds:
-    os.system("python3 scripts/generate-stepping-data.py" \
+    os.system("rq run python3 scripts/generate-stepping-data.py" \
               + " --ls " + str(params.ls)\
               + " --lt " + str(params.lt)\
               + " --kub " + str(params.stroke_angle_k_ub)\
