@@ -160,7 +160,7 @@
   year={2014},
   pages={479-485},
   publisher={Nature},
-  notes={Apparently this paper says something about dynein not rotating its stalk during the pre-powerstroke?}
+  notes={This paper uses quick-freeze and cryo-em tomography to find the low-resolution structure of axonemal dyneins while freely moving. It ffinds that the head/stalk rotate during the pre-powerstroke and are forward displaced, and that the motion is similar to a jackknife. They suggest that rotation of the head is really important for the powerstroke (and prestroke). They say that there are two prestroke states, one MTBD unbound, and the other MTBD-bound, where the latter is rotated 20 degrees anticlockwise. This suggests that the head is somewhat 'undoing' its prestroke angle change. They also say the linker remains stationary through the whole cycle. They talk about the two dynein heads moving at different rates, supporting an 'inchworm' mechanism. The fact that this is a low time-resolution technique seems like a good reason for why they didn't discover stalk deflection.}
 }
 
 @article{schmidt-carter,
@@ -521,6 +521,18 @@
   number={50},
   publisher={PNAS},
   notes={This paper supports the winch model by using a special type of stained cryo-EM to find the orientations of the axonemal dynein stalks relative to MT. They find that between apo and ADP-Vi-bound dynein, there is no significant change in the angle of the stalk domain. This is interesting, but the angle change is fairly small and maybe the linker swing doesn't happen properly in two-foot-bound ADP-Vi dynein.}
+  }
+
+@article{burgessknight,
+  title={Is the dynein motor a winch?},
+  author={Burgess, S and Knight, P},
+  journal={Current Opinion in Structural Biology},
+  volume={14},
+  year={2004},
+  pages={138-146},
+  number={},
+  publisher={Elsevier},
+  notes={A theoretical paper which takes all the experiments from 2004 and summarizes a mechanical model. They call their model the 'winch,' but it seems like a powerstroke-y model. They say that remodeling causes tension in the stalk, which pulls the motor forward. This seems to postulate a stalk displacement, NOT a displacement of the tail/linker downwards.}
 }
 
 @Comment Pro-powerstroke papers
@@ -550,3 +562,7 @@
 @Comment Maybe need to amend how we justify the cryo-em no-angle-change results
 @Comment Todo: Add a supplemental figure with the BD angle after binding showing it doesn't change. Then calculate how long the BD angular displacement lasts and say it's well under 50ms.
 @Comment There's currently a bug where the long-stroke files aren't getting printed to for steps > 0.2 seconds. This should be fixed. This is for both long and short files.
+@Comment Make sure to say in the abstract that we found that dynein has a quick powerstroke
+@Comment Make sure to note that the motor binding angle starts out at equilibrium, then 'strokes' forwards
+@Comment Make sure the angle figure's cartoon has variable names corresponding to the axes of the figures
+@Comment Has the radii problem actually been solved? Did we re-fit?
