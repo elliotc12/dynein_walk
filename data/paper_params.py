@@ -27,6 +27,6 @@ eqt = 0
 ls = 20.75 # nm
 lt = 23 # nm
 
-radius_t = 12*.5 # nm
-radius_m = 11*.5 # nm
-radius_b = 3.5*.5 # nm
+radius_t = 6 # nm, incorporating the .5 change
+radius_m = 5.5 # nm
+radius_b = 1.75 # nm
