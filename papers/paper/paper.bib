@@ -137,7 +137,8 @@
   number={},
   year={2003},
   pages={715-718},
-  publisher={Nature}
+  publisher={Nature},
+  notes={They vaguely allude to a powerstroke by showing how stalk conformation changes via EM. Early study where we get our angles from.}
 }
 
 @article{carter-paper,
@@ -307,7 +308,8 @@
   volume={131},
   year={2007},
   pages={952-965},
-  publisher={Elsevier}
+  publisher={Elsevier},
+  notes={Need to look at paper; they provide force-dependent velocity data and say that binding angle influences binding rate.}
 }
 
 @article{cargotransport,
@@ -487,18 +489,6 @@
   notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order.}
 }
 
-@article{,
-  title={Is the dynein motor a winch?},
-  author={Burgess, S and Knight, P},
-  journal={Current Opinion in Structural Biology},
-  volume={14},
-  year={2004},
-  pages={138-146},
-  number={},
-  publisher={Elsevier},
-  notes={This paper is describing the winch mechanism theoretically.}
-}
-
 @article{mallikps,
   title={Cytoplasmic dynein functions as a gear in response to load},
   author={Mallik, R and Carter, B and Lex, S and King, S and Gross, S},
@@ -559,15 +549,65 @@
   notes={This paper does a very similar derivation to ours of the OB/BB duty ratio. They are used by imaiburgess to calculate their duty ratio.}
 }
 
-@Comment Pro-powerstroke papers
-@Comment Direct observation shows superposition and large scale flexibility within cytoplasmic dynein motors moving along microtubules
-@Comment AAA+ Ring and linker swing mechanism in the dynein motor
-@Comment Dynein structure and power stroke
+@article{robertspowerstroke,
+  title={AAA+ Ring and Linker Swing Mechanism in the Dynein Motor},
+  author={Roberts, A and Numata, N and Walker, M and Kato, Y and Malkova, B and Kon, T and Ohkura, R and Arisaka, F and Knight, P and Sutoh, K and Burgess, S},
+  journal={Cell},
+  volume={136},
+  year={2009},
+  pages={485-495},
+  number={},
+  publisher={Elsevier},
+  notes={Older paper which does EM to get a rough structure of Dictyostelium dynein. They say the word "winch," but mention ring turning in the MT plane, which is explicitly powerstroke.}
+}
 
-@Comment Pro-winch papers
-@Comment Dynein pulls microtubules without rotating its stalk (dynein no rotate)
-@Comment Structural mechanism of the dynein power stroke (dynein no rotate)
-@Comment The 2.8 Å crystal structure of the dynein motor domain
+@article{wonkymacrosim,
+  title={A Dynamic Model for the Processive Motion of Dynein on Microtubules},
+  author={Hsiao, YF and Chou, YC},
+  journal={Advances in Biological Chemistry},
+  volume={6},
+  year={2016},
+  pages={43-54},
+  number={},
+  publisher={Scientific Research Publishing},
+  notes={Wonky paper which creates a "macroscopic simulation," where they apply a Brownian force to a board with isoscelese triangles on it and show that they can move a molded puck representing dynein. This system shows tension gating and demonstrates that dynein's mechanism can be reproduced by just having a preferential forwards step.}
+}
+
+@article{tsygankovscheme,
+  title={Kinetic models for the coordinated stepping of cytoplasmic dynein},
+  author={Tsygankov, D and Serohijos, A and Dokholyan, N and Elston, T},
+  journal={The Journal of Chemical Physics},
+  volume={130},
+  year={2009},
+  pages={},
+  number={025101},
+  publisher={American Institute of Physics},
+  notes={Builds on the Imamula model, which is the basic picture that we think of: ATP binding, MT unbinding, prestroke, Pi rejection, MT binding, powerstroke, ADP rejection. They come up with a more complicated model which includes both heads. They report the rate constants for almost all the transition rates in the Imamula model. Their model also combines different things, like ATP binding with MT unbinding. They describe all possible cycles a 2-headed dynein could take. Both taking the prestroke and unbinding ADP happen pretty slowly, with ADP unbinding being the slowest step. Thus it seems like waiting-to-powerstroke and waiting-to-unbind are prominent steps in the mechanochemical cycle; however, if dissociation takes longer than powerstroke, then it would make sense to say the waiting-to-unbind state is more prominent than waiting-to-powerstroke. Despite erroneously combining these two states, textually they say that ADP-bound is the most occupied state, and that when each head drops ADP is goes through its entire cycle before the other head unbinds ADP, which agrees exactly with our model. They then talk about coordination schemes between the two motor heads and describe how these are necessary to achieve physical velocities. They say "ADP release is believed to be the rate-limiting step."}
+}
+
+@article{holzbaur1989,
+  title={ADP Release is Rate Limiting in Steady-State Turnover by the Dynein Adenosinetriphosphatase},
+  author={Holzbaur, E and Johnson, K},
+  journal={Biochemistry},
+  volume={28},
+  year={1989},
+  pages={5577-5585},
+  number={},
+  publisher={American Chemical Society},
+  notes={This paper finds the rates of ATPase activity in dynein and says that ADP release is the rate-limiting step.}
+}
+
+@article{mogamirate,
+  title={Kinetic Characterization of Tail Swing Steps in the ATPase Cycle of Dictyostelium Cytoplasmic Dynein},
+  author={Mogami, T and Kon, T and Ito, K and Sutoh, K},
+  journal={Journal of Biological Chemistry},
+  volume={282},
+  year={2007},
+  pages={},
+  number={30},
+  publisher={American Chemical Society},
+  notes={This paper does FRET to find how long it takes the tail to swing once dynein binds MT. They report rate values of 0.2 for no-MT case and 5-15/s for the MT case. Though I'm not quite sure what the physiological values would be for MT concentration, so it's hard to say what the real value is.}
+}
 
 @Comment Tension gating was added to the model as a biophysical way to account for unbinding
 @Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
@@ -590,4 +630,4 @@
 @Comment Make sure to say in the abstract that we found that dynein has a quick powerstroke
 @Comment Make sure to note that the motor binding angle starts out at equilibrium, then 'strokes' forwards
 @Comment Make sure the angle figure's cartoon has variable names corresponding to the axes of the figures
-@Comment Has the radii problem actually been solved? Did we re-fit?>
+@Comment Has the radii problem actually been solved? Did we re-fit?
