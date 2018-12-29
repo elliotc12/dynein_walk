@@ -609,6 +609,31 @@
   notes={This paper does FRET to find how long it takes the tail to swing once dynein binds MT. They report rate values of 0.2 for no-MT case and 5-15/s for the MT case. Though I'm not quite sure what the physiological values would be for MT concentration, so it's hard to say what the real value is.}
 }
 
+@article{tsygankovemsimulation,
+  title={A Physical Model Reveals the Mechanochemistry Responsible for Dynein's Processive Motion},
+  author={Tsygankov, D and Serohijos, A and Dokholyan, N and Elston, T},
+  journal={Biophysical Journal},
+  volume={101},
+  year={2011},
+  pages={144-150},
+  number={},
+  publisher={Biophysical Society},
+  notes={Modeling paper which uses EM micrographs to come up with the lowest-energy conformations for dynein, then animate them in a cycle. They parameterize dynein similar to how we do, and allow the motor to transition between positions somehow - they say they use Langevin equations. This approach allows them to generate a step size distribution. They discuss what flexibility parameters are needed to allow dynein to move - flexibility of binding site and tail. Their stepping histogram doesn't predict large steps, and they postulate that linker undocking in teh GST dynein is responsible for larger steps which wouldn't be seen in native dynein. They show that there is an energy minima which can cause repeated backwards stepping bouts.}
+}
+
+@article{carterwinch,
+  title={Structure and Functional Role of Dynein’s Microtubule-Binding Domain},
+  author={Carter, P and Garbarino, J and Wilson-Kubalek, E and Shipley, W and Cho, C and MIllegan, R and Vale, R and Gibbons, I},
+  journal={Science},
+  volume={322},
+  year={2009},
+  pages={1691-1695},
+  number={5908},
+  publisher={Science},
+  notes={This was cited as a pro-winch paper. They hypothesize that because removing 7 heptads from the coiled coil doesn't change the directionality of dynein, then the force vector of the powerstroke must be parallel to the stalk, such that rotating the ring by 180 preserves the forward directionality.}
+}
+
+@Comment Add a movie of dynein walking as a supplemental figure
 @Comment Tension gating was added to the model as a biophysical way to account for unbinding
 @Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
 @Comment       possibly do a randomsearch with c=0 to see how the best ungated dynein behaves, whether gating is necessary or just helpful
