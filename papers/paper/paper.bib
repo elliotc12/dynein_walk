@@ -634,17 +634,34 @@
 }
 
 @article{zhaomodel,
-  title={},
-  author={},
-  journal={},
-  volume={},
-  year={},
-  pages={},
+  title={A model for the coordinated stepping of cytoplasmic dynein},
+  author={Zhao, XY and Sun, W and Zhang, JP and Tala and Guo, WS},
+  journal={Biochemical and Biophysical Research Communications},
+  volume={453},
+  year={2014},
+  pages={686-691},
   number={},
-  publisher={},
+  publisher={Elsevier},
   notes={This paper uses the Imamula cycle. They break dynein down into two states: MT-bound poststroke and MT-unbound prestroke, just like us. They have probabilistic unbinding, and binding to different binding sites with certain probabilities based on spring energies. Their stepping histogram is similar to real dynein.}
 }
 
+@article{kinoshitaPSwinch,
+  title={Step Sizes and Rate Constants of Single-headed Cytoplasmic Dynein Measured with Optical Tweezers},
+  author={Kinoshita, Y and Kambara, T and Nishikawa, K and Kaya, M and Higushi, H},
+  journal={Scientific Reports},
+  volume={8},
+  year={2018},
+  pages={},
+  number={16333},
+  publisher={Nature},
+  notes={This paper seeks to study the powerstroke motion after binding MT through optical tweezers. They do FRET to show that the linker kinks when in prestroke from ATP, and adding ATP causes the motor to go into prestroke kinked. This paper seems like its main claim is flawed - the experiment is unnatural and doesn't account for the diffusive search dynein makes, it just forces the MTBD to bind to MT. Anyway, their model they propose seems winch-like in that the primary purpose of the powerstroke is to create inter-head tension which pulls the other motor forward; our model says that the powerstroke itself pulls the stroking head forward and doesn't produce tension.}
+}
+
+@Comment Importantly the powerstroke pulls the motor forward, whereas the winch doesn't; the winch pulls the rest of the tail and stuff forward. Any model which says the powerstroke doesn't pull the
+@Comment        main motor forward is a winch-like model. Powerstroke "levers" forward, winch "contracts to pull cargo forward"
+@Comment Not taking into account diffusion dynamics may be why the previous sarlah winch model paper found that the winch model can reproduce experimental results - they just transitioned the model
+@Comment        between geometric states based on their energies, they didn't account for drag
+@Comment Emphasize that our model uses the 'drag dynamics' of dynein to study what stepping mechanisms are compatible with drag dynamics
 @Comment Add a movie of dynein walking as a supplemental figure
 @Comment Tension gating was added to the model as a biophysical way to account for unbinding
 @Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
