@@ -98,15 +98,68 @@ class SteppingData(object):
         self.step_lengths = self.final_displacements - self.initial_displacements
         self.step_times = self.onebound_times + self.bothbound_times
 
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) == 2:
-        data = SteppingData(sys.argv[1])
-    else:
-        print("dynein.data error: no stepping file provided")
-        exit(1)
-    print(data.rawData)
-    print(data.initial_displacements)
-    print(data.final_displacements)
 
-    
+
+class MovieData(object):
+    def __init__(self, movieFile):
+        self.rawData = np.loadtxt(movieFile)
+        self.times = self.rawData[:, 1]
+        self.PE1 = self.rawData[:, 2]
+        self.PE2 = self.rawData[:, 3]
+        self.PE3 = self.rawData[:, 4]
+        self.PE4 = self.rawData[:, 5]
+        self.PE5 = self.rawData[:, 6]
+        self.x1 = self.rawData[:, 7]
+        self.y1 = self.rawData[:, 8]
+        self.x2 = self.rawData[:, 9]
+        self.y2 = self.rawData[:, 10]
+        self.x3 = self.rawData[:, 11]
+        self.y3 = self.rawData[:, 12]
+        self.x4 = self.rawData[:, 13]
+        self.y4 = self.rawData[:, 14]
+        self.x5 = self.rawData[:, 15]
+        self.y5 = self.rawData[:, 16]
+        self.fx1 = self.rawData[:, 17]
+        self.fy1 = self.rawData[:, 18]
+        self.fx2 = self.rawData[:, 19]
+        self.fy2 = self.rawData[:, 20]
+        self.fx3 = self.rawData[:, 21]
+        self.fy3 = self.rawData[:, 22]
+        self.fx4 = self.rawData[:, 23]
+        self.fy4 = self.rawData[:, 24]
+        self.fx5 = self.rawData[:, 25]
+        self.fy5 = self.rawData[:, 26]
+
+
+if __name__ == "__main__":
+    data = MovieData('/home/john/gitRepos/dynein_walk/data/paper_trajectory_movie_data.txt')
+    print(np.shape(data.rawData))
+    print(np.shape(data.times))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
