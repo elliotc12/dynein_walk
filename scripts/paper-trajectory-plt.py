@@ -69,7 +69,7 @@ for p in sample_points:
     i += 1
 
 y_min_xproj = np.min([np.min(nbxs), np.min(fbxs)])
-y_max_xproj = np.max([np.max(nbxs), 20])
+y_max_xproj = np.max([np.max(nbxs), 20]) # <-- why is this 20 and not np.max(fbxs)? 
 
 y_min_yproj = np.min([np.min(nbys), np.min(fbys)])
 y_max_yproj = np.max([np.max(nbys), np.max(fbys)])
