@@ -253,18 +253,6 @@
   notes={MD simulation which reveals that during the ATP-bound post-stroke state the stalk is more flexible, but in the ADP-bound pre-stroke state the stalk is less flexible. This reveals that flexibility of the stalk is an important feature during the bothbound state. This is something we do not take into account.}
 }
 
-@Comment @article{mdstroke,
-@Comment   title={Allosteric conformational change cascade in cytoplasmic dynein revealed by structurebased molecular simulations},
-@Comment   author={Kubo, S and Li, W and Takada, S},
-@Comment   journal={PLOS Computational Biology},
-@Comment   volume={13},
-@Comment   year={2017},
-@Comment   pages={e1005748},
-@Comment   number={9},
-@Comment   publisher={},
-@Comment   notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order. It seems that the pre->post transition takes ~5-10us, while the post->pre takes ~2us.}
-@Comment }
-
 @article{mallikps,
   title={Cytoplasmic dynein functions as a gear in response to load},
   author={Mallik, R and Carter, B and Lex, S and King, S and Gross, S},
@@ -419,6 +407,18 @@
   number={16333},
   publisher={Nature},
   notes={This paper seeks to study the powerstroke motion after binding MT through optical tweezers. They do FRET to show that the linker kinks when in prestroke from ATP, and adding ATP causes the motor to go into prestroke kinked. This paper seems like its main claim is flawed - the experiment is unnatural and doesn't account for the diffusive search dynein makes, it just forces the MTBD to bind to MT. Anyway, their model they propose seems winch-like in that the primary purpose of the powerstroke is to create inter-head tension which pulls the other motor forward; our model says that the powerstroke itself pulls the stroking head forward and doesn't produce tension.}
+}
+
+@article{mdstroke,
+  title={Allosteric conformational change cascade in cytoplasmic dynein revealed by structurebased molecular simulations},
+  author={Kubo, S and Li, W and Takada, S},
+  journal={PLOS Computational Biology},
+  volume={13},
+  year={2017},
+  pages={e1005748},
+  number={9},
+  publisher={},
+  notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order. It seems that the pre->post transition takes ~5-10us, while the post->pre takes ~2us.}
 }
 
 @Comment Importantly the powerstroke pulls the motor forward, whereas the winch doesn't; the winch pulls the rest of the tail and stuff forward. Any model which says the powerstroke doesn't pull the
