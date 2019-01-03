@@ -421,31 +421,22 @@
   notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order. It seems that the pre->post transition takes ~5-10us, while the post->pre takes ~2us.}
 }
 
-@Comment Importantly the powerstroke pulls the motor forward, whereas the winch doesn't; the winch pulls the rest of the tail and stuff forward. Any model which says the powerstroke doesn't pull the
-@Comment        main motor forward is a winch-like model. Powerstroke "levers" forward, winch "contracts to pull cargo forward"
-@Comment Not taking into account diffusion dynamics may be why the previous sarlah winch model paper found that the winch model can reproduce experimental results - they just transitioned the model
-@Comment        between geometric states based on their energies, they didn't account for drag
+
+@Comment ----Writing-----
+@Comment Make sure results section describes how the parameters were fit and in what order
 @Comment Emphasize that our model uses the 'drag dynamics' of dynein to study what stepping mechanisms are compatible with drag dynamics
-@Comment Add a movie of dynein walking as a supplemental figure
 @Comment Tension gating was added to the model as a biophysical way to account for unbinding
 @Comment       find citation for tension-gating mechanism, how the front/rear MTBDs have different unbinding rates
-@Comment       possibly do a randomsearch with c=0 to see how the best ungated dynein behaves, whether gating is necessary or just helpful
-@Comment       alternatively, just do a run identical to the paper-params run except with c=0 to see how gating helps motility, put this in supplemental
+@Comment Should we move to using the onebound and bothbound labels in the paper text, to avoid partiality by using the term 'powerstroke'?
 @Comment The point of the initial displacement vs step length plot is that it shows more information than just the initial-disp vs lagging-probability plot - it shows that the model's geometry and powerstroke are right and the model can reproduce hte displacement-step curve --without being fit--
 
 
-@Comment Do we need to use a differetn stepping histo since -imaiburgess- say head labelling is inaccurate?
-@Comment Fix bug in the angle data plot
-@Comment Calculate most probable step distance, put in stepping length histogram
-@Comment Read more papers and add them to discussion, particularly those that are relevant to the points you make: powerstroke/winch, MTBD guidance, models, theories on motility
-@Comment Make sure results section describes how the parameters were fit and in what order
-@Comment Should we move to using the onebound and bothbound labels in the paper text, to avoid partiality by using the term 'powerstroke'?
-@Comment Rerun simulations with the fixed radii bug
-@Comment Question: if the bb angle is always away from equilibrium, would you expect to detect a change in angle? also since this is nonequilibrium maybe it is different than the cryo-em case
-@Comment Maybe need to amend how we justify the cryo-em no-angle-change results
-@Comment Todo: Add a supplemental figure with the BD angle after binding showing it doesn't change. Then calculate how long the BD angular displacement lasts and say it's well under 50ms.
-@Comment There's currently a bug where the long-stroke files aren't getting printed to for steps > 0.2 seconds. This should be fixed. This is for both long and short files.
-@Comment Make sure to say in the abstract that we found that dynein has a quick powerstroke
-@Comment Make sure to note that the motor binding angle starts out at equilibrium, then 'strokes' forwards
+@Comment ----Plots------
+@Comment Tension-gating plot
+@Comment       possibly do a randomsearch with c=0 to see how the best ungated dynein behaves, whether gating is necessary or just helpful
+@Comment       alternatively, just do a run identical to the paper-params run except with c=0 to see how gating helps motility, put this in supplementaln
 @Comment Make sure the angle figure's cartoon has variable names corresponding to the axes of the figures
-@Comment Has the radii problem actually been solved? Did we re-fit?
+
+
+@Comment ----Decisions----
+@Comment Do we need to use a differetn stepping histo since -imaiburgess- say head labelling is inaccurate?
