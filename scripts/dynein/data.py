@@ -107,6 +107,9 @@ class MovieData(object):
         self.rawData = np.loadtxt(movieFile)
         # note states are defined in dynein_struct.h to be
         # 0 = NEARBOUND, 1 = FARBOUND, 2 = BOTHBOUND, 3 = UNBOUND
+        # the state will affect the ordering of the domains e.g.
+        # x1 is always the bound domain and switches between near
+        # and far foot as of right now. 
         self.states = self.rawData[:,0]
         self.times = self.rawData[:, 1]
         self.PE1 = self.rawData[:, 2]
