@@ -14,12 +14,12 @@ import paper_params as params
 runtime = 2
 
 for f in [4, 0, -1, -2, -3, -4, -5, -6, -7, -8, -10]:
-    for s in [1, 2]:
+    for s in [1, 2, 3, 4]:
         basename = "paper_force__F-%s,s-%s" % (str(f), str(s))
         os.system("rq run --job-name paperforce-F-{},s-{}".format(f, s) \
                   + " python3 scripts/generate-stepping-data.py" \
-                  + " --kub " + str(params.k_ub) \
-                  + " --kb " + str(params.k_b) \
+                  + " --kub " + str(params.force_k_ub) \
+                  + " --kb " + str(params.force_k_b) \
                   + " --cb " + str(params.cb) \
                   + " --cm " + str(params.cm) \
                   + " --ct " + str(params.ct) \
