@@ -518,15 +518,19 @@ def make_stroke_plots(args, angles_data, longrun=False):
 
     if longrun:
         plt.figure()
-        stds = np.zeros_like(bothbound_angles_data["longest_times"])
-        for i, time in enumerate(bothbound_angles_data["longest_times"]):
-            t_idx = np.where(bothbound_angles_data["longest_times"] == time)[0]
+        downsample_idxs = np.round(bothbound_angles_data["longest_times"]) % 20000 == 0 # downsample from every 1us to every 20us
+        downsampled_ba = [s[downsample_idxs] for s in bothbound_angles_data["ba"]]
+        downsampled_times = bothbound_angles_data["longest_times"][downsample_idxs] / 1e3 # convert to ms
+        downsampled_ba_avg = np.nanmean(downsampled_ba, axis=0)
+        stds = np.zeros_like(downsampled_times)
+        for i, time in enumerate(downsampled_times):
+            t_idx = np.where(downsampled_times == time)[0]
             stds[i] = np.nanstd(np.array([arr[int(t_idx)] for arr in bothbound_angles_data["ba"]]))
-        plt.fill_between(bothbound_angles_data["longest_times"], (ba_avg+stds)*radians, (ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
-        plt.plot(bothbound_angles_data["longest_times"], ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
-        plt.xlabel("time (ns)")
-        plt.ylabel(r"$\theta_{ub}$ poststroke")
-        plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
+        plt.fill_between(downsampled_times, (downsampled_ba_avg+stds)*radians, (downsampled_ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
+        plt.plot(downsampled_times, downsampled_ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
+        plt.xlabel("time (ms)")
+        plt.ylabel(r"$\theta_{b}$ poststroke")
+        plt.gca().set_xlim(0, downsampled_times[-1])
         plt.gca().axhline(120 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
         plt.tight_layout()
         plt.savefig("plots/bothbound_long_stroke_angles_bd.pdf", format="pdf")
@@ -542,7 +546,7 @@ def make_stroke_plots(args, angles_data, longrun=False):
     plt.fill_between(bothbound_angles_data["longest_times"], (ma_avg+stds)*radians, (ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(bothbound_angles_data["longest_times"], ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
-    plt.ylabel(r"$\theta_{um}$ poststroke")
+    plt.ylabel(r"$\theta_{m}$ poststroke")
     plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1, yunits=radians)
     plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1, yunits=radians)
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
@@ -595,7 +599,7 @@ def make_stroke_plots(args, angles_data, longrun=False):
     plt.fill_between(bothbound_angles_data["longest_times"], (ba_avg+stds)*radians, (ba_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(bothbound_angles_data["longest_times"], ba_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
-    plt.ylabel(r"$\theta_{ub}$ poststroke")
+    plt.ylabel(r"$\theta_{b}$ poststroke")
     plt.gca().set_xlim(0, bothbound_angles_data["longest_times"][-1])
     plt.gca().axhline(120 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
     plt.tight_layout()
@@ -617,7 +621,7 @@ def make_stroke_plots(args, angles_data, longrun=False):
     plt.fill_between(onebound_angles_data["longest_times"], (ma_avg+stds)*radians, (ma_avg-stds)*radians, zorder=2, yunits=radians, alpha=0.5)
     plt.plot(onebound_angles_data["longest_times"], ma_avg*radians, linewidth=3, zorder=2, yunits=radians)
     plt.xlabel("time (ns)")
-    plt.ylabel(r"$\theta_{um}$ prestroke")
+    plt.ylabel(r"$\theta_{m}$ prestroke")
     plt.gca().axhline(197 / 180 * np.pi * radians, color='red', linestyle='dashed', linewidth=1)
     plt.gca().axhline(242 / 180 * np.pi * radians, color='blue', linestyle='dashed', linewidth=1)
     plt.gca().set_xlim(0, onebound_angles_data["longest_times"][-1])

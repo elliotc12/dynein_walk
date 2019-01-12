@@ -154,7 +154,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
   long long int BBLOGDURATION;
   if (longmode) {
     BBLOGDURATION = 1e7;
-    SKIPITERS = 1e4;
+    SKIPITERS = 1e4; // note - this gets further downsampled in make_all_stepping_plots.py
   }
   else
     BBLOGDURATION = 1e4;
