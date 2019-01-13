@@ -362,7 +362,7 @@ def make_behavior_plot(args, stepping_data, up_data):
     if len(stepping_data["step_lengths"]) == 0:
         print("No steps to put in histogram!")
 
-    bins = np.histogram(np.hstack((yildiz_step_lengths, stepping_data["step_lengths"])), bins=20)[1]
+    bins = np.histogram(np.hstack((yildiz_step_lengths, stepping_data["step_lengths"])), bins=40)[1]
 
     ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", normed=True, stacked=True, color="C0")
     ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", normed=True, stacked=True, color="C1")
@@ -465,8 +465,8 @@ def make_force_plot(args, force_data):
     gennerich_forces = [4, 0, -1, -2, -3, -4, -5, -6, -7, -8, -10]
     gennerich_velocities = [50.76, 45.38, 43.07, 36.92, 22.3, 8.46, 4.6, 3.07, -.6, -5.38, -15.38]
     gennerich_errors = [2.3, 1.8, 3, 3, 1.6, 1.4, 1.5, 1.5, 1.4, 1.4, 2.3]
-    plt.errorbar(gennerich_forces, gennerich_velocities, yerr=gennerich_errors, label="Gennerich 2007", fmt='o-', c='b', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
-    plt.scatter(force_data["forces"], force_data["velocities"], c='r', label="Model", zorder=2, s=4**2)
+    plt.errorbar(gennerich_forces, gennerich_velocities, yerr=gennerich_errors, label="Experiment", c='C0', fmt='o-', markersize=4, linestyle='', capsize=1, elinewidth=0.3, markeredgewidth=0.3)
+    plt.scatter(force_data["forces"], force_data["velocities"], label="Model", c='C1', zorder=2, s=4**2)
     plt.xlabel("$\hat{x}$ Force (pN)")
     plt.ylabel("Velocity (nm/s)")
     plt.legend()

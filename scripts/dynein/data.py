@@ -62,6 +62,9 @@ class SteppingData(object):
             self.bothbound_times.append(self.unbindTimes[s]-self.bindTimes[s-1])
 
         for s in range(2, len(self.nbx_bind)):
+            # if (self.nbx_bind[s] + self.fbx_bind[s] - self.nbx_bind[s-1] - self.fbx_bind[s-1]) < 5 and \
+            #    (self.nbx_bind[s] + self.fbx_bind[s] - self.nbx_bind[s-1] - self.fbx_bind[s-1]) > -5: # only look at steps > 5nm
+            #     continue
             if self.nbx_bind[s-1] < self.fbx_bind[s-1]:
                 self.trailing_foot = self.nbx_bind
                 self.leading_foot = self.fbx_bind
