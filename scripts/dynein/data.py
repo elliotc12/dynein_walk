@@ -104,8 +104,16 @@ class SteppingData(object):
 
 
 class MovieData(object):
+    """Class for organizing the simulation movie data
+    """
     def __init__(self, movieFile):
         self.rawData = np.loadtxt(movieFile)
+        # note states are defined in dynein_struct.h to be
+        # 0 = NEARBOUND, 1 = FARBOUND, 2 = BOTHBOUND, 3 = UNBOUND
+        # the state will affect the ordering of the domains e.g.
+        # x1 is always the bound domain and switches between near
+        # and far foot as of right now. 
+        self.states = self.rawData[:,0]
         self.times = self.rawData[:, 1]
         self.PE1 = self.rawData[:, 2]
         self.PE2 = self.rawData[:, 3]
@@ -132,6 +140,8 @@ class MovieData(object):
         self.fy4 = self.rawData[:, 24]
         self.fx5 = self.rawData[:, 25]
         self.fy5 = self.rawData[:, 26]
+
+
 
 
 if __name__ == "__main__":

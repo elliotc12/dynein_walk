@@ -53,7 +53,7 @@ for i in range(plot_length):
     if int(data[i,0]) == 0 or int(data[i,0]) == 2:
         nbxs[i] = data[i,7]
         fbxs[i] = data[i,15]
-        fbys[i] = data[i,16]
+        fbys[i] = data[i,16]  #NOTE if dynein is onebound or bothbound at least one y proj will be zero 
     elif int(data[i,0]) == 1:
         nbxs[i] = data[i,15]
         fbxs[i] = data[i,7]
@@ -69,6 +69,8 @@ avg_nbys = np.array([np.mean(nbys[avging_window_width*i:avging_window_width*(i+1
 avg_fbys = np.array([np.mean(fbys[avging_window_width*i:avging_window_width*(i+1)]) for i in range(num_windows)])
 
 avg_times = np.array([times[int(np.floor((i+0.5)*avging_window_width))] for i in range(num_windows)])
+# ^this looks like it's using the left most data point as the time for the window instead of the
+# average time
 
 y_min_xproj = np.min([np.min(avg_nbxs), np.min(avg_fbxs)])
 y_max_xproj = np.max([np.max(avg_nbxs), 20])
