@@ -11,8 +11,8 @@ stroke_angle_k_b  = k_b # s^-1
 stroke_angle_k_ub = k_ub # s^-1
 stroke_angle_seed = 1
 
-force_k_b  = k_b # s^-1
-force_k_ub = 10 # s^-1
+force_k_b  = 3e6 # s^-1
+force_k_ub = 10 # s^-1, 5 was about 1/2 the velocity we want
 
 cexp = -0.35
 

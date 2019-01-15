@@ -12,7 +12,6 @@ sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params
 
 runtime = 2
-
 for f in [4, 0, -1, -2, -3, -4, -5, -6, -7, -8, -10]:
     for s in [1, 2, 3, 4]:
         basename = "paper_force__F-%s,s-%s" % (str(f), str(s))
