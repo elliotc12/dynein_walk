@@ -53,13 +53,13 @@ def get_stepping_data(args):
     stepping_data["step_lengths"] = np.concatenate([d.step_lengths for d in data_objects])
     stepping_data["initial_displacements"] = np.concatenate([d.initial_displacements for d in data_objects])
 
-    stepping_data["alternating_passing"] = sum([d.alternating_passing for d in data_objects])
-    stepping_data["alternating_not_passing"] = sum([d.alternating_not_passing for d in data_objects])
-    stepping_data["not_alternating_passing"] = sum([d.not_alternating_passing for d in data_objects])
-    stepping_data["not_alternating_not_passing"] = sum([d.not_alternating_not_passing for d in data_objects])
+    # stepping_data["alternating_passing"] = sum([d.alternating_passing for d in data_objects])
+    # stepping_data["alternating_not_passing"] = sum([d.alternating_not_passing for d in data_objects])
+    # stepping_data["not_alternating_passing"] = sum([d.not_alternating_passing for d in data_objects])
+    # stepping_data["not_alternating_not_passing"] = sum([d.not_alternating_not_passing for d in data_objects])
 
-    stepping_data["leading_foot_steps"] = np.sum([d.leading_foot_steps for d in data_objects])
-    stepping_data["trailing_foot_steps"] = np.sum([d.trailing_foot_steps for d in data_objects])
+    # stepping_data["leading_foot_steps"] = np.sum([d.leading_foot_steps for d in data_objects])
+    # stepping_data["trailing_foot_steps"] = np.sum([d.trailing_foot_steps for d in data_objects])
 
     stepping_data["num_steps"] = len(stepping_data["step_lengths"])
     stepping_data["initial_displacements"] = np.array(stepping_data["initial_displacements"])
@@ -428,37 +428,37 @@ def make_behavior_plot(args, stepping_data, up_data):
     plt.tight_layout()
     plt.savefig("plots/unbinding_probability_vs_displacement.pdf")
 
-def make_analysis_plot(args, stepping_data):
-    fig = plt.figure(figsize=(8*.6, 6*.6), dpi=300)
-    plt.rc('text', usetex=True)
+# def make_analysis_plot(args, stepping_data):
+#     fig = plt.figure(figsize=(8*.6, 6*.6), dpi=300)
+#     plt.rc('text', usetex=True)
 
-    gs = gridspec.GridSpec(1, 3, width_ratios=[1, 1, 1])
-    ax1 = fig.add_subplot(gs[0])
-    ax2 = fig.add_subplot(gs[1])
-    ax3 = fig.add_subplot(gs[2])
+#     gs = gridspec.GridSpec(1, 3, width_ratios=[1, 1, 1])
+#     ax1 = fig.add_subplot(gs[0])
+#     ax2 = fig.add_subplot(gs[1])
+#     ax3 = fig.add_subplot(gs[2])
 
-    width = 0.5
+#     width = 0.5
 
-    ax1.bar([0, 1], [stepping_data["alternating_passing"] + stepping_data["alternating_not_passing"], stepping_data["not_alternating_passing"] + stepping_data["not_alternating_not_passing"],], width)
-    ax1.set_ylabel('frequency')
-    ax1.set_xticks([0, 1])
-    ax1.set_xticklabels(('alternating', 'not\nalternating'), rotation=45)
+#     ax1.bar([0, 1], [stepping_data["alternating_passing"] + stepping_data["alternating_not_passing"], stepping_data["not_alternating_passing"] + stepping_data["not_alternating_not_passing"],], width)
+#     ax1.set_ylabel('frequency')
+#     ax1.set_xticks([0, 1])
+#     ax1.set_xticklabels(('alternating', 'not\nalternating'), rotation=45)
 
-    ax2.bar([0, 1], [stepping_data["alternating_passing"] + stepping_data["not_alternating_passing"], stepping_data["alternating_not_passing"] + stepping_data["not_alternating_not_passing"],], width)
-    ax2.set_ylabel('frequency')
-    ax2.set_xticks([0, 1])
-    ax2.set_xticklabels(('passing', 'not passing'), rotation=45)
+#     ax2.bar([0, 1], [stepping_data["alternating_passing"] + stepping_data["not_alternating_passing"], stepping_data["alternating_not_passing"] + stepping_data["not_alternating_not_passing"],], width)
+#     ax2.set_ylabel('frequency')
+#     ax2.set_xticks([0, 1])
+#     ax2.set_xticklabels(('passing', 'not passing'), rotation=45)
 
-    ax3.bar([0, 1, 2, 3], [stepping_data["alternating_passing"], stepping_data["alternating_not_passing"], stepping_data["not_alternating_passing"], stepping_data["not_alternating_not_passing"],], width)
-    ax3.set_ylabel('frequency')
-    ax3.set_xticks([0, 1, 2, 3])
-    ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'not alternating,\n passing', 'not alternating,\n not passing'), rotation=45)
+#     ax3.bar([0, 1, 2, 3], [stepping_data["alternating_passing"], stepping_data["alternating_not_passing"], stepping_data["not_alternating_passing"], stepping_data["not_alternating_not_passing"],], width)
+#     ax3.set_ylabel('frequency')
+#     ax3.set_xticks([0, 1, 2, 3])
+#     ax3.set_xticklabels(('alternating,\n passing', 'alternating,\n not passing', 'not alternating,\n passing', 'not alternating,\n not passing'), rotation=45)
 
-    plt.tight_layout()
-    plt.gca().spines["top"].set_visible(False)
-    plt.gca().spines["right"].set_visible(False)
-    plt.savefig("plots/stepping_analysis.pdf", format="pdf")
-    plt.close(fig)
+#     plt.tight_layout()
+#     plt.gca().spines["top"].set_visible(False)
+#     plt.gca().spines["right"].set_visible(False)
+#     plt.savefig("plots/stepping_analysis.pdf", format="pdf")
+#     plt.close(fig)
 
 def make_force_plot(args, force_data):
     fig = plt.figure(figsize=(4, 2.2), dpi=300)
@@ -688,7 +688,6 @@ def main():
     make_behavior_plot(args, stepping_data, unbinding_probability_data)
     if args.quick:
         exit()
-    make_analysis_plot(args, stepping_data)
     force_data = get_force_data(args)
     make_force_plot(args, force_data)
     make_stroke_plots(args, angles_data)

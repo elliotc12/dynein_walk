@@ -64,11 +64,10 @@ data/paper_unbinding_probability__L-10,s-1.txt: simulate_unbinding_rates scripts
 # 	python3 scripts/generate-angle-data.py long
 
 ######### fun plots ##########
-plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf plots/stepping_analysis_paper.pdf: scripts/paper-histogram-plt.py $(STATIC_DATA)
+plots/stepping_time_histogram_paper.pdf plots/stepping_length_histogram_paper.pdf: scripts/paper-histogram-plt.py $(STATIC_DATA)
 	python3 scripts/paper-histogram-plt.py
 	mv plots/stepping_length_histogram.pdf plots/stepping_length_histogram_paper.pdf
 	mv plots/stepping_time_histogram.pdf plots/stepping_time_histogram_paper.pdf
-	mv plots/stepping_analysis.pdf plots/stepping_analysis_paper.pdf
 
 plots/stepping_time_histogram_%.pdf: scripts/make_stepping_plots.py
 	python3 scripts/make_stepping_plots.py $*
@@ -82,7 +81,6 @@ PAPER-PLOTS = plots/paper_trajectory_plot.pdf plots/paper_displacement_vs_step_l
 
 plots/paper_model_behavior.pdf plots/paper_foot_order_histogram.pdf plots/paper_force_vs_velocity.pdf plots/paper_unbinding_probability_vs_displacement.pdf: scripts/make_all_stepping_plots.py $(PAPER_DATA) data/paper_unbinding_probability__L-10,s-1.txt $(PAPER_FORCE_DATA)
 	python3 scripts/make_all_stepping_plots.py -d data -b paper_main
-	mv plots/stepping_analysis.pdf plots/paper_foot_order_statistics.pdf
 	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf
 	mv plots/unbinding_probability_vs_displacement.pdf plots/paper_unbinding_probability_vs_displacement.pdf
 	mv plots/force_vs_velocity.pdf plots/paper_force_vs_velocity.pdf
