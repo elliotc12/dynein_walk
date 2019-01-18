@@ -1,6 +1,8 @@
 TODO
 ====
 
+1. Make build work again.
+
 1. Teach dynein.run to take paper_params (or other params hypothetically) as an option.
 
 2. Teach dynein.run to use rq?
