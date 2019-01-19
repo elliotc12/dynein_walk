@@ -421,19 +421,12 @@
   notes={MD simulation which simulates both the prestroke and powerstroke. They seem to happen pretty quick. Doesn't simulate the dimer, which would be cool to actually see the powerstroke happen. This could confirm if the winch or powerstroke pictures are true. They show that potentially the MTBD is in the low-affinity state when the linker powerstroke happens, which conflicts with the Cianfrocco model. In light of their finding that the linker powerstroke occurs before the MTBD low->high transition, they present a model (the winch model?) where the powerstroke occurs when the MTBD is in a low-affinity mode (MT unbound?) and the head somehow rotates/translates, which somehow causes the head to diffuse forward and rebind MT, going into the high-affinity state. This seems winch-like. It would be nice to test if our model could display this behavior by adding new states and changing the transition order. It seems that the pre->post transition takes ~5-10us, while the post->pre takes ~2us.}
 }
 
-@Comment Misc notes
-@Comment Dynein's two feet take different steps according to yildiz/qiu
-@Comment Carter 2008 says that dynein's MTBD decides directionaolity, whereas Redwine 2012 thinks its linker motion (clarify)
-@Comment Imai 2015 has lots to say criticizing the step length studies of qiu/yildiz and have something to say about domain movement MT search
-
 @Comment ----Writing-----
 @Comment find citations for our assumption that the conformational change is harmonic?
 
 @Comment ----Plots------
 @Comment Fit force-v-velocity model's params via velocity to gennerich's force=0 velocity
-@Comment Cartoon: Add spring symbols to angles to make it more obvious where the springs are
 @Comment Supplemental: Add more stuff to supplemental methods, like how our drag forces and stuff are calculated and how we calculate unbinding rate
-@Comment Debug: Fix stepping analysis python module to categorize zero-length steps separately from other steps, particularly in terms of stepping imes.  Alternately, change C++ to make it possible to identify which foot lifted if it didn't move.
 
 @Comment ----Questions for David----
 @Comment Yildiz 2012 fig 1B does head-labeling of dynein, but we're comparing it to our MTBD-labelled data. Is this fair or should we do head-labelling? imaibugress say that due to flexibility of

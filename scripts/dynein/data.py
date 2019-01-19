@@ -46,9 +46,10 @@ class SteppingData(object):
                 print("Error, one step had both feet move")
                 print(self.nbx_bind[s-1], self.nbx_bind[s], self.fbx_bind[s-1], self.fbx_bind[s])
                 exit(1)
-            if(self.nbx_bind[s-1]== self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
-                #print("Zero-length step")
-                continue
+            if(self.nbx_bind[s-1] == self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
+                print("Error, zero-length step")
+                print(self.nbx_bind[s-1], self.nbx_bind[s], self.fbx_bind[s-1], self.fbx_bind[s])
+                exit(1)
             if not (self.nbx_bind[s-1] == self.nbx_bind[s]):
                 self.initial_displacements.append(self.nbx_bind[s-1]-self.fbx_bind[s-1])
                 self.final_displacements.append(self.nbx_bind[s]-self.fbx_bind[s])
