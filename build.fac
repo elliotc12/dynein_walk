@@ -12,7 +12,7 @@ c .pyc
 
 ########## paper plots ##########
 
-| python3 scripts/make_all_stepping_plots.py -d data -b paper_main && mv plots/stepping_analysis.pdf plots/paper_foot_order_histogram.pdf &&	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf &&	mv plots/unbinding_probability_vs_displacement.pdf plots/paper_unbinding_probability_vs_displacement.pdf &&	mv plots/force_vs_velocity.pdf plots/paper_force_vs_velocity.pdf
+| python3 scripts/make_all_stepping_plots.py -d data -b paper_main &&	mv plots/model_behavior.pdf plots/paper_model_behavior.pdf &&	mv plots/unbinding_probability_vs_displacement.pdf plots/paper_unbinding_probability_vs_displacement.pdf &&	mv plots/force_vs_velocity.pdf plots/paper_force_vs_velocity.pdf
 c .pyc
 < data/paper_unbinding_probability__L-30,s-1.txt
 < scripts/dynein/draw/tail.py
