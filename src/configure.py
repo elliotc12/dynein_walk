@@ -2,6 +2,7 @@ import glob
 
 for f in glob.glob('*.cpp'):
     print('| g++ -c {} -std=c++98 -g -Werror -O2 -Wall'.format(f))
+    print('> {}.o'.format(f[:-4]))
 
 # Below are the executables
 
