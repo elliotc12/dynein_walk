@@ -2,7 +2,6 @@
 import subprocess, os
 import numpy as np
 
-# ask professor round / elliott about this latex_format stuff - 6/26/17
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
         x = '{:g}'.format(x)
@@ -64,7 +63,7 @@ def sim(**run):
     print("Running: ", " ".join(cmd))
     out.flush()
 
-    # run the simulation 
+    # run the simulation
     rc = subprocess.run(cmd, stdout=out, stderr=out).returncode
     out.flush()
 
@@ -76,22 +75,21 @@ def sim(**run):
     return basename
 
 
-def sim2(path_to_best_params=None, **run):
+def sim2(path_to_best_params=None, verbose=False, **run):
     # detect operating system using strategy found at
     # https://stackoverflow.com/questions/1854/python-what-os-am-i-running-on
     import platform
     if platform.system() == 'Darwin':
         os.system("make generate_stepping_data")
     elif platform.system() == "Linux":
-        print("You are running linux. Fac should handle everything...")
+        if verbose: print("You are running linux. Fac should handle everything...")
     else:
-        print("You're os is not recognized... Beware!")
+        if verbose: print("Your os is not recognized... Beware!")
 
     # we know now that code should be built. First, try using best_params from data folder
     # we can do this recursively
     if path_to_best_params!=None:
         # make sure file exists
-        print(path_to_best_params)
         assert(os.path.isfile(path_to_best_params))
 
         # find end of path
@@ -99,20 +97,38 @@ def sim2(path_to_best_params=None, **run):
         import sys
         sys.path.append(path[0])
         import importlib
-        params = importlib.import_module(path[1][:-3]) #make sure to chop off .py for import 
-        print("success")
+        params = importlib.import_module(path[1][:-3]) #make sure to chop off .py for import
         sim2(**params.for_simulation)
 
     else:
+
+
+        # to run the command, find the distance to root of directory where simulation executable lives
+        current_dir = os.getcwd()
+        folders = current_dir.split('/')
+        root_index = folders.index('dynein_walk')
+        distance_to_root = int(len(folders)-(root_index+1))
+
+        cmd = [distance_to_root*"../"+"generate_stepping_data"]
+
         for key in run:
-            print(key)
+            if key in ["nomovie", "onebound-debugging", "crash-movie", "full-gibbs-transitions", "angle-logging-mode", "long-angle-logging-mode"]:
+                if run[key] == True:
+                    cmd.extend(["--"+key])
+            else:
+                cmd.extend(["--"+key, str(run[key])])
+
+
+        # run the simulation
+        print(cmd)
+        rc = subprocess.run(cmd).returncode
 
 
 
 
 
 if __name__ == "__main__":
-    sim2("../../data/params.py")
+    sim2("../../data/params.py", verbose=True)
 
 
 
