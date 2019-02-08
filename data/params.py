@@ -9,5 +9,15 @@ for_simulation= {"k_b": 3e6,
                  "lt": 23.0,
                  "rt": 6.0,
                  "rm": 5.5,
-                 "rb": 1.75, 
+                 "rb": 1.75,
+                 "seed": 1,
+                 "dt": 1e-10,
+                 "force": 0,
+                 "exp-unbinding-constant":0.0,
+                 "runtime": 0.1,
+                 "crash-movie": False,
+                 "nomovie": False,
+                 "angle-logging-mode": False,
+                 "long-angle-logging-mode": False
+
 }
