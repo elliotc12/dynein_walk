@@ -109,7 +109,8 @@ def sim2(path_to_best_params=None, verbose=False, **run):
         root_index = folders.index('dynein_walk')
         distance_to_root = int(len(folders)-(root_index+1))
 
-        cmd = [distance_to_root*"../"+"generate_stepping_data"]
+        os.chdir(distance_to_root*"../")
+        cmd = ["./generate_stepping_data"]
 
         for key in run:
             if key in ["nomovie", "onebound-debugging", "crash-movie", "full-gibbs-transitions", "angle-logging-mode", "long-angle-logging-mode"]:
