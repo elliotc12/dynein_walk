@@ -365,8 +365,8 @@ def make_behavior_plot(args, stepping_data, up_data):
 
     bins = np.histogram(np.hstack((yildiz_step_lengths, stepping_data["step_lengths"])), bins=40)[1]
 
-    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", density=True, stacked=True, color="C0")
-    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", density=True, stacked=True, color="C1")
+    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", normed=True, stacked=True, color="C0")
+    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", normed=True, stacked=True, color="C1")
 
     # ax1.scatter([np.mean(stepping_data["step_lengths"])], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(stepping_data["step_lengths"]), decimals=2)) + r'$ \textit{nm}')
 
@@ -672,7 +672,7 @@ def calculate_stacked_histo(id_data, fd_data, id_boundaries, bins):
         intersect = lt[np.in1d(lt, gt)]
         bounded_final_disps = fd_data[intersect]
 
-        (histIn, binsIn) = np.histogram(bounded_final_disps, bins=bins, density=True) # outline histogram code from SciPy Cookbook
+        (histIn, binsIn) = np.histogram(bounded_final_disps, bins=bins, normed=True) # outline histogram code from SciPy Cookbook
 
         stepSize = binsIn[1] - binsIn[0]
         outline_bins = np.zeros(len(binsIn)*2 + 2, dtype=np.float)
