@@ -1,8 +1,9 @@
 #Image center (0x, 0y) = (157 px, 128 px)
-#Left center (-56, 0) = (3, 128
+#Left center (-56, 0) = (3, 128)
 #Bottom center (0, -56) = (157, 254)
+#Acquired by stripping from Yildiz 2012 Fig 3.A scatter plot
 
-#Dots
+#x, y
 83, 195
 88, 188
 103, 186

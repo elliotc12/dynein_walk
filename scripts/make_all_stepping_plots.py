@@ -52,6 +52,7 @@ def get_stepping_data(args):
     stepping_data["step_times"] = stepping_data["onebound_times"] + stepping_data["bothbound_times"]
     stepping_data["step_lengths"] = np.concatenate([d.step_lengths for d in data_objects])
     stepping_data["initial_displacements"] = np.concatenate([d.initial_displacements for d in data_objects])
+    stepping_data["final_displacements"] = np.array(np.concatenate([d.final_displacements for d in data_objects]))
 
     # stepping_data["alternating_passing"] = sum([d.alternating_passing for d in data_objects])
     # stepping_data["alternating_not_passing"] = sum([d.alternating_not_passing for d in data_objects])
@@ -364,8 +365,8 @@ def make_behavior_plot(args, stepping_data, up_data):
 
     bins = np.histogram(np.hstack((yildiz_step_lengths, stepping_data["step_lengths"])), bins=40)[1]
 
-    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", normed=True, stacked=True, color="C0")
-    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", normed=True, stacked=True, color="C1")
+    ax1.hist(yildiz_step_lengths, bins, alpha=0.5, label="Experiment", density=True, stacked=True, color="C0")
+    ax1.hist(stepping_data["step_lengths"], bins, alpha=0.5, label="Model", density=True, stacked=True, color="C1")
 
     # ax1.scatter([np.mean(stepping_data["step_lengths"])], [0], label=r'$\overline{\Delta x} = ' + str(np.around(np.mean(stepping_data["step_lengths"]), decimals=2)) + r'$ \textit{nm}')
 
@@ -661,18 +662,96 @@ def make_stroke_plots(args, angles_data, longrun=False):
     plt.tight_layout()
     plt.savefig("plots/onebound_stroke_taily_positions.pdf", format="pdf")
 
-# is it possible that our current results are true, and that dynein moves mostly on its prestroke, not poststroke?
-# the best way to figure out this would be to get the average x-displacement during onebound and bothbound
-# perhaps just measure the tx-displacement histogram for onebound and bothbound and see if there are interesting trends
-# make ba plot
-# augment the stepping data files to also show the ob vs bb tail displacement
+def calculate_stacked_histo(id_data, fd_data, id_boundaries, bins):
+    calculated_histo_stuff = []
+    for b in range(len(id_boundaries)-1):
+        bound1 = id_boundaries[b]
+        bound2 = id_boundaries[b+1]
+        lt = np.nonzero(id_data > bound1)[0]
+        gt = np.nonzero(id_data <= bound2)[0]
+        intersect = lt[np.in1d(lt, gt)]
+        bounded_final_disps = fd_data[intersect]
 
-# Maybe have make automatically make the data file since it's pretty small; have it in the repository
-# Make an alternate trajectory movie which is smaller so you can see steps better
+        (histIn, binsIn) = np.histogram(bounded_final_disps, bins=bins, density=True) # outline histogram code from SciPy Cookbook
 
-# at the current sim conditions (1e5 logging iterations, kb 1e8 kub 1e4), tailx displaces about 17.6nm in about .5us per step during the powerstroke, suggesting a max speed of 35 mm/s
-# the binding domain during powerstroke reliably changes by about pi/6 or 30 degrees, suggesting a partial powerstroke mechanism (as opposed to winch)
-# the tail actually increases its y coordinate by about 10nm, in opposition to the winch mechanism
+        stepSize = binsIn[1] - binsIn[0]
+        outline_bins = np.zeros(len(binsIn)*2 + 2, dtype=np.float)
+        data = np.zeros(len(binsIn)*2 + 2, dtype=np.float)
+        for bb in range(len(binsIn)):
+            outline_bins[2*bb + 1] = binsIn[bb]
+            outline_bins[2*bb + 2] = binsIn[bb] + stepSize
+            if bb < len(histIn):
+                data[2*bb + 1] = histIn[bb]
+                data[2*bb + 2] = histIn[bb]
+
+        outline_bins[0] = outline_bins[1]
+        outline_bins[-1] = outline_bins[-2]
+        data[0] = 0
+        data[-1] = 0
+
+        calculated_histo_stuff.append((data, outline_bins))
+    return calculated_histo_stuff
+
+def make_stacked_displacement_histogram(stepping_data):
+    fig = plt.figure(figsize=(8,10))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+    ax1 = fig.add_subplot(gs[0])
+    ax2 = fig.add_subplot(gs[1])
+
+    (_, bins_) = np.histogram(stepping_data["initial_displacements"], bins=30)
+
+    num_histos = 7
+    num_displacements = len(stepping_data["initial_displacements"])
+    partition = [int(s) for s in np.linspace(0, num_displacements-1, num_histos)]
+    initial_displacement_boundaries = np.sort(stepping_data["initial_displacements"])[partition]
+
+    model_histos_bins = calculate_stacked_histo(stepping_data["initial_displacements"], stepping_data["final_displacements"], initial_displacement_boundaries, bins_)
+
+    for i in range(len(initial_displacement_boundaries)-1):
+        lbound = initial_displacement_boundaries[i]
+        rbound = initial_displacement_boundaries[i+1]
+        ax1.plot(model_histos_bins[i][1], model_histos_bins[i][0], label="Model initial displacement in ({:.1f}, {:.2f}]".format(lbound, rbound), color="C{}".format(i))
+
+    yildiz_IF_data = np.loadtxt("data/yildiz_2012_if_scatter_coordinates.txt", delimiter=", ")
+
+    center_px_x = 157 # from data file
+    center_px_y = 128
+    right_center_px_x = 311
+    right_center_nm_x = 56
+    bottom_center_px_y = 254
+    bottom_center_nm_y = 56
+
+    yildiz_data_nm = np.add(yildiz_IF_data, np.array((-center_px_x, -center_px_y))) # shift origin to (0, 0)
+    yildiz_data_nm = np.multiply(yildiz_data_nm, np.array((1.0, -1.0))) # invert the y
+    yildiz_data_nm = np.multiply(yildiz_data_nm, np.array((right_center_nm_x / (right_center_px_x-center_px_x), bottom_center_nm_y / (bottom_center_px_y-center_px_y)))) # rescale to nm
+
+    yildiz_ids = yildiz_data_nm[:,0]
+    yildiz_fds = yildiz_ids + yildiz_data_nm[:,1]
+
+    (_, ybins_) = np.histogram(yildiz_ids, bins=30)
+
+    num_histos = 4
+    num_displacements = len(yildiz_ids)
+    partition = [int(s) for s in np.linspace(0, num_displacements-1, num_histos)]
+    yildiz_initial_displacement_boundaries = np.sort(yildiz_ids)[partition]
+
+    yildiz_histos_bins = calculate_stacked_histo(yildiz_ids, yildiz_fds, yildiz_initial_displacement_boundaries, bins_)
+
+    for i in range(len(yildiz_initial_displacement_boundaries)-1):
+        lbound = yildiz_initial_displacement_boundaries[i]
+        rbound = yildiz_initial_displacement_boundaries[i+1]
+        ax2.plot(yildiz_histos_bins[i][1], yildiz_histos_bins[i][0], label="Yildiz initial displacement in ({:.1f}, {:.2f}]".format(lbound, rbound), color="C{}".format(i))
+
+    plt.rcParams.update({'font.size': 8})
+    ax1.set_ylabel("Frequency")
+    ax1.legend()
+
+    ax2.set_ylabel("Frequency")
+    ax2.legend()
+
+    plt.xlabel("Final displacement (nm)")
+    plt.tight_layout()
+    plt.savefig("plots/stacked_displacement_histogram.pdf", format="pdf")
 
 def initialize():
     plt.rcParams.update({'font.size': 8})
@@ -692,6 +771,7 @@ def main():
     make_force_plot(args, force_data)
     make_stroke_plots(args, angles_data)
     make_stroke_plots(args, long_angles_data, longrun=True)
+    make_stacked_displacement_histogram(stepping_data)
 
 if __name__ == "__main__":
     main()
