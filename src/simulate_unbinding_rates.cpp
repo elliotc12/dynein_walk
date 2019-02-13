@@ -15,8 +15,8 @@
 #include "dynein_struct.h"
 #include "simulation_defaults.h"
 
-const bool display_step_info = false;
-const bool display_progress = false;
+// const bool display_step_info = false;
+// const bool display_progress = false;
 
 extern movie_data_struct* on_crash_old_movie_data_global_ptr;
 extern movie_data_struct* on_crash_new_movie_data_global_ptr;

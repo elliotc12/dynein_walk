@@ -751,7 +751,7 @@ def make_stacked_displacement_histogram(stepping_data):
 
     plt.xlabel("Final displacement (nm)")
     plt.tight_layout()
-    plt.savefig("plots/stacked_displacement_histogram.pdf", format="pdf")
+    plt.savefig("plots/paper_stacked_displacement_histogram.pdf", format="pdf")
 
 def initialize():
     plt.rcParams.update({'font.size': 8})

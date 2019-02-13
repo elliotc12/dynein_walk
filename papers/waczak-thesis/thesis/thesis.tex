@@ -12,6 +12,13 @@
 
 \usepackage{caption}  % for creating simple subfigures
 \usepackage{subcaption}
+
+\usepackage{titlesec} % redefine headings to remove "Chapter X"
+
+\usepackage[labelfont=bf, textfont=md]{caption}
+
+\usepackage{setspace}
+
 \title{
 	{Simulating the Brownian Dynamics of a Two-Dimensional Model for the Dynein Motor Protein}\vspace{1.5em}\\
 	\includegraphics[width=0.5\columnwidth]{OSU_logo.png}\vspace{0.5em}\\
@@ -21,6 +28,8 @@
 \date{\today} 
 
 \begin{document}
+	\onehalfspacing
+	
 	\maketitle
 	
 	\chapter*{Abstract}
@@ -34,8 +43,10 @@
 	\input{./chapters/introduction}
 	\chapter{Dynein}
 	\input{./chapters/dynein}
+	\chapter{Theory}
+	\input{./chapters/theory}
 	\chapter{Methods}
-	\input{./chapters/methods}
+	\input{./chapters/theory}
 	
 \bibliography{references}
 \bibliographystyle{acm}
