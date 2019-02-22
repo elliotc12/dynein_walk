@@ -16,8 +16,8 @@ for_simulation= {"k_b": 3e6,
                  "exp-unbinding-constant":0.0,
                  "runtime": 0.1,
                  "crash-movie": False,
-                 "nomovie": False,
+                 "nomovie": True,
                  "angle-logging-mode": False,
-                 "long-angle-logging-mode": False
-
+                 "long-angle-logging-mode": False,
+                 "label": "test"
 }
