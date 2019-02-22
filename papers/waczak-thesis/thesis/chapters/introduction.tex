@@ -1,21 +1,25 @@
-\textbf{NOTE:} Empty brackets [] indicate fields where I intend to add references. \\
+Cells are the fundamental unit for all life on Earth. In order
+for them to perform their biological tasks, the complex structures they contain
+must be able to replicate and move within their aqueous environment. This
+transport problem  poses a unique challenge as diffusion alone is far to slow,
+and random, a process to be able to produce movement on cellular timescales[].
+Nature's solution to this problem is twofold. Within each cell there is a vast network of interweaving filaments called the \textit{cytoskeleton} that spans the gaps between the substructures of the cell. This cytoskeleton serves as a highway to a class of proteins called \textit{molecular motors} which can be distinguished into three types: kinesin, myosin, and dynein. Molecular motors attach to cellular cargo and drag it along the cytoskeleton by hydrolyzing Adenosine triphosphate (ATP) in order to convert stored chemical energy into mechanical work\cite{alberts_molecular_2002}. Correct operation of these motors results in processes such as cell division, muscle contraction, and axonal transport; failure can lead to debilitating diseases such as ALS \cite{boillee_als:_2006}. 
 
-The cell is the basic structural component for all life on Earth. Each is comprised of a cocktail of complicated molecules that when working together enable these small units to perform their many biological functions-- often in collections, but also as individuals. Most cells must be magnified tens or hundreds of times just to be seen. How then do the constituent components of cells maneuver through their environment with only their aqueous surroundings and a slew of proteins at their disposal? As cells replicate, how do the newly copied parts find their way to opposite sides of the cell before it finally divides? 
+\begin{figure}[!hbt]
+	\centering 
+	\includegraphics[width=0.5\columnwidth]{motor_comparison}
+	\caption{Comparison of the three primary motor proteins (from left to right): myosin, kinesin, dynein. Image taken from \cite{philips__nodate}.}
+	\label{fig:motor proteins} 
+\end{figure}
 
-\textbf{NOTE} Add sentence or two about focus of this thesis here.
-
-
-The answer lies in part with motor proteins. Within each cell there is a vast network of interweaving protein filaments called the cytoskeleton that functions as a system of  highways to a particular class of proteins that have evolved to tackle the problem of cellular transport. These \textit{motor proteins} move along the cytoplasm by converting chemical energy into mechanical work through the hydrolysis of Adenosine triphosphate (ATP).
-
-Why should we study motor proteins and why should this interest a physicist? To answer first question we need only consider the vast array of cellular processes in which motor proteins are critically involved. Among these include muscle contraction, axonal transprot, mitosis, meiosis, and the movement of flagella to name a few \cite{}. When motor proteins fail, these fundamental processes are jeopardized and can result in disease\cite{hirokawa_biochemical_2003}. Therefore, understanding the workings of motor proteins is vital if we are to understand how and why they fail. 
-
-The answer to the second question is a little more complicated. Naturally, one might wonder at how such small motors can be studied in the laboratory. Kinesin and Dynein have masses of a few hundred kDa and  $\sim2$ MDa respectively \cite{liao_kinesin_1998, johnson_structure_1983}. Recalling that 1 Dalton (Da) corresponds to one atomic mass unit means these proteins consist of, at most, a few million atoms. This small scale poses a unique experimental challenge. One way this is approached here at OSU by Prof. Weihong Qiu's group is by attaching small fluorescent beads called fluorophores to the binding sites that motor proteins use to grab on to their cargo. Then, the individual movement of motors is tracked using total internal reflection fluorescence microscopy to produce video of the proteins in action as illustrated in figure \ref{fig:weihong tirf} from \cite{qiu_dynein_2012}. 
+Astonishingly, each of these motors is composed of two legs that combine to form a bipedal structure (see figure \ref{fig:motor proteins}). that steps like a human as it moves along the cytoskeleton. Myosin and kinesin behave like a normal person; their steps alternate between opposing domains. This motion is called \textit{hand over hand} stepping \cite{noauthor_drunk_nodate}. Dynein, however, is unique in its motion as it takes hand-over-hand steps but also \textit{inchworms} meaning that it often steps twice with the same foot. Furthermore, dynein even takes frequent backwards steps as shown in the stepping histogram in figure \ref{fig:weihong histogram} \cite{qiu_dynein_2012}. Collectively this behavior has earned dynein the title of \textit{drunken walker} which compactly summarizes its peculiar tendencies \cite{noauthor_drunk_nodate}. \\
 
 \begin{figure}[!hbt]
 	\centering
-	\includegraphics[width=0.25\columnwidth]{weihong_motor}
-	\caption{\textbf{TIRF Microscopy Imaging} individual kinesin proteins are imaged as small green dots and tracked as they move. Slices at different times are stacked so that the slope of each green line indicates the velocity of the protein. Taken from \cite{qiu_dynein_2012}.}
-	\label{fig:weihong tirf}
+	\includegraphics[width=0.5\columnwidth]{weihong_histogram}
+	\caption{Stepping histogram showing the distribution of step sizes for \textit{in vitro} dynein. 1-D data corresponds to the projection of the step along the axis of the microtubule. 2-D data corresponds to the total step size over the two-dimensional structure. Figure taken form \cite{qiu_dynein_2012}.}  
+	\label{fig:weihong histogram} 
 \end{figure}
 
-My interest lies in how these motor proteins move as physical objects through space. Remarkably, life has evolved to make use of three primary motor proteins: myosin, kinesin, and dynein; all perform similar but slightly varied functions. This thesis is concerned specifically with dynein-- a protein unique not only for its status as the largest of the motor proteins, but also for its unique motion as drunken walker. In this thesis I continue the analysis of a proposed model for the motion of dynein along the microtublule.   
+This unique stepping behavior makes dynein an interesting subject to study. There have been significant efforts aimed at characterizing the complex, multi-phase chemical cycle involved in the hydrolysis of ATP\cite{cianfrocco_mechanism_2015}. However, the dynamics of dynein's physical motion through space remains an open question. In this thesis, we examine a simplified physical model for the motion of dynein using Brownian dynamics. By simulating this model, we demonstrate it's ability to replicate of many observed properties of the protein. We will also use the model to comment a proposed mechanism for how dynein generates most of its movement, namely the powerstroke model. 
+

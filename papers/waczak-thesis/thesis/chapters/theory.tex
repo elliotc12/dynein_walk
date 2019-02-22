@@ -4,11 +4,11 @@ Now that I have established some facts about motor proteins as well as specifics
 	\begin{equation}
 		\sum_i \mathbf{F}_i = \dot{\mathbf{p}} = m\ddot{\mathbf{x}}
 	\end{equation}
-	Thus, determining the dynamics of a system boils down to describing the various forces which act upon it and then solving the resulting differential equation for some set of initial conditions. For particles in a solvent, there are three important forces to consider. The first is linear drag, which we write as 
+	Thus, determining the dynamics of a system boils down to describing the various forces which act upon it and then solving the resulting differential equation for some set of initial conditions. For small particles in a solvent, there are three important forces to consider. The first is linear drag, which we write as 
 	\begin{equation}
 		F_\text{drag} = -\gamma\dot{\mathbf{x}}
 	\end{equation}
-	so that the force is proportional to the velocity by a factor $\gamma$s. For a spherical particle of radius $a$ moving through a solvent with liquid viscosity $\eta$ this was derived by Stoke to be 
+	so that the drag force is proportional to the velocity by a factor $\gamma$. For a spherical particle of radius $a$ moving through a solvent with liquid viscosity $\eta$ this was derived by Stoke to be 
 	\begin{equation}
 		\gamma = 6\pi\eta a
 	\end{equation}
@@ -19,20 +19,20 @@ Now that I have established some facts about motor proteins as well as specifics
 		 -\gamma\dot{\mathbf{x}}+\mathbf{F}_\text{rand} + \mathbf{F}_\text{interact} = m\ddot{\mathbf{x}} 
 	\end{equation}
 	
-	If we assume further that $|\gamma\dot{\mathbf{x}}|\gg |m\ddot{\mathbf{x}}|$, or in other words, we take the limit of strong drag, then we arrive at the definition of Brownian Dynamics. This allows us to neglect the acceleration term resulting in the following differential equation:
+	If we assume further that $|\gamma\dot{\mathbf{x}}|\gg |m\ddot{\mathbf{x}}|$, or in other words, we take the limit of strong drag, then we arrive at the definition of Brownian Dynamics. This allows us to neglect the acceleration term resulting in the following differential equation
 	\begin{equation}
 		\dot{\mathbf{x}} = \frac{1}{\gamma}\left( \mathbf{F}_\text{interact} + \mathbf{F}_\text{rand} \right)
 	\end{equation}
-	We must now solve the above for equations of motion. 
+	which we must now solve for the equations of motion of our model. 
 	
 	
 	\section{A Simplified Model for Dynein}
-	As mentioned, we model dynein as a system of spherical domains held together by massless rigid-rods with the whole system moving according to Brownian dynamics. The random forces on each domain are responsible for diffusing the system and creating the expected chaotic motion, but in order to have dynein prefer one side of the microtubule on average (as is the case for real dynein) we need to impose some \textit{extra} structure on the protein. 
+	As mentioned, we model dynein as a system of spherical domains held together by massless rigid-rods with the whole system moving according to Brownian dynamics. The random forces on each domain are responsible for diffusing the system and creating the expected chaotic motion, but in order to have dynein prefer walking towards one side of the microtubule, as is the case for real dynein, we need to impose some \textit{extra} structure on the protein. 
 	
 	\begin{figure}[hbt!]
 		\centering
 		\includegraphics[angle=-90, width=0.6\columnwidth]{torque_angles}
-		\caption{Example of dynein in the onebound configuration with torque angles $\{\phi_i\}$ shown. \textbf{NOTE: double check w/ David on how we select the angles e.g. do we take min of the two possible angles? How do we define the equilibrium angles?}}
+		\caption{Example of dynein in the one bound configuration with torque angles $\{\varphi_i\}$ shown.}
 		\label{fig:torque angles}
 	\end{figure}
 	
@@ -40,20 +40,31 @@ Now that I have established some facts about motor proteins as well as specifics
 	\begin{equation}
 		\Gamma_i = -c_i\left(\varphi_i-\varphi_{i,\text{eq}}\right)
 	\end{equation}
-	Here the $c_i$ are spring constants (a free parameter of the model) and the set $\{\varphi_i\}$ are the angles measured between the $i-1$ and $i+1$ domains. Perhaps more useful is the harmonic energy associated with each torque given as 
+	Here the $c_i$ are spring constants (a free parameter of the model) and the set $\{\varphi_i\}$ are the angles measured between the $i-1$ and $i+1$ domains. Equally useful is the harmonic energy associated with each torque. These are given by
 	\begin{equation}
 		U_i = \frac{1}{2}c_i(\varphi_i-\varphi_{i,\text{eq}})^2
 	\end{equation} 
-	Note that for binding domains this angle may be measured to the microtubule or not measured if the domain is unbound from the microtubule. The angles $\{\varphi_{i, \text{eq}}\}$ are the preferred angles of the system as illustrated in figure \ref{fig:torque angles}. Torques are related to forces by 
+	
+	Real dynein is composed of a pair of identical heavy chains. Therefore, our angle convention is chosen starting at the $0^{th}$ domain in figure \ref{fig:torque angles}. The same convention is then repeated for the second leg with the following correspondence 
+	\begin{align}
+		\varphi_{0,eq} &\longleftrightarrow \varphi_{4,eq} \\ 
+		\varphi_{1,eq} &\longleftrightarrow \varphi_{3,eq}
+	\end{align}
+	where the angles $\{\varphi_{i, \text{eq}}\}$ are the preferred angles of the system as illustrated in figure \ref{fig:torque angles}. The torques on each domain are related to forces by 
 	\begin{equation}
 		\mathbf{\Gamma} = \mathbf{r}\times\mathbf{F}
 	\end{equation}
-	so that knowing the distance between each domains means that we have specified each of the $\mathbf{\Gamma}_i$ and $\mathbf{r}_i$. We desire to determine $\mathbf{F}_i$ from this information however there is no unique way to invert a cross product. Therefore we must specify an algorithm for determining the forces that result from each torque. 
+	so that knowing the distance between each domains means that we have specified each of the $\mathbf{\Gamma}_i$ and $\mathbf{r}_i$. In order to dynamically move each domain we must invert equation 4.10 to determine $\mathbf{F}_i$, however there is no unique way to invert such a cross product. Therefore, we must specify an algorithm for determining the forces that result from each torque. 
+	
+	\section{Calculating Forces and Torques}
+	Here I will discuss in detail how we calculate the forces and show how this is done in code
 	
 	
 	
 	\section{Equations of Motion}
-	To model how dynein steps we introduce two states hereafter referred to as the one bound state and the both bound state. In the one bound state, all but one of the domains are free to diffuse whilst the last is attached to the microtubule. In the both bound state, both binding domains are attached. The slight difference in geometry between the two scenarios leads to two sets of equations for motion that differ slightly. The following section details their derivation. 
+	Now that we have specified the forces, the dynamics of each domain are determined by equation 4.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state. 
+	
+	In the one bound state, all but one of the domains are free to diffuse while the last is attached to the microtubule. In the both bound state, both binding domains are attached. This slight difference in geometry between the two scenarios leads to two sets of equations for motion that differ slightly. The following section details the derivation of these equations of motion. 
 	
 		\subsection{The one bound state}
 		Figure \ref{fig:one bound} illustrates dynein in the one bound state with new angles $\{\theta_i\}$ chosen for convenience of calculation and computation.\\
@@ -103,9 +114,8 @@ Now that I have established some facts about motor proteins as well as specifics
 		The Brownian motion equation (3.5) also defines the velocity on domain. 
 		
 		 
-		\section{The both bound state}
-		\section{Calculating Forces and Torques}
-			Here I will discuss in detail how we calculate the forces and show how this is done in code 
+		\subsection{The both bound state}
+		 
 		\section{Determining constants of the model}
 		The stalk and tail lengths $\ell_S, \ell_T$ as well as a set of equilibrium angles $\{\varphi_{i,\text{eq}}\}$ were determined by examining microscopy images of dynein in various configurations. 
 		\begin{figure}[hbt!]
