@@ -2,8 +2,9 @@
 
 import os
 
-students = ['droundy', 'elliotc12', 'john-waczak']
- 
+students = ['droundy', 'elliotc12', 'john-waczak', 'kiatvonj']
+
+
 for student in students:
     os.system('git pull git://github.com/%s/dynein_walk.git :' % student)
 
