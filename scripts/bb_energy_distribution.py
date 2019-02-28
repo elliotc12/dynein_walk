@@ -32,7 +32,7 @@ def get_bb_total_energy(nma, fma, L=16): # length in nm, near motor angle, far m
     fba = np.pi-np.arccos((L**2+Ln**2-Lf**2)/(2*L*Ln))-fa
 
     r_nm = [Ls*np.cos(nba), Ls*np.sin(nba)]
-    r_fm = [-Ls*np.cos(fba), Ls*np.sin(fba)]
+    r_fm = [L-Ls*np.cos(fba), Ls*np.sin(fba)]
 
     Lm = np.sqrt((r_nm[0]-r_fm[0])**2+(r_nm[1]-r_fm[1])**2)
 
@@ -64,8 +64,34 @@ def find_energy_extema(E_total):
     # return a list with the correct indices
     maximum = [max_coords[0][0], max_coords[1][0]]
     minimum = [min_coords[0][0], min_coords[1][0]]
-    print(maximum)
     return maximum, minimum
+
+def get_bb_coordinates(nma, fma, L, x=0):
+    """
+    Calculate positions of each domain for the bothbound state given motor angles, 
+    """
+    # calculate all of the angles 
+    Lt = params.for_simulation['lt']
+    Ls = params.for_simulation['ls']
+    Ln = np.sqrt(Lt**2+Ls**2-2*Lt*Ls*np.cos(nma)) # squared lengths
+    Lf = np.sqrt(Lt**2+Ls**2-2*Ls*Lt*np.cos(fma))
+
+    na = np.arccos((Ln**2+Ls**2-Lt**2)/(2*Ln*Ls))
+    fa = np.arccos((Lf**2+Ls**2-Lt**2)/(2*Lf*Ls))
+
+    nba = np.arccos((L**2+Lf**2-Ln**2)/(2*L*Lf))-na
+    fba = np.pi-np.arccos((L**2+Ln**2-Lf**2)/(2*L*Ln))-fa
+
+    # coordinates
+    r_nb = [x, 0]
+    r_fb = [x+L, 0]
+
+    r_nm = [x+Ls*np.cos(nba), Ls*np.sin(nba)]
+    r_fm = [x+L-Ls*np.cos(fba), Ls*np.sin(fba)]
+
+    r_t = [x+Ln*np.cos(na+nba), Ln*np.sin(na+nba)]
+
+#    return r_nb, r_fb, r_nm, r_fm, r_t
 
 
 def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
@@ -79,13 +105,17 @@ def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
     ax.set_ylabel('Far motor angle')
     ax.set_title('Total Energy distribution for L={0}'.format(L))
 
+    figs = [fig]
+    axes = [ax]
+
     if extrema == True:
         extrema = np.asarray(find_energy_extema(E_total))
+        get_bb_coordinates(nma[extrema[:,0]], nma[extrema[:,1]], L)
         x = nma[extrema[:,0]]
         y = fma[extrema[:, 1]]
-        ax.scatter(x,y, color='r')
+        axes[0].scatter(x,y, color='r')
 
-    return fig, ax
+    return figs, axes
 if __name__ == "__main__":
    fig1, ax1 = plot_bb_energy_distribution(nma, fma, L=8, extrema=True)
    fig2, ax2 = plot_bb_energy_distribution(nma, fma, L=16)
