@@ -104,6 +104,8 @@ def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
     ax.set_xlabel('Near motor angle')
     ax.set_ylabel('Far motor angle')
     ax.set_title('Total Energy distribution for L={0}'.format(L))
+    ax.set_xlim(0-0.1, 2*np.pi+0.1)
+    ax.set_ylim(0-0.1, 2*np.pi+0.1)
 
     figs = [fig]
     axes = [ax]
