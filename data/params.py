@@ -12,6 +12,10 @@ for_simulation= {"k_b": 3e6,
                  "rb": 1.75,
                  "seed": 1,
                  "dt": 1e-10,
+                 "eqb" :120,
+                 "eqmpre": 197,
+                 "eqmpost": 242,
+                 "eqt": 0,
                  "force": 0,
                  "exp-unbinding-constant":0.0,
                  "runtime": 0.1,
@@ -21,3 +25,4 @@ for_simulation= {"k_b": 3e6,
                  "long-angle-logging-mode": False,
                  "label": "test"
 }
+# other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09
