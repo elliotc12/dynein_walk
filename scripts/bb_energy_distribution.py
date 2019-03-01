@@ -63,9 +63,11 @@ def find_energy_extema(E_total):
     # need to be careful about nan values
     max_coords = np.where(E_total==np.nanmax(E_total))
     min_coords = np.where(E_total==np.nanmin(E_total))
+    print('min', np.nanmin(E_total))
     # return a list with the correct indices
     maximum = [max_coords[0][0], max_coords[1][0]]
     minimum = [min_coords[0][0], min_coords[1][0]]
+    print('energy at min', E_total[min_coords[0][0], min_coords[1][0]])
     return maximum, minimum
 
 def get_bb_coordinates(nma, fma, L, x=0):
@@ -92,13 +94,21 @@ def get_bb_coordinates(nma, fma, L, x=0):
     r_fm = [x+L-Ls*np.cos(fba), Ls*np.sin(fba)]
 
     r_t = [x+Ln*np.cos(na+nba), Ln*np.sin(na+nba)]
+    r_t = [x+Lf*np.cos(fa+fba), Lf*np.sin(fa+fba)]
 
     return r_nb, r_fb, r_nm, r_fm, r_t
 
+def is_bb_crazy(nma, fma, L):
+    r_nb, r_fb, r_nm, r_fm, r_t = get_bb_coordinates(nma, fma, L)
+    return r_nm[1] < 0 or r_fm[1] < 0 or r_t[1] < 0
 
 def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
     NMA, FMA = np.meshgrid(nma, fma)
     E_total = get_bb_total_energy(NMA, FMA, L)
+    for i in range(NMA.shape[0]):
+        for j in range(NMA.shape[1]):
+            if is_bb_crazy(NMA[i,j], FMA[i,j], L):
+                E_total[i,j] = np.nan
 
     fig = plt.figure()
     if extrema == False:
@@ -116,14 +126,16 @@ def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
         import dynein.draw.balls as balls
         # plot extrema as red dots on graph
         extrema = np.asarray(find_energy_extema(E_total))
-        x = nma[extrema[:,0]]
-        y = fma[extrema[:, 1]]
+        x = nma[extrema[:,1]]
+        y = fma[extrema[:, 0]]
         print(x,y)
+        print('craziness', is_bb_crazy(x[0],y[0],L))
+        print('craziness', is_bb_crazy(x[1],y[1],L))
         ax1.scatter(x,y, color='r')
 
         #add another graph to show configuration at extrema
-        r_nb1, r_fb1, r_nm1, r_fm1, r_t1 = get_bb_coordinates(nma[extrema[0,0]], nma[extrema[0,1]], L)
-        r_nb2, r_fb2, r_nm2, r_fm2, r_t2 = get_bb_coordinates(nma[extrema[1,0]], nma[extrema[1,1]], L)
+        r_nb1, r_fb1, r_nm1, r_fm1, r_t1 = get_bb_coordinates(x[0], y[0], L)
+        r_nb2, r_fb2, r_nm2, r_fm2, r_t2 = get_bb_coordinates(x[1], y[1], L)
         ax2 = fig.add_subplot(1,2,2)
 
         x_coords1 = [r_nb1[0], r_nm1[0], r_t1[0], r_fm1[0], r_fb1[0]]
@@ -131,15 +143,16 @@ def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
 
         x_coords2 = [r_nb2[0], r_nm2[0], r_t2[0], r_fm2[0], r_fb2[0]]
         # shift over second dynein to make sure they don't overlap on graph
-        Delta = 2.5*L
+        Delta = 3.5*L
         x_coords2 = [elem + Delta for elem in x_coords2]
         y_coords2 = [r_nb2[1], r_nm2[1], r_t2[1], r_fm2[1], r_fb2[1]]
 
         balls.draw(x_coords1, y_coords1, alpha=1)
         balls.draw(x_coords2, y_coords2, alpha=1)
+        plt.axhline(0)
 
-        ax2.axis('equal')
         ax2.axis('off')
+        ax2.axis('equal')
         return fig, [ax1, ax2]
     else:
         return fig, ax1
