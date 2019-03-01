@@ -10,10 +10,12 @@ nma = np.linspace(0, 2*np.pi, 500)
 fma = np.linspace(0, 2*np.pi, 500)
 
 
-def spring_energy(theta, theta_eq, c): #domain angle, equilibrium angle, spring constant
+def spring_energy(theta, theta_eq, c, eq_in_degrees=True): #domain angle, equilibrium angle, spring constant
     """
     Calculate the Hooke's law energy for the spring at a particular domain
     """
+    if eq_in_degrees == True:
+        theta_eq = theta_eq*np.pi/180
     return 0.5*c*(theta-theta_eq)**2
 
 def get_bb_total_energy(nma, fma, L=16): # length in nm, near motor angle, far motor angle
@@ -91,7 +93,7 @@ def get_bb_coordinates(nma, fma, L, x=0):
 
     r_t = [x+Ln*np.cos(na+nba), Ln*np.sin(na+nba)]
 
-#    return r_nb, r_fb, r_nm, r_fm, r_t
+    return r_nb, r_fb, r_nm, r_fm, r_t
 
 
 def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
@@ -99,25 +101,48 @@ def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
     E_total = get_bb_total_energy(NMA, FMA, L)
 
     fig = plt.figure()
-    ax = plt.gca()
-    ax.pcolor(NMA, FMA, E_total)
-    ax.set_xlabel('Near motor angle')
-    ax.set_ylabel('Far motor angle')
-    ax.set_title('Total Energy distribution for L={0}'.format(L))
-    ax.set_xlim(0-0.1, 2*np.pi+0.1)
-    ax.set_ylim(0-0.1, 2*np.pi+0.1)
-
-    figs = [fig]
-    axes = [ax]
+    if extrema == False:
+        ax1 = fig.add_subplot(1, 1, 1)
+    else:
+        ax1 = fig.add_subplot(1,2,1)
+    ax1.pcolor(NMA, FMA, E_total)
+    ax1.set_xlabel('Near motor angle')
+    ax1.set_ylabel('Far motor angle')
+    ax1.set_title('Total Energy distribution for L={0}'.format(L))
+    ax1.set_xlim(0-0.1, 2*np.pi+0.1)
+    ax1.set_ylim(0-0.1, 2*np.pi+0.1)
 
     if extrema == True:
+        import dynein.draw.balls as balls
+        # plot extrema as red dots on graph
         extrema = np.asarray(find_energy_extema(E_total))
-        get_bb_coordinates(nma[extrema[:,0]], nma[extrema[:,1]], L)
         x = nma[extrema[:,0]]
         y = fma[extrema[:, 1]]
-        axes[0].scatter(x,y, color='r')
+        print(x,y)
+        ax1.scatter(x,y, color='r')
 
-    return figs, axes
+        #add another graph to show configuration at extrema
+        r_nb1, r_fb1, r_nm1, r_fm1, r_t1 = get_bb_coordinates(nma[extrema[0,0]], nma[extrema[0,1]], L)
+        r_nb2, r_fb2, r_nm2, r_fm2, r_t2 = get_bb_coordinates(nma[extrema[1,0]], nma[extrema[1,1]], L)
+        ax2 = fig.add_subplot(1,2,2)
+
+        x_coords1 = [r_nb1[0], r_nm1[0], r_t1[0], r_fm1[0], r_fb1[0]]
+        y_coords1 = [r_nb1[1], r_nm1[1], r_t1[1], r_fm1[1], r_fb1[1]]
+
+        x_coords2 = [r_nb2[0], r_nm2[0], r_t2[0], r_fm2[0], r_fb2[0]]
+        # shift over second dynein to make sure they don't overlap on graph
+        Delta = 2.5*L
+        x_coords2 = [elem + Delta for elem in x_coords2]
+        y_coords2 = [r_nb2[1], r_nm2[1], r_t2[1], r_fm2[1], r_fb2[1]]
+
+        balls.draw(x_coords1, y_coords1, alpha=1)
+        balls.draw(x_coords2, y_coords2, alpha=1)
+
+        ax2.axis('equal')
+        ax2.axis('off')
+        return fig, [ax1, ax2]
+    else:
+        return fig, ax1
 if __name__ == "__main__":
    fig1, ax1 = plot_bb_energy_distribution(nma, fma, L=8, extrema=True)
    fig2, ax2 = plot_bb_energy_distribution(nma, fma, L=16)
