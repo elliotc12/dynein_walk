@@ -136,7 +136,7 @@ class DyneinBothBound:
         # find the extrema
         j_max, i_max, j_min, i_min = self.find_energy_extrema()
         ax1.scatter(self.nma[i_max,j_max], self.fma[i_max,j_max], color='red')
-        ax1.scatter(self.fma[i_min, j_min], self.fma[i_min, j_min], color='orange')
+        ax1.scatter(self.nma[i_min, j_min], self.fma[i_min, j_min], color='orange')
 
         ax2 = fig.add_subplot(1, 2, 2)
         x_coords_min = [self.r_nb[0,i_min, j_min],
