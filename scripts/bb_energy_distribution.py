@@ -27,9 +27,6 @@ def spring_energy(theta, theta_eq, c, eq_in_degrees=True): #domain angle, equili
 class DyneinBothBound:
     """
     Class for all dynein parameters in the both bound state.
-
-    All operations must be done point wise for the lengths to make sense
-    make sure you know which values are scalars and which are arrays
     """
 
 
@@ -41,16 +38,16 @@ class DyneinBothBound:
         self.Lt = params.for_simulation['lt']
         self.Ls = params.for_simulation['ls']
 
-        self.Ln = np.sqrt(np.power(self.Ls,2)+np.power(self.Lt,2)-2*np.multiply(self.Ls,self.Lt)*np.cos(2*np.pi-self.nma))
-        self.Lf = np.sqrt(np.power(self.Ls,2)+np.power(self.Lt,2)-2*np.multiply(self.Ls,self.Lt)*np.cos(2*np.pi-self.fma))
+        self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
+        self.Lf = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.fma))
 
         # calculate angles from Ln, Lf to microtubule
-        self.na = np.arccos((np.power(self.Ln,2)+np.power(self.L,2)-np.power(self.Lf,2))/(2*np.multiply(self.Ln,self.L) ))
-        self.fa = np.pi-np.arccos((np.power(self.Lf,2)+np.power(self.L,2)-np.power(self.Ln,2))/(2*np.multiply(self.Lf,self.L)))
+        self.na = np.arccos((self.Ln**2+self.L**2-self.Lf**2)/(2*self.Ln*self.L))
+        self.fa = np.pi-np.arccos((self.Lf**2+self.L**2-self.Ln**2)/(2*self.Lf*self.L))
 
         # calculate small triangle angles
-        self.nsa = np.arccos((np.power(self.Ln,2)+np.power(self.Ls,2)-np.power(self.Lt,2))/(2*np.multiply(self.Ln,self.Ls)))
-        self.fsa = np.arccos((np.power(self.Lf,2)+np.power(self.Ls,2)-np.power(self.Lt,2))/(2*np.multiply(self.Lf,self.Ls)))
+        self.nsa = np.arccos((self.Ln**2+self.Ls**2-self.Lt**2)/(2*self.Ln*self.Ls))
+        self.fsa = np.arccos((self.Lf**2+self.Ls**2-self.Lt**2)/(2*self.Lf*self.Ls))
 
         # calculate binding domain angles
         self.nba = self.na-self.nsa
@@ -62,16 +59,16 @@ class DyneinBothBound:
         self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
 
 
-        self.r_nm = self.r_nb + np.array([np.multiply(self.Ls,np.cos(self.nba)), np.multiply(self.Ls,np.sin(self.nba))])
-        self.r_fm = self.r_fb + np.array([np.multiply(self.Ls,np.cos(self.fba)), np.multiply(self.Ls,np.sin(self.fba))])
+        self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
+        self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
 
-        self.r_t = self.r_nb + np.array([np.multiply(self.Ln,np.cos(self.na)), np.multiply(self.Ln,np.sin(self.na))])
+        self.r_t = self.r_nb + np.array([self.Ln*np.cos(self.na), self.Ln*np.sin(self.na)])
 
         # calculate distance between motors
         # NOTE: np.sqrt() is already element-wise 
-        self.Lm = np.sqrt(np.power((self.r_nm[0]-self.r_fm[0]),2)+np.power((self.r_nm[1]-self.r_fm[1]),2))
+        self.Lm = np.sqrt((self.r_nm[0]-self.r_fm[0])**2 + (self.r_nm[1]-self.r_fm[1])**2)
         # calculate tail angle
-        self.ta = np.arccos(1-np.divide(np.power(self.Lm,2),np.power(self.Lt,2)))
+        self.ta = np.arccos(1- self.Lm**2/self.Lt**2)
 
 
         # calculate all of the energies
