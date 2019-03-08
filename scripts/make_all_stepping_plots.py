@@ -721,9 +721,10 @@ def make_stacked_displacement_histogram(stepping_data):
     bottom_center_px_y = 254
     bottom_center_nm_y = 56
 
-    yildiz_data_nm = np.add(yildiz_IF_data, np.array((-center_px_x, -center_px_y))) # shift origin to (0, 0)
-    yildiz_data_nm = np.multiply(yildiz_data_nm, np.array((1.0, -1.0))) # invert the y
-    yildiz_data_nm = np.multiply(yildiz_data_nm, np.array((right_center_nm_x / (right_center_px_x-center_px_x), bottom_center_nm_y / (bottom_center_px_y-center_px_y)))) # rescale to nm
+    yildiz_data_nm = yildiz_IF_data + np.array((-center_px_x, -center_px_y)) # shift origin to (0, 0)
+    yildiz_data_nm = yildiz_data_nm*np.array((1.0, -1.0)) # invert the y
+    yildiz_data_nm = yildiz_data_nm*np.array((right_center_nm_x / (right_center_px_x-center_px_x),
+                                              bottom_center_nm_y / (bottom_center_px_y-center_px_y))) # rescale to nm
 
     yildiz_ids = yildiz_data_nm[:,0]
     yildiz_fds = yildiz_ids + yildiz_data_nm[:,1]

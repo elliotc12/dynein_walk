@@ -102,6 +102,17 @@ def sim2(path_to_best_params=None, verbose=False, **run):
 
     else:
 
+        # create name for file that matches simulation output. 
+        if 'label' in run:
+            basename = "%s__k_b-%g,k_ub-%g,c-%g,cb-%g,cm-%g,ct-%g,ls-%g,lt-%g,seed-%g,dt-%g" % \
+                    (str(run["label"]), run["k_b"], run["k_ub"], run["exp-unbinding-constant"], run["cb"], run["cm"],
+                    run["ct"], run["ls"], run["lt"], run["seed"], run["dt"])
+        else:
+            basename = "k_b-%g,k_ub-%g,c-%g,cb-%g,cm-%g,ct-%g,dt-%g" % (run["k_b"], run["k_ub"],
+                                                                run["exp-unbinding-constant"], run["cb"], run["cm"], run["ct"], run["dt"])
+
+
+
 
         # to run the command, find the distance to root of directory where simulation executable lives
         current_dir = os.getcwd()
@@ -124,12 +135,15 @@ def sim2(path_to_best_params=None, verbose=False, **run):
         print(cmd)
         rc = subprocess.run(cmd).returncode
 
+        return basename
+
 
 
 
 
 if __name__ == "__main__":
-    sim2("../../data/params.py", verbose=True)
+    basename = sim2("../../data/params.py", verbose=True)
+    print(basename)
 
 
 
