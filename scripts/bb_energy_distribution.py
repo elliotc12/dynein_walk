@@ -6,8 +6,7 @@ import importlib
 
 params = importlib.import_module("params")
 
-nma = np.linspace(0, 2*np.pi, 500)
-fma = np.linspace(0, 2*np.pi, 500)
+
 
 
 def spring_energy(theta, theta_eq, c, eq_in_degrees=True): #domain angle, equilibrium angle, spring constant
@@ -18,149 +17,183 @@ def spring_energy(theta, theta_eq, c, eq_in_degrees=True): #domain angle, equili
         theta_eq = theta_eq*np.pi/180
     return 0.5*c*(theta-theta_eq)**2
 
-def get_bb_total_energy(nma, fma, L=16): # length in nm, near motor angle, far motor angle
-    """ Calculate total energy for both bound dynein given motor angles and binding domain displacement."""
-
-    # calculate all of the angles 
-    Lt = params.for_simulation['lt']
-    Ls = params.for_simulation['ls']
-    Ln = np.sqrt(Lt**2+Ls**2-2*Lt*Ls*np.cos(nma)) # squared lengths
-    Lf = np.sqrt(Lt**2+Ls**2-2*Ls*Lt*np.cos(fma))
-
-    na = np.arccos((Ln**2+Ls**2-Lt**2)/(2*Ln*Ls))
-    fa = np.arccos((Lf**2+Ls**2-Lt**2)/(2*Lf*Ls))
-
-    nba = np.arccos((L**2+Lf**2-Ln**2)/(2*L*Lf))-na
-    fba = np.pi-np.arccos((L**2+Ln**2-Lf**2)/(2*L*Ln))-fa
-
-    r_nm = [Ls*np.cos(nba), Ls*np.sin(nba)]
-    r_fm = [L-Ls*np.cos(fba), Ls*np.sin(fba)]
-
-    Lm = np.sqrt((r_nm[0]-r_fm[0])**2+(r_nm[1]-r_fm[1])**2)
-
-    ta = np.arccos(1-(Lm**2)/(2*Lt**2))
-
-    # calculate all of the energies
-    E_t = spring_energy(ta, params.for_simulation['eqt'], params.for_simulation['ct'])
-    E_nm = spring_energy(nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
-    E_fm = spring_energy(fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
-    E_nb = spring_energy(nba, params.for_simulation['eqb'], params.for_simulation['cb'])
-    E_fb = spring_energy(fba, params.for_simulation['eqb'], params.for_simulation['cb'])
-
-    E_total = E_t+E_nm+E_fm+E_nb+E_fb
-
-    return E_total
-
-def remove_nans(E_total, nma, fma):
-    nan_locations = np.isnan(E_total)
-    print(row_nans)
 
 
-def find_energy_extema(E_total):
+
+
+
+
+
+class DyneinBothBound:
     """
-    Return indices of the maximum and minimum energy value
+    Class for all dynein parameters in the both bound state.
+
+    All operations must be done point wise for the lengths to make sense
+    make sure you know which values are scalars and which are arrays
     """
-    # need to be careful about nan values
-    max_coords = np.where(E_total==np.nanmax(E_total))
-    min_coords = np.where(E_total==np.nanmin(E_total))
-    print('min', np.nanmin(E_total))
-    # return a list with the correct indices
-    maximum = [max_coords[0][0], max_coords[1][0]]
-    minimum = [min_coords[0][0], min_coords[1][0]]
-    print('energy at min', E_total[min_coords[0][0], min_coords[1][0]])
-    return maximum, minimum
 
-def get_bb_coordinates(nma, fma, L, x=0):
-    """
-    Calculate positions of each domain for the bothbound state given motor angles, 
-    """
-    # calculate all of the angles 
-    Lt = params.for_simulation['lt']
-    Ls = params.for_simulation['ls']
-    Ln = np.sqrt(Lt**2+Ls**2-2*Lt*Ls*np.cos(nma)) # squared lengths
-    Lf = np.sqrt(Lt**2+Ls**2-2*Ls*Lt*np.cos(fma))
 
-    na = np.arccos((Ln**2+Ls**2-Lt**2)/(2*Ln*Ls))
-    fa = np.arccos((Lf**2+Ls**2-Lt**2)/(2*Lf*Ls))
+    def __init__(self, nma, fma, params, L=8, x=0):
+        self.nma = nma
+        self.fma = fma
+        self.L = L
 
-    nba = np.arccos((L**2+Lf**2-Ln**2)/(2*L*Lf))-na
-    fba = np.pi-np.arccos((L**2+Ln**2-Lf**2)/(2*L*Ln))-fa
+        self.Lt = params.for_simulation['lt']
+        self.Ls = params.for_simulation['ls']
 
-    # coordinates
-    r_nb = [x, 0]
-    r_fb = [x+L, 0]
+        self.Ln = np.sqrt(np.power(self.Ls,2)+np.power(self.Lt,2)-2*np.multiply(self.Ls,self.Lt)*np.cos(2*np.pi-self.nma))
+        self.Lf = np.sqrt(np.power(self.Ls,2)+np.power(self.Lt,2)-2*np.multiply(self.Ls,self.Lt)*np.cos(2*np.pi-self.fma))
 
-    r_nm = [x+Ls*np.cos(nba), Ls*np.sin(nba)]
-    r_fm = [x+L-Ls*np.cos(fba), Ls*np.sin(fba)]
+        # calculate angles from Ln, Lf to microtubule
+        self.na = np.arccos((np.power(self.Ln,2)+np.power(self.L,2)-np.power(self.Lf,2))/(2*np.multiply(self.Ln,self.L) ))
+        self.fa = np.pi-np.arccos((np.power(self.Lf,2)+np.power(self.L,2)-np.power(self.Ln,2))/(2*np.multiply(self.Lf,self.L)))
 
-    r_t = [x+Ln*np.cos(na+nba), Ln*np.sin(na+nba)]
-    r_t = [x+Lf*np.cos(fa+fba), Lf*np.sin(fa+fba)]
+        # calculate small triangle angles
+        self.nsa = np.arccos((np.power(self.Ln,2)+np.power(self.Ls,2)-np.power(self.Lt,2))/(2*np.multiply(self.Ln,self.Ls)))
+        self.fsa = np.arccos((np.power(self.Lf,2)+np.power(self.Ls,2)-np.power(self.Lt,2))/(2*np.multiply(self.Lf,self.Ls)))
 
-    return r_nb, r_fb, r_nm, r_fm, r_t
+        # calculate binding domain angles
+        self.nba = self.na-self.nsa
+        self.fba = self.fa-self.fsa
 
-def is_bb_crazy(nma, fma, L):
-    r_nb, r_fb, r_nm, r_fm, r_t = get_bb_coordinates(nma, fma, L)
-    return r_nm[1] < 0 or r_fm[1] < 0 or r_t[1] < 0
+        # calculate positions
+        self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
 
-def plot_bb_energy_distribution(nma, fma, L=16, extrema=True):
-    NMA, FMA = np.meshgrid(nma, fma)
-    E_total = get_bb_total_energy(NMA, FMA, L)
-    for i in range(NMA.shape[0]):
-        for j in range(NMA.shape[1]):
-            if is_bb_crazy(NMA[i,j], FMA[i,j], L):
-                E_total[i,j] = np.nan
+        self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
 
-    fig = plt.figure()
-    if extrema == False:
-        ax1 = fig.add_subplot(1, 1, 1)
-    else:
-        ax1 = fig.add_subplot(1,2,1)
-    ax1.pcolor(NMA, FMA, E_total)
-    ax1.set_xlabel('Near motor angle')
-    ax1.set_ylabel('Far motor angle')
-    ax1.set_title('Total Energy distribution for L={0}'.format(L))
-    ax1.set_xlim(0-0.1, 2*np.pi+0.1)
-    ax1.set_ylim(0-0.1, 2*np.pi+0.1)
 
-    if extrema == True:
-        import dynein.draw.balls as balls
-        # plot extrema as red dots on graph
-        extrema = np.asarray(find_energy_extema(E_total))
-        x = nma[extrema[:,1]]
-        y = fma[extrema[:, 0]]
-        print(x,y)
-        print('craziness', is_bb_crazy(x[0],y[0],L))
-        print('craziness', is_bb_crazy(x[1],y[1],L))
-        ax1.scatter(x,y, color='r')
+        self.r_nm = self.r_nb + np.array([np.multiply(self.Ls,np.cos(self.nba)), np.multiply(self.Ls,np.sin(self.nba))])
+        self.r_fm = self.r_fb + np.array([np.multiply(self.Ls,np.cos(self.fba)), np.multiply(self.Ls,np.sin(self.fba))])
 
-        #add another graph to show configuration at extrema
-        r_nb1, r_fb1, r_nm1, r_fm1, r_t1 = get_bb_coordinates(x[0], y[0], L)
-        r_nb2, r_fb2, r_nm2, r_fm2, r_t2 = get_bb_coordinates(x[1], y[1], L)
-        ax2 = fig.add_subplot(1,2,2)
+        self.r_t = self.r_nb + np.array([np.multiply(self.Ln,np.cos(self.na)), np.multiply(self.Ln,np.sin(self.na))])
 
-        x_coords1 = [r_nb1[0], r_nm1[0], r_t1[0], r_fm1[0], r_fb1[0]]
-        y_coords1 = [r_nb1[1], r_nm1[1], r_t1[1], r_fm1[1], r_fb1[1]]
+        # calculate distance between motors
+        # NOTE: np.sqrt() is already element-wise 
+        self.Lm = np.sqrt(np.power((self.r_nm[0]-self.r_fm[0]),2)+np.power((self.r_nm[1]-self.r_fm[1]),2))
+        # calculate tail angle
+        self.ta = np.arccos(1-np.divide(np.power(self.Lm,2),np.power(self.Lt,2)))
 
-        x_coords2 = [r_nb2[0], r_nm2[0], r_t2[0], r_fm2[0], r_fb2[0]]
-        # shift over second dynein to make sure they don't overlap on graph
-        Delta = 3.5*L
-        x_coords2 = [elem + Delta for elem in x_coords2]
-        y_coords2 = [r_nb2[1], r_nm2[1], r_t2[1], r_fm2[1], r_fb2[1]]
 
-        balls.draw(x_coords1, y_coords1, alpha=1)
-        balls.draw(x_coords2, y_coords2, alpha=1)
-        plt.axhline(0)
+        # calculate all of the energies
+        self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
+        self.E_nm = spring_energy(self.nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
+        self.E_fm = spring_energy(self.fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
+        self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])
+        self.E_fb = spring_energy(self.fba, params.for_simulation['eqb'], params.for_simulation['cb'])
 
+        self.E_total = self.E_t+self.E_nm+self.E_fm+self.E_nb+self.E_fb
+
+        if self.nma.shape != (1,):
+            for i in range(self.nma.shape[0]):
+                for j in range(self.nma.shape[1]):
+                    if (self.r_nm[1, i, j] < 0 or self.r_fm[1, i, j]<0 or self.r_t[1, i, j]<0) :
+                        self.E_total[i,j] = np.nan
+        else:
+            if (self.r_nm[1] < 0 or self.r_fm[1]<0 or self.r_t[1]<0) :
+                self.E_total = np.nan
+
+    def find_energy_extrema(self):
+        """
+        Return indices of the maximum and minimum energy value
+        """
+
+        # make sure that we actually have an array of energies to check
+        assert(self.nma.shape != (1,))
+
+        # need to be careful about nan values. Use np.nanmax and np.nanmin to ignore nans
+        max_coords = np.where(self.E_total==np.nanmax(self.E_total))
+        min_coords = np.where(self.E_total==np.nanmin(self.E_total))
+
+        # return a list with the correct indices
+        maximum = [max_coords[0][0], max_coords[1][0]]
+        minimum = [min_coords[0][0], min_coords[1][0]]
+
+        nm_max = maximum[1]
+        fm_max = maximum[0]
+        nm_min = minimum[1]
+        fm_min = minimum[0]
+
+        return nm_max, fm_max, nm_min, fm_min
+
+
+    def plot_bb_energy_distribution(self):
+        """Plot the energy distribution for the both bound configuration given an
+        array of motor angles and an initial displacement.
+        """
+
+        # make sure that we actually have an array of energies to check
+        assert(self.nma.shape!= (1,))
+        fig = plt.figure()
+
+        # make contourf graph
+        ax1 = fig.add_subplot(1, 2, 1)
+        energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, levels=35)
+        ax1.contour(self.nma, self.fma, self.E_total, levels=35, colors='black')
+        ax1.set_xlabel(r'$\theta_{nm}$')
+        ax1.set_ylabel(r'$\theta_{fm}$')
+        ax1.set_title('Total Energy distribution for L={0}'.format(self.L))
+        ax1.set_xlim(0-0.1, 2*np.pi+0.1)
+        ax1.set_ylim(0-0.1, 2*np.pi+0.1)
+        cb = plt.colorbar(energyPlot)
+        cb.set_label(r"Energy [$k_BT$]")
+        # find the extrema
+        j_max, i_max, j_min, i_min = self.find_energy_extrema()
+        ax1.scatter(self.nma[i_max,j_max], self.fma[i_max,j_max], color='red')
+        ax1.scatter(self.fma[i_min, j_min], self.fma[i_min, j_min], color='orange')
+
+        ax2 = fig.add_subplot(1, 2, 2)
+        x_coords_min = [self.r_nb[0,i_min, j_min],
+                        self.r_nm[0,i_min, j_min],
+                        self.r_t[0,i_min, j_min],
+                        self.r_fm[0,i_min, j_min],
+                        self.r_fb[0,i_min, j_min]]
+        y_coords_min = [self.r_nb[1,i_min, j_min],
+                        self.r_nm[1,i_min, j_min],
+                        self.r_t[1,i_min, j_min],
+                        self.r_fm[1,i_min, j_min],
+                        self.r_fb[1,i_min, j_min]]
+        x_coords_max = [self.r_nb[0,i_max, j_max],
+                        self.r_nm[0,i_max, j_max],
+                        self.r_t[0,i_max, j_max],
+                        self.r_fm[0,i_max, j_max],
+                        self.r_fb[0,i_max, j_max]]
+        y_coords_max = [self.r_nb[1,i_max, j_max],
+                        self.r_nm[1,i_max, j_max],
+                        self.r_t[1,i_max, j_max],
+                        self.r_fm[1,i_max, j_max],
+                        self.r_fb[1,i_max, j_max]]
+
+        shift = 40
+        x_coords_max = [elem + shift for elem in x_coords_max]
+
+        ax2.plot(x_coords_min, y_coords_min, color='orange', label="min")
+        ax2.plot(x_coords_max, y_coords_max, color='red', label="max")
         ax2.axis('off')
         ax2.axis('equal')
-        return fig, [ax1, ax2]
-    else:
-        return fig, ax1
+        ax2.legend()
+
+
+
 if __name__ == "__main__":
-   fig1, ax1 = plot_bb_energy_distribution(nma, fma, L=8, extrema=True)
-   fig2, ax2 = plot_bb_energy_distribution(nma, fma, L=16)
-   fig3, ax3 = plot_bb_energy_distribution(nma, fma, L=24)
-   plt.show()
+    num_points = 500
+    nma = np.linspace(0, 2*np.pi, num_points)
+    fma = np.linspace(0, 2*np.pi, num_points)
+    NMA, FMA = np.meshgrid(nma, fma)
+    dynein_8 = DyneinBothBound(NMA, FMA, params, L=8)
+    dynein_16 = DyneinBothBound(NMA, FMA, params, L=16)
+    dynein_24 = DyneinBothBound(NMA, FMA, params, L=24)
+    dynein_32 = DyneinBothBound(NMA, FMA, params, L=32)
+
+    dynein_8.plot_bb_energy_distribution()
+    dynein_16.plot_bb_energy_distribution()
+    dynein_24.plot_bb_energy_distribution()
+    dynein_32.plot_bb_energy_distribution()
+
+    plt.show()
+
+
+
+
 
 
 
