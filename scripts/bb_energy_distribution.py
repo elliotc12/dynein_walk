@@ -124,8 +124,8 @@ class DyneinBothBound:
 
         # make contourf graph
         ax1 = fig.add_subplot(1, 2, 1)
-        energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, levels=35)
-        ax1.contour(self.nma, self.fma, self.E_total, levels=35, colors='black')
+        energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, levels=100)
+        contour = ax1.contour(self.nma, self.fma, self.E_total, np.arange(1, 30, 1), colors='w', linewidth=0)
         ax1.set_xlabel(r'$\theta_{nm}$')
         ax1.set_ylabel(r'$\theta_{fm}$')
         ax1.set_title('Total Energy distribution for L={0}'.format(self.L))
@@ -133,6 +133,8 @@ class DyneinBothBound:
         ax1.set_ylim(0-0.1, 2*np.pi+0.1)
         cb = plt.colorbar(energyPlot)
         cb.set_label(r"Energy [$k_BT$]")
+        cb.set_ticks(np.arange(0, 31, 5))
+        cb.add_lines(contour)
         # find the extrema
         j_max, i_max, j_min, i_min = self.find_energy_extrema()
         ax1.scatter(self.nma[i_max,j_max], self.fma[i_max,j_max], color='red')
