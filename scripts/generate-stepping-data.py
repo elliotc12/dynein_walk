@@ -4,8 +4,6 @@ import os, sys
 import numpy as np
 import dynein.run as run
 
-os.system("make generate_stepping_data")
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--seed", type=int, help="Manually set the seed value, default=1", default=1)
 parser.add_argument("-b", "--cb", type=float, help="Manually set the cb value, default=0.1", default=0.1)

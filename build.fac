@@ -17,10 +17,15 @@ c .pyc
 < data/paper_unbinding_probability__L-30,s-1.txt
 < scripts/dynein/draw/tail.py
 < scripts/dynein/draw/motor_domain.py
+< data/paper_trajectory_stepping_parameters.tex
+< data/paper_params.tex
 
 | python3 scripts/color_hist2.py -d paper_main && mv plots/initial-vs-final-displacement.pdf plots/paper_initial_vs_final_displacement.pdf &&  mv plots/initial-displacement-vs-step-length.pdf plots/paper_displacement_vs_step_length.pdf
 c .pyc
 < scripts/color_hist2.py
+< data/paper_params.tex
+< data/paper_trajectory_stepping_data.txt
+< data/paper_unbinding_probability__L-40,s-1.txt
 
 | python3 scripts/paper-trajectory-plt.py data/paper_trajectory
 c .pyc
