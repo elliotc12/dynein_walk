@@ -47,9 +47,12 @@ class SteppingData(object):
                 print(self.nbx_bind[s-1], self.nbx_bind[s], self.fbx_bind[s-1], self.fbx_bind[s])
                 exit(1)
             if(self.nbx_bind[s-1] == self.nbx_bind[s] and self.fbx_bind[s-1] == self.fbx_bind[s]):
-                print("Error, zero-length step")
-                print(self.nbx_bind[s-1], self.nbx_bind[s], self.fbx_bind[s-1], self.fbx_bind[s])
-                exit(1)
+                #print("Error, zero-length step")
+                self.nbx_bind[s] = self.nbx_bind[s-1]
+                self.fbx_bind[s] = self.fbx_bind[s-1]
+                self.bindTimes[s] = self.bindTimes[s-1]
+                self.unbindTimes[s] = self.unbindTimes[s-1]
+                continue
             if not (self.nbx_bind[s-1] == self.nbx_bind[s]):
                 self.initial_displacements.append(self.nbx_bind[s-1]-self.fbx_bind[s-1])
                 self.final_displacements.append(self.nbx_bind[s]-self.fbx_bind[s])
@@ -104,8 +107,6 @@ class SteppingData(object):
 
         self.step_lengths = self.final_displacements - self.initial_displacements
         self.step_times = self.onebound_times + self.bothbound_times
-
-
 
 class MovieData(object):
     """Class for organizing the simulation movie data
