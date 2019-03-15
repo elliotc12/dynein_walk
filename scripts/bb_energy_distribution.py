@@ -80,14 +80,8 @@ class DyneinBothBound:
 
         self.E_total = self.E_t+self.E_nm+self.E_fm+self.E_nb+self.E_fb
 
-        if self.nma.shape != (1,):
-            for i in range(self.nma.shape[0]):
-                for j in range(self.nma.shape[1]):
-                    if (self.r_nm[1, i, j] < 0 or self.r_fm[1, i, j]<0 or self.r_t[1, i, j]<0) :
-                        self.E_total[i,j] = np.nan
-        else:
-            if (self.r_nm[1] < 0 or self.r_fm[1]<0 or self.r_t[1]<0) :
-                self.E_total = np.nan
+        # Hokey trick to make result a nan if y coordinates are negative
+        self.E_total += 0*np.sqrt(self.r_nm[1]) + 0*np.sqrt(self.r_fm[1]) + 0*np.sqrt(self.r_t[1])
 
     def find_energy_extrema(self):
         """
