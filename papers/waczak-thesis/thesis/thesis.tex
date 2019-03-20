@@ -1,6 +1,6 @@
 \documentclass[12pt]{report}
 \usepackage{graphicx} % make it easy to load in images
-\graphicspath{{./images/},{../../../../plots}} % where to find images
+\graphicspath{{./images/},{../../../plots/}} % where to find images
 \usepackage[a4paper, margin=1in]{geometry} % change margins 
 \usepackage{fancyhdr} % add a header / footer 
 \pagestyle{fancy}
@@ -19,8 +19,15 @@
 
 \usepackage{setspace}
 
+\usepackage{hyperref}
+
+\usepackage[color=cyan]{todonotes}
+
+\usepackage[labelfont=bf]{caption}
+
+
 \title{
-	{Simulating the Brownian Dynamics of a Two-Dimensional Model for the Dynein Motor Protein}\vspace{1.5em}\\
+	{Simulating the Brownian Dynamics of a Two-dimensional Model for the Dynein Motor Protein}\vspace{1.5em}\\
 	\includegraphics[width=0.5\columnwidth]{OSU_logo.png}\vspace{0.5em}\\
 	\large{Oregon State University}
 }
@@ -47,7 +54,8 @@
 	\input{./chapters/theory}
 	\chapter{Methods}
 	\input{./chapters/methods}
-	
+	\chapter{Results}
+	\input{./chapters/results}
 \bibliography{references}
-\bibliographystyle{acm}
+\bibliographystyle{prl_like.bst}
 \end{document}

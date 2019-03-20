@@ -36,7 +36,7 @@ Now that I have established some facts about motor proteins as well as specifics
 		\label{fig:torque angles}
 	\end{figure}
 	
-	To do this we steer each domain towards an equilibrium configuration by a Hooke's law restorative torque with magnitude of the following form
+	To do this we steer each domain towards an equilibrium configuration by a Hooke's law restorative torque with signed magnitude of the following form
 	\begin{equation}
 		\Gamma_i = -c_i\left(\varphi_i-\varphi_{i,\text{eq}}\right)
 	\end{equation}
@@ -57,14 +57,32 @@ Now that I have established some facts about motor proteins as well as specifics
 	so that knowing the distance between each domains means that we have specified each of the $\mathbf{\Gamma}_i$ and $\mathbf{r}_i$. In order to dynamically move each domain we must invert equation 4.10 to determine $\mathbf{F}_i$, however there is no unique way to invert such a cross product. Therefore, we must specify an algorithm for determining the forces that result from each torque. 
 	
 	\section{Calculating Forces and Torques}
-	Here I will discuss in detail how we calculate the forces and show how this is done in code
+	However we decide to choose the forces on each domain, we would like them to satisfy  conservation angular momentum as this condition serves to keep the energy of the structure in check (add some stuff here) \todo[inline]{TODO: double check for other conditions on torques with David}
 	
+	Ultimately, we must specify the forces for three cases: a motor domain, and a tail domain, and the unbound binding domain. Having decided upon an algorithm for determining these forces, we could also calculate the force on a bound binding domain (attached to the microtubule) in order to estimate the maximum possible strain before unbinding occurs. This may prove interesting for future work but currently we do not care to calculate these forces as a bound binding domain is static and therefore, we do not need to evolve it's position. 
 	
+	\begin{figure}[!hbt]
+		\centering
+		\includegraphics[angle =-90, width=0.65\columnwidth]{torque_forces.pdf}
+		\caption{Toy model for three arbitrary domains. The force applied to adjacent domains due to the torque on the $i^{th}$ domain is shown. Forces are chosen to be perpendicular the inter-domain separation and in the direction that would move $\varphi_i$ towards its equilibrium configuration.}
+		\label{fig:torque_force}
+	\end{figure}
+	
+	Figure \ref{fig:torque_force} illustrates how the force on the motor domain due to the torque on the binding domain is chosen. In general, equation (3.10) suggests we should pick the magnitude of the force on the $i^{th}$ domain due to the torque on the $j=i\pm1$ domains to be
+	\begin{equation}
+		F_{ij} = \Gamma_j / \ell_{ij}
+	\end{equation}
+	where $\ell_{ij}$ is the distance between the $i$ and $j$ domains. We then make the choice to apply the force perpendicular to the inter-domain separation and in the direction of the equilibrium angle. Making this choice makes it clear that angular momentum will be conserved for the case where $\ell_{i\;i-1}=\ell_{i\;i+1}$. Finally to simplify computational complexity, we transform these two forces into forces on the $i^{th}$ domain by instead applying an equal and opposite force to each $\mathbf{F}_{ij}$ on the $i^{th}$ domain. 
+	
+	With this algorithm, we can loop through each domain and calculate the torque-related forces on each domain. For binding domains, there is only one adjacent domain to consider. 
+	\todo[inline]{TODO: add another figure or update above to indicate the equal-and-opposite forces that are actually kept. It may look nice to turn force arrows into dotted arrow and then add the force on the $i^{th}$ domain with a solid line} 
+	
+	We are now armed with a way to calculate the forces on each domain due to the restorative torque. The only force which we are unable to calculate directly is the force due to tension. We will deal with these forces by applying the method Lagrange multipliers as we solve for the equations of motion. 
 	
 	\section{Equations of Motion}
-	Now that we have specified the forces, the dynamics of each domain are determined by equation 4.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state. 
+	The dynamics of each domain are determined by equation 3.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state with the idea being that they directly correspond to the pre and post-stroke states defined by the mechanochemical cycle of \cite{cianfrocco_mechanism_2015}.  
 	
-	In the one bound state, all but one of the domains are free to diffuse while the last is attached to the microtubule. In the both bound state, both binding domains are attached. This slight difference in geometry between the two scenarios leads to two sets of equations for motion that differ slightly. The following section details the derivation of these equations of motion. 
+	In the one bound state, all but one of the domains are free to diffuse while the last is attached to the microtubule. In the both bound state, both binding domains are attached. This slight difference in geometry between the two scenarios leads to two independent equations motion motion that require careful consideration when transitioning between states. The following sections detail the derivation of these equations of motion for each configuration. 
 	
 		\subsection{The one bound state}
 		Figure \ref{fig:one bound} illustrates dynein in the one bound state with new angles $\{\theta_i\}$ chosen for convenience of calculation and computation.\\
@@ -111,8 +129,18 @@ Now that I have established some facts about motor proteins as well as specifics
 		\end{cases} 
 		\end{align}
 		
-		The Brownian motion equation (3.5) also defines the velocity on domain. 
+		The Brownian motion equation (3.5) also defines the velocity on each domain allowing us to write
+		\begin{align}
+			\dot{x}_i &= \frac{1}{\gamma_i}\Big(F_{i,\Gamma_i}^x+ \lambda_{i,i-1}(x_i-x_{i-1})+\lambda_{i,i+1}(x_i-x_{i+1})-F_{i,\text{rand}}^x\Big)\\
+			\dot{y}_i &= \frac{1}{\gamma_i}\Big(F_{i,\Gamma_i}^y+ \lambda_{i,i-1}(y_i-y_{i-1})+\lambda_{i,i+1}(y_i-y_{i+1})-F_{i,\text{rand}}^y\Big) \notag
+		\end{align}
+		where superscript $x$ and $y$ denote the force components. 
 		
+		\todo[inline]{Double check this calculation with David to make sure I have accounted for the tension terms correctly. For some reason, Elliott uses x's in both the x and y equations... Is this a typo?} 
+		 
+		 At this point, comparing equations 3.13 with 3.14 reveals we have identified 8 nontrivial equations (x and y derivatives; ignoring bound binding domain 0). There are four unknown derivatives $\{\dot\theta_i\}$ and four unknown Lagrange multipliers $\{\lambda_{ij}\}$ which altogether form a linear system which we solve using Mathematica. For a detailed calculation see the appendices. 
+		 
+		 \todo[inline]{TODO: add appendices with full matrix equations} 
 		 
 		\subsection{The both bound state}
 		 
@@ -124,5 +152,7 @@ Now that I have established some facts about motor proteins as well as specifics
 			\caption{Our model superimposed over microscopy image of Dynein \textbf{NOTE: add source} for determining lengths and equilibrium angles} 
 			\label{fig:superimpmosed}
 		\end{figure}
-	\section{The Code}
-		\subsection{The Random Force}
+
+	\section{Binding and Unbinding}
+	
+	\todo[inline]{Add theoretical description of binding and unbinding probabilities and their relation to tension and torque on binding domain. Explain the use of our exponential factor and why it is reasonable. Discuss potential to add in exponential factor to binding rate.}
