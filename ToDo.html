@@ -1,23 +1,42 @@
 <h1> Dynein To-do List </h1>
 
+<hr>
 
 <h3> John </h3>
-<ol>
-    <li>Try running with longer tail i.e. bigger Lt (widen displacement distribution) </li>
-    <li>Increase binding rate (look for initial vs final correlation)</li>
-    <li>add histogram plot to paper (overlaid histogram)</li>
-    <li>Look into log-scale of the bb time histogram in paper (are the bins really log scaled?)</li>
-    <li>add average tail/motor domain displacements to stepping data output</li>
-    <li>add Ls & Lt to dynein run parameters.</li>
-    <li><strike>Finish dynein.run script</strike></li>
-    <li>Create params dictionary files in ./data for simulations</li>
-    <ul>
-        <li><strike>create best parameters file (params.py)</strike> </li>
-        <li>Create params file for only onebound (called angle something...) </li>
-        <li> Verify correct best params between paper_params.py and script defaults. </li>
-    </ul>
-    <li>Fix plotting scripts to search for file names bsaed on params files.</li>
-    <li>For the both bound state (calculate Total energy as function of two angles). Make color plot of energy as a function of the two angles. Do this with Jin. <b>Highlight the equilibrium value slices in the plot. Plot should also be a function of the initial displacement between the feet.</b> We can call it "Energy Landscape" or something to that effect. </li>
-</ol>
+    <ol>
+        <li>Try running with longer tail i.e. bigger Lt (widen displacement distribution) </li>
+        <li>Increase binding rate (look for initial vs final correlation)</li>
+        <li>add histogram plot to paper (overlaid histogram)</li>
+        <li>Look into log-scale of the bb time histogram in paper (are the bins really log scaled?)</li>
+        <li>add average tail/motor domain displacements to stepping data output</li>
+        <li><strike>Finish dynein.run script</strike></li>
+        <li>Create params dictionary files in ./data for simulations</li>
+        <ul>
+            <li><strike>create best parameters file (params.py)</strike> </li>
+            <li>Create params file for only onebound (called angle something...) </li>
+            <li> Verify correct best params between paper_params.py and script defaults. </li>
+        </ul>
+        <li>Fix plotting scripts to search for file names bsaed on params files.</li>
+    </ol>
+
+<h4>Notes from colloquium: Kazu Oiwa </h4>
+    <ol>
+        <li>Double check that each binding domain has equal probability of unbinding independently</li>
+        <li>Find Kazu Oiwa Nature Nanotech Paper (ask David)</li>
+        <li>Look for Jim Spudich lab paper on myosin 5/6 Brownian motion resolution on unbinding using gold nanoparticles for scattering measurements. Suggested by Kazu</li>
+        <li> Add description of how our model "breaks the symmetry" as David mentioned after colloqium. i.e. the exponential unbinding rate formula and the pre/post powerstoke equilibrium angles.</li>
+    </ol>
+<hr>
 
 <h3> Jin </h3>
+    <ol>
+        <li>
+            (For fun) Make addition to bb_energy_distribution.py to highlight equilibrium angles on graph
+        </li>
+    </ol>
+
+
+<h3>Thoughts / Ideas</h3>
+    <ul>
+        <li>If we add in the periodic structure of the microtubule to our model (i.e. we only accept steps sizes of multiples of 8 nm) we could try and see how chirality of microtubule induces minus end directed motion. Start with some initial configuration and the have the x positions of the possible binding sites to be slightly skewed between each of the two binding domains to account for the helicity of the MT</li>
+    </ul>
