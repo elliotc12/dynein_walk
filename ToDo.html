@@ -4,7 +4,9 @@
 
 <h3> John </h3>
     <ol>
-        <li>Try running with longer tail i.e. bigger Lt (widen displacement distribution) </li>
+        <li>Try running with longer tail i.e. bigger Lt (widen displacement distribution). That would allow us to step further and broaden the stepping distribution. This could be justified by a flexible tail linker. </li>
+        <li>Decrease tail spring constant to allow "splits".</li>
+        <li>Add height requirement for each domain based off of the radius. i.e. motor domain cant be within it's radius of the MT otherwise it would bump. This would decrease our step sizes.</li>
         <li>Increase binding rate (look for initial vs final correlation)</li>
         <li>add histogram plot to paper (overlaid histogram)</li>
         <li>Look into log-scale of the bb time histogram in paper (are the bins really log scaled?)</li>
@@ -16,7 +18,11 @@
             <li>Create params file for only onebound (called angle something...) </li>
             <li> Verify correct best params between paper_params.py and script defaults. </li>
         </ul>
-        <li>Fix plotting scripts to search for file names bsaed on params files.</li>
+        <li>Fix plotting scripts to search for file names based on params files.</li>
+        <li>Download newer version of fac</li>
+        <li>Look for angle dependent binding affinity</li>
+        <li>Fix bibliography!!!</li>j
+        <li>Onebound simulation. Make just a onebound simulation. Take a copy of dynein.simulate, (consider using popped or keep using getopt) and remove a bunch of parameters so that we are only doing a onebound simulation. Need to stop simulation on first binding. Output the final displacement and time but leave room to add other. Consider outputing yaml files (map) like a python dictionary or just printing to standard out. We will want movie data for debugging.  </li>
     </ol>
 
 <h4>Notes from colloquium: Kazu Oiwa </h4>
@@ -33,6 +39,7 @@
         <li>
             (For fun) Make addition to bb_energy_distribution.py to highlight equilibrium angles on graph
         </li>
+        <li>Monte carlo for BB and then run many different simulations for one-bound.</li>
     </ol>
 
 
