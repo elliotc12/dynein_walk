@@ -9,12 +9,12 @@ import bb_energy_distribution
 
 params = importlib.import_module("params")
 
-# FIXME: Attempt to make command-line flags
 parser = argparse.ArgumentParser()
+parser.add_argument("-L", type=float, help="displacement in nm", required=True)
 args = parser.parse_args()
 
-# User input for initial displacement
-L = int(input("Initial Displacement: "))
+
+L = args.L
 
 # Initialize arrays for histograms
 angles = [[] for i in range(2)]		# Pair of angles
