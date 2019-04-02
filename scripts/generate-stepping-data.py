@@ -16,14 +16,14 @@ parser.add_argument("-w", "--lt", type=float, help="", default=10)
 
 parser.add_argument("-F", "--force", type=float, help="", default=0)
 
-parser.add_argument("-ee", "--rt", type=float, help="", default=8)
-parser.add_argument("-ff", "--rm", type=float, help="", default=11)
-parser.add_argument("-gg", "--rb", type=float, help="", default=3.5)
+parser.add_argument("--rt", type=float, help="", default=8)
+parser.add_argument("--rm", type=float, help="", default=11)
+parser.add_argument("--rb", type=float, help="", default=3.5)
 
-parser.add_argument("-aa", "--eqb", type=float, help="", default=10)
-parser.add_argument("-bb", "--eqt", type=float, help="", default=10)
-parser.add_argument("-cc", "--eqmpre", type=float, help="", default=10)
-parser.add_argument("-dd", "--eqmpost", type=float, help="", default=10)
+parser.add_argument("--eqb", type=float, help="", default=10)
+parser.add_argument("--eqt", type=float, help="", default=10)
+parser.add_argument("--eqmpre", type=float, help="", default=10)
+parser.add_argument("--eqmpost", type=float, help="", default=10)
 
 parser.add_argument("-x", "--unbindingconst", type=float, help="Manually set the unbinding const", default=0.0)
 parser.add_argument("-r", "--runtime", type=float, help="Manually set the runtime value, default=0.1", default=0.1)
