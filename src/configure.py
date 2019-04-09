@@ -11,18 +11,21 @@ def linkme(name, objects):
     for o in objects:
         print('<', o)
 
-linkme('onebound', ['onebound.o',
-                                  'dynein_simulate.o',
-                                  'dynein_struct_onebound.o',
-                                  'dynein_struct_bothbound.o',
-                                  'utilities.o',
+
+
+linkme('generate_onebound_step', ['generate_onebound_step.o',
 ])
+
+
+# standard simulations
+
 linkme('generate_stepping_data', ['generate_stepping_data.o',
                                   'dynein_simulate.o',
                                   'dynein_struct_onebound.o',
                                   'dynein_struct_bothbound.o',
                                   'utilities.o',
 ])
+
 linkme('simulate_unbinding_rates', ['simulate_unbinding_rates.o',
                                     'dynein_simulate.o',
                                     'dynein_struct_onebound.o',
