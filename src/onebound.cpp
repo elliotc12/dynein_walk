@@ -48,27 +48,11 @@ int main() {
       t += dt; // iterate time
       iter ++;
 
-      double old_bba = dynein->get_bba();
-      double old_bma = dynein->get_bma();
-      double old_uba = dynein->get_uba();
-      double old_uma = dynein->get_uma();
       if (binding_prob > 0) printf("binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
-
       bool accept_step = false;
-      int attempts = 0;
-      const long long max_attempts = 1e6;
 
-      while(!accept_step){
-        if(attempts > max_attempts){
-          printf("Over %lld attempts needed to avoid a NaN state in onebound at time %g, something must be wrong. Exiting.\n", max_attempts, t);
-          exit(1);
-        }
-        dynein->set_bba(old_bba);
-        dynein->set_bma(old_bma);
-        dynein->set_uba(old_uba);
-        dynein->set_uma(old_uma);
-
+      while (!accept_step) {
         double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
         double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
         double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
@@ -80,7 +64,6 @@ int main() {
         dynein->set_uba(temp_uba);
 
         accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-        attempts++;
       }
     }
   }
