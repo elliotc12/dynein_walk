@@ -45,8 +45,11 @@ nmx = []	# Near motor array
 fmx = []	# Far motor array
 fbx = []	# Far bound array
 E_avg_arr = []	# Average energy array
-k_ub = []		# Unbinding Rates
+rate_unbinding_leading = []		# Unbinding Rates
+rate_unbinding_trailing = []		# Unbinding Rates
 
+
+C =  0.1 # exponential binding constant FIXME from parameters
 
 Z = 0		# Partition Function
 N = 100	 	# Count
@@ -98,16 +101,22 @@ while Z < N:
 		# One bound dynein immediately after both bound
 		dyneinob = DyneinOneBound(nma, fma, params, L)
 
-		dG = dyneinob.E_total - dyneinbb.E_total 
-		print("dG: ", dG)
-		k_ub.append(np.exp(-b*dG))
+                rate_trailing = np.exp(C*(dyneinbb.nba - params.for_simulation['eqb']))
+                rate_leading = np.exp(C*(dyneinbb.fba - params.for_simulation['eqb']))
+                rate_unbinding_trailing.append(rate_trailing)
+                rate_unbinding_leading.append(rate_leading)
+
+                prob_trailing = P*rate_trailing
+                prob_leading = P*rate_leading
+                if np.random() < prob_trailing:
+                        print("I ought to simulate this")
+                if np.random() < prob_leading:
+                        print("I ought to simulate this")
 
 
-
-
-print("Unbinding Rates: ",k_ub )
+print("Unbinding Rates: ", rate_ub)
 plt.title("Unbinding Rates")
-plt.hist(k_ub, bins = 100, ec = 'black')
+plt.hist(rate_ub, bins = 100, ec = 'black')
 plt.xlabel("Unbinding Rates")
 plt.show()
 
