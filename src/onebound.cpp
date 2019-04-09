@@ -38,14 +38,9 @@ int main() {
   while(stillStepping){
 
     double binding_prob = dynein->get_binding_rate()*dt;
-    double unbinding_prob = dynein->get_unbinding_rate()*dt;
     if (binding_prob > 0) printf("binding_prob is %g\n", binding_prob);
 
-    // deal with falling off of microtubule
-    if (rand->rand() < unbinding_prob) {
-      printf("I fell off of the microtubule!");
-      exit(1);
-    } else if (rand->rand() < binding_prob) {
+    if (rand->rand() < binding_prob) {
       // We are going to bind!
       printf("I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
       exit(0);
