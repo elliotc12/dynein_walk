@@ -56,14 +56,7 @@ int main() {
 
 
       bool accept_step = false;
-      int attempts = 0;
-      const long long max_attempts = 1e6;
-
       while(!accept_step){
-        if(attempts > max_attempts){
-          printf("Over %lld attempts needed to avoid a NaN state in onebound at time %g, something must be wrong. Exiting.\n", max_attempts, t);
-          exit(1);
-        }
         dynein->set_bba(old_bba);
         dynein->set_bma(old_bma);
         dynein->set_uba(old_uba);
@@ -80,7 +73,6 @@ int main() {
         dynein->set_uba(temp_uba);
 
         accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-        attempts++;
       }
     }
   }
