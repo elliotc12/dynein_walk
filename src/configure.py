@@ -13,7 +13,10 @@ def linkme(name, objects):
 
 
 
-linkme('generate_onebound_step', ['generate_onebound_step.o',
+linkme('onebound', ['onebound.o',
+                    'dynein_struct_onebound.o',
+                    'dynein_struct_bothbound.o',
+                    'utilities.o',
 ])
 
 
