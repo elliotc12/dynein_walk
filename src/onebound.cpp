@@ -52,7 +52,11 @@ int main() {
       double old_bma = dynein->get_bma();
       double old_uba = dynein->get_uba();
       double old_uma = dynein->get_uma();
-      if (binding_prob > 0) printf("binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
+      if (binding_prob > 0 && rand->rand() > binding_prob) {
+        printf("binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
+        printf("all done\n");
+        exit(0);
+      }
 
 
       bool accept_step = false;

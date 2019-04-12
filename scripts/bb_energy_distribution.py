@@ -7,9 +7,9 @@ import importlib
 params = importlib.import_module("params")
 
 
+eq_in_degrees=True
 
-
-def spring_energy(theta, theta_eq, c, eq_in_degrees=True): #domain angle, equilibrium angle, spring constant
+def spring_energy(theta, theta_eq, c): #domain angle, equilibrium angle, spring constant
     """
     Calculate the Hooke's law energy for the spring at a particular domain
     """

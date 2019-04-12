@@ -5,6 +5,7 @@ import sys
 sys.path.append("../data")
 import importlib
 import argparse
+import subprocess
 import bb_energy_distribution
 
 params = importlib.import_module("params")
@@ -19,7 +20,7 @@ rate_unbinding_leading = []                        # Leading (Far) Unbinding Rat
 rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
 
 
-C =  0.1         # exponential binding constant FIXME from parameters
+C =  -0.35         # exponential binding constant from paper_params.py April 12
 
 Z = 0                # Partition Function
 N = 100                 # Count
@@ -37,6 +38,10 @@ b = 1                        # thermodynamic beta
 
 max_rate_trailing = 0
 max_rate_leading = 0
+
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
 
 while Z < N:
         # Making random motor angles
@@ -63,8 +68,9 @@ while Z < N:
                 r_fbx += dynein.r_fb[0]*P
                 E_avg += dynein.E_total*P
 
-                rate_trailing = np.exp(C*(dynein.nba - params.for_simulation['eqb']))
-                rate_leading = np.exp(C*(dynein.fba - params.for_simulation['eqb']))
+                print('angle =', dynein.nba, 'vs', eqb_angle)
+                rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
+                rate_leading = np.exp(C*(dynein.fba - eqb_angle))
                 rate_unbinding_trailing.append(rate_trailing)
                 rate_unbinding_leading.append(rate_leading)
                 max_rate_leading = max(rate_leading, max_rate_leading)
@@ -77,9 +83,16 @@ while Z < N:
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
                 if np.random.random() < prob_trailing:
-                        print("I ought to simulate this")
+                        process = subprocess.Popen(["../onebound", "--arguments", 'here'], stdout=subprocess.PIPE)
+                        (output, err) = process.communicate()
+                        exit_code = process.wait()
+                        print('onebound for trailing step gives:\n%s' % output.decode('utf-8'))
                 if np.random.random() < prob_leading:
-                        print("I ought to simulate this")
+                        process = subprocess.Popen(["../onebound", "--arguments", 'here'], stdout=subprocess.PIPE)
+                        (output, err) = process.communicate()
+                        exit_code = process.wait()
+                        print('onebound for leading step gives:\n%s' % output.decode('utf-8'))
+
 
 print("rate_unbinding_leading: ", rate_unbinding_leading)
 print("rate_unbinding_trailing: ", rate_unbinding_trailing)
