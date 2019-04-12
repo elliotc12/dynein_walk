@@ -60,26 +60,24 @@ while Z < N:
 		r_fbx += dynein.r_fb[0]*P
 		E_avg += dynein.E_total*P
 
-		# Array of averages
-		tx.append()
-		ty.append(r_ty/Z)
-		nmx.append(r_nmx/Z)
-		fmx.append(r_fmx/Z)
-		fbx.append(r_fbx/Z)
-		E_avg_arr.append(E_avg/Z)
+		rate_trailing = np.exp(C*(dynein.nba - params.for_simulation['eqb']))
+		rate_leading = np.exp(C*(dynein.fba - params.for_simulation['eqb']))
+		rate_unbinding_trailing.append(rate_trailing)
+		rate_unbinding_leading.append(rate_leading)
 
-        rate_trailing = np.exp(C*(dynein.nba - params.for_simulation['eqb']))
-        rate_leading = np.exp(C*(dynein.fba - params.for_simulation['eqb']))
-        rate_unbinding_trailing.append(rate_trailing)
-        rate_unbinding_leading.append(rate_leading)
+		prob_trailing = P*rate_trailing
+		prob_leading = P*rate_leading
 
-        prob_trailing = P*rate_trailing
-        prob_leading = P*rate_leading
-        if np.random() < prob_trailing:
-                print("I ought to simulate this")
-        if np.random() < prob_leading:
-                print("I ought to simulate this")
+		print("P:", P)
+		print("prob_leading: ", prob_leading)
+		print("prob_trailing: ", prob_trailing)
+		if np.random.random() < prob_trailing:
+		        print("I ought to simulate this")
+		if np.random.random() < prob_leading:
+		        print("I ought to simulate this")
 
+print("rate_unbinding_leading: ", rate_unbinding_leading)
+print("rate_unbinding_trailing: ", rate_unbinding_trailing)
 
 tx = r_tx/Z		# Tail x array
 ty = r_ty/Z		# Tail y array
@@ -88,10 +86,17 @@ fmx = r_fmx/Z	# Far motor array
 fbx = r_fbx/Z	# Far bound array
 E_avg_arr = E_avg/Z	# Average energy array
 
-print("Unbinding Rates: ", rate_ub)
-plt.title("Unbinding Rates")
-plt.hist(rate_ub, bins = 100, ec = 'black')
-plt.xlabel("Unbinding Rates")
-plt.show()
+print("Avg Tail x:", tx)
+print("Avg Tail y:", ty)
+print("Avg nmx:", nmx)
+print("Avg fmx:", fmx)
+print("Avg fbx:", fbx)
+print("Avg E:", E_avg_arr)
+
+# print("Unbinding Rates: ", rate_ub)
+# plt.title("Unbinding Rates")
+# plt.hist(rate_ub, bins = 100, ec = 'black')
+# plt.xlabel("Unbinding Rates")
+# plt.show()
 
 
