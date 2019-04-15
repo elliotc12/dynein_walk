@@ -17,12 +17,12 @@ for_simulation= {"k_b": 3e6,
                  "eqmpost": 242,
                  "eqt": 0,
                  "force": 0,
-                 "exp-unbinding-constant":0.0,
+                 "exp-unbinding-constant": -0.35,
                  "runtime": 0.1,
                  "crash-movie": False,
                  "nomovie": True,
                  "angle-logging-mode": False,
                  "long-angle-logging-mode": False,
                  "label": "test"
-}
+}   
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09
