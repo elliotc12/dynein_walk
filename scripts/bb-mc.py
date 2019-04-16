@@ -46,7 +46,7 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # FIXME CHANGE
 
 def run_onebound(bba, bma, ta, uma, uba):
-        process = subprocess.Popen(['../src/onebound.cpp',
+        process = subprocess.Popen(['../onebound',
                                     params.for_simulation['k_b'],
                                     params.for_simulation['cb'],
                                     params.for_simulation['cm'],
