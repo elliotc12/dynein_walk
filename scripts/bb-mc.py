@@ -43,6 +43,35 @@ eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
+seed = 0 # FIXME CHANGE
+
+def run_onebound(bba, bma, ta, uma, uba):
+        process = subprocess.Popen(['../src/onebound.cpp',
+                                    params.for_simulation['k_b'],
+                                    params.for_simulation['cb'],
+                                    params.for_simulation['cm'],
+                                    params.for_simulation['ct'],
+                                    params.for_simulation['ls'],
+                                    params.for_simulation['lt'],
+                                    params.for_simulation['rt'],
+                                    params.for_simulation['rm'],
+                                    params.for_simulation['rb'],
+                                    seed, # FIXME
+                                    params.for_simulation['dt'],
+                                    params.for_simulation['eqb'],
+                                    params.for_simulation['eqmpre'],
+                                    params.for_simulation['eqmpost'],
+                                    params.for_simulation['eqt'],
+                                    params.for_simulation['force'],
+                                    params.for_simulation['exp-unbinding-const'],
+                                    bba, bma, uma, uba,
+        ], stdout=subprocess.PIPE)
+        (output, err) = process.communicate()
+        exit_code = process.wait()
+        print('onebound for trailing step gives:\n%s' % output.decode('utf-8'))
+        assert(exit_code == 0);
+        return 'FIXME: This should be real output'
+
 while Z < N:
         # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
@@ -82,36 +111,15 @@ while Z < N:
                 print("prob_trailing: ", prob_trailing)
 
                 if np.random.random() < prob_trailing:
-                        process = subprocess.Popen(['../src/onebound.cpp',              # FIXME: Need to figure out order 
-                                                        '--bba', repr(dynein.nba),
-                                                        '--bma', repr(nma),
-                                                        '--fma', repr(fma),
-                                                        '--fba', repr(dynein.fba),
-                                                        '--bbx', 
-                                                        '--bby',
-                                                        '--rt', repr(rate_trailing),
-                                                        '--rl', repr(rate_leading),
-                                                        '-C', repr(C)],
-                                                         stdout=subprocess.PIPE)
-                        (output, err) = process.communicate()
-                        exit_code = process.wait()
-                        print('onebound for trailing step gives:\n%s' % output.decode('utf-8'))
+                        run_onebound(dynein.nba,
+                                     np.pi - dynein.nba - nma,
+                                     np.pi - dynein.fba - fma,
+                                     dynein.fba)
                 if np.random.random() < prob_leading:
-                        process = subprocess.Popen(['../src/onebound.cpp',
-                                                        '--bba', repr(dynein.nba),
-                                                        '--bma', repr(nma),
-                                                        '--fma', repr(fma),
-                                                        '--fba', repr(dynein.fba),
-                                                        '--bbx', 
-                                                        '--bby',
-                                                        '--rt', repr(rate_trailing),
-                                                        '--rl', repr(rate_leading),
-                                                        '-C', repr(C)],
-                                                         stdout=subprocess.PIPE)
-                        (output, err) = process.communicate()
-                        exit_code = process.wait()
-                        print('onebound for leading step gives:\n%s' % output.decode('utf-8'))
-
+                        run_onebound(dynein.fba,
+                                     np.pi - dynein.fba - fma,
+                                     np.pi - dynein.nba - nma,
+                                     dynein.nba)
 
 print("rate_unbinding_leading: ", rate_unbinding_leading)
 print("rate_unbinding_trailing: ", rate_unbinding_trailing)
