@@ -45,30 +45,31 @@ if bb_energy_distribution.eq_in_degrees:
 
 seed = 0 # FIXME CHANGE
 
-def run_onebound(bba, bma, ta, uma, uba):
+def run_onebound(bba, bma, uma, uba):
+        print("abbout to run onebound...\n\n")
         process = subprocess.Popen(['../onebound',
-                                    params.for_simulation['k_b'],
-                                    params.for_simulation['cb'],
-                                    params.for_simulation['cm'],
-                                    params.for_simulation['ct'],
-                                    params.for_simulation['ls'],
-                                    params.for_simulation['lt'],
-                                    params.for_simulation['rt'],
-                                    params.for_simulation['rm'],
-                                    params.for_simulation['rb'],
-                                    seed, # FIXME
-                                    params.for_simulation['dt'],
-                                    params.for_simulation['eqb'],
-                                    params.for_simulation['eqmpre'],
-                                    params.for_simulation['eqmpost'],
-                                    params.for_simulation['eqt'],
-                                    params.for_simulation['force'],
-                                    params.for_simulation['exp-unbinding-const'],
-                                    bba, bma, uma, uba,
+                                    str(params.for_simulation['k_b']),
+                                    str(params.for_simulation['cb']),
+                                    str(params.for_simulation['cm']),
+                                    str(params.for_simulation['ct']),
+                                    str(params.for_simulation['ls']),
+                                    str(params.for_simulation['lt']),
+                                    str(params.for_simulation['rt']),
+                                    str(params.for_simulation['rm']),
+                                    str(params.for_simulation['rb']),
+                                    str(seed), # FIXME
+                                    str(params.for_simulation['dt']),
+                                    str(params.for_simulation['eqb']),
+                                    str(params.for_simulation['eqmpre']),
+                                    str(params.for_simulation['eqmpost']),
+                                    str(params.for_simulation['eqt']),
+                                    str(params.for_simulation['force']),
+                                    str(params.for_simulation['exp-unbinding-constant']),
+                                    str(bba), str(bma), str(uma), str(uba),
         ], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
-        print('onebound for trailing step gives:\n%s' % output.decode('utf-8'))
+        print('onebound for a step (which kind?) gives:\n%s' % output.decode('utf-8'))
         assert(exit_code == 0);
         return 'FIXME: This should be real output'
 
@@ -110,7 +111,7 @@ while Z < N:
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
 
-                if np.random.random() < prob_trailing:
+                if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         run_onebound(dynein.nba,
                                      np.pi - dynein.nba - nma,
                                      np.pi - dynein.fba - fma,

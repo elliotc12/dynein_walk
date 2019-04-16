@@ -21,80 +21,6 @@
 // see dynein_struct.h for possible command line parameters (extern double ... )
 // they are all defined in default_parameters.h
 
-
-void get_command_line_flags(int argc, char** argv);
-
-int main(int argc, char** argv) {
-  double bba, bma, uma, uba, bbx = 0, bby = 0; // FIXME
-  get_command_line_flags(argc, argv, &bba, &mba, &uma, &uba);
-
-  // we will probably need Jin's code to output which foot steps
-  // do we care about nearbound or farbound
-
-  MTRand* rand = new MTRand(0.0); // FIXME
-  Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
-                                                NEARBOUND,
-                                                NULL,
-                                                NULL,
-                                                NULL,
-                                                rand);
-
-  int temp;
-  std::cin>>temp;
-
-
-  double t = 0;
-  long long iter = 0;
-  bool stillStepping = true;
-
-  while(stillStepping){
-
-    // FIXME consider doing *one* move before checking binding
-    double binding_prob = dynein->get_binding_rate()*dt;
-    if (binding_prob > 0) printf("binding_prob is %g\n", binding_prob);
-
-    if (rand->rand() < binding_prob) {
-      // We are going to bind!
-      printf("I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
-      exit(0);
-    } else {
-      t += dt; // iterate time
-      iter ++;
-
-      double old_bba = dynein->get_bba();
-      double old_bma = dynein->get_bma();
-      double old_uba = dynein->get_uba();
-      double old_uma = dynein->get_uma();
-      if (binding_prob > 0 && rand->rand() > binding_prob) {
-        printf("binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
-        printf("all done\n");
-        exit(0);
-      }
-
-
-      bool accept_step = false;
-      while(!accept_step){
-        dynein->set_bba(old_bba);
-        dynein->set_bma(old_bma);
-        dynein->set_uba(old_uba);
-        dynein->set_uma(old_uma);
-
-        double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
-        double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
-        double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
-        double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
-
-        dynein->set_bba(temp_bba);
-        dynein->set_bma(temp_bma);
-        dynein->set_uma(temp_uma);
-        dynein->set_uba(temp_uba);
-
-        accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-      }
-    }
-  }
-}
-
 void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba){
   for(int i=1; i<argc; i++){
     printf("%s ", argv[i]);
@@ -142,17 +68,74 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
   // note we are not using runtime as onebound runs indefinitely until binding event
 }
 
+int main(int argc, char** argv) {
+  double bba, bma, uma, uba, bbx = 0, bby = 0; // FIXME
+  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba);
+  binding_mode = EXPONENTIAL_UNBINDING;
+
+  // we will probably need Jin's code to output which foot steps
+  // do we care about nearbound or farbound
+
+  MTRand* rand = new MTRand(0.0); // FIXME
+  Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
+                                                NEARBOUND,
+                                                NULL,
+                                                NULL,
+                                                NULL,
+                                                rand);
+
+  double t = 0;
+  long long iter = 0;
+  bool stillStepping = true;
+
+  while(stillStepping){
+
+    // FIXME consider doing *one* move before checking binding
+    double binding_prob = dynein->get_binding_rate()*dt;
+
+    // fprintf(stderr, "The time is %g\n", t);
+    if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g\n",
+                                  binding_prob, t, dynein->get_uba());
+
+    if (rand->rand() < binding_prob) {
+      // We are going to bind!
+      fprintf(stderr, "I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
+      exit(0);
+    } else {
+      t += dt; // iterate time
+      iter ++;
+
+      double old_bba = dynein->get_bba();
+      double old_bma = dynein->get_bma();
+      double old_uba = dynein->get_uba();
+      double old_uma = dynein->get_uma();
+      if (binding_prob > 0 && rand->rand() < binding_prob) {
+        fprintf(stderr, "binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
+        printf("all done\n");
+        exit(0);
+      }
 
 
+      bool accept_step = false;
+      while(!accept_step){
+        dynein->set_bba(old_bba);
+        dynein->set_bma(old_bma);
+        dynein->set_uba(old_uba);
+        dynein->set_uma(old_uma);
 
+        double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
+        double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
+        double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
+        double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
 
+        dynein->set_bba(temp_bba);
+        dynein->set_bma(temp_bma);
+        dynein->set_uma(temp_uma);
+        dynein->set_uba(temp_uba);
 
-
-
-
-
-
-
-
-
-
+        accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
+        // if (!accept_step) fprintf(stderr, "This is sad, we are going to reject!\n");
+      }
+    }
+  }
+}
