@@ -20,7 +20,7 @@ rate_unbinding_leading = []                        # Leading (Far) Unbinding Rat
 rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
 
 
-C =  -0.35         # exponential binding constant from paper_params.py April 12
+C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
 
 Z = 0                # Partition Function
 N = 100                 # Count
@@ -68,7 +68,6 @@ while Z < N:
                 r_fbx += dynein.r_fb[0]*P
                 E_avg += dynein.E_total*P
 
-                print('angle =', dynein.nba, 'vs', eqb_angle)
                 rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                 rate_leading = np.exp(C*(dynein.fba - eqb_angle))
                 rate_unbinding_trailing.append(rate_trailing)
@@ -79,16 +78,36 @@ while Z < N:
                 prob_trailing = P*rate_trailing
                 prob_leading = P*rate_leading
 
-                print("P:", P)
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
+
                 if np.random.random() < prob_trailing:
-                        process = subprocess.Popen(["../onebound", "--arguments", 'here'], stdout=subprocess.PIPE)
+                        process = subprocess.Popen(['../src/onebound.cpp',              # FIXME: Need to figure out order 
+                                                        '--bba', repr(dynein.nba),
+                                                        '--bma', repr(nma),
+                                                        '--fma', repr(fma),
+                                                        '--fba', repr(dynein.fba),
+                                                        '--bbx', 
+                                                        '--bby',
+                                                        '--rt', repr(rate_trailing),
+                                                        '--rl', repr(rate_leading),
+                                                        '-C', repr(C)],
+                                                         stdout=subprocess.PIPE)
                         (output, err) = process.communicate()
                         exit_code = process.wait()
                         print('onebound for trailing step gives:\n%s' % output.decode('utf-8'))
                 if np.random.random() < prob_leading:
-                        process = subprocess.Popen(["../onebound", "--arguments", 'here'], stdout=subprocess.PIPE)
+                        process = subprocess.Popen(['../src/onebound.cpp',
+                                                        '--bba', repr(dynein.nba),
+                                                        '--bma', repr(nma),
+                                                        '--fma', repr(fma),
+                                                        '--fba', repr(dynein.fba),
+                                                        '--bbx', 
+                                                        '--bby',
+                                                        '--rt', repr(rate_trailing),
+                                                        '--rl', repr(rate_leading),
+                                                        '-C', repr(C)],
+                                                         stdout=subprocess.PIPE)
                         (output, err) = process.communicate()
                         exit_code = process.wait()
                         print('onebound for leading step gives:\n%s' % output.decode('utf-8'))
@@ -113,10 +132,13 @@ print("Avg fmx:", fmx)
 print("Avg fbx:", fbx)
 print("Avg E:", E_avg_arr)
 
-# print("Unbinding Rates: ", rate_ub)
 # plt.title("Unbinding Rates")
-# plt.hist(rate_ub, bins = 100, ec = 'black')
+# plt.hist(pt, bins = 100, ec = 'black')
 # plt.xlabel("Unbinding Rates")
 # plt.show()
 
+# plt.title("Unbinding Rates")
+# plt.hist(pl, bins = 100, ec = 'black')
+# plt.xlabel("Unbinding Rates")
+# plt.show()
 
