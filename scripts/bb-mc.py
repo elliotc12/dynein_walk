@@ -116,9 +116,9 @@ while Z < N:
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         bba = nma-(np.pi-dynein.nba)
-                        bba_old = np.pi - dynein.nba - nma
+                        uba = fma-(np.pi-dynein.fba)
 
-                        # uba = fma-(np.pi-dynein.fba)
+                        # bba_old = np.pi - dynein.nba - nma
                         # uba_old = np.pi - dynein.fba - fma
                         # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
                         # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
@@ -129,9 +129,9 @@ while Z < N:
                                      dynein.fba)
                 if np.random.random() < prob_leading:
                         bba = fma-(np.pi-dynein.fba)
-                        bba_old = np.pi - dynein.fba - fma
+                        uba = nma-(np.pi-dynein.nba)
 
-                        # uba = nma-(np.pi-dynein.nba)
+                        # bba_old = np.pi - dynein.fba - fma
                         # uba_old = np.pi - dynein.nba - nma
                         # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
                         # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
