@@ -190,9 +190,46 @@ Now that I have established some facts about motor proteins as well as specifics
 		Now we have everything we need in order to repeat the process for the one bound state. Differentiating these equations will give us explicit formulas for the time derivative of the coordinates of each domain which we can then compare to the forces acting on each domain via the Brownian motion equation. Fortunately, the effort was well spent as we've reduced (3.14) to a system of six equation with 6 unknowns (one angle and one Lagrange multiplier for each \textit{moving} domain). 
 		 
 	\section{Binding and Unbinding}
+	To keep the simulation simple, we have chosen a very physically reasonable and uncomplicated binding model with a minimum amount of assumptions. The two key processes, binding and unbinding, are controlled by two parameters called the binding rates. For binding, we simply assume that a binding event occurs when a binding domain is close enough to the microtubule. In other words
+	\begin{equation}
+		\rho_{b} = k_b
+	\end{equation}
+	where $\rho_b$ is a probability per second and $k_b$ is a constant. \\
 	
-	\todo[inline]{Add theoretical description of binding and unbinding probabilities and their relation to tension and torque on binding domain. Explain the use of our exponential factor and why it is reasonable. Discuss potential to add in exponential factor to binding rate.}
+	Recently there has been evidence to show that dynein's step length depends on the tension applied at the linker between the two motor domains (e.g. the tail).\cite{cleary2014tension} This tension is high when the motor domains are far apart and small when they are together as illustrated in the following figure. \\
+	\begin{figure}[!hbt]
+		\centering
+		\includegraphics[width=0.8\columnwidth]{yildiz_tension_dependence}
+		\caption{\textbf{Tension dependent stepping} is shown for a typical dynein (non-mutated). There is a clear, negative correlation between the step size and interhead separation. Data is clustered around trailing steps indicating that a higher tension leads to more stepping. Image taken from \cite{cleary2014tension}}
+		\label{fig:yildiz_tension}
+	\end{figure} 	
+	As figure \ref{fig:yildiz_tension} indicates, a large interhead separation leads to more likely stepping. Furthermore, trailing steps are favored-- this means steps where the back foot begins the motion (like a normal step) are more likely. To capture this behavior, we use an angle dependent exponential factor in the binding rate. That is 
+	
+	
 	
 	\begin{equation}
-	\rho_{ub} = k_{ub}e^{-c(\theta_i-\theta_{i,eq})}
+	\rho_{ub} = k_{ub}e^{-c(\theta_b-\theta_{b,eq})}
 	\end{equation}
+	i.e. unbinding depends on the angular separation of the binding domain from it's equilibrium position. If the $\theta_b$ is large and positive, then the unbinding rate is very small. If $\theta_b$ is less than $\theta_{b,eq}$, then the unbinding rate is very large. This will favor the lagging foot because when dynein has a large interhead separation, the lagging $\theta_b$ is very small and the leading $\theta_b$ is very large as shown in the following figure. 
+	
+	\begin{figure}[!hbt]
+		\centering
+		\includegraphics[width=0.7\columnwidth, angle=-90]{tension_dependence_edge_case}
+		\caption{\textbf{A Stretched dynein} illustrates the angular dependence of the unbinding model. In this configuration $\theta_{nb}$ is very small and is therefore much more likely to unbind than $\theta_{fb}$.}
+	\end{figure}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
