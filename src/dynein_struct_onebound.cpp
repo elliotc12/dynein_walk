@@ -1083,6 +1083,8 @@ double Dynein_onebound::get_binding_rate() {
   return 0.0;
 }
 
+
+//NOTE: this turns off the ability for dynein to fall off of the microtubule
 double Dynein_onebound::get_unbinding_rate() {
   //return high_affinity_unbinding_preexponential_factor*exp(-PE_bba/kb/T);
   return 0;
