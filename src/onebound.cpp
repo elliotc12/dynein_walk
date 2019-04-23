@@ -87,15 +87,17 @@ int main(int argc, char** argv) {
   double t = 0;
   long long iter = 0;
   bool stillStepping = true;
+  double cumulative_prob = 0;
 
   while(stillStepping){
 
     // FIXME consider doing *one* move before checking binding
     double binding_prob = dynein->get_binding_rate()*dt;
+    cumulative_prob += binding_prob;
 
     // fprintf(stderr, "The time is %g\n", t);
-    if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g\n",
-                                  binding_prob, t, dynein->get_uba());
+    if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
+                                  binding_prob, t, dynein->get_uba(), cumulative_prob);
 
     if (rand->rand() < binding_prob) {
       // We are going to bind!
@@ -114,6 +116,7 @@ int main(int argc, char** argv) {
         printf("all done\n");
         exit(0);
       }
+      fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
 
 
       bool accept_step = false;

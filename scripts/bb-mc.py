@@ -44,6 +44,7 @@ if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
 seed = 0 # FIXME CHANGE
+np.random.seed(0) # FIXME CHANGE
 
 def run_onebound(bba, bma, uma, uba):
         print("abbout to run onebound...\n\n")
