@@ -1055,9 +1055,7 @@ bool Dynein_onebound::update_velocities() {
 }
 
 double Dynein_onebound::get_binding_rate() {
-  if (get_uby() < MICROTUBULE_BINDING_DISTANCE and
-      get_umy() > MICROTUBULE_BINDING_DISTANCE and
-      fabs(get_bbx()-get_ubx()) > 0.5) {
+  if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
     if (binding_mode == GIBBS_FULL) {
       if (am_debugging_conversions) printf("Creating bothbound from onebound to test energy\n");
       double dG_spring = Dynein_bothbound(this, rand, true).get_PE() - get_PE();
