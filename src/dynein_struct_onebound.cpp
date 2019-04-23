@@ -1064,6 +1064,7 @@ double Dynein_onebound::get_binding_rate() {
       if (isnan(dG_spring)) return 0.0;
       return low_affinity_binding_rate * exp(-dG_spring/kb/T);
     }
+    // shouldn't this at least depend on the height above the microtubule
     else if (binding_mode == EXPONENTIAL_UNBINDING) {
       return low_affinity_binding_rate;
     }
