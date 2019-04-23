@@ -1,4 +1,4 @@
-Now that I have established some facts about motor proteins as well as specifics about dynein's many odd behaviors, we may begin our discussion of how to construct and test a physical model for its motion. First, we note that dynein's large mass of roughly 2MDa \cite{johnson_structure_1983} as compared to similar motor proteins such as Kinesin (a few hundred kDa) \cite{liao_kinesin_1998} exaggerates the effect of interactions with the  aqueous environment of the cell. This results in a much more significant drag force as well as a random element from water molecule collisions that changes the overall dynamics of the system. The set of equations governing this motion is called Brownian dynamics and is what we use to simulate the trajectory of dynein along the microtubule. 
+Now that I have established some facts about motor proteins as well as specifics about dynein's many odd behaviors, we may begin our discussion of how to construct and test a physical model for its motion. First, we note that dynein's large mass of roughly 2MDa \cite{johnson1983structure} as compared to similar motor proteins such as Kinesin (a few hundred kDa) \cite{liao1998kinesin} amplifies the effect of interactions with the  aqueous environment of the cell. This results in a much more significant drag force as well as a random element from water molecule collisions that changes the overall dynamics of the system. The set of equations governing this motion is called Brownian dynamics and is what we use to simulate the trajectory of dynein along the microtubule. 
 	\section{Brownian dynamics}
 	To model dynein we treat its various domains (binding, motor, and tail) as spheres held together by massless rigid-rods. In general, the dynamics of a constant mass particle are governed by Newton's second law
 	\begin{equation}
@@ -44,6 +44,8 @@ Now that I have established some facts about motor proteins as well as specifics
 	\begin{equation}
 		U_i = \frac{1}{2}c_i(\varphi_i-\varphi_{i,\text{eq}})^2
 	\end{equation} 
+	Bead-and-spring models such as this are common in molecular dynamics simulations as a way to model the interactions of high weight molecules.\cite{bead-spring-model}. 
+	
 	
 	Real dynein is composed of a pair of identical heavy chains. Therefore, our angle convention is chosen starting at the $0^{th}$ domain in figure \ref{fig:torque angles}. The same convention is then repeated for the second leg with the following correspondence 
 	\begin{align}
@@ -80,7 +82,7 @@ Now that I have established some facts about motor proteins as well as specifics
 	We are now armed with a way to calculate the forces on each domain due to the restorative torque. The only force which we are unable to calculate directly is the force due to tension. We will deal with these forces by applying the method Lagrange multipliers as we solve for the equations of motion. 
 	
 	\section{Equations of Motion}
-	The dynamics of each domain are determined by equation 3.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state with the idea being that they directly correspond to the pre and post-stroke states defined by the mechanochemical cycle of \cite{cianfrocco_mechanism_2015}.  
+	The dynamics of each domain are determined by equation 3.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state with the idea being that they directly correspond to the pre and post-stroke states defined by the mechanochemical cycle of \cite{cianfrocco2015mechanism}.  
 	
 	In the one bound state, all but one of the domains are free to diffuse while the last is attached to the microtubule. In the both bound state, both binding domains are attached. This slight difference in geometry between the two scenarios leads to two independent equations motion motion that require careful consideration when transitioning between states. The following sections detail the derivation of these equations of motion for each configuration. 
 	
@@ -88,7 +90,7 @@ Now that I have established some facts about motor proteins as well as specifics
 		Figure \ref{fig:one bound} illustrates dynein in the one bound state with new angles $\{\theta_i\}$ chosen for convenience of calculation and computation.\\
 		\begin{figure}[!hbt]
 			\centering
-			\includegraphics[angle=-90,width=0.75\columnwidth]{onebound}
+			\includegraphics[angle=-90,width=0.8\columnwidth]{onebound}
 			\caption{The dynein model in the one bound state }
 			\label{fig:one bound}  
 		\end{figure}
@@ -143,16 +145,54 @@ Now that I have established some facts about motor proteins as well as specifics
 		 \todo[inline]{TODO: add appendices with full matrix equations} 
 		 
 		\subsection{The both bound state}
-		 
-		\section{Determining constants of the model}
-		The stalk and tail lengths $\ell_S, \ell_T$ as well as a set of equilibrium angles $\{\varphi_{i,\text{eq}}\}$ were determined by examining microscopy images of dynein in various configurations. 
-		\begin{figure}[hbt!]
+		For the both bound state, we no longer have a notion of bound and unbound domains. We therefore introduce a new notation, near and far, to identify each dimer. This is not purely for convenience of notation, but rather is important for storing data. We will want the ability to calculate the total step length. Doing this requires knowledge of which motor domain initiates the stepping cycle. \\
+		
+		In this state, both binding domains are attached to the microtubule and therefore, a degree of freedom has been removed from our system. This enables us to simplify the dynamic equations in order to take advantage of the new, constrained geometry. To that end, we define a new coordinate system as shown in the following figure. 
+		
+		\begin{figure}[!hbt]
 			\centering
-			\includegraphics[width=0.3\columnwidth]{schematic-2-superimposed}
-			\caption{Our model superimposed over microscopy image of Dynein \textbf{NOTE: add source} for determining lengths and equilibrium angles} 
-			\label{fig:superimpmosed}
+			\includegraphics[width=0.75\columnwidth, angle=-90]{bothbound.pdf}
+			\caption{\textbf{Both bound} state with the new angles and lengths shown.}
+			\label{fig:bothbound}
 		\end{figure}
-
+		
+		Here, $\theta_{nm}$ and $\theta_{fm}$ can be obtained from the one bound state by 
+		\begin{equation}
+			\theta_{nm} = \theta_1+(\pi-\theta_0) \qquad \theta_{fm}= \theta_3 + (\pi-\theta_4) 
+		\end{equation}
+		Because the near and far binding domains are fixed, the only domains that we need to time evolve for the both bound state are the two motors (nm, fm) and the tail (T). Therefore, specifying $\theta_{nm}, \theta_{fm}$, and $\ell$ is enough to determine the geometry of the system. The intermediate variables are calculated by wild application of the law of cosines. 
+		\begin{align}
+			\ell_n &= \sqrt{\ell_s^2+\ell_T^2-2\ell_s\ell_T\cos(2\pi-\theta_{nm})} \\
+			\ell_f &=  \sqrt{\ell_s^2+\ell_T^2-2\ell_s\ell_T\cos(2\pi-\theta_{fm})} \\
+			\text{}\nonumber\\
+			 \theta_n &= \arccos\left(\frac{\ell_n^2+\ell^2-\ell_f^2}{2\ell_n\ell}\right)\\
+			\theta_f &= \pi-\arccos\left(\frac{\ell_f^2+\ell^2-\ell_n^2}{2\ell_f\ell}\right)\\
+			\text{}\nonumber\\
+			\theta_{n'} &= \arccos\left(\frac{\ell_n^2+\ell_s^2-\ell_t^2}{2\ell_n\ell_s}\right) \\
+			\theta_{f'} &= \arccos\left(\frac{\ell_f^2+\ell_s^2-\ell_t^2}{2\ell_f\ell_s}\right) \\ 
+			\text{}\nonumber \\ 
+			\theta_{nb} &\equiv \theta_{n}-\theta_{n'} \\ 
+			\theta_{fb} &\equiv \theta_{f}-\theta_{f'} 
+		\end{align}
+	   	with these angles and lengths defined, we can now easily define the positions 
+	   		\begin{align}
+	   	{x}'s \quad \begin{cases}
+	   	{x}_{nm} = x_n+\ell_s\cos(\theta_{nb}) \\
+	   	{x}_{fm} = x_f+\ell_s\cos(\theta_{fb}) \\
+	   	{x}_{T} = x_{nm}+\ell_n\cos(\theta_n) 
+	   	\end{cases} &
+	   	{y}'s \quad \begin{cases}
+	   	{y}_{nm} = \ell_s\sin(\theta_{nb}) \\
+	   	{y}_{fm} = \ell_s\sin(\theta_{fb}) \\
+	   	{y}_{t} = \ell_n\sin(\theta_n) 
+	   	\end{cases} 
+	   	\end{align}
+		Now we have everything we need in order to repeat the process for the one bound state. Differentiating these equations will give us explicit formulas for the time derivative of the coordinates of each domain which we can then compare to the forces acting on each domain via the Brownian motion equation. Fortunately, the effort was well spent as we've reduced (3.14) to a system of six equation with 6 unknowns (one angle and one Lagrange multiplier for each \textit{moving} domain). 
+		 
 	\section{Binding and Unbinding}
 	
 	\todo[inline]{Add theoretical description of binding and unbinding probabilities and their relation to tension and torque on binding domain. Explain the use of our exponential factor and why it is reasonable. Discuss potential to add in exponential factor to binding rate.}
+	
+	\begin{equation}
+	\rho_{ub} = k_{ub}e^{-c(\theta_i-\theta_{i,eq})}
+	\end{equation}
