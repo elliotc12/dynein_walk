@@ -112,16 +112,34 @@ while Z < N:
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
 
+                print()
+
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                        bba = nma-(np.pi-dynein.nba)
+                        bba_old = np.pi - dynein.nba - nma
+
+                        # uba = fma-(np.pi-dynein.fba)
+                        # uba_old = np.pi - dynein.fba - fma
+                        # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
+                        # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
+
                         run_onebound(dynein.nba,
-                                     np.pi - dynein.nba - nma,
-                                     np.pi - dynein.fba - fma,
+                                     bba,
+                                     uba,
                                      dynein.fba)
                 if np.random.random() < prob_leading:
+                        bba = fma-(np.pi-dynein.fba)
+                        bba_old = np.pi - dynein.fba - fma
+
+                        # uba = nma-(np.pi-dynein.nba)
+                        # uba_old = np.pi - dynein.nba - nma
+                        # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
+                        # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
+
                         run_onebound(dynein.fba,
-                                     np.pi - dynein.fba - fma,
-                                     np.pi - dynein.nba - nma,
-                                     dynein.nba)
+                                     bba,
+                                     uba,
+                                    dynein.nba)
 
 print("rate_unbinding_leading: ", rate_unbinding_leading)
 print("rate_unbinding_trailing: ", rate_unbinding_trailing)
