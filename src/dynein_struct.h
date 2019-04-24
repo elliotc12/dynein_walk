@@ -1,5 +1,6 @@
 #include <csignal>
 #include <fenv.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdbool.h>
 

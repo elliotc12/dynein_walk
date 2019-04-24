@@ -112,39 +112,29 @@ while Z < N:
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
 
-                print()
+                bma = nma-(np.pi-dynein.nba)
+                uma = fma-(np.pi-dynein.fba)
+
+                # bba_old = np.pi - dynein.nba - nma
+                # uba_old = np.pi - dynein.fba - fma
+                # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
+                # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                        bba = nma-(np.pi-dynein.nba)
-                        uba = fma-(np.pi-dynein.fba)
-
-                        # bba_old = np.pi - dynein.nba - nma
-                        # uba_old = np.pi - dynein.fba - fma
-                        # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
-                        # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
-
                         run_onebound(dynein.nba,
-                                     bba,
-                                     uba,
+                                     bma,
+                                     uma,
                                      dynein.fba)
                 if np.random.random() < prob_leading:
-                        bba = fma-(np.pi-dynein.fba)
-                        uba = nma-(np.pi-dynein.nba)
-
-                        # bba_old = np.pi - dynein.fba - fma
-                        # uba_old = np.pi - dynein.nba - nma
-                        # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
-                        # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
-
                         run_onebound(dynein.fba,
-                                     bba,
-                                     uba,
+                                     bma,
+                                     uma,
                                     dynein.nba)
 
-print("rate_unbinding_leading: ", rate_unbinding_leading)
-print("rate_unbinding_trailing: ", rate_unbinding_trailing)
-print('max_rate_trailing', max_rate_trailing)
-print('max_rate_leading', max_rate_leading)
+# print("rate_unbinding_leading: ", rate_unbinding_leading)
+# print("rate_unbinding_trailing: ", rate_unbinding_trailing)
+# print('max_rate_trailing', max_rate_trailing)
+# print('max_rate_leading', max_rate_leading)
 
 tx = r_tx/Z          # Tail x array
 ty = r_ty/Z          # Tail y array
@@ -160,13 +150,4 @@ print("Avg fmx:", fmx)
 print("Avg fbx:", fbx)
 print("Avg E:", E_avg_arr)
 
-# plt.title("Unbinding Rates")
-# plt.hist(pt, bins = 100, ec = 'black')
-# plt.xlabel("Unbinding Rates")
-# plt.show()
-
-# plt.title("Unbinding Rates")
-# plt.hist(pl, bins = 100, ec = 'black')
-# plt.xlabel("Unbinding Rates")
-# plt.show()
 
