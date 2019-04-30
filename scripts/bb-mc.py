@@ -130,6 +130,7 @@ while Z < N:
                                      bma,
                                      uma,
                                     dynein.nba)
+        break;
 
 # print("rate_unbinding_leading: ", rate_unbinding_leading)
 # print("rate_unbinding_trailing: ", rate_unbinding_trailing)
