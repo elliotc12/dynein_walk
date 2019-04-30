@@ -190,10 +190,15 @@ Now that I have established some facts about motor proteins as well as specifics
 		Now we have everything we need in order to repeat the process for the one bound state. Differentiating these equations will give us explicit formulas for the time derivative of the coordinates of each domain which we can then compare to the forces acting on each domain via the Brownian motion equation. Fortunately, the effort was well spent as we've reduced (3.14) to a system of six equation with 6 unknowns (one angle and one Lagrange multiplier for each \textit{moving} domain). 
 		 
 	\section{Binding and Unbinding}
-	To keep the simulation simple, we have chosen a very physically reasonable and uncomplicated binding model with a minimum amount of assumptions. The two key processes, binding and unbinding, are controlled by two parameters called the binding rates. For binding, we simply assume that a binding event occurs when a binding domain is close enough to the microtubule. In other words
+	To keep the simulation simple, we have chosen a very physically reasonable and uncomplicated binding model with a minimum amount of assumptions. The two key processes, binding and unbinding, are controlled by two parameters called the binding rates. For binding, we simply assume that a binding event occurs at a certain rate whenever a binding domain is close enough to the microtubule. That is, 
+	
 	\begin{equation}
-		\rho_{b} = k_b
+	\begin{cases}
+		\rho_{b} = k_b; & y_b < \varepsilon \\ 
+		\rho_{b} = 0; & y_b > \varepsilon
+	\end{cases}
 	\end{equation}
+	
 	where $\rho_b$ is a probability per second and $k_b$ is a constant. \\
 	
 	Recently there has been evidence to show that dynein's step length depends on the tension applied at the linker between the two motor domains (e.g. the tail).\cite{cleary2014tension} This tension is high when the motor domains are far apart and small when they are together as illustrated in the following figure. \\
