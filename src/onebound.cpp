@@ -19,8 +19,9 @@
 
 void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba){
   for(int i=1; i<argc; i++){
-    printf("%s ", argv[i]);
+    fprintf(stderr, "%s ", argv[i]);
   }
+  fprintf(stderr, "\n");
   assert(argc==22);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
@@ -84,6 +85,8 @@ int main(int argc, char** argv) {
   long long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
+  fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
+  fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
   while(stillStepping){
 
@@ -92,12 +95,13 @@ int main(int argc, char** argv) {
     cumulative_prob += binding_prob;
 
     // fprintf(stderr, "The time is %g\n", t);
-    if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
-                                  binding_prob, t, dynein->get_uba(), cumulative_prob);
+    // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
+    //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
-    if (rand->rand() < binding_prob) {
+    if (binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
-      fprintf(stderr, "I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
+      // fprintf(stderr, "I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
+      printf("{\n  'L': %g,\n  't': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t);
       exit(0);
     } else {
       t += dt; // iterate time
@@ -107,16 +111,12 @@ int main(int argc, char** argv) {
       double old_bma = dynein->get_bma();
       double old_uba = dynein->get_uba();
       double old_uma = dynein->get_uma();
-      if (binding_prob > 0 && rand->rand() < binding_prob) {
-        fprintf(stderr, "binding domain at %g %g\n", dynein->get_ubx(), dynein->get_uby());
-        printf("all done\n");
-        exit(0);
-      }
-      fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
+      // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
 
 
       bool accept_step = false;
       while(!accept_step){
+        // fprintf(stderr, "I am crazy %g %g\n", dynein->get_ubx(), dynein->get_uby());
         dynein->set_bba(old_bba);
         dynein->set_bma(old_bma);
         dynein->set_uba(old_uba);

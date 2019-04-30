@@ -44,7 +44,7 @@ if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
 seed = 0 # FIXME CHANGE
-np.random.seed(0) # FIXME CHANGE
+# np.random.seed(0) # FIXME CHANGE
 
 def run_onebound(bba, bma, uma, uba):
         print("abbout to run onebound...\n\n")
@@ -70,9 +70,11 @@ def run_onebound(bba, bma, uma, uba):
         ], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
-        print('onebound for a step (which kind?) gives:\n%s' % output.decode('utf-8'))
+        output_data = eval(output.decode('utf-8'))
+        # print('onebound for a step (which kind?) gives:\n%s\nEND OUTPUT' % output.decode('utf-8'))
+        # print('data', output_data)
         assert(exit_code == 0);
-        return 'FIXME: This should be real output'
+        return output_data
 
 while Z < N:
         # Making random motor angles
@@ -112,8 +114,8 @@ while Z < N:
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
 
-                bma = nma-(np.pi-dynein.nba)
-                uma = fma-(np.pi-dynein.fba)
+                new_nma = nma-(np.pi-dynein.nba)
+                new_fma = fma-(np.pi-dynein.fba)
 
                 # bba_old = np.pi - dynein.nba - nma
                 # uba_old = np.pi - dynein.fba - fma
@@ -121,16 +123,28 @@ while Z < N:
                 # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                        run_onebound(dynein.nba,
-                                     bma,
-                                     uma,
-                                     dynein.fba)
+                        print('\n\ntrailing',dynein.nba,
+                                            new_nma,
+                                            new_fma,
+                                            dynein.fba)
+                        print('positoins', dynein.r_nb[0], dynein.r_nb[1])
+                        print('positoins', dynein.r_fb[0], dynein.r_fb[1])
+                        step = run_onebound(dynein.nba,
+                                            new_nma,
+                                            new_fma,
+                                            dynein.fba)
+                        print('trailing stepped with final displacement %g after time %g' % (step['L'], step['t']))
                 if np.random.random() < prob_leading:
-                        run_onebound(dynein.fba,
-                                     bma,
-                                     uma,
-                                    dynein.nba)
-        break;
+                        print('\n\nleading', dynein.fba, new_fma,
+                                            new_nma,
+                                            dynein.nba)
+                        print('positoins', dynein.r_nb[0], dynein.r_nb[1])
+                        print('positoins', dynein.r_fb[0], dynein.r_fb[1])
+                        step = run_onebound(dynein.fba,
+                                            new_fma,
+                                            new_nma,
+                                            dynein.nba)
+                        print('leading stepped with final displacement %g after time %g' % (step['L'], step['t']))
 
 # print("rate_unbinding_leading: ", rate_unbinding_leading)
 # print("rate_unbinding_trailing: ", rate_unbinding_trailing)
