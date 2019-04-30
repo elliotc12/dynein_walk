@@ -379,14 +379,14 @@ def make_behavior_plot(args, stepping_data, up_data):
 
     # OB time histogram
     if len(stepping_data["step_times"]) > 0:
-        ax2.hist(stepping_data["onebound_times"], bins=np.logspace(np.log10(1e-9),np.log10(1e-3), 50))
+        ax2.hist(stepping_data["onebound_times"], bins=np.linspace(0,0.01, 50))
     else:
         print("Error, no step_times")
         exit(1)
 
     ax2.set_ylabel("Frequency")
     ax2.set_xlabel("Onebound time (s)")
-    ax2.set_xscale('log')
+    ax2.set_xlim(0, 0.008)
 
     ob_theory_avg = 5.2e-4
     ax2.axvline(ob_theory_avg, color='red', linestyle='dashed', linewidth=1)
@@ -395,14 +395,14 @@ def make_behavior_plot(args, stepping_data, up_data):
 
     # BB (dwell) time histogram
     if len(stepping_data["step_times"]) > 0:
-        ax3.hist(stepping_data["bothbound_times"], bins=np.logspace(np.log10(1e-6),np.log10(1e-0), 50))
+        ax3.hist(stepping_data["bothbound_times"], bins=np.linspace(0,0.15, 50))
 
     bb_theory_avg = 6.4e-2
     ax3.axvline(bb_theory_avg, color='red', linestyle='dashed', linewidth=1)
     plt.setp([ax3.get_yticklabels()], visible=False)
     ax3.tick_params(axis='y', which="both", left=False, right=False, labelbottom=False)
     ax3.set_xlabel("Bothbound time (s)")
-    ax3.set_xscale('log')
+    ax3.set_xlim(0, 0.15)
 
     ax3.spines["top"].set_visible(False)
     ax3.spines["right"].set_visible(False)
