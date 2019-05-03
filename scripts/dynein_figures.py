@@ -10,8 +10,7 @@ import bb_energy_distribution
 
 params = importlib.import_module("params")
 
-rate_unbinding_leading = []                        # Leading (Far) Unbinding Rates
-rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
+prob = []
 
 angles = [[] for i in range(2)]
 
@@ -19,10 +18,15 @@ C =  params.for_simulation['exp-unbinding-constant']         # exponential bindi
 
 
 L = 24         # Length
+b = 1
+
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
 
 x = 0
 while x < 9:
-# Making random motor angles
+        # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
         fma = np.random.uniform(0, 2*np.pi)
 
@@ -35,6 +39,23 @@ while x < 9:
                 angles[0].append(nma)
                 angles[1].append(fma)
                 x = x + 1
+
+                # Calculating partition function
+                P = np.exp(-b*dynein.E_total)
+
+                rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
+                rate_leading = np.exp(C*(dynein.fba - eqb_angle))
+
+                prob_trailing = P*rate_trailing
+                prob_leading = P*rate_leading
+
+                print("prob_leading: ", prob_leading)
+                print("prob_trailing: ", prob_trailing)
+
+                if prob_trailing > prob_leading:
+                    prob.append(prob_trailing)
+                else:
+                    prob.append(prob_leading)
 
 
 def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
@@ -142,4 +163,4 @@ NMA, FMA = np.meshgrid(nma1, fma1)
 dynein_24 = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L=24)
 plot_bb_energy_distribution(dynein_24, dynein1, dynein2, dynein3, dynein4, dynein5, dynein6, dynein7, dynein8, dynein9)
 
-plt.show()
+# plt.show()
