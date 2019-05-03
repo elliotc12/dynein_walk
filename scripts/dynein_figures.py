@@ -36,6 +36,7 @@ while x < 9:
                 angles[1].append(fma)
                 x = x + 1
 
+
 def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
     """Plot the energy distribution for the both bound configuration given an
     array of motor angles and an initial displacement.
@@ -49,7 +50,7 @@ def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
     contour = ax1.contour(self.nma, self.fma, self.E_total, np.arange(1, 30, 1), colors='w', linewidth=10)
     ax1.set_xlabel(r'$\theta_{nm}$')
     ax1.set_ylabel(r'$\theta_{fm}$')
-    ax1.set_title('Total Energy distribution for L={0}'.format(self.L))
+    ax1.set_title('Total Energy Distribution for L={0}'.format(self.L))
     ax1.set_xlim(0-0.1, 2*np.pi+0.1)
     ax1.set_ylim(0-0.1, 2*np.pi+0.1)
     cb = plt.colorbar(energyPlot)
@@ -83,7 +84,8 @@ def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
                     self.r_fb[1,i_min, j_min]]
 
 
-    ax2.plot(x_coords_min, y_coords_min, color='black', label="min")
+    ax2.plot(x_coords_min, y_coords_min, color='black', label='Minimum Energy', linewidth=3)
+    ax2.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
     ax2.axis('off')
     ax2.axis('equal')
     ax2.legend()
@@ -107,7 +109,8 @@ def plot_bb_figures(self, dynein_color):
                     self.r_fm[1],
                     self.r_fb[1]]
 
-    ax.plot(x_coords, y_coords, color= dynein_color, label='dynein')
+    ax.plot(x_coords, y_coords, color= dynein_color, linewidth=3)
+    ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
     ax.axis('off')
     ax.axis('equal')
     ax.legend()
