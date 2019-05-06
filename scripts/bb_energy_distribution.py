@@ -17,9 +17,14 @@ def spring_energy(theta, theta_eq, c): #domain angle, equilibrium angle, spring 
         theta_eq = theta_eq*np.pi/180
     return 0.5*c*(theta-theta_eq)**2
 
-
-
-
+def unbinding_rate(expconst, theta, theta_eq):
+    """
+    Calculate unbinding rates for Jins poster
+    """
+    if eq_in_degrees == True:
+        theta_eq = theta_eq*np.pi/180
+    return np.exp(expconst*(theta-theta_eq))
+    
 
 
 
@@ -82,6 +87,18 @@ class DyneinBothBound:
 
         # Hokey trick to make result a nan if y coordinates are negative
         self.E_total += 0*np.sqrt(self.r_nm[1]) + 0*np.sqrt(self.r_fm[1]) + 0*np.sqrt(self.r_t[1])
+
+        # added unbinding prob. for Jin's poster
+        self.P = np.exp(-self.E_total)
+        self.rate_trailing = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
+        self.rate_leading = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
+        self.prob_trailing = self.P*self.rate_trailing
+        self.prob_leading = self.P*self.rate_leading
+        # self.prob = []
+        # if self.prob_trailing > self.prob_leading:
+        #     self.prob.append(self.prob_trailing)
+        # else:
+        #     self.prob.append(self.prob_leading)
 
     def find_energy_extrema(self):
         """

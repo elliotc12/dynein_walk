@@ -67,16 +67,16 @@ def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
 
     # make contourf graph
     ax1 = fig.add_subplot(1, 2, 1)
-    energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, 100)
-    contour = ax1.contour(self.nma, self.fma, self.E_total, np.arange(1, 30, 1), colors='w', linewidth=10)
+    ProbabilityPlot = ax1.contourf(self.nma, self.fma, self.prob_trailing, 100)
+    contour = ax1.contour(self.nma, self.fma, self.E_total, np.arange(1, 10, 1), colors='w', linewidth=10)
     ax1.set_xlabel(r'$\theta_{nm}$')
     ax1.set_ylabel(r'$\theta_{fm}$')
-    ax1.set_title('Total Energy Distribution for L={0}'.format(self.L))
+    ax1.set_title('Trailing Unbinding Porbability Distribution for L={0}'.format(self.L))
     ax1.set_xlim(0-0.1, 2*np.pi+0.1)
     ax1.set_ylim(0-0.1, 2*np.pi+0.1)
-    cb = plt.colorbar(energyPlot)
-    cb.set_label(r"Energy [$k_BT$]")
-    cb.set_ticks(np.arange(0, 31, 5))
+    cb = plt.colorbar(ProbabilityPlot)
+    cb.set_label(r"Probability")
+    cb.set_ticks(np.arange(0, 10, 500))
     cb.add_lines(contour)
 
     # find the extrema
@@ -146,15 +146,15 @@ dynein7 = bb_energy_distribution.DyneinBothBound(angles[0][6], angles[1][6], par
 dynein8 = bb_energy_distribution.DyneinBothBound(angles[0][7], angles[1][7], params, L)
 dynein9 = bb_energy_distribution.DyneinBothBound(angles[0][8], angles[1][8], params, L)
 
-plot_bb_figures(dynein1, 'red')
-plot_bb_figures(dynein2, 'orange')
-plot_bb_figures(dynein3, 'lime')
-plot_bb_figures(dynein4, 'blue')
-plot_bb_figures(dynein5, 'gray')
-plot_bb_figures(dynein6, 'magenta')
-plot_bb_figures(dynein7, 'green')
-plot_bb_figures(dynein8, 'purple')
-plot_bb_figures(dynein9, 'sienna')
+# plot_bb_figures(dynein1, 'red')
+# plot_bb_figures(dynein2, 'orange')
+# plot_bb_figures(dynein3, 'lime')
+# plot_bb_figures(dynein4, 'blue')
+# plot_bb_figures(dynein5, 'gray')
+# plot_bb_figures(dynein6, 'magenta')
+# plot_bb_figures(dynein7, 'green')
+# plot_bb_figures(dynein8, 'purple')
+# plot_bb_figures(dynein9, 'sienna')
 
 num_points = 500
 nma1 = np.linspace(0, 2*np.pi, num_points)
@@ -163,4 +163,4 @@ NMA, FMA = np.meshgrid(nma1, fma1)
 dynein_24 = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L=24)
 plot_bb_energy_distribution(dynein_24, dynein1, dynein2, dynein3, dynein4, dynein5, dynein6, dynein7, dynein8, dynein9)
 
-# plt.show()
+plt.show()
