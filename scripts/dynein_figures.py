@@ -24,6 +24,7 @@ eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
+max_P = 0.1
 x = 0
 while x < 9:
         # Making random motor angles
@@ -36,18 +37,25 @@ while x < 9:
         if np.isnan(dynein.E_total) == True:
                 continue
         else:
-                angles[0].append(nma)
-                angles[1].append(fma)
-                x = x + 1
-
                 # Calculating partition function
                 P = np.exp(-b*dynein.E_total)
+                if P > max_P:
+                        max_P = P
+                        x = 0
+                        angles[0] = []
+                        angles[1] = []
+                P = P/max_P
 
                 rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                 rate_leading = np.exp(C*(dynein.fba - eqb_angle))
 
                 prob_trailing = P*rate_trailing
                 prob_leading = P*rate_leading
+
+                if np.random.random() < P:
+                        angles[0].append(nma)
+                        angles[1].append(fma)
+                        x = x + 1
 
                 print("prob_leading: ", prob_leading)
                 print("prob_trailing: ", prob_trailing)
@@ -170,4 +178,4 @@ dynein_24 = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L=24)
 plot_bb_energy_distribution(dynein_24, dynein1, dynein2, dynein3, dynein4, dynein5, dynein6, dynein7, dynein8, dynein9)
 
 
-# plt.show()
+plt.show()
