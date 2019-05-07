@@ -63,15 +63,15 @@ def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
     array of motor angles and an initial displacement.
     """
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(4,3))
 
     # make contourf graph
-    ax1 = fig.add_subplot(1, 2, 1)
+    ax1 = fig.add_subplot(1, 1, 1)
     ProbabilityPlot = ax1.contourf(self.nma, self.fma, self.prob_trailing, 100)
     contour = ax1.contour(self.nma, self.fma, self.prob_trailing, np.linspace(0, 1.25, 6), colors='w', linewidth=10)
-    ax1.set_xlabel(r'$\theta_{nm}$', fontsize=60)
-    ax1.set_ylabel(r'$\theta_{fm}$', fontsize=60)
-    ax1.set_title('Unbinding Porbability Distribution', fontsize=43)
+    ax1.set_xlabel(r'$\theta_{nm}$')#, fontsize=60)
+    ax1.set_ylabel(r'$\theta_{fm}$')#, fontsize=60)
+    ax1.set_title('Unbinding Porbability Distribution')#, fontsize=43)
     ax1.set_xlim(0-0.1, 2*np.pi+0.1)
     ax1.set_ylim(0-0.1, 2*np.pi+0.1)
     cb = plt.colorbar(ProbabilityPlot)
@@ -81,35 +81,39 @@ def plot_bb_energy_distribution(self, d1, d2, d3, d4, d5, d6, d7, d8, d9):
 
     # find the extrema
     j_max, i_max, j_min, i_min = self.find_energy_extrema()
-    ax1.scatter(self.nma[i_min, j_min], self.fma[i_min, j_min], s = 250, color='black')
-    ax1.scatter(d1.nma, d1.fma, s=400, color='red')
-    ax1.scatter(d2.nma, d2.fma, s=400, color='orange')
-    ax1.scatter(d3.nma, d3.fma, s=400, color='lime')
-    ax1.scatter(d4.nma, d4.fma, s=400, color='blue')
-    ax1.scatter(d5.nma, d5.fma, s=400, color='gray')
-    ax1.scatter(d6.nma, d6.fma, s=400, color='magenta')
-    ax1.scatter(d7.nma, d7.fma, s=400, color='green')
-    ax1.scatter(d8.nma, d8.fma, s=400, color='purple')
-    ax1.scatter(d9.nma, d9.fma, s=400, color='sienna')
+    marker_size = 20
+    # ax1.scatter(self.nma[i_min, j_min], self.fma[i_min, j_min], s = marker_size, color='black')
+    ax1.scatter(d1.nma, d1.fma, s=marker_size, color='red')
+    ax1.scatter(d2.nma, d2.fma, s=marker_size, color='orange')
+    ax1.scatter(d3.nma, d3.fma, s=marker_size, color='lime')
+    ax1.scatter(d4.nma, d4.fma, s=marker_size, color='blue')
+    ax1.scatter(d5.nma, d5.fma, s=marker_size, color='gray')
+    ax1.scatter(d6.nma, d6.fma, s=marker_size, color='magenta')
+    ax1.scatter(d7.nma, d7.fma, s=marker_size, color='green')
+    ax1.scatter(d8.nma, d8.fma, s=marker_size, color='purple')
+    ax1.scatter(d9.nma, d9.fma, s=marker_size, color='sienna')
 
-    ax2 = fig.add_subplot(1, 2, 2)
-    x_coords_min = [self.r_nb[0,i_min, j_min],
-                    self.r_nm[0,i_min, j_min],
-                    self.r_t[0,i_min, j_min],
-                    self.r_fm[0,i_min, j_min],
-                    self.r_fb[0,i_min, j_min]]
-    y_coords_min = [self.r_nb[1,i_min, j_min],
-                    self.r_nm[1,i_min, j_min],
-                    self.r_t[1,i_min, j_min],
-                    self.r_fm[1,i_min, j_min],
-                    self.r_fb[1,i_min, j_min]]
+    ax1.set_aspect('equal')
+    # ax2 = fig.add_subplot(1, 2, 2)
+    # x_coords_min = [self.r_nb[0,i_min, j_min],
+    #                 self.r_nm[0,i_min, j_min],
+    #                 self.r_t[0,i_min, j_min],
+    #                 self.r_fm[0,i_min, j_min],
+    #                 self.r_fb[0,i_min, j_min]]
+    # y_coords_min = [self.r_nb[1,i_min, j_min],
+    #                 self.r_nm[1,i_min, j_min],
+    #                 self.r_t[1,i_min, j_min],
+    #                 self.r_fm[1,i_min, j_min],
+    #                 self.r_fb[1,i_min, j_min]]
 
 
-    ax2.plot(x_coords_min, y_coords_min, color='black', label='Minimum Energy', linewidth=3)
-    ax2.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
-    ax2.axis('off')
-    ax2.axis('equal')
-    ax2.legend()
+    # ax2.plot(x_coords_min, y_coords_min, color='black', label='Minimum Energy', linewidth=3)
+    # ax2.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
+    # ax2.axis('off')
+    # ax2.axis('equal')
+    # ax2.legend()
+    plt.savefig('../papers/jin-poster/poster-probability-plot.svg', transparent=True)
+    plt.savefig('../papers/jin-poster/poster-probability-plot.png', transparent=True)
 
 
 def plot_bb_figures(self, dynein_color):
@@ -135,6 +139,8 @@ def plot_bb_figures(self, dynein_color):
     ax.axis('off')
     ax.axis('equal')
     ax.legend()
+    plt.savefig('../papers/jin-poster/poster-stick-figure-{}.svg'.format(dynein_color), transparent=True)
+    plt.savefig('../papers/jin-poster/poster-stick-figure-{}.png'.format(dynein_color), transparent=True)
 
 dynein1 = bb_energy_distribution.DyneinBothBound(angles[0][0], angles[1][0], params, L)
 dynein2 = bb_energy_distribution.DyneinBothBound(angles[0][1], angles[1][1], params, L)
@@ -164,4 +170,4 @@ dynein_24 = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L=24)
 plot_bb_energy_distribution(dynein_24, dynein1, dynein2, dynein3, dynein4, dynein5, dynein6, dynein7, dynein8, dynein9)
 
 
-plt.show()
+# plt.show()

@@ -51,9 +51,18 @@ class DyneinBothBound:
         self.fa = np.pi-np.arccos((self.Lf**2+self.L**2-self.Ln**2)/(2*self.Lf*self.L))
 
         # calculate small triangle angles
-        I think there may be a bug here, since we may assume here that the triangle is on one side of the thingy
         self.nsa = np.arccos((self.Ln**2+self.Ls**2-self.Lt**2)/(2*self.Ln*self.Ls))
+        if isinstance(nma, np.ndarray):
+            self.nsa[nma > np.pi] *= -1
+        else:
+            if nma > np.pi:
+                self.nsa = -self.nsa
         self.fsa = np.arccos((self.Lf**2+self.Ls**2-self.Lt**2)/(2*self.Lf*self.Ls))
+        if isinstance(fma, np.ndarray):
+            self.fsa[fma > np.pi] *= -1
+        else:
+            if fma > np.pi:
+                self.fsa = -self.fsa
 
         # calculate binding domain angles
         self.nba = self.na-self.nsa
