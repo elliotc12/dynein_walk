@@ -1,7 +1,7 @@
 \documentclass[12pt]{report}
 \usepackage{graphicx} % make it easy to load in images
 \graphicspath{{./images/},{../../../plots/}} % where to find images
-\usepackage[a4paper, margin=1in]{geometry} % change margins 
+\usepackage[letterpaper, margin=1in]{geometry} % change margins 
 \usepackage{fancyhdr} % add a header / footer 
 \pagestyle{fancy}
 
@@ -26,33 +26,38 @@
 \usepackage[labelfont=bf]{caption}
 
 
+
+
 \title{
-	{Simulating the Brownian Dynamics of a Two-dimensional Model for the Dynein Motor Protein}\vspace{1.5em}\\
+	\large{Drunken Walking: A Novel Brownian Dynamics Simulation for the Mechanochemical Cycle of the Dynein Motor Protein}\vspace{1.5em}\\
+	\normalsize{by}\\
+	\large{John Waczak} \vspace{2em}\\ 
+	\normalsize{an undergraduate thesis advised by David Roundy submitted to \\ 
+		Department of Physics, Oregon State University}\vspace{2em}\\
+	\normalsize{in partial fulfillment of the requirements for the degree of}\\
+	\normalsize{Baccalaureate of Science in Physics}\vspace{1.5 em}\\
+	\normalsize{Submitted \today}\vspace{3em}\\
 	\includegraphics[width=0.5\columnwidth]{OSU_logo.png}\vspace{0.5em}\\
-	\large{Oregon State University}
 }
-\author{John Waczak}
-\date{\today} 
+\date{}
 
 \begin{document}
 	\onehalfspacing
 	
 	\maketitle
-	\todo[inline]{TODO: Fix formatting of title page}
 	\chapter*{Abstract}
-	\vspace{-3 em}word count: \textbf{345}\\
+	\vspace{-3 em}word count: \textbf{282}\\
 	
-	The dynein molecule is a peculiar motor protein recognized for its odd stepping behavior. Sometimes it steps forwards. Other times it steps backwards. It has even been observed to occasionally shuffle by beginning a step with the same domain many times in row. These unique motions make dynein an interesting object of study, but its status as one of a select few minus-end directed motors makes understanding the mechanics of dynein’s motion vital to our understanding of the cell. When these motors misbehave, fundamental processes like axonal transport and muscle contraction fail. Observational techniques for studying biomolecules have revealed much about the different conformational states achieved by dynein during its stepping cycle and have established a base of relevant statistics such step lengths, velocities, and generated forces among others. Despite these advancements, the ability to image the full molecule for an entire stepping cycle remains beyond the capabilities of the current experimental apparatus. 
+	The dynein molecule is a peculiar motor protein recognized for its odd stepping behavior. Sometimes it steps forwards. Other times it steps backwards. It has even been observed to occasionally shuffle by beginning a step with the same domain many times in row. These unique motions make dynein an interesting object of study, but its status as one of a select few minus-end directed motors makes understanding the mechanics of dynein’s motion vital to our understanding of the cell. When these motors misbehave, fundamental processes like axonal transport and muscle contraction fail. Experimental techniques for studying biomolecules have revealed much about the different conformational states achieved by dynein during its stepping cycle and have established a base of relevant statistics such step lengths, velocities, and generated forces among others. Despite these advancements, the ability to image the full molecule for an entire stepping cycle remains beyond current experimental capabilities. 
 	
-	To address this gap, we have developed a simplified, two-dimensional model for the dynein molecule. We treat the protein as a system of massive domains held together by rigid rods steered towards equilibrium configurations by spring like torques and time evolved using Brownian dynamics. With our current set of parameters, the model displays directed motion with step length and velocity distributions ( give statistics here ) in agreement with experiment. Our simulations also suggest that there is no correlation between the conformation of dynein before and after a step. Our results indicate that a more computationally efficient simulation can be achieved with a two state system where a post power stroke state is selected from a distribution via a Monte Carlo simulation and binding is then simulated with the full Brownian dynamics. We are optimistic that our simulations will be able to address the power stroke versus winch model debate. 
+	To address this gap, we have developed a simplified, two-dimensional model for the dynein molecule. We treat the protein as a system of massive domains held together by rigid rods steered towards equilibrium configurations by spring like torques and time evolved using Brownian dynamics. With our current set of parameters, the model displays directed motion with step length and velocity distributions in agreement with experiment. Our simulations also suggest that there is no correlation between the conformation of dynein before and after it takes a step. Our results indicate that a more computationally efficient simulation can be achieved with a two state system where a post power stroke state is selected from a distribution via a Monte Carlo simulation and binding is then simulated with the full Brownian dynamics. 
 	
-	\todo[inline]{TODO: Add in specific data to results}
-	\todo[inline]{TODO: Fix formatting to include "a thesis submitted in completion of..." etc.}
-	
-	\chapter*{Acknowledgments}
-	I want to thank ...
-	
+
+
 	\tableofcontents
+	\listoffigures
+	%\listoftables
+	
 	
 	\chapter{Introduction}
 	\input{./chapters/introduction}
@@ -64,6 +69,8 @@
 	\input{./chapters/methods}
 	\chapter{Results \& Discussion}
 	\input{./chapters/results}
+	\chapter{Conclusion}
+	\input{./chapters/conclusion}
 \bibliography{references}
 \bibliographystyle{plain}
 \end{document}

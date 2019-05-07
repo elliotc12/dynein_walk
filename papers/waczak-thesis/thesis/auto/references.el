@@ -1,0 +1,32 @@
+(TeX-add-style-hook
+ "references"
+ (lambda ()
+   (LaTeX-add-bibitems
+    "alberts2002molecular"
+    "cianfrocco2015mechanism"
+    "cleary2014tension"
+    "puls2003mutant"
+    "johnson1983structure"
+    "bead-spring-model"
+    "berk2000molecular"
+    "chretien1996determination"
+    "kinoshita2018step"
+    "tsygankov_kinetic_2009"
+    "liao1998kinesin"
+    "singh2005monte"
+    "hendricks2012dynein"
+    "ori2010cytoplasmic"
+    "heidemann1980visualization"
+    "hirokawa2003biochemical"
+    "qiu2012dynein"
+    "capek_simulating_nodate"
+    "goldman2009drunk"
+    "downing1998tubulin"
+    "philips__nodate"
+    "boillee2006disease"
+    "hunyadi2007microtubule"
+    "cytoskeleton"
+    "burgess2003dynein"
+    "lin2014structural"))
+ :bibtex)
+
