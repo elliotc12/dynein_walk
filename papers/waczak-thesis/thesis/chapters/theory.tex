@@ -1,4 +1,4 @@
-Now that I have established some facts about motor proteins as well as specifics about dynein's many odd behaviors, we may begin our discussion of how to construct and test a physical model for its motion. First, we note that dynein's large mass of roughly 2MDa \cite{johnson1983structure} as compared to similar motor proteins such as Kinesin (a few hundred kDa) \cite{liao1998kinesin} amplifies the effect of interactions with the  aqueous environment of the cell. This results in a much more significant drag force as well as a random element from water molecule collisions that changes the overall dynamics of the system. The set of equations governing this motion is called Brownian dynamics and is what we use to simulate the trajectory of dynein along the microtubule. 
+Having established some facts about motor proteins as well as specifics about dynein's many odd behaviors, we may begin our discussion of how to construct and test a physical model for its motion. First, we note that dynein's large cross section and mass (roughly 2 MDa) \cite{johnson1983structure} as compared to similar motor proteins such as Kinesin (a few hundred kDa) \cite{liao1998kinesin} amplifies the effect of interactions with the  aqueous environment of the cell. This results in a much more significant drag force as well as a random element from water molecule collisions that changes the overall dynamics of the system. The set of equations governing this motion is called Brownian dynamics and is what we use to simulate the trajectory of dynein along the microtubule. 
 	\section{Brownian dynamics}
 	To model dynein we treat its various domains (binding, motor, and tail) as spheres held together by massless rigid-rods. In general, the dynamics of a constant mass particle are governed by Newton's second law
 	\begin{equation}
@@ -32,7 +32,7 @@ Now that I have established some facts about motor proteins as well as specifics
 	\begin{figure}[hbt!]
 		\centering
 		\includegraphics[angle=-90, width=0.6\columnwidth]{torque_angles}
-		\caption{Example of dynein in the one bound configuration with torque angles $\{\varphi_i\}$ shown.}
+		\caption[One bound state]{Example of dynein in the one bound configuration with torque angles $\{\varphi_i\}$ shown.}
 		\label{fig:torque angles}
 	\end{figure}
 	
@@ -44,45 +44,49 @@ Now that I have established some facts about motor proteins as well as specifics
 	\begin{equation}
 		U_i = \frac{1}{2}c_i(\varphi_i-\varphi_{i,\text{eq}})^2
 	\end{equation} 
-	Bead-and-spring models such as this are common in molecular dynamics simulations as a way to model the interactions of high weight molecules.\cite{bead-spring-model}. 
+	Bead-and-spring models such as this are common in molecular dynamics simulations as a way to model the interactions of the components of large molecules.\cite{bead-spring-model}. 
 	
 	
-	Real dynein is composed of a pair of identical heavy chains. Therefore, our angle convention is chosen starting at the $0^{th}$ domain in figure \ref{fig:torque angles}. The same convention is then repeated for the second leg with the following correspondence 
+	Real dynein is composed of a pair of identical heavy chain legs. Therefore, our angle convention is chosen starting at the $0^{th}$ domain in figure \ref{fig:torque angles}. The same convention is then repeated for the second leg with the following correspondences as the two legs are identical. 
 	\begin{align}
-		\varphi_{0,eq} &\longleftrightarrow \varphi_{4,eq} \\ 
-		\varphi_{1,eq} &\longleftrightarrow \varphi_{3,eq}
+		\varphi_{0,eq} = \varphi_{4,eq} \\ 
+		\varphi_{1,eq} = \varphi_{3,eq}
 	\end{align}
-	where the angles $\{\varphi_{i, \text{eq}}\}$ are the preferred angles of the system as illustrated in figure \ref{fig:torque angles}. The torques on each domain are related to forces by 
+	where the angles $\{\varphi_{i, \text{eq}}\}$ are the preferred angles of the system as illustrated in figure \ref{fig:torque angles}.\\
+	
+	 The torques on each domain are related to forces by 
 	\begin{equation}
 		\mathbf{\Gamma} = \mathbf{r}\times\mathbf{F}
 	\end{equation}
-	so that knowing the distance between each domains means that we have specified each of the $\mathbf{\Gamma}_i$ and $\mathbf{r}_i$. In order to dynamically move each domain we must invert equation 4.10 to determine $\mathbf{F}_i$, however there is no unique way to invert such a cross product. Therefore, we must specify an algorithm for determining the forces that result from each torque. 
+	so that knowing the distance between each domains means that we have specified each of the $\mathbf{\Gamma}_i$ and $\mathbf{r}_i$. In order to dynamically move each domain, we must invert equation 3.10 to determine $\mathbf{F}_i$. However, there is no unique way to invert such a cross product. We must specify an algorithm for determining the forces that result from the torque on each domain. 
 	
 	\section{Calculating Forces and Torques}
-	However we decide to choose the forces on each domain, we would like them to satisfy  conservation angular momentum as this condition serves to keep the energy of the structure in check (add some stuff here) \todo[inline]{TODO: double check for other conditions on torques with David}
+	We would like our choice of forces to satisfy momentum conservation (linear and angular) as this condition is a physical requirement and serves to keep the energy of the structure in check across long simulations. Physically, this also imposes a requirement that no spring can move the entire molecule. To that end we must specify the spring forces for three cases: a motor domain, a tail domain, and an unbound binding domain. Having decided upon an algorithm for determining these forces, we can also calculate the force on a bound binding domain (attached to the microtubule) to estimate the maximum possible strain before unbinding occurs. This may prove interesting for future work but currently we do calculate these forces as a bound binding domain is static and therefore does not change its position while bound. \\ 
 	
-	Ultimately, we must specify the forces for three cases: a motor domain, and a tail domain, and the unbound binding domain. Having decided upon an algorithm for determining these forces, we could also calculate the force on a bound binding domain (attached to the microtubule) in order to estimate the maximum possible strain before unbinding occurs. This may prove interesting for future work but currently we do not care to calculate these forces as a bound binding domain is static and therefore, we do not need to evolve it's position. 
+	To help us devise a reasonable method for applying the forces due to each torque, consider a small portion of dynein consisting of only three domains under the influence of \textbf{no} external forces. \\
 	
 	\begin{figure}[!hbt]
 		\centering
-		\includegraphics[angle =-90, width=0.65\columnwidth]{torque_forces.pdf}
-		\caption{Toy model for three arbitrary domains. The force applied to adjacent domains due to the torque on the $i^{th}$ domain is shown. Forces are chosen to be perpendicular the inter-domain separation and in the direction that would move $\varphi_i$ towards its equilibrium configuration.}
+		\includegraphics[angle =-90, width=0.475\columnwidth]{torque_forces.pdf}
+		\caption[Torque related forces]{Toy model for three arbitrary domains. The force applied on each domain due to the torque on the $i^{th}$ domain is shown. Forces are chosen to be perpendicular the inter-domain separation and in the direction that would move $\varphi_i$ towards its equilibrium configuration. Equal and opposite forces are applied to the $i^{th}$.}
 		\label{fig:torque_force}
 	\end{figure}
 	
-	Figure \ref{fig:torque_force} illustrates how the force on the motor domain due to the torque on the binding domain is chosen. In general, equation (3.10) suggests we should pick the magnitude of the force on the $i^{th}$ domain due to the torque on the $j=i\pm1$ domains to be
+	 Figure \ref{fig:torque_force} illustrates how the torque related forces on the $i^{th}$ domain and its two neighbors can be determined in this scenario. In general, equation (3.10) suggests we should pick the magnitude of the force on the $i^{th}$ domain due to the torque on the $j=i\pm1$ domains to be
 	\begin{equation}
-		F_{ij} = \Gamma_j / \ell_{ij}
+		F_{ij} \propto \Gamma_j / \ell_{ij}
 	\end{equation}
-	where $\ell_{ij}$ is the distance between the $i$ and $j$ domains. We then make the choice to apply the force perpendicular to the inter-domain separation and in the direction of the equilibrium angle. Making this choice makes it clear that angular momentum will be conserved for the case where $\ell_{i\;i-1}=\ell_{i\;i+1}$. Finally to simplify computational complexity, we transform these two forces into forces on the $i^{th}$ domain by instead applying an equal and opposite force to each $\mathbf{F}_{ij}$ on the $i^{th}$ domain. 
+	where $\ell_{ij}$ is the distance between the $i$ and $j$ domains. To make our lives easier, we can make the choice to apply the force perpendicular to the interdomain separation and in the direction of the equilibrium angle so that (3.11) is really an equality. If the $i^{th}$ domain were fixed in space, then we would be done. However, it is also free to move which means we should expect a force on it as well. We define the force on the $i^{th}$ domain to be the sum of the equal-and-opposite forces to the $i+1$ and $i-1$ domains. This results in the following properties
+	\begin{equation}
+		\sum\limits_{j=i-1}^{i+1}\mathbf{F}_j=0 \qquad\qquad \sum\limits_{j=i-1}^{i+1}\mathbf{\Gamma}_j = 0
+	\end{equation}
+	which indicate that the center of mass does not move (linear momentum conservation) and that angular momentum is conserved in the case of equal masses and equal distances (as desired). With this algorithm, we can loop through each domain and calculate the torque-related forces. For binding domains, there is only one neighboring domain to consider. 
+
 	
-	With this algorithm, we can loop through each domain and calculate the torque-related forces on each domain. For binding domains, there is only one adjacent domain to consider. 
-	\todo[inline]{TODO: add another figure or update above to indicate the equal-and-opposite forces that are actually kept. It may look nice to turn force arrows into dotted arrow and then add the force on the $i^{th}$ domain with a solid line} 
-	
-	We are now armed with a way to calculate the forces on each domain due to the restorative torque. The only force which we are unable to calculate directly is the force due to tension. We will deal with these forces by applying the method Lagrange multipliers as we solve for the equations of motion. 
+	We are now armed with a way to calculate the forces on each domain due to the restorative torque. The only force which we are unable to calculate directly is the force due to tension. We will deal with this force via the method Lagrange multipliers as we solve for the equations of motion. 
 	
 	\section{Equations of Motion}
-	The dynamics of each domain are determined by equation 3.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the one bound state and the both bound state with the idea being that they directly correspond to the pre and post-stroke states defined by the mechanochemical cycle of \cite{cianfrocco2015mechanism}.  
+	The dynamics of each domain are determined by equation 3.5 so that in order to simulate the complicated structure we must solve a system of coupled first order differential equations. In doing so, it is convenient to introduce two states to distinguish between dynein's stepping and when both of its binding domains are attached to the microtubule. We shall refer to these configurations hereafter as the \textbf{one bound state} and the \textbf{both bound state} with the idea being that they directly correspond to the pre and post-stroke states defined by the mechanochemical cycle of \cite{cianfrocco2015mechanism}.  
 	
 	In the one bound state, all but one of the domains are free to diffuse while the last is attached to the microtubule. In the both bound state, both binding domains are attached. This slight difference in geometry between the two scenarios leads to two independent equations motion motion that require careful consideration when transitioning between states. The following sections detail the derivation of these equations of motion for each configuration. 
 	
@@ -91,7 +95,7 @@ Now that I have established some facts about motor proteins as well as specifics
 		\begin{figure}[!hbt]
 			\centering
 			\includegraphics[angle=-90,width=0.8\columnwidth]{onebound}
-			\caption{The dynein model in the one bound state }
+			\caption[One bound angles]{The dynein model in the one bound state }
 			\label{fig:one bound}  
 		\end{figure}
 		
@@ -138,21 +142,18 @@ Now that I have established some facts about motor proteins as well as specifics
 		\end{align}
 		where superscript $x$ and $y$ denote the force components. 
 		
-		\todo[inline]{Double check this calculation with David to make sure I have accounted for the tension terms correctly. For some reason, Elliott uses x's in both the x and y equations... Is this a typo?} 
-		 
 		 At this point, comparing equations 3.13 with 3.14 reveals we have identified 8 nontrivial equations (x and y derivatives; ignoring bound binding domain 0). There are four unknown derivatives $\{\dot\theta_i\}$ and four unknown Lagrange multipliers $\{\lambda_{ij}\}$ which altogether form a linear system which we solve using Mathematica. For a detailed calculation see the appendices. 
 		 
-		 \todo[inline]{TODO: add appendices with full matrix equations} 
 		 
 		\subsection{The both bound state}
-		For the both bound state, we no longer have a notion of bound and unbound domains. We therefore introduce a new notation, near and far, to identify each dimer. This is not purely for convenience of notation, but rather is important for storing data. We will want the ability to calculate the total step length. Doing this requires knowledge of which motor domain initiates the stepping cycle. \\
+		For the both bound state, we no longer have a notion of bound and unbound domains. We therefore introduce a new notation, near and far, to identify each dimer. This is not purely for convenience of notation, but rather is important for storing data. We want the ability to calculate the total step length. Doing this requires knowledge of which motor domain initiates the stepping cycle. \\
 		
-		In this state, both binding domains are attached to the microtubule and therefore, a degree of freedom has been removed from our system. This enables us to simplify the dynamic equations in order to take advantage of the new, constrained geometry. To that end, we define a new coordinate system as shown in the following figure. 
+		In the both bound state, both binding domains are attached to the microtubule and therefore, some degrees of freedom have been removed from our system. This enables us to simplify the dynamic equations in order to take advantage of the new, constrained geometry. To that end, we define a new coordinate system as shown in the following figure. 
 		
 		\begin{figure}[!hbt]
 			\centering
 			\includegraphics[width=0.75\columnwidth, angle=-90]{bothbound.pdf}
-			\caption{\textbf{Both bound} state with the new angles and lengths shown.}
+			\caption[The both bound state]{\textbf{Both bound} state with the new angles and lengths shown.}
 			\label{fig:bothbound}
 		\end{figure}
 		
@@ -160,7 +161,7 @@ Now that I have established some facts about motor proteins as well as specifics
 		\begin{equation}
 			\theta_{nm} = \theta_1+(\pi-\theta_0) \qquad \theta_{fm}= \theta_3 + (\pi-\theta_4) 
 		\end{equation}
-		Because the near and far binding domains are fixed, the only domains that we need to time evolve for the both bound state are the two motors (nm, fm) and the tail (T). Therefore, specifying $\theta_{nm}, \theta_{fm}$, and $\ell$ is enough to determine the geometry of the system. The intermediate variables are calculated by wild application of the law of cosines. 
+		Because the near and far binding domains are fixed, the only domains that we need to time evolve for the both bound state are the two motors (nm, fm) and the tail (T). Therefore, specifying $\theta_{nm}, \theta_{fm}$, and $\ell$ is enough to determine the geometry of the system. The intermediate variables are calculated by multiple applications of the law of cosines. 
 		\begin{align}
 			\ell_n &= \sqrt{\ell_s^2+\ell_T^2-2\ell_s\ell_T\cos(2\pi-\theta_{nm})} \\
 			\ell_f &=  \sqrt{\ell_s^2+\ell_T^2-2\ell_s\ell_T\cos(2\pi-\theta_{fm})} \\
@@ -190,7 +191,7 @@ Now that I have established some facts about motor proteins as well as specifics
 		Now we have everything we need in order to repeat the process for the one bound state. Differentiating these equations will give us explicit formulas for the time derivative of the coordinates of each domain which we can then compare to the forces acting on each domain via the Brownian motion equation. Fortunately, the effort was well spent as we've reduced (3.14) to a system of six equation with 6 unknowns (one angle and one Lagrange multiplier for each \textit{moving} domain). 
 		 
 	\section{Binding and Unbinding}
-	To keep the simulation simple, we have chosen a very physically reasonable and uncomplicated binding model with a minimum amount of assumptions. The two key processes, binding and unbinding, are controlled by two parameters called the binding rates. For binding, we simply assume that a binding event occurs at a certain rate whenever a binding domain is close enough to the microtubule. That is, 
+	To keep the simulation simple, we have chosen an uncomplicated binding model which requires a minimum amount of assumptions. The two key processes, binding and unbinding, are controlled by two parameters called the binding rates (probability per unit time). For binding, we simply assume that a binding event occurs at a certain rate whenever a binding domain is close enough to the microtubule. That is, 
 	
 	\begin{equation}
 	\begin{cases}
@@ -199,28 +200,28 @@ Now that I have established some facts about motor proteins as well as specifics
 	\end{cases}
 	\end{equation}
 	
-	where $\rho_b$ is a probability per second and $k_b$ is a constant. \\
+	where $\rho_b$ is the rate and $k_b$ is a constant. \\
 	
 	Recently there has been evidence to show that dynein's step length depends on the tension applied at the linker between the two motor domains (e.g. the tail).\cite{cleary2014tension} This tension is high when the motor domains are far apart and small when they are together as illustrated in the following figure. \\
 	\begin{figure}[!hbt]
 		\centering
 		\includegraphics[width=0.8\columnwidth]{yildiz_tension_dependence}
-		\caption{\textbf{Tension dependent stepping} is shown for a typical dynein (non-mutated). There is a clear, negative correlation between the step size and interhead separation. Data is clustered around trailing steps indicating that a higher tension leads to more stepping. Image taken from \cite{cleary2014tension}}
+		\caption[Tension dependent stepping]{\textbf{Tension dependent stepping} is shown for a typical dynein (non-mutated). There is a clear, negative correlation between the step size and interhead separation. Data is clustered around trailing steps indicating that a higher tension leads to more stepping. Image taken from \cite{cleary2014tension}}
 		\label{fig:yildiz_tension}
 	\end{figure} 	
-	As figure \ref{fig:yildiz_tension} indicates, a large interhead separation leads to more likely stepping. Furthermore, trailing steps are favored-- this means steps where the back foot begins the motion (like a normal step) are more likely. To capture this behavior, we use an angle dependent exponential factor in the binding rate. That is 
+	As figure \ref{fig:yildiz_tension} indicates, a large interhead separation leads to more likely stepping. Furthermore, trailing steps are favored-- this means steps where the back foot begins the motion (like a normal human step) are more likely. To capture this behavior, we use an angle dependent exponential factor in the binding rate. That is 
 	
 	
 	
 	\begin{equation}
-	\rho_{ub} = k_{ub}e^{-c(\theta_b-\theta_{b,eq})}
+	\rho_{ub} = k_{ub}e^{c(\theta_b-\theta_{b,eq})}
 	\end{equation}
-	i.e. unbinding depends on the angular separation of the binding domain from it's equilibrium position. If the $\theta_b$ is large and positive, then the unbinding rate is very small. If $\theta_b$ is less than $\theta_{b,eq}$, then the unbinding rate is very large. This will favor the lagging foot because when dynein has a large interhead separation, the lagging $\theta_b$ is very small and the leading $\theta_b$ is very large as shown in the following figure. 
+	i.e. unbinding depends on the angular separation of the binding domain from it's equilibrium position. This means that for negative values of this constant, a large $\theta_b$ should yields a very small unbinding rate. Similarly, if $\theta_b$ is less than $\theta_{b,eq}$, then the unbinding rate is very large. This will favor the lagging foot because when dynein has a large interhead separation, the lagging $\theta_b$ is very small and the leading $\theta_b$ is very large as shown in the following figure. 
 	
 	\begin{figure}[!hbt]
 		\centering
 		\includegraphics[width=0.7\columnwidth, angle=-90]{tension_dependence_edge_case}
-		\caption{\textbf{A Stretched dynein} illustrates the angular dependence of the unbinding model. In this configuration $\theta_{nb}$ is very small and is therefore much more likely to unbind than $\theta_{fb}$.}
+		\caption[Stretched dynein]{\textbf{A Stretched dynein} illustrates the angular dependence of the unbinding model. In this configuration $\theta_{nb}$ is very small and is therefore much more likely to unbind than $\theta_{fb}$.}
 	\end{figure}
 	
 	
