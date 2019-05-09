@@ -168,6 +168,16 @@ plot_bb_figures(dynein7, 'green')
 plot_bb_figures(dynein8, 'purple')
 plot_bb_figures(dynein9, 'sienna')
 
+print("dynein1 nma: {0} fma: {1}".format(dynein1.nma, dynein1.fma))
+print("dynein2 nma: {0} fma: {1}".format(dynein2.nma, dynein2.fma))
+print("dynein3 nma: {0} fma: {1}".format(dynein3.nma, dynein3.fma))
+print("dynein4 nma: {0} fma: {1}".format(dynein4.nma, dynein4.fma))
+print("dynein5 nma: {0} fma: {1}".format(dynein5.nma, dynein5.fma))
+print("dynein6 nma: {0} fma: {1}".format(dynein6.nma, dynein6.fma))
+print("dynein7 nma: {0} fma: {1}".format(dynein7.nma, dynein7.fma))
+print("dynein8 nma: {0} fma: {1}".format(dynein8.nma, dynein8.fma))
+print("dynein9 nma: {0} fma: {1}".format(dynein9.nma, dynein9.fma))
+
 num_points = 500
 nma1 = np.linspace(0, 2*np.pi, num_points)
 fma1 = np.linspace(0, 2*np.pi, num_points)
