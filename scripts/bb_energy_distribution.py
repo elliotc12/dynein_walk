@@ -104,11 +104,6 @@ class DyneinBothBound:
         self.rate_leading = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
         self.prob_trailing = self.P*self.rate_trailing
         self.prob_leading = self.P*self.rate_leading
-        # self.prob = []
-        # if self.prob_trailing > self.prob_leading:
-        #     self.prob.append(self.prob_trailing)
-        # else:
-        #     self.prob.append(self.prob_leading)
 
     def find_energy_extrema(self):
         """
