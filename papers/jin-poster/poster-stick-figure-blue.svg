@@ -24,6 +24,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -36,15 +37,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="1163"
+     inkscape:window-width="1280"
+     inkscape:window-height="960"
      id="namedview28"
      showgrid="false"
      inkscape:zoom="1.4363107"
-     inkscape:cx="273.18467"
+     inkscape:cx="415.21523"
      inkscape:cy="214.89707"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-x="1600"
+     inkscape:window-y="145"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg26" />
   <defs
@@ -217,4 +218,30 @@
      d="m -257.029,185.33602 a 22.045376,21.833694 0 0 1 -12.45811,20.7387 22.045376,21.833694 0 0 1 -24.13749,-3.29366 22.045376,21.833694 0 0 1 -6.3314,-23.3026"
      transform="rotate(-114.63294)"
      sodipodi:open="true" />
+  <text
+     id="text901"
+     y="223.05173"
+     x="239.53995"
+     style="font-style:normal;font-weight:normal;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;baseline-shift:baseline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.38226607;stroke-linecap:butt;stroke-linejoin:round"
+     xml:space="preserve"><tspan
+       style="baseline-shift:baseline;stroke-width:0.38226607;stroke-linecap:butt;stroke-linejoin:round"
+       y="223.05173"
+       x="239.53995"
+       id="tspan899"
+       sodipodi:role="line">216<tspan
+   style="font-size:48.75000119%;baseline-shift:super;stroke-linecap:butt;stroke-linejoin:round"
+   id="tspan920">o</tspan></tspan></text>
+  <text
+     id="text901-6"
+     y="167.20827"
+     x="314.91568"
+     style="font-style:normal;font-weight:normal;font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;baseline-shift:baseline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.38226607;stroke-linecap:butt;stroke-linejoin:round"
+     xml:space="preserve"><tspan
+       style="baseline-shift:baseline;stroke-width:0.38226607;stroke-linecap:butt;stroke-linejoin:round"
+       y="167.20827"
+       x="314.91568"
+       id="tspan899-7"
+       sodipodi:role="line">197<tspan
+   style="font-size:5.85000038px;baseline-shift:super;stroke-width:0.38226607;stroke-linecap:butt;stroke-linejoin:round"
+   id="tspan920-5">o</tspan></tspan></text>
 </svg>
