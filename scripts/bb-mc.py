@@ -47,7 +47,6 @@ seed = 0 # FIXME CHANGE
 # np.random.seed(0) # FIXME CHANGE
 
 def run_onebound(bba, bma, uma, uba):
-        print("abbout to run onebound...\n\n")
         process = subprocess.Popen(['../onebound',
                                     str(params.for_simulation['k_b']),
                                     str(params.for_simulation['cb']),
@@ -127,8 +126,6 @@ while Z < N:
                                             new_nma,
                                             new_fma,
                                             dynein.fba)
-                        print('positoins', dynein.r_nb[0], dynein.r_nb[1])
-                        print('positoins', dynein.r_fb[0], dynein.r_fb[1])
                         step = run_onebound(dynein.nba,
                                             new_nma,
                                             new_fma,
@@ -138,18 +135,32 @@ while Z < N:
                         print('\n\nleading', dynein.fba, new_fma,
                                             new_nma,
                                             dynein.nba)
-                        print('positoins', dynein.r_nb[0], dynein.r_nb[1])
-                        print('positoins', dynein.r_fb[0], dynein.r_fb[1])
                         step = run_onebound(dynein.fba,
                                             new_fma,
                                             new_nma,
                                             dynein.nba)
                         print('leading stepped with final displacement %g after time %g' % (step['L'], step['t']))
 
+
+# What to collect and output or visualize?
+
+### Bothbound data
+# Mean angles while bothbound? (no stepping required)
+# Mean motor/tail domain locations
+
+
+### Stepping data (separately for leading/trailing)
+# Final displacement (mean/histogram/list)
+# Onebound time (mean/histogram/list)
+# Rate of stepping
+
 # print("rate_unbinding_leading: ", rate_unbinding_leading)
 # print("rate_unbinding_trailing: ", rate_unbinding_trailing)
 # print('max_rate_trailing', max_rate_trailing)
 # print('max_rate_leading', max_rate_leading)
+
+### What to export, and in what format?
+# Histograms of final displacements?
 
 tx = r_tx/Z          # Tail x array
 ty = r_ty/Z          # Tail y array

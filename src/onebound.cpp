@@ -18,10 +18,10 @@
 // they are all defined in default_parameters.h
 
 void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba){
-  for(int i=1; i<argc; i++){
-    fprintf(stderr, "%s ", argv[i]);
-  }
-  fprintf(stderr, "\n");
+  // for(int i=1; i<argc; i++){
+  //   fprintf(stderr, "%s ", argv[i]);
+  // }
+  // fprintf(stderr, "\n");
   assert(argc==22);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
@@ -85,8 +85,8 @@ int main(int argc, char** argv) {
   long long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
-  fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
-  fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
+  // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
+  // fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
   while(stillStepping){
 
