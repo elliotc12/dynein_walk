@@ -68,6 +68,7 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
 int main(int argc, char** argv) {
   double bba, bma, uma, uba, bbx = 0, bby = 0; // FIXME
   get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba);
+  fprintf(stderr, "angles: %g %g %g %g\n", bba, bma, uma, uba);
   binding_mode = EXPONENTIAL_UNBINDING;
 
   // we will probably need Jin's code to output which foot steps
@@ -80,9 +81,11 @@ int main(int argc, char** argv) {
                                                 NULL,
                                                 NULL,
                                                 rand);
+  fprintf(stderr, "Starting with %g %g %g %g\n",
+          dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
 
   double t = 0;
-  long long iter = 0;
+  long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
@@ -100,13 +103,19 @@ int main(int argc, char** argv) {
 
     if (binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
-      // fprintf(stderr, "I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
+      fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
+              iter, dynein->get_bbx()-dynein->get_ubx(),
+              dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
       printf("{\n  'L': %g,\n  't': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t);
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
     } else {
       t += dt; // iterate time
       iter ++;
+      if (iter < 4 || iter % 1000000 == 0) {
+        fprintf(stderr, " %ld:  %g %g %g %g\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
+      }
 
       double old_bba = dynein->get_bba();
       double old_bma = dynein->get_bma();

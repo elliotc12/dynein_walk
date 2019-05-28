@@ -7,7 +7,6 @@ import importlib
 import argparse
 import subprocess
 import bb_energy_distribution
-import yaml
 
 params = importlib.import_module("params")
 
@@ -47,10 +46,13 @@ eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
-seed = 0 # FIXME CHANGE
-# np.random.seed(0) # FIXME CHANGE
+seed = 0 # The initial seed for the C++ onebound code.
+np.random.seed(0)
 
 def run_onebound(bba, bma, uma, uba):
+        global seed
+        seed += 1 # use a different seed every time.  ugh, global variables!
+        print('running with inputs', bba, bma, uma, uba)
         process = subprocess.Popen(['../onebound',
                                     str(params.for_simulation['k_b']),
                                     str(params.for_simulation['cb']),
@@ -148,11 +150,6 @@ while Z < N:
                         leading_data[0].append(step['L'])
                         leading_data[1].append(step['t'])
                         print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-
-                with open('output_data_trailing.yml', 'w') as outfile:
-                    yaml.dump(trailing_data, outfile, default_flow_style = False)
-                with open('output_data_leading.yml', 'w') as outfile:
-                    yaml.dump(leading_data, outfile, default_flow_style = False)
 
 
 # What to collect and output or visualize?
