@@ -51,6 +51,9 @@ class DyneinBothBound:
         self.fa = np.pi-np.arccos((self.Lf**2+self.L**2-self.Ln**2)/(2*self.Lf*self.L))
 
         # calculate small triangle angles
+
+        # NOTE: we have to be careful about motor domain angles less than pi
+
         self.nsa = np.arccos((self.Ln**2+self.Ls**2-self.Lt**2)/(2*self.Ln*self.Ls))
         if isinstance(nma, np.ndarray):
             self.nsa[nma < np.pi] *= -1
