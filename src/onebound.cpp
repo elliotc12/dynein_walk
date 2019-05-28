@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
       // We are going to bind!
       // fprintf(stderr, "I took a step! Final L = %f", dynein->get_bbx()-dynein->get_ubx());
       printf("{\n  'L': %g,\n  't': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t);
+      // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
     } else {
       t += dt; // iterate time
