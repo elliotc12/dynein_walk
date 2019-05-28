@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 import scipy.constants
 import sys
@@ -7,6 +7,7 @@ import importlib
 import argparse
 import subprocess
 import bb_energy_distribution
+import yaml
 
 params = importlib.import_module("params")
 
@@ -38,6 +39,9 @@ b = 1                        # thermodynamic beta
 
 max_rate_trailing = 0
 max_rate_leading = 0
+
+trailing_data = [[] for i in range(2)]
+leading_data = [[] for i in range(2)]
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
@@ -110,8 +114,8 @@ while Z < N:
                 prob_trailing = P*rate_trailing
                 prob_leading = P*rate_leading
 
-                print("prob_leading: ", prob_leading)
-                print("prob_trailing: ", prob_trailing)
+                # print("prob_leading: ", prob_leading)
+                # print("prob_trailing: ", prob_trailing)
 
                 new_nma = nma-(np.pi-dynein.nba)
                 new_fma = fma-(np.pi-dynein.fba)
@@ -130,7 +134,9 @@ while Z < N:
                                             new_nma,
                                             new_fma,
                                             dynein.fba)
-                        print('trailing stepped with final displacement %g after time %g' % (step['L'], step['t']))
+                        trailing_data[0].append(step['L'])
+                        trailing_data[1].append(step['t'])
+                        print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                 if np.random.random() < prob_leading:
                         print('\n\nleading', dynein.fba, new_fma,
                                             new_nma,
@@ -139,7 +145,14 @@ while Z < N:
                                             new_fma,
                                             new_nma,
                                             dynein.nba)
-                        print('leading stepped with final displacement %g after time %g' % (step['L'], step['t']))
+                        leading_data[0].append(step['L'])
+                        leading_data[1].append(step['t'])
+                        print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+
+                with open('output_data_trailing.yml', 'w') as outfile:
+                    yaml.dump(trailing_data, outfile, default_flow_style = False)
+                with open('output_data_leading.yml', 'w') as outfile:
+                    yaml.dump(leading_data, outfile, default_flow_style = False)
 
 
 # What to collect and output or visualize?
@@ -175,5 +188,3 @@ print("Avg nmx:", nmx)
 print("Avg fmx:", fmx)
 print("Avg fbx:", fbx)
 print("Avg E:", E_avg_arr)
-
-
