@@ -110,7 +110,6 @@ void Dynein_onebound::update_brownian_forces() {
     r = *brownian_testcase; // just copy over forces!
   } else {
 
-    // is this just seeding the random number generator? 
     rand->gauss2(sqrt(2*kb*T*gb/dt), &r.bbx, &r.bby);
     rand->gauss2(sqrt(2*kb*T*gm/dt), &r.bmx, &r.bmy);
     rand->gauss2(sqrt(2*kb*T*gt/dt), &r.tx, &r.ty);
