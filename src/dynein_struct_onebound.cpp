@@ -109,6 +109,7 @@ void Dynein_onebound::update_brownian_forces() {
   if (brownian_testcase) {
     r = *brownian_testcase; // just copy over forces!
   } else {
+
     rand->gauss2(sqrt(2*kb*T*gb/dt), &r.bbx, &r.bby);
     rand->gauss2(sqrt(2*kb*T*gm/dt), &r.bmx, &r.bmy);
     rand->gauss2(sqrt(2*kb*T*gt/dt), &r.tx, &r.ty);
@@ -290,27 +291,28 @@ bool Dynein_onebound::update_velocities() {
   if (bma < -2*M_PI or bma > 2*M_PI) { // check motor angles for crazy states
     if (am_naively_correcting_nan_errors) {
       if (bma < -2*M_PI) {
-	if (am_debugging_naive_corrections) printf("Naive correction: bma < -2*M_PI\n");
-	bma = -2*M_PI + 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: bma < -2*M_PI\n");
+        bma = -2*M_PI + 1e-6;
       }
       if (bma > 2*M_PI) {
-	if (am_debugging_naive_corrections) printf("Naive correction: bma > 2*M_PI\n");
-	bma = 2*M_PI - 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: bma > 2*M_PI\n");
+        bma = 2*M_PI - 1e-6;
       }
     }
     if (am_debugging_angles) printf("bma angle is crazy man! %g\n", bma);
   }
   else if (am_debugging_angles) printf("bma angle is cool:      %g\n", bma);
 
+
   if (uma < -2*M_PI or uma > 2*M_PI) {
     if (am_naively_correcting_nan_errors) {
       if (uma < -2*M_PI) {
-	if (am_debugging_naive_corrections) printf("Naive correction: uma < -2*M_PI\n");
-	uma = -2*M_PI + 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: uma < -2*M_PI\n");
+        uma = -2*M_PI + 1e-6;
       }
       if (uma > 2*M_PI) {
-	if (am_debugging_naive_corrections) printf("Naive correction: uma > 2*M_PI\n");
-	uma = 2*M_PI - 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: uma > 2*M_PI\n");
+        uma = 2*M_PI - 1e-6;
       }
     }
     if (am_debugging_angles) printf("uma angle is crazy man! %g\n", uma);
@@ -320,12 +322,12 @@ bool Dynein_onebound::update_velocities() {
   if (bba > M_PI or bba < 0) { // check binding angles for crazy states
     if (am_naively_correcting_nan_errors) {
       if (bba < 0) {
-	if (am_debugging_naive_corrections) printf("Naive correction: bba < 0\n");
-	bba = 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: bba < 0\n");
+        bba = 1e-6;
       }
       if (bba > M_PI) {
-	if (am_debugging_naive_corrections) printf("Naive correction: bba > M_PI\n");
-	bba = M_PI - 1e-6;
+        if (am_debugging_naive_corrections) printf("Naive correction: bba > M_PI\n");
+        bba = M_PI - 1e-6;
       }
     }
     if (am_debugging_angles) printf("bba angle is crazy man! %g\n", bba);

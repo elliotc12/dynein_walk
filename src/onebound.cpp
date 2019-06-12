@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
 
       bool accept_step = false;
       while(!accept_step){
-        // fprintf(stderr, "I am crazy %g %g\n", dynein->get_ubx(), dynein->get_uby());
+
         dynein->set_bba(old_bba);
         dynein->set_bma(old_bma);
         dynein->set_uba(old_uba);
@@ -143,7 +143,6 @@ int main(int argc, char** argv) {
         dynein->set_uba(temp_uba);
 
         accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-        // if (!accept_step) fprintf(stderr, "This is sad, we are going to reject!\n");
       }
     }
   }
