@@ -49,10 +49,10 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
-def run_onebound(bba, bma, uma, uba):
+def run_onebound(bba, bma, uma, uba, state):
         global seed
         seed += 1 # use a different seed every time.  ugh, global variables!
-        print('running with inputs', bba, bma, uma, uba)
+        print('running with inputs', bba, bma, uma, uba, state)
         process = subprocess.Popen(['../onebound',
                                     str(params.for_simulation['k_b']),
                                     str(params.for_simulation['cb']),
@@ -71,7 +71,7 @@ def run_onebound(bba, bma, uma, uba):
                                     str(params.for_simulation['eqt']),
                                     str(params.for_simulation['force']),
                                     str(params.for_simulation['exp-unbinding-constant']),
-                                    str(bba), str(bma), str(uma), str(uba),
+                                    str(bba), str(bma), str(uma), str(uba), str(state),
         ], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
@@ -128,25 +128,32 @@ while Z < N:
                 # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                        state = 1
                         print('\n\ntrailing',dynein.nba,
                                             new_nma,
                                             new_fma,
-                                            dynein.fba)
+                                            dynein.fba,
+                                            state)
                         step = run_onebound(dynein.nba,
                                             new_nma,
                                             new_fma,
-                                            dynein.fba)
+                                            dynein.fba,
+                                            state)
                         trailing_data[0].append(step['L'])
                         trailing_data[1].append(step['t'])
                         print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                 if np.random.random() < prob_leading:
-                        print('\n\nleading', dynein.fba, new_fma,
+                        state = 2
+                        print('\n\nleading', dynein.fba,
+                                            new_fma,
                                             new_nma,
-                                            dynein.nba)
+                                            dynein.nba,
+                                            state)
                         step = run_onebound(dynein.fba,
                                             new_fma,
                                             new_nma,
-                                            dynein.nba)
+                                            dynein.nba,
+                                            state)
                         leading_data[0].append(step['L'])
                         leading_data[1].append(step['t'])
                         print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
