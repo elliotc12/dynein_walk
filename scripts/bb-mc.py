@@ -15,37 +15,46 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-L", type=float, help="displacement in nm", required=True)
 args = parser.parse_args()
 
-angles = [[] for i in range(2)]                # Pair of angles
+C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
+
+Z = 0                # Partition Function
+N = 500              # Count
+L = args.L           # Length
+
+# Sums for averages
+r_tx = 0                # Tail x position
+r_ty = 0                # Tail y position
+r_nmx = 0               # Near motor x position
+r_nmy = 0               # Near motor y position
+r_fmx = 0               # Far motor x position
+r_fmy = 0               # Far motor y position
+E_avg = 0               # Energy Average
+final_L = 0             # Final Displacements
+ob_t = 0                # One bound times
+
+b = 11.82733524          # thermodynamic beta from default_parameters.h
 
 rate_unbinding_leading = []                        # Leading (Far) Unbinding Rates
 rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
 
-
-C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
-
-Z = 0                # Partition Function
-N = 100                 # Count
-L = args.L         # Length
-
-# These are sums of partition function
-r_tx = 0                # Tail x position
-r_ty = 0                # Tail y position
-r_nmx = 0                # Near motor x position
-r_fmx = 0                # Far motor x position
-r_fbx = 0                # Far bound x position
-E_avg = 0                # Energy Average
-r_L = 0                  # Final Displacements
-
-b = 11.82733524          # thermodynamic beta from default_parameters.h
-
 max_rate_trailing = 0
 max_rate_leading = 0
 
+P_arr = []
+angles = [[] for i in range(2)]                # Pair of angles
 trailing_data = [[] for i in range(2)]
 leading_data = [[] for i in range(2)]
-final_displacement = []
-ob_t = []
-P_array = []
+
+r_tx_arr = []                # Tail x position array
+r_ty_arr = []                # Tail y position array
+r_nmx_arr = []               # Near motor x position array
+r_nmy_arr = []               # Near motor y position array
+r_fmx_arr = []               # Far motor x position array
+r_fmy_arr = []               # Far motor y position array
+E_avg_arr = []               # Energy Average array
+final_L_arr = []
+ob_t_arr = []
+
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
@@ -90,8 +99,6 @@ while Z < N:
         # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
         fma = np.random.uniform(0, 2*np.pi)
-        angles[0].append(nma)
-        angles[1].append(fma)
 
         dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
 
@@ -102,14 +109,6 @@ while Z < N:
                 # Calculating partition function
                 P = np.exp(-b*dynein.E_total)
                 Z += P
-
-                # Calculation for averages
-                r_tx += dynein.r_t[0]*P
-                r_ty += dynein.r_t[1]*P
-                r_nmx += dynein.r_nm[0]*P
-                r_fmx += dynein.r_fm[0]*P
-                r_fbx += dynein.r_fb[0]*P
-                E_avg += dynein.E_total*P
 
                 rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                 rate_leading = np.exp(C*(dynein.fba - eqb_angle))
@@ -127,14 +126,30 @@ while Z < N:
                 new_nma = nma-(np.pi-dynein.nba)
                 new_fma = fma-(np.pi-dynein.fba)
 
-                # bba_old = np.pi - dynein.nba - nma
-                # uba_old = np.pi - dynein.fba - fma
-                # print("bba: {0}  bba_old: {1}".format( bba, bba_old))
-                # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
-
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
+                        P_arr.append(P)
+                        angles[0].append(nma)
+                        angles[1].append(fma)
+
+                        # Calculation for averages
+                        r_tx += dynein.r_t[0]*P
+                        r_ty += dynein.r_t[1]*P
+                        r_nmx += dynein.r_nm[0]*P
+                        r_nmy += dynein.r_nm[1]*P
+                        r_fmx += dynein.r_fm[0]*P
+                        r_fmy += dynein.r_fm[1]*P
+                        E_avg += dynein.E_total*P
+
+                        r_tx_arr.append(dynein.r_t[0])
+                        r_ty_arr.append(dynein.r_t[1])
+                        r_nmx_arr.append(dynein.r_nm[0])
+                        r_nmy_arr.append(dynein.r_nm[1])
+                        r_fmx_arr.append(dynein.r_fm[0])
+                        r_fmy_arr.append(dynein.r_fm[1])
+                        E_avg_arr.append(dynein.E_total)
+
                         print('\n\ntrailing',dynein.nba,
                                             new_nma,
                                             new_fma,
@@ -148,13 +163,31 @@ while Z < N:
                         print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         trailing_data[0].append(step['L'])
                         trailing_data[1].append(step['t'])
-                        final_displacement.append(step['L'])
-                        ob_t.append(step['t'])
-                        P_array.append(P)
+                        final_L_arr.append(step['L'])
+                        ob_t_arr.append(step['t'])
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
                         state = 2
+                        P_arr.append(P)
+                        angles[0].append(nma)
+                        angles[1].append(fma)
+
+                        # Calculation for averages
+                        r_tx += dynein.r_t[0]*P
+                        r_ty += dynein.r_t[1]*P
+                        r_nmx += dynein.r_nm[0]*P
+                        r_fmx += dynein.r_fm[0]*P
+                        E_avg += dynein.E_total*P
+
+                        r_tx_arr.append(dynein.r_t[0])
+                        r_ty_arr.append(dynein.r_t[1])
+                        r_nmx_arr.append(dynein.r_nm[0])
+                        r_nmy_arr.append(dynein.r_nm[1])
+                        r_fmx_arr.append(dynein.r_fm[0])
+                        r_fmy_arr.append(dynein.r_fm[1])
+                        E_avg_arr.append(dynein.E_total)
+
                         print('\n\nleading', dynein.fba,
                                             new_fma,
                                             new_nma,
@@ -168,13 +201,14 @@ while Z < N:
                         print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         leading_data[0].append(step['L'])
                         leading_data[1].append(step['t'])
-                        final_displacement.append(step['L'])
-                        ob_t.append(step['t'])
-                        P_array.append(P)
+                        final_L_arr.append(step['L'])
+                        ob_t_arr.append(step['t'])
 
-print("FINAL DISPLACEMENTS:", final_displacement)
-for i in range(len(final_displacement)):
-    r_L += final_displacement[i]*P_array[i]
+
+print("FINAL DISPLACEMENTS:", final_L_arr)
+for i in range(len(final_L_arr)):
+    final_L += final_L_arr[i]*P_arr[i]
+    ob_t += ob_t_arr[i]*P_arr[i]
 
 # What to collect and output or visualize?
 
@@ -200,19 +234,19 @@ tx = r_tx/Z          # Tail x array
 ty = r_ty/Z          # Tail y array
 nmx = r_nmx/Z        # Near motor array
 fmx = r_fmx/Z        # Far motor array
-fbx = r_fbx/Z        # Far bound array
 E_avg_arr = E_avg/Z  # Average energy array
-mean_L = r_L/Z
+mean_L = final_L/Z
+mean_obt = ob_t/Z
 
 print("Avg Tail x:", tx)
 print("Avg Tail y:", ty)
 print("Avg nmx:", nmx)
 print("Avg fmx:", fmx)
-print("Avg fbx:", fbx)
 print("Avg E:", E_avg_arr)
-print("Avg L:", mean_L)
+print("Avg Final Displacement:", mean_L)
+print("Avg ob t:", mean_obt)
 
-fig = plt.figure()
+fig = plt.figure(1)
 gs = gridspec.GridSpec(2, 4)
 ax0 = fig.add_subplot(gs[0, 0:2])
 ax1 = fig.add_subplot(gs[1, 0:2])
@@ -222,24 +256,35 @@ ax3 = fig.add_subplot(gs[1, 2:4])
 ax0.hist(trailing_data[0], bins=50, alpha=0.5, label="Trailing step", normed=True, stacked=True, color="C0")
 ax0.hist(leading_data[0], bins=50, alpha=0.5, label="Leading step", normed=True, stacked=True, color="C1")
 ax0.legend(loc="upper right")
+ax0.set_title("Initial Displacement 8nm")
 ax0.set_xlabel("Final Displacement (nm)")
 ax0.set_ylabel("Frequency")
 
-ax1.hist(final_displacement, bins=50, alpha=0.5, label="Both", normed=True, stacked=True, color="C2")
+ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
 ax1.legend(loc="upper right")
 ax1.set_xlabel("Final Displacement (nm)")
 ax1.set_ylabel("Frequency")
 
-ax2.hist(trailing_data[1], bins=50, alpha=0.5, label="Trailing time", normed=True, stacked=True, color="C0")
-ax2.hist(leading_data[1], bins=50, alpha=0.5, label="Leading time", normed=True, stacked=True, color="C1")
+ax2.hist(trailing_data[1], bins=50, alpha=0.5, label="Trailing time", normed=False, stacked=True, color="C0")
+ax2.hist(leading_data[1], bins=50, alpha=0.5, label="Leading time", normed=False, stacked=True, color="C1")
 ax2.legend(loc="upper right")
 ax2.set_xlabel("time (s)")
 ax2.set_ylabel("Frequency")
 
-ax3.hist(ob_t, bins=50, alpha=0.5, label="Both time", normed=True, stacked=True, color="C2")
+ax3.hist(ob_t_arr, bins=50, alpha=0.5, normed=False, stacked=True, color="C2")
 ax3.legend(loc="upper right")
 ax3.set_xlabel("time (s)")
 ax3.set_ylabel("Frequency")
 
+fig1 = plt.figure(2)
+gs1 = gridspec.GridSpec(1,1)
+ax4 = fig1.add_subplot(gs1[:,:])
+
+ax4.hist(angles[0], bins=50, alpha=0.5, label="nma", normed=True, stacked=True, color="C0")
+ax4.hist(angles[1], bins=50, alpha=0.5, label="fma", normed=True, stacked=True, color="C1")
+ax4.legend(loc="upper right")
+ax4.set_title("Initial Displacement 8nm")
+ax4.set_xlabel("Initial Angles")
+ax4.set_ylabel("Frequency")
 
 plt.show()
