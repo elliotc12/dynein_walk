@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 import scipy.constants
 import sys
 sys.path.append("../data")
@@ -33,14 +34,18 @@ r_nmx = 0                # Near motor x position
 r_fmx = 0                # Far motor x position
 r_fbx = 0                # Far bound x position
 E_avg = 0                # Energy Average
+r_L = 0                  # Final Displacements
 
-b = 1                        # thermodynamic beta
+b = 11.82733524          # thermodynamic beta from default_parameters.h
 
 max_rate_trailing = 0
 max_rate_leading = 0
 
 trailing_data = [[] for i in range(2)]
 leading_data = [[] for i in range(2)]
+final_displacement = []
+ob_t = []
+P_array = []
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
@@ -128,6 +133,7 @@ while Z < N:
                 # print("uba: {0}  uba_old: {1}".format( uba, uba_old))
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                        # FARBOUND State
                         state = 1
                         print('\n\ntrailing',dynein.nba,
                                             new_nma,
@@ -139,10 +145,15 @@ while Z < N:
                                             new_fma,
                                             dynein.fba,
                                             state)
+                        print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         trailing_data[0].append(step['L'])
                         trailing_data[1].append(step['t'])
-                        print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+                        final_displacement.append(step['L'])
+                        ob_t.append(step['t'])
+                        P_array.append(P)
+
                 if np.random.random() < prob_leading:
+                        # NEARBOUND State
                         state = 2
                         print('\n\nleading', dynein.fba,
                                             new_fma,
@@ -154,10 +165,16 @@ while Z < N:
                                             new_nma,
                                             dynein.nba,
                                             state)
+                        print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         leading_data[0].append(step['L'])
                         leading_data[1].append(step['t'])
-                        print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+                        final_displacement.append(step['L'])
+                        ob_t.append(step['t'])
+                        P_array.append(P)
 
+print("FINAL DISPLACEMENTS:", final_displacement)
+for i in range(len(final_displacement)):
+    r_L += final_displacement[i]*P_array[i]
 
 # What to collect and output or visualize?
 
@@ -185,6 +202,7 @@ nmx = r_nmx/Z        # Near motor array
 fmx = r_fmx/Z        # Far motor array
 fbx = r_fbx/Z        # Far bound array
 E_avg_arr = E_avg/Z  # Average energy array
+mean_L = r_L/Z
 
 print("Avg Tail x:", tx)
 print("Avg Tail y:", ty)
@@ -192,3 +210,36 @@ print("Avg nmx:", nmx)
 print("Avg fmx:", fmx)
 print("Avg fbx:", fbx)
 print("Avg E:", E_avg_arr)
+print("Avg L:", mean_L)
+
+fig = plt.figure()
+gs = gridspec.GridSpec(2, 4)
+ax0 = fig.add_subplot(gs[0, 0:2])
+ax1 = fig.add_subplot(gs[1, 0:2])
+ax2 = fig.add_subplot(gs[0, 2:4])
+ax3 = fig.add_subplot(gs[1, 2:4])
+
+ax0.hist(trailing_data[0], bins=50, alpha=0.5, label="Trailing step", normed=True, stacked=True, color="C0")
+ax0.hist(leading_data[0], bins=50, alpha=0.5, label="Leading step", normed=True, stacked=True, color="C1")
+ax0.legend(loc="upper right")
+ax0.set_xlabel("Final Displacement (nm)")
+ax0.set_ylabel("Frequency")
+
+ax1.hist(final_displacement, bins=50, alpha=0.5, label="Both", normed=True, stacked=True, color="C2")
+ax1.legend(loc="upper right")
+ax1.set_xlabel("Final Displacement (nm)")
+ax1.set_ylabel("Frequency")
+
+ax2.hist(trailing_data[1], bins=50, alpha=0.5, label="Trailing time", normed=True, stacked=True, color="C0")
+ax2.hist(leading_data[1], bins=50, alpha=0.5, label="Leading time", normed=True, stacked=True, color="C1")
+ax2.legend(loc="upper right")
+ax2.set_xlabel("time (s)")
+ax2.set_ylabel("Frequency")
+
+ax3.hist(ob_t, bins=50, alpha=0.5, label="Both time", normed=True, stacked=True, color="C2")
+ax3.legend(loc="upper right")
+ax3.set_xlabel("time (s)")
+ax3.set_ylabel("Frequency")
+
+
+plt.show()
