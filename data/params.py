@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-for_simulation= {"k_b": 3.4e9, # previously 3e6
+for_simulation= {"k_b": 3.4e7, # previously 3e6
                  "k_ub": 30,
                  "cb": 0.08,
                  "cm": 1.05,
