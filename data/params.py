@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-for_simulation= {"k_b": 3e6,
+for_simulation= {"k_b": 3.4e7, # previously 3e6
                  "k_ub": 30,
                  "cb": 0.08,
                  "cm": 1.05,
@@ -24,5 +24,5 @@ for_simulation= {"k_b": 3e6,
                  "angle-logging-mode": False,
                  "long-angle-logging-mode": False,
                  "label": "test"
-}   
+}
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09

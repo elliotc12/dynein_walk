@@ -17,12 +17,12 @@
 // see dynein_struct.h for possible command line parameters (extern double ... )
 // they are all defined in default_parameters.h
 
-void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba){
+void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state){
   // for(int i=1; i<argc; i++){
   //   fprintf(stderr, "%s ", argv[i]);
   // }
   // fprintf(stderr, "\n");
-  assert(argc==22);
+  assert(argc==23);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
   cb = atof(argv[i++]);
@@ -60,23 +60,27 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
   *bma = atof(argv[i++]);
   *uma = atof(argv[i++]);
   *uba = atof(argv[i++]);
-
-  assert(i==22);
+  *state = atof(argv[i++]);
+  assert(i==23);
   // note we are not using runtime as onebound runs indefinitely until binding event
 }
 
 int main(int argc, char** argv) {
-  double bba, bma, uma, uba, bbx = 0, bby = 0; // FIXME
-  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba);
-  fprintf(stderr, "angles: %g %g %g %g\n", bba, bma, uma, uba);
+  double bba, bma, uma, uba, bbx = 0, bby = 0, state; // FIXME
+  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state);
+  fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   binding_mode = EXPONENTIAL_UNBINDING;
 
   // we will probably need Jin's code to output which foot steps
   // do we care about nearbound or farbound
-
   MTRand* rand = new MTRand(0.0); // FIXME
+  State s = FARBOUND;
+  if (state == 2) {
+    s = NEARBOUND;
+  }
+  fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
-                                                NEARBOUND,
+                                                s,
                                                 NULL,
                                                 NULL,
                                                 NULL,
@@ -113,8 +117,8 @@ int main(int argc, char** argv) {
       t += dt; // iterate time
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
-        fprintf(stderr, " %ld:  %g %g %g %g\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
+        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba(), dynein->get_bbx()-dynein->get_ubx());
       }
 
       double old_bba = dynein->get_bba();
