@@ -3,3 +3,8 @@
 < ./images/OSU_logo.png
 < ./images/onebound.pdf
 < ./images/schematic-2-superimposed.pdf
+< ../../../plots/paper_trajectory_plot.pdf
+< ../../../plots/burgess-model-figure.pdf
+< ../../../plots/paper_model_behavior.pdf
+< ../../../plots/paper_displacement_vs_step_length.pdf
+< ../../../plots/grotjahn-model-figure.pdf
