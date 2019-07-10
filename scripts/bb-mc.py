@@ -16,10 +16,10 @@ parser.add_argument("-L", type=float, help="displacement in nm", required=True)
 args = parser.parse_args()
 
 C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
-k_b = 3e7
+# k_b = 3e7
 
-#Z = 0                # Partition Function
-N = 30              # Count
+Z = 0                # Partition Function
+N = 100              # Count
 L = args.L           # Length
 
 # Sums for averages
@@ -31,6 +31,7 @@ r_fmx = 0               # Far motor x position
 r_fmy = 0               # Far motor y position
 E = 0                   # Energy Average
 final_L = 0             # Final Displacements
+step_L = 0              # Step Lengths
 ob_t = 0                # One bound times
 
 b = 11.82733524          # thermodynamic beta from default_parameters.h
@@ -50,7 +51,8 @@ r_t_arr = [[] for i in range(2)]                # Tail position array
 r_nm_arr = [[] for i in range(2)]               # Near motor position array
 r_fm_arr = [[] for i in range(2)]               # Far motor position array
 E_arr = []                                      # Energy Average array
-#final_L_arr = []
+final_L_arr = []
+step_length = []
 ob_t_arr = []
 
 
@@ -61,12 +63,12 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
-def run_onebound(bba, bma, uma, uba, state, k_b):
+def run_onebound(bba, bma, uma, uba, state):
         global seed
         seed += 1 # use a different seed every time.  ugh, global variables!
         print('running with inputs', bba, bma, uma, uba, state)
         process = subprocess.Popen(['../onebound',
-                                    str(k_b),    # str(params.for_simulation['k_b']),
+                                    str(params.for_simulation['k_b']),
                                     str(params.for_simulation['cb']),
                                     str(params.for_simulation['cm']),
                                     str(params.for_simulation['ct']),
@@ -93,141 +95,144 @@ def run_onebound(bba, bma, uma, uba, state, k_b):
         assert(exit_code == 0);
         return output_data
 
-bool = True
-while bool == True:
-    Z = 0
-    final_L_arr = []
-    print("OLD K_B:", k_b)
-    while Z < N:
-            # Making random motor angles
-            nma = np.random.uniform(0, 2*np.pi)
-            fma = np.random.uniform(0, 2*np.pi)
+# bool = True
+# while bool == True:
+#     Z = 0
+#     final_L_arr = []
+#     print("OLD K_B:", k_b)
+while Z < N:
+        # Making random motor angles
+        nma = np.random.uniform(0, 2*np.pi)
+        fma = np.random.uniform(0, 2*np.pi)
 
-            dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
+        dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
 
-            # Checking if energy is nan
-            if np.isnan(dynein.E_total) == True:
-                    continue
-            else:
-                    # Calculating partition function
-                    P = np.exp(-b*dynein.E_total)
-                    Z += P
+        # Checking if energy is nan
+        if np.isnan(dynein.E_total) == True:
+                continue
+        else:
+                # Calculating partition function
+                P = np.exp(-b*dynein.E_total)
+                Z += P
 
-                    rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
-                    rate_leading = np.exp(C*(dynein.fba - eqb_angle))
-                    rate_unbinding_trailing.append(rate_trailing)
-                    rate_unbinding_leading.append(rate_leading)
-                    max_rate_leading = max(rate_leading, max_rate_leading)
-                    max_rate_trailing = max(rate_trailing, max_rate_trailing)
+                rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
+                rate_leading = np.exp(C*(dynein.fba - eqb_angle))
+                rate_unbinding_trailing.append(rate_trailing)
+                rate_unbinding_leading.append(rate_leading)
+                max_rate_leading = max(rate_leading, max_rate_leading)
+                max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
-                    prob_trailing = P*rate_trailing
-                    prob_leading = P*rate_leading
+                prob_trailing = P*rate_trailing
+                prob_leading = P*rate_leading
 
-                    # print("prob_leading: ", prob_leading)
-                    # print("prob_trailing: ", prob_trailing)
+                # print("prob_leading: ", prob_leading)
+                # print("prob_trailing: ", prob_trailing)
 
-                    new_nma = nma-(np.pi-dynein.nba)
-                    new_fma = fma-(np.pi-dynein.fba)
+                new_nma = nma-(np.pi-dynein.nba)
+                new_fma = fma-(np.pi-dynein.fba)
 
-                    if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                            # FARBOUND State
-                            state = 1
-                            P_arr.append(P)
-                            angles[0].append(nma)
-                            angles[1].append(fma)
+                if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                        # FARBOUND State
+                        state = 1
+                        P_arr.append(P)
+                        angles[0].append(nma)
+                        angles[1].append(fma)
 
-                            # Calculation for averages
-                            r_tx += dynein.r_t[0]*P
-                            r_ty += dynein.r_t[1]*P
-                            r_nmx += dynein.r_nm[0]*P
-                            r_nmy += dynein.r_nm[1]*P
-                            r_fmx += dynein.r_fm[0]*P
-                            r_fmy += dynein.r_fm[1]*P
-                            E += dynein.E_total*P
+                        # Calculation for averages
+                        r_tx += dynein.r_t[0]*P
+                        r_ty += dynein.r_t[1]*P
+                        r_nmx += dynein.r_nm[0]*P
+                        r_nmy += dynein.r_nm[1]*P
+                        r_fmx += dynein.r_fm[0]*P
+                        r_fmy += dynein.r_fm[1]*P
+                        E += dynein.E_total*P
 
-                            r_t_arr[0].append(dynein.r_t[0])
-                            r_t_arr[1].append(dynein.r_t[1])
-                            r_nm_arr[0].append(dynein.r_nm[0])
-                            r_nm_arr[1].append(dynein.r_nm[1])
-                            r_fm_arr[0].append(dynein.r_fm[0])
-                            r_fm_arr[1].append(dynein.r_fm[1])
-                            E_arr.append(dynein.E_total)
+                        r_t_arr[0].append(dynein.r_t[0])
+                        r_t_arr[1].append(dynein.r_t[1])
+                        r_nm_arr[0].append(dynein.r_nm[0])
+                        r_nm_arr[1].append(dynein.r_nm[1])
+                        r_fm_arr[0].append(dynein.r_fm[0])
+                        r_fm_arr[1].append(dynein.r_fm[1])
+                        E_arr.append(dynein.E_total)
 
-                            print('\n\ntrailing',dynein.nba,
-                                                new_nma,
-                                                new_fma,
-                                                dynein.fba,
-                                                state)
-                            step = run_onebound(dynein.nba,
-                                                new_nma,
-                                                new_fma,
-                                                dynein.fba,
-                                                state, k_b)
-                            print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-                            trailing_data[0].append(step['L'])
-                            trailing_data[1].append(step['t'])
-                            final_L_arr.append(step['L'])
-                            ob_t_arr.append(step['t'])
+                        print('\n\ntrailing',dynein.fba,
+                                            new_fma,
+                                            new_nma,
+                                            dynein.nba,
+                                            state)
+                        step = run_onebound(dynein.fba,
+                                            new_fma,
+                                            new_nma,
+                                            dynein.nba,
+                                            state)
+                        print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+                        trailing_data[0].append(step['L']+L)
+                        trailing_data[1].append(step['t'])
+                        final_L_arr.append(step['L'])
+                        step_length.append(step['L']+L)
+                        ob_t_arr.append(step['t'])
 
-                    if np.random.random() < prob_leading:
-                            # NEARBOUND State
-                            state = 2
-                            P_arr.append(P)
-                            angles[0].append(nma)
-                            angles[1].append(fma)
+                if np.random.random() < prob_leading:
+                        # NEARBOUND State
+                        state = 2
+                        P_arr.append(P)
+                        angles[0].append(nma)
+                        angles[1].append(fma)
 
-                            # Calculation for averages
-                            r_tx += dynein.r_t[0]*P
-                            r_ty += dynein.r_t[1]*P
-                            r_nmx += dynein.r_nm[0]*P
-                            r_fmx += dynein.r_fm[0]*P
-                            E += dynein.E_total*P
+                        # Calculation for averages
+                        r_tx += dynein.r_t[0]*P
+                        r_ty += dynein.r_t[1]*P
+                        r_nmx += dynein.r_nm[0]*P
+                        r_fmx += dynein.r_fm[0]*P
+                        E += dynein.E_total*P
 
-                            r_t_arr[0].append(dynein.r_t[0])
-                            r_t_arr[1].append(dynein.r_t[1])
-                            r_nm_arr[0].append(dynein.r_nm[0])
-                            r_nm_arr[1].append(dynein.r_nm[1])
-                            r_fm_arr[0].append(dynein.r_fm[0])
-                            r_fm_arr[1].append(dynein.r_fm[1])
-                            E_arr.append(dynein.E_total)
+                        r_t_arr[0].append(dynein.r_t[0])
+                        r_t_arr[1].append(dynein.r_t[1])
+                        r_nm_arr[0].append(dynein.r_nm[0])
+                        r_nm_arr[1].append(dynein.r_nm[1])
+                        r_fm_arr[0].append(dynein.r_fm[0])
+                        r_fm_arr[1].append(dynein.r_fm[1])
+                        E_arr.append(dynein.E_total)
 
-                            print('\n\nleading', dynein.fba,
-                                                new_fma,
-                                                new_nma,
-                                                dynein.nba,
-                                                state)
-                            step = run_onebound(dynein.fba,
-                                                new_fma,
-                                                new_nma,
-                                                dynein.nba,
-                                                state, k_b)
-                            print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-                            leading_data[0].append(step['L'])
-                            leading_data[1].append(step['t'])
-                            final_L_arr.append(step['L'])
-                            ob_t_arr.append(step['t'])
+                        print('\n\nleading', dynein.nba,
+                                            new_nma,
+                                            new_fma,
+                                            dynein.fba,
+                                            state)
+                        step = run_onebound(dynein.nba,
+                                            new_nma,
+                                            new_fma,
+                                            dynein.fba,
+                                            state)
+                        print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+                        leading_data[0].append(step['L']-L)
+                        leading_data[1].append(step['t'])
+                        final_L_arr.append(step['L'])
+                        step_length.append(step['L']-L)
+                        ob_t_arr.append(step['t'])
 
-                    #FIXME! Does not work 
-                    print("Old K_B:", k_b)
-                    print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
-                    for i in range(0, len(final_L_arr)):
-                        print("i:", i)
-                        if i == len(final_L_arr) - 1:
-                            bool = False
-                            break
-                        for j in range(i+1, len(final_L_arr)):
-                            print("j:", j)
-                            if final_L_arr[i] == final_L_arr[j]:
-                                k_b = k_b * 1.3
-                                Z = 30
-                                break
-                        break
+                    #FIXME! Does not work
+                    # print("Old K_B:", k_b)
+                    # print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
+                    # for i in range(0, len(final_L_arr)):
+                    #     print("i:", i)
+                    #     if i == len(final_L_arr) - 1:
+                    #         bool = False
+                    #         break
+                    #     for j in range(i+1, len(final_L_arr)):
+                    #         print("j:", j)
+                    #         if final_L_arr[i] == final_L_arr[j]:
+                    #             k_b = k_b * 1.3
+                    #             Z = 30
+                    #             break
+                    #     break
 
 
-print("FINAL K_B:", k_b)
+# print("FINAL K_B:", k_b)
 print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
 for i in range(len(final_L_arr)):
     final_L += final_L_arr[i]*P_arr[i]
+    step_L += step_length[i]*P_arr[i]
     ob_t += ob_t_arr[i]*P_arr[i]
 
 # What to collect and output or visualize?
@@ -257,7 +262,8 @@ nmy = r_nmy/Z        # Near Motor y
 fmx = r_fmx/Z        # Far motor x
 fmy = r_fmy/Z        # Far Motor y
 E_avg = E/Z          # Average energy
-mean_L = final_L/Z
+mean_final_L = final_L/Z
+mean_step_L = step_L/Z
 mean_obt = ob_t/Z
 
 print("BOTHBOUND AVERAGES")
@@ -268,7 +274,8 @@ print("Avg nmy:", nmy)
 print("Avg fmx:", fmx)
 print("Avg fmy:", fmy)
 print("Avg E:", E_avg)
-print("Avg Final Displacement:", mean_L)
+print("Avg Final Displacement:", mean_final_L)
+print("Avg Step Length:", mean_step_L)
 print("Avg ob time:", mean_obt)
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
@@ -290,16 +297,16 @@ ax3 = fig0.add_subplot(gs0[1, 2:4])
 
 separate_step_hist = make_hist(ax0, True, trailing_data[0], leading_data[0], 50,
                     "Trailing Step", "Leading Step", True, "C0", "C1",
-                    "Initial Displacement 8nm", "Final Displacement (nm)")
-step_hist = make_hist(ax1, False, final_L_arr, None, 50,
+                    "Initial Displacement {0}nm".format(L), "Step Length (nm)")
+step_hist = make_hist(ax1, False, step_length, None, 50,
                     None, None, True, "C3", None,
-                    "Initial Displacement 8nm", "Final Displacement (nm)")
+                    None, "Step Length (nm)")
 separate_time_hist = make_hist(ax2, True, trailing_data[1], leading_data[1], 50,
                     "Trailing time", "Leading time", False, "C0", "C1",
-                    "Initial Displacement 8nm", "time (s)")
+                    "Initial Displacement {0}nm".format(L), "time (s)")
 time_hist = make_hist(ax3, False, ob_t_arr, None, 50,
                     None, None, False, "C3", None,
-                    "Initial Displacement 8nm", "time (s)")
+                    None, "time (s)")
 
 # ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
 # ax1.legend(loc="upper right")
@@ -323,7 +330,7 @@ ax4 = fig1.add_subplot(gs1[:,:])
 
 initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 50,
                     "nma", "fma", True, "C0", "C1",
-                    "Initial Displacement 8nm", "Initial Angles")
+                    "Initial Both Bound Angles", "Initial Angles (rad)")
 
 # ax4.hist(angles[0], bins=50, alpha=0.5, label="nma", normed=True, stacked=True, color="C0")
 # ax4.hist(angles[1], bins=50, alpha=0.5, label="fma", normed=True, stacked=True, color="C1")
@@ -339,11 +346,11 @@ ax6 = fig2.add_subplot(gs2[1,:])
 
 tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 50,
                     "tx", None, True, "C0", None,
-                    "Initial Displacement 8nm", "Tail x Positions")
+                    "Initial Both Bound Tail Position", "Tail x Positions")
 
 ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 50,
                     "ty", None, True, "C1", None,
-                    "Initial Displacement 8nm", "Tail y Positions")
+                    None, "Tail y Positions")
 
 fig3 = plt.figure(3)
 ax7 = fig3.add_subplot(gs2[0,:])
@@ -351,11 +358,11 @@ ax8 = fig3.add_subplot(gs2[1,:])
 
 nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 50,
                     "nmx", None, True, "C0", None,
-                    "Initial Displacement 8nm", "Near Motor x Positions")
+                    "Initial Both Bound Near Motor Position", "Near Motor x Positions")
 
 nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 50,
                     "nmy", None, True, "C1", None,
-                    "Initial Displacement 8nm", "Near Motor y Positions")
+                    None, "Near Motor y Positions")
 
 fig4 = plt.figure(4)
 ax9 = fig4.add_subplot(gs2[0,:])
@@ -363,18 +370,18 @@ ax10 = fig4.add_subplot(gs2[1,:])
 
 fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 50,
                     "fmx", None, True, "C0", None,
-                    "Initial Displacement 8nm", "Far Motor x Positions")
+                    "Initial Both Bound Far Motor Position", "Far Motor x Positions")
 
 fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 50,
                     "fmy", None, True, "C1", None,
-                    "Initial Displacement 8nm", "Far Motor 1 Positions")
+                    None, "Far Motor y Positions")
 
 fig5 = plt.figure(5)
 ax11 = fig5.add_subplot(gs1[:,:])
 
 Energy_hist = make_hist(ax11, False, E_arr, None, 50,
                     "Energies", None, True, "C0", None,
-                    "Initial Displacement 8nm", "Energies")
+                    "Initial Both Bound Energy", "Energies")
 
 
-# plt.show()
+plt.show()

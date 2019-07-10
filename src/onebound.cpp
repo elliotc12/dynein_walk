@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
   if (state == 2) {
     s = NEARBOUND;
   }
-  fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
+  fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
                                                 s,
                                                 NULL,
@@ -123,8 +123,8 @@ int main(int argc, char** argv) {
 
       double old_bba = dynein->get_bba();
       double old_bma = dynein->get_bma();
-      double old_uba = dynein->get_uba();
       double old_uma = dynein->get_uma();
+      double old_uba = dynein->get_uba();
       // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
 
 
@@ -133,8 +133,9 @@ int main(int argc, char** argv) {
 
         dynein->set_bba(old_bba);
         dynein->set_bma(old_bma);
-        dynein->set_uba(old_uba);
         dynein->set_uma(old_uma);
+        dynein->set_uba(old_uba);
+        dynein->update_velocities();
 
         double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
         double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
