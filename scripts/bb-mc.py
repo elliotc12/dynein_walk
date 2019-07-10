@@ -174,7 +174,7 @@ while Z < N:
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
-                        state = 2
+                        state = 0
                         P_arr.append(P)
                         angles[0].append(nma)
                         angles[1].append(fma)
@@ -286,27 +286,28 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
     ax.set_title(Title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
+    plt.savefig('../plots/mc_{0}_{1}.pdf'.format(L, xlabel), transparent=False)
 
 
 fig0 = plt.figure(0)
-gs0 = gridspec.GridSpec(2, 4)
-ax0 = fig0.add_subplot(gs0[0, 0:2])
-ax1 = fig0.add_subplot(gs0[1, 0:2])
-ax2 = fig0.add_subplot(gs0[0, 2:4])
-ax3 = fig0.add_subplot(gs0[1, 2:4])
+gs0 = gridspec.GridSpec(5, 10)
+ax0 = fig0.add_subplot(gs0[0:2, 0:4])
+ax1 = fig0.add_subplot(gs0[3:5, 0:4])
+ax2 = fig0.add_subplot(gs0[0:2, 6:10])
+ax3 = fig0.add_subplot(gs0[3:5, 6:10])
 
 separate_step_hist = make_hist(ax0, True, trailing_data[0], leading_data[0], 50,
                     "Trailing Step", "Leading Step", True, "C0", "C1",
                     "Initial Displacement {0}nm".format(L), "Step Length (nm)")
 step_hist = make_hist(ax1, False, step_length, None, 50,
                     None, None, True, "C3", None,
-                    None, "Step Length (nm)")
+                    "", "Step Length (nm)")
 separate_time_hist = make_hist(ax2, True, trailing_data[1], leading_data[1], 50,
                     "Trailing time", "Leading time", False, "C0", "C1",
                     "Initial Displacement {0}nm".format(L), "time (s)")
 time_hist = make_hist(ax3, False, ob_t_arr, None, 50,
                     None, None, False, "C3", None,
-                    None, "time (s)")
+                    "", "time (s)")
 
 # ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
 # ax1.legend(loc="upper right")
@@ -350,7 +351,7 @@ tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 50,
 
 ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 50,
                     "ty", None, True, "C1", None,
-                    None, "Tail y Positions")
+                    "", "Tail y Positions")
 
 fig3 = plt.figure(3)
 ax7 = fig3.add_subplot(gs2[0,:])
@@ -362,7 +363,7 @@ nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 50,
 
 nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 50,
                     "nmy", None, True, "C1", None,
-                    None, "Near Motor y Positions")
+                    "", "Near Motor y Positions")
 
 fig4 = plt.figure(4)
 ax9 = fig4.add_subplot(gs2[0,:])
@@ -374,7 +375,7 @@ fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 50,
 
 fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 50,
                     "fmy", None, True, "C1", None,
-                    None, "Far Motor y Positions")
+                    "", "Far Motor y Positions")
 
 fig5 = plt.figure(5)
 ax11 = fig5.add_subplot(gs1[:,:])

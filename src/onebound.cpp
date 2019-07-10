@@ -68,16 +68,17 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
 int main(int argc, char** argv) {
   double bba, bma, uma, uba, bbx = 0, bby = 0, state; // FIXME
   get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state);
+  State s = NEARBOUND;
   fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
+  if (state == 1) {
+    s = FARBOUND;
+  }
   binding_mode = EXPONENTIAL_UNBINDING;
 
   // we will probably need Jin's code to output which foot steps
   // do we care about nearbound or farbound
   MTRand* rand = new MTRand(0.0); // FIXME
-  State s = FARBOUND;
-  if (state == 2) {
-    s = NEARBOUND;
-  }
+
   fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
                                                 s,
@@ -101,7 +102,7 @@ int main(int argc, char** argv) {
     double binding_prob = dynein->get_binding_rate()*dt;
     cumulative_prob += binding_prob;
 
-    // fprintf(stderr, "The time is %g\n", t);
+    //fprintf(stderr, "The time is %g\n", t);
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
@@ -113,12 +114,12 @@ int main(int argc, char** argv) {
       printf("{\n  'L': %g,\n  't': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t);
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else {
-      t += dt; // iterate time
+    } else if (rand->rand() > binding_prob){
+      t += dt;  // iterate time
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba(), dynein->get_bbx()-dynein->get_ubx());
+                dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
 
       double old_bba = dynein->get_bba();
