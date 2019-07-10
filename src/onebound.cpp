@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
 
       double old_bba = dynein->get_bba();

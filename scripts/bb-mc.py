@@ -286,15 +286,15 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
     ax.set_title(Title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
-    plt.savefig('../plots/mc_{0}_{1}.pdf'.format(L, xlabel), transparent=False)
+    plt.savefig('../plots/mc_plots/mc_{0}_{1}.pdf'.format(L, xlabel), transparent=False)
 
 
-fig0 = plt.figure(0)
-gs0 = gridspec.GridSpec(5, 10)
-ax0 = fig0.add_subplot(gs0[0:2, 0:4])
-ax1 = fig0.add_subplot(gs0[3:5, 0:4])
-ax2 = fig0.add_subplot(gs0[0:2, 6:10])
-ax3 = fig0.add_subplot(gs0[3:5, 6:10])
+fig0 = plt.figure(0, figsize=(12,8))
+gs0 = gridspec.GridSpec(2, 21)
+ax0 = fig0.add_subplot(gs0[0, 0:10])
+ax1 = fig0.add_subplot(gs0[1, 0:10])
+ax2 = fig0.add_subplot(gs0[0, 11:21])
+ax3 = fig0.add_subplot(gs0[1, 11:21])
 
 separate_step_hist = make_hist(ax0, True, trailing_data[0], leading_data[0], 50,
                     "Trailing Step", "Leading Step", True, "C0", "C1",
@@ -340,7 +340,7 @@ initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 50,
 # ax4.set_xlabel("Initial Angles")
 # ax4.set_ylabel("Frequency")
 
-fig2 = plt.figure(2)
+fig2 = plt.figure(2, figsize=(6,8))
 gs2 = gridspec.GridSpec(2,1)
 ax5 = fig2.add_subplot(gs2[0,:])
 ax6 = fig2.add_subplot(gs2[1,:])
@@ -353,7 +353,7 @@ ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 50,
                     "ty", None, True, "C1", None,
                     "", "Tail y Positions")
 
-fig3 = plt.figure(3)
+fig3 = plt.figure(3, figsize=(6,8))
 ax7 = fig3.add_subplot(gs2[0,:])
 ax8 = fig3.add_subplot(gs2[1,:])
 
@@ -365,7 +365,7 @@ nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 50,
                     "nmy", None, True, "C1", None,
                     "", "Near Motor y Positions")
 
-fig4 = plt.figure(4)
+fig4 = plt.figure(4, figsize=(6,8))
 ax9 = fig4.add_subplot(gs2[0,:])
 ax10 = fig4.add_subplot(gs2[1,:])
 
