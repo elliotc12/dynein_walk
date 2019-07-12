@@ -13,14 +13,16 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", type=float, help="displacement in nm", required=True)
+parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
 args = parser.parse_args()
 
 C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
-# k_b = 3e7
 
 Z = 0                # Partition Function
 N = 100              # Count
 L = args.L           # Length
+k_b = args.kb         # Binding Rate Constant
+k = 0
 
 # Sums for averages
 r_tx = 0                # Tail x position
@@ -63,12 +65,43 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
+def plot_bb_figures(self, dynein_color_nm, dynein_color_fm):
+    """Plot just the figure of dynein for the both bound configuration given an
+    array of motor angles and an initial displacement.
+    """
+    fig = plt.figure()
+
+    ax = fig.add_subplot(1, 1, 1)
+    x_coords_nm = [self.r_nb[0],
+                    self.r_nm[0],
+                    self.r_t[0]]
+
+    y_coords_nm = [self.r_nb[1],
+                    self.r_nm[1],
+                    self.r_t[1]]
+
+    x_coords_fm = [self.r_t[0],
+                    self.r_fm[0],
+                    self.r_fb[0]]
+
+    y_coords_fm = [self.r_t[1],
+                    self.r_fm[1],
+                    self.r_fb[1]]
+
+
+    ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
+    ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
+    ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
+    ax.axis('off')
+    ax.axis('equal')
+    ax.legend()
+
 def run_onebound(bba, bma, uma, uba, state):
         global seed
         seed += 1 # use a different seed every time.  ugh, global variables!
         print('running with inputs', bba, bma, uma, uba, state)
         process = subprocess.Popen(['../onebound',
-                                    str(params.for_simulation['k_b']),
+                                    str(k_b),
                                     str(params.for_simulation['cb']),
                                     str(params.for_simulation['cm']),
                                     str(params.for_simulation['ct']),
@@ -132,6 +165,7 @@ while Z < N:
                 new_fma = fma-(np.pi-dynein.fba)
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                        k += 1
                         # FARBOUND State
                         state = 1
                         P_arr.append(P)
@@ -154,6 +188,8 @@ while Z < N:
                         r_fm_arr[0].append(dynein.r_fm[0])
                         r_fm_arr[1].append(dynein.r_fm[1])
                         E_arr.append(dynein.E_total)
+                        plot_bb_figures(dynein, 'red', 'blue')
+                        plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
                         print('\n\ntrailing',dynein.fba,
                                             new_fma,
@@ -165,6 +201,12 @@ while Z < N:
                                             new_nma,
                                             dynein.nba,
                                             state)
+
+                        dyn_after_step = bb_energy_distribution.DyneinBothBound(step['uma'], step['bma'], params, step['L'])
+                        plot_bb_figures(dyn_after_step, 'red', 'blue')
+                        plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
+                        plt.show()
+
                         print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         trailing_data[0].append(step['L']+L)
                         trailing_data[1].append(step['t'])
@@ -173,6 +215,7 @@ while Z < N:
                         ob_t_arr.append(step['t'])
 
                 if np.random.random() < prob_leading:
+                        k += 1
                         # NEARBOUND State
                         state = 0
                         P_arr.append(P)
@@ -193,6 +236,9 @@ while Z < N:
                         r_fm_arr[0].append(dynein.r_fm[0])
                         r_fm_arr[1].append(dynein.r_fm[1])
                         E_arr.append(dynein.E_total)
+                        plot_bb_figures(dynein, 'red', 'blue')
+                        plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
+
 
                         print('\n\nleading', dynein.nba,
                                             new_nma,
@@ -204,6 +250,12 @@ while Z < N:
                                             new_fma,
                                             dynein.fba,
                                             state)
+
+                        dyn_after_step = bb_energy_distribution.DyneinBothBound(step['bma'], step['uma'], params, step['L'])
+                        plot_bb_figures(dyn_after_step, 'red', 'blue')
+                        plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
+                        plt.show()
+
                         print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         leading_data[0].append(step['L']-L)
                         leading_data[1].append(step['t'])
@@ -286,7 +338,6 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
     ax.set_title(Title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
-    plt.savefig('../plots/mc_plots/mc_{0}_{1}.pdf'.format(L, xlabel), transparent=False)
 
 
 fig0 = plt.figure(0, figsize=(12,8))
@@ -296,18 +347,19 @@ ax1 = fig0.add_subplot(gs0[1, 0:10])
 ax2 = fig0.add_subplot(gs0[0, 11:21])
 ax3 = fig0.add_subplot(gs0[1, 11:21])
 
-separate_step_hist = make_hist(ax0, True, trailing_data[0], leading_data[0], 50,
+separate_step_hist = make_hist(ax0, True, trailing_data[0], leading_data[0], 30,
                     "Trailing Step", "Leading Step", True, "C0", "C1",
-                    "Initial Displacement {0}nm".format(L), "Step Length (nm)")
+                    "Initial Displacement {0}nm".format(int(L)), "Step Length (nm)")
 step_hist = make_hist(ax1, False, step_length, None, 50,
                     None, None, True, "C3", None,
                     "", "Step Length (nm)")
-separate_time_hist = make_hist(ax2, True, trailing_data[1], leading_data[1], 50,
+separate_time_hist = make_hist(ax2, True, trailing_data[1], leading_data[1], 30,
                     "Trailing time", "Leading time", False, "C0", "C1",
-                    "Initial Displacement {0}nm".format(L), "time (s)")
+                    "Initial Displacement {0}nm".format(int(L)), "time (s)")
 time_hist = make_hist(ax3, False, ob_t_arr, None, 50,
                     None, None, False, "C3", None,
                     "", "time (s)")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_onebound_length_time.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
 
 # ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
 # ax1.legend(loc="upper right")
@@ -329,9 +381,11 @@ fig1 = plt.figure(1)
 gs1 = gridspec.GridSpec(1,1)
 ax4 = fig1.add_subplot(gs1[:,:])
 
-initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 50,
+initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 30,
                     "nma", "fma", True, "C0", "C1",
                     "Initial Both Bound Angles", "Initial Angles (rad)")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_init_ang.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+
 
 # ax4.hist(angles[0], bins=50, alpha=0.5, label="nma", normed=True, stacked=True, color="C0")
 # ax4.hist(angles[1], bins=50, alpha=0.5, label="fma", normed=True, stacked=True, color="C1")
@@ -345,44 +399,51 @@ gs2 = gridspec.GridSpec(2,1)
 ax5 = fig2.add_subplot(gs2[0,:])
 ax6 = fig2.add_subplot(gs2[1,:])
 
-tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 50,
+tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 30,
                     "tx", None, True, "C0", None,
                     "Initial Both Bound Tail Position", "Tail x Positions")
 
-ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 50,
+ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 30,
                     "ty", None, True, "C1", None,
                     "", "Tail y Positions")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_tail_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+
 
 fig3 = plt.figure(3, figsize=(6,8))
 ax7 = fig3.add_subplot(gs2[0,:])
 ax8 = fig3.add_subplot(gs2[1,:])
 
-nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 50,
+nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 30,
                     "nmx", None, True, "C0", None,
                     "Initial Both Bound Near Motor Position", "Near Motor x Positions")
 
-nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 50,
+nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 30,
                     "nmy", None, True, "C1", None,
                     "", "Near Motor y Positions")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_nm_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+
 
 fig4 = plt.figure(4, figsize=(6,8))
 ax9 = fig4.add_subplot(gs2[0,:])
 ax10 = fig4.add_subplot(gs2[1,:])
 
-fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 50,
+fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 30,
                     "fmx", None, True, "C0", None,
                     "Initial Both Bound Far Motor Position", "Far Motor x Positions")
 
-fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 50,
+fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 30,
                     "fmy", None, True, "C1", None,
                     "", "Far Motor y Positions")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_fm_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+
 
 fig5 = plt.figure(5)
 ax11 = fig5.add_subplot(gs1[:,:])
 
-Energy_hist = make_hist(ax11, False, E_arr, None, 50,
+Energy_hist = make_hist(ax11, False, E_arr, None, 30,
                     "Energies", None, True, "C0", None,
                     "Initial Both Bound Energy", "Energies")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_energy.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
 
 
 plt.show()

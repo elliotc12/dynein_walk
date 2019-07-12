@@ -111,13 +111,21 @@ int main(int argc, char** argv) {
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
               iter, dynein->get_bbx()-dynein->get_ubx(),
               dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-      printf("{\n  'L': %g,\n  't': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t);
+      printf("{\n  'L': %g,\n  't': %g,\n  'bma': %g,\n  'uma': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t, dynein->get_bma(), dynein->get_uma());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else if (rand->rand() > binding_prob){
+    } else if (rand->rand() > binding_prob) {
       t += dt;  // iterate time
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
+        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      }
+      if (iter > 17517378 && iter < 17517388) {
+        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      }
+      if (iter > 17519101 && iter < 17519111) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
                 dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
