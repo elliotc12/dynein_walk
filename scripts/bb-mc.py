@@ -65,7 +65,7 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
-def plot_bb_figures(self, dynein_color_nm, dynein_color_fm):
+def plot_bb_before_step(self, dynein_color_nm, dynein_color_fm):
     """Plot just the figure of dynein for the both bound configuration given an
     array of motor angles and an initial displacement.
     """
@@ -87,6 +87,37 @@ def plot_bb_figures(self, dynein_color_nm, dynein_color_fm):
     y_coords_fm = [self.r_t[1],
                     self.r_fm[1],
                     self.r_fb[1]]
+
+
+    ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
+    ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
+    ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
+    ax.axis('off')
+    ax.axis('equal')
+    ax.legend()
+
+def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_color_nm, dynein_color_fm):
+    """Plot just the figure of dynein for the both bound configuration given an
+    array of motor angles and an initial displacement.
+    """
+    fig = plt.figure()
+
+    ax = fig.add_subplot(1, 1, 1)
+    x_coords_nm = [nbx,
+                    nmx,
+                    tx]
+
+    y_coords_nm = [nby,
+                    nmy,
+                    ty]
+
+    x_coords_fm = [tx,
+                    fmx,
+                    fbx]
+
+    y_coords_fm = [ty,
+                    fmy,
+                    fby]
 
 
     ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
@@ -188,8 +219,8 @@ while Z < N:
                         r_fm_arr[0].append(dynein.r_fm[0])
                         r_fm_arr[1].append(dynein.r_fm[1])
                         E_arr.append(dynein.E_total)
-                        plot_bb_figures(dynein, 'red', 'blue')
-                        plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
+                        # plot_bb_before_step(dynein, 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
                         print('\n\ntrailing',dynein.fba,
                                             new_fma,
@@ -202,10 +233,11 @@ while Z < N:
                                             dynein.nba,
                                             state)
 
-                        dyn_after_step = bb_energy_distribution.DyneinBothBound(step['uma'], step['bma'], params, step['L'])
-                        plot_bb_figures(dyn_after_step, 'red', 'blue')
-                        plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
-                        plt.show()
+                        # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
+                        #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
+                        #                 step['bbx'], step['bby'], 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
+                        # plt.show()
 
                         print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         trailing_data[0].append(step['L']+L)
@@ -236,8 +268,8 @@ while Z < N:
                         r_fm_arr[0].append(dynein.r_fm[0])
                         r_fm_arr[1].append(dynein.r_fm[1])
                         E_arr.append(dynein.E_total)
-                        plot_bb_figures(dynein, 'red', 'blue')
-                        plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
+                        # plot_bb_before_step(dynein, 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
 
 
                         print('\n\nleading', dynein.nba,
@@ -251,10 +283,11 @@ while Z < N:
                                             dynein.fba,
                                             state)
 
-                        dyn_after_step = bb_energy_distribution.DyneinBothBound(step['bma'], step['uma'], params, step['L'])
-                        plot_bb_figures(dyn_after_step, 'red', 'blue')
-                        plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
-                        plt.show()
+                        # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
+                        #                 step['tx'], step['ty'], step['umx'], step['umy'],
+                        #                 step['ubx'], step['uby'], 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
+                        # plt.show()
 
                         print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
                         leading_data[0].append(step['L']-L)

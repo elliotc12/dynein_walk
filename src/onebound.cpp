@@ -66,7 +66,7 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
 }
 
 int main(int argc, char** argv) {
-  double bba, bma, uma, uba, bbx = 0, bby = 0, state; // FIXME
+  double bba, bma, uma, uba, bbx = 0, bby = 0, state;
   get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state);
   State s = NEARBOUND;
   fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
@@ -110,25 +110,28 @@ int main(int argc, char** argv) {
       // We are going to bind!
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
               iter, dynein->get_bbx()-dynein->get_ubx(),
-              dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-      printf("{\n  'L': %g,\n  't': %g,\n  'bma': %g,\n  'uma': %g,\n}\n", dynein->get_bbx()-dynein->get_ubx(), t, dynein->get_bma(), dynein->get_uma());
+              dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
+      printf("{\n  'L': %g,\n  't': %g,\n  'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g,\n  'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
+              dynein->get_bbx()-dynein->get_ubx(), t, dynein->get_bbx(), dynein->get_bby(),
+              dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
+              dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else if (rand->rand() > binding_prob) {
+    } else {
       t += dt;  // iterate time
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
                 dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
-      if (iter > 17517378 && iter < 17517388) {
-        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      }
-      if (iter > 17519101 && iter < 17519111) {
-        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      }
+      // if (iter > 17517378 && iter < 17517388) {
+      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // }
+      // if (iter > 17519101 && iter < 17519111) {
+      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // }
 
       double old_bba = dynein->get_bba();
       double old_bma = dynein->get_bma();
