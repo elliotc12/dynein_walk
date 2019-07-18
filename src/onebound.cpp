@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 
   // we will probably need Jin's code to output which foot steps
   // do we care about nearbound or farbound
-  MTRand* rand = new MTRand(0.0); // FIXME
+  MTRand* rand = new MTRand(k); // FIXME
 
   // Does this onebound resemble with the bothbound orientation
 
@@ -99,6 +99,12 @@ int main(int argc, char** argv) {
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
+  FILE *log_f = NULL;
+  if (k == 1) {
+    log_f = fopen("raw-data-1.dat", "w");
+  } else if (k == 3) {
+    log_f = fopen("raw-data-3.dat", "w");
+  }
   while(stillStepping){
 
     // FIXME consider doing *one* move before checking binding
@@ -123,17 +129,23 @@ int main(int argc, char** argv) {
     } else if (rand->rand() >= binding_prob) {    // else if vs. else makes diff data (?)
       t += dt;  // iterate time
       iter ++;
-      if (iter < 4 || iter % 1000000 == 0) {
-        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // if (iter < 4 || iter % 1000000 == 0) {
+      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // }
+      if (k == 1) {
+        fprintf(log_f, "%g %g %g %g %g\n",
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+                dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+        // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+        //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
-      if (k == 1 && iter > 5843583 && iter < 5843683) {
-        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      }
-      if (k == 3 && iter > 5843299 && iter < 5843399) {
-        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      if (k == 3) {
+        fprintf(log_f, "%g %g %g %g %g\n",
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+                dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+        // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+        //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
 
       double old_bba = dynein->get_bba();
