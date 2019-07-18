@@ -388,11 +388,11 @@ step_hist = make_hist(ax1, False, step_length, None, 50,
                     "", "Step Length (nm)")
 separate_time_hist = make_hist(ax2, True, trailing_data[1], leading_data[1], 30,
                     "Trailing time", "Leading time", False, "C0", "C1",
-                    "Initial Displacement {0}nm".format(int(L)), "time (s)")
+                    "k_b: {0:e}".format(k_b), "time (s)")
 time_hist = make_hist(ax3, False, ob_t_arr, None, 50,
                     None, None, False, "C3", None,
                     "", "time (s)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_onebound_length_time.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_onebound_length_time.pdf'.format(int(L), k_b), transparent=False)
 
 # ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
 # ax1.legend(loc="upper right")
@@ -417,7 +417,7 @@ ax4 = fig1.add_subplot(gs1[:,:])
 initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 30,
                     "nma", "fma", True, "C0", "C1",
                     "Initial Both Bound Angles", "Initial Angles (rad)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_init_ang.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_init_ang.pdf'.format(int(L), k_b), transparent=False)
 
 
 # ax4.hist(angles[0], bins=50, alpha=0.5, label="nma", normed=True, stacked=True, color="C0")
@@ -439,7 +439,7 @@ tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 30,
 ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 30,
                     "ty", None, True, "C1", None,
                     "", "Tail y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_tail_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_tail_position.pdf'.format(int(L), k_b), transparent=False)
 
 
 fig3 = plt.figure(3, figsize=(6,8))
@@ -453,7 +453,7 @@ nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 30,
 nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 30,
                     "nmy", None, True, "C1", None,
                     "", "Near Motor y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_nm_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_nm_position.pdf'.format(int(L), k_b), transparent=False)
 
 
 fig4 = plt.figure(4, figsize=(6,8))
@@ -467,7 +467,7 @@ fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 30,
 fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 30,
                     "fmy", None, True, "C1", None,
                     "", "Far Motor y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_fm_position.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_fm_position.pdf'.format(int(L), k_b), transparent=False)
 
 
 fig5 = plt.figure(5)
@@ -476,7 +476,7 @@ ax11 = fig5.add_subplot(gs1[:,:])
 Energy_hist = make_hist(ax11, False, E_arr, None, 30,
                     "Energies", None, True, "C0", None,
                     "Initial Both Bound Energy", "Energies")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_energy.pdf'.format(int(L), params.for_simulation['k_b']), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_energy.pdf'.format(int(L), k_b), transparent=False)
 
 
 plt.show()

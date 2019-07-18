@@ -79,6 +79,8 @@ int main(int argc, char** argv) {
   // do we care about nearbound or farbound
   MTRand* rand = new MTRand(0.0); // FIXME
 
+  // Does this onebound resemble with the bothbound orientation
+
   fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
                                                 s,
@@ -117,18 +119,18 @@ int main(int argc, char** argv) {
               dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else {
+    } else if (rand->rand() >= binding_prob) {    // else if vs. else makes diff data (?)
       t += dt;  // iterate time
       iter ++;
       if (iter < 4 || iter % 1000000 == 0) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
                 dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
-      // if (iter > 17517378 && iter < 17517388) {
+      // if (iter > 21443400 && iter < 21443410) {
       //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
       //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       // }
-      // if (iter > 17519101 && iter < 17519111) {
+      // if (iter > 21446518 && iter < 21446528) {
       //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
       //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       // }
@@ -141,13 +143,15 @@ int main(int argc, char** argv) {
 
 
       bool accept_step = false;
+      int attempts = 0;
       while(!accept_step){
-
-        dynein->set_bba(old_bba);
-        dynein->set_bma(old_bma);
-        dynein->set_uma(old_uma);
-        dynein->set_uba(old_uba);
-        dynein->update_velocities();
+        if (attempts > 0) {
+          dynein->set_bba(old_bba);
+          dynein->set_bma(old_bma);
+          dynein->set_uma(old_uma);
+          dynein->set_uba(old_uba);
+          dynein->update_velocities();    // This update_velocities() was added (?)
+        }
 
         double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
         double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
@@ -160,6 +164,8 @@ int main(int argc, char** argv) {
         dynein->set_uba(temp_uba);
 
         accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
+
+        attempts++;
       }
     }
   }
