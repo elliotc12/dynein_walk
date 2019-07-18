@@ -17,12 +17,12 @@
 // see dynein_struct.h for possible command line parameters (extern double ... )
 // they are all defined in default_parameters.h
 
-void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state){
+void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state, double *k){
   // for(int i=1; i<argc; i++){
   //   fprintf(stderr, "%s ", argv[i]);
   // }
   // fprintf(stderr, "\n");
-  assert(argc==23);
+  assert(argc==24);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
   cb = atof(argv[i++]);
@@ -61,13 +61,14 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
   *uma = atof(argv[i++]);
   *uba = atof(argv[i++]);
   *state = atof(argv[i++]);
-  assert(i==23);
+  *k = atof(argv[i++]);
+  assert(i==24);
   // note we are not using runtime as onebound runs indefinitely until binding event
 }
 
 int main(int argc, char** argv) {
-  double bba, bma, uma, uba, bbx = 0, bby = 0, state;
-  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state);
+  double bba, bma, uma, uba, bbx = 0, bby = 0, state, k;
+  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k);
   State s = NEARBOUND;
   fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   if (state == 1) {
@@ -126,14 +127,14 @@ int main(int argc, char** argv) {
         fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
                 dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       }
-      // if (iter > 21443400 && iter < 21443410) {
-      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      // }
-      // if (iter > 21446518 && iter < 21446528) {
-      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      // }
+      if (k == 1 && iter > 5843583 && iter < 5843683) {
+        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      }
+      if (k == 3 && iter > 5843299 && iter < 5843399) {
+        fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      }
 
       double old_bba = dynein->get_bba();
       double old_bma = dynein->get_bma();

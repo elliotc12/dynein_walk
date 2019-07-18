@@ -127,10 +127,10 @@ def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_co
     ax.axis('equal')
     ax.legend()
 
-def run_onebound(bba, bma, uma, uba, state):
+def run_onebound(bba, bma, uma, uba, state, k):
         global seed
         seed += 1 # use a different seed every time.  ugh, global variables!
-        print('running with inputs', bba, bma, uma, uba, state)
+        print('running with inputs', bba, bma, uma, uba, state, k)
         process = subprocess.Popen(['../onebound',
                                     str(k_b),
                                     str(params.for_simulation['cb']),
@@ -149,7 +149,7 @@ def run_onebound(bba, bma, uma, uba, state):
                                     str(params.for_simulation['eqt']),
                                     str(params.for_simulation['force']),
                                     str(params.for_simulation['exp-unbinding-constant']),
-                                    str(bba), str(bma), str(uma), str(uba), str(state),
+                                    str(bba), str(bma), str(uma), str(uba), str(state), str(k),
         ], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
@@ -231,7 +231,7 @@ while Z < N:
                                             new_fma,
                                             new_nma,
                                             dynein.nba,
-                                            state)
+                                            state, k)
 
                         # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
                         #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
@@ -281,7 +281,7 @@ while Z < N:
                                             new_nma,
                                             new_fma,
                                             dynein.fba,
-                                            state)
+                                            state, k)
 
                         # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
                         #                 step['tx'], step['ty'], step['umx'], step['umy'],
