@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "MersenneTwister.h"
+#include "xorshift.h"
 
 #ifndef DYNEIN_STRUCT_H
 #define DYNEIN_STRUCT_H

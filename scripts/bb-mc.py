@@ -12,7 +12,7 @@ import bb_energy_distribution
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", type=float, help="displacement in nm", required=True)
+parser.add_argument("-L", type=float, help="displacement in nm", default=8)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
 args = parser.parse_args()
 

@@ -72,7 +72,7 @@ public:
   }
 
     // Re-seeding functions with same behavior as initializers
-    void seed( uint64_t oneSeed ) {
+  void seed( uint64_t oneSeed ) {
     for (int i=0; i<16; i++) {
       oneSeed = (oneSeed << 3) + (oneSeed >> 61); // a terribly crude PRNG
       oneSeed ^= 5; // to avoid getting all zeros when given a seed of 0
@@ -80,7 +80,7 @@ public:
     }
     p = oneSeed & 15;
   }
-    void seed() {
+  void seed() {
     // Seed the generator with an array from /dev/urandom if available
     // Otherwise use a combination of time(), pid, a pointer, and
     // clock() values
