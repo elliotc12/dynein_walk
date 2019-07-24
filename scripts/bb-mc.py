@@ -25,7 +25,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
                                     str(params.for_simulation['rm']),
                                     str(params.for_simulation['rb']),
                                     str(seed),
-                                    str(params.for_simulation['dt']),
+                                    str(dt),
                                     str(params.for_simulation['eqb']),
                                     str(params.for_simulation['eqmpre']),
                                     str(params.for_simulation['eqmpost']),
@@ -168,6 +168,7 @@ params = importlib.import_module("params")
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", type=float, help="displacement in nm", default=8)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
+parser.add_argument("--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 args = parser.parse_args()
 
 C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
@@ -175,7 +176,8 @@ C =  params.for_simulation['exp-unbinding-constant']         # exponential bindi
 Z = 0                # Partition Function
 N = 100              # Count
 L = args.L           # Length
-k_b = args.kb         # Binding Rate Constant
+k_b = args.kb        # Binding Rate Constant
+dt = args.dt
 k = [0]
 
 # Sums for averages
@@ -220,9 +222,9 @@ if bb_energy_distribution.eq_in_degrees:
 seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
-data_file = open("../data/mc_data_{0}_{1}.txt".format(int(L), k_b), "w")
-data_file.write("#********mc_data: k_b-{0}, L-{1}, dt-{2}********\n\n\n".format(k_b,
-                L, params.for_simulation['dt']))
+data_file = open("../data/mc_data_{0}_{1}_{2}.txt".format(int(L), k_b, dt), "w")
+data_file.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}********\n\n\n".format(L,
+                k_b, params.for_simulation['dt']))
 data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
 
 while Z < N:
