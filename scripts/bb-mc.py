@@ -9,123 +9,6 @@ import argparse
 import subprocess
 import bb_energy_distribution
 
-params = importlib.import_module("params")
-
-parser = argparse.ArgumentParser()
-parser.add_argument("-L", type=float, help="displacement in nm", default=8)
-parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
-args = parser.parse_args()
-
-C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
-
-Z = 0                # Partition Function
-N = 100              # Count
-L = args.L           # Length
-k_b = args.kb         # Binding Rate Constant
-k = 0
-
-# Sums for averages
-r_tx = 0                # Tail x position
-r_ty = 0                # Tail y position
-r_nmx = 0               # Near motor x position
-r_nmy = 0               # Near motor y position
-r_fmx = 0               # Far motor x position
-r_fmy = 0               # Far motor y position
-E = 0                   # Energy Average
-final_L = 0             # Final Displacements
-step_L = 0              # Step Lengths
-ob_t = 0                # One bound times
-
-b = 11.82733524          # thermodynamic beta from default_parameters.h
-
-rate_unbinding_leading = []                        # Leading (Far) Unbinding Rates
-rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
-
-max_rate_trailing = 0
-max_rate_leading = 0
-
-P_arr = []
-angles = [[] for i in range(2)]                # Pair of angles
-trailing_data = [[] for i in range(2)]
-leading_data = [[] for i in range(2)]
-
-r_t_arr = [[] for i in range(2)]                # Tail position array
-r_nm_arr = [[] for i in range(2)]               # Near motor position array
-r_fm_arr = [[] for i in range(2)]               # Far motor position array
-E_arr = []                                      # Energy Average array
-final_L_arr = []
-step_length = []
-ob_t_arr = []
-
-
-eqb_angle = params.for_simulation['eqb']
-if bb_energy_distribution.eq_in_degrees:
-        eqb_angle = eqb_angle*np.pi/180
-
-seed = 0 # The initial seed for the C++ onebound code.
-np.random.seed(0)
-
-def plot_bb_before_step(self, dynein_color_nm, dynein_color_fm):
-    """Plot just the figure of dynein for the both bound configuration given an
-    array of motor angles and an initial displacement.
-    """
-    fig = plt.figure()
-
-    ax = fig.add_subplot(1, 1, 1)
-    x_coords_nm = [self.r_nb[0],
-                    self.r_nm[0],
-                    self.r_t[0]]
-
-    y_coords_nm = [self.r_nb[1],
-                    self.r_nm[1],
-                    self.r_t[1]]
-
-    x_coords_fm = [self.r_t[0],
-                    self.r_fm[0],
-                    self.r_fb[0]]
-
-    y_coords_fm = [self.r_t[1],
-                    self.r_fm[1],
-                    self.r_fb[1]]
-
-
-    ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
-    ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
-    ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
-    ax.axis('off')
-    ax.axis('equal')
-    ax.legend()
-
-def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_color_nm, dynein_color_fm):
-    """Plot just the figure of dynein for the both bound configuration given an
-    array of motor angles and an initial displacement.
-    """
-    fig = plt.figure()
-
-    ax = fig.add_subplot(1, 1, 1)
-    x_coords_nm = [nbx,
-                    nmx,
-                    tx]
-
-    y_coords_nm = [nby,
-                    nmy,
-                    ty]
-
-    x_coords_fm = [tx,
-                    fmx,
-                    fbx]
-
-    y_coords_fm = [ty,
-                    fmy,
-                    fby]
-
-
-    ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
-    ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
-    ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
-    ax.axis('off')
-    ax.axis('equal')
-    ax.legend()
 
 def run_onebound(bba, bma, uma, uba, state, k):
         global seed
@@ -159,11 +42,189 @@ def run_onebound(bba, bma, uma, uba, state, k):
         assert(exit_code == 0);
         return output_data
 
-# bool = True
-# while bool == True:
-#     Z = 0
-#     final_L_arr = []
-#     print("OLD K_B:", k_b)
+
+def collect_bothbound_data(self, P, nma, fma):
+        P_arr.append(P)
+        angles[0].append(nma)
+        angles[1].append(fma)
+
+        # Calculation for averages
+        r_tx[0] += self.r_t[0]*P
+        r_ty[0] += self.r_t[1]*P
+        r_nmx[0] += self.r_nm[0]*P
+        r_nmy[0] += self.r_nm[1]*P
+        r_fmx[0] += self.r_fm[0]*P
+        r_fmy[0] += self.r_fm[1]*P
+        E[0] += self.E_total*P
+
+        r_t_arr[0].append(self.r_t[0])
+        r_t_arr[1].append(self.r_t[1])
+        r_nm_arr[0].append(self.r_nm[0])
+        r_nm_arr[1].append(self.r_nm[1])
+        r_fm_arr[0].append(self.r_fm[0])
+        r_fm_arr[1].append(self.r_fm[1])
+        E_arr.append(self.E_total)
+
+
+def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
+        print('\n\nbothbound angles ',bba, bma, uma, uba, state)
+        step = run_onebound(bba, bma, uma, uba, state, k[0])
+
+        if state == 0:
+            print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+            step_data[0].append(step['L']-L)
+            step_length.append(step['L']-L)
+            if step['L'] < 0:
+                final_ang_arr[0].append(step['uma'])
+                final_ang_arr[1].append(step['bma'])
+            else:
+                final_ang_arr[0].append(step['bma'])
+                final_ang_arr[1].append(step['uma'])
+        else:
+            print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+            step_data[0].append(step['L']+L)
+            step_length.append(step['L']+L)
+            if step['L'] > 0:
+                final_ang_arr[0].append(step['bma'])
+                final_ang_arr[1].append(step['uma'])
+            else:
+                final_ang_arr[0].append(step['uma'])
+                final_ang_arr[1].append(step['bma'])
+
+        final_L_arr.append(step['L'])
+        step_data[1].append(step['t'])
+        ob_t_arr.append(step['t'])
+        k[0] += 1
+
+
+def plot_bb_before_step(self, dynein_color_nm, dynein_color_fm):
+        """Plot just the figure of dynein for the both bound configuration given an
+        array of motor angles and an initial displacement.
+        """
+        fig = plt.figure()
+
+        ax = fig.add_subplot(1, 1, 1)
+        x_coords_nm = [self.r_nb[0],
+                        self.r_nm[0],
+                        self.r_t[0]]
+
+        y_coords_nm = [self.r_nb[1],
+                        self.r_nm[1],
+                        self.r_t[1]]
+
+        x_coords_fm = [self.r_t[0],
+                        self.r_fm[0],
+                        self.r_fb[0]]
+
+        y_coords_fm = [self.r_t[1],
+                        self.r_fm[1],
+                        self.r_fb[1]]
+
+
+        ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
+        ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
+        ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
+        ax.axis('off')
+        ax.axis('equal')
+        ax.legend()
+
+
+def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_color_nm, dynein_color_fm):
+        """Plot just the figure of dynein for the both bound configuration given an
+        array of motor angles and an initial displacement.
+        """
+        fig = plt.figure()
+
+        ax = fig.add_subplot(1, 1, 1)
+        x_coords_nm = [nbx,
+                        nmx,
+                        tx]
+
+        y_coords_nm = [nby,
+                        nmy,
+                        ty]
+
+        x_coords_fm = [tx,
+                        fmx,
+                        fbx]
+
+        y_coords_fm = [ty,
+                        fmy,
+                        fby]
+
+
+        ax.plot(x_coords_nm, y_coords_nm, color= dynein_color_nm, linewidth=3)
+        ax.plot(x_coords_fm, y_coords_fm, color= dynein_color_fm, linewidth=3)
+        ax.plot([-6, 30], [0, 0], color = 'black', linestyle='-', linewidth=3)
+        ax.axis('off')
+        ax.axis('equal')
+        ax.legend()
+
+
+
+
+params = importlib.import_module("params")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-L", type=float, help="displacement in nm", default=8)
+parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
+args = parser.parse_args()
+
+C =  params.for_simulation['exp-unbinding-constant']         # exponential binding constant from paper_params.py April 12
+
+Z = 0                # Partition Function
+N = 100              # Count
+L = args.L           # Length
+k_b = args.kb         # Binding Rate Constant
+k = [0]
+
+# Sums for averages
+r_tx = [0]                # Tail x position
+r_ty = [0]                # Tail y position
+r_nmx = [0]               # Near motor x position
+r_nmy = [0]               # Near motor y position
+r_fmx = [0]               # Far motor x position
+r_fmy = [0]               # Far motor y position
+E = [0]                   # Energy Average
+final_L = 0             # Final Displacements
+step_L = 0              # Step Lengths
+ob_t = 0                # One bound times
+
+b = 11.82733524          # thermodynamic beta from default_parameters.h
+
+rate_unbinding_leading = []                        # Leading (Far) Unbinding Rates
+rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
+
+max_rate_trailing = 0
+max_rate_leading = 0
+
+P_arr = []
+angles = [[] for i in range(2)]                # Pair of angles
+trailing_data = [[] for i in range(2)]
+leading_data = [[] for i in range(2)]
+
+r_t_arr = [[] for i in range(2)]                # Tail position array
+r_nm_arr = [[] for i in range(2)]               # Near motor position array
+r_fm_arr = [[] for i in range(2)]               # Far motor position array
+E_arr = []                                      # Energy Average array
+final_L_arr = []
+final_ang_arr = [[] for i in range(2)]
+step_length = []
+ob_t_arr = []
+
+
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
+
+seed = 0 # The initial seed for the C++ onebound code.
+np.random.seed(0)
+
+data_file = open("../data/mc_data_{0}_{1}.txt".format(int(L), k_b), "w")
+data_file.write("#********mc_data: k_b-{0}, L-{1}, dt-{2}********\n\n".format(k_b,
+                L, params.for_simulation['dt']))
+data_file.write("#init L\t\t init nma\t init fma\t final L\t final nma\t final fma\t step length\t t\n")
+
 while Z < N:
         # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
@@ -196,42 +257,16 @@ while Z < N:
                 new_fma = fma-(np.pi-dynein.fba)
 
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                        k += 1
                         # FARBOUND State
                         state = 1
-                        P_arr.append(P)
-                        angles[0].append(nma)
-                        angles[1].append(fma)
 
-                        # Calculation for averages
-                        r_tx += dynein.r_t[0]*P
-                        r_ty += dynein.r_t[1]*P
-                        r_nmx += dynein.r_nm[0]*P
-                        r_nmy += dynein.r_nm[1]*P
-                        r_fmx += dynein.r_fm[0]*P
-                        r_fmy += dynein.r_fm[1]*P
-                        E += dynein.E_total*P
+                        collect_bothbound_data(dynein, P, nma, fma)
 
-                        r_t_arr[0].append(dynein.r_t[0])
-                        r_t_arr[1].append(dynein.r_t[1])
-                        r_nm_arr[0].append(dynein.r_nm[0])
-                        r_nm_arr[1].append(dynein.r_nm[1])
-                        r_fm_arr[0].append(dynein.r_fm[0])
-                        r_fm_arr[1].append(dynein.r_fm[1])
-                        E_arr.append(dynein.E_total)
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
-                        print('\n\ntrailing',dynein.fba,
-                                            new_fma,
-                                            new_nma,
-                                            dynein.nba,
-                                            state)
-                        step = run_onebound(dynein.fba,
-                                            new_fma,
-                                            new_nma,
-                                            dynein.nba,
-                                            state, k)
+                        collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
+                                                L, trailing_data)
 
                         # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
                         #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
@@ -239,49 +274,21 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-                        trailing_data[0].append(step['L']+L)
-                        trailing_data[1].append(step['t'])
-                        final_L_arr.append(step['L'])
-                        step_length.append(step['L']+L)
-                        ob_t_arr.append(step['t'])
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:f}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\n".format(int(L),
+                                        nma, fma, final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
+                                        step_length[k[0]-1], ob_t_arr[k[0]-1]))
 
                 if np.random.random() < prob_leading:
-                        k += 1
                         # NEARBOUND State
                         state = 0
-                        P_arr.append(P)
-                        angles[0].append(nma)
-                        angles[1].append(fma)
 
-                        # Calculation for averages
-                        r_tx += dynein.r_t[0]*P
-                        r_ty += dynein.r_t[1]*P
-                        r_nmx += dynein.r_nm[0]*P
-                        r_fmx += dynein.r_fm[0]*P
-                        E += dynein.E_total*P
+                        collect_bothbound_data(dynein, P, nma, fma)
 
-                        r_t_arr[0].append(dynein.r_t[0])
-                        r_t_arr[1].append(dynein.r_t[1])
-                        r_nm_arr[0].append(dynein.r_nm[0])
-                        r_nm_arr[1].append(dynein.r_nm[1])
-                        r_fm_arr[0].append(dynein.r_fm[0])
-                        r_fm_arr[1].append(dynein.r_fm[1])
-                        E_arr.append(dynein.E_total)
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
 
-
-                        print('\n\nleading', dynein.nba,
-                                            new_nma,
-                                            new_fma,
-                                            dynein.fba,
-                                            state)
-                        step = run_onebound(dynein.nba,
-                                            new_nma,
-                                            new_fma,
-                                            dynein.fba,
-                                            state, k)
+                        collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
+                                                L, leading_data)
 
                         # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
                         #                 step['tx'], step['ty'], step['umx'], step['umy'],
@@ -289,31 +296,12 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-                        leading_data[0].append(step['L']-L)
-                        leading_data[1].append(step['t'])
-                        final_L_arr.append(step['L'])
-                        step_length.append(step['L']-L)
-                        ob_t_arr.append(step['t'])
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:f}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\n".format(int(L),
+                                        nma, fma, final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
+                                        step_length[k[0]-1], ob_t_arr[k[0]-1]))
 
-                    #FIXME! Does not work
-                    # print("Old K_B:", k_b)
-                    # print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
-                    # for i in range(0, len(final_L_arr)):
-                    #     print("i:", i)
-                    #     if i == len(final_L_arr) - 1:
-                    #         bool = False
-                    #         break
-                    #     for j in range(i+1, len(final_L_arr)):
-                    #         print("j:", j)
-                    #         if final_L_arr[i] == final_L_arr[j]:
-                    #             k_b = k_b * 1.3
-                    #             Z = 30
-                    #             break
-                    #     break
+data_file.close()
 
-
-# print("FINAL K_B:", k_b)
 print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
 for i in range(len(final_L_arr)):
     final_L += final_L_arr[i]*P_arr[i]
@@ -340,13 +328,13 @@ for i in range(len(final_L_arr)):
 ### What to export, and in what format?
 # Histograms of final displacements?
 
-tx = r_tx/Z          # Tail x
-ty = r_ty/Z          # Tail y
-nmx = r_nmx/Z        # Near motor x
-nmy = r_nmy/Z        # Near Motor y
-fmx = r_fmx/Z        # Far motor x
-fmy = r_fmy/Z        # Far Motor y
-E_avg = E/Z          # Average energy
+tx = r_tx[0]/Z          # Tail x
+ty = r_ty[0]/Z          # Tail y
+nmx = r_nmx[0]/Z        # Near motor x
+nmy = r_nmy[0]/Z        # Near Motor y
+fmx = r_fmx[0]/Z        # Far motor x
+fmy = r_fmy[0]/Z        # Far Motor y
+E_avg = E[0]/Z          # Average energy
 mean_final_L = final_L/Z
 mean_step_L = step_L/Z
 mean_obt = ob_t/Z

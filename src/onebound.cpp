@@ -99,12 +99,12 @@ int main(int argc, char** argv) {
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
-  FILE *log_f = NULL;
-  if (k == 1) {
-    log_f = fopen("raw-data-1.dat", "w");
-  } else if (k == 3) {
-    log_f = fopen("raw-data-3.dat", "w");
-  }
+  // FILE *log_f = NULL;
+  // if (k == 1) {
+  //   log_f = fopen("raw-data-1.dat", "w");
+  // } else if (k == 3) {
+  //   log_f = fopen("raw-data-3.dat", "w");
+  // }
   while(stillStepping){
 
     // FIXME consider doing *one* move before checking binding
@@ -120,8 +120,8 @@ int main(int argc, char** argv) {
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
               iter, dynein->get_bbx()-dynein->get_ubx(),
               dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
-      printf("{\n  'L': %g,\n  't': %g,\n  'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g,\n  'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
-              dynein->get_bbx()-dynein->get_ubx(), t, dynein->get_bbx(), dynein->get_bby(),
+      printf("{\n  'L': %g,\n  't': %g,\n  'bma': %g,\n 'uma': %g,\n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g,\n  'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
+              dynein->get_bbx()-dynein->get_ubx(), t, dynein->get_bma(), dynein->get_uma(), dynein->get_bbx(), dynein->get_bby(),
               dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
               dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
@@ -129,24 +129,25 @@ int main(int argc, char** argv) {
     } else if (rand->rand() >= binding_prob) {    // else if vs. else makes diff data (?)
       t += dt;  // iterate time
       iter ++;
+
       // if (iter < 4 || iter % 1000000 == 0) {
       //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
       //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
       // }
-      if (k == 1) {
-        fprintf(log_f, "%g %g %g %g %g\n",
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-                dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-        // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-        //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      }
-      if (k == 3) {
-        fprintf(log_f, "%g %g %g %g %g\n",
-                dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-                dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-        // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-        //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      }
+      // if (k == 1) {
+      //   fprintf(log_f, "%g %g %g %g %g\n",
+      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+      //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+      //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // }
+      // if (k == 3) {
+      //   fprintf(log_f, "%g %g %g %g %g\n",
+      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+      //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+      //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+      // }
 
       double old_bba = dynein->get_bba();
       double old_bma = dynein->get_bma();
