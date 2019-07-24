@@ -24,7 +24,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
                                     str(params.for_simulation['rt']),
                                     str(params.for_simulation['rm']),
                                     str(params.for_simulation['rb']),
-                                    str(seed), # FIXME
+                                    str(seed),
                                     str(params.for_simulation['dt']),
                                     str(params.for_simulation['eqb']),
                                     str(params.for_simulation['eqmpre']),
@@ -94,7 +94,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         final_L_arr.append(step['L'])
         step_data[1].append(step['t'])
         ob_t_arr.append(step['t'])
-        k[0] += 1
+        k[0]+=1
 
 
 def plot_bb_before_step(self, dynein_color_nm, dynein_color_fm):
@@ -221,9 +221,9 @@ seed = 0 # The initial seed for the C++ onebound code.
 np.random.seed(0)
 
 data_file = open("../data/mc_data_{0}_{1}.txt".format(int(L), k_b), "w")
-data_file.write("#********mc_data: k_b-{0}, L-{1}, dt-{2}********\n\n".format(k_b,
+data_file.write("#********mc_data: k_b-{0}, L-{1}, dt-{2}********\n\n\n".format(k_b,
                 L, params.for_simulation['dt']))
-data_file.write("#init L\t\t init nma\t init fma\t final L\t final nma\t final fma\t step length\t t\n")
+data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
 
 while Z < N:
         # Making random motor angles
@@ -260,13 +260,16 @@ while Z < N:
                         # FARBOUND State
                         state = 1
 
+                        # while True:
                         collect_bothbound_data(dynein, P, nma, fma)
 
-                        # plot_bb_before_step(dynein, 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
                         collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
                                                 L, trailing_data)
+                            # if final_L_arr[k[0]-1] < -8 or -8 < final_L_arr[k[0]-1] < 8 or 8 < final_L_arr[k[0]-1]:
+                            #     break
+                        # plot_bb_before_step(dynein, 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
                         # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
                         #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
@@ -274,21 +277,24 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:f}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\n".format(int(L),
-                                        nma, fma, final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
+                                        nma, fma, "FARBOUND", final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
                                         step_length[k[0]-1], ob_t_arr[k[0]-1]))
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
                         state = 0
 
+                        # while True:
                         collect_bothbound_data(dynein, P, nma, fma)
 
-                        # plot_bb_before_step(dynein, 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
 
                         collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
                                                 L, leading_data)
+                            # if final_L_arr[k[0]-1] < -8 or -8 < final_L_arr[k[0]-1] < 8 or 8 < final_L_arr[k[0]-1]:
+                            #     break
+                        # plot_bb_before_step(dynein, 'red', 'blue')
+                        # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
 
                         # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
                         #                 step['tx'], step['ty'], step['umx'], step['umy'],
@@ -296,9 +302,10 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:f}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\n".format(int(L),
-                                        nma, fma, final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
+                                        nma, fma, "NEARBOUND", final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
                                         step_length[k[0]-1], ob_t_arr[k[0]-1]))
+
 
 data_file.close()
 
