@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
-    if (binding_prob > 0 && rand->rand() < binding_prob) {
+    if (binding_prob > 0 && rand->rand() < binding_prob && abs(dynein->get_bbx()-dynein->get_ubx()) != 8 ) {
       // We are going to bind!
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
               iter, dynein->get_bbx()-dynein->get_ubx(),
