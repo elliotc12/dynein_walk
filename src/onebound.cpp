@@ -96,7 +96,6 @@ int main(int argc, char** argv) {
   long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
-  bool test = false;
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
 
@@ -115,7 +114,7 @@ int main(int argc, char** argv) {
     //fprintf(stderr, "The time is %g\n", t);
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
-    
+
     if (binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
