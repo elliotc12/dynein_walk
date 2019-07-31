@@ -15,7 +15,7 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
 				   bothbound_forces* internal_test,
 				   bothbound_forces* brownian_test,
 				   bothbound_equilibrium_angles* eq_angles,
-				   MTRand* mtrand) {
+				   Rand* mtrand) {
   nbx = nbx_init;
   nby = nby_init;
 
@@ -38,7 +38,7 @@ Dynein_bothbound::Dynein_bothbound(double nma_init, double fma_init, double nbx_
   update_velocities();
 }
 
-Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* mtrand, bool am_cool_with_nans) {
+Dynein_bothbound::Dynein_bothbound(Dynein_onebound* old_dynein, Rand* mtrand, bool am_cool_with_nans) {
   am_testing_binding = am_cool_with_nans;
   // out of old dyn
   double bad_nma, bad_fma;

@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 
   // we will probably need Jin's code to output which foot steps
   // do we care about nearbound or farbound
-  MTRand* rand = new MTRand(k); // FIXME
+  Rand* rand = new Rand(k); // FIXME
 
   // Does this onebound resemble with the bothbound orientation
 

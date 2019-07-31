@@ -28,7 +28,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
     signal(SIGFPE, FPE_signal_handler);
   }
 
-  MTRand* rand = new MTRand(rand_seed);
+  Rand* rand = new Rand(rand_seed);
 
   Dynein_onebound *dyn_ob;
   Dynein_bothbound *dyn_bb;
@@ -44,7 +44,7 @@ void simulate(double runtime, double rand_seed, State init_state, double* init_p
 				  NULL,                  // internal forces
 				  NULL,                  // brownian forces
 				  NULL,                  // equilibrium angles
-				  rand);                 // MTRand
+				  rand);                 // Rand
   } else {
     dyn_ob = new Dynein_onebound(
 				 init_position[0],    // bba_init

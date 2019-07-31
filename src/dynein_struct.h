@@ -4,7 +4,6 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "MersenneTwister.h"
 #include "xorshift.h"
 
 #ifndef DYNEIN_STRUCT_H
@@ -134,11 +133,11 @@ public:
 		  onebound_forces *internal_test,
 		  onebound_forces *brownian_test,
 		  onebound_equilibrium_angles* eq_angles,
-		  MTRand* mtrand);
+		  Rand* mtrand);
 
-  Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* rand, State s);
+  Dynein_onebound(Dynein_bothbound* old_dynein, Rand* rand, State s);
 
-  MTRand *rand;
+  Rand *rand;
 
   /** Onebound functions **/
   void set_bba(double d);
@@ -233,9 +232,9 @@ public:
 		   double nby_init, double L_init,
 		   bothbound_forces* internal_test, bothbound_forces* brownian_test,
 		   bothbound_equilibrium_angles* eq_angles,
-		   MTRand* mtrand);
+		   Rand* mtrand);
 
-  Dynein_bothbound(Dynein_onebound* old_dynein, MTRand* rand, bool am_cool_with_nans=false);
+  Dynein_bothbound(Dynein_onebound* old_dynein, Rand* rand, bool am_cool_with_nans=false);
 
   void set_nma(double d);
   void set_fma(double d);
@@ -327,7 +326,7 @@ private:
   void update_brownian_forces();
   void update_internal_forces();
 
-  MTRand *rand;
+  Rand *rand;
 
   double nma, fma;  //Bothbound coordinates
   double nbx, nby;

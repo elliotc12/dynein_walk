@@ -14,7 +14,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 State s, onebound_forces *internal_test,
 				 onebound_forces *brownian_test,
 				 onebound_equilibrium_angles* eq_angles,
-				 MTRand* mtrand) {
+				 Rand* mtrand) {
   bbx = bbx_init;
   bby = bby_init;
 
@@ -38,7 +38,7 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   update_velocities();
 }
 
-Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, MTRand* mtrand, State s) {
+Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, Rand* mtrand, State s) {
   if (s == NEARBOUND) {
     bbx = old_dynein->get_nbx();
     bby = 0;

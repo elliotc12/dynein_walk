@@ -31,6 +31,13 @@ static inline uint64_t rotl(const uint64_t x, int k) {
 
 static uint64_t s[4];
 
+void seed_xoshiro(int seed) {
+  s[0] = seed;
+  s[1] = seed + 1;
+  s[2] = seed + 2;
+  s[3] = seed + 3;
+}
+
 uint64_t next(void) {
 	const uint64_t result_plus = s[0] + s[3];
 
@@ -48,6 +55,22 @@ uint64_t next(void) {
 	return result_plus;
 }
 
+double rand_double() {
+  return double(next()) * (1.0/4294967295.0);
+}
+
+inline void gauss2(double scale, double *xx, double *yy) {
+  double x, y, r2;
+  do {
+    x = 2*rand_double() - 1;
+    y = 2*rand_double() - 1;
+    r2 = x*x + y*y;
+  } while(r2 >= 1 || r2 == 0);
+  double fac = scale*sqrt(-2*log(r2)/r2);
+  *xx = x*fac;
+  *yy = y*fac;
+}
+
 
 /* This is the jump function for the generator. It is equivalent
    to 2^128 calls to next(); it can be used to generate 2^128
@@ -60,7 +83,7 @@ void jump(void) {
 	uint64_t s1 = 0;
 	uint64_t s2 = 0;
 	uint64_t s3 = 0;
-	for(int i = 0; i < sizeof JUMP / sizeof *JUMP; i++)
+	for(uint64_t i = 0; i < sizeof JUMP / sizeof *JUMP; i++)
 		for(int b = 0; b < 64; b++) {
 			if (JUMP[i] & UINT64_C(1) << b) {
 				s0 ^= s[0];
@@ -90,7 +113,7 @@ void long_jump(void) {
 	uint64_t s1 = 0;
 	uint64_t s2 = 0;
 	uint64_t s3 = 0;
-	for(int i = 0; i < sizeof LONG_JUMP / sizeof *LONG_JUMP; i++)
+	for(uint64_t i = 0; i < sizeof LONG_JUMP / sizeof *LONG_JUMP; i++)
 		for(int b = 0; b < 64; b++) {
 			if (LONG_JUMP[i] & UINT64_C(1) << b) {
 				s0 ^= s[0];

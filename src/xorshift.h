@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 class Rand {
 public:
@@ -69,6 +70,17 @@ public:
   }
   double rand() {
     return ldexp(rand64(), -64);
+  }
+  void gauss2(double scale, double *xx, double *yy) {
+    double x, y, r2;
+    do {
+      x = 2*this->rand() - 1;
+      y = 2*this->rand() - 1;
+      r2 = x*x + y*y;
+    } while(r2 >= 1 || r2 == 0);
+    double fac = scale*sqrt(-2*log(r2)/r2);
+    *xx = x*fac;
+    *yy = y*fac;
   }
 
     // Re-seeding functions with same behavior as initializers

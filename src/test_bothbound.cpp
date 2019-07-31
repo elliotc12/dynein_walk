@@ -97,7 +97,7 @@ int main(int argvc, char **argv) {
   }
 
   double R = gm*sqrt(2*kb*T/(gm*dt)); // Brownian force constant
-  MTRand* rand = new MTRand(RAND_INIT_SEED);
+  Rand* rand = new Rand(RAND_INIT_SEED);
   int num_failures = 0;
 
   bothbound_forces no_forces  = {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
@@ -120,7 +120,7 @@ int main(int argvc, char **argv) {
 			    NULL,              // internal forces
 			    &no_forces,        // brownian forces
 			    &line_eq_angles,   // equilibrium angles
-			    rand);             // MTRand
+			    rand);             // Rand
 
     printf("\tTesting coordinate system:\n");
     if (!test("nbx zero?", dyn_bb.get_nbx(), 0, 1e-6)) num_failures++;
@@ -165,7 +165,7 @@ int main(int argvc, char **argv) {
 			     &no_forces,    // internal forces
 			     &out_forces,   // brownian forces
 			     NULL,          // equilibrium angles
-			     rand);         // MTRand
+			     rand);         // Rand
 
      printf("\tTesting coordinate definitions:\n");
      if (!test("nmx = zero?", dyn_bb.get_nmx(), 0)) num_failures++;
@@ -226,7 +226,7 @@ int main(int argvc, char **argv) {
 			    &no_forces,       // internal forces
 			    &x_forces,        // brownian forces
 			    NULL,             // equilibrium angles
-			    rand);            // MTRand
+			    rand);            // Rand
 
     printf("\tTesting time derivatives:\n");
     if (!test_noteq("d_nmx_dt nonzero?", dyn_bb.get_d_nmx(), 0)) num_failures++;
@@ -247,7 +247,7 @@ int main(int argvc, char **argv) {
 				 NULL,                   // internal forces
 				 &no_forces,             // brownian forces
 				 NULL,                   // equilibrium angles
-				 rand);                  // MTRand
+				 rand);                  // Rand
 
     Dynein_bothbound right_dyn_bb(second_nma,             // nma_init
 				  first_nma,              // fma_init
@@ -257,7 +257,7 @@ int main(int argvc, char **argv) {
 				  NULL,                   // internal forces
 				  &no_forces,             // brownian forces
 				  NULL,                   // equilibrium angles
-				  rand);                  // MTRand
+				  rand);                  // Rand
 
     printf("\tTesting coordinate definitions:\n");
     if (!test("left bx coords equal?",
@@ -338,7 +338,7 @@ int main(int argvc, char **argv) {
 			  NULL,          // internal forces
 			  &no_forces,    // brownian forces
 			  NULL,          // equilibrium angles
-			  rand);         // MTRand
+			  rand);         // Rand
 
     Dynein_bothbound bb_2(4.6*M_PI/6 + poke, // nma_init
 			  7.1*M_PI/6 + poke, // fma_init
@@ -348,7 +348,7 @@ int main(int argvc, char **argv) {
 			  NULL,            // internal forces
 			  &no_forces,      // brownian forces
 			  NULL,            // equilibrium angles
-			  rand);           // MTRand
+			  rand);           // Rand
 
     double d_PE = bb_2.get_PE() - bb_1.get_PE();
 

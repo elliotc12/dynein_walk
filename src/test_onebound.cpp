@@ -90,7 +90,7 @@ int main() {
   double uma_eq = onebound_post_powerstroke_internal_angles.uma;
 
   double R = sqrt(2*kb*T/(gm*dt)); // Brownian force constant
-  MTRand* rand = new MTRand(RAND_INIT_SEED);
+  Rand* rand = new Rand(RAND_INIT_SEED);
   int num_failures = 0;
 
   onebound_forces no_forces    = {0,0,0,0,0,0,0,0,0,0}; // bbx, bby, bmx, bmy, ...
@@ -112,7 +112,7 @@ int main() {
 			     &no_forces,                             // internal forces
 			     &no_forces,                             // brownian forces
 		             NULL,                                   // eq angles
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     printf("Testing velocities:\n");
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
@@ -143,7 +143,7 @@ int main() {
 			     &no_forces,
 			     &no_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is ubx zero", dyn_ob->get_ubx(), 0)) num_failures++;
     if (!test("Is umx zero", dyn_ob->get_umx(), 0)) num_failures++;
@@ -185,7 +185,7 @@ int main() {
 			     &no_forces,
 			     &no_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
     
     if (!test("Is uby zero", dyn_ob->get_uby(), 0)) num_failures++;
     if (!test("Is umy zero", dyn_ob->get_umy(), 0)) num_failures++;
@@ -223,7 +223,7 @@ int main() {
 			     &no_forces,
 			     &right_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     if (!test_greater("Is d_bmx positive", dyn_ob->get_d_bmx(), 0)) num_failures++;
@@ -248,7 +248,7 @@ int main() {
 			     &no_forces,
 			     &up_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     if (!test("Is d_bmx zero", dyn_ob->get_d_bmx(), 0)) num_failures++;
@@ -274,7 +274,7 @@ int main() {
 			     &no_forces,
 			     &right_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     // if (!test("Is d_bmx zero", dyn_ob->get_d_bmx(), 0)) num_failures++; // NaN failing; not necessarily bad
@@ -300,7 +300,7 @@ int main() {
 			     &no_forces,
 			     &up_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     // if (!test("Is d_bmx zero", dyn_ob->get_d_bmx(), 0)) num_failures++; // NaN failing
@@ -328,7 +328,7 @@ int main() {
 			     &no_forces,
 			     &right_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     if (!test_noteq("Is d_bmx nonzero", dyn_ob->get_d_bmx(), 0)) num_failures++;
@@ -349,7 +349,7 @@ int main() {
 			     &left_forces,
 			     &no_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Is d_bbx zero", dyn_ob->get_d_bbx(), 0)) num_failures++;
     if (!test_noteq("Is d_bmx nonzero", dyn_ob->get_d_bmx(), 0)) num_failures++;
@@ -370,7 +370,7 @@ int main() {
 			     &no_forces,
 			     &right_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     Dynein_onebound* dyn_ob_minus = new Dynein_onebound(bba_eq,
                              bba_eq + bma_eq - M_PI,
@@ -382,7 +382,7 @@ int main() {
 			     &left_forces,
 			     &no_forces,
 			     NULL,
-			     rand);                                  // MTRand
+			     rand);                                  // Rand
 
     if (!test("Are d_bmxs equal^opposite", dyn_ob_plus->get_d_bmx(), -dyn_ob_minus->get_d_bmx())) num_failures++;
     if (!test("Are d_umxs equal^opposite", dyn_ob_plus->get_d_umx(), -dyn_ob_minus->get_d_umx())) num_failures++;

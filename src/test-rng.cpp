@@ -1,9 +1,9 @@
-#include "MersenneTwister.h"
+#include "xorshift.h"
 #include <stdio.h>
 
 int main() {
   double RAND_INIT_SEED = 0;
-  MTRand* rand = new MTRand(RAND_INIT_SEED);
+  Rand* rand = new Rand(RAND_INIT_SEED);
   long long count = 0;
   long long i = 0;
   long long iters = 1e14;
