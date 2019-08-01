@@ -48,11 +48,12 @@ public:
 		return (x << k) | (x >> (64 - k));
 	}
 
-	void seed(int seed) {
-	  s[0] = seed;
-	  s[1] = seed + 1;
-	  s[2] = seed + 2;
-	  s[3] = seed + 3;
+	void seed(uint64_t seed) {
+          for (int i=0; i<4; i++) {
+            seed = (seed << 3) + (seed >> 61); // a terribly crude PRNG
+            seed ^= 5; // to avoid getting all zeros when given a seed of 0
+            s[i] = seed;
+          }
 	}
 
 	uint64_t next(void) {
