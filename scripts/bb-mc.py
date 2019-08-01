@@ -55,26 +55,26 @@ def collect_bothbound_data(self, P, nma, fma):
         """
         P_arr.append(P)
         # Storing bb angles
-        angles[0].append(nma)
-        angles[1].append(fma)
+        angles['nma'].append(nma)
+        angles['fma'].append(fma)
 
         # Sum calculation for averages
-        r_tx[0] += self.r_t[0]*P
-        r_ty[0] += self.r_t[1]*P
-        r_nmx[0] += self.r_nm[0]*P
-        r_nmy[0] += self.r_nm[1]*P
-        r_fmx[0] += self.r_fm[0]*P
-        r_fmy[0] += self.r_fm[1]*P
-        E[0] += self.E_total*P
+        r_t['x_avg'] += self.r_t[0]*P
+        r_t['y_avg'] += self.r_t[1]*P
+        r_nm['x_avg'] += self.r_nm[0]*P
+        r_nm['y_avg'] += self.r_nm[1]*P
+        r_fm['x_avg'] += self.r_fm[0]*P
+        r_fm['y_avg'] += self.r_fm[1]*P
+        E['avg'] += self.E_total*P
 
         # Storing data for histograms
-        r_t_arr[0].append(self.r_t[0])
-        r_t_arr[1].append(self.r_t[1])
-        r_nm_arr[0].append(self.r_nm[0])
-        r_nm_arr[1].append(self.r_nm[1])
-        r_fm_arr[0].append(self.r_fm[0])
-        r_fm_arr[1].append(self.r_fm[1])
-        E_arr.append(self.E_total)
+        r_t['x'].append(self.r_t[0])
+        r_t['y'].append(self.r_t[1])
+        r_nm['x'].append(self.r_nm[0])
+        r_nm['y'].append(self.r_nm[1])
+        r_fm['x'].append(self.r_fm[0])
+        r_fm['y'].append(self.r_fm[1])
+        E['bb'].append(self.E_total)
 
 
 def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
@@ -84,30 +84,34 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         print('\n\nbothbound angles ',bba, bma, uma, uba, state)
         step = run_onebound(bba, bma, uma, uba, state, k[0])
 
-        if state == 0:      # NEARBOUND State
+        if state == 0:
+            # NEARBOUND State - Leading step ddata
             print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-            step_data['L'].append(step['L'])        # Just leading step data
-            step_data['step_length'].append(step['L']-L)        # Just leading step data
-            step_length.append(step['L']-L)         # Contains both steps data
+            step_data['L'].append(step['L'])
+            step_data['step_length'].append(step['L']-L)
+            final_data['step_length'].append(step['L']-L)         # Contains both steps data
+
             # Storing final motor angles
-            if step['L'] < 0:
-                final_ang_arr[0].append(step['uma'])
-                final_ang_arr[1].append(step['bma'])
+            if step['L'] < 0:   #FIXME uma != nma !!! need to calculate new bb nma
+                final_data['nma'].append(step['uma'])
+                final_data['fma'].append(step['bma'])
             else:
-                final_ang_arr[0].append(step['bma'])
-                final_ang_arr[1].append(step['uma'])
-        else:               # FARBOUND State
+                final_data['nma'].append(step['bma'])
+                final_data['fma'].append(step['uma'])
+        else:
+            # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-            step_data['L'].append(step['L'])        # Just trailing step data
-            step_data['step_length'].append(step['L']+L)        # Just trailing step data
-            step_length.append(step['L']+L)         # Contains both steps data
+            step_data['L'].append(step['L'])
+            step_data['step_length'].append(step['L']+L)
+            final_data['step_length'].append(step['L']+L)         # Contains both steps data
+
             # Storing final motor angles
             if step['L'] > 0:
-                final_ang_arr[0].append(step['bma'])
-                final_ang_arr[1].append(step['uma'])
+                final_data['nma'].append(step['bma'])
+                final_data['fma'].append(step['uma'])
             else:
-                final_ang_arr[0].append(step['uma'])
-                final_ang_arr[1].append(step['bma'])
+                final_data['nma'].append(step['uma'])
+                final_data['fma'].append(step['bma'])
 
         final_L_arr.append(step['L'])       # Final L array
         step_data['t'].append(step['t'])      # Specific type of step time array
@@ -197,13 +201,14 @@ k_b = args.kb        # Binding Rate Constant
 dt = args.dt         # Time Step
 
 # Creating Data File for All L
-data_file = open("../data/mc_data_{0}_{1}.txt".format(k_b, dt), "w")
-data_file.write("#********mc_data: k_b-{0}, dt-{1}********\n\n\n".format(k_b, params.for_simulation['dt']))
-data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
+# data_file = open("../data/mc_data_{0}_{1}.txt".format(k_b, dt), "w")
+# data_file.write("#********mc_data: k_b-{0}, dt-{1}********\n\n\n".format(k_b, params.for_simulation['dt']))
+# data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
 
 
 # for L in range(1, 33):
 Z = 0                # Partition Function
+N = args.N           # Count
 L = args.L           # Initial Length
 k = [0]              # Dynein Count & RNG Seed
 
@@ -227,23 +232,41 @@ rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
 max_rate_trailing = 0
 max_rate_leading = 0
 
+# Bothbound Data
 P_arr = []
-angles = [[] for i in range(2)]                # Pair of angles
-trailing_data = { # Just trailing data
+angles = {'nma': [],'fma': []}          # Pair of Angles
+r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
+r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
+r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
+E = {'bb': [], 'avg': 0}               # Energy data
+rate_unbinding = {      # Unbinding rate
+        'trailing': [],
+        'leading': []
+}
+prob_unbinding = {      # Unbinding probability
+        'trailing': [],
+        'leading': []
+}
+
+# Onebound Data
+trailing_data = {   # Trailing step data
         'L': [],
         't': [],
         'step_length': [],
 }
-leading_data = { # Just leading data
+leading_data = {    # Leading step data
+        'L': [],
+        't': [],
+        'step_length': [],
+}
+final_data = {
+        'nma': [],
+        'fma': [],
         'L': [],
         't': [],
         'step_length': [],
 }
 
-r_t_arr = [[] for i in range(2)]                # Tail position array
-r_nm_arr = [[] for i in range(2)]               # Near motor position array
-r_fm_arr = [[] for i in range(2)]               # Far motor position array
-E_arr = []                                      # Bothbound Energy array
 final_L_arr = []                                # Final L array
 final_ang_arr = [[] for i in range(2)]          # Final motor angles array
 step_length = []                                # Step length array
@@ -257,12 +280,12 @@ if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
 # Creating Data File for Specific L
-# data_file = open("../data/mc_data_{0}_{1}_{2}.txt".format(int(L), k_b, dt), "w")
-# data_file.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}********\n\n\n".format(L,
-#                 k_b, params.for_simulation['dt']))
-# data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
+data_file = open("../data/mc_data_{0}_{1}_{2}.txt".format(int(L), k_b, dt), "w")
+data_file.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}********\n\n\n".format(L,
+                k_b, params.for_simulation['dt']))
+data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
 
-while Z < args.N:
+while Z < N:
         # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
         fma = np.random.uniform(0, 2*np.pi)
@@ -279,13 +302,16 @@ while Z < args.N:
 
                 rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                 rate_leading = np.exp(C*(dynein.fba - eqb_angle))
-                rate_unbinding_trailing.append(rate_trailing)
-                rate_unbinding_leading.append(rate_leading)
+                rate_unbinding['trailing'].append(rate_trailing)
+                rate_unbinding['leading'].append(rate_leading)
                 max_rate_leading = max(rate_leading, max_rate_leading)
                 max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
                 prob_trailing = P*rate_trailing
                 prob_leading = P*rate_leading
+                # FIXME Maybe should take data after if statements below
+                prob_unbinding['trailing'].append(prob_trailing)
+                prob_unbinding['leading'].append(prob_leading)
 
                 # print("prob_leading: ", prob_leading)
                 # print("prob_trailing: ", prob_trailing)
