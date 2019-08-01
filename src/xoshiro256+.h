@@ -22,112 +22,130 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    output to fill s. */
 
 
-#ifndef XORSHIFT_H
-#define XORSHIFT_H
+#ifndef XOSHIRO256_H
+#define XOSHIRO256_H
+
 #include <stdint.h>
+#include <time.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
-static inline uint64_t rotl(const uint64_t x, int k) {
-	return (x << k) | (x >> (64 - k));
-}
+class Rand {
+public:
+	uint64_t s[4];
+
+public:
+	Rand( const uint64_t oneSeed ) {  // initialize with a simple uint64_t
+		seed(oneSeed);
+	}
+	// Rand() {  // auto-initialize with /dev/urandom or time() and clock()
+	// 	seed();
+	// }
+
+	inline uint64_t rotl(const uint64_t x, int k) {
+		return (x << k) | (x >> (64 - k));
+	}
+
+	void seed(int seed) {
+	  s[0] = seed;
+	  s[1] = seed + 1;
+	  s[2] = seed + 2;
+	  s[3] = seed + 3;
+	}
+
+	uint64_t next(void) {
+		const uint64_t result_plus = s[0] + s[3];
+
+		const uint64_t t = s[1] << 17;
+
+		s[2] ^= s[0];
+		s[3] ^= s[1];
+		s[1] ^= s[2];
+		s[0] ^= s[3];
+
+		s[2] ^= t;
+
+		s[3] = rotl(s[3], 45);
+
+		return result_plus;
+	}
+
+	double rand() {
+	  return double(next()) * (1.0/4294967295.0);
+	}
+
+	inline void gauss2(double scale, double *xx, double *yy) {
+	  double x, y, r2;
+	  do {
+	    x = 2*rand() - 1;
+	    y = 2*rand() - 1;
+	    r2 = x*x + y*y;
+	  } while(r2 >= 1 || r2 == 0);
+	  double fac = scale*sqrt(-2*log(r2)/r2);
+	  *xx = x*fac;
+	  *yy = y*fac;
+	}
 
 
-static uint64_t s[4];
+	/* This is the jump function for the generator. It is equivalent
+	   to 2^128 calls to next(); it can be used to generate 2^128
+	   non-overlapping subsequences for parallel computations. */
 
-void seed_xoshiro(int seed) {
-  s[0] = seed;
-  s[1] = seed + 1;
-  s[2] = seed + 2;
-  s[3] = seed + 3;
-}
+	void jump(void) {
+		static const uint64_t JUMP[] = { 0x180ec6d33cfd0aba, 0xd5a61266f0c9392c, 0xa9582618e03fc9aa, 0x39abdc4529b1661c };
 
-uint64_t next(void) {
-	const uint64_t result_plus = s[0] + s[3];
-
-	const uint64_t t = s[1] << 17;
-
-	s[2] ^= s[0];
-	s[3] ^= s[1];
-	s[1] ^= s[2];
-	s[0] ^= s[3];
-
-	s[2] ^= t;
-
-	s[3] = rotl(s[3], 45);
-
-	return result_plus;
-}
-
-double rand_double() {
-  return double(next()) * (1.0/4294967295.0);
-}
-
-inline void gauss2(double scale, double *xx, double *yy) {
-  double x, y, r2;
-  do {
-    x = 2*rand_double() - 1;
-    y = 2*rand_double() - 1;
-    r2 = x*x + y*y;
-  } while(r2 >= 1 || r2 == 0);
-  double fac = scale*sqrt(-2*log(r2)/r2);
-  *xx = x*fac;
-  *yy = y*fac;
-}
-
-
-/* This is the jump function for the generator. It is equivalent
-   to 2^128 calls to next(); it can be used to generate 2^128
-   non-overlapping subsequences for parallel computations. */
-
-void jump(void) {
-	static const uint64_t JUMP[] = { 0x180ec6d33cfd0aba, 0xd5a61266f0c9392c, 0xa9582618e03fc9aa, 0x39abdc4529b1661c };
-
-	uint64_t s0 = 0;
-	uint64_t s1 = 0;
-	uint64_t s2 = 0;
-	uint64_t s3 = 0;
-	for(uint64_t i = 0; i < sizeof JUMP / sizeof *JUMP; i++)
-		for(int b = 0; b < 64; b++) {
-			if (JUMP[i] & UINT64_C(1) << b) {
-				s0 ^= s[0];
-				s1 ^= s[1];
-				s2 ^= s[2];
-				s3 ^= s[3];
+		uint64_t s0 = 0;
+		uint64_t s1 = 0;
+		uint64_t s2 = 0;
+		uint64_t s3 = 0;
+		for(uint64_t i = 0; i < sizeof JUMP / sizeof *JUMP; i++)
+			for(int b = 0; b < 64; b++) {
+				if (JUMP[i] & UINT64_C(1) << b) {
+					s0 ^= s[0];
+					s1 ^= s[1];
+					s2 ^= s[2];
+					s3 ^= s[3];
+				}
+				next();
 			}
-			next();
-		}
 
-	s[0] = s0;
-	s[1] = s1;
-	s[2] = s2;
-	s[3] = s3;
-}
+		s[0] = s0;
+		s[1] = s1;
+		s[2] = s2;
+		s[3] = s3;
+	}
 
 
-/* This is the long-jump function for the generator. It is equivalent to
-   2^192 calls to next(); it can be used to generate 2^64 starting points,
-   from each of which jump() will generate 2^64 non-overlapping
-   subsequences for parallel distributed computations. */
+	/* This is the long-jump function for the generator. It is equivalent to
+	   2^192 calls to next(); it can be used to generate 2^64 starting points,
+	   from each of which jump() will generate 2^64 non-overlapping
+	   subsequences for parallel distributed computations. */
 
-void long_jump(void) {
-	static const uint64_t LONG_JUMP[] = { 0x76e15d3efefdcbbf, 0xc5004e441c522fb3, 0x77710069854ee241, 0x39109bb02acbe635 };
+	void long_jump(void) {
+		static const uint64_t LONG_JUMP[] = { 0x76e15d3efefdcbbf, 0xc5004e441c522fb3, 0x77710069854ee241, 0x39109bb02acbe635 };
 
-	uint64_t s0 = 0;
-	uint64_t s1 = 0;
-	uint64_t s2 = 0;
-	uint64_t s3 = 0;
-	for(uint64_t i = 0; i < sizeof LONG_JUMP / sizeof *LONG_JUMP; i++)
-		for(int b = 0; b < 64; b++) {
-			if (LONG_JUMP[i] & UINT64_C(1) << b) {
-				s0 ^= s[0];
-				s1 ^= s[1];
-				s2 ^= s[2];
-				s3 ^= s[3];
+		uint64_t s0 = 0;
+		uint64_t s1 = 0;
+		uint64_t s2 = 0;
+		uint64_t s3 = 0;
+		for(uint64_t i = 0; i < sizeof LONG_JUMP / sizeof *LONG_JUMP; i++)
+			for(int b = 0; b < 64; b++) {
+				if (LONG_JUMP[i] & UINT64_C(1) << b) {
+					s0 ^= s[0];
+					s1 ^= s[1];
+					s2 ^= s[2];
+					s3 ^= s[3];
+				}
+				next();
 			}
-			next();
-		}
 
-	s[0] = s0;
-	s[1] = s1;
-	s[2] = s2;
-	s[3] = s3;
-}
+		s[0] = s0;
+		s[1] = s1;
+		s[2] = s2;
+		s[3] = s3;
+	}
+};
+
+#endif	// XOSHIRO256+_H

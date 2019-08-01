@@ -1,4 +1,4 @@
-#include "xorshift.h"
+#include "xoshiro256+.h"
 #include <stdio.h>
 
 int main() {

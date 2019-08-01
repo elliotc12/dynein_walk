@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "xorshift.h"
+#include "xoshiro256+.h"
 
 #ifndef DYNEIN_STRUCT_H
 #define DYNEIN_STRUCT_H

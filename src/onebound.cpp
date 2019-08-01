@@ -76,8 +76,6 @@ int main(int argc, char** argv) {
   }
   binding_mode = EXPONENTIAL_UNBINDING;
 
-  // we will probably need Jin's code to output which foot steps
-  // do we care about nearbound or farbound
   Rand* rand = new Rand(k); // FIXME
 
   // Does this onebound resemble with the bothbound orientation
@@ -107,7 +105,6 @@ int main(int argc, char** argv) {
   // }
   while(stillStepping){
 
-    // FIXME consider doing *one* move before checking binding
     double binding_prob = dynein->get_binding_rate()*dt;
     cumulative_prob += binding_prob;
 
@@ -126,7 +123,7 @@ int main(int argc, char** argv) {
               dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else if (rand->rand() >= binding_prob) {    // else if vs. else makes diff data (?)
+    } else {    // else if vs. else makes diff data (?)
       t += dt;  // iterate time
       iter ++;
 
