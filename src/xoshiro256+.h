@@ -73,7 +73,7 @@ public:
 	}
 
 	double rand() {
-	  return double(next()) * (1.0/4294967295.0);
+          return double(next()) * (1.0/0xFFFFFFFFFFFFFFFF);
 	}
 
 	inline void gauss2(double scale, double *xx, double *yy) {
