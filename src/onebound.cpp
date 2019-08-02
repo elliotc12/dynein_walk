@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
   }
   binding_mode = EXPONENTIAL_UNBINDING;
 
-  Rand* rand = new Rand(k); // FIXME
+  Rand* rand = new Rand(0.0); // FIXME
 
   // Does this onebound resemble with the bothbound orientation
 
