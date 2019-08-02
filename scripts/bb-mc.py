@@ -113,9 +113,9 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['uma'])
                 final_data['fma'].append(step['bma'])
 
-        final_L_arr.append(step['L'])       # Final L array
+        final_data['L'].append(step['L'])       # Final L array
         step_data['t'].append(step['t'])      # Specific type of step time array
-        ob_t_arr.append(step['t'])          # Onebound time array
+        final_data['t'].append(step['t'])          # Onebound time array
         k[0]+=1
 
 
@@ -265,12 +265,15 @@ final_data = {
         'L': [],
         't': [],
         'step_length': [],
+        'L_avg': 0,
+        't_avg': 0,
+        'step_length_avg': 0,
 }
 
-final_L_arr = []                                # Final L array
-final_ang_arr = [[] for i in range(2)]          # Final motor angles array
-step_length = []                                # Step length array
-ob_t_arr = []                                   # Onebound time array
+# final_L_arr = []                                # Final L array
+# final_ang_arr = [[] for i in range(2)]          # Final motor angles array
+# step_length = []                                # Step length array
+# ob_t_arr = []                                   # Onebound time array
 
 seed = 0
 np.random.seed(0)
@@ -341,8 +344,8 @@ while Z < N:
                         # plt.show()
 
                         data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                                        nma, fma, "FARBOUND", final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
-                                        step_length[k[0]-1], ob_t_arr[k[0]-1]))
+                                        nma, fma, "FARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
+                                        final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
@@ -366,17 +369,17 @@ while Z < N:
                         # plt.show()
 
                         data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                                        nma, fma, "NEARBOUND", final_L_arr[k[0]-1], final_ang_arr[0][k[0]-1], final_ang_arr[1][k[0]-1],
-                                        step_length[k[0]-1], ob_t_arr[k[0]-1]))
+                                        nma, fma, "NEARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
+                                        final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
 
 
 # data_file.close()
 
-print("FINAL DISPLACEMENTS: {0} \n".format(final_L_arr))
-for i in range(len(final_L_arr)):
-    final_L += final_L_arr[i]*P_arr[i]
-    step_L += step_length[i]*P_arr[i]
-    ob_t += ob_t_arr[i]*P_arr[i]
+print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
+for i in range(len(final_data['L'])):
+    final_data['L_avg'] += final_data['L'][i]*P_arr[i]
+    final_data['t_avg'] += final_data['t'][i]*P_arr[i]
+    final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
 
 # What to collect and output or visualize?
 
@@ -398,28 +401,29 @@ for i in range(len(final_L_arr)):
 ### What to export, and in what format?
 # Histograms of final displacements?
 
-tx = r_tx[0]/Z          # Tail x
-ty = r_ty[0]/Z          # Tail y
-nmx = r_nmx[0]/Z        # Near motor x
-nmy = r_nmy[0]/Z        # Near Motor y
-fmx = r_fmx[0]/Z        # Far motor x
-fmy = r_fmy[0]/Z        # Far Motor y
-E_avg = E[0]/Z          # Average energy
-mean_final_L = final_L/Z
-mean_step_L = step_L/Z
-mean_obt = ob_t/Z
+# Averages
+tx_avg = r_t['x_avg']/Z          # Tail x
+ty_avg = r_t['y_avg']/Z          # Tail y
+nmx_avg = r_nm['x_avg']/Z        # Near motor x
+nmy_avg = r_nm['y_avg']/Z        # Near Motor y
+fmx_avg = r_fm['x_avg']/Z        # Far motor x
+fmy_avg = r_fm['y_avg']/Z        # Far Motor y
+E_avg = E['avg']/Z          # Average energy
+final_L_avg = final_data['L_avg']/Z
+step_length_avg = final_data['step_length_avg']/Z
+obt_avg = final_data['t_avg']/Z
 
 print("BOTHBOUND AVERAGES")
-print("Avg Tail x:", tx)
-print("Avg Tail y:", ty)
-print("Avg nmx:", nmx)
-print("Avg nmy:", nmy)
-print("Avg fmx:", fmx)
-print("Avg fmy:", fmy)
+print("Avg Tail x:", tx_avg)
+print("Avg Tail y:", ty_avg)
+print("Avg nmx:", nmx_avg)
+print("Avg nmy:", nmy_avg)
+print("Avg fmx:", fmx_avg)
+print("Avg fmy:", fmy_avg)
 print("Avg E:", E_avg)
-print("Avg Final Displacement:", mean_final_L)
-print("Avg Step Length:", mean_step_L)
-print("Avg ob time:", mean_obt)
+print("Avg Final Displacement:", final_L_avg)
+print("Avg Step Length:", step_length_avg)
+print("Avg ob time:", obt_avg)
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
@@ -441,13 +445,13 @@ ax3 = fig0.add_subplot(gs0[1, 11:21])
 separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
                     "Trailing Step", "Leading Step", True, "C0", "C1",
                     "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
-step_hist = make_hist(ax1, False, step_length, None, 50,
+step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
                     None, None, True, "C3", None,
                     "", "Step Length (nm)")
 separate_time_hist = make_hist(ax2, True, trailing_data['t'], leading_data['t'], 30,
                     "Trailing time", "Leading time", False, "C0", "C1",
                     "k_b: {0:e}".format(k_b), "time (s)")
-time_hist = make_hist(ax3, False, ob_t_arr, None, 50,
+time_hist = make_hist(ax3, False, final_data['t'], None, 50,
                     None, None, False, "C3", None,
                     "", "time (s)")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_onebound_length_time.pdf'.format(int(L), k_b), transparent=False)
@@ -472,7 +476,7 @@ fig1 = plt.figure(1)
 gs1 = gridspec.GridSpec(1,1)
 ax4 = fig1.add_subplot(gs1[:,:])
 
-initial_angle_hist = make_hist(ax4, True, angles[0], angles[1], 30,
+initial_angle_hist = make_hist(ax4, True, angles['nma'], angles['fma'], 30,
                     "nma", "fma", True, "C0", "C1",
                     "Initial Both Bound Angles", "Initial Angles (rad)")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_init_ang.pdf'.format(int(L), k_b), transparent=False)
@@ -490,11 +494,11 @@ gs2 = gridspec.GridSpec(2,1)
 ax5 = fig2.add_subplot(gs2[0,:])
 ax6 = fig2.add_subplot(gs2[1,:])
 
-tx_position_hist = make_hist(ax5, False, r_t_arr[0], None, 30,
+tx_position_hist = make_hist(ax5, False, r_t['x'], None, 30,
                     "tx", None, True, "C0", None,
                     "Initial Both Bound Tail Position", "Tail x Positions")
 
-ty_position_hist = make_hist(ax6, False, r_t_arr[1], None, 30,
+ty_position_hist = make_hist(ax6, False, r_t['y'], None, 30,
                     "ty", None, True, "C1", None,
                     "", "Tail y Positions")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_tail_position.pdf'.format(int(L), k_b), transparent=False)
@@ -504,11 +508,11 @@ fig3 = plt.figure(3, figsize=(6,8))
 ax7 = fig3.add_subplot(gs2[0,:])
 ax8 = fig3.add_subplot(gs2[1,:])
 
-nmx_position_hist = make_hist(ax7, False, r_nm_arr[0], None, 30,
+nmx_position_hist = make_hist(ax7, False, r_nm['x'], None, 30,
                     "nmx", None, True, "C0", None,
                     "Initial Both Bound Near Motor Position", "Near Motor x Positions")
 
-nmy_position_hist = make_hist(ax8, False, r_nm_arr[1], None, 30,
+nmy_position_hist = make_hist(ax8, False, r_nm['y'], None, 30,
                     "nmy", None, True, "C1", None,
                     "", "Near Motor y Positions")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_nm_position.pdf'.format(int(L), k_b), transparent=False)
@@ -518,11 +522,11 @@ fig4 = plt.figure(4, figsize=(6,8))
 ax9 = fig4.add_subplot(gs2[0,:])
 ax10 = fig4.add_subplot(gs2[1,:])
 
-fmx_position_hist = make_hist(ax9, False, r_fm_arr[0], None, 30,
+fmx_position_hist = make_hist(ax9, False, r_fm['x'], None, 30,
                     "fmx", None, True, "C0", None,
                     "Initial Both Bound Far Motor Position", "Far Motor x Positions")
 
-fmy_position_hist = make_hist(ax10, False, r_fm_arr[1], None, 30,
+fmy_position_hist = make_hist(ax10, False, r_fm['y'], None, 30,
                     "fmy", None, True, "C1", None,
                     "", "Far Motor y Positions")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_fm_position.pdf'.format(int(L), k_b), transparent=False)
@@ -531,7 +535,7 @@ plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_fm_position.pdf'.format(in
 fig5 = plt.figure(5)
 ax11 = fig5.add_subplot(gs1[:,:])
 
-Energy_hist = make_hist(ax11, False, E_arr, None, 30,
+Energy_hist = make_hist(ax11, False, E['bb'], None, 30,
                     "Energies", None, True, "C0", None,
                     "Initial Both Bound Energy", "Energies")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_bothbound_energy.pdf'.format(int(L), k_b), transparent=False)

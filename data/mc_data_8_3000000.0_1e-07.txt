@@ -2,4 +2,3 @@
 
 
 #init L		 init nma	 init fma	 state		 final L	 final nma	 final fma	 step length	 t
-8.000000	4.189419	4.213742	FARBOUND	-10.521100	3.203240	3.465100	-2.521100	0.001804
