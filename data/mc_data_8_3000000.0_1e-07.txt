@@ -1,4 +1,0 @@
-#********mc_data: L-8.0, k_b-3000000.0, dt-1e-10********
-
-
-#init L		 init nma	 init fma	 state		 final L	 final nma	 final fma	 step length	 t

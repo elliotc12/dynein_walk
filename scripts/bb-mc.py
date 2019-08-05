@@ -268,7 +268,7 @@ if bb_energy_distribution.eq_in_degrees:
 # Creating Data File for Specific L
 data_file = open("../data/mc_data_{0}_{1}_{2}_{3}.txt".format(int(L), k_b, dt, N), "w")
 data_file.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}********\n\n\n".format(L,
-                k_b, params.for_simulation['dt']), N)
+                k_b, params.for_simulation['dt'], N))
 data_file.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
 
 while Z < N:
@@ -326,9 +326,9 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        # data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                        #                 nma, fma, "FARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
-                        #                 final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
+                                        nma, fma, "FARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
+                                        final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
@@ -351,9 +351,9 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
 
-                        # data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                        #                 nma, fma, "NEARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
-                        #                 final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
+                        data_file.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
+                                        nma, fma, "NEARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
+                                        final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
 
 
 # data_file.close()
@@ -525,4 +525,4 @@ plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_energy.pdf'.format
 
 data_file.close()
 
-# plt.show()
+plt.show()
