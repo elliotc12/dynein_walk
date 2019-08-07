@@ -384,7 +384,7 @@ while Z < N:
 
 
 
-prob_unbinding['unbinding']/max_unbinding
+# prob_unbinding['unbinding']/max_unbinding
 print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
 for i in range(len(final_data['L'])):
     final_data['L_avg'] += final_data['L'][i]*P_arr[i]
