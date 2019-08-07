@@ -77,17 +77,16 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob):
         r_fm['y'].append(self.r_fm[1])
         E['bb'].append(self.E_total)
         # FIXME These are wrong I'm pretty sure
-        prob_unbinding['leading'].append(prob)
-        prob_unbinding['trailing'].append(prob)
-
         if state == 0:
             # NEARBOUND State - Leading step
+            prob_unbinding['leading'].append(prob)
             data_file_bb.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t\t{4:f}\t{5:f}\n".format(int(L),
-                        nma, fma, "LEADING", prob_unbinding['leading'][k[0]], prob_unbinding['unbinding'][k[0]]))
+                        nma, fma, "LEADING", prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1], prob_unbinding['unbinding'][k[0]]))
         else:
             # FARBOUND State - Trailing step
+            prob_unbinding['trailing'].append(prob)
             data_file_bb.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\n".format(int(L),
-                        nma, fma, "TRAILING", prob_unbinding['trailing'][k[0]], prob_unbinding['unbinding'][k[0]]))
+                        nma, fma, "TRAILING", prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1], prob_unbinding['unbinding'][k[0]]))
 
 def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         """
@@ -565,7 +564,7 @@ prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbi
                     "Unbinding Probabilities", "Probability")
 prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
                     "Probabilities", None, True, "C0", None,
-                    "Unbinding Probabilities", "Probability")
+                    "Cumulative Unbinding Probabilities", "Probability")
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
 
 
