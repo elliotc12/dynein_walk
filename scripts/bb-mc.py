@@ -213,7 +213,7 @@ parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
-parser.add_argument("--bb", type=bool, help="Collect Bothbound data", default=False)
+parser.add_argument("--bb", type=bool, help="Collect Bothbound data", default=True)
 parser.add_argument("--ob", type=bool, help="Colelct Onebound data", default=True)
 args = parser.parse_args()
 
