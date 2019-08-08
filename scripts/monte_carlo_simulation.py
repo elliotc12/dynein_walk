@@ -114,10 +114,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['bma'])
                 final_data['fma'].append(step['uma'])
 
-            data_file_ob.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                            nma, fma, "NEARBOUND", final_data['L'][k[0]-1], final_data['nma'][k[0]-1], final_data['fma'][k[0]-1],
-                            final_data['step_length'][k[0]-1], final_data['t'][k[0]-1]))
-
+            data_file_ob.write("{0:f}\t{1:f}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         else:
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
@@ -133,9 +130,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['uma'])
                 final_data['fma'].append(step['bma'])
 
-            data_file_ob.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\t{6:f}\t{7:f}\t{8:f}\n".format(int(L),
-                            nma, fma, "FARBOUND", final_data['L'][k[0]], final_data['nma'][k[0]], final_data['fma'][k[0]],
-                            final_data['step_length'][k[0]], final_data['t'][k[0]]))
+            data_file_ob.write("{0:f}\t{1:f}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         k[0]+=1
 
 
@@ -229,9 +224,9 @@ dt = args.dt         # Time Step
 
 
 # for L in range(1, 33):
-Z = 0                # Partition Function
-N = args.N           # Count
 L = args.L           # Initial Length
+N = args.N           # Count
+Z = 0                # Partition Function
 k = [0]              # Dynein Count & RNG Seed
 
 max_unbinding = 1
@@ -299,7 +294,7 @@ if args.ob == True:
     data_file_ob = open("../data/mc_data_kb_{0:e}/mc_ob_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
     data_file_ob.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}********\n\n\n".format(L,
                     k_b, dt, N))
-    data_file_ob.write("#init L\t\t init nma\t init fma\t state\t\t final L\t final nma\t final fma\t step length\t t\n")
+    data_file_ob.write("final L\t t\n")
 
 while Z < N:
         # Making random motor angles
