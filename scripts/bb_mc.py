@@ -45,12 +45,12 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob):
             # NEARBOUND State - Leading step
             Z['leading'] += P
             prob_unbinding['leading'].append(prob)
-            prob_unbinding['rel_leading'] += prob*P
+            prob_unbinding['leading_avg'] += prob*P
         else:
             # FARBOUND State - Trailing step
             Z['trailing'] += P
             prob_unbinding['trailing'].append(prob)
-            prob_unbinding['rel_trailing'] += prob*P
+            prob_unbinding['trailing_avg'] += prob*P
         k[0]+=1
 
 
@@ -64,12 +64,13 @@ args = parser.parse_args()
 
 prob_avg = {'trailing': [], 'leading': [], 'L': [], '1': [], '2': []}
 
-for L in range(1, 33):
+for L in range(1, 52, 2):
     # L = args.L           # Initial Length
     prob_avg['L'].append(L)
     N = args.N           # Count
+    steps = 0
     C =  args.C          # exponential binding constant from paper_params.py April 12
-    Z = {'big': 0, 'main': 0, 'trailing': 0, 'leading': 0}                # Partition Function
+    Z = {'main': 0, 'trailing': 0, 'leading': 0}                # Partition Function
     k = [0]              # Dynein Count & RNG Seed
 
     max_unbinding = 1
@@ -99,10 +100,9 @@ for L in range(1, 33):
     prob_unbinding = {      # Unbinding probability
             'trailing': [],
             'leading': [],
-            'unbinding': [],
-            'rel_trailing': 0,
-            'rel_leading': 0,
-            'rel_cumulative': 0,
+            'trailing_avg': 0,
+            'leading_avg': 0,
+            'cumulative_avg': 0,
             'avg': 0
     }
 
@@ -110,7 +110,7 @@ for L in range(1, 33):
     np.random.seed(0)
 
 
-    while Z['big'] < N:
+    while steps < N:
             # Making random motor angles
             nma = np.random.uniform(0, 2*np.pi)
             fma = np.random.uniform(0, 2*np.pi)
@@ -123,7 +123,6 @@ for L in range(1, 33):
             else:
                     # Calculating partition function
                     P = np.exp(-b*dynein.E_total)
-                    Z['big'] += P
 
                     rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                     rate_leading = np.exp(C*(dynein.fba - eqb_angle))
@@ -142,39 +141,28 @@ for L in range(1, 33):
                     if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                             # FARBOUND State
                             state = 1
-
-                            if (prob_trailing+prob_leading) > max_unbinding:
-                                max_unbinding = prob_trailing+prob_leading
-                            prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-
                             rate_unbinding['cumulative'].append(cumulative_rate)
                             collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing)
                             Z['main'] += P
-                            prob_unbinding['rel_cumulative'] += (prob_trailing+prob_leading)*P
-                            # prob_unbinding['rel_trailing'].append((rate_trailing/cumulative_rate)*P)
+                            prob_unbinding['cumulative_avg'] += (prob_trailing+prob_leading)*P
+                            steps += 1
 
                     if np.random.random() < prob_leading:
                             # NEARBOUND State
                             state = 0
 
-                            if (prob_trailing+prob_leading) > max_unbinding:
-                                max_unbinding = prob_trailing+prob_leading
-                            prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-
                             rate_unbinding['cumulative'].append(cumulative_rate)
                             collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading)
                             Z['main'] += P
-                            prob_unbinding['rel_cumulative'] += (prob_trailing+prob_leading)*P
-                            # prob_unbinding['rel_leading'].append((rate_leading/cumulative_rate)*P)
+                            prob_unbinding['cumulative_avg'] += (prob_trailing+prob_leading)*P
+                            steps += 1
 
 
-
-    # prob_unbinding['unbinding']/max_unbinding
 
     prob_unbinding_avg = prob_unbinding['avg']/Z['main']
-    prob_unbinding_leading_avg = prob_unbinding['rel_leading']/Z['leading']
-    prob_unbinding_trailing_avg = prob_unbinding['rel_trailing']/Z['trailing']
-    prob_unbinding_cumulative_avg = prob_unbinding['rel_cumulative']/Z['main']
+    prob_unbinding_leading_avg = prob_unbinding['leading_avg']/Z['leading']
+    prob_unbinding_trailing_avg = prob_unbinding['trailing_avg']/Z['trailing']
+    prob_unbinding_cumulative_avg = prob_unbinding['cumulative_avg']/Z['main']
 
 
     print("BOTHBOUND AVERAGES")
@@ -220,11 +208,11 @@ fig7 = plt.figure(7, figsize=(6,8))
 ax14 = fig6.add_subplot(gs2[0,:])
 ax15 = fig6.add_subplot (gs2[1,:])
 
-ax14.scatter(prob_avg['L'], prob_avg['trailing'])
+ax14.scatter(prob_avg['L'], prob_avg['1'])
 ax14.set_title("Trailing Unbinding Prob vs. Initial L")
 ax14.set_ylabel("Avg Unbinding Prob")
 
-ax15.scatter(prob_avg['L'], prob_avg['leading'])
+ax15.scatter(prob_avg['L'], prob_avg['2'])
 ax15.set_title("Leading Unbinding Prob vs. Initial L")
 ax15.set_xlabel("Initial L")
 ax15.set_ylabel("Avg Unbinding Prob")
