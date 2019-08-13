@@ -1,4 +1,5 @@
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 import scipy.constants
@@ -81,14 +82,14 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob):
             # NEARBOUND State - Leading step
             prob_unbinding['leading'].append(prob)
             if args.bb == True:
-                data_file_bb.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t\t{4:f}\t{5:f}\n".format(int(L),
-                            nma, fma, "LEADING", prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1], prob_unbinding['unbinding'][k[0]]))
+                data_file_bb_leading.write("{0:f}\t{1:f}\n".format(prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1],
+                prob_unbinding['unbinding'][k[0]]))
         else:
             # FARBOUND State - Trailing step
             prob_unbinding['trailing'].append(prob)
             if args.bb == True:
-                data_file_bb.write("{0:f}\t{1:f}\t{2:f}\t{3:s}\t{4:f}\t{5:f}\n".format(int(L),
-                                nma, fma, "TRAILING", prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1], prob_unbinding['unbinding'][k[0]]))
+                data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
+                prob_unbinding['unbinding'][k[0]]))
 
 def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         """
@@ -116,7 +117,8 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['bma'])
                 final_data['fma'].append(step['uma'])
 
-            data_file_ob_leading.write("{0:f}\t{1:f}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+            if args.ob == True:
+                data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         else:
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
@@ -132,7 +134,8 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['uma'])
                 final_data['fma'].append(step['bma'])
 
-            data_file_ob_trailing.write("{0:f}\t{1:f}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+            if args.ob == True:
+                data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         k[0]+=1
 
 
@@ -200,7 +203,6 @@ def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_co
         ax.axis('off')
         ax.axis('equal')
         ax.legend()
-
 
 
 params = importlib.import_module("params")
@@ -289,16 +291,19 @@ np.random.seed(0)
 
 # Creating Data File for Specific L
 if args.bb == True:
-    data_file_bb = open("../data/mc_data_kb_{0:e}/mc_bb_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-    data_file_bb.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+    data_file_bb_trailing = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+    data_file_bb_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                     k_b, dt, N, C))
-    data_file_bb.write("unbinding prob\t cumulative unbinding prob\n")
+    data_file_bb_trailing.write("unbinding prob\t cumulative unbinding prob\n")
+    data_file_bb_leading = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+    data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+                    k_b, dt, N, C))
+    data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
 if args.ob == True:
     data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
     data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                     k_b, dt, N, C))
     data_file_ob_trailing.write("final L\t t\n")
-
     data_file_ob_leading = open("../data/mc_data_kb_{0:e}/mc_ob_leading_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
     data_file_ob_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                     k_b, dt, N, C))
@@ -438,6 +443,14 @@ data_file_bb.write("\n\n Average Unbinding Prob: {0:f}".format(prob_unbinding_av
 # data_file_ob.write("\n\n Average Final Displacement: {0:f}\nAverage Step Length: {1:f}\nAverage time: {2:f}".format(final_L_avg,
 #                     step_length_avg, obt_avg))
 
+if args.bb == True:
+    data_file_bb_trailing.close()
+    data_file_bb_leading.close()
+if args.ob == True:
+    data_file_ob_trailing.close()
+    data_file_ob_leading.close()
+
+plot_hist(L, k_b, dt, N)
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
@@ -448,127 +461,40 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
 
+def plot_hist(L, k_b, dt, N):
+    fig0 = plt.figure(0, figsize=(12,8))
+    gs0 = gridspec.GridSpec(2, 21)
+    ax0 = fig0.add_subplot(gs0[0, 0:10])
+    ax1 = fig0.add_subplot(gs0[1, 0:10])
+    ax2 = fig0.add_subplot(gs0[0, 11:21])
+    ax3 = fig0.add_subplot(gs0[1, 11:21])
 
-fig0 = plt.figure(0, figsize=(12,8))
-gs0 = gridspec.GridSpec(2, 21)
-ax0 = fig0.add_subplot(gs0[0, 0:10])
-ax1 = fig0.add_subplot(gs0[1, 0:10])
-ax2 = fig0.add_subplot(gs0[0, 11:21])
-ax3 = fig0.add_subplot(gs0[1, 11:21])
-
-separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
-                    "Trailing Step", "Leading Step", True, "C0", "C1",
-                    "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
-step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
-                    None, None, True, "C3", None,
-                    "", "Step Length (nm)")
-separate_time_hist = make_hist(ax2, True, trailing_data['t'], leading_data['t'], 30,
-                    "Trailing time", "Leading time", False, "C0", "C1",
-                    "k_b: {0:e}".format(k_b), "time (s)")
-time_hist = make_hist(ax3, False, final_data['t'], None, 50,
-                    None, None, False, "C3", None,
-                    "", "time (s)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-# ax1.hist(final_L_arr, bins=50, alpha=0.5, normed=True, stacked=True, color="C2")
-# ax1.legend(loc="upper right")
-# ax1.set_xlabel("Final Displacement (nm)")
-# ax1.set_ylabel("Frequency")
-
-# ax2.hist(trailing_data[1], bins=50, alpha=0.5, label="Trailing time", normed=False, stacked=True, color="C0")
-# ax2.hist(leading_data[1], bins=50, alpha=0.5, label="Leading time", normed=False, stacked=True, color="C1")
-# ax2.legend(loc="upper right")
-# ax2.set_xlabel("time (s)")
-# ax2.set_ylabel("Frequency")
-#
-# ax3.hist(ob_t_arr, bins=50, alpha=0.5, normed=False, stacked=True, color="C2")
-# ax3.legend(loc="upper right")
-# ax3.set_xlabel("time (s)")
-# ax3.set_ylabel("Frequency")
-
-fig1 = plt.figure(1)
-gs1 = gridspec.GridSpec(1,1)
-ax4 = fig1.add_subplot(gs1[:,:])
-
-initial_angle_hist = make_hist(ax4, True, angles['nma'], angles['fma'], 30,
-                    "nma", "fma", True, "C0", "C1",
-                    "Initial Both Bound Angles", "Initial Angles (rad)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_init_ang.pdf'.format(int(L), k_b, dt, N), transparent=False)
+    separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
+                        "Trailing Step", "Leading Step", True, "C0", "C1",
+                        "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
+    step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
+                        None, None, True, "C3", None,
+                        "", "Step Length (nm)")
+    separate_time_hist = make_hist(ax2, True, trailing_data['t'], leading_data['t'], 30,
+                        "Trailing time", "Leading time", False, "C0", "C1",
+                        "k_b: {0:e}".format(k_b), "time (s)")
+    time_hist = make_hist(ax3, False, final_data['t'], None, 50,
+                        None, None, False, "C3", None,
+                        "", "time (s)")
+    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
 
 
-# ax4.hist(angles[0], bins=50, alpha=0.5, label="nma", normed=True, stacked=True, color="C0")
-# ax4.hist(angles[1], bins=50, alpha=0.5, label="fma", normed=True, stacked=True, color="C1")
-# ax4.legend(loc="upper right")
-# ax4.set_title("Initial Displacement 8nm")
-# ax4.set_xlabel("Initial Angles")
-# ax4.set_ylabel("Frequency")
-
-fig2 = plt.figure(2, figsize=(6,8))
-gs2 = gridspec.GridSpec(2,1)
-ax5 = fig2.add_subplot(gs2[0,:])
-ax6 = fig2.add_subplot(gs2[1,:])
-
-tx_position_hist = make_hist(ax5, False, r_t['x'], None, 30,
-                    "tx", None, True, "C0", None,
-                    "Initial Both Bound Tail Position", "Tail x Positions")
-
-ty_position_hist = make_hist(ax6, False, r_t['y'], None, 30,
-                    "ty", None, True, "C1", None,
-                    "", "Tail y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_tail_position.pdf'.format(int(L), k_b, dt, N), transparent=False)
+    fig6 = plt.figure(6, figsize=(6,8))
+    ax12 = fig6.add_subplot(gs2[0,:])
+    ax13 = fig6.add_subplot (gs2[1,:])
+    prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
+                        "Trailing", "Leading", True, "C0", "C1",
+                        "Unbinding Probabilities", "Probability")
+    prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
+                        "Probabilities", None, True, "C0", None,
+                        "Cumulative Unbinding Probabilities", "Probability")
+    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
 
 
-fig3 = plt.figure(3, figsize=(6,8))
-ax7 = fig3.add_subplot(gs2[0,:])
-ax8 = fig3.add_subplot(gs2[1,:])
 
-nmx_position_hist = make_hist(ax7, False, r_nm['x'], None, 30,
-                    "nmx", None, True, "C0", None,
-                    "Initial Both Bound Near Motor Position", "Near Motor x Positions")
-
-nmy_position_hist = make_hist(ax8, False, r_nm['y'], None, 30,
-                    "nmy", None, True, "C1", None,
-                    "", "Near Motor y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_nm_position.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-
-fig4 = plt.figure(4, figsize=(6,8))
-ax9 = fig4.add_subplot(gs2[0,:])
-ax10 = fig4.add_subplot(gs2[1,:])
-
-fmx_position_hist = make_hist(ax9, False, r_fm['x'], None, 30,
-                    "fmx", None, True, "C0", None,
-                    "Initial Both Bound Far Motor Position", "Far Motor x Positions")
-
-fmy_position_hist = make_hist(ax10, False, r_fm['y'], None, 30,
-                    "fmy", None, True, "C1", None,
-                    "", "Far Motor y Positions")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_fm_position.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-
-fig5 = plt.figure(5)
-ax11 = fig5.add_subplot(gs1[:,:])
-
-Energy_hist = make_hist(ax11, False, E['bb'], None, 30,
-                    "Energies", None, True, "C0", None,
-                    "Initial Both Bound Energy", "Energies")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_energy.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-fig6 = plt.figure(6, figsize=(6,8))
-ax12 = fig6.add_subplot(gs2[0,:])
-ax13 = fig6.add_subplot (gs2[1,:])
-prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
-                    "Trailing", "Leading", True, "C0", "C1",
-                    "Unbinding Probabilities", "Probability")
-prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
-                    "Probabilities", None, True, "C0", None,
-                    "Cumulative Unbinding Probabilities", "Probability")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-if args.bb == True:
-    data_file_bb.close()
-if args..ob == True:
-    data_file_ob_trailing.close()
-    data_file_ob_leading.close()
-
-plt.show()
+    plt.show()

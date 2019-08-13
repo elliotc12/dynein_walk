@@ -205,8 +205,8 @@ ax13.set_xlabel("Initial L")
 ax13.set_ylabel("Avg Unbinding Prob")
 
 fig7 = plt.figure(7, figsize=(6,8))
-ax14 = fig6.add_subplot(gs2[0,:])
-ax15 = fig6.add_subplot (gs2[1,:])
+ax14 = fig7.add_subplot(gs2[0,:])
+ax15 = fig7.add_subplot (gs2[1,:])
 
 ax14.scatter(prob_avg['L'], prob_avg['1'])
 ax14.set_title("Trailing Unbinding Prob vs. Initial L")
