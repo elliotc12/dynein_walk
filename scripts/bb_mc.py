@@ -124,6 +124,7 @@ for L in range(1, 52, 2):
                     # Calculating partition function
                     P = np.exp(-b*dynein.E_total)
 
+                    # FIXME!
                     rate_trailing = np.exp(C*(dynein.nba - eqb_angle))
                     rate_leading = np.exp(C*(dynein.fba - eqb_angle))
                     rate_unbinding['trailing'].append(rate_trailing)
@@ -150,7 +151,6 @@ for L in range(1, 52, 2):
                     if np.random.random() < prob_leading:
                             # NEARBOUND State
                             state = 0
-
                             rate_unbinding['cumulative'].append(cumulative_rate)
                             collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading)
                             Z['main'] += P
@@ -168,12 +168,15 @@ for L in range(1, 52, 2):
     print("BOTHBOUND AVERAGES")
     print("Prob unbinding trailing: ", prob_unbinding['trailing'])
     print("Prob unbinding leading: ", prob_unbinding['leading'])
-    print("Avg prob_unbinding:", prob_unbinding_avg)
-    print("Z trailing:", Z['trailing'])
-    print("Z leading:", Z['leading'])
-    print("Z Main:", Z['main'])
-    print("Avg rel trailing prob_unbinding:", prob_unbinding_trailing_avg)
-    print("Avg rel leading prob_unbinding:", prob_unbinding_leading_avg)
+    print("AVG trailing: ", np.mean(prob_unbinding['trailing']))
+    print("AVG leading: ", np.mean(prob_unbinding['leading']))
+
+    # print("Avg prob_unbinding:", prob_unbinding_avg)
+    # print("Z trailing:", Z['trailing'])
+    # print("Z leading:", Z['leading'])
+    # print("Z Main:", Z['main'])
+    # print("Avg rel trailing prob_unbinding:", prob_unbinding_trailing_avg)
+    # print("Avg rel leading prob_unbinding:", prob_unbinding_leading_avg)
 
     prob_avg['trailing'].append(prob_unbinding_trailing_avg/prob_unbinding_cumulative_avg)
     prob_avg['1'].append(prob_unbinding_trailing_avg)

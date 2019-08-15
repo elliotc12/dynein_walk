@@ -50,7 +50,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         return output_data
 
 
-def collect_bothbound_data(k, self, P, state, nma, fma, prob):
+def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
         """
         Collect bothbound statistics
         """
@@ -81,17 +81,17 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob):
         if state == 0:
             # NEARBOUND State - Leading step
             prob_unbinding['leading'].append(prob)
-            if args.bb == True:
+            if bb_data_file == True:
                 data_file_bb_leading.write("{0:f}\t{1:f}\n".format(prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1],
                 prob_unbinding['unbinding'][k[0]]))
         else:
             # FARBOUND State - Trailing step
             prob_unbinding['trailing'].append(prob)
-            if args.bb == True:
+            if bb_data_file == True:
                 data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
                 prob_unbinding['unbinding'][k[0]]))
 
-def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
+def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_file):
         """
         Call run_onebound function and collect onebound statistics
         """
@@ -109,6 +109,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
             data['final_L'].append(step['L'])
             step_data['step_length'].append(step['L']-L)
             final_data['step_length'].append(step['L']-L)         # Contains both steps data
+            data['step_length'].append(step['L']-L)
 
             # Storing final motor angles
             if step['L'] < 0:   #FIXME uma != nma !!! need to calculate new bb nma
@@ -118,7 +119,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['bma'])
                 final_data['fma'].append(step['uma'])
 
-            if args.ob == True:
+            if ob_data_file == True:
                 data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         else:
             # FARBOUND State - Trailing step data
@@ -127,6 +128,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
             data['final_L'].append(step['L'])
             step_data['step_length'].append(step['L']+L)
             final_data['step_length'].append(step['L']+L)         # Contains both steps data
+            data['step_length'].append(step['L']+L)
 
             # Storing final motor angles
             if step['L'] > 0:
@@ -136,7 +138,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
                 final_data['nma'].append(step['uma'])
                 final_data['fma'].append(step['bma'])
 
-            if args.ob == True:
+            if ob_data_file == True:
                 data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         k[0]+=1
 
@@ -222,17 +224,19 @@ parser.add_argument("-N", "--N", type=float, help="how many steps to do", defaul
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding rate", default=params.for_simulation['k_b'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
-parser.add_argument("--bb", type=bool, help="Collect Bothbound data", default=True)
-parser.add_argument("--ob", type=bool, help="Colelct Onebound data", default=True)
+parser.add_argument("-b", "--bb", type=bool, help="Collect Bothbound data", default=False)
+parser.add_argument("-o", "--ob", type=bool, help="Colelct Onebound data", default=False)
 args = parser.parse_args()
 
 
 k_b = args.kb        # Binding Rate Constant
 dt = args.dt         # Time Step
 C = args.C         # exponential binding constant from paper_params.py April 12
-data = {'init_L': [], 'final_L': []}
+bb_data_file = args.bb
+ob_data_file = args.ob
+data = {'init_L': [], 'final_L': [], 'step_length': []}
 
-for L in range(1, 41, 4):
+for L in range(1, 41, 8):
     # L = args.L           # Initial Length
     N = args.N           # Count
     Z = 0                # Partition Function
@@ -294,7 +298,7 @@ for L in range(1, 41, 4):
     np.random.seed(0)
 
     # Creating Data File for Specific L
-    if args.bb == True:
+    if bb_data_file == True:
         data_file_bb_trailing = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
         data_file_bb_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                         k_b, dt, N, C))
@@ -303,7 +307,7 @@ for L in range(1, 41, 4):
         data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                         k_b, dt, N, C))
         data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
-    if args.ob == True:
+    if ob_data_file == True:
         data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
         data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                         k_b, dt, N, C))
@@ -352,11 +356,11 @@ for L in range(1, 41, 4):
                             if (prob_trailing+prob_leading) > max_unbinding:
                                 max_unbinding = prob_trailing+prob_leading
                             prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-                            collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing)
+                            collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
 
 
                             collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
-                                                    L, trailing_data)
+                                                    L, trailing_data, ob_data_file)
 
                             # plot_bb_before_step(dynein, 'red', 'blue')
                             # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
@@ -376,11 +380,11 @@ for L in range(1, 41, 4):
                             if (prob_trailing+prob_leading) > max_unbinding:
                                 max_unbinding = prob_trailing+prob_leading
                             prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-                            collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading)
+                            collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
 
 
                             collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
-                                                    L, leading_data)
+                                                    L, leading_data, ob_data_file)
 
                             # plot_bb_before_step(dynein, 'red', 'blue')
                             # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
@@ -449,21 +453,36 @@ for L in range(1, 41, 4):
     # data_file_ob.write("\n\n Average Final Displacement: {0:f}\nAverage Step Length: {1:f}\nAverage time: {2:f}".format(final_L_avg,
     #                     step_length_avg, obt_avg))
 
-    if args.bb == True:
+    if bb_data_file == True:
         data_file_bb_trailing.close()
         data_file_bb_leading.close()
-    if args.ob == True:
+    if ob_data_file == True:
         data_file_ob_trailing.close()
         data_file_ob_leading.close()
 
     # plot_hist(L, k_b, dt, N)
 
-m, b = best_fit(np.asarray(data['init_L']), np.asarray(data['final_L']))
-regression_line = [(m*x)+b for x in np.asarray(data['init_L'])]
-plt.hist2d(data['init_L'], data['final_L'], bins=(range(-30,30), 60), cmap=plt.cm.jet)
-plt.plot(data['init_L'], regression_line, label='y={0:.3}{1:.3}x'.format(b,m))
-plt.legend()
+final_L_slope, final_L_intercept = best_fit(np.asarray(data['init_L']), np.asarray(data['final_L']))
+final_L_rgrsn_line = [(final_L_slope*x)+final_L_intercept for x in np.asarray(data['init_L'])]
+fig7 = plt.figure(7)
+gs1 = gridspec.GridSpec(1,1)
+ax14 = fig7.add_subplot(gs1[:,:])
+ax14.hist2d(data['init_L'], data['final_L'], bins=(range(-30,30), 60), cmap=plt.cm.jet)
+ax14.plot(data['init_L'], final_L_rgrsn_line, label='y=({0:.3})+({1:.3})x'.format(final_L_intercept,final_L_slope))
+ax14.legend()
+# plt.colorbar(label='counts')
 plt.savefig('../plots/mc_plots/mc_{0:e}_{1}_init_vs_final.pdf'.format(k_b, N), transparent=False)
+# plt.show()
+
+step_length_slope, step_length_intercept = best_fit(np.asarray(data['init_L']), np.asarray(data['step_length']))
+step_length_rgrsn_line = [(step_length_slope*x)+step_length_intercept for x in np.asarray(data['init_L'])]
+fig8 = plt.figure(8)
+ax15 = fig8.add_subplot(gs1[:,:])
+ax15.hist2d(data['init_L'], data['step_length'], bins=(range(-30,30), 60), cmap=plt.cm.jet)
+ax15.plot(data['init_L'], step_length_rgrsn_line, label='y=({0:.3})+({1:.3})x'.format(step_length_intercept,step_length_slope))
+ax15.legend()
+# plt.colorbar(label='counts')
+plt.savefig('../plots/mc_plots/mc_{0:e}_{1}_init_vs_step_length.pdf'.format(k_b, N), transparent=False)
 # plt.show()
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
@@ -499,6 +518,7 @@ def plot_hist(L, k_b, dt, N):
 
 
     fig6 = plt.figure(6, figsize=(6,8))
+    gs2 = gridspec.GridSpec(2,1)
     ax12 = fig6.add_subplot(gs2[0,:])
     ax13 = fig6.add_subplot (gs2[1,:])
     prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
