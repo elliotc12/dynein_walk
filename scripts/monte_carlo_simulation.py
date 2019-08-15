@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from statistics import mean
 import scipy.constants
 import sys
 sys.path.append("../data")
@@ -206,6 +207,13 @@ def plot_bb_after_step(nbx, nby, nmx, nmy, tx, ty, fmx, fmy, fbx, fby, dynein_co
         ax.legend()
 
 
+def best_fit(x,y):
+    m = (((mean(x)*mean(y)) - mean(x*y))/
+        ((mean(x)*mean(x)) - mean(x*x)))
+    b = mean(y) - m*mean(x)
+    return m, b
+
+
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
@@ -224,7 +232,7 @@ dt = args.dt         # Time Step
 C = args.C         # exponential binding constant from paper_params.py April 12
 data = {'init_L': [], 'final_L': []}
 
-for L in range(0, 24, 2):
+for L in range(1, 41, 4):
     # L = args.L           # Initial Length
     N = args.N           # Count
     Z = 0                # Partition Function
@@ -437,7 +445,7 @@ for L in range(0, 24, 2):
     print("Avg Step Length:", step_length_avg)
     print("Avg ob time:", obt_avg)
 
-    data_file_bb.write("\n\n Average Unbinding Prob: {0:f}".format(prob_unbinding_avg))
+    # data_file_bb.write("\n\n Average Unbinding Prob: {0:f}".format(prob_unbinding_avg))
     # data_file_ob.write("\n\n Average Final Displacement: {0:f}\nAverage Step Length: {1:f}\nAverage time: {2:f}".format(final_L_avg,
     #                     step_length_avg, obt_avg))
 
@@ -450,8 +458,13 @@ for L in range(0, 24, 2):
 
     # plot_hist(L, k_b, dt, N)
 
+m, b = best_fit(np.asarray(data['init_L']), np.asarray(data['final_L']))
+regression_line = [(m*x)+b for x in np.asarray(data['init_L'])]
 plt.hist2d(data['init_L'], data['final_L'], bins=(range(-30,30), 60), cmap=plt.cm.jet)
-plt.show()
+plt.plot(data['init_L'], regression_line, label='y={0:.3}{1:.3}x'.format(b,m))
+plt.legend()
+plt.savefig('../plots/mc_plots/mc_{0:e}_{1}_init_vs_final.pdf'.format(k_b, N), transparent=False)
+# plt.show()
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
