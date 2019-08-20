@@ -241,7 +241,7 @@ parent_data = {0:data, 1:data, 2:data, 3:data, 4:data, 5:data, 6:data, 7:data, 8
 
 
 for x in k_b:
-    for L in range(1, 41, 10):
+    for L in range(1, 42, 10):
         # L = args.L           # Initial Length
         N = args.N           # Count
         Z = 0                # Partition Function
@@ -475,39 +475,47 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
         yildiz_line = [(0.6*x)+8.7 for x in np.asarray(x_data)]
     if tof == False:
         yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(x_data)]
-    ax.hist2d(x_data, y_data, bins=(range(-30,30), 60), cmap=plt.cm.jet)
+    ax.hist2d(x_data, y_data, bins=(range(-42,42), 60), cmap=plt.cm.jet)
     ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
     ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(8.7, 0.6), linestyle=":")
-    # ax.title("kb = {}".format(k_b))
+    ax.set_title('kb = {}'.format(k_b))
     ax.set_ylabel(label)
     ax.legend()
 
-fig7, ax = plt.subplots(12, 1)
-ax = ax.flatten()
-gs1 = gridspec.GridSpec(12,1)
+fig7, ax = plt.subplots(4,3, figsize=(12,14))
+fig7.tight_layout()
 for i in range(12):
-    if i < 4:
-        ax[i] = fig7.add_subplot(gs1[i, 0]) # 0:9, (i*10):(i*10)+9])
-        make_hist2d(True, ax[i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-    if 4 <= i < 8:
-        ax[i] = fig7.add_subplot(gs1[i, 0])  # 10:19, ((i-4)*10):((i-4)*10)+9])
-        make_hist2d(True, ax[i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-    if 8 <= i < 12:
-        ax[i] = fig7.add_subplot(gs1[i, 0])  # 20:29, ((i-8)*10):((i-8)*10)+9])
-        make_hist2d(True, ax[i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if i < 3:
+        # ax[0][i] = fig7.add_subplot(4,3,i+1) # 0:9, (i*10):(i*10)+9])
+        # ax[0][i].axis('off')
+        make_hist2d(True, ax[0][i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 3 <= i < 6:
+        # ax[0][i] = fig7.add_subplot(4,3,i+1)  # 10:19, ((i-4)*10):((i-4)*10)+9])
+        make_hist2d(True, ax[1][i-3], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 6 <= i < 9:
+        # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
+        make_hist2d(True, ax[2][i-6], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 9 <= i < 12:
+        # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
+        make_hist2d(True, ax[3][i-9], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
 plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_final.pdf'.format(N, dt), transparent=False)
 
-fig8 = plt.figure(8)
+fig8, ax = plt.subplots(4,3, figsize=(12,14))
+fig8.tight_layout()
 for i in range(12):
-    if i < 4:
-        ax[i] = fig8.add_subplot(gs1[0, i])
-        make_hist2d(False, ax[i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-    if 4 <= i < 8:
-        ax[i] = fig8.add_subplot(gs1[1, i-4])
-        make_hist2d(False, ax[i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-    if 8 <= i < 12:
-        ax[i] = fig8.add_subplot(gs1[2, i-8])
-        make_hist2d(False, ax[i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if i < 3:
+        # ax[0][i] = fig7.add_subplot(4,3,i+1) # 0:9, (i*10):(i*10)+9])
+        # ax[0][i].axis('off')
+        make_hist2d(False, ax[0][i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 3 <= i < 6:
+        # ax[0][i] = fig7.add_subplot(4,3,i+1)  # 10:19, ((i-4)*10):((i-4)*10)+9])
+        make_hist2d(False, ax[1][i-3], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 6 <= i < 9:
+        # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
+        make_hist2d(False, ax[2][i-6], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 9 <= i < 12:
+        # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
+        make_hist2d(False, ax[3][i-9], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
 plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_step_length.pdf'.format(N, dt), transparent=False)
 
 
