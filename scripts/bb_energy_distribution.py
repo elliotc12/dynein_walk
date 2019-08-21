@@ -4,8 +4,6 @@ import sys
 sys.path.append("../data")
 import importlib
 
-params = importlib.import_module("params")
-
 
 eq_in_degrees=True
 
@@ -102,7 +100,8 @@ class DyneinBothBound:
         self.E_total += 0*np.sqrt(self.r_nm[1]) + 0*np.sqrt(self.r_fm[1]) + 0*np.sqrt(self.r_t[1])
 
         # added unbinding prob. for Jin's poster
-        self.P = np.exp(-self.E_total)
+        b = 11.82733524 # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
+        self.P = np.exp(-b*self.E_total)
         self.rate_trailing = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
         self.rate_leading = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
         self.prob_trailing = self.P*self.rate_trailing
@@ -193,6 +192,7 @@ class DyneinBothBound:
 
 
 if __name__ == "__main__":
+    params = importlib.import_module("params")
     num_points = 500
     nma = np.linspace(0, 2*np.pi, num_points)
     fma = np.linspace(0, 2*np.pi, num_points)
