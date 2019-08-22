@@ -14,7 +14,7 @@ import bb_energy_distribution
 Monte Carlo simulation for dynein taking a step
 """
 
-def run_onebound(bba, bma, uma, uba, state, k, count):
+def run_onebound(bba, bma, uma, uba, state, k):
         """
         Runs onebound.cpp with bb configuration and params.py
         """
@@ -96,7 +96,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
         Call run_onebound function and collect onebound statistics
         """
         print('\n\nbothbound angles ',bba, bma, uma, uba, state)
-        step = run_onebound(bba, bma, uma, uba, state, k[0], count)
+        step = run_onebound(bba, bma, uma, uba, state, k[0])
 
         final_data['L'].append(step['L'])          # Final L array
         step_data['t'].append(step['t'])           # Specific type of step time array
@@ -125,10 +125,10 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
-            data['final_L'].append(step['L'])
+            parent_data[count]['final_L'].append(step['L'])
             step_data['step_length'].append(step['L']+L)
             final_data['step_length'].append(step['L']+L)         # Contains both steps data
-            data['step_length'].append(step['L']+L)
+            parent_data[count]['step_length'].append(step['L']+L)
 
             # Storing final motor angles
             if step['L'] > 0:
@@ -230,17 +230,27 @@ parser.add_argument("-o", "--ob", type=bool, help="Colelct Onebound data", defau
 args = parser.parse_args()
 
 
-k_b = [3e6, 3e9] # 5.5e6, 8e6, 3e7, 5.5e7, 8e7, 3e8, 5.5e8, 8e8, 3e9, 5.5e9, 8e9] # args.kb        # Binding Rate Constant
+k_b = [3e6, 5.5e6, 8e6, 3e7, 5.5e7, 8e7, 3e8, 5.5e8, 8e8, 3e9, 5.5e9, 8e9] # args.kb        # Binding Rate Constant
 dt = args.dt          # Time Step
 bb_data_file = args.bb
 ob_data_file = args.ob
 count = 0
-data = {'init_L': [], 'final_L': [], 'step_length': []}
-parent_data = {0:data, 1:data} # , 2:data, 3:data, 4:data, 5:data, 6:data, 7:data, 8:data, 9:data, 10:data, 11:data}
+parent_data = {0:{'init_L': [], 'final_L': [], 'step_length': []},
+                1:{'init_L': [], 'final_L': [], 'step_length': []},
+                2:{'init_L': [], 'final_L': [], 'step_length': []},
+                3:{'init_L': [], 'final_L': [], 'step_length': []},
+                4:{'init_L': [], 'final_L': [], 'step_length': []},
+                5:{'init_L': [], 'final_L': [], 'step_length': []},
+                6:{'init_L': [], 'final_L': [], 'step_length': []},
+                7:{'init_L': [], 'final_L': [], 'step_length': []},
+                8:{'init_L': [], 'final_L': [], 'step_length': []},
+                9:{'init_L': [], 'final_L': [], 'step_length': []},
+                10:{'init_L': [], 'final_L': [], 'step_length': []},
+                11:{'init_L': [], 'final_L': [], 'step_length': []}}
 
 
 for x in k_b:
-    for L in range(1, 42, 20):
+    for L in range(1, 42, 4):
         # L = args.L           # Initial Length
         N = args.N           # Count
         Z = 0                # Partition Function
@@ -259,22 +269,22 @@ for x in k_b:
         max_rate_leading = 0
 
         # Bothbound Data
-        P_arr = []
-        angles = {'nma': [],'fma': []}          # Pair of Angles
-        r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
-        r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
-        r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
-        E = {'bb': [], 'avg': 0}               # Energy data
-        rate_unbinding = {      # Unbinding rate
-                'trailing': [],
-                'leading': []
-        }
-        prob_unbinding = {      # Unbinding probability
-                'trailing': [],
-                'leading': [],
-                'unbinding': [],
-                'avg': 0
-        }
+        # P_arr = []
+        # angles = {'nma': [],'fma': []}          # Pair of Angles
+        # r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
+        # r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
+        # r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
+        # E = {'bb': [], 'avg': 0}               # Energy data
+        # rate_unbinding = {      # Unbinding rate
+        #         'trailing': [],
+        #         'leading': []
+        # }
+        # prob_unbinding = {      # Unbinding probability
+        #         'trailing': [],
+        #         'leading': [],
+        #         'unbinding': [],
+        #         'avg': 0
+        # }
 
         # Onebound Data
         trailing_data = {   # Trailing step data
@@ -338,8 +348,8 @@ for x in k_b:
 
                         rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
                         rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-                        rate_unbinding['trailing'].append(rate_trailing)
-                        rate_unbinding['leading'].append(rate_leading)
+                        # rate_unbinding['trailing'].append(rate_trailing)
+                        # rate_unbinding['leading'].append(rate_leading)
                         max_rate_leading = max(rate_leading, max_rate_leading)
                         max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
@@ -357,10 +367,10 @@ for x in k_b:
                                 state = 1
                                 parent_data[count]['init_L'].append(-L)
 
-                                if (prob_trailing+prob_leading) > max_unbinding:
-                                    max_unbinding = prob_trailing+prob_leading
-                                prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-                                collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
+                                # if (prob_trailing+prob_leading) > max_unbinding:
+                                #     max_unbinding = prob_trailing+prob_leading
+                                # prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
+                                # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
 
 
                                 collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
@@ -381,10 +391,10 @@ for x in k_b:
                                 state = 0
                                 parent_data[count]['init_L'].append(L)
 
-                                if (prob_trailing+prob_leading) > max_unbinding:
-                                    max_unbinding = prob_trailing+prob_leading
-                                prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
-                                collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
+                                # if (prob_trailing+prob_leading) > max_unbinding:
+                                #     max_unbinding = prob_trailing+prob_leading
+                                # prob_unbinding['unbinding'].append(prob_trailing+prob_leading)
+                                # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
 
 
                                 collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
@@ -401,11 +411,11 @@ for x in k_b:
 
 
 
-        print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
-        for i in range(len(final_data['L'])):
-            final_data['L_avg'] += final_data['L'][i]*P_arr[i]
-            final_data['t_avg'] += final_data['t'][i]*P_arr[i]
-            final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
+        # print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
+        # for i in range(len(final_data['L'])):
+        #     final_data['L_avg'] += final_data['L'][i]*P_arr[i]
+        #     final_data['t_avg'] += final_data['t'][i]*P_arr[i]
+        #     final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
 
         # What to collect and output or visualize?
 
@@ -465,10 +475,9 @@ for x in k_b:
             data_file_ob_leading.close()
 
         # plot_hist(L, k_b, dt, N)
-    print(parent_data[count]['init_L'])
     count += 1
 
-print(parent_data)
+
 def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     slope, intercept = best_fit(np.asarray(x_data), np.asarray(y_data))
     rgrsn_line = [(slope*x)+intercept for x in np.asarray(x_data)]
@@ -483,55 +492,31 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     ax.set_ylabel(label)
     ax.legend()
 
-# fig7 , ax = plt.subplots(4,3, figsize=(12,14))
-fig7 , ax = plt.subplots(2,1, figsize=(12,14))
+fig7 , ax = plt.subplots(4,3, figsize=(12,14))
 fig7.tight_layout()
-make_hist2d(True, ax[0][0], parent_data[0]['init_L'], parent_data[0]['final_L'], k_b[0], "Final L")
-make_hist2d(True, ax[1][0], parent_data[1]['init_L'], parent_data[1]['final_L'], k_b[1], "Final L")
-# make_hist2d(True, ax[0][2], parent_data[2]['init_L'], parent_data[2]['final_L'], k_b[2], "Final L")
-# make_hist2d(True, ax[0][3], parent_data[3]['init_L'], parent_data[3]['final_L'], k_b[3], "Final L")
-# make_hist2d(True, ax[0][4], parent_data[4]['init_L'], parent_data[4]['final_L'], k_b[4], "Final L")
-# make_hist2d(True, ax[0][5], parent_data[5]['init_L'], parent_data[5]['final_L'], k_b[5], "Final L")
-# make_hist2d(True, ax[0][6], parent_data[6]['init_L'], parent_data[6]['final_L'], k_b[6], "Final L")
-# make_hist2d(True, ax[0][7], parent_data[7]['init_L'], parent_data[7]['final_L'], k_b[7], "Final L")
-# make_hist2d(True, ax[0][8], parent_data[8]['init_L'], parent_data[8]['final_L'], k_b[8], "Final L")
-# make_hist2d(True, ax[0][9], parent_data[9]['init_L'], parent_data[9]['final_L'], k_b[9], "Final L")
-# make_hist2d(True, ax[0][10], parent_data[10]['init_L'], parent_data[10]['final_L'], k_b[10], "Final L")
-# make_hist2d(True, ax[0][11], parent_data[11]['init_L'], parent_data[11]['final_L'], k_b[11], "Final L")
-
-# for i in range(12):
-#     if i < 3:
-#         # ax[0][i] = fig7.add_subplot(4,3,i+1) # 0:9, (i*10):(i*10)+9])
-#         # ax[0][i].axis('off')
-#         make_hist2d(True, ax[0][i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-#     if 3 <= i < 6:
-#         # ax[0][i] = fig7.add_subplot(4,3,i+1)  # 10:19, ((i-4)*10):((i-4)*10)+9])
-#         make_hist2d(True, ax[1][i-3], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-#     if 6 <= i < 9:
-#         # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
-#         make_hist2d(True, ax[2][i-6], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-#     if 9 <= i < 12:
-#         # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
-#         make_hist2d(True, ax[3][i-9], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+for i in range(12):
+    if i < 3:
+        make_hist2d(True, ax[0, i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 3 <= i < 6:
+        make_hist2d(True, ax[1, i-3], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 6 <= i < 9:
+        make_hist2d(True, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
+    if 9 <= i < 12:
+        make_hist2d(True, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
 plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_final.pdf'.format(N, dt), transparent=False)
 
-# fig8, ax = plt.subplots(4,3, figsize=(12,14))
-# fig8.tight_layout()
-# for i in range(12):
-#     if i < 3:
-#         # ax[0][i] = fig7.add_subplot(4,3,i+1) # 0:9, (i*10):(i*10)+9])
-#         # ax[0][i].axis('off')
-#         make_hist2d(False, ax[0][i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-#     if 3 <= i < 6:
-#         # ax[0][i] = fig7.add_subplot(4,3,i+1)  # 10:19, ((i-4)*10):((i-4)*10)+9])
-#         make_hist2d(False, ax[1][i-3], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-#     if 6 <= i < 9:
-#         # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
-#         make_hist2d(False, ax[2][i-6], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-#     if 9 <= i < 12:
-#         # ax[i] = fig7.add_subplot(4,3, i+1)  # 20:29, ((i-8)*10):((i-8)*10)+9])
-#         make_hist2d(False, ax[3][i-9], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-# plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_step_length.pdf'.format(N, dt), transparent=False)
+fig8, ax = plt.subplots(4,3, figsize=(12,14))
+fig8.tight_layout()
+for i in range(12):
+    if i < 3:
+        make_hist2d(False, ax[0, i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 3 <= i < 6:
+        make_hist2d(False, ax[1, i-3], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 6 <= i < 9:
+        make_hist2d(False, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+    if 9 <= i < 12:
+        make_hist2d(False, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
+plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_step_length.pdf'.format(N, dt), transparent=False)
 
 
 # final_L_slope[i], final_L_intercept[i] = best_fit(np.asarray(data['init_L']), np.asarray(data['final_L']))
@@ -583,32 +568,32 @@ def plot_hist(L, k_b, dt, N):
     ax2 = fig0.add_subplot(gs0[0, 11:21])
     ax3 = fig0.add_subplot(gs0[1, 11:21])
 
-    separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
-                        "Trailing Step", "Leading Step", True, "C0", "C1",
-                        "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
-    step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
-                        None, None, True, "C3", None,
-                        "", "Step Length (nm)")
-    separate_time_hist = make_hist(ax2, True, trailing_data['t'], leading_data['t'], 30,
-                        "Trailing time", "Leading time", False, "C0", "C1",
-                        "k_b: {0:e}".format(k_b), "time (s)")
-    time_hist = make_hist(ax3, False, final_data['t'], None, 50,
-                        None, None, False, "C3", None,
-                        "", "time (s)")
-    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-
-    fig6 = plt.figure(6, figsize=(6,8))
-    gs2 = gridspec.GridSpec(2,1)
-    ax12 = fig6.add_subplot(gs2[0,:])
-    ax13 = fig6.add_subplot (gs2[1,:])
-    prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
-                        "Trailing", "Leading", True, "C0", "C1",
-                        "Unbinding Probabilities", "Probability")
-    prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
-                        "Probabilities", None, True, "C0", None,
-                        "Cumulative Unbinding Probabilities", "Probability")
-    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
+    # separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
+    #                     "Trailing Step", "Leading Step", True, "C0", "C1",
+    #                     "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
+    # step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
+    #                     None, None, True, "C3", None,
+    #                     "", "Step Length (nm)")
+    # separate_time_hist = make_hist(ax2, True, trailing_data['t'], leading_data['t'], 30,
+    #                     "Trailing time", "Leading time", False, "C0", "C1",
+    #                     "k_b: {0:e}".format(k_b), "time (s)")
+    # time_hist = make_hist(ax3, False, final_data['t'], None, 50,
+    #                     None, None, False, "C3", None,
+    #                     "", "time (s)")
+    # plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
+    #
+    #
+    # fig6 = plt.figure(6, figsize=(6,8))
+    # gs2 = gridspec.GridSpec(2,1)
+    # ax12 = fig6.add_subplot(gs2[0,:])
+    # ax13 = fig6.add_subplot (gs2[1,:])
+    # prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
+    #                     "Trailing", "Leading", True, "C0", "C1",
+    #                     "Unbinding Probabilities", "Probability")
+    # prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
+    #                     "Probabilities", None, True, "C0", None,
+    #                     "Cumulative Unbinding Probabilities", "Probability")
+    # plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
 
 
 
