@@ -17,7 +17,7 @@ for_simulation= {"k_b": 3.4e9, # previously 3e6
                  "eqmpost": 242,
                  "eqt": 0,
                  "force": 0,
-                 "exp-unbinding-constant": -0.35,
+                 "exp-unbinding-constant": -0.3563,
                  "runtime": 0.1,
                  "crash-movie": False,
                  "nomovie": True,
