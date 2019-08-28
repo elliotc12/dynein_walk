@@ -112,6 +112,42 @@ int main(int argc, char** argv) {
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
+    t += dt;  // iterate time
+    iter ++;
+
+    double old_bba = dynein->get_bba();
+    double old_bma = dynein->get_bma();
+    double old_uma = dynein->get_uma();
+    double old_uba = dynein->get_uba();
+    // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
+
+
+    bool accept_step = false;
+    int attempts = 0;
+    while(!accept_step){
+      if (attempts > 0) {
+        dynein->set_bba(old_bba);
+        dynein->set_bma(old_bma);
+        dynein->set_uma(old_uma);
+        dynein->set_uba(old_uba);
+        dynein->update_velocities();    // This update_velocities() was added (?)
+      }
+
+      double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
+      double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
+      double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
+      double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
+
+      dynein->set_bba(temp_bba);
+      dynein->set_bma(temp_bma);
+      dynein->set_uma(temp_uma);
+      dynein->set_uba(temp_uba);
+
+      accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
+
+      attempts++;
+    }
+
     if (binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
       fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
@@ -123,61 +159,61 @@ int main(int argc, char** argv) {
               dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    } else {    // else if vs. else makes diff data (?)
-      t += dt;  // iterate time
-      iter ++;
-
-      // if (iter < 4 || iter % 1000000 == 0) {
-      //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      // }
-      // if (k == 1) {
-      //   fprintf(log_f, "%g %g %g %g %g\n",
-      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-      //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-      //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      // }
-      // if (k == 3) {
-      //   fprintf(log_f, "%g %g %g %g %g\n",
-      //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-      //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-      //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-      // }
-
-      double old_bba = dynein->get_bba();
-      double old_bma = dynein->get_bma();
-      double old_uma = dynein->get_uma();
-      double old_uba = dynein->get_uba();
-      // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
-
-
-      bool accept_step = false;
-      int attempts = 0;
-      while(!accept_step){
-        if (attempts > 0) {
-          dynein->set_bba(old_bba);
-          dynein->set_bma(old_bma);
-          dynein->set_uma(old_uma);
-          dynein->set_uba(old_uba);
-          dynein->update_velocities();    // This update_velocities() was added (?)
-        }
-
-        double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
-        double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
-        double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
-        double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
-
-        dynein->set_bba(temp_bba);
-        dynein->set_bma(temp_bma);
-        dynein->set_uma(temp_uma);
-        dynein->set_uba(temp_uba);
-
-        accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-
-        attempts++;
-      }
+    // } else {    // else if vs. else makes diff data (?)
+    //   t += dt;  // iterate time
+    //   iter ++;
+    //
+    //   // if (iter < 4 || iter % 1000000 == 0) {
+    //   //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+    //   // }
+    //   // if (k == 1) {
+    //   //   fprintf(log_f, "%g %g %g %g %g\n",
+    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+    //   //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+    //   //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+    //   //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+    //   // }
+    //   // if (k == 3) {
+    //   //   fprintf(log_f, "%g %g %g %g %g\n",
+    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
+    //   //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+    //   //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
+    //   //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
+    //   // }
+    //
+    //   double old_bba = dynein->get_bba();
+    //   double old_bma = dynein->get_bma();
+    //   double old_uma = dynein->get_uma();
+    //   double old_uba = dynein->get_uba();
+    //   // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
+    //
+    //
+    //   bool accept_step = false;
+    //   int attempts = 0;
+    //   while(!accept_step){
+    //     if (attempts > 0) {
+    //       dynein->set_bba(old_bba);
+    //       dynein->set_bma(old_bma);
+    //       dynein->set_uma(old_uma);
+    //       dynein->set_uba(old_uba);
+    //       dynein->update_velocities();    // This update_velocities() was added (?)
+    //     }
+    //
+    //     double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
+    //     double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
+    //     double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
+    //     double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
+    //
+    //     dynein->set_bba(temp_bba);
+    //     dynein->set_bma(temp_bma);
+    //     dynein->set_uma(temp_uma);
+    //     dynein->set_uba(temp_uba);
+    //
+    //     accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
+    //
+    //     attempts++;
+    //   }
     }
   }
 }

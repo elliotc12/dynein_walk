@@ -22,7 +22,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         seed += 1 # use a different seed every time.  ugh, global variables!
         print('running with inputs', bba, bma, uma, uba, state, k)
         process = subprocess.Popen(['../onebound',
-                                    str(k_b[count]),
+                                    str(k_b),
                                     str(params.for_simulation['cb']),
                                     str(params.for_simulation['cm']),
                                     str(params.for_simulation['ct']),
@@ -48,23 +48,28 @@ def run_onebound(bba, bma, uma, uba, state, k):
         return output_data
 
 
-def collect_onebound_data(k, state, bba, bma, uma, uba, L, count):
+def collect_onebound_data(k, state, bba, bma, uma, uba, L):
         """
         Call run_onebound function and collect onebound statistics
         """
         print('\n\nbothbound angles ',bba, bma, uma, uba, state)
         step = run_onebound(bba, bma, uma, uba, state, k[0])
+        if step['t'] == dt:
+            return
+        parent_data['t'].append(step['t'])
 
         if state == 1:
             # FARBOUND State - Trailing step data
+            parent_data['init_L'].append(-L)
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-            parent_data[count]['final_L'].append(step['L'])
-            parent_data[count]['step_length'].append(step['L']+L)
+            parent_data['final_L'].append(step['L'])
+            parent_data['step_length'].append(step['L']+L)
         else:
             # NEARBOUND State - Leading step ddata
+            parent_data['init_L'].append(L)
             print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-            parent_data[count]['final_L'].append(step['L'])
-            parent_data[count]['step_length'].append(step['L']-L)
+            parent_data['final_L'].append(step['L'])
+            parent_data['step_length'].append(step['L']-L)
 
         k[0]+=1
 
@@ -82,84 +87,76 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=42)
 parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
-parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
-# parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
 
-k_b = [3e7, 5e7, 7e7, 9e7, 1e8, 3e8, 5e8, 7e8, 9e8, 1e9, 3e9, 5e9] # args.kb        # Binding Rate Constant
+k_b = args.kb        # Binding Rate Constant
 dt = args.dt          # Time Step
-count = 0
-parent_data = {0:{'init_L': [], 'final_L': [], 'step_length': []},
-                1:{'init_L': [], 'final_L': [], 'step_length': []},
-                2:{'init_L': [], 'final_L': [], 'step_length': []},
-                3:{'init_L': [], 'final_L': [], 'step_length': []},
-                4:{'init_L': [], 'final_L': [], 'step_length': []},
-                5:{'init_L': [], 'final_L': [], 'step_length': []},
-                6:{'init_L': [], 'final_L': [], 'step_length': []},
-                7:{'init_L': [], 'final_L': [], 'step_length': []},
-                8:{'init_L': [], 'final_L': [], 'step_length': []},
-                9:{'init_L': [], 'final_L': [], 'step_length': []},
-                10:{'init_L': [], 'final_L': [], 'step_length': []},
-                11:{'init_L': [], 'final_L': [], 'step_length': []}}
+parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
 
 
-for x in k_b:
-    for L in range(1, args.L, args.Ls):
-        N = args.N           # Count
-        Z = 0                # Partition Function
-        k = [0]              # Dynein Count & RNG Seed
+for L in range(1, args.L, args.Ls):
+    N = args.N           # Count
+    Z = 0                # Partition Function
+    k = [0]              # Dynein Count & RNG Seed
 
-        max_unbinding = 1
-        b = 11.82733524          # thermodynamic beta from default_parameters.h
-        eqb_angle = params.for_simulation['eqb']
-        if bb_energy_distribution.eq_in_degrees:
-                eqb_angle = eqb_angle*np.pi/180
+    max_unbinding = 1
+    b = 11.82733524          # thermodynamic beta from default_parameters.h
+    eqb_angle = params.for_simulation['eqb']
+    if bb_energy_distribution.eq_in_degrees:
+            eqb_angle = eqb_angle*np.pi/180
 
-        seed = 0
-        np.random.seed(0)
+    seed = 0
+    np.random.seed(0)
 
 
-        while Z < N:
-                # Making random motor angles
-                nma = np.random.uniform(0, 2*np.pi)
-                fma = np.random.uniform(0, 2*np.pi)
+    while Z < N:
+            # Making random motor angles
+            nma = np.random.uniform(0, 2*np.pi)
+            fma = np.random.uniform(0, 2*np.pi)
 
-                dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
+            dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
 
-                # Checking if energy is nan
-                if np.isnan(dynein.E_total) == True:
-                        continue
-                else:
-                        # Calculating partition function
-                        P = np.exp(-b*dynein.E_total)
-                        Z += P
+            # Checking if energy is nan
+            if np.isnan(dynein.E_total) == True:
+                    continue
+            else:
+                    # Calculating partition function
+                    P = np.exp(-b*dynein.E_total)
+                    Z += P
 
-                        rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                        rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-                        prob_trailing = P*rate_trailing     #   Unnormalized
-                        prob_leading = P*rate_leading       #   Unnormalized
+                    rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+                    rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+                    prob_trailing = P*rate_trailing     #   Unnormalized
+                    prob_leading = P*rate_leading       #   Unnormalized
 
-                        new_nma = nma-(np.pi-dynein.nba)
-                        new_fma = fma-(np.pi-dynein.fba)
+                    new_nma = nma-(np.pi-dynein.nba)
+                    new_fma = fma-(np.pi-dynein.fba)
 
-                        if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                                # FARBOUND State
-                                state = 1
-                                parent_data[count]['init_L'].append(-L)
-                                collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
-                                                        L, count)
+                    if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                            # FARBOUND State
+                            state = 1
+                            collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
+                                                    L)
 
-                        if np.random.random() < prob_leading:
-                                # NEARBOUND State
-                                state = 0
-                                parent_data[count]['init_L'].append(L)
-                                collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
-                                                        L, count)
-    count += 1
+                    if np.random.random() < prob_leading:
+                            # NEARBOUND State
+                            state = 0
+                            collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
+                                                    L)
 
+
+def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
+    ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
+    if stacked_hist == True:
+        ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True, color=Color0)
+    ax.legend(loc="upper right")
+    ax.set_title(Title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel("Frequency")
 
 def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     slope, intercept = best_fit(np.asarray(x_data), np.asarray(y_data))
@@ -176,28 +173,14 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     ax.set_ylabel(label)
     ax.legend()
 
-fig7 , ax = plt.subplots(4,3, figsize=(12,14))
+fig7, ax = plt.subplots(2,1, figsize=(5,7))
 fig7.tight_layout()
-for i in range(12):
-    if i < 3:
-        make_hist2d(True, ax[0, i], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-    if 3 <= i < 6:
-        make_hist2d(True, ax[1, i-3], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-    if 6 <= i < 9:
-        make_hist2d(True, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-    if 9 <= i < 12:
-        make_hist2d(True, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], "Final L")
-plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_final.pdf'.format(N, dt), transparent=False)
+make_hist2d(True, ax[0], parent_data['init_L'], parent_data['final_L'], k_b, "Final L")
+make_hist2d(False, ax[1], parent_data['init_L'], parent_data['step_length'], k_b, "Step Length")
+plt.savefig('../plots/mc_plots/mc_{}_{}_{}_fitting_kb.pdf'.format(N, dt, k_b), transparent=False)
 
-fig8, ax = plt.subplots(4,3, figsize=(12,14))
-fig8.tight_layout()
-for i in range(12):
-    if i < 3:
-        make_hist2d(False, ax[0, i], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-    if 3 <= i < 6:
-        make_hist2d(False, ax[1, i-3], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-    if 6 <= i < 9:
-        make_hist2d(False, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-    if 9 <= i < 12:
-        make_hist2d(False, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], "Step Length")
-plt.savefig('../plots/mc_plots/mc_{}_{}_init_vs_step_length.pdf'.format(N, dt), transparent=False)
+# fig8, ax3 = plt.subplots(1,1, figsize=(5,8))
+# time_hist = make_hist(ax3, False, parent_data['t'], None, 50,
+#                     None, None, False, "C3", None,
+#                     "k_b: {0:e}".format(k_b), "time (s)")
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
