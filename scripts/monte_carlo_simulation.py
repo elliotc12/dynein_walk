@@ -22,7 +22,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         seed += 1 # use a different seed every time.  ugh, global variables!
         print('running with inputs', bba, bma, uma, uba, state, k)
         process = subprocess.Popen(['../onebound',
-                                    str(k_b[count]),
+                                    str(k_b),
                                     str(params.for_simulation['cb']),
                                     str(params.for_simulation['cm']),
                                     str(params.for_simulation['ct']),
@@ -91,7 +91,7 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
                 data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
                 prob_unbinding['unbinding'][k[0]]))
 
-def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_file, count):
+def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_file):
         """
         Call run_onebound function and collect onebound statistics
         """
@@ -106,10 +106,8 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             # NEARBOUND State - Leading step ddata
             print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
-            parent_data[count]['final_L'].append(step['L'])
             step_data['step_length'].append(step['L']-L)
             final_data['step_length'].append(step['L']-L)         # Contains both steps data
-            parent_data[count]['step_length'].append(step['L']-L)
 
             # Storing final motor angles
             if step['L'] < 0:   #FIXME uma != nma !!! need to calculate new bb nma
@@ -125,10 +123,8 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
-            parent_data[count]['final_L'].append(step['L'])
             step_data['step_length'].append(step['L']+L)
             final_data['step_length'].append(step['L']+L)         # Contains both steps data
-            parent_data[count]['step_length'].append(step['L']+L)
 
             # Storing final motor angles
             if step['L'] > 0:
@@ -346,13 +342,11 @@ while Z < N:
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
-                        parent_data[count]['init_L'].append(-L)
-
                         collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
 
 
                         collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
-                                                L, trailing_data, ob_data_file, count)
+                                                L, trailing_data, ob_data_file)
 
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
@@ -367,13 +361,11 @@ while Z < N:
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
                         state = 0
-                        parent_data[count]['init_L'].append(L)
-
                         collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
 
 
                         collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
-                                                L, leading_data, ob_data_file, count)
+                                                L, leading_data, ob_data_file)
 
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
@@ -412,7 +404,7 @@ for i in range(len(final_data['L'])):
 ### What to export, and in what format?
 # Histograms of final displacements?
 
-Averages
+print('Averages')
 tx_avg = r_t['x_avg']/Z          # Tail x
 ty_avg = r_t['y_avg']/Z          # Tail y
 nmx_avg = r_nm['x_avg']/Z        # Near motor x
@@ -446,8 +438,6 @@ if ob_data_file == True:
     data_file_ob_trailing.close()
     data_file_ob_leading.close()
 
-# plot_hist(L, k_b, dt, N)
-
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
@@ -480,19 +470,6 @@ def plot_hist(L, k_b, dt, N):
                         "", "time (s)")
     plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
 
-
-    fig6 = plt.figure(6, figsize=(6,8))
-    gs2 = gridspec.GridSpec(2,1)
-    ax12 = fig6.add_subplot(gs2[0,:])
-    ax13 = fig6.add_subplot (gs2[1,:])
-    prob_separate_hist = make_hist(ax12, True, prob_unbinding['trailing'], prob_unbinding['leading'], 30,
-                        "Trailing", "Leading", True, "C0", "C1",
-                        "Unbinding Probabilities", "Probability")
-    prob_hist = make_hist(ax13, False, prob_unbinding['unbinding'], None, 30,
-                        "Probabilities", None, True, "C0", None,
-                        "Cumulative Unbinding Probabilities", "Probability")
-    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_bothbound_unbinding_prob.pdf'.format(int(L), k_b, dt, N), transparent=False)
-
-
-
     plt.show()
+
+plot_hist(L, k_b, dt, N)

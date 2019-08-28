@@ -55,16 +55,17 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, count):
         print('\n\nbothbound angles ',bba, bma, uma, uba, state)
         step = run_onebound(bba, bma, uma, uba, state, k[0])
 
-        if state == 0:
-            # NEARBOUND State - Leading step ddata
-            print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
-            parent_data[count]['final_L'].append(step['L'])
-            parent_data[count]['step_length'].append(step['L']-L)
-        else:
+        if state == 1:
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             parent_data[count]['final_L'].append(step['L'])
             parent_data[count]['step_length'].append(step['L']+L)
+        else:
+            # NEARBOUND State - Leading step ddata
+            print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+            parent_data[count]['final_L'].append(step['L'])
+            parent_data[count]['step_length'].append(step['L']-L)
+
         k[0]+=1
 
 
@@ -78,7 +79,7 @@ def best_fit(x,y):
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=8)
+parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=42)
 parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
@@ -88,7 +89,7 @@ parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constan
 args = parser.parse_args()
 
 
-k_b = [3e4, 5e4, 7e4, 9e4, 1e5, 3e5, 5e5, 7e5, 9e5, 1e6, 3e6, 5e6] # args.kb        # Binding Rate Constant
+k_b = [3e7, 5e7, 7e7, 9e7, 1e8, 3e8, 5e8, 7e8, 9e8, 1e9, 3e9, 5e9] # args.kb        # Binding Rate Constant
 dt = args.dt          # Time Step
 count = 0
 parent_data = {0:{'init_L': [], 'final_L': [], 'step_length': []},
@@ -165,11 +166,12 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     rgrsn_line = [(slope*x)+intercept for x in np.asarray(x_data)]
     if tof == True:
         yildiz_line = [(0.6*x)+8.7 for x in np.asarray(x_data)]
+        ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(8.7, 0.6), linestyle=":")
     if tof == False:
         yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(x_data)]
+        ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(9.1, -0.4), linestyle=":")
     ax.hist2d(x_data, y_data, bins=(range(-42,42), 60), cmap=plt.cm.jet)
     ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
-    ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(8.7, 0.6), linestyle=":")
     ax.set_title('kb = {}'.format(k_b))
     ax.set_ylabel(label)
     ax.legend()
