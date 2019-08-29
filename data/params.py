@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 for_simulation= {"k_b": 3.4e9, # previously 3e6
-                 "k_ub": 1e20, # previously 30
+                 "k_ub": 30,
                  "cb": 0.08,
                  "cm": 1.05,
                  "ct": 0.36,

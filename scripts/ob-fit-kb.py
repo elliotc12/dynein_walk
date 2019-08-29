@@ -54,8 +54,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L):
         """
         print('\n\nbothbound angles ',bba, bma, uma, uba, state)
         step = run_onebound(bba, bma, uma, uba, state, k[0])
-        if step['t'] == dt:
-            return
+
         parent_data['t'].append(step['t'])
 
         if state == 1:
@@ -85,17 +84,23 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=42)
-parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
+parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=10)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-b", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
+parser.add_argument("-m", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
+parser.add_argument("-s", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
-
 k_b = args.kb        # Binding Rate Constant
 dt = args.dt          # Time Step
+params.for_simulation['cb'] = args.cb
+params.for_simulation['cm'] = args.cm
+params.for_simulation['ct'] = args.ct
 parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
+
 
 
 for L in range(1, args.L, args.Ls):
@@ -149,6 +154,7 @@ for L in range(1, args.L, args.Ls):
                                                     L)
 
 
+
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
     if stacked_hist == True:
@@ -161,14 +167,14 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
 def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     slope, intercept = best_fit(np.asarray(x_data), np.asarray(y_data))
     rgrsn_line = [(slope*x)+intercept for x in np.asarray(x_data)]
+    ax.hist2d(x_data, y_data, bins=(range(-42,42), 60), cmap=plt.cm.jet)
+    ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
     if tof == True:
         yildiz_line = [(0.6*x)+8.7 for x in np.asarray(x_data)]
         ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(8.7, 0.6), linestyle=":")
     if tof == False:
         yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(x_data)]
         ax.plot(x_data, yildiz_line, label='Experiment: y = ({:.3}) + ({:.3})x'.format(9.1, -0.4), linestyle=":")
-    ax.hist2d(x_data, y_data, bins=(range(-42,42), 60), cmap=plt.cm.jet)
-    ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
     ax.set_title('kb = {}'.format(k_b))
     ax.set_ylabel(label)
     ax.legend()
@@ -177,7 +183,7 @@ fig7, ax = plt.subplots(2,1, figsize=(5,7))
 fig7.tight_layout()
 make_hist2d(True, ax[0], parent_data['init_L'], parent_data['final_L'], k_b, "Final L")
 make_hist2d(False, ax[1], parent_data['init_L'], parent_data['step_length'], k_b, "Step Length")
-plt.savefig('../plots/mc_plots/mc_{}_{}_{}_fitting_kb.pdf'.format(N, dt, k_b), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.pdf'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=False)
 
 # fig8, ax3 = plt.subplots(1,1, figsize=(5,8))
 # time_hist = make_hist(ax3, False, parent_data['t'], None, 50,

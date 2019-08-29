@@ -71,7 +71,7 @@ args = parser.parse_args()
 params.for_simulation['exp-unbinding-constant'] = args.C
 params.for_simulation['k_ub'] = args.kub
 
-Ls = np.arange(5, 51, 2)
+Ls = np.arange(5, 51, 10)
 delta = 0.000001
 
 yildiz_displacements = [10.0, 20.0, 30.0, 40.0, 50.0]
@@ -128,6 +128,8 @@ while True:
         params.for_simulation['exp-unbinding-constant'] += delta
 
 print('Best C: ', params.for_simulation['exp-unbinding-constant'])
+
+print('rate:', rate_trailing)
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)

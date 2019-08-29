@@ -336,6 +336,7 @@ while Z < N:
                 prob_trailing = P*rate_trailing     #   Unnormalized
                 prob_leading = P*rate_leading       #   Unnormalized
 
+
                 new_nma = nma-(np.pi-dynein.nba)
                 new_fma = fma-(np.pi-dynein.fba)
 
@@ -462,10 +463,10 @@ def plot_hist(L, k_b, dt, N):
     step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
                         None, None, True, "C3", None,
                         "", "Step Length (nm)")
-    separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])/dt, np.array(leading_data['t'])/dt, 30,
+    separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t']), np.array(leading_data['t']), 30,
                         "Trailing time", "Leading time", False, "C0", "C1",
                         "k_b: {0:e}".format(k_b), "time (s)")
-    time_hist = make_hist(ax3, False, np.array(final_data['t'])/dt, None, 50,
+    time_hist = make_hist(ax3, False, np.array(final_data['t']), None, 50,
                         None, None, False, "C3", None,
                         "", "time (s)")
     plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)

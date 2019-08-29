@@ -15,14 +15,14 @@ def spring_energy(theta, theta_eq, c): #domain angle, equilibrium angle, spring 
         theta_eq = theta_eq*np.pi/180
     return 0.5*c*(theta-theta_eq)**2
 
-def unbinding_rate(expconst, theta, theta_eq):
+def unbinding_rate(k_ub, expconst, theta, theta_eq):
     """
     Calculate unbinding rates for Jins poster
     """
     if eq_in_degrees == True:
         theta_eq = theta_eq*np.pi/180
-    return np.exp(expconst*(theta-theta_eq))
-    
+    return k_ub*np.exp(expconst*(theta-theta_eq))
+
 
 
 
@@ -81,7 +81,7 @@ class DyneinBothBound:
         self.r_t = self.r_nb + np.array([self.Ln*np.cos(self.na), self.Ln*np.sin(self.na)])
 
         # calculate distance between motors
-        # NOTE: np.sqrt() is already element-wise 
+        # NOTE: np.sqrt() is already element-wise
         self.Lm = np.sqrt((self.r_nm[0]-self.r_fm[0])**2 + (self.r_nm[1]-self.r_fm[1])**2)
         # calculate tail angle
         self.ta = np.arccos(1- self.Lm**2/self.Lt**2)
@@ -102,8 +102,8 @@ class DyneinBothBound:
         # added unbinding prob. for Jin's poster
         b = 11.82733524 # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
         self.P = np.exp(-b*self.E_total)
-        self.rate_trailing = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
-        self.rate_leading = unbinding_rate(params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
+        self.rate_trailing = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
+        self.rate_leading = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
         self.prob_trailing = self.P*self.rate_trailing
         self.prob_leading = self.P*self.rate_leading
 
@@ -142,7 +142,7 @@ class DyneinBothBound:
 
         # make contourf graph
         ax1 = fig.add_subplot(1, 2, 1)
-        energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, levels=100)
+        energyPlot = ax1.contourf(self.nma, self.fma, self.E_total, 100)
         contour = ax1.contour(self.nma, self.fma, self.E_total, np.arange(1, 30, 1), colors='w', linewidth=0)
         ax1.set_xlabel(r'$\theta_{nm}$')
         ax1.set_ylabel(r'$\theta_{fm}$')
@@ -208,36 +208,3 @@ if __name__ == "__main__":
     dynein_32.plot_bb_energy_distribution()
 
     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
