@@ -215,8 +215,8 @@ def best_fit(x,y):
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=8)
-parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=200)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
@@ -380,10 +380,10 @@ while Z < N:
 
 
 print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
-for i in range(len(final_data['L'])):
-    final_data['L_avg'] += final_data['L'][i]*P_arr[i]
-    final_data['t_avg'] += final_data['t'][i]*P_arr[i]
-    final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
+# for i in range(len(final_data['L'])):
+#     final_data['L_avg'] += final_data['L'][i]*P_arr[i]
+#     final_data['t_avg'] += final_data['t'][i]*P_arr[i]
+#     final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
 
 # What to collect and output or visualize?
 
@@ -404,32 +404,32 @@ for i in range(len(final_data['L'])):
 
 ### What to export, and in what format?
 # Histograms of final displacements?
-
-print('Averages')
-tx_avg = r_t['x_avg']/Z          # Tail x
-ty_avg = r_t['y_avg']/Z          # Tail y
-nmx_avg = r_nm['x_avg']/Z        # Near motor x
-nmy_avg = r_nm['y_avg']/Z        # Near Motor y
-fmx_avg = r_fm['x_avg']/Z        # Far motor x
-fmy_avg = r_fm['y_avg']/Z        # Far Motor y
-E_avg = E['avg']/Z          # Average energy
-prob_unbinding_avg = prob_unbinding['avg']/Z
-final_L_avg = final_data['L_avg']/Z
-step_length_avg = final_data['step_length_avg']/Z
-obt_avg = final_data['t_avg']/Z
-
-print("BOTHBOUND AVERAGES")
-print("Avg Tail x:", tx_avg)
-print("Avg Tail y:", ty_avg)
-print("Avg nmx:", nmx_avg)
-print("Avg nmy:", nmy_avg)
-print("Avg fmx:", fmx_avg)
-print("Avg fmy:", fmy_avg)
-print("Avg E:", E_avg)
-print("Avg prob_unbinding:", prob_unbinding_avg)
-print("Avg Final Displacement:", final_L_avg)
-print("Avg Step Length:", step_length_avg)
-print("Avg ob time:", obt_avg)
+#
+# print('Averages')
+# tx_avg = r_t['x_avg']/Z          # Tail x
+# ty_avg = r_t['y_avg']/Z          # Tail y
+# nmx_avg = r_nm['x_avg']/Z        # Near motor x
+# nmy_avg = r_nm['y_avg']/Z        # Near Motor y
+# fmx_avg = r_fm['x_avg']/Z        # Far motor x
+# fmy_avg = r_fm['y_avg']/Z        # Far Motor y
+# E_avg = E['avg']/Z          # Average energy
+# prob_unbinding_avg = prob_unbinding['avg']/Z
+# final_L_avg = final_data['L_avg']/Z
+# step_length_avg = final_data['step_length_avg']/Z
+# obt_avg = final_data['t_avg']/Z
+#
+# print("BOTHBOUND AVERAGES")
+# print("Avg Tail x:", tx_avg)
+# print("Avg Tail y:", ty_avg)
+# print("Avg nmx:", nmx_avg)
+# print("Avg nmy:", nmy_avg)
+# print("Avg fmx:", fmx_avg)
+# print("Avg fmy:", fmy_avg)
+# print("Avg E:", E_avg)
+# print("Avg prob_unbinding:", prob_unbinding_avg)
+# print("Avg Final Displacement:", final_L_avg)
+# print("Avg Step Length:", step_length_avg)
+# print("Avg ob time:", obt_avg)
 
 
 if bb_data_file == True:
@@ -449,28 +449,47 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
 
-def plot_hist(L, k_b, dt, N):
-    fig0 = plt.figure(0, figsize=(12,8))
-    gs0 = gridspec.GridSpec(2, 21)
-    ax0 = fig0.add_subplot(gs0[0, 0:10])
-    ax1 = fig0.add_subplot(gs0[1, 0:10])
-    ax2 = fig0.add_subplot(gs0[0, 11:21])
-    ax3 = fig0.add_subplot(gs0[1, 11:21])
+# def plot_hist(L, k_b, dt, N):
+# fig0 = plt.figure(0, figsize=(12,8))
+# gs0 = gridspec.GridSpec(2, 22)
+gs0 = gridspec.GridSpec(1,1)
+# ax0 = fig0.add_subplot(gs0[0, 0:10])
+# ax1 = fig0.add_subplot(gs0[1, 0:10])
+# ax2 = fig0.add_subplot(gs0[0, 12:22])
+# ax3 = fig0.add_subplot(gs0[1, 12:22])
 
-    separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
-                        "Trailing Step", "Leading Step", True, "C0", "C1",
-                        "Initial Displacement {0}nm".format(int(L)), "Final Displacement (nm)")
-    step_hist = make_hist(ax1, False, final_data['step_length'], None, 50,
-                        None, None, True, "C3", None,
-                        "", "Step Length (nm)")
-    separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t']), np.array(leading_data['t']), 30,
-                        "Trailing time", "Leading time", False, "C0", "C1",
-                        "k_b: {0:e}".format(k_b), "time (s)")
-    time_hist = make_hist(ax3, False, np.array(final_data['t']), None, 50,
-                        None, None, False, "C3", None,
-                        "", "time (s)")
-    plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_onebound_length_time.pdf'.format(int(L), k_b, dt, N), transparent=False)
+fig0 = plt.figure(0)
+ax0 = fig0.add_subplot(gs0[:,:])
+separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 30,
+                    "Trailing Step", "Leading Step", False, "C0", "C1",
+                    "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Final Displacement (nm)")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.png'.format(int(L), k_b, dt, N), transparent=True)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.svg'.format(int(L), k_b, dt, N), transparent=True)
 
-    plt.show()
+fig1 = plt.figure(1)
+ax1 = fig1.add_subplot(gs0[:,:])
+step_hist = make_hist(ax1, True, trailing_data['step_length'], leading_data['step_length'], 30,
+                    "Trailing Step", "Leading Step", False, "C0", "C1",
+                    "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Step Length (nm)")
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.png'.format(int(L), k_b, dt, N), transparent=True)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.svg'.format(int(L), k_b, dt, N), transparent=True)
 
-plot_hist(L, k_b, dt, N)
+fig2 = plt.figure(2)
+ax2 = fig2.add_subplot(gs0[:,:])
+separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*1e6, np.array(leading_data['t'])*1e3, 30,
+                    "Trailing time", "Leading time", False, "C0", "C1",
+                    "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.png'.format(int(L), k_b, dt, N), transparent=True)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.svg'.format(int(L), k_b, dt, N), transparent=True)
+
+fig3 = plt.figure(3)
+ax3 = fig3.add_subplot(gs0[:,:])
+time_hist = make_hist(ax3, False, np.array(final_data['t'])*1e3, None, 30,
+                    None, None, False, "C3", None,
+                    "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.png'.format(int(L), k_b, dt, N), transparent=True)
+plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.svg'.format(int(L), k_b, dt, N), transparent=True)
+
+plt.show()
+
+# plot_hist(L, k_b, dt, N)
