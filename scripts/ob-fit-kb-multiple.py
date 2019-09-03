@@ -86,9 +86,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=34)
 parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
-parser.add_argument("-b", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
-parser.add_argument("-m", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
-parser.add_argument("-s", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
+parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
+parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
+parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
+parser.add_argument("--eqb", type=float, help="Binding equilibrium angle", default=params.for_simulation['eqb'])
+parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", default=params.for_simulation['eqmpre'])
+parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
@@ -98,6 +101,9 @@ dt = args.dt          # Time Step
 params.for_simulation['cb'] = args.cb
 params.for_simulation['cm'] = args.cm
 params.for_simulation['ct'] = args.ct
+params.for_simulation['eqb'] = args.eqb
+params.for_simulation['eqmpre'] = args.eqmpre
+params.for_simulation['eqmpost'] = args.eqmpost
 parent_data = {0:{'init_L': [], 'final_L': [], 'step_length': [], 't': []},
                 1:{'init_L': [], 'final_L': [], 'step_length': [], 't': []},
                 2:{'init_L': [], 'final_L': [], 'step_length': [], 't': []},
@@ -196,7 +202,7 @@ for i in range(12):
         make_hist2d(True, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], 1e-10, "Final L")
     if 9 <= i < 12:
         make_hist2d(True, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['final_L'], k_b[i], 1e-13, "Final L")
-plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_init_vs_final.pdf'.format(N, dt, args.cb, args.cm, args.ct), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_{}_{}_init_vs_final.pdf'.format(N, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), transparent=False)
 
 fig8, ax = plt.subplots(4,3, figsize=(12,14))
 fig8.tight_layout()
@@ -209,4 +215,4 @@ for i in range(12):
         make_hist2d(False, ax[2, i-6], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], 1e-10, "Step Length")
     if 9 <= i < 12:
         make_hist2d(False, ax[3, i-9], parent_data[i]['init_L'], parent_data[i]['step_length'], k_b[i], 1e-13, "Step Length")
-plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_init_vs_step_length.pdf'.format(N, dt, args.cb, args.cm, args.ct), transparent=False)
+plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_{}_{}_init_vs_step_length.pdf'.format(N, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), transparent=False)

@@ -219,6 +219,12 @@ parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=200)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
+parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
+parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
+parser.add_argument("--eqb", type=float, help="Binding equilibrium angle", default=params.for_simulation['eqb'])
+parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", default=params.for_simulation['eqmpre'])
+parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 parser.add_argument("-b", "--bb", type=bool, help="Collect Bothbound data", default=False)
@@ -227,6 +233,12 @@ args = parser.parse_args()
 
 
 k_b = args.kb        # Binding Rate Constant
+params.for_simulation['cb'] = args.cb
+params.for_simulation['cm'] = args.cm
+params.for_simulation['ct'] = args.ct
+params.for_simulation['eqb'] = args.eqb
+params.for_simulation['eqmpre'] = args.eqmpre
+params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 bb_data_file = args.bb
 ob_data_file = args.ob
@@ -235,6 +247,9 @@ L = args.L           # Initial Length
 N = args.N           # Count
 Z = 0                # Partition Function
 k = [0]              # Dynein Count & RNG Seed
+ts = 1e4
+if dt < 1e-10:
+    ts = 1e7
 
 max_unbinding = 1
 b = 11.82733524          # thermodynamic beta from default_parameters.h
@@ -476,7 +491,7 @@ plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.svg'.format
 
 fig2 = plt.figure(2)
 ax2 = fig2.add_subplot(gs0[:,:])
-separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*1e6, np.array(leading_data['t'])*1e3, 30,
+separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*ts, np.array(leading_data['t'])*ts, 30,
                     "Trailing time", "Leading time", False, "C0", "C1",
                     "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.png'.format(int(L), k_b, dt, N), transparent=True)
@@ -484,7 +499,7 @@ plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.svg'.format(int(L)
 
 fig3 = plt.figure(3)
 ax3 = fig3.add_subplot(gs0[:,:])
-time_hist = make_hist(ax3, False, np.array(final_data['t'])*1e3, None, 30,
+time_hist = make_hist(ax3, False, np.array(final_data['t'])*ts, None, 30,
                     None, None, False, "C3", None,
                     "Initial Displacement: {}nm\nBinding Rate: {:.0e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
 plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.png'.format(int(L), k_b, dt, N), transparent=True)

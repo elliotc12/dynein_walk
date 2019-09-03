@@ -90,6 +90,9 @@ parser.add_argument("-k", "--kb", type=float, help="Manually set the binding con
 parser.add_argument("-b", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-m", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
 parser.add_argument("-s", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
+parser.add_argument("--eqb", type=float, help="Binding equilibrium angle", default=params.for_simulation['eqb'])
+parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", default=params.for_simulation['eqmpre'])
+parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
@@ -99,6 +102,9 @@ dt = args.dt          # Time Step
 params.for_simulation['cb'] = args.cb
 params.for_simulation['cm'] = args.cm
 params.for_simulation['ct'] = args.ct
+params.for_simulation['eqb'] = args.eqb
+params.for_simulation['eqmpre'] = args.eqmpre
+params.for_simulation['eqmpost'] = args.eqmpost
 parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
 
 
@@ -186,7 +192,7 @@ ax[0].set_title('Binding Rate: {:.0e}    dt: {}'.format(k_b, dt))
 make_hist2d(False, ax[1], parent_data['init_L'], parent_data['step_length'], k_b, "Step Length")
 # plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.png'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=True)
 # plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.svg'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=True)
-plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.pdf'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=True)
+plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_{}_{}_{}_fitting_kb.pdf'.format(N, dt, k_b, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), transparent=True)
 
 # fig8, ax3 = plt.subplots(1,1, figsize=(5,8))
 # time_hist = make_hist(ax3, False, parent_data['t'], None, 50,
