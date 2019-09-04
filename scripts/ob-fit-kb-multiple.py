@@ -84,7 +84,7 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=34)
-parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
+parser.add_argument("-l", "--dL", type=int, help="intervals in L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])

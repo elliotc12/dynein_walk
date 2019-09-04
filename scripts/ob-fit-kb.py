@@ -84,9 +84,11 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="max initial displacement in nm", default=34)
-parser.add_argument("-l", "--Ls", type=int, help="intervals in L", default=8)
+parser.add_argument("-dL", "--dL", type=int, help="intervals in L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-ls", "--ls", type=float, help="Stalk Length", default=params.for_simulation['ls'])
+parser.add_argument("-lt", "--lt", type=float, help="Tail Length", default=params.for_simulation['lt'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
 parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
@@ -105,11 +107,13 @@ params.for_simulation['ct'] = args.ct
 params.for_simulation['eqb'] = args.eqb
 params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
+params.for_simulation['ls'] = args.ls
+params.for_simulation['lt'] = args.lt
 parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
 
 
 
-for L in range(1, args.L, args.Ls):
+for L in range(1, args.L, args.dL):
     N = args.N           # Count
     Z = 0                # Partition Function
     k = [0]              # Dynein Count & RNG Seed
