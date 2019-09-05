@@ -111,9 +111,9 @@ params.for_simulation['ls'] = args.ls
 params.for_simulation['lt'] = args.lt
 parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
 
+Ls = np.arange(1, args.L, args.dL)
 
-
-for L in range(1, args.L, args.dL):
+for L in Ls:
     N = args.N           # Count
     Z = 0                # Partition Function
     k = [0]              # Dynein Count & RNG Seed
@@ -177,7 +177,10 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
 def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     slope, intercept = best_fit(np.asarray(x_data), np.asarray(y_data))
     rgrsn_line = [(slope*x)+intercept for x in np.asarray(x_data)]
-    ax.hist2d(x_data, y_data, bins=(range(-34,34), 60), cmap=plt.cm.jet)
+    ax.hist2d(x_data, y_data,
+              bins=(2*len(Ls)-1, # This accounts for two of our L values being essentially 0
+                    int(np.sqrt(args.N))),
+              cmap=plt.cm.jet)
     ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
     if tof == True:
         yildiz_line = [(0.6*x)+8.7 for x in np.asarray(x_data)]
