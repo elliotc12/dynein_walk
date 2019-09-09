@@ -179,7 +179,7 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
     rgrsn_line = [(slope*x)+intercept for x in np.asarray(x_data)]
     ax.hist2d(x_data, y_data,
               bins=(2*len(Ls)-1, # This accounts for two of our L values being essentially 0
-                    int(np.sqrt(args.N))),
+                     3*int(np.sqrt(args.N))),
               cmap=plt.cm.jet)
     ax.plot(x_data, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
     if tof == True:
@@ -195,7 +195,7 @@ def make_hist2d(tof, ax, x_data, y_data, k_b, label):
 fig7, ax = plt.subplots(2,1, figsize=(5,7))
 # fig7.tight_layout()
 make_hist2d(True, ax[0], parent_data['init_L'], parent_data['final_L'], k_b, "Final L")
-ax[0].set_title('Binding Rate: {:.0e}    dt: {}'.format(k_b, dt))
+ax[0].set_title('Binding Rate: {:.1e}    dt: {}'.format(k_b, dt))
 make_hist2d(False, ax[1], parent_data['init_L'], parent_data['step_length'], k_b, "Step Length")
 # plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.png'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=True)
 # plt.savefig('../plots/mc_plots/mc_{}_{}_{}_{}_{}_{}_fitting_kb.svg'.format(N, dt, k_b, args.cb, args.cm, args.ct), transparent=True)
