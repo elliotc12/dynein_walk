@@ -70,25 +70,25 @@ int main(int argc, char** argv) {
   double bba, bma, uma, uba, bbx = 0, bby = 0, state, k;
   get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k);
   State s = NEARBOUND;
-  fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
+  // fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   if (state == 1) {
     s = FARBOUND;
   }
   binding_mode = EXPONENTIAL_UNBINDING;
 
-  Rand* rand = new Rand(k); // FIXME
+  Rand* rand = new Rand(RAND_INIT_SEED); 
 
   // Does this onebound resemble with the bothbound orientation
 
-  fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
+  // fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
                                                 s,
                                                 NULL,
                                                 NULL,
                                                 NULL,
                                                 rand);
-  fprintf(stderr, "Starting with %g %g %g %g\n",
-          dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
+  // fprintf(stderr, "Starting with %g %g %g %g\n",
+  //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
 
   double t = 0;
   long iter = 0;
@@ -150,70 +150,13 @@ int main(int argc, char** argv) {
 
     if (binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
-      fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
-              iter, dynein->get_ubx()-dynein->get_bbx(),
-              dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
-      printf("{\n  'L': %g,\n  't': %g,\n  'bma': %g,\n 'uma': %g,\n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g,\n  'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
-              dynein->get_ubx()-dynein->get_bbx(), t, dynein->get_bma(), dynein->get_uma(), dynein->get_bbx(), dynein->get_bby(),
-              dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
-              dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
+      // fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
+      //         iter, dynein->get_ubx()-dynein->get_bbx(),
+      //         dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
+      printf("{\n  'L': %g,\n  't': %g,\n}\n",
+              dynein->get_ubx()-dynein->get_bbx(), t);
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
-    // } else {    // else if vs. else makes diff data (?)
-    //   t += dt;  // iterate time
-    //   iter ++;
-    //
-    //   // if (iter < 4 || iter % 1000000 == 0) {
-    //   //   fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-    //   // }
-    //   // if (k == 1) {
-    //   //   fprintf(log_f, "%g %g %g %g %g\n",
-    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-    //   //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-    //   //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-    //   //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-    //   // }
-    //   // if (k == 3) {
-    //   //   fprintf(log_f, "%g %g %g %g %g\n",
-    //   //           dynein->get_bba(), dynein->get_bma(), dynein->get_uma(),
-    //   //           dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-    //   //   // fprintf(stderr, " %ld:  %g %g %g %g %f\n", iter,
-    //   //   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uby(), dynein->get_bbx()-dynein->get_ubx());
-    //   // }
-    //
-    //   double old_bba = dynein->get_bba();
-    //   double old_bma = dynein->get_bma();
-    //   double old_uma = dynein->get_uma();
-    //   double old_uba = dynein->get_uba();
-    //   // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
-    //
-    //
-    //   bool accept_step = false;
-    //   int attempts = 0;
-    //   while(!accept_step){
-    //     if (attempts > 0) {
-    //       dynein->set_bba(old_bba);
-    //       dynein->set_bma(old_bma);
-    //       dynein->set_uma(old_uma);
-    //       dynein->set_uba(old_uba);
-    //       dynein->update_velocities();    // This update_velocities() was added (?)
-    //     }
-    //
-    //     double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
-    //     double temp_bma = dynein->get_bma() + dynein->get_d_bma() * dt;
-    //     double temp_uma = dynein->get_uma() + dynein->get_d_uma() * dt;
-    //     double temp_uba = dynein->get_uba() + dynein->get_d_uba() * dt;
-    //
-    //     dynein->set_bba(temp_bba);
-    //     dynein->set_bma(temp_bma);
-    //     dynein->set_uma(temp_uma);
-    //     dynein->set_uba(temp_uba);
-    //
-    //     accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
-    //
-    //     attempts++;
-    //   }
     }
   }
 }

@@ -358,7 +358,7 @@ while Z < N:
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
-                        collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
+                        # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
 
 
                         collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
@@ -377,7 +377,7 @@ while Z < N:
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
                         state = 0
-                        collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
+                        # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
 
 
                         collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
@@ -454,6 +454,8 @@ if ob_data_file == True:
     data_file_ob_trailing.close()
     data_file_ob_leading.close()
 
+# END OF SIM
+
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
@@ -467,44 +469,44 @@ def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Col
 # def plot_hist(L, k_b, dt, N):
 # fig0 = plt.figure(0, figsize=(12,8))
 # gs0 = gridspec.GridSpec(2, 22)
-gs0 = gridspec.GridSpec(1,1)
+# gs0 = gridspec.GridSpec(1,1)
 # ax0 = fig0.add_subplot(gs0[0, 0:10])
 # ax1 = fig0.add_subplot(gs0[1, 0:10])
 # ax2 = fig0.add_subplot(gs0[0, 12:22])
 # ax3 = fig0.add_subplot(gs0[1, 12:22])
-
-fig0 = plt.figure(0)
-ax0 = fig0.add_subplot(gs0[:,:])
-separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 50,
-                    "Trailing Step", "Leading Step", False, "C0", "C1",
-                    "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Final Displacement (nm)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.png'.format(int(L), k_b, dt, N), transparent=True)
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.svg'.format(int(L), k_b, dt, N), transparent=True)
-
-fig1 = plt.figure(1)
-ax1 = fig1.add_subplot(gs0[:,:])
-step_hist = make_hist(ax1, True, trailing_data['step_length'], leading_data['step_length'], 50,
-                    "Trailing Step", "Leading Step", False, "C0", "C1",
-                    "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Step Length (nm)")
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.png'.format(int(L), k_b, dt, N), transparent=True)
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.svg'.format(int(L), k_b, dt, N), transparent=True)
-
-fig2 = plt.figure(2)
-ax2 = fig2.add_subplot(gs0[:,:])
-separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*ts, np.array(leading_data['t'])*ts, 50,
-                    "Trailing time", "Leading time", False, "C0", "C1",
-                    "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.png'.format(int(L), k_b, dt, N), transparent=True)
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.svg'.format(int(L), k_b, dt, N), transparent=True)
-
-fig3 = plt.figure(3)
-ax3 = fig3.add_subplot(gs0[:,:])
-time_hist = make_hist(ax3, False, np.array(final_data['t'])*ts, None, 50,
-                    None, None, False, "C3", None,
-                    "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.png'.format(int(L), k_b, dt, N), transparent=True)
-plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.svg'.format(int(L), k_b, dt, N), transparent=True)
-
-plt.show()
+#
+# fig0 = plt.figure(0)
+# ax0 = fig0.add_subplot(gs0[:,:])
+# separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 50,
+#                     "Trailing Step", "Leading Step", False, "C0", "C1",
+#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Final Displacement (nm)")
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.png'.format(int(L), k_b, dt, N), transparent=True)
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.svg'.format(int(L), k_b, dt, N), transparent=True)
+#
+# fig1 = plt.figure(1)
+# ax1 = fig1.add_subplot(gs0[:,:])
+# step_hist = make_hist(ax1, True, trailing_data['step_length'], leading_data['step_length'], 50,
+#                     "Trailing Step", "Leading Step", False, "C0", "C1",
+#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Step Length (nm)")
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.png'.format(int(L), k_b, dt, N), transparent=True)
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.svg'.format(int(L), k_b, dt, N), transparent=True)
+#
+# fig2 = plt.figure(2)
+# ax2 = fig2.add_subplot(gs0[:,:])
+# separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*ts, np.array(leading_data['t'])*ts, 50,
+#                     "Trailing time", "Leading time", False, "C0", "C1",
+#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.png'.format(int(L), k_b, dt, N), transparent=True)
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.svg'.format(int(L), k_b, dt, N), transparent=True)
+#
+# fig3 = plt.figure(3)
+# ax3 = fig3.add_subplot(gs0[:,:])
+# time_hist = make_hist(ax3, False, np.array(final_data['t'])*ts, None, 50,
+#                     None, None, False, "C3", None,
+#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.png'.format(int(L), k_b, dt, N), transparent=True)
+# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.svg'.format(int(L), k_b, dt, N), transparent=True)
+#
+# plt.show()
 
 # plot_hist(L, k_b, dt, N)
