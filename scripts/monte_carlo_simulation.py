@@ -20,7 +20,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         """
         global seed
         seed += 1 # use a different seed every time.  ugh, global variables!
-        print('running with inputs', bba, bma, uma, uba, state, k)
+        # print('running with inputs', bba, bma, uma, uba, state, k)
         process = subprocess.Popen(['../onebound',
                                     str(k_b),
                                     str(params.for_simulation['cb']),
@@ -95,47 +95,48 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
         """
         Call run_onebound function and collect onebound statistics
         """
-        print('\n\nbothbound angles ',bba, bma, uma, uba, state)
+        # print('\n\nbothbound angles ',bba, bma, uma, uba, state)
         step = run_onebound(bba, bma, uma, uba, state, k[0])
 
         final_data['L'].append(step['L'])          # Final L array
-        step_data['t'].append(step['t'])           # Specific type of step time array
         final_data['t'].append(step['t'])          # Onebound time array
 
         if state == 0:
             # NEARBOUND State - Leading step ddata
             print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
+            step_data['t'].append(step['t'])
             step_data['step_length'].append(step['L']-L)
             final_data['step_length'].append(step['L']-L)         # Contains both steps data
 
             # Storing final motor angles
-            if step['L'] < 0:   #FIXME uma != nma !!! need to calculate new bb nma
-                final_data['nma'].append(step['uma'])
-                final_data['fma'].append(step['bma'])
-            else:
-                final_data['nma'].append(step['bma'])
-                final_data['fma'].append(step['uma'])
+            # if step['L'] < 0:   #FIXME uma != nma !!! need to calculate new bb nma
+            #     final_data['nma'].append(step['uma'])
+            #     final_data['fma'].append(step['bma'])
+            # else:
+            #     final_data['nma'].append(step['bma'])
+            #     final_data['fma'].append(step['uma'])
 
-            if ob_data_file == True:
-                data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+            # if ob_data_file == True:
+            #     data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         else:
             # FARBOUND State - Trailing step data
             print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
+            step_data['t'].append(step['t'])
             step_data['step_length'].append(step['L']+L)
             final_data['step_length'].append(step['L']+L)         # Contains both steps data
 
             # Storing final motor angles
-            if step['L'] > 0:
-                final_data['nma'].append(step['bma'])
-                final_data['fma'].append(step['uma'])
-            else:
-                final_data['nma'].append(step['uma'])
-                final_data['fma'].append(step['bma'])
+            # if step['L'] > 0:
+            #     final_data['nma'].append(step['bma'])
+            #     final_data['fma'].append(step['uma'])
+            # else:
+            #     final_data['nma'].append(step['uma'])
+            #     final_data['fma'].append(step['bma'])
 
-            if ob_data_file == True:
-                data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+            # if ob_data_file == True:
+            #     data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         k[0]+=1
 
 
@@ -216,7 +217,7 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
-parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=200)
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=100)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
@@ -231,7 +232,7 @@ parser.add_argument("-b", "--bb", type=bool, help="Collect Bothbound data", defa
 parser.add_argument("-o", "--ob", type=bool, help="Colelct Onebound data", default=False)
 args = parser.parse_args()
 
-
+params.for_simulation['k_ub'] = args.kub
 k_b = args.kb        # Binding Rate Constant
 params.for_simulation['cb'] = args.cb
 params.for_simulation['cm'] = args.cm
@@ -316,15 +317,15 @@ if bb_data_file == True:
     data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
                     k_b, dt, N, C))
     data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
-if ob_data_file == True:
-    data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-    data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-                    k_b, dt, N, C))
-    data_file_ob_trailing.write("final L\t t\n")
-    data_file_ob_leading = open("../data/mc_data_kb_{0:e}/mc_ob_leading_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-    data_file_ob_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-                    k_b, dt, N, C))
-    data_file_ob_leading.write("final L\t t\n")
+# if ob_data_file == True:
+#     data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+#     data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+#                     k_b, dt, N, C))
+#     data_file_ob_trailing.write("final L\t t\n")
+#     data_file_ob_leading = open("../data/mc_data_kb_{0:e}/mc_ob_leading_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+#     data_file_ob_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+#                     k_b, dt, N, C))
+#     data_file_ob_leading.write("final L\t t\n")
 
 while Z < N:
         # Making random motor angles
@@ -450,21 +451,28 @@ print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
 if bb_data_file == True:
     data_file_bb_trailing.close()
     data_file_bb_leading.close()
-if ob_data_file == True:
-    data_file_ob_trailing.close()
-    data_file_ob_leading.close()
+# if ob_data_file == True:
+#     data_file_ob_trailing.close()
+#     data_file_ob_leading.close()
+
+np.savetxt('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
+            N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+            (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savetxt('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
+            N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+            (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 
 # END OF SIM
 
 
-def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
-    ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
-    if stacked_hist == True:
-        ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True, color=Color0)
-    ax.legend(loc="upper right")
-    ax.set_title(Title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel("Frequency")
+# def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
+#     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
+#     if stacked_hist == True:
+#         ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True, color=Color0)
+#     ax.legend(loc="upper right")
+#     ax.set_title(Title)
+#     ax.set_xlabel(xlabel)
+#     ax.set_ylabel("Frequency")
 
 # def plot_hist(L, k_b, dt, N):
 # fig0 = plt.figure(0, figsize=(12,8))
