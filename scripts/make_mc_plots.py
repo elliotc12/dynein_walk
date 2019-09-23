@@ -56,18 +56,22 @@ for i in np.arange(len(files)/2):
         if j == i:
             continue
         first_ = files[i].find('_',2)
+        second_ = files[i].find('_', first_+1)
+        third_ = files[i].find('_', second_+1)
+        fourth_ = files[i].find('_', third_+1)
+        fifth_ = files[i].find('_', fourth_+1)
+        sixth_ = files[i].find('_', fifth_+1)
+        seventh_ = files[i].find('_', sixth_+1)
+        eigth_ = files[i].find('_', seventh_+1)
         if files[i][2:first_] == files[j][2:first_]:
             leading_data['L'] = np.loadtxt(basepath+files[i])[0]
             leading_data['t'] = np.loadtxt(basepath+files[i])[1]
             trailing_data['L'] = np.loadtxt(basepath+files[j])[0]
             trailing_data['t'] = np.loadtxt(basepath+files[j])[1]
             plot_hist(files[i][2:first_],
-                    files[i][first_+1:files[i].find('_',first_+1)],
-                    files[i][files[i].find('_',first_+1)+1:files[i].find('_',files[i].find('_',first_+1)+1)],
-                    files[i][files[i].find('_',files[i].find('_',first_+1)+1):files[i].find('_',files[i].find('_',files[i].find('_',first_+1)+1))],
-                    files[i][files[i].find('_',files[i].find('_',files[i].find('_',first_+1)+1)):files[i].find('_',files[i].find('_',files[i].find('_',files[i].find('_',first_+1)+1)))],
-                    params.for_simulation['cb'], params.for_simulation['cm'], params.for_simulation['ct'], params.for_simulation['exp-unbinding-constant'])
-
+                    files[i][first_+1:second_], files[i][second_+1:third_], files[i][third_+1:fourth_],
+                    files[i][fourth_+1:fifth_], files[i][fifth_+1:sixth_], files[i][sixth_+1:seventh_],
+                    files[i][seventh_+1:eigth_], files[i][eigth_+1:files[i].rfind('.')])
 
 
 
