@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-for_simulation= {"k_b": 3.4e9, # previously 3e6
+for_simulation= {"k_b": 5.5e9, # 3.4e9, # previously 3e6
                  "k_ub": 30,
                  "cb": 0.08,
                  "cm": 1.05,
@@ -11,7 +11,7 @@ for_simulation= {"k_b": 3.4e9, # previously 3e6
                  "rm": 5.5,
                  "rb": 1.75,
                  "seed": 1,
-                 "dt": 1e-10,
+                 "dt": 1e-13, # 1e-10,
                  "eqb" :120,
                  "eqmpre": 197,
                  "eqmpost": 242,
