@@ -111,6 +111,8 @@ params.for_simulation['ls'] = args.ls
 params.for_simulation['lt'] = args.lt
 parent_data = {'init_L': [], 'final_L': [], 'step_length': [], 't': []}
 
+# For reading and saving an array: loadtxt and savetxt.
+
 Ls = np.arange(1, args.L, args.dL)
 
 for L in Ls:

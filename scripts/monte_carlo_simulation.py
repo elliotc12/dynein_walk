@@ -138,6 +138,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             # if ob_data_file == True:
             #     data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         k[0]+=1
+        sys.stdout.flush()
 
 
 def plot_bb_before_step(self, dynein_color_nm, dynein_color_fm):
@@ -247,7 +248,7 @@ ob_data_file = args.ob
 L = args.L           # Initial Length
 N = args.N           # Count
 Z = 0                # Partition Function
-k = [0]              # Dynein Count & RNG Seed
+k = [0]              # Dynein Count
 ts = 1e4
 if dt < 1e-10:
     ts = 1e7

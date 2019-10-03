@@ -10,18 +10,19 @@ import importlib
 import argparse
 import subprocess
 import bb_energy_distribution
+from glob import glob
 
 def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
-    ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
+    ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True)
     if stacked_hist == True:
-        ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True, color=Color0)
+        ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True)
     ax.legend(loc="upper right")
     ax.set_title(Title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Frequency")
 
 def plot_hist(L, N, k_ub, k_b, dt, cb, cm, ct, C):
-    fig = plt.figure(0)
+    fig = plt.figure()
     gs = gridspec.GridSpec(1,1)
     make_hist(fig.add_subplot(gs[:,:]), True, trailing_data['L'], leading_data['L'], 50,
                 "Trailing Step", "Leading Step", False, "C0", "C1",
@@ -45,33 +46,34 @@ def rad_to_deg(angle):
 
 basepath = '../data/mc_data/'
 plotpath = '../plots/mc_plots/'
-files = os.listdir(basepath)
+leading_files = glob('{}/l_*.txt'.format(basepath))
 
-for i in np.arange(len(files)/2):
+for leading in leading_files:
+    leading = leading[len(basepath):]
     leading_data = {'L': [], 't': []}
     trailing_data = {'L': [], 't': []}
-    for j in np.arange(len(files)):
-        i = int(i)
-        j = int(j)
-        if j == i:
-            continue
-        first_ = files[i].find('_',2)
-        second_ = files[i].find('_', first_+1)
-        third_ = files[i].find('_', second_+1)
-        fourth_ = files[i].find('_', third_+1)
-        fifth_ = files[i].find('_', fourth_+1)
-        sixth_ = files[i].find('_', fifth_+1)
-        seventh_ = files[i].find('_', sixth_+1)
-        eigth_ = files[i].find('_', seventh_+1)
-        if files[i][2:first_] == files[j][2:first_]:
-            leading_data['L'] = np.loadtxt(basepath+files[i])[0]
-            leading_data['t'] = np.loadtxt(basepath+files[i])[1]
-            trailing_data['L'] = np.loadtxt(basepath+files[j])[0]
-            trailing_data['t'] = np.loadtxt(basepath+files[j])[1]
-            plot_hist(files[i][2:first_],
-                    files[i][first_+1:second_], files[i][second_+1:third_], files[i][third_+1:fourth_],
-                    files[i][fourth_+1:fifth_], files[i][fifth_+1:sixth_], files[i][sixth_+1:seventh_],
-                    files[i][seventh_+1:eigth_], files[i][eigth_+1:files[i].rfind('.')])
+    trailing = leading.replace('l_', 't_')
+    first_ = leading.find('_',2)
+    second_ = leading.find('_', first_+1)
+    third_ = leading.find('_', second_+1)
+    fourth_ = leading.find('_', third_+1)
+    fifth_ = leading.find('_', fourth_+1)
+    sixth_ = leading.find('_', fifth_+1)
+    seventh_ = leading.find('_', sixth_+1)
+    eigth_ = leading.find('_', seventh_+1)
+    leading_data['L'] = np.loadtxt(basepath+leading)[0]
+    leading_data['t'] = np.loadtxt(basepath+leading)[1]
+    try:
+        trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
+        trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
+        print('about to plot_hist', leading)
+        plot_hist(leading[2:first_],
+                  leading[first_+1:second_], leading[second_+1:third_], leading[third_+1:fourth_],
+                  leading[fourth_+1:fifth_], leading[fifth_+1:sixth_], leading[sixth_+1:seventh_],
+                  leading[seventh_+1:eigth_], leading[eigth_+1:leading.rfind('.')])
+    except:
+        print('unable to load trailing data for', leading)
+    #plt.show()
 
 
 
