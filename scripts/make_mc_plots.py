@@ -48,12 +48,16 @@ basepath = '../data/mc_data/'
 plotpath = '../plots/mc_plots/'
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
+initial_L = []
+final_L_lists = {}
+
 for leading in leading_files:
     leading = leading[len(basepath):]
     leading_data = {'L': [], 't': []}
     trailing_data = {'L': [], 't': []}
     trailing = leading.replace('l_', 't_')
     first_ = leading.find('_',2)
+    iL = float(leading[2:first_])
     second_ = leading.find('_', first_+1)
     third_ = leading.find('_', second_+1)
     fourth_ = leading.find('_', third_+1)
@@ -66,8 +70,12 @@ for leading in leading_files:
     try:
         trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
         trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
+        initial_L.append(iL)
+        initial_L.append(-iL)
+        final_L_lists[iL] = leading_data['L']
+        final_L_lists[-iL] = trailing_data['L']
         print('about to plot_hist', leading)
-        plot_hist(leading[2:first_],
+        plot_hist(iL,
                   leading[first_+1:second_], leading[second_+1:third_], leading[third_+1:fourth_],
                   leading[fourth_+1:fifth_], leading[fifth_+1:sixth_], leading[sixth_+1:seventh_],
                   leading[seventh_+1:eigth_], leading[eigth_+1:leading.rfind('.')])
@@ -75,9 +83,42 @@ for leading in leading_files:
         print('unable to load trailing data for', leading)
     #plt.show()
 
+initial_L = np.array(sorted(initial_L))
+final_L_center = initial_L*1.0
 
+final_L_edges = np.zeros(len(final_L_center)+1)
+for i in range(1,len(final_L_edges)-1):
+    final_L_edges[i] = (final_L_center[i-1] + final_L_center[i])*0.5
+final_L_edges[0] = 2*final_L_center[0] - final_L_edges[1]
+final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
 
+i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
+hist = np.zeros_like(i_LLcenter)
+
+for iL in initial_L:
+    iL_index = 0
+    for i in range(1,len(final_L_edges)):
+        if iL < final_L_edges[i]:
+            iL_index = i-1
+            break
+    for fL in final_L_lists[iL]:
+        fL_index = 0
+        for i in range(1,len(final_L_edges)):
+            if fL < final_L_edges[i]:
+                fL_index = i-1
+                break
+        hist[iL_index, fL_index] += 1
+
+i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
+print(initial_L)
+print(hist)
+print(final_L_edges)
+plt.cla()
+plt.figure()
+plt.pcolor(i_LLedge, f_LLedge, hist)
+plt.colorbar()
+plt.show()
 
 
 # fig = plt.figure(figsize=(10,15))
