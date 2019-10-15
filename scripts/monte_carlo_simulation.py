@@ -374,7 +374,7 @@ while Z < N:
                         #                 step['bbx'], step['bby'], 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
-                        if k[0] % 1000 == 0:
+                        if k[0] % 100 == 0:
                             np.savetxt('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
                                         N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
@@ -400,7 +400,7 @@ while Z < N:
                         #                 step['ubx'], step['uby'], 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
-                        if k[0] % 1000 == 0:
+                        if k[0] % 100 == 0:
                             np.savetxt('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
                                         N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')

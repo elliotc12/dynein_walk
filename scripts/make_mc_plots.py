@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from statistics import mean
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.constants
 import sys
@@ -30,6 +31,12 @@ def plot_hist(L, N, k_ub, k_b, dt, cb, cm, ct, C):
                 k_b, r'$s^{-1}$', dt), "Final Displacement (nm)")
     plt.savefig(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(L,
                 N, k_b, dt, cb, cm, ct, C))
+
+def best_fit(x,y):
+    m = (((mean(x)*mean(y)) - mean(x*y))/
+        ((mean(x)*mean(x)) - mean(x*x)))
+    b = mean(y) - m*mean(x)
+    return m, b
 
 
 params = importlib.import_module("params")
@@ -114,7 +121,10 @@ i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 print(initial_L)
 print(hist)
 print(final_L_edges)
-plt.cla()
+# slope, intercept = best_fit(i_LLedge, f_LLedge)
+# rgrsn_line = [(slope*x)+intercept for x in np.asarray(i_LLedge)]
+plt.close('all')
+# plt.plot(i_LLedge, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
 plt.figure()
 plt.pcolor(i_LLedge, f_LLedge, hist)
 plt.colorbar()
