@@ -109,13 +109,14 @@ for iL in initial_L:
         if iL < final_L_edges[i]:
             iL_index = i-1
             break
+    total_counts = len(final_L_lists[iL])
     for fL in final_L_lists[iL]:
         fL_index = 0
         for i in range(1,len(final_L_edges)):
             if fL < final_L_edges[i]:
                 fL_index = i-1
                 break
-        hist[iL_index, fL_index] += 1
+        hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 print(initial_L)
@@ -127,6 +128,8 @@ plt.close('all')
 # plt.plot(i_LLedge, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
 plt.figure()
 plt.pcolor(i_LLedge, f_LLedge, hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.show()
 
