@@ -1,4 +1,5 @@
 import os
+from os import path
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
@@ -64,7 +65,6 @@ for leading in leading_files:
     trailing_data = {'L': [], 't': []}
     trailing = leading.replace('l_', 't_')
     first_ = leading.find('_',2)
-    iL = float(leading[2:first_])
     second_ = leading.find('_', first_+1)
     third_ = leading.find('_', second_+1)
     fourth_ = leading.find('_', third_+1)
@@ -72,6 +72,14 @@ for leading in leading_files:
     sixth_ = leading.find('_', fifth_+1)
     seventh_ = leading.find('_', sixth_+1)
     eigth_ = leading.find('_', seventh_+1)
+    iL = float(leading[2:first_])
+    N = leading[second_+1:third_]
+    k_b = leading[third_+1:fourth_]
+    dt = leading[fourth_+1:fifth_]
+    cb = leading[fifth_+1:sixth_]
+    cm = leading[sixth_+1:seventh_]
+    ct = leading[seventh_+1:eigth_]
+    C = leading[eigth_+1:leading.rfind('.')]
     leading_data['L'] = np.loadtxt(basepath+leading)[0]
     leading_data['t'] = np.loadtxt(basepath+leading)[1]
     try:
@@ -81,13 +89,12 @@ for leading in leading_files:
         initial_L.append(-iL)
         final_L_lists[iL] = leading_data['L']
         final_L_lists[-iL] = trailing_data['L']
-        print('about to plot_hist', leading)
-        plot_hist(iL,
-                  leading[first_+1:second_], leading[second_+1:third_], leading[third_+1:fourth_],
-                  leading[fourth_+1:fifth_], leading[fifth_+1:sixth_], leading[sixth_+1:seventh_],
-                  leading[seventh_+1:eigth_], leading[eigth_+1:leading.rfind('.')])
+        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
+            print('about to plot_hist', leading)
+            plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
     except:
-        print('unable to load trailing data for', leading)
+        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
+            print('unable to load trailing data for', leading)
     #plt.show()
 
 initial_L = np.array(sorted(initial_L))
@@ -102,6 +109,7 @@ final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
 hist = np.zeros_like(i_LLcenter)
+normalized_hist = np.zeros_like(i_LLcenter)
 
 for iL in initial_L:
     iL_index = 0
@@ -116,16 +124,25 @@ for iL in initial_L:
             if fL < final_L_edges[i]:
                 fL_index = i-1
                 break
-        hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
+        hist[fL_index, iL_index] += 1/total_counts
+
+        # Normalized by area
+        normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
-print(initial_L)
-print(hist)
 print(final_L_edges)
+
+# Create for loop in hist and calculate prob for final L per initial L in new array
+
 # slope, intercept = best_fit(i_LLedge, f_LLedge)
 # rgrsn_line = [(slope*x)+intercept for x in np.asarray(i_LLedge)]
 plt.close('all')
 # plt.plot(i_LLedge, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
+plt.figure()
+plt.pcolor(i_LLedge, f_LLedge, normalized_hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
 plt.figure()
 plt.pcolor(i_LLedge, f_LLedge, hist)
 plt.xlabel('initial displacement (nm)')
