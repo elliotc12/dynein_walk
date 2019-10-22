@@ -73,6 +73,9 @@ for leading in leading_files:
     seventh_ = leading.find('_', sixth_+1)
     eigth_ = leading.find('_', seventh_+1)
     iL = float(leading[2:first_])
+    if iL in initial_L:
+        print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
+        exit(1)
     N = leading[second_+1:third_]
     k_b = leading[third_+1:fourth_]
     dt = leading[fourth_+1:fifth_]
@@ -150,6 +153,11 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.show()
 
+T = np.matrix(hist)
+P = np.matrix(np.zeros((len(T),1)))
+P[0] = 1
+print(T)
+print(T*T*T*T*T*T*T*T*T*T*T*T*T*T*T*T*P)
 
 # fig = plt.figure(figsize=(10,15))
 #
