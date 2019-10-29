@@ -1,6 +1,7 @@
 import os
 from os import path
 import numpy as np
+from numpy.linalg import matrix_power
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from statistics import mean
@@ -127,15 +128,13 @@ for iL in initial_L:
             if fL < final_L_edges[i]:
                 fL_index = i-1
                 break
-        hist[fL_index, iL_index] += 1/total_counts
+        hist[iL_index, fL_index] += 1/total_counts
 
         # Normalized by area
         normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
-print(final_L_edges)
-
-# Create for loop in hist and calculate prob for final L per initial L in new array
+# print(final_L_edges)
 
 # slope, intercept = best_fit(i_LLedge, f_LLedge)
 # rgrsn_line = [(slope*x)+intercept for x in np.asarray(i_LLedge)]
@@ -146,18 +145,42 @@ plt.pcolor(i_LLedge, f_LLedge, normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
-plt.figure()
-plt.pcolor(i_LLedge, f_LLedge, hist)
-plt.xlabel('initial displacement (nm)')
-plt.ylabel('final displacement (nm)')
-plt.colorbar()
-plt.show()
+plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
+# plt.show()
+
+# Which entry in the transition matrix or P[?] corresponds to a given init L?
 
 T = np.matrix(hist)
 P = np.matrix(np.zeros((len(T),1)))
-P[0] = 1
-print(T)
-print(T*T*T*T*T*T*T*T*T*T*T*T*T*T*T*T*P)
+big_m = []
+
+for i in range(len(P)):
+    P = np.matrix(np.zeros((len(T), 1)))
+    P[i] = 1
+    prob = (T**5)*P
+    big_m.append(prob)
+    # print(prob)
+
+print(big_m)
+# plt.figure()
+# plt.pcolor(i_LLedge, f_LLedge, big_m)
+# plt.xlabel('initial displacement (nm)')
+# plt.ylabel('final displacement (nm)')
+# plt.colorbar()
+# plt.show()
+
+# print(T[81])
+# print(T[0])
+
+# print(T*P)
+
+# for i in range(0, 1e3, 100):
+#     prob_final = (T**i)*P
+
+
+
+
+
 
 # fig = plt.figure(figsize=(10,15))
 #

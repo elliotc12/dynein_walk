@@ -103,7 +103,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
 
         if state == 0:
             # NEARBOUND State - Leading step ddata
-            print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+            # print('leading stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
             step_data['t'].append(step['t'])
             step_data['step_length'].append(step['L']-L)
@@ -121,7 +121,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             #     data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
         else:
             # FARBOUND State - Trailing step data
-            print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
+            # print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
             step_data['L'].append(step['L'])
             step_data['t'].append(step['t'])
             step_data['step_length'].append(step['L']+L)
@@ -410,7 +410,7 @@ while Z < N:
 
 
 
-print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
+# print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
 # for i in range(len(final_data['L'])):
 #     final_data['L_avg'] += final_data['L'][i]*P_arr[i]
 #     final_data['t_avg'] += final_data['t'][i]*P_arr[i]
