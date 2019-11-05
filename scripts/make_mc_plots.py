@@ -150,18 +150,27 @@ plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
 # Which entry in the transition matrix or P[?] corresponds to a given init L?
 
-T = np.matrix(hist)
+T = np.matrix(hist).transpose()
 P = np.matrix(np.zeros((len(T),1)))
 big_m = []
 
+plt.figure()
 for i in range(len(P)):
     P = np.matrix(np.zeros((len(T), 1)))
     P[i] = 1
-    prob = (T**5)*P
+    prob = (T**15)*P
     big_m.append(prob)
     # print(prob)
+    plt.plot(prob, label=f'i is {i}')
 
-print(big_m)
+for i in range(len(T)):
+    print(T[i,:].sum())
+
+plt.legend()
+plt.show()
+
+#print(big_m)
+
 # plt.figure()
 # plt.pcolor(i_LLedge, f_LLedge, big_m)
 # plt.xlabel('initial displacement (nm)')
