@@ -382,6 +382,10 @@ while Z < N:
                             np.savetxt('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
                                         N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                            if os.path.getsize('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                                break
+                            if os.path.getsize('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                                break
 
 
                 if np.random.random() < prob_leading:
@@ -408,12 +412,13 @@ while Z < N:
                             np.savetxt('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L),
                                         N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                            if os.path.getsize('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                                break
+                            if os.path.getsize('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                                break
 
-        if os.path.getsize('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-            break
-        if os.path.getsize('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-            break
-            
+
+
 
 # print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
 # for i in range(len(final_data['L'])):
