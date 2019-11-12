@@ -128,7 +128,7 @@ for iL in initial_L:
             if fL < final_L_edges[i]:
                 fL_index = i-1
                 break
-        hist[iL_index, fL_index] += 1/total_counts
+        hist[fL_index, iL_index] += 1/total_counts
 
         # Normalized by area
         normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
@@ -150,18 +150,19 @@ plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
 # Which entry in the transition matrix or P[?] corresponds to a given init L?
 
-T = np.matrix(hist).transpose()
+T = np.matrix(hist)
 P = np.matrix(np.zeros((len(T),1)))
-big_m = []
+f_L = []
+for i in range(len(final_L_edges)-1):
+    f_L.append((final_L_edges[i]+final_L_edges[i+1])/2)
 
 plt.figure()
 for i in range(len(P)):
     P = np.matrix(np.zeros((len(T), 1)))
     P[i] = 1
     prob = (T**15)*P
-    big_m.append(prob)
-    # print(prob)
-    plt.plot(prob, label=f'i is {i}')
+    prob_fL = np.array(prob).flatten()
+    plt.plot(f_L, prob_fL, label=f'i is {i}')
 
 for i in range(len(T)):
     print(T[i,:].sum())

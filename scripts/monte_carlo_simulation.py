@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
@@ -218,7 +219,7 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
-parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e18)
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e12)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
@@ -309,15 +310,15 @@ seed = 0
 np.random.seed(0)
 
 # Creating Data File for Specific L
-if bb_data_file == True:
-    data_file_bb_trailing = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-    data_file_bb_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-                    k_b, dt, N, C))
-    data_file_bb_trailing.write("unbinding prob\t cumulative unbinding prob\n")
-    data_file_bb_leading = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-    data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-                    k_b, dt, N, C))
-    data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
+# if bb_data_file == True:
+#     data_file_bb_trailing = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+#     data_file_bb_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+#                     k_b, dt, N, C))
+#     data_file_bb_trailing.write("unbinding prob\t cumulative unbinding prob\n")
+#     data_file_bb_leading = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
+#     data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
+#                     k_b, dt, N, C))
+#     data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
 # if ob_data_file == True:
 #     data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
 #     data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
@@ -408,7 +409,11 @@ while Z < N:
                                         N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 
-
+        if os.path.getsize('../data/mc_data/t_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+            break
+        if os.path.getsize('../data/mc_data/l_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}_{8}.txt'.format(int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+            break
+            
 
 # print("FINAL DISPLACEMENTS: {0} \n".format(final_data['L']))
 # for i in range(len(final_data['L'])):
@@ -463,9 +468,9 @@ while Z < N:
 # print("Avg ob time:", obt_avg)
 
 
-if bb_data_file == True:
-    data_file_bb_trailing.close()
-    data_file_bb_leading.close()
+# if bb_data_file == True:
+#     data_file_bb_trailing.close()
+#     data_file_bb_leading.close()
 # if ob_data_file == True:
 #     data_file_ob_trailing.close()
 #     data_file_ob_leading.close()
