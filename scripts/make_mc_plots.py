@@ -123,15 +123,18 @@ for iL in initial_L:
             break
     total_counts = len(final_L_lists[iL])
     for fL in final_L_lists[iL]:
-        fL_index = 0
+        fL_index = None
         for i in range(1,len(final_L_edges)):
             if fL < final_L_edges[i]:
                 fL_index = i-1
                 break
-        hist[fL_index, iL_index] += 1/total_counts
+        if fL_index is None or fL < final_L_edges[0]:
+            print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
+        else:
+            hist[fL_index, iL_index] += 1/total_counts
 
-        # Normalized by area
-        normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
+            # Normalized by area
+            normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 # print(final_L_edges)
