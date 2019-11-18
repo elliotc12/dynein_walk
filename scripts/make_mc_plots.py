@@ -129,7 +129,10 @@ for iL in initial_L:
                 fL_index = i-1
                 break
         if fL_index is None or fL < final_L_edges[0]:
-            print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
+            continue
+            # print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
+            # Possibly think about making a infinite bin for final_L that goes outside plot
+            # Will have some normalization issues
         else:
             hist[fL_index, iL_index] += 1/total_counts
 
@@ -163,9 +166,21 @@ plt.figure()
 for i in range(len(P)):
     P = np.matrix(np.zeros((len(T), 1)))
     P[i] = 1
-    prob = (T**15)*P
-    prob_fL = np.array(prob).flatten()
-    plt.plot(f_L, prob_fL, label=f'i is {i}')
+    prob1 = (T**1)*P
+    prob2 = (T**2)*P
+    prob3 = (T**3)*P
+    prob4 = (T**4)*P
+    prob5 = (T**5)*P
+    prob1_flat = np.array(prob1_flat).flatten()
+    prob2_flat = np.array(prob2_flat).flatten()
+    prob3_flat = np.array(prob3_flat).flatten()
+    prob4_flat = np.array(prob4_flat).flatten()
+    prob5_flat = np.array(prob5_flat).flatten()
+    plt.plot(f_L, prob1_flat, label=f'i is {i}')
+    plt.plot(f_L, prob2_flat, label=f'i is {i}')
+    plt.plot(f_L, prob3_flat, label=f'i is {i}')
+    plt.plot(f_L, prob4_flat, label=f'i is {i}')
+    plt.plot(f_L, prob5_flat, label=f'i is {i}')
 
 for i in range(len(T)):
     print(T[i,:].sum())
