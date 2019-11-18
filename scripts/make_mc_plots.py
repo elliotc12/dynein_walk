@@ -171,11 +171,11 @@ for i in range(len(P)):
     prob3 = (T**3)*P
     prob4 = (T**4)*P
     prob5 = (T**5)*P
-    prob1_flat = np.array(prob1_flat).flatten()
-    prob2_flat = np.array(prob2_flat).flatten()
-    prob3_flat = np.array(prob3_flat).flatten()
-    prob4_flat = np.array(prob4_flat).flatten()
-    prob5_flat = np.array(prob5_flat).flatten()
+    prob1_flat = np.array(prob1).flatten()
+    prob2_flat = np.array(prob2).flatten()
+    prob3_flat = np.array(prob3).flatten()
+    prob4_flat = np.array(prob4).flatten()
+    prob5_flat = np.array(prob5).flatten()
     plt.plot(f_L, prob1_flat, label=f'i is {i}')
     plt.plot(f_L, prob2_flat, label=f'i is {i}')
     plt.plot(f_L, prob3_flat, label=f'i is {i}')
