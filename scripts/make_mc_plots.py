@@ -113,6 +113,7 @@ final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
 hist = np.zeros_like(i_LLcenter)
+hist2 = np.zeros_like(i_LLcenter)
 normalized_hist = np.zeros_like(i_LLcenter)
 
 for iL in initial_L:
@@ -135,6 +136,7 @@ for iL in initial_L:
             # Will have some normalization issues
         else:
             hist[fL_index, iL_index] += 1/total_counts
+            hist2[fL_index, iL_index] += 1
 
             # Normalized by area
             normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
@@ -152,9 +154,7 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
-# plt.show()
 
-# Which entry in the transition matrix or P[?] corresponds to a given init L?
 
 T = np.matrix(hist)
 P = np.matrix(np.zeros((len(T),1)))
@@ -162,48 +162,36 @@ f_L = []
 for i in range(len(final_L_edges)-1):
     f_L.append((final_L_edges[i]+final_L_edges[i+1])/2)
 
-plt.figure()
+fig = plt.figure()
+prob_plot = fig.add_subplot(111)
+new_hist = []
+
+num_steps = 15
+
 for i in range(len(P)):
     P = np.matrix(np.zeros((len(T), 1)))
     P[i] = 1
-    prob1 = (T**1)*P
-    prob2 = (T**2)*P
-    prob3 = (T**3)*P
-    prob4 = (T**4)*P
-    prob5 = (T**5)*P
-    prob1_flat = np.array(prob1).flatten()
-    prob2_flat = np.array(prob2).flatten()
-    prob3_flat = np.array(prob3).flatten()
-    prob4_flat = np.array(prob4).flatten()
-    prob5_flat = np.array(prob5).flatten()
-    plt.plot(f_L, prob1_flat, label=f'i is {i}')
-    plt.plot(f_L, prob2_flat, label=f'i is {i}')
-    plt.plot(f_L, prob3_flat, label=f'i is {i}')
-    plt.plot(f_L, prob4_flat, label=f'i is {i}')
-    plt.plot(f_L, prob5_flat, label=f'i is {i}')
+    prob = (T**num_steps)*P
+    prob_flat = np.array(prob).flatten()
+    prob_plot.plot(f_L, prob_flat, label=f'i is {i}')
 
-for i in range(len(T)):
-    print(T[i,:].sum())
+    new_hist.append(np.array(normalized_hist[i]*prob_flat))
 
-plt.legend()
+prob_plot.legend()
+
+plt.figure()
+plt.pcolor(i_LLedge, f_LLedge, new_hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
+
+# for i in range(len(T)):
+#     print(T[i,:].sum())
+
 plt.show()
 
-#print(big_m)
 
-# plt.figure()
-# plt.pcolor(i_LLedge, f_LLedge, big_m)
-# plt.xlabel('initial displacement (nm)')
-# plt.ylabel('final displacement (nm)')
-# plt.colorbar()
-# plt.show()
 
-# print(T[81])
-# print(T[0])
-
-# print(T*P)
-
-# for i in range(0, 1e3, 100):
-#     prob_final = (T**i)*P
 
 
 
