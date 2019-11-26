@@ -41,6 +41,29 @@ def best_fit(x,y):
     return m, b
 
 
+# Determining final location after a set number of steps
+def prob_steps(T, P, num_steps, P_lt):
+    P = np.matrix(np.zeros((len(T),1)))
+    # T_invs = np.asarray(list(reversed(T))
+    for i in range(len(P)): # for each initial displacement ...
+        P = np.matrix(np.zeros((len(T), 1)))
+        P[i] = 1
+        # set prob to P
+        prob = P
+        for j in range(num_steps): # step a number of times...
+            prob = T*P
+
+            if np.random.random_sample() > P_lt[i]:
+                # then it is a trailing step.
+                # if it's already a trailing step, leave same
+                # otherwise, invert the position on probability matrix.
+
+
+                # T *= T
+            # else:
+                # T *= T_invs
+                a = 1
+                
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
@@ -60,6 +83,10 @@ leading_files = glob('{}/l_*.txt'.format(basepath))
 initial_L = []
 final_L_lists = {}
 
+# probability of being a leading step
+P_lt = []
+P_lt_1 = []
+
 for leading in leading_files:
     leading = leading[len(basepath):]
     leading_data = {'L': [], 't': []}
@@ -74,6 +101,7 @@ for leading in leading_files:
     seventh_ = leading.find('_', sixth_+1)
     eigth_ = leading.find('_', seventh_+1)
     iL = float(leading[2:first_])
+
     if iL in initial_L:
         print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
         exit(1)
@@ -93,13 +121,26 @@ for leading in leading_files:
         initial_L.append(-iL)
         final_L_lists[iL] = leading_data['L']
         final_L_lists[-iL] = trailing_data['L']
+
+        # calculate probability for step to be leading or trailing
+        leading_data_length = len(leading_data['L'])
+        trailing_data_length = len(trailing_data['L'])
+        Prob_lt = leading_data_length / (leading_data_length + trailing_data_length)
+        P_lt.append(Prob_lt)
+        P_lt_1.append(Prob_lt)
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('about to plot_hist', leading)
             plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
     except:
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('unable to load trailing data for', leading)
-    #plt.show()
+
+# combine to make leading/trailing probability
+P_lt = list(reversed(P_lt))
+P_lt.extend(P_lt_1)
+print(len(P_lt))
+
+
 
 initial_L = np.array(sorted(initial_L))
 final_L_center = initial_L*1.0
@@ -172,6 +213,8 @@ for i in range(len(P)):
     P = np.matrix(np.zeros((len(T), 1)))
     P[i] = 1
     prob = (T**num_steps)*P
+    # WORKING ON IT, FIXME:
+    # prob = prob_steps(T, P, num_steps, P_lt)
     prob_flat = np.array(prob).flatten()
     prob_plot.plot(f_L, prob_flat, label=f'i is {i}')
 
