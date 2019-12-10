@@ -77,6 +77,13 @@ def L_to_L(T, P_l, P_t):
         else:
             abs[num_col-1-i,i] = 1
     T_L = abs*T*prob_step
+    # plt.figure('abs')
+    # plt.pcolor(abs);
+    # plt.colorbar();
+    # plt.figure('prob_step')
+    # plt.pcolor(prob_step);
+    # plt.colorbar();
+    # plt.show()
     return T_L
 
 
@@ -219,15 +226,18 @@ plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
 T = np.matrix(hist)
 P = np.matrix(np.zeros((int(len(T)/2),1)))
-f_L = []
-for i in range((int(len(final_L_edges)/2))):
-    f_L.append((final_L_edges[i+49]+final_L_edges[i+50])/2)
+f_L = np.array(final_L_center[len(final_L_center)//2:])
+f_L_bin_width = np.zeros_like(f_L)
+print(len(f_L), len(f_L_bin_width[1:-1]), len(f_L[2:]), len(f_L[:-3]))
+f_L_bin_width[1:-1] = (f_L[2:] - f_L[:-2])/2
+f_L_bin_width[0] = f_L[0] + (f_L[1] - f_L[0])/2
+f_L_bin_width[-1] = f_L[-1] - f_L[-2]
 
-fig = plt.figure()
+fig = plt.figure('prob plot')
 prob_plot = fig.add_subplot(111)
 new_hist = []
 
-num_steps = 15
+num_steps = 10
 
 for i in range(len(P)):
     P = np.matrix(np.zeros((int(len(T)/2), 1)))
@@ -237,9 +247,16 @@ for i in range(len(P)):
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
     prob_flat = np.array(prob).flatten()
-    prob_plot.plot(list(reversed(f_L)), prob_flat, label=f'i is {i}')
+    prob_plot.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
+
+    plt.figure('prob density')
+    plt.plot(f_L, prob_flat/prob_flat.sum()/f_L_bin_width, label=f'i is {i}')
 
     # new_hist.append(np.array(normalized_hist[i]*prob_flat))
+    print(f'norm {i} is', prob_flat.sum())
+
+plt.figure('prob density')
+plt.legend(loc='best')
 
 prob_plot.legend()
 
