@@ -2,7 +2,7 @@
 
 import os
 
-students = ['droundy', 'elliotc12', 'john-waczak', 'kiatvonj']
+students = ['droundy', 'elliotc12', 'john-waczak', 'kiatvonj', 'wongrp']
 
 
 for student in students:
