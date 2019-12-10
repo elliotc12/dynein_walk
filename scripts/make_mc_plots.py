@@ -68,14 +68,14 @@ def L_to_L(T, P_l, P_t):
     abs = np.zeros((50,100))
     prob_step = np.zeros((100,50))
     num_col = np.shape(abs)[1]
-    num_rows = np.shape(abs)[0]-1
+    num_rows = np.shape(abs)[0]
     for i in range(num_col):
-        if i < np.shape(abs)[1]/2:
-            abs[i,i] = 1
-            prob_step[i,i] = P_t[num_rows-i]              # P_t array starts at 1 to 50
-            prob_step[num_col-1-i, i] = P_l[num_rows-i]   # P_l array starts at 1 to 50
+        if i < num_col/2:
+            abs[num_rows-1-i,i] = 1
+            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
+            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
         else:
-            abs[num_col-1-i,i] = 1
+            abs[i-num_rows,i] = 1
     T_L = abs*T*prob_step
     # plt.figure('abs')
     # plt.pcolor(abs);
@@ -237,7 +237,7 @@ fig = plt.figure('prob plot')
 prob_plot = fig.add_subplot(111)
 new_hist = []
 
-num_steps = 10
+num_steps = 8
 
 for i in range(len(P)):
     P = np.matrix(np.zeros((int(len(T)/2), 1)))
