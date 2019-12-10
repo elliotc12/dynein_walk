@@ -63,7 +63,24 @@ def prob_steps(T, P, num_steps, P_lt):
             # else:
                 # T *= T_invs
                 a = 1
-                
+
+def L_to_L(T, P_l, P_t):
+    abs = np.zeros((50,100))
+    prob_step = np.zeros((100,50))
+    num_col = np.shape(abs)[1]
+    num_rows = np.shape(abs)[0]-1
+    for i in range(num_col):
+        if i < np.shape(abs)[1]/2:
+            abs[i,i] = 1
+            prob_step[i,i] = P_t[num_rows-i]              # P_t array starts at 1 to 50
+            prob_step[num_col-1-i, i] = P_l[num_rows-i]   # P_l array starts at 1 to 50
+        else:
+            abs[num_col-1-i,i] = 1
+    T_L = abs*T*prob_step
+    return T_L
+
+
+
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
@@ -139,7 +156,10 @@ for leading in leading_files:
 P_lt = list(reversed(P_lt))
 P_lt.extend(P_lt_1)
 print(len(P_lt))
-
+P_l = P_lt_1
+P_t = int(1)-np.asarray(P_l)
+print(P_l)
+print(P_t)
 
 
 initial_L = np.array(sorted(initial_L))
@@ -198,10 +218,10 @@ plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
 
 T = np.matrix(hist)
-P = np.matrix(np.zeros((len(T),1)))
+P = np.matrix(np.zeros((int(len(T)/2),1)))
 f_L = []
-for i in range(len(final_L_edges)-1):
-    f_L.append((final_L_edges[i]+final_L_edges[i+1])/2)
+for i in range((int(len(final_L_edges)/2))):
+    f_L.append((final_L_edges[i+49]+final_L_edges[i+50])/2)
 
 fig = plt.figure()
 prob_plot = fig.add_subplot(111)
@@ -210,23 +230,24 @@ new_hist = []
 num_steps = 15
 
 for i in range(len(P)):
-    P = np.matrix(np.zeros((len(T), 1)))
+    P = np.matrix(np.zeros((int(len(T)/2), 1)))
     P[i] = 1
-    prob = (T**num_steps)*P
+    # prob = (T**num_steps)*P
+    prob = (L_to_L(T, P_l, P_t)**num_steps)*P
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
     prob_flat = np.array(prob).flatten()
-    prob_plot.plot(f_L, prob_flat, label=f'i is {i}')
+    prob_plot.plot(list(reversed(f_L)), prob_flat, label=f'i is {i}')
 
-    new_hist.append(np.array(normalized_hist[i]*prob_flat))
+    # new_hist.append(np.array(normalized_hist[i]*prob_flat))
 
 prob_plot.legend()
 
-plt.figure()
-plt.pcolor(i_LLedge, f_LLedge, new_hist)
-plt.xlabel('initial displacement (nm)')
-plt.ylabel('final displacement (nm)')
-plt.colorbar()
+# plt.figure()
+# plt.pcolor(i_LLedge, f_LLedge, new_hist)
+# plt.xlabel('initial displacement (nm)')
+# plt.ylabel('final displacement (nm)')
+# plt.colorbar()
 
 # for i in range(len(T)):
 #     print(T[i,:].sum())
