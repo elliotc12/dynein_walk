@@ -40,29 +40,30 @@ def best_fit(x,y):
     b = mean(y) - m*mean(x)
     return m, b
 
-
-# Determining final location after a set number of steps
-def prob_steps(T, P, num_steps, P_lt):
-    P = np.matrix(np.zeros((len(T),1)))
-    # T_invs = np.asarray(list(reversed(T))
-    for i in range(len(P)): # for each initial displacement ...
-        P = np.matrix(np.zeros((len(T), 1)))
-        P[i] = 1
-        # set prob to P
-        prob = P
-        for j in range(num_steps): # step a number of times...
-            prob = T*P
-
-            if np.random.random_sample() > P_lt[i]:
-                # then it is a trailing step.
-                # if it's already a trailing step, leave same
-                # otherwise, invert the position on probability matrix.
-
-
-                # T *= T
-            # else:
-                # T *= T_invs
-                a = 1
+# DRAFT OF PROB FUNCTION, FIXME
+#
+# # Determining final location after a set number of steps
+# def prob_steps(T, P, num_steps, P_lt):
+#     P = np.matrix(np.zeros((len(T),1)))
+#     # T_invs = np.asarray(list(reversed(T))
+#     for i in range(len(P)): # for each initial displacement ...
+#         P = np.matrix(np.zeros((len(T), 1)))
+#         P[i] = 1
+#         # set prob to P
+#         prob = P
+#         for j in range(num_steps): # step a number of times...
+#             prob = T*P
+#
+#             if np.random.random_sample() > P_lt[i]:
+#                 # then it is a trailing step.
+#                 # if it's already a trailing step, leave same
+#                 # otherwise, invert the position on probability matrix.
+#
+#
+#                 # T *= T
+#             # else:
+#                 # T *= T_invs
+#                 a = 1
 
 def L_to_L(T, P_l, P_t):
     abs = np.zeros((50,100))
@@ -162,11 +163,11 @@ for leading in leading_files:
 # combine to make leading/trailing probability
 P_lt = list(reversed(P_lt))
 P_lt.extend(P_lt_1)
-print(len(P_lt))
+# print(len(P_lt))
 P_l = P_lt_1
 P_t = int(1)-np.asarray(P_l)
-print(P_l)
-print(P_t)
+# print(P_l)
+# print(P_t)
 
 
 initial_L = np.array(sorted(initial_L))
@@ -216,26 +217,33 @@ i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 # rgrsn_line = [(slope*x)+intercept for x in np.asarray(i_LLedge)]
 plt.close('all')
 # plt.plot(i_LLedge, rgrsn_line, label='Model: y = ({:.3}) + ({:.3})x'.format(intercept,slope), linestyle=":")
-plt.figure()
+plt.figure('From Data')
 plt.pcolor(i_LLedge, f_LLedge, normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
-
 T = np.matrix(hist)
 P = np.matrix(np.zeros((int(len(T)/2),1)))
 f_L = np.array(final_L_center[len(final_L_center)//2:])
 f_L_bin_width = np.zeros_like(f_L)
-print(len(f_L), len(f_L_bin_width[1:-1]), len(f_L[2:]), len(f_L[:-3]))
+# print(len(f_L), len(f_L_bin_width[1:-1]), len(f_L[2:]), len(f_L[:-3]))
 f_L_bin_width[1:-1] = (f_L[2:] - f_L[:-2])/2
 f_L_bin_width[0] = f_L[0] + (f_L[1] - f_L[0])/2
 f_L_bin_width[-1] = f_L[-1] - f_L[-2]
 
+i_L = np.array(initial_L[len(initial_L)//2:])
+i_L_bin_width = np.zeros_like(i_L)
+# print(len(i_L), len(i_L_bin_width[1:-1]), len(i_L[2:]), len(i_L[:-3]))
+i_L_bin_width[1:-1] = (i_L[2:] - i_L[:-2])/2
+i_L_bin_width[0] = i_L[0] + (i_L[1] - i_L[0])/2
+i_L_bin_width[-1] = i_L[-1] - i_L[-2]
+
 fig = plt.figure('prob plot')
 prob_plot = fig.add_subplot(111)
 new_hist = []
+prob_den = []
 
 num_steps = 8
 
@@ -247,13 +255,17 @@ for i in range(len(P)):
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
     prob_flat = np.array(prob).flatten()
+    prob_flat_norm = prob_flat.sum()*f_L_bin_width
+    prob_den.append(np.array(prob_flat/prob_flat_norm))
+
     prob_plot.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
 
     plt.figure('prob density')
-    plt.plot(f_L, prob_flat/prob_flat.sum()/f_L_bin_width, label=f'i is {i}')
+    plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
 
     # new_hist.append(np.array(normalized_hist[i]*prob_flat))
-    print(f'norm {i} is', prob_flat.sum())
+    # print(f'norm {i} is', prob_flat.sum())
+    # print(f'norm {i} is', prob_flat.sum()/f_L_bin_width)
 
 plt.figure('prob density')
 plt.legend(loc='best')
@@ -269,7 +281,32 @@ prob_plot.legend()
 # for i in range(len(T)):
 #     print(T[i,:].sum())
 
+
+
+# print(prob_den)
+prob_den_1 = list(reversed(prob_den))
+prob_den_1.extend(prob_den)
+prob_dx = []
+
+print(np.shape(prob_den))
+print(np.shape(prob_den_1))
+for i in prob_den_1:
+    reverse = list(reversed(i))
+    reverse.extend(list(i))
+    prob_dx.append(reverse)
+
+print(np.shape(prob_dx))
+
+final_normalized_hist = np.multiply(normalized_hist, prob_dx)
+plt.figure('Match Yildiz')
+plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
+
 plt.show()
+# prob_den_2 = list()
+
 
 
 
