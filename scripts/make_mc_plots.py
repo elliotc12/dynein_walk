@@ -163,22 +163,19 @@ for leading in leading_files:
 # combine to make leading/trailing probability
 P_lt = list(reversed(P_lt))
 P_lt.extend(P_lt_1)
-# print(len(P_lt))
 P_l = P_lt_1
 P_t = int(1)-np.asarray(P_l)
-# print(P_l)
-# print(P_t)
 
 
-initial_L = np.array(sorted(initial_L))
-final_L_center = initial_L*1.0
-
+# make bin center the data point (for pcolor)
+initial_L = np.array(sorted(initial_L)) # -50 to 50 array
+final_L_center = initial_L*1.0 # set final_L_center to initial_L
 final_L_edges = np.zeros(len(final_L_center)+1)
 for i in range(1,len(final_L_edges)-1):
     final_L_edges[i] = (final_L_center[i-1] + final_L_center[i])*0.5
 final_L_edges[0] = 2*final_L_center[0] - final_L_edges[1]
 final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
-
+# obtain meshgrid for pcolor 
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
 hist = np.zeros_like(i_LLcenter)
@@ -211,7 +208,6 @@ for iL in initial_L:
             normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
-# print(final_L_edges)
 
 # slope, intercept = best_fit(i_LLedge, f_LLedge)
 # rgrsn_line = [(slope*x)+intercept for x in np.asarray(i_LLedge)]
@@ -228,14 +224,13 @@ T = np.matrix(hist)
 P = np.matrix(np.zeros((int(len(T)/2),1)))
 f_L = np.array(final_L_center[len(final_L_center)//2:])
 f_L_bin_width = np.zeros_like(f_L)
-# print(len(f_L), len(f_L_bin_width[1:-1]), len(f_L[2:]), len(f_L[:-3]))
 f_L_bin_width[1:-1] = (f_L[2:] - f_L[:-2])/2
 f_L_bin_width[0] = f_L[0] + (f_L[1] - f_L[0])/2
 f_L_bin_width[-1] = f_L[-1] - f_L[-2]
 
+# Get bin widths for initial displacement histogram
 i_L = np.array(initial_L[len(initial_L)//2:])
 i_L_bin_width = np.zeros_like(i_L)
-# print(len(i_L), len(i_L_bin_width[1:-1]), len(i_L[2:]), len(i_L[:-3]))
 i_L_bin_width[1:-1] = (i_L[2:] - i_L[:-2])/2
 i_L_bin_width[0] = i_L[0] + (i_L[1] - i_L[0])/2
 i_L_bin_width[-1] = i_L[-1] - i_L[-2]
@@ -247,6 +242,7 @@ prob_den = []
 
 num_steps = 8
 
+# Obtain L to L probability density
 for i in range(len(P)):
     P = np.matrix(np.zeros((int(len(T)/2), 1)))
     P[i] = 1
@@ -262,41 +258,23 @@ for i in range(len(P)):
 
     plt.figure('prob density')
     plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
-
-    # new_hist.append(np.array(normalized_hist[i]*prob_flat))
-    # print(f'norm {i} is', prob_flat.sum())
-    # print(f'norm {i} is', prob_flat.sum()/f_L_bin_width)
-
+# Plot L to L probability density
 plt.figure('prob density')
 plt.legend(loc='best')
 
 prob_plot.legend()
 
-# plt.figure()
-# plt.pcolor(i_LLedge, f_LLedge, new_hist)
-# plt.xlabel('initial displacement (nm)')
-# plt.ylabel('final displacement (nm)')
-# plt.colorbar()
-
-# for i in range(len(T)):
-#     print(T[i,:].sum())
-
-
-
-# print(prob_den)
 prob_den_1 = list(reversed(prob_den))
 prob_den_1.extend(prob_den)
 prob_dx = []
 
-print(np.shape(prob_den))
-print(np.shape(prob_den_1))
 for i in prob_den_1:
     reverse = list(reversed(i))
     reverse.extend(list(i))
     prob_dx.append(reverse)
 
-print(np.shape(prob_dx))
 
+# plot the normalized histogram multiplied by the probability
 final_normalized_hist = np.multiply(normalized_hist, prob_dx)
 plt.figure('Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
@@ -305,7 +283,6 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 
 plt.show()
-# prob_den_2 = list()
 
 
 
