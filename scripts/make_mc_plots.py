@@ -175,7 +175,7 @@ for i in range(1,len(final_L_edges)-1):
     final_L_edges[i] = (final_L_center[i-1] + final_L_center[i])*0.5
 final_L_edges[0] = 2*final_L_center[0] - final_L_edges[1]
 final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
-# obtain meshgrid for pcolor 
+# obtain meshgrid for pcolor
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
 hist = np.zeros_like(i_LLcenter)
@@ -251,13 +251,13 @@ for i in range(len(P)):
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
     prob_flat = np.array(prob).flatten()
-    prob_flat_norm = prob_flat.sum()*f_L_bin_width
+    prob_flat_norm = prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
     prob_den.append(np.array(prob_flat/prob_flat_norm))
-
     prob_plot.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
 
     plt.figure('prob density')
     plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
+
 # Plot L to L probability density
 plt.figure('prob density')
 plt.legend(loc='best')
@@ -273,10 +273,19 @@ for i in prob_den_1:
     reverse.extend(list(i))
     prob_dx.append(reverse)
 
+bin_width = list(reversed(i_L_bin_width*1.0))
+bin_width.extend(i_L_bin_width)
+
 
 # plot the normalized histogram multiplied by the probability
 final_normalized_hist = np.multiply(normalized_hist, prob_dx)
-plt.figure('Match Yildiz')
+plt.figure('Match Yildiz divided by area of box')
+plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist/(np.power(bin_width,2)))
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
+
+plt.figure('Match Yildiz Not divided')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
