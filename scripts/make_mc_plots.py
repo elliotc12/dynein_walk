@@ -235,8 +235,6 @@ i_L_bin_width[1:-1] = (i_L[2:] - i_L[:-2])/2
 i_L_bin_width[0] = i_L[0] + (i_L[1] - i_L[0])/2
 i_L_bin_width[-1] = i_L[-1] - i_L[-2]
 
-fig = plt.figure('prob plot')
-prob_plot = fig.add_subplot(111)
 new_hist = []
 prob_den = []
 
@@ -244,7 +242,7 @@ num_steps = 8
 
 # Obtain L to L probability density
 for i in range(len(P)):
-    P = np.matrix(np.zeros((int(len(T)/2), 1)))
+    P[:,:]= 0
     P[i] = 1
     # prob = (T**num_steps)*P
     prob = (L_to_L(T, P_l, P_t)**num_steps)*P
@@ -253,7 +251,9 @@ for i in range(len(P)):
     prob_flat = np.array(prob).flatten()
     prob_flat_norm = prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
     prob_den.append(np.array(prob_flat/prob_flat_norm))
-    prob_plot.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
+
+    plt.figure('prob plot')
+    plt.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
 
     plt.figure('prob density')
     plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
@@ -262,7 +262,8 @@ for i in range(len(P)):
 plt.figure('prob density')
 plt.legend(loc='best')
 
-prob_plot.legend()
+plt.figure('prob plot')
+plt.legend()
 
 prob_den_1 = list(reversed(prob_den))
 prob_den_1.extend(prob_den)
