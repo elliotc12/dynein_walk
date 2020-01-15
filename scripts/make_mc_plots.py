@@ -163,8 +163,8 @@ for leading in leading_files:
 # combine to make leading/trailing probability
 P_lt = list(reversed(P_lt))
 P_lt.extend(P_lt_1)
-P_l = P_lt_1
-P_t = int(1)-np.asarray(P_l)
+P_l = np.array(P_lt_1)
+P_t = int(1)-P_l
 
 
 # make bin center the data point (for pcolor)
