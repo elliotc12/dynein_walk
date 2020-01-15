@@ -236,9 +236,14 @@ i_L_bin_width[0] = i_L[0] + (i_L[1] - i_L[0])/2
 i_L_bin_width[-1] = i_L[-1] - i_L[-2]
 
 new_hist = []
-prob_den = []
 
-num_steps = 8
+num_steps = 16
+
+plt.figure('prob density')
+# Plot L to L probability density
+plt.legend(loc='best')
+plt.xlabel('L')
+plt.ylabel('Prob per L')
 
 # Obtain L to L probability density
 for i in range(len(P)):
@@ -248,43 +253,27 @@ for i in range(len(P)):
     prob = (L_to_L(T, P_l, P_t)**num_steps)*P
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
-    prob_flat = np.array(prob).flatten()
+    prob_flat = np.array(prob)[:,0] # convert to a 1D array from a column vector
+    print('prob_flat.sum()', prob_flat.sum())
     prob_flat_norm = prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
-    prob_den.append(np.array(prob_flat/prob_flat_norm))
+    # print('prob_flat_norm', prob_flat_norm)
+    prob_den = prob_flat/prob_flat_norm
 
-    plt.figure('prob plot')
-    plt.plot(f_L, prob_flat/prob_flat.sum(), label=f'i is {i}')
-
-    plt.figure('prob density')
     plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
 
-# Plot L to L probability density
-plt.figure('prob density')
-plt.legend(loc='best')
-
-plt.figure('prob plot')
-plt.legend()
-
-prob_den_1 = list(reversed(prob_den))
-prob_den_1.extend(prob_den)
-prob_dx = []
-
-for i in prob_den_1:
-    reverse = list(reversed(i))
-    reverse.extend(list(i))
-    prob_dx.append(reverse)
+print(prob_den)
+prob_dx = list(reversed(prob_den))
+prob_dx.extend(prob_den)
+prob_dx = np.array(prob_dx)
 
 bin_width = list(reversed(i_L_bin_width*1.0))
 bin_width.extend(i_L_bin_width)
 
 
 # plot the normalized histogram multiplied by the probability
-final_normalized_hist = np.multiply(normalized_hist, prob_dx)
-plt.figure('Match Yildiz divided by area of box')
-plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist/(np.power(bin_width,2)))
-plt.xlabel('initial displacement (nm)')
-plt.ylabel('final displacement (nm)')
-plt.colorbar()
+final_normalized_hist = np.zeros_like(normalized_hist)
+for i in range(final_normalized_hist.shape[0]):
+    final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx
 
 plt.figure('Match Yildiz Not divided')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
