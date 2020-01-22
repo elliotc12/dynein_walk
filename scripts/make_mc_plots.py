@@ -134,6 +134,8 @@ final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
 # obtain meshgrid for pcolor
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
+bin_width = final_L_edges[1:] - final_L_edges[:-1]
+
 hist = np.zeros_like(i_LLcenter)
 hist2 = np.zeros_like(i_LLcenter)
 normalized_hist = np.zeros_like(i_LLcenter)
@@ -154,9 +156,11 @@ for iL in initial_L:
         if fL_index is None or fL < final_L_edges[0] or fL > final_L_edges[-1]:
             # This seems fishy...
             if fL < final_L_edges[0]:
-                normalized_hist[0, iL_index] += 1/total_counts/(final_L_edges[1] - final_L_edges[0])
+                normalized_hist[0, iL_index] += 1/total_counts/bin_width[0]
+                hist[0, iL_index] += 1/total_counts
             if fL > final_L_edges[-1]:
-                normalized_hist[-1, iL_index] += 1/total_counts/(final_L_edges[-1] - final_L_edges[-2])
+                normalized_hist[-1, iL_index] += 1/total_counts/bin_width[-1]
+                hist[-1, iL_index] += 1/total_counts
             continue
             # print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
             # Possibly think about making a infinite bin for final_L that goes outside plot
@@ -166,7 +170,11 @@ for iL in initial_L:
             hist2[fL_index, iL_index] += 1
 
             # Normalized by area
-            normalized_hist[fL_index, iL_index] += 1/total_counts/(final_L_edges[fL_index+1] - final_L_edges[fL_index])
+            normalized_hist[fL_index, iL_index] += 1/total_counts/bin_width[fl_index]
+
+# for i in range(len(normalized_hist)):
+    # print('norm', i, (normalized_hist[:,i]*bin_width).sum())
+    # print('hist', i, hist[:,i].sum())
 
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 
