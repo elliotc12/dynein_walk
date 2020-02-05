@@ -137,8 +137,11 @@ i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 bin_width = final_L_edges[1:] - final_L_edges[:-1]
 
 hist = np.zeros_like(i_LLcenter)
+filtered_hist = np.zeros_like(i_LLcenter)
 hist2 = np.zeros_like(i_LLcenter)
 normalized_hist = np.zeros_like(i_LLcenter)
+filtered_norm_hist = np.zeros_like(i_LLcenter)
+epsilon = 4
 
 for iL in initial_L:
     iL_index = 0
@@ -158,19 +161,29 @@ for iL in initial_L:
             if fL < final_L_edges[0]:
                 normalized_hist[0, iL_index] += 1/total_counts/bin_width[0]
                 hist[0, iL_index] += 1/total_counts
+                if abs(fL-iL) > epsilon:
+                    filtered_norm_hist[0, iL_index] += 1/total_counts/bin_width[0]
+                    filtered_hist[0, iL_index] += 1/total_counts
             if fL > final_L_edges[-1]:
                 normalized_hist[-1, iL_index] += 1/total_counts/bin_width[-1]
                 hist[-1, iL_index] += 1/total_counts
+                if abs(fL-iL) > epsilon:
+                    filtered_norm_hist[-1, iL_index] += 1/total_counts/bin_width[-1]
+                    filtered_hist[-1, iL_index] += 1/total_counts
             continue
             # print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
             # Possibly think about making a infinite bin for final_L that goes outside plot
             # Will have some normalization issues
+
         else:
             hist[fL_index, iL_index] += 1/total_counts
             hist2[fL_index, iL_index] += 1
 
             # Normalized by area
-            normalized_hist[fL_index, iL_index] += 1/total_counts/bin_width[fl_index]
+            normalized_hist[fL_index, iL_index] += 1/total_counts/bin_width[fL_index]
+            if abs(fL-iL) > epsilon:
+                filtered_norm_hist[fL_index, iL_index] += 1/total_counts/bin_width[fL_index]
+                filtered_hist[fL_index, iL_index] += 1/total_counts
 
 # for i in range(len(normalized_hist)):
     # print('norm', i, (normalized_hist[:,i]*bin_width).sum())
@@ -187,7 +200,14 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
+plt.figure('Filtered Instant Rebinds Data')
+plt.pcolor(i_LLedge, f_LLedge, filtered_norm_hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
+
 T = np.matrix(hist)
+filtered_T = np.matrix(filtered_hist)
 P = np.matrix(np.zeros((int(len(T)/2),1)))
 f_L = np.array(final_L_center[len(final_L_center)//2:])
 f_L_bin_width = np.zeros_like(f_L)
@@ -226,12 +246,34 @@ for i in range(len(P)):
     # print('prob_flat_norm', prob_flat_norm)
     prob_den = prob_flat/prob_flat_norm
 
-    plt.plot(f_L, prob_flat/prob_flat_norm, label=f'i is {i}')
+    plt.plot(f_L, prob_den, label=f'i is {i}')
+
+plt.figure('filtered prob density')
+plt.legend(loc='best')
+plt.xlabel('L')
+plt.ylabel('Prob per L')
+
+# Obtain L to L probability density
+for i in range(len(P)):
+    P[:,:]= 0
+    P[i] = 1
+    # prob = (T**num_steps)*P
+    filtered_prob = (L_to_L(filtered_T, P_l, P_t)**num_steps)*P
+    filtered_prob_flat = np.array(filtered_prob)[:,0] # convert to a 1D array from a column vector
+    print('filtered_prob_flat.sum()', prob_flat.sum())
+    filtered_prob_flat_norm = filtered_prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
+    filtered_prob_den = filtered_prob_flat/filtered_prob_flat_norm
+
+    plt.plot(f_L, filtered_prob_den, label=f'i is {i}')
 
 # print(prob_den)
 prob_dx = list(reversed(prob_den))
 prob_dx.extend(prob_den)
 prob_dx = np.array(prob_dx)
+
+filtered_prob_dx = list(reversed(filtered_prob_den))
+filtered_prob_dx.extend(filtered_prob_den)
+filtered_prob_dx = np.array(filtered_prob_dx)
 
 bin_width = list(reversed(i_L_bin_width*1.0))
 bin_width.extend(i_L_bin_width)
@@ -242,10 +284,20 @@ final_normalized_hist = np.zeros_like(normalized_hist)
 for i in range(final_normalized_hist.shape[0]):
     final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx
 
+filtered_final_norm_hist = np.zeros_like(filtered_norm_hist)
+for i in range(filtered_final_norm_hist.shape[0]):
+    filtered_final_norm_hist[i,:] = filtered_norm_hist[i,:]*filtered_prob_dx
+
 # print(np.sum(final_normalized_hist))
 
-plt.figure('Match Yildiz Not divided')
+plt.figure('Probability Distribution to Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('final displacement (nm)')
+plt.colorbar()
+
+plt.figure('Filtered Probability Distribution to Match Yildiz')
+plt.pcolor(i_LLedge, f_LLedge, filtered_final_norm_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
