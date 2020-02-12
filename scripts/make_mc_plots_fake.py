@@ -45,6 +45,7 @@ def L_to_L(T, P_l, P_t):
     # plt.pcolor(prob_step);
     # plt.colorbar();
     # plt.show()
+    # print(T_L)
     return T_L
 
 
@@ -61,8 +62,11 @@ basepath = '../data/mc_data/'
 plotpath = '../plots/mc_plots/'
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
+
+
 initial_L = []
 final_L_lists = {}
+
 
 # probability of being a leading step
 P_lt = []
@@ -122,6 +126,24 @@ P_lt.extend(P_lt_1)
 P_l = np.array(P_lt_1)
 P_t = int(1)-P_l
 
+## Make a fake P_l and P_t with equal probabilities ##
+for i in range(len(P_l)):
+    P_l[i] = 0.5
+    P_t[i] = 0.5
+
+
+## Generate fake data ##
+initial_L = np.arange(-50.0,51.0, 1)
+initial_L = np.delete(initial_L, 50)
+final_L_lists = {}
+
+# want a line of slope 1 and y-intercept 0 so m = 1 and b = 0
+# generate same final displacement as initial displacement on
+for i in range(len(initial_L)):
+    init_displacement = initial_L[i]
+    final_L_lists[init_displacement] = np.array([0.0])
+    # final_L_lists[init_displacement] = np.array([init_displacement])
+
 
 # make bin center the data point (for pcolor)
 initial_L = np.array(sorted(initial_L)) # -50 to 50 array
@@ -136,12 +158,14 @@ i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
 bin_width = final_L_edges[1:] - final_L_edges[:-1]
 
+
 hist = np.zeros_like(i_LLcenter)
 filtered_hist = np.zeros_like(i_LLcenter)
 hist2 = np.zeros_like(i_LLcenter)
 normalized_hist = np.zeros_like(i_LLcenter)
 filtered_norm_hist = np.zeros_like(i_LLcenter)
 epsilon = 4
+
 
 for iL in initial_L:
     iL_index = 0
@@ -188,7 +212,6 @@ for iL in initial_L:
 # for i in range(len(normalized_hist)):
     # print('norm', i, (normalized_hist[:,i]*bin_width).sum())
     # print('hist', i, hist[:,i].sum())
-
 i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
 
 
@@ -224,7 +247,7 @@ i_L_bin_width[-1] = i_L[-1] - i_L[-2]
 
 new_hist = []
 
-num_steps = 16
+num_steps = 1
 
 plt.figure('prob density')
 # Plot L to L probability density
@@ -245,11 +268,9 @@ for i in range(len(P)):
     prob_flat_norm = prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
     # print('prob_flat_norm', prob_flat_norm)
     prob_den = prob_flat/prob_flat_norm
-    print('prob_den SUM:', prob_den.sum())
+    print(np.shape(prob_den))
     plt.plot(f_L, prob_den, label=f'i is {i}')
 
-
-# Filtered Prob Density Function
 plt.figure('filtered prob density')
 plt.legend(loc='best')
 plt.xlabel('L')
@@ -262,7 +283,7 @@ for i in range(len(P)):
     # prob = (T**num_steps)*P
     filtered_prob = (L_to_L(filtered_T, P_l, P_t)**num_steps)*P
     filtered_prob_flat = np.array(filtered_prob)[:,0] # convert to a 1D array from a column vector
-    # print('filtered_prob_flat.sum()', prob_flat.sum())
+    print('filtered_prob_flat.sum()', prob_flat.sum())
     filtered_prob_flat_norm = filtered_prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
     filtered_prob_den = filtered_prob_flat/filtered_prob_flat_norm
 
@@ -289,7 +310,8 @@ for i in range(final_normalized_hist.shape[0]):
 filtered_final_norm_hist = np.zeros_like(filtered_norm_hist)
 for i in range(filtered_final_norm_hist.shape[0]):
     filtered_final_norm_hist[i,:] = filtered_norm_hist[i,:]*filtered_prob_dx
-
+# print(normalized_hist)
+# print(final_normalized_hist)
 # print(np.sum(final_normalized_hist))
 
 plt.figure('Probability Distribution to Match Yildiz')
@@ -303,17 +325,6 @@ plt.pcolor(i_LLedge, f_LLedge, filtered_final_norm_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
-
-print('SUM:', np.sum(normalized_hist))
-print('FINAL SUM:', np.sum(final_normalized_hist))
-
-dx = 1
-v = 0
-for i in range(len(final_normalized_hist)):
-    for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[i][j]*dx**2
-
-print('Integral of P(x,y)', v)  # FIXME!
 
 # print(final_normalized_hist)
 # print(np.shape(final_normalized_hist))
