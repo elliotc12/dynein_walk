@@ -25,18 +25,26 @@ def rad_to_deg(angle):
     # array = angle*180/np.pi
     return angle
 
+def L_to_initial_displacement(P_l, P_t):
+    num_col = 2*len(P_l)
+    num_rows = len(P_l)
+    prob_step = np.zeros((num_col,num_rows))
+    for i in range(num_col):
+        if i < num_col/2:
+            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
+            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
+    return prob_step
+
 def L_to_L(T, P_l, P_t):
-    abs = np.zeros((50,100))
-    prob_step = np.zeros((100,50))
-    num_col = np.shape(abs)[1]
-    num_rows = np.shape(abs)[0]
+    num_col = 2*len(P_l)
+    num_rows = len(P_l)
+    abs = np.zeros((num_rows,num_col))
     for i in range(num_col):
         if i < num_col/2:
             abs[num_rows-1-i,i] = 1
-            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
-            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
         else:
             abs[i-num_rows,i] = 1
+    prob_step = L_to_initial_displacement(P_l, P_t)
     T_L = abs*T*prob_step
     # plt.figure('abs')
     # plt.pcolor(abs);
@@ -269,9 +277,12 @@ for i in range(len(P)):
     plt.plot(f_L, filtered_prob_den, label=f'i is {i}')
 
 # print(prob_den)
-prob_dx = list(reversed(prob_den))
-prob_dx.extend(prob_den)
-prob_dx = np.array(prob_dx)
+prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den)
+print(prob_dx.shape)
+plt.figure('prob_dx')
+plt.plot(initial_L, prob_dx)
+plt.xlabel('displacement')
+plt.ylabel('probability density')
 
 filtered_prob_dx = list(reversed(filtered_prob_den))
 filtered_prob_dx.extend(filtered_prob_den)
@@ -311,7 +322,7 @@ dx = 1
 v = 0
 for i in range(len(final_normalized_hist)):
     for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[i][j]*dx**2
+        v += final_normalized_hist[i][j]*bin_width[i]*bin_width[j]
 
 print('Integral of P(x,y)', v)  # FIXME!
 
