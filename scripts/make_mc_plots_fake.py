@@ -25,18 +25,26 @@ def rad_to_deg(angle):
     # array = angle*180/np.pi
     return angle
 
+def L_to_initial_displacement(P_l, P_t):
+    num_col = 2*len(P_l)
+    num_rows = len(P_l)
+    prob_step = np.zeros((num_col,num_rows))
+    for i in range(num_col):
+        if i < num_col/2:
+            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
+            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
+    return prob_step
+
 def L_to_L(T, P_l, P_t):
-    abs = np.zeros((50,100))
-    prob_step = np.zeros((100,50))
-    num_col = np.shape(abs)[1]
-    num_rows = np.shape(abs)[0]
+    num_col = 2*len(P_l)
+    num_rows = len(P_l)
+    abs = np.zeros((num_rows,num_col))
     for i in range(num_col):
         if i < num_col/2:
             abs[num_rows-1-i,i] = 1
-            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
-            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
         else:
             abs[i-num_rows,i] = 1
+    prob_step = L_to_initial_displacement(P_l, P_t)
     T_L = abs*T*prob_step
     # plt.figure('abs')
     # plt.pcolor(abs);
@@ -45,7 +53,6 @@ def L_to_L(T, P_l, P_t):
     # plt.pcolor(prob_step);
     # plt.colorbar();
     # plt.show()
-    # print(T_L)
     return T_L
 
 
@@ -141,8 +148,8 @@ final_L_lists = {}
 # generate same final displacement as initial displacement on
 for i in range(len(initial_L)):
     init_displacement = initial_L[i]
-    final_L_lists[init_displacement] = np.array([0.0])
-    # final_L_lists[init_displacement] = np.array([init_displacement])
+    # final_L_lists[init_displacement] = np.array([0.0])
+    final_L_lists[init_displacement] = np.array([init_displacement])
 
 
 # make bin center the data point (for pcolor)
@@ -276,27 +283,14 @@ plt.legend(loc='best')
 plt.xlabel('L')
 plt.ylabel('Prob per L')
 
-# Obtain L to L probability density
-for i in range(len(P)):
-    P[:,:]= 0
-    P[i] = 1
-    # prob = (T**num_steps)*P
-    filtered_prob = (L_to_L(filtered_T, P_l, P_t)**num_steps)*P
-    filtered_prob_flat = np.array(filtered_prob)[:,0] # convert to a 1D array from a column vector
-    print('filtered_prob_flat.sum()', prob_flat.sum())
-    filtered_prob_flat_norm = filtered_prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
-    filtered_prob_den = filtered_prob_flat/filtered_prob_flat_norm
-
-    plt.plot(f_L, filtered_prob_den, label=f'i is {i}')
-
 # print(prob_den)
-prob_dx = list(reversed(prob_den))
-prob_dx.extend(prob_den)
-prob_dx = np.array(prob_dx)
+prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den)
+print(prob_dx.shape)
+plt.figure('prob_dx')
+plt.plot(initial_L, prob_dx)
+plt.xlabel('displacement')
+plt.ylabel('probability density')
 
-filtered_prob_dx = list(reversed(filtered_prob_den))
-filtered_prob_dx.extend(filtered_prob_den)
-filtered_prob_dx = np.array(filtered_prob_dx)
 
 bin_width = list(reversed(i_L_bin_width*1.0))
 bin_width.extend(i_L_bin_width)
@@ -307,12 +301,34 @@ final_normalized_hist = np.zeros_like(normalized_hist)
 for i in range(final_normalized_hist.shape[0]):
     final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx
 
-filtered_final_norm_hist = np.zeros_like(filtered_norm_hist)
-for i in range(filtered_final_norm_hist.shape[0]):
-    filtered_final_norm_hist[i,:] = filtered_norm_hist[i,:]*filtered_prob_dx
 # print(normalized_hist)
 # print(final_normalized_hist)
 # print(np.sum(final_normalized_hist))
+
+# Generating Best-Fit
+v = 0
+x_mean = 0
+y_mean = 0
+x2_mean = 0
+xy_mean = 0
+for i in range(len(final_normalized_hist)):
+    for j in range(len(final_normalized_hist[i])):
+        v += final_normalized_hist[i][j]*bin_width[i]*bin_width[j]
+        x_mean += final_normalized_hist[i][j]*initial_L[i]*bin_width[i]*bin_width[j]
+        # y_mean += final_normalized_hist[i][j]*final_L_lists[j]*bin_width[i]*bin_width[j]
+        x2_mean += final_normalized_hist[i][j]*initial_L[i]**2*bin_width[i]*bin_width[j]
+        # xy_mean += final_normalized_hist[i][j]*initial_L[i]*final_L_lists[j]*bin_width[i]*bin_width[j]
+
+print(x_mean)
+print(y_mean)
+print(x2_mean)
+print(xy_mean)
+
+b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
+m = (-b*x_mean+xy_mean)/(x2_mean)
+
+print(m)
+print(b)
 
 plt.figure('Probability Distribution to Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
@@ -320,11 +336,6 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 
-plt.figure('Filtered Probability Distribution to Match Yildiz')
-plt.pcolor(i_LLedge, f_LLedge, filtered_final_norm_hist)
-plt.xlabel('initial displacement (nm)')
-plt.ylabel('final displacement (nm)')
-plt.colorbar()
 
 # print(final_normalized_hist)
 # print(np.shape(final_normalized_hist))
