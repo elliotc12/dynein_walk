@@ -149,7 +149,7 @@ final_L_lists = {}
 for i in range(len(initial_L)):
     init_displacement = initial_L[i]
     # final_L_lists[init_displacement] = np.array([0.0])
-    final_L_lists[init_displacement] = np.array([init_displacement])
+    final_L_lists[init_displacement] = np.array([init_displacement, 10, 10, 10, 10, 10, 10])
 
 
 # make bin center the data point (for pcolor)
@@ -311,14 +311,16 @@ x_mean = 0
 y_mean = 0
 x2_mean = 0
 xy_mean = 0
+
 for i in range(len(final_normalized_hist)):
     for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[i][j]*bin_width[i]*bin_width[j]
-        x_mean += final_normalized_hist[i][j]*initial_L[i]*bin_width[i]*bin_width[j]
-        # y_mean += final_normalized_hist[i][j]*final_L_lists[j]*bin_width[i]*bin_width[j]
-        x2_mean += final_normalized_hist[i][j]*initial_L[i]**2*bin_width[i]*bin_width[j]
-        # xy_mean += final_normalized_hist[i][j]*initial_L[i]*final_L_lists[j]*bin_width[i]*bin_width[j]
+        v += final_normalized_hist[j][i]*bin_width[i]*bin_width[j]
+        x_mean += final_normalized_hist[j][i]*initial_L[i]*bin_width[i]*bin_width[j]
+        y_mean += final_normalized_hist[j][i]*initial_L[j]*bin_width[i]*bin_width[j]
+        x2_mean += final_normalized_hist[j][i]*initial_L[i]**2*bin_width[i]*bin_width[j]
+        xy_mean += final_normalized_hist[j][i]*initial_L[i]*initial_L[j]*bin_width[i]*bin_width[j]
 
+print('v', v)
 print(x_mean)
 print(y_mean)
 print(x2_mean)
@@ -327,11 +329,14 @@ print(xy_mean)
 b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
 m = (-b*x_mean+xy_mean)/(x2_mean)
 
+lin_fit = [(m*x)+b for x in np.asarray(initial_L)]
+
 print(m)
 print(b)
 
 plt.figure('Probability Distribution to Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
+plt.plot(initial_L, lin_fit)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
