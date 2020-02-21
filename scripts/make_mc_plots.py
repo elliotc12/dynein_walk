@@ -278,7 +278,7 @@ for i in range(len(P)):
 
 # print(prob_den)
 prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den)
-print(prob_dx.shape)
+# print(prob_dx.shape)
 plt.figure('prob_dx')
 plt.plot(initial_L, prob_dx)
 plt.xlabel('displacement')
@@ -301,13 +301,56 @@ filtered_final_norm_hist = np.zeros_like(filtered_norm_hist)
 for i in range(filtered_final_norm_hist.shape[0]):
     filtered_final_norm_hist[i,:] = filtered_norm_hist[i,:]*filtered_prob_dx
 
-# print(np.sum(final_normalized_hist))
+filtered_final_norm_hist = final_normalized_hist*1.0
+
+# Generating Best-Fit
+v = 0
+x_mean = 0
+y_mean = 0
+x2_mean = 0
+xy_mean = 0
+
+for i in range(len(final_normalized_hist)):
+    for j in range(len(final_normalized_hist[i])):
+        v += final_normalized_hist[i,j]*bin_width[i]*bin_width[j]
+        x_mean += final_normalized_hist[i,j]*initial_L[j]*bin_width[i]*bin_width[j]
+        y_mean += final_normalized_hist[i,j]*initial_L[i]*bin_width[i]*bin_width[j]
+        x2_mean += final_normalized_hist[i,j]*initial_L[j]**2*bin_width[i]*bin_width[j]
+        xy_mean += final_normalized_hist[i,j]*initial_L[j]*initial_L[i]*bin_width[i]*bin_width[j]
+        if i == j:
+            #FIXME ! NOT NORMALIZED
+            filtered_final_norm_hist[i, j] = 0.0
+            if i >=4 and i <= 95:
+                filtered_final_norm_hist[i-4:i+4,j] = 0.0
+
+
+
+print('v', v)
+print(x_mean)
+print(y_mean)
+print(x2_mean)
+print(xy_mean)
+
+b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
+m = (-b*x_mean+xy_mean)/(x2_mean)
+
+lin_fit = [(m*x)+b for x in np.asarray(initial_L)]
+
+print(m)
+print(b)
+
+
 
 plt.figure('Probability Distribution to Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
+plt.plot(initial_L, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
+plt.legend()
+
+
+
 
 plt.figure('Filtered Probability Distribution to Match Yildiz')
 plt.pcolor(i_LLedge, f_LLedge, filtered_final_norm_hist)
@@ -318,13 +361,6 @@ plt.colorbar()
 print('SUM:', np.sum(normalized_hist))
 print('FINAL SUM:', np.sum(final_normalized_hist))
 
-dx = 1
-v = 0
-for i in range(len(final_normalized_hist)):
-    for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[i][j]*bin_width[i]*bin_width[j]
-
-print('Integral of P(x,y)', v)  # FIXME!
 
 # print(final_normalized_hist)
 # print(np.shape(final_normalized_hist))

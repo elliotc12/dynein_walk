@@ -312,13 +312,15 @@ y_mean = 0
 x2_mean = 0
 xy_mean = 0
 
+print(initial_L)
 for i in range(len(final_normalized_hist)):
+    print(final_normalized_hist[i])
     for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[j][i]*bin_width[i]*bin_width[j]
-        x_mean += final_normalized_hist[j][i]*initial_L[i]*bin_width[i]*bin_width[j]
-        y_mean += final_normalized_hist[j][i]*initial_L[j]*bin_width[i]*bin_width[j]
-        x2_mean += final_normalized_hist[j][i]*initial_L[i]**2*bin_width[i]*bin_width[j]
-        xy_mean += final_normalized_hist[j][i]*initial_L[i]*initial_L[j]*bin_width[i]*bin_width[j]
+        v += final_normalized_hist[i][j]*bin_width[i]*bin_width[j]
+        x_mean += final_normalized_hist[i][j]*initial_L[j]*bin_width[i]*bin_width[j]
+        y_mean += final_normalized_hist[i][j]*initial_L[i]*bin_width[i]*bin_width[j]
+        x2_mean += final_normalized_hist[i][j]*initial_L[j]**2*bin_width[i]*bin_width[j]
+        xy_mean += final_normalized_hist[i][j]*initial_L[i]*initial_L[j]*bin_width[i]*bin_width[j]
 
 print('v', v)
 print(x_mean)
