@@ -24,6 +24,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         # print('running with inputs', bba, bma, uma, uba, state, k)
         process = subprocess.Popen(['../onebound',
                                     str(k_b),
+                                    str(k_stk),
                                     str(params.for_simulation['cb']),
                                     str(params.for_simulation['cm']),
                                     str(params.for_simulation['ct']),
@@ -91,6 +92,7 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
             if bb_data_file == True:
                 data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
                 prob_unbinding['unbinding'][k[0]]))
+
 
 def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_file):
         """
@@ -222,6 +224,7 @@ parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e12)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-s", "--ks", type=float, help="Manually set the sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
 parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
@@ -236,6 +239,7 @@ args = parser.parse_args()
 
 params.for_simulation['k_ub'] = args.kub
 k_b = args.kb        # Binding Rate Constant
+k_stk = args.ks      # Sticky Rate Constant
 params.for_simulation['cb'] = args.cb
 params.for_simulation['cm'] = args.cm
 params.for_simulation['ct'] = args.ct

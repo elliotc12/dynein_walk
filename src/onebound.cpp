@@ -17,14 +17,15 @@
 // see dynein_struct.h for possible command line parameters (extern double ... )
 // they are all defined in default_parameters.h
 
-void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state, double *k){
+void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state, double *k, double *sticky_rate){
   // for(int i=1; i<argc; i++){
   //   fprintf(stderr, "%s ", argv[i]);
   // }
   // fprintf(stderr, "\n");
-  assert(argc==24);
+  assert(argc==25);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
+  *sticky_rate = atof(argv[i++]);
   cb = atof(argv[i++]);
   cm = atof(argv[i++]);
   ct = atof(argv[i++]);
@@ -62,13 +63,13 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
   *uba = atof(argv[i++]);
   *state = atof(argv[i++]);
   *k = atof(argv[i++]);
-  assert(i==24);
+  assert(i==25);
   // note we are not using runtime as onebound runs indefinitely until binding event
 }
 
 int main(int argc, char** argv) {
-  double bba, bma, uma, uba, bbx = 0, bby = 0, state, k;
-  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k);
+  double bba, bma, uma, uba, bbx = 0, bby = 0, state, k, sticky_rate;
+  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k, &sticky_rate);
   State s = NEARBOUND;
   // fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   if (state == 1) {
@@ -76,7 +77,7 @@ int main(int argc, char** argv) {
   }
   binding_mode = EXPONENTIAL_UNBINDING;
 
-  Rand* rand = new Rand(RAND_INIT_SEED); 
+  Rand* rand = new Rand(RAND_INIT_SEED);
 
   // Does this onebound resemble with the bothbound orientation
 
@@ -106,7 +107,11 @@ int main(int argc, char** argv) {
   while(stillStepping){
 
     double binding_prob = dynein->get_binding_rate()*dt;
+    double sticky_prob = sticky_rate*dt;
     cumulative_prob += binding_prob;
+
+    fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
+
 
     //fprintf(stderr, "The time is %g\n", t);
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
