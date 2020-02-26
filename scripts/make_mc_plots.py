@@ -26,6 +26,12 @@ def rad_to_deg(angle):
     return angle
 
 def L_to_initial_displacement(P_l, P_t):
+    """
+    Returns a matrix (technically array) which when multiplied by a
+    probability density of L will result in a probability density of
+    displacement.  Thus this is a dimensionless 2D array.
+
+    """
     num_col = 2*len(P_l)
     num_rows = len(P_l)
     prob_step = np.zeros((num_col,num_rows))
@@ -142,11 +148,11 @@ final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
 # obtain meshgrid for pcolor
 i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
 
-bin_width = final_L_edges[1:] - final_L_edges[:-1]
+bin_width = final_L_edges[1:] - final_L_edges[:-1] # a 1D array giving final displacement bin width
 
 hist = np.zeros_like(i_LLcenter)
 hist2 = np.zeros_like(i_LLcenter)
-normalized_hist = np.zeros_like(i_LLcenter)
+normalized_hist = np.zeros_like(i_LLcenter) # dimensions: 1/distance
 epsilon = 4
 
 for iL in initial_L:
@@ -198,8 +204,8 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
-T = np.matrix(hist)
-P = np.matrix(np.zeros((int(len(T)/2),1)))
+T = np.matrix(hist) # dimensionless transition matrix
+P = np.matrix(np.zeros((int(len(T)/2),1))) # dimensionless measure a column vector
 f_L = np.array(final_L_center[len(final_L_center)//2:])
 f_L_bin_width = np.zeros_like(f_L)
 f_L_bin_width[1:-1] = (f_L[2:] - f_L[:-2])/2
@@ -225,24 +231,27 @@ plt.ylabel('probability per L')
 
 # Obtain L to L probability density
 for i in range(len(P)):
+    # this loop is just to compute the L probability density many
+    # different ways so we can tell that num_steps is sufficiently
+    # high.
     P[:,:]= 0
     P[i] = 1
     # prob = (T**num_steps)*P
     prob = (L_to_L(T, P_l, P_t)**num_steps)*P
     # WORKING ON IT, FIXME:
     # prob = prob_steps(T, P, num_steps, P_lt)
-    prob_flat = np.array(prob)[:,0] # convert to a 1D array from a column vector
+    prob_flat = np.array(prob)[:,0] # convert to a dimensionless 1D array from a column vector
     # print('prob_flat.sum()', prob_flat.sum())
-    prob_flat_norm = prob_flat.sum()*f_L_bin_width # sum of prob flat * bin width of both axis
+    prob_flat_norm = (prob_flat*f_L_bin_width).sum() # dimensions of distance, sum of (prob flat * bin width of both axis)
     # print('prob_flat_norm', prob_flat_norm)
-    prob_den = prob_flat/prob_flat_norm
-    # print('prob_den SUM:', prob_den.sum())
+    prob_den = prob_flat/prob_flat_norm # dimensions 1/distance, a probability density
+    # print('prob_den SUM:', (prob_den*f_L_bin_width).sum())
     plt.plot(f_L, prob_den, label=f'i is {i}')
 
 plt.savefig(plotpath+'L_to_L_prob_density.pdf')
 
 # print(prob_den)
-prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den)
+prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den) # dimensions 1/distance
 # print(prob_dx.shape)
 plt.figure('prob_dx')
 plt.plot(initial_L, prob_dx)
@@ -252,11 +261,9 @@ plt.savefig(plotpath+'Probability_density.pdf')
 
 
 # plot the normalized histogram multiplied by the probability
-final_normalized_hist = np.zeros_like(normalized_hist)
-final_normalized_hist_original = np.zeros_like(normalized_hist)
+final_normalized_hist = np.zeros_like(normalized_hist) # dimensions 1/distance**2
 for i in range(final_normalized_hist.shape[0]):
-    final_normalized_hist_original[i,:] = normalized_hist[i,:]*prob_dx
-    final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx*bin_width
+    final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx
 
 filtered_final_norm_hist = final_normalized_hist*1.0
 
@@ -339,9 +346,11 @@ plt.legend()
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution.pdf')
 
 
-
-print('FINAL SUM:', np.sum(final_normalized_hist_original*bin_width))
-print('FINAL SUM with prob_dx*bin_width:', np.sum(final_normalized_hist*bin_width))
+final_normalized_hist_total = 0
+for i in range(len(final_normalized_hist)):
+    for j in range(len(final_normalized_hist)):
+        final_normalized_hist_total += final_normalized_hist[i,j]*bin_width[i]*bin_width[j]
+print('FINAL SUM:', final_normalized_hist_total)
 
 
 plt.show()
