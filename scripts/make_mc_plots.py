@@ -15,42 +15,66 @@ import subprocess
 import bb_energy_distribution
 from glob import glob
 
-def best_fit(x,y):
-    m = (((mean(x)*mean(y)) - mean(x*y))/
-        ((mean(x)*mean(x)) - mean(x*x)))
-    b = mean(y) - m*mean(x)
-    return m, b
+def integrate_1d(arr, dx):
+    sum = 0
+    for i in range(len(arr)):
+        sum += arr[i]*dx[i]
+    return sum
 
-def rad_to_deg(angle):
-    # array = angle*180/np.pi
-    return angle
+def integrate_2d(arr, dx, dy):
+    sum = 0
+    for i in range(len(arr)):
+        for j in range(len(arr[i])):
+            sum += arr[i,j]*dx[i]*dy[j]
+    return sum
 
-def L_to_initial_displacement(P_l, P_t):
+def least_squares(arr, x, y, dx, dy):
+    x_mean = 0
+    y_mean = 0
+    x2_mean = 0
+    xy_mean = 0
+
+    for i in range(len(arr)):
+        for j in range(len(arr[i])):
+            x_mean += arr[i,j]*x[j]*dx[i]*dy[j]
+            y_mean += arr[i,j]*x[i]*dx[i]*dy[j]
+            x2_mean += arr[i,j]*y[j]**2*dx[i]*dy[j]
+            xy_mean += arr[i,j]*y[j]*x[i]*dx[i]*dy[j]
+
+    # Intercept & Slope for Best-fit
+    b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
+    m = (-b*x_mean+xy_mean)/(x2_mean)
+    lin_fit = [(m*xi)+b for xi in np.asarray(x)]
+
+    return b, m, lin_fit
+
+
+def L_to_initial_displacement(P_leading, P_trailing):
     """
     Returns a matrix (technically array) which when multiplied by a
     probability density of L will result in a probability density of
     displacement.  Thus this is a dimensionless 2D array.
 
     """
-    num_col = 2*len(P_l)
-    num_rows = len(P_l)
-    prob_step = np.zeros((num_col,num_rows))
+    num_col = 2*len(P_leading)
+    num_rows = len(P_leading)
+    P_step = np.zeros((num_col,num_rows))
     for i in range(num_col):
         if i < num_col/2:
-            prob_step[num_rows-1-i,i] = P_t[num_rows-1-i]              # P_t array starts at 1 to 50
-            prob_step[num_rows+i, i] = P_l[num_rows-1-i]        # P_l array starts at 1 to 50
-    return prob_step
+            P_step[num_rows-1-i,i] = P_trailing[num_rows-1-i]              # P_trailing array starts at 1 to 50
+            P_step[num_rows+i, i] = P_leading[num_rows-1-i]        # P_leading array starts at 1 to 50
+    return P_step
 
-def L_to_L(T, P_l, P_t):
-    num_col = 2*len(P_l)
-    num_rows = len(P_l)
+def L_to_L(T, P_leading, P_trailing):
+    num_col = 2*len(P_leading)
+    num_rows = len(P_leading)
     abs = np.zeros((num_rows,num_col))
     for i in range(num_col):
         if i < num_col/2:
             abs[num_rows-1-i,i] = 1
         else:
             abs[i-num_rows,i] = 1
-    prob_step = L_to_initial_displacement(P_l, P_t)
+    prob_step = L_to_initial_displacement(P_leading, P_trailing)
     T_L = abs*T*prob_step
     # plt.figure('abs')
     # plt.pcolor(abs);
@@ -60,7 +84,6 @@ def L_to_L(T, P_l, P_t):
     # plt.colorbar();
     # plt.show()
     return T_L
-
 
 params = importlib.import_module("params")
 
@@ -75,12 +98,11 @@ basepath = '../data/mc_data/'
 plotpath = '../plots/mc_plots/'
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
-initial_L = []
-final_L_lists = {}
+initial_disp = []
+final_disp_dict = {}
 
 # probability of being a leading step
-P_lt = []
-P_lt_1 = []
+P_leading = []
 
 for leading in leading_files:
     leading = leading[len(basepath):]
@@ -97,7 +119,7 @@ for leading in leading_files:
     eigth_ = leading.find('_', seventh_+1)
     iL = float(leading[2:first_])
 
-    if iL in initial_L:
+    if iL in initial_disp:
         print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
         exit(1)
     N = leading[second_+1:third_]
@@ -112,17 +134,16 @@ for leading in leading_files:
     try:
         trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
         trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
-        initial_L.append(iL)
-        initial_L.append(-iL)
-        final_L_lists[iL] = leading_data['L']
-        final_L_lists[-iL] = trailing_data['L']
+        initial_disp.append(iL)
+        initial_disp.append(-iL)
+        final_disp_dict[iL] = leading_data['L']
+        final_disp_dict[-iL] = trailing_data['L']
 
         # calculate probability for step to be leading or trailing
         leading_data_length = len(leading_data['L'])
         trailing_data_length = len(trailing_data['L'])
         Prob_lt = leading_data_length / (leading_data_length + trailing_data_length)
-        P_lt.append(Prob_lt)
-        P_lt_1.append(Prob_lt)
+        P_leading.append(Prob_lt)
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('about to plot_hist', leading)
             plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
@@ -130,101 +151,99 @@ for leading in leading_files:
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('unable to load trailing data for', leading)
 
-# combine to make leading/trailing probability
-P_lt = list(reversed(P_lt))
-P_lt.extend(P_lt_1)
-P_l = np.array(P_lt_1)
-P_t = int(1)-P_l
+# Probability of Leading and Trailing Steps Based on Data
+P_leading = np.array(P_leading)
+P_trailing = int(1)-P_leading
 
 
 # make bin center the data point (for pcolor)
-initial_L = np.array(sorted(initial_L)) # -50 to 50 array
-final_L_center = initial_L*1.0 # set final_L_center to initial_L
-final_L_edges = np.zeros(len(final_L_center)+1)
-for i in range(1,len(final_L_edges)-1):
-    final_L_edges[i] = (final_L_center[i-1] + final_L_center[i])*0.5
-final_L_edges[0] = 2*final_L_center[0] - final_L_edges[1]
-final_L_edges[-1] = 2*final_L_center[-1] - final_L_edges[-2]
+initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
+final_bin_center = initial_disp*1.0 # set final_bin_center to initial_disp
+final_bin_edges = np.zeros(len(final_bin_center)+1)
+for i in range(1,len(final_bin_edges)-1):
+    final_bin_edges[i] = (final_bin_center[i-1] + final_bin_center[i])*0.5
+final_bin_edges[0] = 2*final_bin_center[0] - final_bin_edges[1]
+final_bin_edges[-1] = 2*final_bin_center[-1] - final_bin_edges[-2]
+
 # obtain meshgrid for pcolor
-i_LLcenter, f_LLcenter = np.meshgrid(initial_L, final_L_center)
+initial_disp_center, final_disp_center = np.meshgrid(initial_disp, final_bin_center)
 
-bin_width = final_L_edges[1:] - final_L_edges[:-1] # a 1D array giving final displacement bin width
+final_disp_bin_width = final_bin_edges[1:] - final_bin_edges[:-1]    # a 1D array giving final displacement bin width
 
-hist = np.zeros_like(i_LLcenter)
-hist2 = np.zeros_like(i_LLcenter)
-normalized_hist = np.zeros_like(i_LLcenter) # dimensions: 1/distance
-epsilon = 4
 
-for iL in initial_L:
-    iL_index = 0
-    for i in range(1,len(final_L_edges)):
-        if iL < final_L_edges[i]:
-            iL_index = i-1
+hist = np.zeros_like(initial_disp_center)
+normalized_hist = np.zeros_like(initial_disp_center)    # Dimensions: 1/distance
+
+for i_disp in initial_disp:
+    i_disp_index = 0
+    for i in range(1,len(final_bin_edges)):
+        if i_disp < final_bin_edges[i]:
+            i_disp_index = i-1
             break
-    total_counts = len(final_L_lists[iL])
-    for fL in final_L_lists[iL]:
-        fL_index = None
-        for i in range(1,len(final_L_edges)):
-            if fL < final_L_edges[i]:
-                fL_index = i-1
+    total_counts = len(final_disp_dict[i_disp])
+    for f_disp in final_disp_dict[i_disp]:
+        f_disp_index = None
+        for i in range(1,len(final_bin_edges)):
+            if f_disp < final_bin_edges[i]:
+                f_disp_index = i-1
                 break
-        if fL_index is None or fL < final_L_edges[0] or fL > final_L_edges[-1]:
-            # This seems fishy...
-            if fL < final_L_edges[0]:
-                normalized_hist[0, iL_index] += 1/total_counts/bin_width[0]
-                hist[0, iL_index] += 1/total_counts
-            if fL > final_L_edges[-1]:
-                normalized_hist[-1, iL_index] += 1/total_counts/bin_width[-1]
-                hist[-1, iL_index] += 1/total_counts
+        if f_disp_index is None or f_disp < final_bin_edges[0] or f_disp > final_bin_edges[-1]:
+            # Data that is outside of range goes into the bin edges.
+            if f_disp < final_bin_edges[0]:
+                normalized_hist[0, i_disp_index] += 1/total_counts/final_disp_bin_width[0]
+                hist[0, i_disp_index] += 1/total_counts
+            if f_disp > final_bin_edges[-1]:
+                normalized_hist[-1, i_disp_index] += 1/total_counts/final_disp_bin_width[-1]
+                hist[-1, i_disp_index] += 1/total_counts
             continue
-            # print("crazasges", fL, 'vs', final_L_edges[0], 'and', final_L_edges[-1])
+            # print("crazasges", f_disp, 'vs', final_bin_edges[0], 'and', final_bin_edges[-1])
             # Possibly think about making a infinite bin for final_L that goes outside plot
-            # Will have some normalization issues
 
         else:
-            hist[fL_index, iL_index] += 1/total_counts
-            hist2[fL_index, iL_index] += 1
+            # Collect unnormalized counts in hist for Transition Matrix
+            hist[f_disp_index, i_disp_index] += 1/total_counts  # Dimensionless
 
-            # Normalized by area
-            normalized_hist[fL_index, iL_index] += 1/total_counts/bin_width[fL_index]
+            # Normalized by bin width (length)
+            normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
 
 
-# for i in range(len(normalized_hist)):
-#     print('norm', i, (normalized_hist[:,i]*bin_width).sum())
-#     print('hist', i, hist[:,i].sum())
 
-i_LLedge, f_LLedge = np.meshgrid(final_L_edges, final_L_edges)
+initial_disp_edge, final_disp_edge = np.meshgrid(final_bin_edges, final_bin_edges)
 
 
 plt.close('all')
 plt.figure('From Data')
-plt.pcolor(i_LLedge, f_LLedge, normalized_hist)
+plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL.pdf')
 
-T = np.matrix(hist) # dimensionless transition matrix
-P = np.matrix(np.zeros((int(len(T)/2),1))) # dimensionless measure a column vector
-f_L = np.array(final_L_center[len(final_L_center)//2:])
-f_L_bin_width = np.zeros_like(f_L)
-f_L_bin_width[1:-1] = (f_L[2:] - f_L[:-2])/2
-f_L_bin_width[0] = f_L[0] + (f_L[1] - f_L[0])/2
-f_L_bin_width[-1] = f_L[-1] - f_L[-2]
+# Transition Matrix
+T = np.matrix(hist)     # Dimensionless
 
-# Get bin widths for initial displacement histogram
-i_L = np.array(initial_L[len(initial_L)//2:])
-i_L_bin_width = np.zeros_like(i_L)
-i_L_bin_width[1:-1] = (i_L[2:] - i_L[:-2])/2
-i_L_bin_width[0] = i_L[0] + (i_L[1] - i_L[0])/2
-i_L_bin_width[-1] = i_L[-1] - i_L[-2]
+# Probability Column Vector for L
+P = np.matrix(np.zeros((int(len(T)/2),1)))      # Dimensionless column vector
 
-new_hist = []
+# Get bin widths for final L
+final_L = np.array(final_bin_center[len(final_bin_center)//2:])
+final_L_bin_width = np.zeros_like(final_L)
+final_L_bin_width[1:-1] = (final_L[2:] - final_L[:-2])/2
+final_L_bin_width[0] = final_L[0] + (final_L[1] - final_L[0])/2
+final_L_bin_width[-1] = final_L[-1] - final_L[-2]
 
+# Get bin widths for initial L
+initial_L = np.array(initial_disp[len(initial_disp)//2:])
+initial_L_bin_width = np.zeros_like(initial_L)
+initial_L_bin_width[1:-1] = (initial_L[2:] - initial_L[:-2])/2
+initial_L_bin_width[0] = initial_L[0] + (initial_L[1] - initial_L[0])/2
+initial_L_bin_width[-1] = initial_L[-1] - initial_L[-2]
+
+# Number of steps for Equilibrium
 num_steps = 16
 
-plt.figure('prob density')
 # Plot L to L probability density
+plt.figure('prob density')
 plt.legend(loc='best')
 plt.xlabel('L')
 plt.ylabel('probability per L')
@@ -236,98 +255,69 @@ for i in range(len(P)):
     # high.
     P[:,:]= 0
     P[i] = 1
-    # prob = (T**num_steps)*P
-    prob = (L_to_L(T, P_l, P_t)**num_steps)*P
-    # WORKING ON IT, FIXME:
-    # prob = prob_steps(T, P, num_steps, P_lt)
-    prob_flat = np.array(prob)[:,0] # convert to a dimensionless 1D array from a column vector
-    # print('prob_flat.sum()', prob_flat.sum())
-    prob_flat_norm = (prob_flat*f_L_bin_width).sum() # dimensions of distance, sum of (prob flat * bin width of both axis)
-    # print('prob_flat_norm', prob_flat_norm)
-    prob_den = prob_flat/prob_flat_norm # dimensions 1/distance, a probability density
-    # print('prob_den SUM:', (prob_den*f_L_bin_width).sum())
-    plt.plot(f_L, prob_den, label=f'i is {i}')
+
+    P_L_to_L = (L_to_L(T, P_leading, P_trailing)**num_steps)*P      # Dimensionless 2D Array that only has 1 column vector
+    P_L_to_L = np.array(P_L_to_L)[:,0]     # convert to a dimensionless 1D array from a column vector
+    # print('P_L_to_L.sum()', P_L_to_L.sum())
+    norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
+    # print('norm_const', norm_const)
+    p_den_L = P_L_to_L*norm_const     # dimensions 1/distance, a probability density
+    # print('p_den_L SUM:', (p_den_L*final_L_bin_width).sum())
+    plt.plot(final_L, p_den_L, label=f'i is {i}')
 
 plt.savefig(plotpath+'L_to_L_prob_density.pdf')
 
-# print(prob_den)
-prob_dx = L_to_initial_displacement(P_l, P_t).dot(prob_den) # dimensions 1/distance
-# print(prob_dx.shape)
-plt.figure('prob_dx')
-plt.plot(initial_L, prob_dx)
+# print(p_den_L)
+p_den_disp = L_to_initial_displacement(P_leading, P_trailing).dot(p_den_L)   # Dimensions: 1/distance
+# print(p_den_disp.shape)
+plt.figure('p_den_disp')
+plt.plot(initial_disp, p_den_disp)
 plt.xlabel('displacement')
 plt.ylabel('probability density')
 plt.savefig(plotpath+'Probability_density.pdf')
 
 
-# plot the normalized histogram multiplied by the probability
-final_normalized_hist = np.zeros_like(normalized_hist) # dimensions 1/distance**2
-for i in range(final_normalized_hist.shape[0]):
-    final_normalized_hist[i,:] = normalized_hist[i,:]*prob_dx
+# Probability Distribution is the normalized histogram multiplied by the probability density
+probability_distribution = np.zeros_like(normalized_hist)   # Dimensions: 1/distance**2
+for i in range(probability_distribution.shape[0]):
+    probability_distribution[i,:] = normalized_hist[i,:]*p_den_disp
 
-filtered_final_norm_hist = final_normalized_hist*1.0
+filtered_probability_distribution = probability_distribution*1.0    # Dimensions: 1/distance**2
 
-print('prob_den:', np.sum(prob_dx*bin_width))
+print('prob_den:', np.sum(p_den_disp*final_disp_bin_width))
 
-# Generating Best-Fit
-v = 0
-x_mean = 0
-y_mean = 0
-x2_mean = 0
-xy_mean = 0
-
-# Generating Best-Fit for Filtered Data
-v_filt = 0
-x_mean_filt = 0
-y_mean_filt = 0
-x2_mean_filt = 0
-xy_mean_filt = 0
+# Sum of probability distribution
+probability_distirbution_sum = integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width)
 
 
-for i in range(len(final_normalized_hist)):
-    for j in range(len(final_normalized_hist[i])):
-        v += final_normalized_hist[i,j]*bin_width[i]*bin_width[j]
-        x_mean += final_normalized_hist[i,j]*initial_L[j]*bin_width[i]*bin_width[j]
-        y_mean += final_normalized_hist[i,j]*initial_L[i]*bin_width[i]*bin_width[j]
-        x2_mean += final_normalized_hist[i,j]*initial_L[j]**2*bin_width[i]*bin_width[j]
-        xy_mean += final_normalized_hist[i,j]*initial_L[j]*initial_L[i]*bin_width[i]*bin_width[j]
+# Filter steps where final and initial displacements are within 4 nm of each other
+for i in range(len(probability_distribution)):
+    for j in range(len(probability_distribution[i])):
         if i == j:
-            #FIXME ! NOT NORMALIZED
-            filtered_final_norm_hist[i, j] = 0.0
+            filtered_probability_distribution[i, j] = 0.0
             if i >=4 and i <= 95:
-                filtered_final_norm_hist[i-4:i+4,j] = 0.0
-        v_filt += filtered_final_norm_hist[i,j]*bin_width[i]*bin_width[j]
-        x_mean_filt += filtered_final_norm_hist[i,j]*initial_L[j]*bin_width[i]*bin_width[j]
-        y_mean_filt += filtered_final_norm_hist[i,j]*initial_L[i]*bin_width[i]*bin_width[j]
-        x2_mean_filt += filtered_final_norm_hist[i,j]*initial_L[j]**2*bin_width[i]*bin_width[j]
-        xy_mean_filt += filtered_final_norm_hist[i,j]*initial_L[j]*initial_L[i]*bin_width[i]*bin_width[j]
+                filtered_probability_distribution[i-4:i+4,j] = 0.0
+
+# Sum of filtered probability distribution
+probability_distribution_sum_filt = integrate_2d(filtered_probability_distribution, final_disp_bin_width, final_disp_bin_width)
 
 # Normalize the filtered historgram
-print('filtered sum: ', np.sum(filtered_final_norm_hist))
-filtered_sum = np.sum(filtered_final_norm_hist)
-for i in range(len(filtered_final_norm_hist)):
-    for j in range(len(filtered_final_norm_hist[i])):
-        filtered_final_norm_hist[i,j] /= filtered_sum
-print('filtered sum After:', np.sum(filtered_final_norm_hist))
-
+for i in range(len(filtered_probability_distribution)):
+    for j in range(len(filtered_probability_distribution[i])):
+        filtered_probability_distribution[i,j] /= probability_distribution_sum_filt
 
 # Intercept & Slope for Best-fit
-b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
-m = (-b*x_mean+xy_mean)/(x2_mean)
-lin_fit = [(m*x)+b for x in np.asarray(initial_L)]
+b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
+
 
 # Intercept & Slope for Best-fit Filtered
-b_filt = (y_mean_filt*x2_mean_filt-xy_mean_filt*x_mean_filt)/(x2_mean_filt-x_mean_filt**2)
-m_filt = (-b_filt*x_mean_filt+xy_mean_filt)/(x2_mean_filt)
-lin_fit_filt = [(m_filt*x)+b_filt for x in np.asarray(initial_L)]
+b_filt, m_filt, lin_fit_filt = least_squares(filtered_probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
-# print(m)
-# print(b)
 
 
 plt.figure('Probability Distribution to Match Yildiz')
-plt.pcolor(i_LLedge, f_LLedge, final_normalized_hist)
-plt.plot(initial_L, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
+plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
+plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
@@ -337,20 +327,15 @@ plt.savefig(plotpath+'Match_Yildiz_probability_distribution.pdf')
 
 
 plt.figure('Filtered Probability Distribution to Match Yildiz')
-plt.pcolor(i_LLedge, f_LLedge, filtered_final_norm_hist)
-plt.plot(initial_L, lin_fit_filt, label='Model: y = ({:.3}) + ({:.3})x'.format(b_filt,m_filt), linestyle=":", color='r')
+plt.pcolor(initial_disp_edge, final_disp_edge, filtered_probability_distribution)
+plt.plot(initial_disp, lin_fit_filt, label='Model: y = ({:.3}) + ({:.3})x'.format(b_filt,m_filt), linestyle=":", color='r')
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution.pdf')
 
-
-final_normalized_hist_total = 0
-for i in range(len(final_normalized_hist)):
-    for j in range(len(final_normalized_hist)):
-        final_normalized_hist_total += final_normalized_hist[i,j]*bin_width[i]*bin_width[j]
-print('FINAL SUM:', final_normalized_hist_total)
+print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
 
 
 print("""
