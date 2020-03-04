@@ -25,10 +25,15 @@ def integrate_2d(arr, dx, dy):
     sum = 0
     for i in range(len(arr)):
         for j in range(len(arr[i])):
-            sum += arr[i,j]*dx[i]*dy[j]
+            sum += arr[i,j]*dx[j]*dy[i]
     return sum
 
 def least_squares(arr, x, y, dx, dy):
+    # X,Y = np.meshgrid(x,y)
+    # x_mean = integrate_2d(arr*X, dx, dy)
+    # y_mean = integrate_2d(arr*Y, dx, dy)
+    # x2_mean = integrate_2d(arr*X**2, dx, dy)
+    # xy_mean = integrate_2d(arr*X*Y, dx, dy)
     x_mean = 0
     y_mean = 0
     x2_mean = 0
@@ -44,7 +49,7 @@ def least_squares(arr, x, y, dx, dy):
     # Intercept & Slope for Best-fit
     b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
     m = (-b*x_mean+xy_mean)/(x2_mean)
-    lin_fit = [(m*xi)+b for xi in np.asarray(x)]
+    lin_fit = (m*x)+b
 
     return b, m, lin_fit
 
@@ -153,7 +158,7 @@ for leading in leading_files:
 
 # Probability of Leading and Trailing Steps Based on Data
 P_leading = np.array(P_leading)
-P_trailing = int(1)-P_leading
+P_trailing = 1-P_leading
 
 
 # make bin center the data point (for pcolor)
@@ -233,11 +238,8 @@ final_L_bin_width[0] = final_L[0] + (final_L[1] - final_L[0])/2
 final_L_bin_width[-1] = final_L[-1] - final_L[-2]
 
 # Get bin widths for initial L
-initial_L = np.array(initial_disp[len(initial_disp)//2:])
-initial_L_bin_width = np.zeros_like(initial_L)
-initial_L_bin_width[1:-1] = (initial_L[2:] - initial_L[:-2])/2
-initial_L_bin_width[0] = initial_L[0] + (initial_L[1] - initial_L[0])/2
-initial_L_bin_width[-1] = initial_L[-1] - initial_L[-2]
+initial_L = final_L
+initial_L_bin_width = final_L_bin_width
 
 # Number of steps for Equilibrium
 num_steps = 16
@@ -291,6 +293,7 @@ probability_distirbution_sum = integrate_2d(probability_distribution, final_disp
 
 
 # Filter steps where final and initial displacements are within 4 nm of each other
+# FIXME use actual distances here!!!
 for i in range(len(probability_distribution)):
     for j in range(len(probability_distribution[i])):
         if i == j:
@@ -302,9 +305,7 @@ for i in range(len(probability_distribution)):
 probability_distribution_sum_filt = integrate_2d(filtered_probability_distribution, final_disp_bin_width, final_disp_bin_width)
 
 # Normalize the filtered historgram
-for i in range(len(filtered_probability_distribution)):
-    for j in range(len(filtered_probability_distribution[i])):
-        filtered_probability_distribution[i,j] /= probability_distribution_sum_filt
+filtered_probability_distribution /= probability_distribution_sum_filt
 
 # Intercept & Slope for Best-fit
 b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
