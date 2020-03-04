@@ -344,22 +344,27 @@ TO DO ITEMS:
 
 a) Clean code and make less bug-prone:
 
-  - Move to consistent names (displacement = disp, L only means L,
+  - DONE: Move to consistent names (displacement = disp, L only means L,
     etc, maybe P is dimensionless prob and p is probability density,
     bin width is delta_disp, delta_L?)
 
   - Possibly all caps for 2D arrays? Or some other naming.
 
-  - Perhaps introduce functions to integrate? 1D & 2D
+  - DONE: Perhaps introduce functions to integrate? 1D & 2D
 
   - Possibly introduce "random" units.  Define nm = random #, and then
     multiply by nm when you read, divide by nm if you want to print a
     distance in nm.  (low priority)
 
-  - Document dimensions and meaning of quantities.
+  - Mainly DONE: Document dimensions and meaning of quantities.
 
   - Introduce 2D arrays for 1D quantities.
 
+  - Document each functions/more
+
+  - Think of using meshgrid for almost everything.
+
+  - Fix filtering prob dist
   """)
 
 plt.show()
