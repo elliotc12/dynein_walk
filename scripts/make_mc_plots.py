@@ -364,7 +364,9 @@ a) Clean code and make less bug-prone:
 
   - Think of using meshgrid for almost everything.
 
-  - Fix filtering prob dist
+  - HIGH PRIORITY:  Fix filtering prob dist
+
+  - Add Yildiz fit to the match plot.
   """)
 
 plt.show()

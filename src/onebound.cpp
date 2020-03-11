@@ -104,10 +104,14 @@ int main(int argc, char** argv) {
   // } else if (k == 3) {
   //   log_f = fopen("raw-data-3.dat", "w");
   // }
+  const double sticky_prob = sticky_rate*dt;
+  bool am_sticky = false;
   while(stillStepping){
 
+    // We are sticky if we were already sticky or if we become sticky.
+    am_sticky = am_sticky || rand->rand() < sticky_prob;
+
     double binding_prob = dynein->get_binding_rate()*dt;
-    double sticky_prob = sticky_rate*dt;
     cumulative_prob += binding_prob;
 
     fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
@@ -153,7 +157,7 @@ int main(int argc, char** argv) {
       attempts++;
     }
 
-    if (binding_prob > 0 && rand->rand() < binding_prob) {
+    if (am_sticky && binding_prob > 0 && rand->rand() < binding_prob) {
       // We are going to bind!
       // fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
       //         iter, dynein->get_ubx()-dynein->get_bbx(),
