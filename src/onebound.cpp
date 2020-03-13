@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
     double binding_prob = dynein->get_binding_rate()*dt;
     cumulative_prob += binding_prob;
 
-    fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
+    // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
     //fprintf(stderr, "The time is %g\n", t);
