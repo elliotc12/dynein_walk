@@ -250,6 +250,11 @@ dt = args.dt          # Time Step
 bb_data_file = args.bb
 ob_data_file = args.ob
 
+# Create MC Data Directory if don't exist
+mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+if not os.path.exists(mc_data_dir):
+    os.mkdir(mc_data_dir)
+
 L = args.L           # Initial Length
 N = args.N           # Count
 Z = 0                # Partition Function
@@ -380,15 +385,15 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
                         if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
-                            if os.path.getsize('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
 
 
@@ -410,15 +415,15 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
                         if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
-                            if os.path.getsize('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
 
 
@@ -484,11 +489,11 @@ while Z < N:
 #     data_file_ob_trailing.close()
 #     data_file_ob_leading.close()
 
-np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
+            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
             (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-np.savetxt('../data/mc_data_{0}_{1}/l_{2}_{3}_{4}_{5}_{6}_{7}_{8}_{9}_{10}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, dt, args.cb, args.cm, args.ct, args.C),
+np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
+            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
             (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 
 # END OF SIM
