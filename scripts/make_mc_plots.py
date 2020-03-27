@@ -97,8 +97,9 @@ parser.add_argument("-k", "--kb", type=float, help="Binding const", default=para
 parser.add_argument("-s", "--ks", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
 args = parser.parse_args()
 
-k_b = args.kb        # Binding Rate Constant
-k_stk = args.ks      # Sticky Rate Constant
+k_b = float(args.kb)        # Binding Rate Constant
+k_stk = float(args.ks)      # Sticky Rate Constant
+
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
 plotpath = '../plots/mc_plots/'
@@ -223,7 +224,7 @@ plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
-# plt.savefig(plotpath+('2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(k_b, k_stk)))
+plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 # Transition Matrix
 T = np.matrix(hist)     # Dimensionless
@@ -268,7 +269,7 @@ for i in range(len(P)):
     # print('p_den_L SUM:', (p_den_L*final_L_bin_width).sum())
     plt.plot(final_L, p_den_L, label=f'i is {i}')
 
-# plt.savefig(plotpath+('L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(k_b, k_stk)))
+plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 # print(p_den_L)
 p_den_disp = L_to_initial_displacement(P_leading, P_trailing).dot(p_den_L)   # Dimensions: 1/distance
@@ -277,7 +278,7 @@ plt.figure('p_den_disp')
 plt.plot(initial_disp, p_den_disp)
 plt.xlabel('displacement')
 plt.ylabel('probability density')
-# plt.savefig(plotpath+('Probability_density_{0:.2e}_{1:.2e}.pdf'.format(k_b, k_stk)))
+plt.savefig(plotpath+'Probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 # Probability Distribution is the normalized histogram multiplied by the probability density
@@ -324,7 +325,7 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
-plt.savefig(plotpath+('Match_Yildiz_probability_distribution_{0:.2}_{1:.2}.pdf'.format(k_b, k_stk)))
+plt.savefig(plotpath+'Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 
@@ -335,7 +336,7 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
-# plt.savefig(plotpath+('filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(k_b, k_stk)))
+plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
 
