@@ -388,12 +388,12 @@ while Z < N:
                             np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
                                         N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
                                         N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                             if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
 
 
@@ -415,13 +415,13 @@ while Z < N:
                         # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
                         if k[0] % 100 == 0:
+                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
+                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                             np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
                                         N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
                                         (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
                             if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
