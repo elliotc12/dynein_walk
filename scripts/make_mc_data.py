@@ -170,6 +170,13 @@ P_leading = np.array(P_leading)
 P_trailing = 1-P_leading
 P_unbinding = {'leading': P_leading, 'trailing': P_trailing}
 
+if len(P_leading) == 0:
+    print("we have no data!!! :(")
+    exit(1)
+
+print(final_disp_dict)
+print(ob_time_dict)
+print(P_unbinding)
 np.savez_compressed(final_disp_path, final_disp_dict)
 np.savez_compressed(ob_time_path, ob_time_dict)
 np.savez_compressed(prob_unbinding_path, P_unbinding)
