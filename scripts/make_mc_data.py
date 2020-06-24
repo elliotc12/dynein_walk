@@ -103,15 +103,14 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
 plotpath = '../plots/mc_plots/'
-final_disp_path = '../data/compressed_mc_data/final_disp_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
-ob_time_path = '../data/compressed_mc_data/ob_time_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
-prob_unbinding_path = '../data/compressed_mc_data/prob_unbinding_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
+final_disp_path = '../data/compressed_mc_data/final_disp_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+ob_time_path = '../data/compressed_mc_data/ob_time_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+prob_unbinding_path = '../data/compressed_mc_data/prob_unbinding_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
 initial_disp = []
 final_disp_dict = {}
-ob_time_dict = {}
-P_unbinding = {'leading': [], 'trailing': []}
+ob_time_dict = {} 
 
 # probability of being a leading step
 P_leading = []
@@ -169,10 +168,8 @@ for leading in leading_files:
 # Probability of Leading and Trailing Steps Based on Data
 P_leading = np.array(P_leading)
 P_trailing = 1-P_leading
-P_unbinding[leading] = P_leading
-P_unbinding[trailing] = P_trailing
+P_unbinding = {'leading': P_leading, 'trailing': P_trailing}
 
-print(P_unbinding)
-np.savez(final_disp_path, final_disp_dict)
-np.savez(ob_time_path, ob_time_dict)
-np.savez(prob_unbinding_path, P_unbinding)
+np.savez_compressed(final_disp_path, final_disp_dict)
+np.savez_compressed(ob_time_path, ob_time_dict)
+np.savez_compressed(prob_unbinding_path, P_unbinding)
