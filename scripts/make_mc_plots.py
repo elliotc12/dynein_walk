@@ -100,68 +100,14 @@ args = parser.parse_args()
 k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
-
-basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
 plotpath = '../plots/mc_plots/'
-leading_files = glob('{}/l_*.txt'.format(basepath))
+datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 
-initial_disp = []
-final_disp_dict = {}
-
-# probability of being a leading step
-P_leading = []
-
-for leading in leading_files:
-    leading = leading[len(basepath):]
-    leading_data = {'L': [], 't': []}
-    trailing_data = {'L': [], 't': []}
-    trailing = leading.replace('l_', 't_')
-    first_ = leading.find('_',2)
-    second_ = leading.find('_', first_+1)
-    third_ = leading.find('_', second_+1)
-    fourth_ = leading.find('_', third_+1)
-    fifth_ = leading.find('_', fourth_+1)
-    sixth_ = leading.find('_', fifth_+1)
-    seventh_ = leading.find('_', sixth_+1)
-    eigth_ = leading.find('_', seventh_+1)
-    iL = float(leading[2:first_])
-
-    if iL in initial_disp:
-        print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
-        exit(1)
-    N = leading[second_+1:third_]
-    k_b = leading[third_+1:fourth_]
-    dt = leading[fourth_+1:fifth_]
-    cb = leading[fifth_+1:sixth_]
-    cm = leading[sixth_+1:seventh_]
-    ct = leading[seventh_+1:eigth_]
-    C = leading[eigth_+1:leading.rfind('.')]
-    leading_data['L'] = np.loadtxt(basepath+leading)[0]
-    leading_data['t'] = np.loadtxt(basepath+leading)[1]
-    try:
-        trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
-        trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
-        initial_disp.append(iL)
-        initial_disp.append(-iL)
-        final_disp_dict[iL] = leading_data['L']
-        final_disp_dict[-iL] = trailing_data['L']
-
-        # calculate probability for step to be leading or trailing
-        leading_data_length = len(leading_data['L'])
-        trailing_data_length = len(trailing_data['L'])
-        Prob_lt = leading_data_length / (leading_data_length + trailing_data_length)
-        P_leading.append(Prob_lt)
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('about to plot_hist', leading)
-            plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
-    except:
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('unable to load trailing data for', leading)
-
-# Probability of Leading and Trailing Steps Based on Data
-P_leading = np.array(P_leading)
-P_trailing = 1-P_leading
-
+mc_data = np.load(datapath, allow_pickle=True)
+final_disp_dict = mc_data['final_disp_dict'].item()
+ob_time_dict = mc_data['ob_time_dict'].item()
+P_unbinding = mc_data['P_unbinding'].item()
+initial_disp = final_disp_dict.keys()
 
 # make bin center the data point (for pcolor)
 initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
@@ -260,7 +206,7 @@ for i in range(len(P)):
     P[:,:]= 0
     P[i] = 1
 
-    P_L_to_L = (L_to_L(T, P_leading, P_trailing)**num_steps)*P      # Dimensionless 2D Array that only has 1 column vector
+    P_L_to_L = (L_to_L(T, P_unbinding['leading'], P_unbinding['trailing'])**num_steps)*P      # Dimensionless 2D Array that only has 1 column vector
     P_L_to_L = np.array(P_L_to_L)[:,0]     # convert to a dimensionless 1D array from a column vector
     # print('P_L_to_L.sum()', P_L_to_L.sum())
     norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
@@ -272,7 +218,7 @@ for i in range(len(P)):
 plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 # print(p_den_L)
-p_den_disp = L_to_initial_displacement(P_leading, P_trailing).dot(p_den_L)   # Dimensions: 1/distance
+p_den_disp = L_to_initial_displacement(P_unbinding['leading'], P_unbinding['trailing']).dot(p_den_L)   # Dimensions: 1/distance
 # print(p_den_disp.shape)
 plt.figure('p_den_disp')
 plt.plot(initial_disp, p_den_disp)
@@ -339,6 +285,18 @@ plt.legend()
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
+
+max_time = max(i for m in ob_time_dict.values() for i in m)
+# 1D Time Histogram
+plt.figure('One Bound Time')
+for i_disp in initial_disp:
+    plt.hist(ob_time_dict[i_disp], label='init disp: {}'.format(i_disp), bins=np.linspace(0.0, max_time, num=50), density=False,
+            weights=np.ones(len(ob_time_dict[i_disp]))/len(ob_time_dict[i_disp]), stacked=True, histtype='step')
+    plt.xticks(fontsize=8)
+plt.xlabel('time (s)')
+plt.ylabel('Probability')
+plt.legend()
+plt.savefig(plotpath+'onebound_time_hist_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 print("""
