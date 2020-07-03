@@ -20,13 +20,13 @@ params = importlib.import_module("params")
 
 plotpath = '../plots/mc_plots/'
 datapath = '../data/compressed_mc_data/'
-datafiles = glob('{}/mc_data_file_*.npz'.format(datapath))
+alldatafiles = glob('{}/mc_data_file_*.npz'.format(datapath))
 
 all_ob_time_dict = {}
 kb_arr = []
 kstk_arr = []
 i = 0
-for data in datafiles:
+for data in alldatafiles:
     mc_data = np.load(data, allow_pickle=True)
     data = data[len(datapath):]
     first_int = re.search(r"\d", data).start()
@@ -52,4 +52,27 @@ plt.xlabel('time (s)')
 plt.ylabel('Probability')
 plt.legend()
 plt.savefig(plotpath+'onebound_time_hist_all_rates.pdf'.format(float(k_b), float(k_stk)))
+
+
+for j in range(len(kb_arr)):
+    k_b = kb_arr[j]
+    k_stk = kstk_arr[j]
+    datafile = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
+    mc_data = np.load(datafile, allow_pickle=True)
+    ob_time_dict = mc_data['ob_time_dict'].item()
+    print(ob_time_dict)
+    initial_disp = ob_time_dict.keys()
+
+    max_time = max(i for m in ob_time_dict.values() for i in m)
+    # 1D Time Histogram
+    plt.figure('One Bound Time')
+    for i_disp in initial_disp:
+        plt.hist(ob_time_dict[i_disp], label='init disp: {}'.format(i_disp), bins=np.linspace(0.0, max_time, num=50), density=False,
+                weights=np.ones(len(ob_time_dict[i_disp]))/len(ob_time_dict[i_disp]), stacked=True, histtype='step')
+        plt.xticks(fontsize=8)
+    plt.xlabel('time (s)')
+    plt.ylabel('Probability')
+    plt.legend()
+    plt.savefig(plotpath+'onebound_time_hist_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
 plt.show()

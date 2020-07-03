@@ -101,13 +101,13 @@ k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 plotpath = '../plots/mc_plots/'
-datapath = '../data/compressed_mc_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 
-mc_data = np.load(datapath, allow_pickle=True)
-final_disp_dict = mc_data['final_disp_dict'].item()
-ob_time_dict = mc_data['ob_time_dict'].item()
+mc_data = np.load(plottingdatapath, allow_pickle=True)
+initial_disp = mc_data['initial_disp']
+hist = mc_data['hist']
+normalized_hist = mc_data['normalized_hist']
 P_unbinding = mc_data['P_unbinding'].item()
-initial_disp = final_disp_dict.keys()
 
 # make bin center the data point (for pcolor)
 initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
@@ -122,44 +122,6 @@ final_bin_edges[-1] = 2*final_bin_center[-1] - final_bin_edges[-2]
 initial_disp_center, final_disp_center = np.meshgrid(initial_disp, final_bin_center)
 
 final_disp_bin_width = final_bin_edges[1:] - final_bin_edges[:-1]    # a 1D array giving final displacement bin width
-
-
-hist = np.zeros_like(initial_disp_center)
-normalized_hist = np.zeros_like(initial_disp_center)    # Dimensions: 1/distance
-
-for i_disp in initial_disp:
-    i_disp_index = 0
-    for i in range(1,len(final_bin_edges)):
-        if i_disp < final_bin_edges[i]:
-            i_disp_index = i-1
-            break
-    total_counts = len(final_disp_dict[i_disp])
-    for f_disp in final_disp_dict[i_disp]:
-        f_disp_index = None
-        for i in range(1,len(final_bin_edges)):
-            if f_disp < final_bin_edges[i]:
-                f_disp_index = i-1
-                break
-        if f_disp_index is None or f_disp < final_bin_edges[0] or f_disp > final_bin_edges[-1]:
-            # Data that is outside of range goes into the bin edges.
-            if f_disp < final_bin_edges[0]:
-                normalized_hist[0, i_disp_index] += 1/total_counts/final_disp_bin_width[0]
-                hist[0, i_disp_index] += 1/total_counts
-            if f_disp > final_bin_edges[-1]:
-                normalized_hist[-1, i_disp_index] += 1/total_counts/final_disp_bin_width[-1]
-                hist[-1, i_disp_index] += 1/total_counts
-            continue
-            # print("crazasges", f_disp, 'vs', final_bin_edges[0], 'and', final_bin_edges[-1])
-            # Possibly think about making a infinite bin for final_L that goes outside plot
-
-        else:
-            # Collect unnormalized counts in hist for Transition Matrix
-            hist[f_disp_index, i_disp_index] += 1/total_counts  # Dimensionless
-
-            # Normalized by bin width (length)
-            normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
-
-
 
 initial_disp_edge, final_disp_edge = np.meshgrid(final_bin_edges, final_bin_edges)
 
@@ -285,18 +247,6 @@ plt.legend()
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
-
-max_time = max(i for m in ob_time_dict.values() for i in m)
-# 1D Time Histogram
-plt.figure('One Bound Time')
-for i_disp in initial_disp:
-    plt.hist(ob_time_dict[i_disp], label='init disp: {}'.format(i_disp), bins=np.linspace(0.0, max_time, num=50), density=False,
-            weights=np.ones(len(ob_time_dict[i_disp]))/len(ob_time_dict[i_disp]), stacked=True, histtype='step')
-    plt.xticks(fontsize=8)
-plt.xlabel('time (s)')
-plt.ylabel('Probability')
-plt.legend()
-plt.savefig(plotpath+'onebound_time_hist_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 print("""

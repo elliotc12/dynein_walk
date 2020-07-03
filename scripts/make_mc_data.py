@@ -29,7 +29,8 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
 plotpath = '../plots/mc_plots/'
-datapath = '../data/compressed_mc_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
 initial_disp = []
@@ -149,4 +150,5 @@ for i_disp in initial_disp:
             normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
 
 
-np.savez_compressed(datapath, initial_disp=initial_disp, hist=hist, normalized_hist=normalized_hist, P_unbinding=P_unbinding)
+np.savez_compressed(datapath, final_disp_dict=final_disp_dict, ob_time_dict=ob_time_dict, P_unbinding=P_unbinding)
+np.savez_compressed(plottingdatapath, initial_disp=initial_disp, hist=hist, normalized_hist=normalized_hist, P_unbinding=P_unbinding)
