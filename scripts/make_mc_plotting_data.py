@@ -29,12 +29,12 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
 plotpath = '../plots/mc_plots/'
-datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+datapath = '../data/compressed_mc_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
 initial_disp = []
 final_disp_dict = {}
-ob_time_dict = {} 
+ob_time_dict = {}
 
 # probability of being a leading step
 P_leading = []
@@ -98,7 +98,55 @@ if len(P_leading) == 0:
     print("we have no data!!! :(")
     exit(1)
 
-print(final_disp_dict)
-print(ob_time_dict)
-print(P_unbinding)
-np.savez_compressed(datapath, final_disp_dict=final_disp_dict, ob_time_dict=ob_time_dict, P_unbinding=P_unbinding)
+# make bin center the data point (for pcolor)
+initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
+final_bin_center = initial_disp*1.0 # set final_bin_center to initial_disp
+final_bin_edges = np.zeros(len(final_bin_center)+1)
+for i in range(1,len(final_bin_edges)-1):
+    final_bin_edges[i] = (final_bin_center[i-1] + final_bin_center[i])*0.5
+final_bin_edges[0] = 2*final_bin_center[0] - final_bin_edges[1]
+final_bin_edges[-1] = 2*final_bin_center[-1] - final_bin_edges[-2]
+
+# obtain meshgrid for pcolor
+initial_disp_center, final_disp_center = np.meshgrid(initial_disp, final_bin_center)
+
+final_disp_bin_width = final_bin_edges[1:] - final_bin_edges[:-1]    # a 1D array giving final displacement bin width
+
+
+hist = np.zeros_like(initial_disp_center)
+normalized_hist = np.zeros_like(initial_disp_center)    # Dimensions: 1/distance
+
+for i_disp in initial_disp:
+    i_disp_index = 0
+    for i in range(1,len(final_bin_edges)):
+        if i_disp < final_bin_edges[i]:
+            i_disp_index = i-1
+            break
+    total_counts = len(final_disp_dict[i_disp])
+    for f_disp in final_disp_dict[i_disp]:
+        f_disp_index = None
+        for i in range(1,len(final_bin_edges)):
+            if f_disp < final_bin_edges[i]:
+                f_disp_index = i-1
+                break
+        if f_disp_index is None or f_disp < final_bin_edges[0] or f_disp > final_bin_edges[-1]:
+            # Data that is outside of range goes into the bin edges.
+            if f_disp < final_bin_edges[0]:
+                normalized_hist[0, i_disp_index] += 1/total_counts/final_disp_bin_width[0]
+                hist[0, i_disp_index] += 1/total_counts
+            if f_disp > final_bin_edges[-1]:
+                normalized_hist[-1, i_disp_index] += 1/total_counts/final_disp_bin_width[-1]
+                hist[-1, i_disp_index] += 1/total_counts
+            continue
+            # print("crazasges", f_disp, 'vs', final_bin_edges[0], 'and', final_bin_edges[-1])
+            # Possibly think about making a infinite bin for final_L that goes outside plot
+
+        else:
+            # Collect unnormalized counts in hist for Transition Matrix
+            hist[f_disp_index, i_disp_index] += 1/total_counts  # Dimensionless
+
+            # Normalized by bin width (length)
+            normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
+
+
+np.savez_compressed(datapath, initial_disp=initial_disp, hist=hist, normalized_hist=normalized_hist, P_unbinding=P_unbinding)

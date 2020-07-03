@@ -101,7 +101,7 @@ k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 plotpath = '../plots/mc_plots/'
-datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
+datapath = '../data/compressed_mc_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 
 mc_data = np.load(datapath, allow_pickle=True)
 final_disp_dict = mc_data['final_disp_dict'].item()
