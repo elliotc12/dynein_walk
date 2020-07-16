@@ -51,50 +51,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
         assert(exit_code == 0);
         return output_data
 
-
-def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
-        """
-        Collect bothbound statistics
-        """
-        P_arr.append(P)
-        # Storing bb angles
-        angles['nma'].append(nma)
-        angles['fma'].append(fma)
-
-        # Sum calculation for averages
-        r_t['x_avg'] += self.r_t[0]*P
-        r_t['y_avg'] += self.r_t[1]*P
-        r_nm['x_avg'] += self.r_nm[0]*P
-        r_nm['y_avg'] += self.r_nm[1]*P
-        r_fm['x_avg'] += self.r_fm[0]*P
-        r_fm['y_avg'] += self.r_fm[1]*P
-        E['avg'] += self.E_total*P
-        prob_unbinding['avg'] +=  prob*P
-
-        # Storing data for histograms
-        r_t['x'].append(self.r_t[0])
-        r_t['y'].append(self.r_t[1])
-        r_nm['x'].append(self.r_nm[0])
-        r_nm['y'].append(self.r_nm[1])
-        r_fm['x'].append(self.r_fm[0])
-        r_fm['y'].append(self.r_fm[1])
-        E['bb'].append(self.E_total)
-        # FIXME These are wrong I'm pretty sure
-        if state == 0:
-            # NEARBOUND State - Leading step
-            prob_unbinding['leading'].append(prob)
-            if bb_data_file == True:
-                data_file_bb_leading.write("{0:f}\t{1:f}\n".format(prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1],
-                prob_unbinding['unbinding'][k[0]]))
-        else:
-            # FARBOUND State - Trailing step
-            prob_unbinding['trailing'].append(prob)
-            if bb_data_file == True:
-                data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
-                prob_unbinding['unbinding'][k[0]]))
-
-
-def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_file):
+def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         """
         Call run_onebound function and collect onebound statistics
         """
@@ -120,8 +77,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             #     final_data['nma'].append(step['bma'])
             #     final_data['fma'].append(step['uma'])
 
-            # if ob_data_file == True:
-            #     data_file_ob_leading.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+
         else:
             # FARBOUND State - Trailing step data
             # print('trailing stepped with final displacement %g after time %g \n' % (step['L'], step['t']))
@@ -138,8 +94,7 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data, ob_data_fi
             #     final_data['nma'].append(step['uma'])
             #     final_data['fma'].append(step['bma'])
 
-            # if ob_data_file == True:
-            #     data_file_ob_trailing.write("{0:f}\t{1:e}\n".format(final_data['L'][k[0]],final_data['t'][k[0]]))
+
         k[0]+=1
         sys.stdout.flush()
 
@@ -233,8 +188,6 @@ parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", 
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
-parser.add_argument("-b", "--bb", type=bool, help="Collect Bothbound data", default=False)
-parser.add_argument("-o", "--ob", type=bool, help="Colelct Onebound data", default=False)
 args = parser.parse_args()
 
 params.for_simulation['k_ub'] = args.kub
@@ -247,8 +200,6 @@ params.for_simulation['eqb'] = args.eqb
 params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
-bb_data_file = args.bb
-ob_data_file = args.ob
 
 # Create MC Data Directory if don't exist
 mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
@@ -275,23 +226,6 @@ rate_unbinding_trailing = []                # Trailing (Near) Unbinding Rates
 max_rate_trailing = 0
 max_rate_leading = 0
 
-# Bothbound Data
-P_arr = []
-angles = {'nma': [],'fma': []}          # Pair of Angles
-r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
-r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
-r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
-E = {'bb': [], 'avg': 0}               # Energy data
-rate_unbinding = {      # Unbinding rate
-        'trailing': [],
-        'leading': []
-}
-prob_unbinding = {      # Unbinding probability
-        'trailing': [],
-        'leading': [],
-        'unbinding': [],
-        'avg': 0
-}
 
 # Onebound Data
 trailing_data = {   # Trailing step data
@@ -318,26 +252,6 @@ final_data = {
 seed = 0
 np.random.seed(0)
 
-# Creating Data File for Specific L
-# if bb_data_file == True:
-#     data_file_bb_trailing = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-#     data_file_bb_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-#                     k_b, dt, N, C))
-#     data_file_bb_trailing.write("unbinding prob\t cumulative unbinding prob\n")
-#     data_file_bb_leading = open("../data/mc_data_kb_{0:e}/mc_bb_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-#     data_file_bb_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-#                     k_b, dt, N, C))
-#     data_file_bb_leading.write("unbinding prob\t cumulative unbinding prob\n")
-# if ob_data_file == True:
-#     data_file_ob_trailing = open("../data/mc_data_kb_{0:e}/mc_ob_trailing_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-#     data_file_ob_trailing.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-#                     k_b, dt, N, C))
-#     data_file_ob_trailing.write("final L\t t\n")
-#     data_file_ob_leading = open("../data/mc_data_kb_{0:e}/mc_ob_leading_data_{1}_{2}_{3}_{4}.txt".format(k_b, int(L), k_b, dt, N), "w")
-#     data_file_ob_leading.write("#********mc_data: L-{0}, k_b-{1}, dt-{2}, N-{3}, C-{4}********\n\n\n".format(L,
-#                     k_b, dt, N, C))
-#     data_file_ob_leading.write("final L\t t\n")
-
 while Z < N:
         # Making random motor angles
         nma = np.random.uniform(0, 2*np.pi)
@@ -355,13 +269,14 @@ while Z < N:
 
                 rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
                 rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-                rate_unbinding['trailing'].append(rate_trailing)
-                rate_unbinding['leading'].append(rate_leading)
                 max_rate_leading = max(rate_leading, max_rate_leading)
                 max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
                 prob_trailing = P*rate_trailing     #   Unnormalized
                 prob_leading = P*rate_leading       #   Unnormalized
+                print('P: ', P)
+                print('Prob trailing: ', prob_trailing)
+                print('Prob leading: ', prob_leading)
 
 
                 new_nma = nma-(np.pi-dynein.nba)
@@ -370,11 +285,9 @@ while Z < N:
                 if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
-                        # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing, bb_data_file)
-
 
                         collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
-                                                L, trailing_data, ob_data_file)
+                                                L, trailing_data)
 
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
@@ -384,6 +297,7 @@ while Z < N:
                         #                 step['bbx'], step['bby'], 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
                         # plt.show()
+
                         if k[0] % 100 == 0:
                             np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
                                         N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
@@ -395,16 +309,16 @@ while Z < N:
                                 break
                             if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
+                        print('shtep t')
+
 
 
                 if np.random.random() < prob_leading:
                         # NEARBOUND State
                         state = 0
-                        # collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading, bb_data_file)
-
 
                         collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
-                                                L, leading_data, ob_data_file)
+                                                L, leading_data)
 
                         # plot_bb_before_step(dynein, 'red', 'blue')
                         # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
@@ -425,6 +339,7 @@ while Z < N:
                                 break
                             if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
                                 break
+                        print('shtep l')
 
 
 
@@ -435,59 +350,22 @@ while Z < N:
 #     final_data['t_avg'] += final_data['t'][i]*P_arr[i]
 #     final_data['step_length_avg'] += final_data['step_length'][i]*P_arr[i]
 
-# What to collect and output or visualize?
-
-### Bothbound data
-# Mean angles while bothbound? (no stepping required)
-# Mean motor/tail domain locations
-
-
-### Stepping data (separately for leading/trailing)
-# Final displacement (mean/histogram/list)
-# Onebound time (mean/histogram/list)
-# Rate of stepping
 
 # print("rate_unbinding_leading: ", rate_unbinding_leading)
 # print("rate_unbinding_trailing: ", rate_unbinding_trailing)
 # print('max_rate_trailing', max_rate_trailing)
 # print('max_rate_leading', max_rate_leading)
 
-### What to export, and in what format?
-# Histograms of final displacements?
-#
-# print('Averages')
-# tx_avg = r_t['x_avg']/Z          # Tail x
-# ty_avg = r_t['y_avg']/Z          # Tail y
-# nmx_avg = r_nm['x_avg']/Z        # Near motor x
-# nmy_avg = r_nm['y_avg']/Z        # Near Motor y
-# fmx_avg = r_fm['x_avg']/Z        # Far motor x
-# fmy_avg = r_fm['y_avg']/Z        # Far Motor y
-# E_avg = E['avg']/Z          # Average energy
-# prob_unbinding_avg = prob_unbinding['avg']/Z
+# Calculating Averages
 # final_L_avg = final_data['L_avg']/Z
 # step_length_avg = final_data['step_length_avg']/Z
 # obt_avg = final_data['t_avg']/Z
 #
-# print("BOTHBOUND AVERAGES")
-# print("Avg Tail x:", tx_avg)
-# print("Avg Tail y:", ty_avg)
-# print("Avg nmx:", nmx_avg)
-# print("Avg nmy:", nmy_avg)
-# print("Avg fmx:", fmx_avg)
-# print("Avg fmy:", fmy_avg)
-# print("Avg E:", E_avg)
+# print("ONEBOUND AVERAGES")
 # print("Avg prob_unbinding:", prob_unbinding_avg)
 # print("Avg Final Displacement:", final_L_avg)
 # print("Avg Step Length:", step_length_avg)
 # print("Avg ob time:", obt_avg)
-
-
-# if bb_data_file == True:
-#     data_file_bb_trailing.close()
-#     data_file_bb_leading.close()
-# if ob_data_file == True:
-#     data_file_ob_trailing.close()
-#     data_file_ob_leading.close()
 
 np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
             N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
@@ -497,58 +375,3 @@ np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8
             (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 
 # END OF SIM
-
-
-# def make_hist(ax, stacked_hist, data, data0, bin, Label, Label0, tof, Color, Color0, Title, xlabel):
-#     ax.hist(data, bins=bin, alpha=0.5, label=Label, normed=tof, stacked=True, color=Color)
-#     if stacked_hist == True:
-#         ax.hist(data0, bins=bin, alpha=0.5, label=Label0, normed=tof, stacked=True, color=Color0)
-#     ax.legend(loc="upper right")
-#     ax.set_title(Title)
-#     ax.set_xlabel(xlabel)
-#     ax.set_ylabel("Frequency")
-
-# def plot_hist(L, k_b, dt, N):
-# fig0 = plt.figure(0, figsize=(12,8))
-# gs0 = gridspec.GridSpec(2, 22)
-# gs0 = gridspec.GridSpec(1,1)
-# ax0 = fig0.add_subplot(gs0[0, 0:10])
-# ax1 = fig0.add_subplot(gs0[1, 0:10])
-# ax2 = fig0.add_subplot(gs0[0, 12:22])
-# ax3 = fig0.add_subplot(gs0[1, 12:22])
-#
-# fig0 = plt.figure(0)
-# ax0 = fig0.add_subplot(gs0[:,:])
-# separate_step_hist = make_hist(ax0, True, trailing_data['L'], leading_data['L'], 50,
-#                     "Trailing Step", "Leading Step", False, "C0", "C1",
-#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Final Displacement (nm)")
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.png'.format(int(L), k_b, dt, N), transparent=True)
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_final_L.svg'.format(int(L), k_b, dt, N), transparent=True)
-#
-# fig1 = plt.figure(1)
-# ax1 = fig1.add_subplot(gs0[:,:])
-# step_hist = make_hist(ax1, True, trailing_data['step_length'], leading_data['step_length'], 50,
-#                     "Trailing Step", "Leading Step", False, "C0", "C1",
-#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), "Step Length (nm)")
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.png'.format(int(L), k_b, dt, N), transparent=True)
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_step_length.svg'.format(int(L), k_b, dt, N), transparent=True)
-#
-# fig2 = plt.figure(2)
-# ax2 = fig2.add_subplot(gs0[:,:])
-# separate_time_hist = make_hist(ax2, True, np.array(trailing_data['t'])*ts, np.array(leading_data['t'])*ts, 50,
-#                     "Trailing time", "Leading time", False, "C0", "C1",
-#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.png'.format(int(L), k_b, dt, N), transparent=True)
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time.svg'.format(int(L), k_b, dt, N), transparent=True)
-#
-# fig3 = plt.figure(3)
-# ax3 = fig3.add_subplot(gs0[:,:])
-# time_hist = make_hist(ax3, False, np.array(final_data['t'])*ts, None, 50,
-#                     None, None, False, "C3", None,
-#                     "Initial Displacement: {}nm\nBinding Rate: {:.1e}{}\t dt: {}s".format(int(L), k_b, r'$s^{-1}$', dt), r'time ($\mu$s)')
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.png'.format(int(L), k_b, dt, N), transparent=True)
-# plt.savefig('../plots/mc_plots/mc_{0}_{1:e}_{2}_{3}_hist_time_all.svg'.format(int(L), k_b, dt, N), transparent=True)
-#
-# plt.show()
-
-# plot_hist(L, k_b, dt, N)
