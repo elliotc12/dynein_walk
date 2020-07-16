@@ -16,7 +16,7 @@ Monte Carlo simulation for dynein taking a step
 """
 
 
-def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
+def collect_bothbound_data(k, self, P, nma, fma, prob):
         """
         Collect bothbound statistics
         """
@@ -46,19 +46,6 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
         r_fm['y'].append(self.r_fm[1])
         E['bb'].append(self.E_total)
 
-        # FIXME These are wrong I'm pretty sure
-        if state == 0:
-            # NEARBOUND State - Leading step
-            prob_unbinding['leading'].append(prob)
-            if bb_data_file == True:
-                data_file_bb_leading.write("{0:f}\t{1:f}\n".format(prob_unbinding['leading'][k[0]-len(prob_unbinding['trailing'])-1],
-                prob_unbinding['unbinding'][k[0]]))
-        else:
-            # FARBOUND State - Trailing step
-            prob_unbinding['trailing'].append(prob)
-            if bb_data_file == True:
-                data_file_bb_trailing.write("{0:f}\t{1:f}\n".format(prob_unbinding['trailing'][k[0]-len(prob_unbinding['leading'])-1],
-                prob_unbinding['unbinding'][k[0]]))
         k[0]+=1
 
 
@@ -66,8 +53,8 @@ def collect_bothbound_data(k, self, P, state, nma, fma, prob, bb_data_file):
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
-parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e12)
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(1,52,10))
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e2)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Manually set the sticky const", default=params.for_simulation['k_stk'])
@@ -92,114 +79,113 @@ params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 
+
 # Create MC Data Directory if don't exist
-mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
-if not os.path.exists(mc_data_dir):
-    os.mkdir(mc_data_dir)
+mc_bb_data_dir = '../data/mc_bb_data/'
+if not os.path.exists(mc_bb_data_dir):
+    os.mkdir(mc_bb_data_dir)
+bbdatapath = mc_bb_data_dir + 'mc_bb_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 
-L = args.L           # Initial Length
-N = args.N           # Count
-Z = 0                # Partition Function
-k = [0]              # Dynein Count
-ts = 1e4
-if dt < 1e-10:
-    ts = 1e7
-
-max_unbinding = 1
-b = 11.82733524          # thermodynamic beta from default_parameters.h
-eqb_angle = params.for_simulation['eqb']
-if bb_energy_distribution.eq_in_degrees:
-        eqb_angle = eqb_angle*np.pi/180
-
-max_rate_trailing = 0
-max_rate_leading = 0
-
-# Bothbound Data
-P_arr = []
-angles = {'nma': [],'fma': []}                       # Pair of Angles
-r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
-r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
-r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
-E = {'bb': [], 'avg': 0}                             # Energy data
-rate_unbinding = {                                   # Unbinding rates
+L_arr = args.L               # All initial lengths
+rate_unbinding = {           # Unbinding rates
         'trailing': [],
         'leading': []
 }
-prob_unbinding = {                                   # Unbinding probabilities
+prob_unbinding = {           # Unbinding probabilities
         'trailing': [],
         'leading': [],
-        'unbinding': [],
         'avg': 0
 }
 
-
-seed = 0
-np.random.seed(0)
-
-while Z < N:
-        # Making random motor angles
-        nma = np.random.uniform(0, 2*np.pi)
-        fma = np.random.uniform(0, 2*np.pi)
-
-        dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
-
-        # Checking if energy is nan
-        if np.isnan(dynein.E_total) == True:
-                continue
-        else:
-                # Calculating partition function
-                P = np.exp(-b*dynein.E_total)
-                Z += P
-
-                rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-                rate_unbinding['trailing'].append(rate_trailing)
-                rate_unbinding['leading'].append(rate_leading)
-                max_rate_leading = max(rate_leading, max_rate_leading)
-                max_rate_trailing = max(rate_trailing, max_rate_trailing)
-
-                prob_trailing = P*rate_trailing     #   Unnormalized
-                prob_leading = P*rate_leading       #   Unnormalized
+for i in range(len(L_arr)):
+    L = L_arr[i]         # Initial Length
+    print(L)
+    N = args.N           # Count
+    Z = 0                # Partition Function
+    k = [0]              # Dynein Count
+    ts = 1e4
+    if dt < 1e-10:
+        ts = 1e7
 
 
-                new_nma = nma-(np.pi-dynein.nba)
-                new_fma = fma-(np.pi-dynein.fba)
+    max_unbinding = 1
+    b = 11.82733524          # thermodynamic beta from default_parameters.h
+    eqb_angle = params.for_simulation['eqb']
+    if bb_energy_distribution.eq_in_degrees:
+            eqb_angle = eqb_angle*np.pi/180
 
-                if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
-                        # FARBOUND State
-                        state = 1
-                        collect_bothbound_data(k, dynein, P, state, nma, fma, prob_trailing)
+    max_rate_trailing = 0
+    max_rate_leading = 0
 
-                        if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
+    # Bothbound Data
+    P_arr = []
+    angles = {'nma': [],'fma': []}                       # Pair of Angles
+    r_t = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}     # Tail data
+    r_nm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Near motor data
+    r_fm = {'x': [], 'y': [], 'x_avg': 0, 'y_avg': 0}    # Far motor data
+    E = {'bb': [], 'avg': 0}                             # Energy data
 
 
-                if np.random.random() < prob_leading:
-                        # NEARBOUND State
-                        state = 0
-                        collect_bothbound_data(k, dynein, P, state, nma, fma, prob_leading)
 
-                        if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
+    seed = 0
+    np.random.seed(0)
 
+    # nma_all = np.linspace(0, 2*np.pi, 100)
+    # fma_all = np.linspace(0, 2*np.pi, 100)
+    # NMA, FMA = np.meshgrid(nma_all, fma_all)
+    # dynein_all = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L)
+    # P_norm = np.nansum(np.exp(-b*dynein_all.E_total))
+    # print(P_norm)
+
+
+    while Z < N:
+            # Making random motor angles
+            nma = np.random.uniform(0, 2*np.pi)
+            fma = np.random.uniform(0, 2*np.pi)
+
+            dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
+
+            # Checking if energy is nan
+            if np.isnan(dynein.E_total) == True:
+                    continue
+            else:
+                    # Calculating partition function
+                    P = np.exp(-b*dynein.E_total)
+                    Z += P
+
+                    rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+                    rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+
+                    max_rate_leading = max(rate_leading, max_rate_leading)
+                    max_rate_trailing = max(rate_trailing, max_rate_trailing)
+
+                    prob_trailing = P*rate_trailing     #   Unnormalized
+                    prob_leading = P*rate_leading       #   Unnormalized
+
+
+                    new_nma = nma-(np.pi-dynein.nba)
+                    new_fma = fma-(np.pi-dynein.fba)
+
+                    if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
+                            # FARBOUND State
+                            state = 1
+                            collect_bothbound_data(k, dynein, P, nma, fma, prob_trailing)
+                            rate_unbinding['trailing'].append(rate_trailing)
+                            prob_unbinding['trailing'].append(prob_trailing)
+
+
+
+                    if np.random.random() < prob_leading:
+                            # NEARBOUND State
+                            state = 0
+                            collect_bothbound_data(k, dynein, P, nma, fma, prob_leading)
+                            rate_unbinding['leading'].append(rate_leading)
+                            prob_unbinding['leading'].append(prob_leading)
+
+                    if k[0] % 100 == 0:
+                        np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
+
+    np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
 
 
 # What to collect and output or visualize?
@@ -234,12 +220,6 @@ while Z < N:
 # print("Avg E:", E_avg)
 # print("Avg prob_unbinding:", prob_unbinding_avg)
 
-
-np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-            (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-            (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
 
 # END OF SIM

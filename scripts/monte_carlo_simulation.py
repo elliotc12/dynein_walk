@@ -282,7 +282,7 @@ while Z < N:
                 new_nma = nma-(np.pi-dynein.nba)
                 new_fma = fma-(np.pi-dynein.fba)
 
-                if np.random.random() < prob_trailing: # FIXME need to normalize this a tad so it is never > 1.
+                if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
 
