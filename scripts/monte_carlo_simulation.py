@@ -268,7 +268,7 @@ while Z < N:
                 Z += P
 
                 rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+                rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
                 max_rate_leading = max(rate_leading, max_rate_leading)
                 max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
@@ -282,7 +282,9 @@ while Z < N:
                 new_nma = nma-(np.pi-dynein.nba)
                 new_fma = fma-(np.pi-dynein.fba)
 
-                if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
+                assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
+                assert(prob_leading <= 1)
+                if np.random.random() < prob_trailing: # Maybe should adjust this a tad so it is never > 1.
                         # FARBOUND State
                         state = 1
 

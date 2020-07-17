@@ -35,7 +35,6 @@ def collect_bothbound_data(k, self, P, nma, fma, prob):
         r_fm['x_avg'] += self.r_fm[0]*P
         r_fm['y_avg'] += self.r_fm[1]*P
         E['avg'] += self.E_total*P
-        prob_unbinding['avg'] +=  prob*P
 
         # Storing data for histograms
         r_t['x'].append(self.r_t[0])
@@ -84,18 +83,11 @@ dt = args.dt          # Time Step
 mc_bb_data_dir = '../data/mc_bb_data/'
 if not os.path.exists(mc_bb_data_dir):
     os.mkdir(mc_bb_data_dir)
-bbdatapath = mc_bb_data_dir + 'mc_bb_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+bbdatapath = mc_bb_data_dir + 'bb_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 
-L_arr = args.L               # All initial lengths
-rate_unbinding = {           # Unbinding rates
-        'trailing': [],
-        'leading': []
-}
-prob_unbinding = {           # Unbinding probabilities
-        'trailing': [],
-        'leading': [],
-        'avg': 0
-}
+L_arr = np.array(args.L)               # All initial lengths
+rate_leading = np.zeros(len(L_arr))
+rate_trailing = np.zeros_like(rate_leading)
 
 for i in range(len(L_arr)):
     L = L_arr[i]         # Initial Length
@@ -137,7 +129,6 @@ for i in range(len(L_arr)):
     # P_norm = np.nansum(np.exp(-b*dynein_all.E_total))
     # print(P_norm)
 
-
     while Z < N:
             # Making random motor angles
             nma = np.random.uniform(0, 2*np.pi)
@@ -153,39 +144,35 @@ for i in range(len(L_arr)):
                     P = np.exp(-b*dynein.E_total)
                     Z += P
 
-                    rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                    rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+                    this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+                    this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
 
-                    max_rate_leading = max(rate_leading, max_rate_leading)
-                    max_rate_trailing = max(rate_trailing, max_rate_trailing)
+                    max_rate_leading = max(this_rate_leading, max_rate_leading)
+                    max_rate_trailing = max(this_rate_trailing, max_rate_trailing)
 
-                    prob_trailing = P*rate_trailing     #   Unnormalized
-                    prob_leading = P*rate_leading       #   Unnormalized
-
+                    rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
+                    rate_leading[i] += P*this_rate_leading       #   Not yet normalized
 
                     new_nma = nma-(np.pi-dynein.nba)
                     new_fma = fma-(np.pi-dynein.fba)
 
-                    if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
-                            # FARBOUND State
-                            state = 1
-                            collect_bothbound_data(k, dynein, P, nma, fma, prob_trailing)
-                            rate_unbinding['trailing'].append(rate_trailing)
-                            prob_unbinding['trailing'].append(prob_trailing)
+                #     if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
+                #             # FARBOUND State
+                #             state = 1
+                #             collect_bothbound_data(k, dynein, P, nma, fma, prob_trailing)
 
 
 
-                    if np.random.random() < prob_leading:
-                            # NEARBOUND State
-                            state = 0
-                            collect_bothbound_data(k, dynein, P, nma, fma, prob_leading)
-                            rate_unbinding['leading'].append(rate_leading)
-                            prob_unbinding['leading'].append(prob_leading)
+                #     if np.random.random() < prob_leading:
+                #             # NEARBOUND State
+                #             state = 0
+                #             collect_bothbound_data(k, dynein, P, nma, fma, prob_leading)
 
-                    if k[0] % 100 == 0:
-                        np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
+    rate_leading[i] /= Z # Normalize our average, but we're still missing the unbinding rate factor
+    rate_trailing[i] /= Z
+    print('saving to', bbdatapath)
+    np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
 
-    np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
 
 
 # What to collect and output or visualize?
