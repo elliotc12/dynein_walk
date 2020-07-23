@@ -10,6 +10,7 @@ import importlib
 import argparse
 import subprocess
 import bb_energy_distribution
+import time
 
 """
 Monte Carlo simulation for dynein taking a step
@@ -52,8 +53,8 @@ def collect_bothbound_data(k, self, P, nma, fma, prob):
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(1,52,10))
-parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e2)
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(1,51,1))
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e9)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Manually set the sticky const", default=params.for_simulation['k_stk'])
@@ -90,6 +91,7 @@ rate_leading = np.zeros(len(L_arr))
 rate_trailing = np.zeros_like(rate_leading)
 
 for i in range(len(L_arr)):
+    start_time = time.time()
     L = L_arr[i]         # Initial Length
     print(L)
     N = args.N           # Count
@@ -121,13 +123,6 @@ for i in range(len(L_arr)):
 
     seed = 0
     np.random.seed(0)
-
-    # nma_all = np.linspace(0, 2*np.pi, 100)
-    # fma_all = np.linspace(0, 2*np.pi, 100)
-    # NMA, FMA = np.meshgrid(nma_all, fma_all)
-    # dynein_all = bb_energy_distribution.DyneinBothBound(NMA, FMA, params, L)
-    # P_norm = np.nansum(np.exp(-b*dynein_all.E_total))
-    # print(P_norm)
 
     while Z < N:
             # Making random motor angles
@@ -172,6 +167,7 @@ for i in range(len(L_arr)):
     rate_trailing[i] /= Z
     print('saving to', bbdatapath)
     np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
+    print('TIME: {}s for N = {}'.format(time.time()-start_time), N)
 
 
 
@@ -207,6 +203,6 @@ for i in range(len(L_arr)):
 # print("Avg E:", E_avg)
 # print("Avg prob_unbinding:", prob_unbinding_avg)
 
-np.savez_compressed(bbdatapath, rate_unbinding=rate_unbinding, prob_unbinding=prob_unbinding)
+np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
 
 # END OF SIM
