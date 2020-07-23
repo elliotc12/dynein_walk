@@ -25,6 +25,16 @@ for i in range(N):
     phi_1 = zero_bound_dynein[i,1]
     phi_2 = zero_bound_dynein[i,2]
     phi_3 = zero_bound_dynein[i,3]
+    x1 = ls*np.cos(phi_0)
+    y1 = ls*np.sin(phi_0)
+    x2 = x1 + lt*np.cos(phi_1)
+    y2 = y1 + lt*np.sin(phi_1)
+    x3 = x2 + lt*np.cos(phi_2)
+    y3 = y2 + lt*np.sin(phi_2)
+    x4 = x3 + ls*np.cos(phi_3)
+    y4 = y3 + ls*np.sin(phi_3)
+    L = np.sqrt(x4**2 + y4**2)
+
     theta_0 = 1*phi_0
     if phi_1 > theta_0:
         theta_1 = phi_1-theta_0
