@@ -169,7 +169,7 @@ for i in range(len(L_arr)):
     np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
     print('TIME: {}s for N = {}'.format(time.time()-start_time), N)
 
-
+np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
 
 # What to collect and output or visualize?
 
@@ -203,6 +203,5 @@ for i in range(len(L_arr)):
 # print("Avg E:", E_avg)
 # print("Avg prob_unbinding:", prob_unbinding_avg)
 
-np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
 
 # END OF SIM
