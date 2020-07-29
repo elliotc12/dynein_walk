@@ -7,6 +7,8 @@ import bb_energy_distribution
 
 N = 100000
 circle = 2*np.pi
+want_L = 8
+err = 1
 
 params = importlib.import_module("params")
 ls = params.for_simulation['ls']
@@ -19,6 +21,8 @@ theta_0_arr = []
 theta_1_arr = []
 theta_2_arr = []
 theta_3_arr = []
+bb_nm = []
+bb_fm = []
 
 for i in range(N):
     phi_0 = zero_bound_dynein[i,0]
@@ -68,26 +72,52 @@ for i in range(N):
     theta_1_arr.append(theta_1)
     theta_2_arr.append(theta_2)
     theta_3_arr.append(theta_3)
+    # print('L: 0', L)
+    if L < want_L+err and L > want_L-err:
+        # bb_nm.append(theta_1)
+        # bb_fm.append(theta_2)
+        if theta_1 > np.pi:
+            bb_nm.append(theta_1-np.pi)
+        if theta_1 < np.pi:
+            bb_nm.append(theta_1+np.pi)
+        if theta_3 > np.pi:
+            bb_fm.append(theta_3-np.pi)
+        if theta_3 < np.pi:
+            bb_fm.append(theta_3+np.pi)
+
 rel_angles = np.transpose(np.array([theta_0_arr, theta_1_arr, theta_2_arr, theta_3_arr]))
 
-r_nb = np.zeros([2, N])
-r_nm = r_nb + np.array([ls*np.cos(rel_angles[:,0]), ls*np.sin(rel_angles[:,0])])
-# r_t = r_nm +
-# r_fm
-# r_fb
-print(r_nm)
 
-for j in range(4):
-    plt.figure()
-    plt.hist(zero_bound_dynein[:,j], label='angle {}'.format(j), density=False, stacked=True, histtype='bar')
-    plt.title('Random angle {}'.format(j))
-    plt.xlabel('angles')
-    plt.legend()
+# for j in range(4):
+#     plt.figure()
+#     plt.hist(zero_bound_dynein[:,j], label='angle {}'.format(j), density=False, stacked=True, histtype='bar')
+#     plt.title('Random angle {}'.format(j))
+#     plt.xlabel('angles')
+#     plt.legend()
+#
+# for j in range(4):
+#     plt.figure()
+#     plt.hist(rel_angles[:,j], label='angle {}'.format(j), density=False, stacked=True, histtype='bar')
+#     plt.title('Relative angle {}'.format(j))
+#     plt.xlabel('angles')
+#     plt.legend()
 
-for j in range(4):
-    plt.figure()
-    plt.hist(rel_angles[:,j], label='angle {}'.format(j), density=False, stacked=True, histtype='bar')
-    plt.title('Relative angle {}'.format(j))
-    plt.xlabel('angles')
-    plt.legend()
+plt.figure()
+plt.hist(bb_nm, label='nm angle', density=False, stacked=True, histtype='bar')
+plt.title('Both Bound Near Motor angle')
+plt.xlabel('angles')
+plt.legend()
+
+plt.figure()
+plt.hist(bb_fm, label='fm angle', density=False, stacked=True, histtype='bar')
+plt.title('Both Bound Far Motor angle')
+plt.xlabel('angles')
+plt.legend()
+
+plt.figure()
+plt.scatter(bb_nm, bb_fm)
+plt.title('Both Bound angle distribution')
+plt.xlabel(r'$\theta_{nm}$')
+plt.ylabel(r'$\theta_{fm}$')
+plt.legend()
 plt.show()
