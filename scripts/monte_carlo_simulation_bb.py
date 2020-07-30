@@ -126,11 +126,8 @@ for i in range(len(L_arr)):
 
     while Z < N:
             # Making random motor angles
-            nma = np.random.uniform(0, 2*np.pi)
-            fma = np.random.uniform(0, 2*np.pi)
-
-            dynein = bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
-
+            dynein = bb_energy_distribution.generate_random_bb(L-0.5, L+0.5, params)
+            
             # Checking if energy is nan
             if np.isnan(dynein.E_total) == True:
                     continue

@@ -32,59 +32,68 @@ class DyneinBothBound:
     Class for all dynein parameters in the both bound state.
     """
 
+    def new_init(self, nma, ta, fma, fba):
+        self.nma = nma
+        self.nba = nba
 
-    def __init__(self, nma, fma, params, L=8, x=0):
+    def __init__(self, nma, fma, nba = None, fba = None, ta = None, params, L=None, x=0):
         self.nma = nma
         self.fma = fma
-        self.L = L
+        if L is not None and nba is None and fba is None and ta is None:
+            self.L = L
 
-        self.Lt = params.for_simulation['lt']
-        self.Ls = params.for_simulation['ls']
+            self.Lt = params.for_simulation['lt']
+            self.Ls = params.for_simulation['ls']
 
-        self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
-        self.Lf = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.fma))
+            self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
+            self.Lf = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.fma))
 
-        # calculate angles from Ln, Lf to microtubule
-        self.na = np.arccos((self.Ln**2+self.L**2-self.Lf**2)/(2*self.Ln*self.L))
-        self.fa = np.pi-np.arccos((self.Lf**2+self.L**2-self.Ln**2)/(2*self.Lf*self.L))
+            # calculate angles from Ln, Lf to microtubule
+            self.na = np.arccos((self.Ln**2+self.L**2-self.Lf**2)/(2*self.Ln*self.L))
+            self.fa = np.pi-np.arccos((self.Lf**2+self.L**2-self.Ln**2)/(2*self.Lf*self.L))
 
-        # calculate small triangle angles
+            # calculate small triangle angles
 
-        # NOTE: we have to be careful about motor domain angles less than pi
+            # NOTE: we have to be careful about motor domain angles less than pi
 
-        self.nsa = np.arccos((self.Ln**2+self.Ls**2-self.Lt**2)/(2*self.Ln*self.Ls))
-        if isinstance(nma, np.ndarray):
-            self.nsa[nma < np.pi] *= -1
+            self.nsa = np.arccos((self.Ln**2+self.Ls**2-self.Lt**2)/(2*self.Ln*self.Ls))
+            if isinstance(nma, np.ndarray):
+                self.nsa[nma < np.pi] *= -1
+            else:
+                if nma < np.pi:
+                    self.nsa = -self.nsa
+            self.fsa = np.arccos((self.Lf**2+self.Ls**2-self.Lt**2)/(2*self.Lf*self.Ls))
+            if isinstance(fma, np.ndarray):
+                self.fsa[fma < np.pi] *= -1
+            else:
+                if fma < np.pi:
+                    self.fsa = -self.fsa
+
+            # calculate binding domain angles
+            self.nba = self.na-self.nsa
+            self.fba = self.fa-self.fsa
+
+            # calculate positions
+            self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
+
+            self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
+
+
+            self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
+            self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
+
+            self.r_t = self.r_nb + np.array([self.Ln*np.cos(self.na), self.Ln*np.sin(self.na)])
+
+            # calculate distance between motors
+            # NOTE: np.sqrt() is already element-wise
+            self.Lm = np.sqrt((self.r_nm[0]-self.r_fm[0])**2 + (self.r_nm[1]-self.r_fm[1])**2)
+            # calculate tail angle
+            self.ta = np.arccos(1- self.Lm**2/self.Lt**2)
         else:
-            if nma < np.pi:
-                self.nsa = -self.nsa
-        self.fsa = np.arccos((self.Lf**2+self.Ls**2-self.Lt**2)/(2*self.Lf*self.Ls))
-        if isinstance(fma, np.ndarray):
-            self.fsa[fma < np.pi] *= -1
-        else:
-            if fma < np.pi:
-                self.fsa = -self.fsa
-
-        # calculate binding domain angles
-        self.nba = self.na-self.nsa
-        self.fba = self.fa-self.fsa
-
-        # calculate positions
-        self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
-
-        self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
-
-
-        self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
-        self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
-
-        self.r_t = self.r_nb + np.array([self.Ln*np.cos(self.na), self.Ln*np.sin(self.na)])
-
-        # calculate distance between motors
-        # NOTE: np.sqrt() is already element-wise
-        self.Lm = np.sqrt((self.r_nm[0]-self.r_fm[0])**2 + (self.r_nm[1]-self.r_fm[1])**2)
-        # calculate tail angle
-        self.ta = np.arccos(1- self.Lm**2/self.Lt**2)
+            self.nba = nba
+            self.fba = fba
+            self.ta = ta
+            ERROR = FIXME
 
 
         # calculate all of the energies
@@ -189,7 +198,13 @@ class DyneinBothBound:
         ax2.axis('equal')
         ax2.legend()
 
+def generate_random_bb(Lmin, Lmax, params):
+        ''' Generate a random and unbiased BB configuration with length L
+           FIXME replace this with something based on distributions_test.py '''
+        nma = np.random.uniform(0, 2*np.pi)
+        fma = np.random.uniform(0, 2*np.pi)
 
+        return bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
 
 if __name__ == "__main__":
     params = importlib.import_module("params")
