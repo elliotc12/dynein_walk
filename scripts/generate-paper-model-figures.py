@@ -9,7 +9,7 @@ if 'show' not in sys.argv:
 
 import dynein.draw.cartoon as cartoon
 
-from mpl_toolkits.axes_grid1 import Divider, LocatableAxes, Size
+from mpl_toolkits.axes_grid1 import Divider, Size
 
 sys.path.insert(0, os.getcwd() + "/data/")
 import paper_params as params

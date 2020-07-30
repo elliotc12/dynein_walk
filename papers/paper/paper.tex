@@ -1,4 +1,4 @@
-\documentclass[9pt,twocolumn,twoside]{pnas-new}
+\documentclass[9pt,twocolumn,twoside]{article}
 % Use the lineno option to display guide line numbers if required.
 % Note that the use of elements such as single-column equations
 % may affect the guide line number alignment.
@@ -10,54 +10,21 @@
 \newcommand\davidsays[1]{{\em\color{blue} {\bf DR:} #1}}
 
 % the follow ing causes latex to not wait interactively
-\nonstopmode
-
-\setboolean{displaywatermark}{false}
+% \nonstopmode
 
 \captionsetup[subfigure]{singlelinecheck=off,justification=raggedright, margin=0pt, parskip=0pt, skip=0pt}
 
-\templatetype{pnasresearcharticle} % Choose template 
-% {pnasresearcharticle} = Template for a two-column research article
-% {pnasmathematics} = Template for a one-column mathematics article
-% {pnasinvited} = Template for a PNAS invited submission
-
 \title{Brownian dynamics simulation of cytoplasmic dynein's powerstroke reproduces bidirectional stepping}
-
-% Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
-\author[a,c,1]{Author One}
-
-\affil[a]{Oregon State University}
-
-% Please give the surname of the lead author for the running footer
-\leadauthor{Lead author last name} 
-
-% Please include corresponding author, author contribution and author declaration information
-\authorcontributions{Please provide details of author contributions here.}
-\authordeclaration{Please declare any conflict of interest here.}
-\equalauthors{\textsuperscript{1}A.O.(Author One) and A.T. (Author Two) contributed equally to this work (remove if not applicable).}
-\correspondingauthor{\textsuperscript{2}To whom correspondence should be addressed. E-mail: author.two\@email.com}
-
-% Keywords are not mandatory, but authors are strongly encouraged to provide them. If provided, please include two to five keywords, separated by the pipe symbol, e.g:
-\keywords{dynein $|$ Brownian dynamics $|$ powerstroke $|$ modeling} 
-
-\begin{abstract}
-Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
-\end{abstract}
-
-\dates{This manuscript was compiled on \today}
-\doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
 
 \input{../../data/paper_params.tex}
 
 \begin{document}
-
-% Optional adjustment to line up main text (after abstract) of first page with line numbers, when using both lineno and twocolumn options.
-% You should only change this length when you've finalised the article contents.
-\verticaladjustment{-2pt}
-
 \maketitle
-\thispagestyle{firststyle}
-\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+\begin{abstract}
+  Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
+\end{abstract}
+  
 
 %% \dropcap{C}ytoplasmic dynein-1 is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
 
@@ -70,7 +37,7 @@ Please provide an abstract of no more than 250 words in a single paragraph. Abst
 
 %% Dynein has several cofactors which alter its dynamics. For example, the motor's stall force is tripled when exposed to dynactin and Bic2D \cite{yildizdynactin}. This is odd, since the dynactin- and Bic2D-binding site on dynein is on the tail, far from the motor heads.
 
-\dropcap{D}ynein is a motor protein which generates motion for various cellular processes. Cytoplasmic dynein-1, here referred to as ``dynein,'' is a motor which performs cargo transport and aids in nuclear division. The protein consists of a ring structure of six AAA+ domains known as the ``head'' which connect via a long stalk to a microtubule binding domain (MTBD). The AAA+ region is responsible for hydrolyzing ATP to drive dynein's motion. The head is connected via a linker to a large tail domain responsible for binding various cargos and accessory proteins. The tail is also the site of dimerization, where two dynein monomers join to form a homodimeric unit capable of motion.
+Dynein is a motor protein which generates motion for various cellular processes. Cytoplasmic dynein-1, here referred to as ``dynein,'' is a motor which performs cargo transport and aids in nuclear division. The protein consists of a ring structure of six AAA+ domains known as the ``head'' which connect via a long stalk to a microtubule binding domain (MTBD). The AAA+ region is responsible for hydrolyzing ATP to drive dynein's motion. The head is connected via a linker to a large tail domain responsible for binding various cargos and accessory proteins. The tail is also the site of dimerization, where two dynein monomers join to form a homodimeric unit capable of motion.
 
 Dynein's mechanism of motion generation is the least understood of all motor proteins \cite{}. Kinesin and myosin both take consistent steps of the same size \cite{kinesin-step-size, myosin-step-size, is-this-true-in-general-i-thought-only-types-of-myosin}. In contrast, dynein is known to take highly variant steps both forwards and backwards, averaging 16nm \cite{yildizpaper, weihongpaper}. Another interesting feature of dynein is the 20nm separation between its ATP hydrolysis and the site and MT binding site \cite{3vkh-cite}. The protein must transmit information about ATP binding across this distance in order to coordinate its steps \cite{mt-atp-coupling}. Explaining these phenomena is necessary to fully understand dynein's mechanism.
 
@@ -99,12 +66,11 @@ Here we present a course-grained model of cytoplasmic dynein which reduces the m
 %% Model at equilibrium angles superimposed over an axonemal dynein c micrograph consisting of an apo and and ADP-Pi-bound dynein monomer \cite{burgess-paper}; axonemal and cytoplasmic dynein have comparable size and architecture \cite{dynein-c-paper}. \textit{Right:} Model at equilibrium superimposed over full-length dimerized dynein bound to accessory proteins,  Left figure has a scale bar of 15nm, right 26.3nm between MTBD and AAA1 of motor domain.
 
 
-
-\begin{minipage}{\linewidth}%% [tbhp]
+\begin{table}
   \centering
   \begin{tabular}{lrrr}
-    Parameter & Model & Experimental & Source \\
-    \midrule
+    Param & Model & Experimental & Source \\
+    \hline
     $c_b$ & $\cb \Delta G_{ATP}$ &  & \\
     $c_m$ & $\cm \Delta G_{ATP}$ &  & \\
     $c_t$ & $\ct \Delta G_{ATP}$ &  & \\
@@ -120,16 +86,11 @@ Here we present a course-grained model of cytoplasmic dynein which reduces the m
     $R_t$ & $\radiust$ & 8nm & \cite{burgess-paper}\\
     $R_m$ & $\radiusm$ & 11nm & \cite{burgess-paper}\\
     $R_b$ & $\radiusb$ & 3.5nm & \cite{burgess-paper}\\
-    \bottomrule
+    \hline
   \end{tabular}
-
-  \begin{minipage}{\linewidth}
-    \small
-    \textbf{Table 1. Parameters used in simulation.} $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted.
-  \end{minipage}
+  \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
   \label{tab:params}
-
-\end{minipage}
+\end{table}
 
 \section{Model}
 This dynein model is meant to capture the coarse-grained structural, dynamical and chemical properties of the full dynein complex while remaining mathematically simple. The structural features of dynein are captured through a two-dimensional geometric model of circular domains connected by rigid rods, shown in Figure \ref{fig:model}. The dynamics of dynein are captured by imposing both equilibrium and Brownian forces on each circular domain of the model. The chemical properties of dynein are captured by sporadically transitioning the model between two states: a poststroke state where both binding domains are fixed to the microtubule, and a prestroke state where one foot is free to diffuse, as has been done before \cite{zhaomodel}. The poststroke state is meant to represent dynein after rebinding free MTBD and undergoing the motor-MTBD conformational change, but before releasing ADP, according to the Tsygankov scheme \cite{tsygankovscheme}. The prestroke state represents the dynein after binding ATP, unbinding from the MT and undergoing a motor conformational change, but before rebinding the MT. ATP hydrolysis and Pi rejection are ignored by the model. These two states were chosen because ADP release is thought to be the rate limiting step for the whole cycle \cite{holzbaur1989}, and the post-unbinding conformational change is expected to happen soon after MT unbinding \cite{mogamirate}, meaning the post-unbinding conformation should dominate when unbound from MT. We constrain our model to move through only the most likely mechanochemical cycle according to \textit{Tsygankov et al} \cite{tsygankovscheme}, where a head remains in the ADP-bound post-stroke state while the other head goes through the entire mechanochemical cycle, neglecting other possible cycles. Each state feels equilibrium forces on its domains meant to mimic the structural changes which occur during the cycle \cite{burgess-paper, burgessknight}. In particular, the equilibrium angles governing a motor's tail-motor-MTBD angle change to cause a displacement of the free MTBD towards the MT minus end, producing a forward step.
@@ -152,8 +113,6 @@ Conformational changes on nucleotide binding, also known as the mechanochemical 
 Unbinding occurs when a poststroke MTBD unbinds from the microtubule. This event can occur for either MTBD, and each domain has its own unbinding rate $k_{ub}$. To account for the tension-gating proposed by Yildiz \textit{et al} \cite{yildizcleary} to allow for interhead communication and bias the motor forward, we use a scheme where an MTBD is more likely to unbind based on its distance behind the other MT, which accords with experiments \cite{yildiz}. For domain $i \in \{n, f\}$ with binding domain angle $\theta_{ib}\left(\theta_{nm}, \theta_{fm}\right)$, unbinding rate is given by $k_{ub} = k^0_{ub}e^{-c\left(\theta_{ib}-\theta^{eq}_{ib}\right)}$, where $c$ is a parameter of the model. This will bias the model to unbind more preferentially for the lagging MTBD due to a higher likelihood for $\theta^{eq}_{ib} > \theta_{ib}$ for the lagging head. Values used for parameters $k^0_{ub}$ and $c$, along with $k_b$, are shown in Table \ref{table:params}.
 
 The transitions between prestroke and poststroke events in the mechanochemical cycle \cite{cianfrocco} are captured by changing the motor equilibrium angles when a state transition occurs. The prestroke state has an unbound motor angle closer to $\pi$ than the prestroke motor\cite{burgess-paper}; thus, on unbinding, the unbound MTBD should experience a restoring force effecting the post-to-pre conformational change. On rebinding, the motors transition back to the poststroke equilibrium, producing restoring forces causing the pre-to-post conformational change. This shifting of equilibria, coupled with alternating the freedom of the active MTBD, meant to mimic the coupling of ATPase activity and MTBD affinity in the real dynein motor.
-
-\matmethods{
 
   \section*{Fitting $k_b$ and $k_{ub}$}
   To fit the binding and unbinding rate constants $k^0_b$ and $k^0_{ub}$ a simple theoretical model for stepping was used, similar to one previously published \cite{myosindutyratio}. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD, that is, that there is no inter-head coordination. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the prestroke state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a prestroke and poststroke state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for poststroke time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for prestroke time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for prestroke and poststroke time in terms of experimental observables of velocity, run time and step length:
@@ -184,7 +143,7 @@ The transitions between prestroke and poststroke events in the mechanochemical c
   \begin{multline}
     \dot{Y_i}\left(\theta_{bb}, ..., \theta_{ub}, \dot{\theta}_{bb}, ..., \dot{\theta}_{ub}\right) = \frac{1}{\gamma_i}\big(F^{spr}_y(\theta_{bb}, ..., \theta_{ub}) + \\
     \lambda_i\left(Y_{i+1}-Y_i\right) + \lambda_{i-1}\left(Y_i-Y_{i-1}\right)R^y_i\big)
-    \label{eq:ob-system}
+    \label{eq:ob-system-other}
   \end{multline}
 
   where the $\lambda$ terms are tension terms needed to maintain the rigid rod constraints and $\vec{F}^{spr}$ the harmonic equilibrium forces felt by each domain. Each $X_i$ coordinate is related to the $\theta_j$ coordinates via the recursive formulas $X_{i>1} = L_i\cos(\theta_{i-1})+X_{i-1}$ and $Y_{i>1} = L_i\sin(\theta_{i-1})+Y_{i-1}$ for y-coords. Thus, each $\dot{X_i}$ term is linearly related to one or more $\dot{\theta_j}$ terms.
@@ -214,7 +173,7 @@ The transitions between prestroke and poststroke events in the mechanochemical c
   \section*{Calculating leading/lagging probability vs displacement}
 
   \section*{Calculating force-dependent velocities}
-}
+
 
 \section{Results}
 
@@ -307,8 +266,6 @@ Our theoretical work draws upon and extends several past models \cite{sarlahmode
 In conclusion, our study demonstrates that the powerstroke mechanism is sufficient to explain dynein's velocity, step length histogram, displacement-vs-step length relationship, and force output. We demonstrate that the powerstroke arises naturally from minimal structural information about the protein, suggesting it is likely possible for real dynein to exhibit a powerstroke. Further, we explain why past studies may have failed to detect this powerstroke. We hope that this evidence is sufficient to maintain the powerstroke mechanism as a viable hypothesis for how dynein walks. We further hope that experiments with higher spatial and temporal resolution can be conducted in the near future to shed more light on the precise nature of dynein's stepping mechanism.
 
 
-\showmatmethods
-
 \section{To do items}
 
 \subsection{Anyone tasks}
@@ -333,11 +290,7 @@ In conclusion, our study demonstrates that the powerstroke mechanism is sufficie
 \section{Papers we should cite}
 This paper says something interesting~\cite{leschziner}.
 
-% \pnasbreak splits and balances the columns before the references.
-% If you see unexpected formatting errors, try commenting out this line
-% as it can run into problems with floats and footnotes on the final page.
-\pnasbreak
-
+\bibliographystyle{plain}
 \bibliography{paper}
 
 \end{document}

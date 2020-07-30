@@ -4,7 +4,7 @@ import numpy as np
 
 import matplotlib.units as units
 import matplotlib.ticker as ticker
-from matplotlib.cbook import iterable
+from numpy import iterable
 
 
 class ProxyDelegate(object):
