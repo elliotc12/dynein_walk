@@ -258,87 +258,87 @@ while Z < N:
 
         # Checking if energy is nan
         if np.isnan(dynein.E_total) == True:
-                continue
+            continue
         else:
-                # Calculating partition function
-                P = np.exp(-b*dynein.E_total)
-                Z += P
+            # Calculating partition function
+            P = np.exp(-b*dynein.E_total)
+            Z += P
 
-                rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
-                max_rate_leading = max(rate_leading, max_rate_leading)
-                max_rate_trailing = max(rate_trailing, max_rate_trailing)
+            rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+            rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
+            max_rate_leading = max(rate_leading, max_rate_leading)
+            max_rate_trailing = max(rate_trailing, max_rate_trailing)
 
-                prob_trailing = P*rate_trailing     #   Unnormalized
-                prob_leading = P*rate_leading       #   Unnormalized
-                print('P: ', P)
-                print('Prob trailing: ', prob_trailing)
-                print('Prob leading: ', prob_leading)
-
-
-                new_nma = nma-(np.pi-dynein.nba)
-                new_fma = fma-(np.pi-dynein.fba)
-
-                assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
-                assert(prob_leading <= 1)
-                if np.random.random() < prob_trailing: # Maybe should adjust this a tad so it is never > 1.
-                        # FARBOUND State
-                        state = 1
-
-                        collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
-                                                L, trailing_data)
-
-                        # plot_bb_before_step(dynein, 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
-
-                        # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
-                        #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
-                        #                 step['bbx'], step['bby'], 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
-                        # plt.show()
-
-                        if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                        print('shtep t')
+            prob_trailing = P*rate_trailing     #   Unnormalized
+            prob_leading = P*rate_leading       #   Unnormalized
+            print('P: ', P)
+            print('Prob trailing: ', prob_trailing)
+            print('Prob leading: ', prob_leading)
 
 
+            new_nma = nma-(np.pi-dynein.nba)
+            new_fma = fma-(np.pi-dynein.fba)
 
-                if np.random.random() < prob_leading:
-                        # NEARBOUND State
-                        state = 0
+            assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
+            assert(prob_leading <= 1)
+            if np.random.random() < prob_trailing: # Maybe should adjust this a tad so it is never > 1.
+                    # FARBOUND State
+                    state = 1
 
-                        collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
-                                                L, leading_data)
+                    collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
+                                            L, trailing_data)
 
-                        # plot_bb_before_step(dynein, 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
+                    # plot_bb_before_step(dynein, 'red', 'blue')
+                    # plt.savefig('../plots/mc_plots/trailing_{}a_before_step.png'.format(k), transparent=False)
 
-                        # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
-                        #                 step['tx'], step['ty'], step['umx'], step['umy'],
-                        #                 step['ubx'], step['uby'], 'red', 'blue')
-                        # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
-                        # plt.show()
-                        if k[0] % 100 == 0:
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                        N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                        (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                            if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
-                                break
-                        print('shtep l')
+                    # plot_bb_after_step(step['ubx'], step['uby'], step['umx'], step['umy'],
+                    #                 step['tx'], step['ty'], step['bmx'], step['bmy'],
+                    #                 step['bbx'], step['bby'], 'red', 'blue')
+                    # plt.savefig('../plots/mc_plots/trailing_{}b_after_step.png'.format(k), transparent=False)
+                    # plt.show()
+
+                    if k[0] % 100 == 0:
+                        np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                    N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
+                                    (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                        np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                    N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
+                                    (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                        if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            break
+                        if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            break
+                    print('shtep t')
+
+
+
+            if np.random.random() < prob_leading:
+                    # NEARBOUND State
+                    state = 0
+
+                    collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
+                                            L, leading_data)
+
+                    # plot_bb_before_step(dynein, 'red', 'blue')
+                    # plt.savefig('../plots/mc_plots/leading_{}a_before_step.png'.format(k), transparent=False)
+
+                    # plot_bb_after_step(step['bbx'], step['bby'], step['bmx'], step['bmy'],
+                    #                 step['tx'], step['ty'], step['umx'], step['umy'],
+                    #                 step['ubx'], step['uby'], 'red', 'blue')
+                    # plt.savefig('../plots/mc_plots/leading_{}b_after_step.png'.format(k), transparent=False)
+                    # plt.show()
+                    if k[0] % 100 == 0:
+                        np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                    N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
+                                    (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                        np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
+                                    N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
+                                    (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                        if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            break
+                        if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                            break
+                    print('shtep l')
 
 
 

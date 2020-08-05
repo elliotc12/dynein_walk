@@ -127,38 +127,40 @@ for i in range(len(L_arr)):
     while Z < N:
             # Making random motor angles
             dynein = bb_energy_distribution.generate_random_bb(L-0.5, L+0.5, params)
-            
+
             # Checking if energy is nan
             if np.isnan(dynein.E_total) == True:
-                    continue
+                continue
             else:
-                    # Calculating partition function
-                    P = np.exp(-b*dynein.E_total)
-                    Z += P
+                print('nba:', dynein.nba*180/np.pi)
+                print('nma:', dynein.nma*180/np.pi)
+                print('ta:', dynein.ta*180/np.pi)
+                print('fma:', dynein.fma*180/np.pi)
+                print('fba:', dynein.fba*180/np.pi)
+                # Calculating partition function
+                P = np.exp(-b*dynein.E_total)
+                Z += P
 
-                    this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                    this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+                this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+                this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
 
-                    max_rate_leading = max(this_rate_leading, max_rate_leading)
-                    max_rate_trailing = max(this_rate_trailing, max_rate_trailing)
+                max_rate_leading = max(this_rate_leading, max_rate_leading)
+                max_rate_trailing = max(this_rate_trailing, max_rate_trailing)
 
-                    rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
-                    rate_leading[i] += P*this_rate_leading       #   Not yet normalized
+                rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
+                rate_leading[i] += P*this_rate_leading       #   Not yet normalized
 
-                    new_nma = nma-(np.pi-dynein.nba)
-                    new_fma = fma-(np.pi-dynein.fba)
-
-                #     if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
-                #             # FARBOUND State
-                #             state = 1
-                #             collect_bothbound_data(k, dynein, P, nma, fma, prob_trailing)
+            #     if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
+            #             # FARBOUND State
+            #             state = 1
+            #             collect_bothbound_data(k, dynein, P, nma, fma, prob_trailing)
 
 
 
-                #     if np.random.random() < prob_leading:
-                #             # NEARBOUND State
-                #             state = 0
-                #             collect_bothbound_data(k, dynein, P, nma, fma, prob_leading)
+            #     if np.random.random() < prob_leading:
+            #             # NEARBOUND State
+            #             state = 0
+            #             collect_bothbound_data(k, dynein, P, nma, fma, prob_leading)
 
     rate_leading[i] /= Z # Normalize our average, but we're still missing the unbinding rate factor
     rate_trailing[i] /= Z

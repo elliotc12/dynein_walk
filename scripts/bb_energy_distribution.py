@@ -32,18 +32,13 @@ class DyneinBothBound:
     Class for all dynein parameters in the both bound state.
     """
 
-    def new_init(self, nma, ta, fma, fba):
-        self.nma = nma
-        self.nba = nba
-
-    def __init__(self, nma, fma, nba = None, fba = None, ta = None, params, L=None, x=0):
+    def __init__(self, nma, fma, params, nba = None, fba = None, ta = None, L=None, x=0):
         self.nma = nma
         self.fma = fma
+        self.Lt = params.for_simulation['lt']
+        self.Ls = params.for_simulation['ls']
         if L is not None and nba is None and fba is None and ta is None:
             self.L = L
-
-            self.Lt = params.for_simulation['lt']
-            self.Ls = params.for_simulation['ls']
 
             self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
             self.Lf = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.fma))
@@ -93,8 +88,13 @@ class DyneinBothBound:
             self.nba = nba
             self.fba = fba
             self.ta = ta
-            ERROR = FIXME
 
+            # calculate positions
+            self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
+            self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
+            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma), self.Lt*np.sin(self.nma)])
+            self.r_fm = self.r_t + np.array([self.Lt*np.cos(self.ta), self.Lt*np.sin(self.ta)])
+            self.r_fb = self.r_fm + np.array([self.Ls*np.cos(self.fma), self.Ls*np.sin(self.fma)])
 
         # calculate all of the energies
         self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
@@ -201,10 +201,86 @@ class DyneinBothBound:
 def generate_random_bb(Lmin, Lmax, params):
         ''' Generate a random and unbiased BB configuration with length L
            FIXME replace this with something based on distributions_test.py '''
-        nma = np.random.uniform(0, 2*np.pi)
-        fma = np.random.uniform(0, 2*np.pi)
+        Ls = params.for_simulation['ls']
+        Lt = params.for_simulation['lt']
+        circle = 2*np.pi
+        L_error = True
+        while(L_error):
+            ''' Pick 4 random uniformly distributed angles for configuration '''
+            angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
+            angle_1 = np.random.uniform(0,2*np.pi)      # Corresponds to nma
+            angle_2 = np.random.uniform(0,2*np.pi)      # Corresponds to ta
+            angle_3 = np.random.uniform(0,2*np.pi)      # Corresponds to tma
+                                                        # tba found from angle_3
+            r_nb = np.array([0,0])
+            r_nm = r_nb + np.array([Ls*np.cos(angle_0), Ls*np.sin(angle_0)])
+            r_t = r_nm + np.array([Lt*np.cos(angle_1), Lt*np.sin(angle_1)])
+            r_fm = r_t + np.array([Lt*np.cos(angle_2), Lt*np.sin(angle_2)])
+            r_fb = r_fm + np.array([Ls*np.cos(angle_3), Ls*np.sin(angle_3)])
+            L = np.sqrt(r_fb[0]**2 + r_fb[1]**2)
 
-        return bb_energy_distribution.DyneinBothBound(nma, fma, params, L)
+            # Check if generated L is within L bounds
+            if L > Lmin and L < Lmax:
+                # Calculate relative angles according to previous angle
+                rel_angle_0 = 1.0*angle_0
+                if angle_1 > angle_0:
+                    rel_angle_1 = angle_1-rel_angle_0
+                    if angle_2 > angle_1:
+                        rel_angle_2 = angle_2-angle_1
+                        if angle_3 > angle_2:
+                            rel_angle_3 = angle_3-angle_2
+                        else:
+                            rel_angle_3 = (circle+angle_3)-angle_2
+                    else:
+                        rel_angle_2 = (circle+angle_2)-angle_1
+                        if angle_3 > angle_2:
+                            rel_angle_3 = (circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
+                        else:
+                            rel_angle_3 = (2*circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
+                else:
+                    rel_angle_1 = (circle+angle_1)-rel_angle_0
+                    if angle_2 > angle_1:
+                        rel_angle_2 = (circle+angle_2)-(rel_angle_1+rel_angle_0)
+                        if angle_3 > angle_2:
+                            rel_angle_3 = angle_3-angle_2
+                        else:
+                            rel_angle_3 = (circle+angle_3)-angle_2
+                    else:
+                        rel_angle_2 = (2*circle+angle_2)-(rel_angle_1+rel_angle_0)
+                        if angle_3 > angle_2:
+                            rel_angle_3 = (circle+angle_3)-(angle_1+rel_angle_2)
+                        else:
+                            rel_angle_3 = (3*circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
+                #  Rotational angle based on fb coordinates
+                rotational_angle = np.arctan(r_fb[1]/r_fb[0])
+                if rotational_angle < 0:
+                    rotational_angle = np.pi + rotational_angle
+                # Calculate dynein angles based on trig
+                if rel_angle_0 > np.pi:
+                    nba = rel_angle_0-np.pi-rotational_angle
+                else:
+                    nba = rel_angle_0-rotational_angle
+
+                if rel_angle_1 > np.pi:
+                    nma = rel_angle_1-np.pi
+                else:
+                    nma = rel_angle_1+np.pi
+
+                if rel_angle_2 > np.pi:
+                    ta = rel_angle_2-np.pi
+                else:
+                    ta = rel_angle_2+np.pi
+
+                if rel_angle_3 > np.pi:
+                    fma = 3*np.pi-rel_angle_3
+                else:
+                    fma = np.pi-rel_angle_3
+
+                if angle_3 > np.pi:
+                    fba = angle_3-np.pi-rotational_angle
+                else:
+                    fba = angle_3-rotational_angle
+                return DyneinBothBound(nma, fma, params, nba, fba, ta)
 
 if __name__ == "__main__":
     params = importlib.import_module("params")
