@@ -204,8 +204,7 @@ def generate_random_bb(Lmin, Lmax, params):
         Ls = params.for_simulation['ls']
         Lt = params.for_simulation['lt']
         circle = 2*np.pi
-        L_error = True
-        while(L_error):
+        while True:
             # Pick 4 random uniformly distributed angles for configuration
             angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
             angle_1 = np.random.uniform(0,2*np.pi)      # Corresponds to nma
@@ -220,67 +219,36 @@ def generate_random_bb(Lmin, Lmax, params):
             L = np.sqrt(r_fb[0]**2 + r_fb[1]**2)
 
             # Check if generated L is within L bounds
-            if L > Lmin and L < Lmax:
-                # Calculate relative angles according to previous angle
-                rel_angle_0 = 1.0*angle_0
-                if angle_1 > angle_0:
-                    rel_angle_1 = angle_1-rel_angle_0
-                    if angle_2 > angle_1:
-                        rel_angle_2 = angle_2-angle_1
-                        if angle_3 > angle_2:
-                            rel_angle_3 = angle_3-angle_2
-                        else:
-                            rel_angle_3 = (circle+angle_3)-angle_2
-                    else:
-                        rel_angle_2 = (circle+angle_2)-angle_1
-                        if angle_3 > angle_2:
-                            rel_angle_3 = (circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
-                        else:
-                            rel_angle_3 = (2*circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
-                else:
-                    rel_angle_1 = (circle+angle_1)-rel_angle_0
-                    if angle_2 > angle_1:
-                        rel_angle_2 = (circle+angle_2)-(rel_angle_1+rel_angle_0)
-                        if angle_3 > angle_2:
-                            rel_angle_3 = angle_3-angle_2
-                        else:
-                            rel_angle_3 = (circle+angle_3)-angle_2
-                    else:
-                        rel_angle_2 = (2*circle+angle_2)-(rel_angle_1+rel_angle_0)
-                        if angle_3 > angle_2:
-                            rel_angle_3 = (circle+angle_3)-(angle_1+rel_angle_2)
-                        else:
-                            rel_angle_3 = (3*circle+angle_3)-(rel_angle_2+rel_angle_1+rel_angle_0)
+            if Lmin < L < Lmax:
                 #  Rotational angle based on fb coordinates
-                rotational_angle = np.arctan(r_fb[1]/r_fb[0])
-                if rotational_angle < 0:
-                    rotational_angle = np.pi + rotational_angle
-                # Calculate dynein angles based on trig
-                if rel_angle_0 > np.pi:
-                    nba = rel_angle_0-np.pi-rotational_angle
-                else:
-                    nba = rel_angle_0-rotational_angle
+                rotational_angle = np.arctan2(r_fb[1],r_fb[0])
+                angle_0 -= rotational_angle
+                angle_1 -= rotational_angle
+                angle_2 -= rotational_angle
+                angle_3 -= rotational_angle
+                
+                # Calculate relative angles according to previous angle
+                nba = angle_0 + 2*np.pi
+                nma = angle_1 - angle_0 + np.pi + 2*np.pi # add 2pi to make it positive
+                ta = angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
+                fma = angle_3 - angle_2 + np.pi + 2*np.pi # add 2pi to make it positive
+                fba = np.pi - angle_3 + 2*np.pi
 
-                if rel_angle_1 > np.pi:
-                    nma = rel_angle_1-np.pi
-                else:
-                    nma = rel_angle_1+np.pi
+                # Now make sure each angle is between pi and -pi
+                while nba > np.pi:
+                    nba -= 2*np.pi
+                while nma > np.pi:
+                    nma -= 2*np.pi
+                while ta > np.pi:
+                    ta -= 2*np.pi
+                while fma > np.pi:
+                    fma -= 2*np.pi
+                while fba > np.pi:
+                    fba -= 2*np.pi
 
-                if rel_angle_2 > np.pi:
-                    ta = rel_angle_2-np.pi
-                else:
-                    ta = rel_angle_2+np.pi
-
-                if rel_angle_3 > np.pi:
-                    fma = 3*np.pi-rel_angle_3
-                else:
-                    fma = np.pi-rel_angle_3
-
-                if angle_3 > np.pi:
-                    fba = angle_3-np.pi-rotational_angle
-                else:
-                    fba = angle_3-rotational_angle
-                return DyneinBothBound(nma, fma, params, nba, fba, ta)
+                d = DyneinBothBound(nma, fma, params, nba, fba, ta)
+                if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
+                    return d
 
 if __name__ == "__main__":
     params = importlib.import_module("params")
