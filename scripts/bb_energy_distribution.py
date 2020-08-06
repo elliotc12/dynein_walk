@@ -206,7 +206,7 @@ def generate_random_bb(Lmin, Lmax, params):
         circle = 2*np.pi
         L_error = True
         while(L_error):
-            ''' Pick 4 random uniformly distributed angles for configuration '''
+            # Pick 4 random uniformly distributed angles for configuration
             angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
             angle_1 = np.random.uniform(0,2*np.pi)      # Corresponds to nma
             angle_2 = np.random.uniform(0,2*np.pi)      # Corresponds to ta

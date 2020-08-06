@@ -132,11 +132,12 @@ for i in range(len(L_arr)):
             if np.isnan(dynein.E_total) == True:
                 continue
             else:
-                print('nba:', dynein.nba*180/np.pi)
-                print('nma:', dynein.nma*180/np.pi)
-                print('ta:', dynein.ta*180/np.pi)
-                print('fma:', dynein.fma*180/np.pi)
-                print('fba:', dynein.fba*180/np.pi)
+                print('nba: ', dynein.nba*180/np.pi)
+                print('nma: ', dynein.nma*180/np.pi)
+                print('ta: ', dynein.ta*180/np.pi)
+                print('fma: ', dynein.fma*180/np.pi)
+                print('fba: ', dynein.fba*180/np.pi)
+                print()
                 # Calculating partition function
                 P = np.exp(-b*dynein.E_total)
                 Z += P
