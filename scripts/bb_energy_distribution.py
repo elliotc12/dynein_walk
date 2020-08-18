@@ -201,6 +201,7 @@ class DyneinBothBound:
 def generate_random_bb(Lmin, Lmax, params):
         ''' Generate a random and unbiased BB configuration with length L
            FIXME replace this with something based on distributions_test.py '''
+        plot_dynein = True
         Ls = params.for_simulation['ls']
         Lt = params.for_simulation['lt']
         circle = 2*np.pi
@@ -226,25 +227,43 @@ def generate_random_bb(Lmin, Lmax, params):
                 angle_1 -= rotational_angle
                 angle_2 -= rotational_angle
                 angle_3 -= rotational_angle
-                
+
+
                 # Calculate relative angles according to previous angle
                 nba = angle_0 + 2*np.pi
                 nma = angle_1 - angle_0 + np.pi + 2*np.pi # add 2pi to make it positive
-                ta = angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
+                ta = np.pi - (max(angle_1, angle_2) - min(angle_1,angle_2)) # add 2pi to make it positive
                 fma = angle_3 - angle_2 + np.pi + 2*np.pi # add 2pi to make it positive
-                fba = np.pi - angle_3 + 2*np.pi
+                fba = np.pi - angle_3 + 2*np.pi # FIXME:  fba is inverse 
 
                 # Now make sure each angle is between pi and -pi
-                while nba > np.pi:
+                while nba > 2*np.pi:
                     nba -= 2*np.pi
-                while nma > np.pi:
+                while nma > 2*np.pi:
                     nma -= 2*np.pi
-                while ta > np.pi:
+                while ta > 2*np.pi:
                     ta -= 2*np.pi
-                while fma > np.pi:
+                while fma > 2*np.pi:
                     fma -= 2*np.pi
-                while fba > np.pi:
+                while fba > 2*np.pi:
                     fba -= 2*np.pi
+
+                print('nba: ', nba*180/np.pi)
+                print('nma: ', nma*180/np.pi)
+                print('ta: ', ta*180/np.pi)
+                print('fma: ', fma*180/np.pi)
+                print('fba: ', fba*180/np.pi)
+                print()
+
+                while plot_dynein == True:
+                    r_nb = np.array([0,0])
+                    r_nm = r_nb + np.array([Ls*np.cos(angle_0), Ls*np.sin(angle_0)])
+                    r_t = r_nm + np.array([Lt*np.cos(angle_1), Lt*np.sin(angle_1)])
+                    r_fm = r_t + np.array([Lt*np.cos(angle_2), Lt*np.sin(angle_2)])
+                    r_fb = r_fm + np.array([Ls*np.cos(angle_3), Ls*np.sin(angle_3)])
+                    plt.plot(np.array([r_nb[0], r_nm[0],r_t[0],r_fm[0],r_fb[0]]), np.array([r_nb[1],r_nm[1],r_t[1],r_fm[1],r_fb[1]]), '-o')
+                    plt.show()
+                    plot_dynein = False
 
                 d = DyneinBothBound(nma, fma, params, nba, fba, ta)
                 if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
