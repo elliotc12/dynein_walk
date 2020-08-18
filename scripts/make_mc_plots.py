@@ -101,6 +101,8 @@ k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 plotpath = '../plots/mc_plots/'
+if not os.path.exists(plotpath):
+    os.mkdir(plotpath)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 
 mc_data = np.load(plottingdatapath, allow_pickle=True)
