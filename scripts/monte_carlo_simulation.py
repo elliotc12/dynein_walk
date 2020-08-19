@@ -281,7 +281,7 @@ while Z < N:
                     # FARBOUND State
                     state = 1
 
-                    collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
+                    collect_onebound_data(k, state, dynein.fba, dynein.fma, dynein.nma, dynein.nba,
                                             L, trailing_data)
 
                     # plot_bb_before_step(dynein, 'red', 'blue')
@@ -312,7 +312,7 @@ while Z < N:
                     # NEARBOUND State
                     state = 0
 
-                    collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
+                    collect_onebound_data(k, state, dynein.nba, dynein.nma, dynein.fma, dynein.fba,
                                             L, leading_data)
 
                     # plot_bb_before_step(dynein, 'red', 'blue')
