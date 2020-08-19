@@ -271,13 +271,9 @@ while Z < N:
 
             prob_trailing = P*rate_trailing     #   Unnormalized
             prob_leading = P*rate_leading       #   Unnormalized
-            print('P: ', P)
-            print('Prob trailing: ', prob_trailing)
-            print('Prob leading: ', prob_leading)
-
-
-            new_nma = nma-(np.pi-dynein.nba)
-            new_fma = fma-(np.pi-dynein.fba)
+            # print('P: ', P)
+            # print('Prob trailing: ', prob_trailing)
+            # print('Prob leading: ', prob_leading)
 
             assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
             assert(prob_leading <= 1)
