@@ -45,8 +45,7 @@ max_time = max(i for m in all_ob_time_dict.values() for i in m)
 plt.figure('One Bound Times')
 for j in range(len(kb_arr)):
     plt.hist(all_ob_time_dict[j], label='kb: {0:.2e}, kstk: {1:.2e}'.format(kb_arr[j], kstk_arr[j]), density=True,
-             stacked=True, histtype='step')
-            # weights=np.ones(len(all_ob_time_dict[j]))/len(all_ob_time_dict[j]), stacked=True, histtype='step')
+            stacked=True, histtype='step')
     plt.xticks(fontsize=10)
     # plt.xscale('log')
 plt.xlabel('time (s)')
@@ -69,13 +68,13 @@ for j in range(len(kb_arr)):
     plt.figure()
     for i_disp in initial_disp:
         plt.hist(ob_time_dict[i_disp], label='init disp: {}'.format(i_disp), bins=np.geomspace(1e-13, max_time, num=50), density=True,
-                weights=np.ones(len(ob_time_dict[i_disp]))/len(ob_time_dict[i_disp]), stacked=True, histtype='step')
+                stacked=True, histtype='step')
         plt.xticks(fontsize=8)
     plt.xlabel('time (s)')
     plt.xscale('log')
     plt.ylabel('Probability')
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-    plt.legend()
+    # plt.legend()
     plt.savefig(plotpath+'onebound_time_hist_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 plt.show()
