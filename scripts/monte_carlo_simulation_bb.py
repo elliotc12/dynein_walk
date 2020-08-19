@@ -53,7 +53,7 @@ def collect_bothbound_data(k, self, P, nma, fma, prob):
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(8,51,1))
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(1,51,1))
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e4)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
@@ -144,7 +144,7 @@ for i in range(len(L_arr)):
 
                 rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
                 rate_leading[i] += P*this_rate_leading       #   Not yet normalized
-                print('{} --> {}'.format(Z, N))
+            #    print('{} --> {}'.format(Z, N))
 
             #     if np.random.random() < prob_trailing: # Should normalize this a tad so it is never > 1.
             #             # FARBOUND State
