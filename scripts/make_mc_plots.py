@@ -253,6 +253,20 @@ plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
 
+plt.figure('Prob lagging vs init L')
+
+yildiz_displacements = [10, 20, 30, 40, 50]
+yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
+yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
+plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', linestyle='', capsize=3)
+
+plt.scatter(initial_L, P_unbinding['trailing'], label='Model',color='C1')
+plt.xlabel('Binding domain separation (nm)')
+plt.ylabel('P(lagging step)')
+plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'prob_lagging_vs_0init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
 
 print("""
 TO DO ITEMS:
