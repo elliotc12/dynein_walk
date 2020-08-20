@@ -23,8 +23,13 @@ def unbinding_rate(k_ub, expconst, theta, theta_eq):
         theta_eq = theta_eq*np.pi/180
     return k_ub*np.exp(expconst*(theta-theta_eq))
 
-
 def generate_random_bb(Lmin, Lmax, params):
+    d = generate_random_bb_any_L(params)
+    while d.L < Lmin or d.L > Lmax:
+        d = generate_random_bb_any_L(params)
+    return d
+
+def generate_random_bb_any_L(params):
         ''' Generate a random and unbiased BB configuration with length L'''
         Ls = params.for_simulation['ls']
         Lt = params.for_simulation['lt']
@@ -43,37 +48,35 @@ def generate_random_bb(Lmin, Lmax, params):
             r_fb = r_fm + np.array([Ls*np.cos(angle_3), Ls*np.sin(angle_3)])
             L = np.sqrt(r_fb[0]**2 + r_fb[1]**2)
 
-            # Check if generated L is within L bounds
-            if Lmin < L < Lmax:
-                #  Rotational angle based on fb coordinates
-                rotational_angle = np.arctan2(r_fb[1],r_fb[0])
-                angle_0 -= rotational_angle
-                angle_1 -= rotational_angle
-                angle_2 -= rotational_angle
-                angle_3 -= rotational_angle
+            #  Rotational angle based on fb coordinates
+            rotational_angle = np.arctan2(r_fb[1],r_fb[0])
+            angle_0 -= rotational_angle
+            angle_1 -= rotational_angle
+            angle_2 -= rotational_angle
+            angle_3 -= rotational_angle
 
-                # Calculate relative angles according to previous angle
-                nba = angle_0 + 2*np.pi
-                nma = np.pi + angle_1 - angle_0 + 2*np.pi # add 2pi to make it positive
-                ta = np.pi + angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
-                fma = np.pi + angle_2 - angle_3 + 2*np.pi # add 2pi to make it positive
-                fba = np.pi + angle_3 + 2*np.pi # add 2pi to make it positive
+            # Calculate relative angles according to previous angle
+            nba = angle_0 + 2*np.pi
+            nma = np.pi + angle_1 - angle_0 + 2*np.pi # add 2pi to make it positive
+            ta = np.pi + angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
+            fma = np.pi + angle_2 - angle_3 + 2*np.pi # add 2pi to make it positive
+            fba = np.pi + angle_3 + 2*np.pi # add 2pi to make it positive
 
-                # Now make sure each angle is between pi and -pi
-                while nba > 2*np.pi:
-                    nba -= 2*np.pi
-                while nma > 2*np.pi:
-                    nma -= 2*np.pi
-                while ta > np.pi:
-                    ta -= 2*np.pi
-                while fma > 2*np.pi:
-                    fma -= 2*np.pi
-                while fba > 2*np.pi:
-                    fba -= 2*np.pi
+            # Now make sure each angle is between pi and -pi
+            while nba > 2*np.pi:
+                nba -= 2*np.pi
+            while nma > 2*np.pi:
+                nma -= 2*np.pi
+            while ta > np.pi:
+                ta -= 2*np.pi
+            while fma > 2*np.pi:
+                fma -= 2*np.pi
+            while fba > 2*np.pi:
+                fba -= 2*np.pi
 
-                d = DyneinBothBound(nma, fma, params, nba, fba, ta, L)
-                if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
-                    return d
+            d = DyneinBothBound(nma, fma, params, nba, fba, ta, L)
+            if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
+                return d
 
 
 class DyneinBothBound:

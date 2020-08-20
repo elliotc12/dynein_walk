@@ -15,7 +15,7 @@ import time
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=np.arange(1,51,1))
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=50)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e4)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
@@ -48,46 +48,51 @@ if not os.path.exists(mc_bb_data_dir):
     os.mkdir(mc_bb_data_dir)
 bbdatapath = mc_bb_data_dir + 'bb_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 
-L_arr = np.array(args.L)               # All initial lengths
-rate_leading = np.zeros(len(L_arr))
+dL = 1.0 # 1 nm resolution ???
+L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
+rate_leading = np.zeros_like(L_arr)
 rate_trailing = np.zeros_like(rate_leading)
 
-for i in range(len(L_arr)):
-    start_time = time.time()
-    L = L_arr[i]         # Initial Length
-    print(L)
-    Z = 0                # Partition Function
+start_time = time.time()
+Z = np.zeros_like(L_arr) # Partition Function
+Ndata = np.zeros_like(Z)
 
-    b = 11.82733524          # thermodynamic beta from default_parameters.h
-    eqb_angle = params.for_simulation['eqb']
-    if bb_energy_distribution.eq_in_degrees:
-            eqb_angle = eqb_angle*np.pi/180
+b = 11.82733524          # thermodynamic beta from default_parameters.h
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
 
-    seed = 0
-    np.random.seed(0)
+seed = 0
+np.random.seed(0)
 
-    while Z < args.N:
-            # Making random motor angles
-            dynein = bb_energy_distribution.generate_random_bb(L-0.5, L+0.5, params)
+while Z.min() < args.N:
+        # Making random motor angles
+        dynein = bb_energy_distribution.generate_random_bb_any_L(params)
 
-            # Checking if energy is nan
-            if np.isnan(dynein.E_total) == True:
+        # Checking if energy is nan
+        if np.isnan(dynein.E_total) == True:
+            continue
+        else:
+            # Calculating partition function
+            L = dynein.L # this is the actual length
+            i = int(L/dL+ 0.5) # FIXME check that this goes in the right places!!!
+            if i >= len(L_arr):
                 continue
-            else:
-                # Calculating partition function
-                P = np.exp(-b*dynein.E_total)
-                Z += P
+            P = np.exp(-b*dynein.E_total)
+            Z[i] += P
+            Ndata[i] += 1
 
-                this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-                this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+            this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
+            this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
 
-                rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
-                rate_leading[i] += P*this_rate_leading       #   Not yet normalized
+            rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
+            rate_leading[i] += P*this_rate_leading       #   Not yet normalized
+            print('at L={} we are {} done'.format(L, Z.min()/args.N))
 
-    rate_leading[i] /= Z # Normalize our average, but we're still missing the unbinding rate factor
-    rate_trailing[i] /= Z
-    print('saving to', bbdatapath)
-    np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
-    print('TIME: {}s for N = {}'.format(time.time()-start_time, args.N))
+rate_leading /= Z # Normalize our average, but we're still missing the unbinding rate factor
+rate_trailing /= Z
+print('saving to', bbdatapath)
+np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
+print('TIME: {}s for N = {}'.format(time.time()-start_time, args.N))
 
 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
