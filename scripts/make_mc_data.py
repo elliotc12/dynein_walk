@@ -38,7 +38,8 @@ final_disp_dict = {}
 ob_time_dict = {}
 
 # probability of being a leading step
-P_leading = {}
+P_leading_dict = {}
+P_leading = []
 
 for leading in leading_files:
     leading = leading[len(basepath):]
@@ -81,7 +82,7 @@ for leading in leading_files:
         # calculate probability for step to be leading or trailing
         leading_data_length = len(leading_data['L'])
         trailing_data_length = len(trailing_data['L'])
-        P_leading[iL] = leading_data_length / (leading_data_length + trailing_data_length)
+        P_leading_dict[iL] = leading_data_length / (leading_data_length + trailing_data_length)
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('about to plot_hist', leading)
             plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
@@ -89,8 +90,9 @@ for leading in leading_files:
         if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
             print('unable to load trailing data for', leading)
 
-print(P_leading)
-exit()
+for key in sorted(P_leading_dict.keys()):
+    P_leading.append(P_leading_dict[key])
+
 # Probability of Leading and Trailing Steps Based on Data
 P_leading = np.array(P_leading)
 P_trailing = 1-P_leading
