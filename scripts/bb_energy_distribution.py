@@ -64,7 +64,7 @@ def generate_random_bb(Lmin, Lmax, params):
                     nba -= 2*np.pi
                 while nma > 2*np.pi:
                     nma -= 2*np.pi
-                while ta > 2*np.pi:
+                while ta > np.pi:
                     ta -= 2*np.pi
                 while fma > 2*np.pi:
                     fma -= 2*np.pi

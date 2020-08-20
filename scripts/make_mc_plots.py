@@ -133,6 +133,7 @@ plt.figure('From Data')
 plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
 plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.colorbar()
 plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
@@ -235,6 +236,7 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
@@ -246,6 +248,7 @@ plt.xlabel('initial displacement (nm)')
 plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))

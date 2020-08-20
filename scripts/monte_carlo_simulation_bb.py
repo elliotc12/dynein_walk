@@ -162,7 +162,7 @@ for i in range(len(L_arr)):
     rate_trailing[i] /= Z
     print('saving to', bbdatapath)
     np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
-    print('TIME: {}s for N = {}'.format(time.time()-start_time), N)
+    print('TIME: {}s for N = {}'.format(time.time()-start_time, N)
 
 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
 
