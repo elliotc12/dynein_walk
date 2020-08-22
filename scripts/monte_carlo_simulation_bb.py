@@ -75,7 +75,7 @@ while Z.min() < args.N:
         else:
             # Calculating partition function
             L = dynein.L # this is the actual length
-            i = int(L/dL+ 0.5) # FIXME check that this goes in the right places!!!
+            i = int(L/dL+ 0.5)
             if i >= len(L_arr):
                 continue
             P = np.exp(-b*dynein.E_total)
@@ -87,12 +87,15 @@ while Z.min() < args.N:
 
             rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
             rate_leading[i] += P*this_rate_leading       #   Not yet normalized
-            print('at L={} we are {} done'.format(L, Z.min()/args.N))
+            # print('at L={},  i={}, we are {} done'.format(L,i, Z[i]/args.N))
+
+            current_rate_trailing = rate_trailing/Z
+            current_rate_leading = rate_leading/Z
+            np.savez_compressed(bbdatapath, L=L_arr, rate_leading=current_rate_leading, rate_trailing=current_rate_trailing)
+
+
 
 rate_leading /= Z # Normalize our average, but we're still missing the unbinding rate factor
 rate_trailing /= Z
 print('saving to', bbdatapath)
-np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
-print('TIME: {}s for N = {}'.format(time.time()-start_time, args.N))
-
 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
