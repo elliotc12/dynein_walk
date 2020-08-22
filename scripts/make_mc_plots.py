@@ -253,6 +253,31 @@ plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:
 
 print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
 
+
+# Probability Density for Step Length s
+s_den = np.zeros((len(probability_distribution)))
+s_arr = np.arange(0,len(probability_distribution))
+for i in range(1,len(s_arr)):
+    s_arr[i] = s_arr[i-1] + final_disp_bin_width[i]
+for i in range(len(probability_distribution)):
+    s_range1 = i+ np.arange(0,len(probability_distribution) - i)
+    s_range2 = np.arange(0,len(probability_distribution) - i)
+    s_current = np.zeros((probability_distribution.shape))
+    s_current[s_range1, s_range2] = probability_distribution[s_range1, s_range2]
+    s_current[s_range2, s_range1] = probability_distribution[s_range2, s_range1]
+    s_den[i] = integrate_2d(s_current, final_disp_bin_width, final_disp_bin_width)
+    norm_const = 1/((s_den*final_disp_bin_width).sum()) # dimension 1/length (Is this normalization right??? )
+    s_den = s_den*norm_const
+# Plot Probability Density for Step Length s
+plt.figure('Probability Density of Step Length')
+plt.plot(s_arr,s_den)
+plt.xlabel('Step Length (nm)')
+plt.ylabel('Probability Density (1/nm)')
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+# question: use diagonal boxes only, or use parts of adjacent boxes.
+
+
 plt.figure('Prob lagging vs init L')
 
 yildiz_displacements = [10, 20, 30, 40, 50]
