@@ -271,13 +271,9 @@ while Z < N:
 
             prob_trailing = P*rate_trailing     #   Unnormalized
             prob_leading = P*rate_leading       #   Unnormalized
-            print('P: ', P)
-            print('Prob trailing: ', prob_trailing)
-            print('Prob leading: ', prob_leading)
-
-
-            new_nma = nma-(np.pi-dynein.nba)
-            new_fma = fma-(np.pi-dynein.fba)
+            # print('P: ', P)
+            # print('Prob trailing: ', prob_trailing)
+            # print('Prob leading: ', prob_leading)
 
             assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
             assert(prob_leading <= 1)
@@ -285,7 +281,7 @@ while Z < N:
                     # FARBOUND State
                     state = 1
 
-                    collect_onebound_data(k, state, dynein.fba, new_fma, new_nma, dynein.nba,
+                    collect_onebound_data(k, state, dynein.fba, dynein.fma, dynein.nma, dynein.nba,
                                             L, trailing_data)
 
                     # plot_bb_before_step(dynein, 'red', 'blue')
@@ -316,7 +312,7 @@ while Z < N:
                     # NEARBOUND State
                     state = 0
 
-                    collect_onebound_data(k, state, dynein.nba, new_nma, new_fma, dynein.fba,
+                    collect_onebound_data(k, state, dynein.nba, dynein.nma, dynein.fma, dynein.fba,
                                             L, leading_data)
 
                     # plot_bb_before_step(dynein, 'red', 'blue')
