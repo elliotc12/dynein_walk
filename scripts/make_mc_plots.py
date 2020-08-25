@@ -202,7 +202,7 @@ filtered_probability_distribution = probability_distribution*1.0    # Dimensions
 print('prob_den:', np.sum(p_den_disp*final_disp_bin_width))
 
 # Sum of probability distribution
-probability_distirbution_sum = integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width)
+probability_distribution_sum = integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width)
 
 
 # Filter steps where final and initial displacements are within 4 nm of each other
@@ -251,13 +251,18 @@ plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
-print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width))
+print('FINAL SUM: ', probability_distribution_sum)
 
 
 # Probability Density for Step Length s
 s_den = np.zeros((len(probability_distribution)))
 s_arr = np.arange(0,len(probability_distribution))
 ds = np.sqrt(2)*final_disp_bin_width
+print(s_den)
+print(s_arr)
+print(ds)
+print(probability_distribution, np.shape(probability_distribution))
+print(final_disp_bin_width)
 for i in range(1,len(s_arr)):
     s_arr[i] = s_arr[i-1] + final_disp_bin_width[i]
 for i in range(len(probability_distribution)):
@@ -324,4 +329,4 @@ a) Clean code and make less bug-prone:
   - Add Yildiz fit to the match plot.
   """)
 
-plt.show()
+# plt.show()
