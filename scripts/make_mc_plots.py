@@ -257,6 +257,7 @@ print('FINAL SUM: ', integrate_2d(probability_distribution, final_disp_bin_width
 # Probability Density for Step Length s
 s_den = np.zeros((len(probability_distribution)))
 s_arr = np.arange(0,len(probability_distribution))
+ds = np.sqrt(2)*final_disp_bin_width
 for i in range(1,len(s_arr)):
     s_arr[i] = s_arr[i-1] + final_disp_bin_width[i]
 for i in range(len(probability_distribution)):
@@ -266,7 +267,7 @@ for i in range(len(probability_distribution)):
     s_current[s_range1, s_range2] = probability_distribution[s_range1, s_range2]
     s_current[s_range2, s_range1] = probability_distribution[s_range2, s_range1]
     s_den[i] = integrate_2d(s_current, final_disp_bin_width, final_disp_bin_width)
-    norm_const = 1/((s_den*final_disp_bin_width).sum()) # dimension 1/length (Is this normalization right??? )
+    norm_const = 1/((s_den*ds).sum()) # dimension 1/length (Is this normalization right? )
     s_den = s_den*norm_const
 # Plot Probability Density for Step Length s
 plt.figure('Probability Density of Step Length')

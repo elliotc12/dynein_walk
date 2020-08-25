@@ -14,7 +14,6 @@ import argparse
 import subprocess
 import bb_energy_distribution
 from glob import glob
-import re
 
 params = importlib.import_module("params")
 
