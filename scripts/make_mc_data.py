@@ -83,12 +83,9 @@ for leading in leading_files:
         leading_data_length = len(leading_data['L'])
         trailing_data_length = len(trailing_data['L'])
         P_leading_dict[iL] = leading_data_length / (leading_data_length + trailing_data_length)
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('about to plot_hist', leading)
-            plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
     except:
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('unable to load trailing data for', leading)
+        if path.exists(leading.replace('l', 't', 1)):
+            print('unable to load trailing data for ', leading)
 
 for key in sorted(P_leading_dict.keys()):
     P_leading.append(P_leading_dict[key])

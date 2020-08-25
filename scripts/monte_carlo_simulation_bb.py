@@ -88,7 +88,8 @@ while Z.min() < args.N:
             rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
             rate_leading[i] += P*this_rate_leading       #   Not yet normalized
             # print('at L={},  i={}, we are {} done'.format(L,i, Z[i]/args.N))
-            if np.sum(Ndata) % 100 == 0:
+            if np.sum(Ndata) % 5000 == 0:
+                print('SAVING DATA, progress = {}'.format(Z.min()/args.N))
                 current_rate_trailing = rate_trailing/Z
                 current_rate_leading = rate_leading/Z
                 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=current_rate_leading, rate_trailing=current_rate_trailing)

@@ -104,6 +104,7 @@ plotpath = '../plots/mc_plots/'
 if not os.path.exists(plotpath):
     os.mkdir(plotpath)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
+bbdatapath = '../data/mc_bb_data/bb_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 
 mc_data = np.load(plottingdatapath, allow_pickle=True)
 initial_disp = mc_data['initial_disp']
@@ -258,17 +259,12 @@ print('FINAL SUM: ', probability_distribution_sum)
 s_den = np.zeros((len(probability_distribution)))
 s_arr = np.arange(0,len(probability_distribution))
 ds = np.sqrt(2)*final_disp_bin_width
-print(s_den)
-print(s_arr)
-print(ds)
-print(probability_distribution, np.shape(probability_distribution))
-print(final_disp_bin_width)
 for i in range(1,len(s_arr)):
     s_arr[i] = s_arr[i-1] + final_disp_bin_width[i]
 for i in range(len(probability_distribution)):
     s_range1 = i+ np.arange(0,len(probability_distribution) - i)
     s_range2 = np.arange(0,len(probability_distribution) - i)
-    s_current = np.zeros((probability_distribution.shape))
+    s_current = np.zeros(np.shape(probability_distribution))
     s_current[s_range1, s_range2] = probability_distribution[s_range1, s_range2]
     s_current[s_range2, s_range1] = probability_distribution[s_range2, s_range1]
     s_den[i] = integrate_2d(s_current, final_disp_bin_width, final_disp_bin_width)
@@ -284,6 +280,18 @@ plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.forma
 # question: use diagonal boxes only, or use parts of adjacent boxes.
 
 
+# Bothbound PLOTS
+mc_bb_data = np.load(bbdatapath, allow_pickle=True)
+bb_L = mc_bb_data['L']
+bb_init_disp = np.concatenate((-np.flip(bb_L),bb_L))
+bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
+bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
+bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
+bb_t_trailing = 1/bb_rate_trailing
+bb_t_leading = 1/bb_rate_leading
+bb_t = np.concatenate((np.flip(bb_t_trailing), bb_t_leading))
+
+# Prob Lagging vs Initial L plot
 plt.figure('Prob lagging vs init L')
 
 yildiz_displacements = [10, 20, 30, 40, 50]
@@ -291,12 +299,22 @@ yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', linestyle='', capsize=3)
 
-plt.scatter(initial_L, P_unbinding['trailing'], label='Model',color='C1')
+plt.scatter(bb_L, bb_P_trailing, label='Model',color='C1')
 plt.xlabel('Binding domain separation (nm)')
 plt.ylabel('P(lagging step)')
 plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-plt.savefig(plotpath+'prob_lagging_vs_0init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
+# Bothbound time plot
+plt.figure('BB time plot')
+plt.plot(bb_init_disp, bb_t, label='Trailing',color='C0')
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('Average time (s)')
+plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
 
 
 print("""
