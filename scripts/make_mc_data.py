@@ -84,7 +84,7 @@ for leading in leading_files:
         trailing_data_length = len(trailing_data['L'])
         P_leading_dict[iL] = leading_data_length / (leading_data_length + trailing_data_length)
     except:
-        if path.exists(leading.replace('l', 't', 1)):
+        if not path.exists(leading.replace('l', 't', 1)):
             print('unable to load trailing data for ', leading)
 
 for key in sorted(P_leading_dict.keys()):

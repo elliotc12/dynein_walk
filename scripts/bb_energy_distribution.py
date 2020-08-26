@@ -67,7 +67,7 @@ def generate_random_bb_any_L(params):
                 nba -= 2*np.pi
             while nma > 2*np.pi:
                 nma -= 2*np.pi
-            while ta > np.pi:
+            while ta > 2*np.pi:
                 ta -= 2*np.pi
             while fma > 2*np.pi:
                 fma -= 2*np.pi
@@ -154,7 +154,10 @@ class DyneinBothBound:
 
 
         # calculate all of the energies
-        self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
+        temp_ta = self.ta
+        if temp_ta > np.pi:
+            temp_ta -= 2*np.pi
+        self.E_t = spring_energy(temp_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
         self.E_nm = spring_energy(self.nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_fm = spring_energy(self.fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])
@@ -166,7 +169,7 @@ class DyneinBothBound:
         self.E_total += 0*np.sqrt(self.r_nm[1]) + 0*np.sqrt(self.r_fm[1]) + 0*np.sqrt(self.r_t[1])
 
         # added unbinding prob. for Jin's poster
-        b = 11.82733524 # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
+        b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T']) # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
         self.P = np.exp(-b*self.E_total)
         self.rate_trailing = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
         self.rate_leading = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])

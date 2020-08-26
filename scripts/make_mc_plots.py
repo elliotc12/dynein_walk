@@ -1,5 +1,5 @@
 import os
-from os import path
+from os import path, mkdir
 import numpy as np
 from numpy.linalg import matrix_power
 import matplotlib.pyplot as plt
@@ -101,16 +101,28 @@ k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 plotpath = '../plots/mc_plots/'
-if not os.path.exists(plotpath):
-    os.mkdir(plotpath)
+if not path.exists(plotpath):
+    mkdir(plotpath)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
 bbdatapath = '../data/mc_bb_data/bb_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
+assert(path.exists(bbdatapath)), 'Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params k_b = {0:.2e}, k_stk = {1:.2e}'.format(k_b, k_stk)
 
+# Onebound Data
 mc_data = np.load(plottingdatapath, allow_pickle=True)
 initial_disp = mc_data['initial_disp']
 hist = mc_data['hist']
 normalized_hist = mc_data['normalized_hist']
-P_unbinding = mc_data['P_unbinding'].item()
+# Bothbound Data
+mc_bb_data = np.load(bbdatapath, allow_pickle=True)
+bb_L = mc_bb_data['L']
+bb_init_disp = np.concatenate((-np.flip(bb_L),bb_L))
+bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
+bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
+bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
+bb_P_leading = bb_rate_leading/(bb_rate_leading+bb_rate_trailing)
+bb_t_trailing = 1/bb_rate_trailing
+bb_t_leading = 1/bb_rate_leading
+bb_t = np.concatenate((np.flip(bb_t_trailing), bb_t_leading))
 
 # make bin center the data point (for pcolor)
 initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
@@ -155,6 +167,10 @@ final_L_bin_width[-1] = final_L[-1] - final_L[-2]
 initial_L = final_L
 initial_L_bin_width = final_L_bin_width
 
+# Unbinding probability based on bb simulation
+P_ub_leading = bb_P_leading[initial_L.astype(int)-1]
+P_ub_trailing = bb_P_trailing[initial_L.astype(int)-1]
+
 # Number of steps for Equilibrium
 num_steps = 16
 
@@ -172,7 +188,7 @@ for i in range(len(P)):
     P[:,:]= 0
     P[i] = 1
 
-    P_L_to_L = (L_to_L(T, P_unbinding['leading'], P_unbinding['trailing'])**num_steps)*P      # Dimensionless 2D Array that only has 1 column vector
+    P_L_to_L = (L_to_L(T, P_ub_leading, P_ub_trailing)**num_steps)*P      # Dimensionless 2D Array that only has 1 column vector
     P_L_to_L = np.array(P_L_to_L)[:,0]     # convert to a dimensionless 1D array from a column vector
     # print('P_L_to_L.sum()', P_L_to_L.sum())
     norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
@@ -184,7 +200,7 @@ for i in range(len(P)):
 plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 # print(p_den_L)
-p_den_disp = L_to_initial_displacement(P_unbinding['leading'], P_unbinding['trailing']).dot(p_den_L)   # Dimensions: 1/distance
+p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
 # print(p_den_disp.shape)
 plt.figure('p_den_disp')
 plt.plot(initial_disp, p_den_disp)
@@ -277,29 +293,26 @@ for i in range(len(probability_distribution)):
     s_den[i+len(probability_distribution)-1] = integrate_2d(s_current1, final_disp_bin_width, final_disp_bin_width) # negative step length
     s_den[len(probability_distribution)-i-1] = integrate_2d(s_current2, final_disp_bin_width, final_disp_bin_width) # positive step length
 s_den = s_den/ds # dimensions probability/length
-print('integral: ', integrate_1d(s_den, ds))
+print('1d step length integral: ', integrate_1d(s_den, ds))
+
+# step length histogram from Yildiz 2012 figure 1B top head-labelled panel
+yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*2, [-30]*3, [-29]*1, [-28]*1, [-27]*4, [-26]*4, [-25]*2, [-24]*3, [-23]*4, [-21]*4, [-20]*3,
+                                      [-19]*3, [-18]*5, [-17]*3, [-16]*3, [-15]*7, [-14]*5, [-13]*7, [-12]*12, [-11]*16, [-10]*14, [-9]*20, [-8]*14, [-7]*10, [-6]*9, [-5]*11,
+                                      [-4]*8, [-3]*2, [4]*6, [5]*7, [6]*12, [7]*20, [8]*19, [9]*22, [10]*30, [11]*34, [12]*26, [13]*21, [14]*23, [15]*22, [16]*30, [17]*29,
+                                      [18]*23, [19]*22, [20]*26, [21]*12, [22]*21, [23]*16, [24]*7, [25]*8, [26]*7, [27]*8, [28]*5, [29]*9, [30]*7, [31]*8, [32]*6, [33]*2,
+                                      [34]*2, [35]*9, [36]*4, [37]*9, [38]*5, [39]*1, [40]*2, [41]*1, [42]*3, [43]*2, [44]*4, [45]*4, [46]*1, [47]*1))
 
 # Plot Probability Density for Step Length s
-s_den_fig = plt.figure('Probability Density of Step Length')
-plt.bar(s_arr,s_den)
+plt.figure('Probability Density of Step Length')
+plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
+plt.bar(s_arr,s_den, label='Model', color='C1')
 plt.xlabel('Step Length (nm)')
 plt.ylabel('Probability Density (1/nm)')
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
-plt.show(s_den_fig)
-
 
 # Bothbound PLOTS
-# mc_bb_data = np.load(bbdatapath, allow_pickle=True)
-# bb_L = mc_bb_data['L']
-# bb_init_disp = np.concatenate((-np.flip(bb_L),bb_L))
-# bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
-# bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
-# bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
-# bb_t_trailing = 1/bb_rate_trailing
-# bb_t_leading = 1/bb_rate_leading
-# bb_t = np.concatenate((np.flip(bb_t_trailing), bb_t_leading))
 
 # Prob Lagging vs Initial L plot
 plt.figure('Prob lagging vs init L')
@@ -309,22 +322,22 @@ yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
 yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
 plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', linestyle='', capsize=3)
 
-# plt.scatter(bb_L, bb_P_trailing, label='Model',color='C1')
-# plt.xlabel('Binding domain separation (nm)')
-# plt.ylabel('P(lagging step)')
-# plt.legend()
-# plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-# plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
-#
-# # Bothbound time plot
-# plt.figure('BB time plot')
-# plt.plot(bb_init_disp, bb_t, label='Trailing',color='C0')
-# plt.xlabel('initial displacement (nm)')
-# plt.ylabel('Average time (s)')
-# plt.legend()
-# plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-# plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
-#
+plt.scatter(bb_L, bb_P_trailing, label='Model',color='C1')
+plt.xlabel('Binding domain separation (nm)')
+plt.ylabel('P(lagging step)')
+plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
+# Bothbound time plot
+plt.figure('BB time plot')
+plt.plot(bb_init_disp, bb_t, label='Trailing',color='C0')
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('Average time (s)')
+plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
 
 
 print("""
@@ -356,5 +369,5 @@ a) Clean code and make less bug-prone:
 
   - Add Yildiz fit to the match plot.
   """)
-#
-# plt.show()
+
+plt.show()

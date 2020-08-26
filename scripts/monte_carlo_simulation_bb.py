@@ -57,7 +57,7 @@ start_time = time.time()
 Z = np.zeros_like(L_arr) # Partition Function
 Ndata = np.zeros_like(Z)
 
-b = 11.82733524          # thermodynamic beta from default_parameters.h
+b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
@@ -84,6 +84,8 @@ while Z.min() < args.N:
 
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+            assert(P*this_rate_trailing*0.4 <= 1),"prob trailing > 1"
+            assert(P*this_rate_leading*0.4 <= 1),"prob leading > 1"
 
             rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
             rate_leading[i] += P*this_rate_leading       #   Not yet normalized

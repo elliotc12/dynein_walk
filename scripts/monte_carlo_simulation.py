@@ -109,7 +109,7 @@ k = [0]              # Dynein Count
 L_err = 0.5          # Margin of error for Length
 
 max_unbinding = 1
-b = 11.82733524          # thermodynamic beta from default_parameters.h
+b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
@@ -144,12 +144,12 @@ while Z < N:
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
 
-            prob_trailing = P*rate_trailing     #   Unnormalized
-            prob_leading = P*rate_leading       #   Unnormalized
+            prob_trailing = P*rate_trailing*0.4     #   Unnormalized (*0.4 in order for prob < 1)
+            prob_leading = P*rate_leading*0.4       #   Unnormalized (*0.4 in order for prob < 1)
 
-            assert(prob_trailing <= 1) # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
-            assert(prob_leading <= 1)
-            if np.random.random() < prob_trailing: # Maybe should adjust this a tad so it is never > 1.
+            assert(prob_trailing <= 1),"prob trailing > 1" # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
+            assert(prob_leading <= 1),"prob leading > 1"
+            if np.random.random() < prob_trailing: 
                     # FARBOUND State
                     state = 1
 
