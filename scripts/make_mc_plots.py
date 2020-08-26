@@ -105,7 +105,7 @@ plotpath = '../plots/mc_plots/'
 if not path.exists(plotpath):
     mkdir(plotpath)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
-bbdatapath = '../data/mc_bb_data/bb_exp-unbinding-constant={}.npz'.format(args.C)
+bbdatapath = '../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz'.format(args.C)
 assert(path.exists(bbdatapath)), 'Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}'.format(args.C)
 
 # Onebound Data

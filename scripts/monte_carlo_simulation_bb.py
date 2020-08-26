@@ -46,9 +46,9 @@ dt = args.dt          # Time Step
 mc_bb_data_dir = '../data/mc_bb_data/'
 if not os.path.exists(mc_bb_data_dir):
     os.mkdir(mc_bb_data_dir)
-bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant={}'.format(args.C)
+bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant_{}'.format(args.C)
 
-dL = 1.0 # 1 nm resolution ???
+dL = 1.0 # 1 nm resolution
 L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
 rate_leading = np.zeros_like(L_arr)
 rate_trailing = np.zeros_like(rate_leading)
