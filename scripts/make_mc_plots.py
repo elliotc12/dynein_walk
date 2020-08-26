@@ -95,6 +95,7 @@ params = importlib.import_module("params")
 parser = argparse.ArgumentParser()
 parser.add_argument("-k", "--kb", type=float, help="Binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
+parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
 k_b = float(args.kb)        # Binding Rate Constant
@@ -104,8 +105,8 @@ plotpath = '../plots/mc_plots/'
 if not path.exists(plotpath):
     mkdir(plotpath)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
-bbdatapath = '../data/mc_bb_data/bb_{0:.2e}_{1:.2e}.npz'.format(k_b, k_stk)
-assert(path.exists(bbdatapath)), 'Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params k_b = {0:.2e}, k_stk = {1:.2e}'.format(k_b, k_stk)
+bbdatapath = '../data/mc_bb_data/bb_exp-unbinding-constant={}.npz'.format(args.C)
+assert(path.exists(bbdatapath)), 'Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}'.format(args.C)
 
 # Onebound Data
 mc_data = np.load(plottingdatapath, allow_pickle=True)

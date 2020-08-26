@@ -30,7 +30,7 @@ parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", defaul
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
-params.for_simulation['k_ub'] = args.kub
+k_ub = args.kub
 k_b = args.kb        # Binding Rate Constant
 k_stk = args.ks      # Sticky Rate Constant
 params.for_simulation['cb'] = args.cb
@@ -46,7 +46,7 @@ dt = args.dt          # Time Step
 mc_bb_data_dir = '../data/mc_bb_data/'
 if not os.path.exists(mc_bb_data_dir):
     os.mkdir(mc_bb_data_dir)
-bbdatapath = mc_bb_data_dir + 'bb_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant={}'.format(args.C)
 
 dL = 1.0 # 1 nm resolution ???
 L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
