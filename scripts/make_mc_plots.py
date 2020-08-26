@@ -309,6 +309,7 @@ plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stack
 plt.bar(s_arr,s_den, label='Model', color='C1')
 plt.xlabel('Step Length (nm)')
 plt.ylabel('Probability Density (1/nm)')
+plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
