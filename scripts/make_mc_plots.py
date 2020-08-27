@@ -39,12 +39,12 @@ def least_squares(arr, x, y, dx, dy):
     x2_mean = 0
     xy_mean = 0
 
-    for i in range(len(arr)):
-        for j in range(len(arr[i])):
-            x_mean += arr[i,j]*x[j]*dx[i]*dy[j]
-            y_mean += arr[i,j]*x[i]*dx[i]*dy[j]
-            x2_mean += arr[i,j]*y[j]**2*dx[i]*dy[j]
-            xy_mean += arr[i,j]*y[j]*x[i]*dx[i]*dy[j]
+    for j in range(len(arr)):
+        for i in range(len(arr[j])):
+            x_mean += arr[j,i]*x[i]*dx[i]*dy[j]
+            y_mean += arr[j,i]*y[j]*dx[i]*dy[j]
+            x2_mean += arr[j,i]*x[i]**2*dx[i]*dy[j]
+            xy_mean += arr[j,i]*y[j]*x[i]*dx[i]*dy[j]
 
     # Intercept & Slope for Best-fit
     b = (y_mean*x2_mean-xy_mean*x_mean)/(x2_mean-x_mean**2)
@@ -116,14 +116,12 @@ normalized_hist = mc_data['normalized_hist']
 # Bothbound Data
 mc_bb_data = np.load(bbdatapath, allow_pickle=True)
 bb_L = mc_bb_data['L']
-bb_init_disp = np.concatenate((-np.flip(bb_L),bb_L))
-bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
 bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
-bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
-bb_P_leading = bb_rate_leading/(bb_rate_leading+bb_rate_trailing)
-bb_t_trailing = 1/bb_rate_trailing
-bb_t_leading = 1/bb_rate_leading
-bb_t = np.concatenate((np.flip(bb_t_trailing), bb_t_leading))
+bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
+bb_rate_combined = bb_rate_leading+bb_rate_trailing
+bb_P_trailing = bb_rate_trailing/(bb_rate_combined)
+bb_P_leading = bb_rate_leading/(bb_rate_combined)
+bb_t = 1/bb_rate_combined
 
 # make bin center the data point (for pcolor)
 initial_disp = np.array(sorted(initial_disp)) # -50 to 50 array
@@ -255,7 +253,7 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-plt.savefig(plotpath+'Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+plt.savefig(plotpath+'final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 
@@ -267,15 +265,16 @@ plt.ylabel('final displacement (nm)')
 plt.colorbar()
 plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-plt.savefig(plotpath+'filtered_Match_Yildiz_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
-print('FINAL SUM: ', probability_distribution_sum)
+print('final displacement prob distribution 2d integral: ', probability_distribution_sum)
 
 
-# Probability Density for Step Length s
+# STEP LENGTH (s) PLOTS CALCULATION
 num_disp = len(probability_distribution)
-s_den = np.zeros((2*num_disp-1)) # step length probability density axis
-s_arr = np.zeros_like(s_den) # step length axis
+initial_disp_index = np.arange(0,num_disp)
+s_den = np.zeros((2*num_disp-1))        # step length probability density axis for 1d hist
+s_arr = np.zeros_like(s_den)            # step length axis (or step length bin center)
 ds = np.zeros(2*num_disp-1)
 ds[:num_disp] = final_disp_bin_width
 ds[num_disp:] = final_disp_bin_width[1:]
@@ -284,9 +283,9 @@ s_arr[-1] = np.sum(final_disp_bin_width)-ds[-1]
 for i in range(1,len(ds)-1):
     s_arr[i] = s_arr[i-1] + ds[i]
 
-for i in range(len(probability_distribution)):
-    s_range1 = np.arange(i,len(probability_distribution))
-    s_range2 = np.arange(0,len(probability_distribution) - i)
+for i in initial_disp_index:
+    s_range1 = np.arange(i,num_disp)
+    s_range2 = np.arange(0,num_disp - i)
     s_current1 = np.zeros(np.shape(probability_distribution))
     s_current2 = np.zeros(np.shape(probability_distribution))
     s_current1[s_range1, s_range2] = probability_distribution[s_range1, s_range2]
@@ -303,15 +302,52 @@ yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*
                                       [18]*23, [19]*22, [20]*26, [21]*12, [22]*21, [23]*16, [24]*7, [25]*8, [26]*7, [27]*8, [28]*5, [29]*9, [30]*7, [31]*8, [32]*6, [33]*2,
                                       [34]*2, [35]*9, [36]*4, [37]*9, [38]*5, [39]*1, [40]*2, [41]*1, [42]*3, [43]*2, [44]*4, [45]*4, [46]*1, [47]*1))
 
-# Plot Probability Density for Step Length s
+# 1D hist step length
 plt.figure('Probability Density of Step Length')
-plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
 plt.bar(s_arr,s_den, label='Model', color='C1')
+plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
 plt.xlabel('Step Length (nm)')
 plt.ylabel('Probability Density (1/nm)')
 plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
+
+
+# 2D probability distribution of step length
+s_bin_edges = np.zeros(len(s_arr)+1)
+for i in range(1,len(s_bin_edges)-1):
+    s_bin_edges[i] = (s_arr[i-1] + s_arr[i])*0.5
+s_bin_edges[0] = 2*s_arr[0] - s_bin_edges[1]
+s_bin_edges[-1] = 2*s_arr[-1] - s_bin_edges[-2]
+
+s_initial_disp_edge, s_final_disp_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
+s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
+
+s_probability_distribution = np.zeros((2*num_disp-1,num_disp))
+for j in initial_disp_index:
+    s_probability_distribution[initial_disp_index+num_disp-1-j,j] = probability_distribution[initial_disp_index,j]*final_disp_bin_width
+    s_probability_distribution[:,j] /= s_bin_width
+
+# Intercept & Slope for Best-fit of step length
+s_b, s_m, s_lin_fit = least_squares(s_probability_distribution, initial_disp, s_arr, final_disp_bin_width, s_bin_width)
+
+print('step length prob distribution 2d integral: ', integrate_2d(s_probability_distribution, final_disp_bin_width, s_bin_width))
+
+# Yildiz step length vs initial disp line
+yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(initial_disp)]
+
+# 2D hist step_length
+plt.figure('Step length probability distribution')
+plt.pcolor(s_initial_disp_edge, s_final_disp_edge, s_probability_distribution)
+plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
+plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
+plt.xlabel('initial displacement (nm)')
+plt.ylabel('step length (nm)')
+plt.ylim(-50,50)
+plt.colorbar()
+plt.legend()
+plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
+plt.savefig(plotpath+'step_length_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
 # Bothbound PLOTS
@@ -333,8 +369,8 @@ plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(k
 
 # Bothbound time plot
 plt.figure('BB time plot')
-plt.plot(bb_init_disp, bb_t, label='Trailing',color='C0')
-plt.xlabel('initial displacement (nm)')
+plt.plot(bb_L, bb_t,color='C0')
+plt.xlabel('initial L (nm)')
 plt.ylabel('Average time (s)')
 plt.legend()
 plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
