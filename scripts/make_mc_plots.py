@@ -243,7 +243,7 @@ b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_di
 # Intercept & Slope for Best-fit Filtered
 b_filt, m_filt, lin_fit_filt = least_squares(filtered_probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
-
+step_length_edge = final_disp_edge - initial_disp_edge
 
 plt.figure('Probability Distribution to Match Yildiz')
 plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
@@ -295,6 +295,13 @@ for i in initial_disp_index:
 s_den = s_den/ds # dimensions probability/length
 print('1d step length integral: ', integrate_1d(s_den, ds))
 
+# 2D probability distribution of step length
+s_bin_edges = np.zeros(len(s_arr)+1)
+for i in range(1,len(s_bin_edges)-1):
+    s_bin_edges[i] = (s_arr[i-1] + s_arr[i])*0.5
+s_bin_edges[0] = 2*s_arr[0] - s_bin_edges[1]
+s_bin_edges[-1] = 2*s_arr[-1] - s_bin_edges[-2]
+
 # step length histogram from Yildiz 2012 figure 1B top head-labelled panel
 yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*2, [-30]*3, [-29]*1, [-28]*1, [-27]*4, [-26]*4, [-25]*2, [-24]*3, [-23]*4, [-21]*4, [-20]*3,
                                       [-19]*3, [-18]*5, [-17]*3, [-16]*3, [-15]*7, [-14]*5, [-13]*7, [-12]*12, [-11]*16, [-10]*14, [-9]*20, [-8]*14, [-7]*10, [-6]*9, [-5]*11,
@@ -304,7 +311,8 @@ yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*
 
 # 1D hist step length
 plt.figure('Probability Density of Step Length')
-plt.bar(s_arr,s_den, label='Model', color='C1')
+# plt.bar(s_arr,s_den, width=5, label='Model', color='C1')
+plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
 plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
 plt.xlabel('Step Length (nm)')
 plt.ylabel('Probability Density (1/nm)')
@@ -313,12 +321,6 @@ plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
 plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 
-# 2D probability distribution of step length
-s_bin_edges = np.zeros(len(s_arr)+1)
-for i in range(1,len(s_bin_edges)-1):
-    s_bin_edges[i] = (s_arr[i-1] + s_arr[i])*0.5
-s_bin_edges[0] = 2*s_arr[0] - s_bin_edges[1]
-s_bin_edges[-1] = 2*s_arr[-1] - s_bin_edges[-2]
 
 s_initial_disp_edge, s_final_disp_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
 s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
@@ -408,4 +410,4 @@ a) Clean code and make less bug-prone:
   - Add Yildiz fit to the match plot.
   """)
 
-plt.show()
+# plt.show()
