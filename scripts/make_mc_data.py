@@ -28,7 +28,6 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
-plotpath = '../plots/mc_plots/'
 datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 leading_files = glob('{}/l_*.txt'.format(basepath))
