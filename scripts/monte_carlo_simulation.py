@@ -1,9 +1,5 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
-from statistics import mean
-import scipy.constants
 import sys
 sys.path.append("../data")
 import importlib
@@ -117,13 +113,11 @@ if bb_energy_distribution.eq_in_degrees:
 # Onebound Data
 trailing_data = {   # Trailing step data
         'L': [],
-        't': [],
-        'step_length': [],
+        't': []
 }
 leading_data = {    # Leading step data
         'L': [],
-        't': [],
-        'step_length': [],
+        't': []
 }
 
 seed = 0
@@ -149,7 +143,7 @@ while Z < N:
 
             assert(prob_trailing <= 1),"prob trailing > 1" # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
             assert(prob_leading <= 1),"prob leading > 1"
-            if np.random.random() < prob_trailing: 
+            if np.random.random() < prob_trailing:
                     # FARBOUND State
                     state = 1
 

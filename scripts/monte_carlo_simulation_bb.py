@@ -1,9 +1,5 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
-from statistics import mean
-import scipy.constants
 import sys
 sys.path.append("../data")
 import importlib
