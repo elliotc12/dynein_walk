@@ -147,10 +147,7 @@ class DyneinBothBound:
             self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
             self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
             self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
-            self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
-            self.Lf = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.fma))
-            self.na = np.arccos((self.Ln**2+self.L**2-self.Lf**2)/(2*self.Ln*self.L))
-            self.r_t = self.r_nb + np.array([self.Ln*np.cos(self.na), self.Ln*np.sin(self.na)])
+            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma+self.nba-np.pi), self.Lt*np.sin(self.nma+self.nba-np.pi)])
 
 
         # calculate all of the energies
