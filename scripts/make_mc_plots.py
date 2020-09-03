@@ -176,7 +176,7 @@ def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trai
 
     return probability_distribution
 
-def make_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, b, m, lin_fit):
+def make_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, b, m, lin_fit, **_):
     plt.figure('Probability Distribution to Match Yildiz')
     plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
     plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
@@ -380,7 +380,7 @@ def main():
     # Linear regression of probability distribution plot
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
-    make_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, b, m, lin_fit)
+    make_prob_dist_plot(**locals())
     # make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
     make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
     make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t)
@@ -390,7 +390,7 @@ def main():
 if __name__ == "__main__":
     params = importlib.import_module("params")
     main()
-    # plt.show()
+    plt.show()
     print("""
     TO DO ITEMS:
 
