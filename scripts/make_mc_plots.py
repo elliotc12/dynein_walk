@@ -221,6 +221,13 @@ def make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_ed
 
 def make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width):
     step_length_edge = final_disp_edge - initial_disp_edge
+    plt.figure('Weird step length prob distribution')
+    plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
+    plt.xlabel('initial displacement (nm)')
+    plt.ylabel('final displacement (nm)')
+    plt.colorbar()
+    plt.legend()
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
 
     # STEP LENGTH (s) PLOTS CALCULATION
     num_disp = len(probability_distribution)
@@ -263,14 +270,13 @@ def make_step_length_plots(args, probability_distribution, initial_disp_edge, fi
 
     # 1D hist step length
     plt.figure('Probability Density of Step Length')
-    # plt.bar(s_arr,s_den, width=5, label='Model', color='C1')
     plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
     plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     s_initial_disp_edge, s_final_disp_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
     s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
@@ -316,7 +322,7 @@ def make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t):
     plt.ylabel('P(lagging step)')
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     # Bothbound time plot
     plt.figure('BB time plot')
@@ -325,7 +331,7 @@ def make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t):
     plt.ylabel('Average time (s)')
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
 def bug_checking_plots():
@@ -335,7 +341,7 @@ def bug_checking_plots():
     plt.ylabel('final displacement (nm)')
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, k_stk))
     plt.colorbar()
-    plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     # Plot L to L probability density
     plt.figure('prob density')
@@ -346,13 +352,13 @@ def bug_checking_plots():
     # Obtain L to L probability density
     for i in range(len(P)):
         plt.plot(final_L, p_den_L, label=f'i is {i}')
-    plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     plt.figure('p_den_disp')
     plt.plot(initial_disp, p_den_disp)
     plt.xlabel('displacement')
     plt.ylabel('probability density')
-    plt.savefig(plotpath+'Probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # plt.savefig(plotpath+'Probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
 def main():
@@ -375,7 +381,7 @@ def main():
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
     make_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, b, m, lin_fit)
-    make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
+    # make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
     make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
     make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t)
 
@@ -384,7 +390,7 @@ def main():
 if __name__ == "__main__":
     params = importlib.import_module("params")
     main()
-    plt.show()
+    # plt.show()
     print("""
     TO DO ITEMS:
 
