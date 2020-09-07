@@ -75,6 +75,7 @@ int main(int argc, char** argv) {
   if (state == 1) {
     s = FARBOUND;
   }
+  bool mc = true;
   binding_mode = EXPONENTIAL_UNBINDING;
 
   Rand* rand = new Rand(RAND_INIT_SEED);
@@ -82,7 +83,7 @@ int main(int argc, char** argv) {
   // Does this onebound resemble with the bothbound orientation
 
   // fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
-  Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
+  Dynein_onebound* dynein = new Dynein_onebound(mc, bba, bma, uma, uba, bbx, bby,
                                                 s,
                                                 NULL,
                                                 NULL,
@@ -90,14 +91,15 @@ int main(int argc, char** argv) {
                                                 rand);
   // fprintf(stderr, "Starting with %g %g %g %g\n",
   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-
+  // fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", 
+  //	dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
+	
   double t = 0;
   long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_bbx(), dynein->get_bby());
   // fprintf(stderr, "I am initially %g %g\n", dynein->get_ubx(), dynein->get_uby());
-
   // FILE *log_f = NULL;
   // if (k == 1) {
   //   log_f = fopen("raw-data-1.dat", "w");
@@ -117,7 +119,14 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    //fprintf(stderr, "The time is %g\n", t);
+    // if (iter%500000 == 0){
+    //	fprintf(stderr, "The time is %g\n", t);
+    // 	fprintf(stderr, "bby %g\n", dynein->get_bby());
+    //	fprintf(stderr, "bmy %g\n", dynein->get_bmy());
+    //	fprintf(stderr, "ty %g\n", dynein->get_ty());
+    //	fprintf(stderr, "umy %g\n", dynein->get_umy());
+    //	fprintf(stderr, "uby %g\n", dynein->get_uby());
+    //  }
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
@@ -139,7 +148,7 @@ int main(int argc, char** argv) {
         dynein->set_bma(old_bma);
         dynein->set_uma(old_uma);
         dynein->set_uba(old_uba);
-        dynein->update_velocities();    // This update_velocities() was added (?)
+        dynein->update_velocities();   
       }
 
       double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;
@@ -152,7 +161,7 @@ int main(int argc, char** argv) {
       dynein->set_uma(temp_uma);
       dynein->set_uba(temp_uba);
 
-      accept_step = dynein->update_velocities(); //NOTE: double check why this is a bool and not void
+      accept_step = dynein->update_velocities(); //
 
       attempts++;
     }

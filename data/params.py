@@ -2,7 +2,7 @@
 
 for_simulation= {"k_b": 5.5e9, # 3.4e9, # previously 3e6
                  "k_ub": 30,
-                 "k_stk": 1e6,  # NEW: Sticky Rate
+                 "k_stk": 1e9,  # NEW: Sticky Rate
                  "cb": 0.08,
                  "cm": 1.05,
                  "ct": 0.36,
@@ -24,6 +24,8 @@ for_simulation= {"k_b": 5.5e9, # 3.4e9, # previously 3e6
                  "nomovie": True,
                  "angle-logging-mode": False,
                  "long-angle-logging-mode": False,
-                 "label": "test"
+                 "label": "test",
+                 "boltzmann-constant": 2.726097017, # kB in ATP energies per K (from default_parameters.h)
+                 "T": 310.15  # temperature in K
 }
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09

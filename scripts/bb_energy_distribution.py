@@ -23,8 +23,60 @@ def unbinding_rate(k_ub, expconst, theta, theta_eq):
         theta_eq = theta_eq*np.pi/180
     return k_ub*np.exp(expconst*(theta-theta_eq))
 
+def generate_random_bb(Lmin, Lmax, params):
+    d = generate_random_bb_any_L(params)
+    while d.L < Lmin or d.L > Lmax:
+        d = generate_random_bb_any_L(params)
+    return d
 
+def generate_random_bb_any_L(params):
+        ''' Generate a random and unbiased BB configuration with length L'''
+        Ls = params.for_simulation['ls']
+        Lt = params.for_simulation['lt']
+        circle = 2*np.pi
+        while True:
+            # Pick 4 random uniformly distributed angles for configuration
+            angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
+            angle_1 = np.random.uniform(0,2*np.pi)      # Corresponds to nma
+            angle_2 = np.random.uniform(0,2*np.pi)      # Corresponds to ta
+            angle_3 = np.random.uniform(0,2*np.pi)      # Corresponds to tma
+                                                        # tba found from angle_3
+            r_nb = np.array([0,0])
+            r_nm = r_nb + np.array([Ls*np.cos(angle_0), Ls*np.sin(angle_0)])
+            r_t = r_nm + np.array([Lt*np.cos(angle_1), Lt*np.sin(angle_1)])
+            r_fm = r_t + np.array([Lt*np.cos(angle_2), Lt*np.sin(angle_2)])
+            r_fb = r_fm + np.array([Ls*np.cos(angle_3), Ls*np.sin(angle_3)])
+            L = np.sqrt(r_fb[0]**2 + r_fb[1]**2)
 
+            #  Rotational angle based on fb coordinates
+            rotational_angle = np.arctan2(r_fb[1],r_fb[0])
+            angle_0 -= rotational_angle
+            angle_1 -= rotational_angle
+            angle_2 -= rotational_angle
+            angle_3 -= rotational_angle
+
+            # Calculate relative angles according to previous angle
+            nba = angle_0 + 2*np.pi
+            nma = np.pi + angle_1 - angle_0 + 2*np.pi # add 2pi to make it positive
+            ta = np.pi + angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
+            fma = np.pi + angle_2 - angle_3 + 2*np.pi # add 2pi to make it positive
+            fba = np.pi + angle_3 + 2*np.pi # add 2pi to make it positive
+
+            # Now make sure each angle is between pi and -pi
+            while nba > 2*np.pi:
+                nba -= 2*np.pi
+            while nma > 2*np.pi:
+                nma -= 2*np.pi
+            while ta > 2*np.pi:
+                ta -= 2*np.pi
+            while fma > 2*np.pi:
+                fma -= 2*np.pi
+            while fba > 2*np.pi:
+                fba -= 2*np.pi
+
+            d = DyneinBothBound(nma, fma, params, nba, fba, ta, L)
+            if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
+                return d
 
 
 class DyneinBothBound:
@@ -37,7 +89,7 @@ class DyneinBothBound:
         self.fma = fma
         self.Lt = params.for_simulation['lt']
         self.Ls = params.for_simulation['ls']
-        if L is not None and nba is None and fba is None and ta is None:
+        if nba is None and fba is None and ta is None:
             self.L = L
 
             self.Ln = np.sqrt(self.Ls**2+self.Lt**2-2*self.Ls*self.Lt*np.cos(2*np.pi-self.nma))
@@ -88,16 +140,21 @@ class DyneinBothBound:
             self.nba = nba
             self.fba = fba
             self.ta = ta
+            self.L = L
 
             # calculate positions
             self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
+            self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
             self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
-            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma), self.Lt*np.sin(self.nma)])
-            self.r_fm = self.r_t + np.array([self.Lt*np.cos(self.ta), self.Lt*np.sin(self.ta)])
-            self.r_fb = self.r_fm + np.array([self.Ls*np.cos(self.fma), self.Ls*np.sin(self.fma)])
+            self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
+            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma+self.nba-np.pi), self.Lt*np.sin(self.nma+self.nba-np.pi)])
+
 
         # calculate all of the energies
-        self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
+        temp_ta = self.ta
+        if temp_ta > np.pi:
+            temp_ta -= 2*np.pi
+        self.E_t = spring_energy(temp_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
         self.E_nm = spring_energy(self.nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_fm = spring_energy(self.fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])
@@ -109,7 +166,7 @@ class DyneinBothBound:
         self.E_total += 0*np.sqrt(self.r_nm[1]) + 0*np.sqrt(self.r_fm[1]) + 0*np.sqrt(self.r_t[1])
 
         # added unbinding prob. for Jin's poster
-        b = 11.82733524 # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
+        b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T']) # thermodynamic beta from default_parameters.h, inverse of temperature in ATP units
         self.P = np.exp(-b*self.E_total)
         self.rate_trailing = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.nba, params.for_simulation['eqb'])
         self.rate_leading = unbinding_rate(1, params.for_simulation['exp-unbinding-constant'], self.fba, params.for_simulation['eqb'])
@@ -197,58 +254,6 @@ class DyneinBothBound:
         ax2.axis('off')
         ax2.axis('equal')
         ax2.legend()
-
-def generate_random_bb(Lmin, Lmax, params):
-        ''' Generate a random and unbiased BB configuration with length L
-           FIXME replace this with something based on distributions_test.py '''
-        Ls = params.for_simulation['ls']
-        Lt = params.for_simulation['lt']
-        circle = 2*np.pi
-        while True:
-            # Pick 4 random uniformly distributed angles for configuration
-            angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
-            angle_1 = np.random.uniform(0,2*np.pi)      # Corresponds to nma
-            angle_2 = np.random.uniform(0,2*np.pi)      # Corresponds to ta
-            angle_3 = np.random.uniform(0,2*np.pi)      # Corresponds to tma
-                                                        # tba found from angle_3
-            r_nb = np.array([0,0])
-            r_nm = r_nb + np.array([Ls*np.cos(angle_0), Ls*np.sin(angle_0)])
-            r_t = r_nm + np.array([Lt*np.cos(angle_1), Lt*np.sin(angle_1)])
-            r_fm = r_t + np.array([Lt*np.cos(angle_2), Lt*np.sin(angle_2)])
-            r_fb = r_fm + np.array([Ls*np.cos(angle_3), Ls*np.sin(angle_3)])
-            L = np.sqrt(r_fb[0]**2 + r_fb[1]**2)
-
-            # Check if generated L is within L bounds
-            if Lmin < L < Lmax:
-                #  Rotational angle based on fb coordinates
-                rotational_angle = np.arctan2(r_fb[1],r_fb[0])
-                angle_0 -= rotational_angle
-                angle_1 -= rotational_angle
-                angle_2 -= rotational_angle
-                angle_3 -= rotational_angle
-                
-                # Calculate relative angles according to previous angle
-                nba = angle_0 + 2*np.pi
-                nma = angle_1 - angle_0 + np.pi + 2*np.pi # add 2pi to make it positive
-                ta = angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
-                fma = angle_3 - angle_2 + np.pi + 2*np.pi # add 2pi to make it positive
-                fba = np.pi - angle_3 + 2*np.pi
-
-                # Now make sure each angle is between pi and -pi
-                while nba > np.pi:
-                    nba -= 2*np.pi
-                while nma > np.pi:
-                    nma -= 2*np.pi
-                while ta > np.pi:
-                    ta -= 2*np.pi
-                while fma > np.pi:
-                    fma -= 2*np.pi
-                while fba > np.pi:
-                    fba -= 2*np.pi
-
-                d = DyneinBothBound(nma, fma, params, nba, fba, ta)
-                if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
-                    return d
 
 if __name__ == "__main__":
     params = importlib.import_module("params")

@@ -28,7 +28,6 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 
 basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
-plotpath = '../plots/mc_plots/'
 datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
 leading_files = glob('{}/l_*.txt'.format(basepath))
@@ -38,6 +37,7 @@ final_disp_dict = {}
 ob_time_dict = {}
 
 # probability of being a leading step
+P_leading_dict = {}
 P_leading = []
 
 for leading in leading_files:
@@ -81,14 +81,13 @@ for leading in leading_files:
         # calculate probability for step to be leading or trailing
         leading_data_length = len(leading_data['L'])
         trailing_data_length = len(trailing_data['L'])
-        Prob_ld = leading_data_length / (leading_data_length + trailing_data_length)
-        P_leading.append(Prob_ld)
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('about to plot_hist', leading)
-            plot_hist(iL, N, k_b, dt, cb, cm, ct, C)
+        P_leading_dict[iL] = leading_data_length / (leading_data_length + trailing_data_length)
     except:
-        if path.exists(plotpath+'hist_final_L_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.pdf'.format(iL, N, k_b, dt, cb, cm, ct, C)):
-            print('unable to load trailing data for', leading)
+        if not path.exists(leading.replace('l', 't', 1)):
+            print('unable to load trailing data for ', leading)
+
+for key in sorted(P_leading_dict.keys()):
+    P_leading.append(P_leading_dict[key])
 
 # Probability of Leading and Trailing Steps Based on Data
 P_leading = np.array(P_leading)

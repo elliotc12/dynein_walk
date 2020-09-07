@@ -26,7 +26,31 @@
 \begin{abstract}
   Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
 \end{abstract}
-  
+
+\section*{TODO August 2020}
+\begin{enumerate}
+  \item Get new simulations working !!!!!!!!!!!!!!!!!!!
+  \item Articulate data we fit to
+  \begin{enumerate}
+    \item Velocity -> unbinding rate
+    \item Ratio of leading vs trailing steps -> exponential parameter
+    \item Average step length -> other parameters
+    \item Yildiz weird slope -> sticky rate + binding rate
+    \item Avoid instant rebinds -> sticky rate
+    \item Time to kick from MD??
+    \item efficiency (affects instant rebind)
+  \end{enumerate}
+  \item Do the fit (requires 1 above)
+  \item Could have a fixed binding immunity time rather than sticky rate
+  \paragraph{Advantages of immunity time}
+  \begin{enumerate}
+    \item Might accurately reflect a diffusive escape from an energy well
+  \end{enumerate}
+  \paragraph{Advantages of sticky rate}
+  \begin{enumerate}
+    \item Accurately reflects the dynamics of a chemical process
+  \end{enumerate}
+\end{enumerate}
 
 %% \dropcap{C}ytoplasmic dynein-1 is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
 
@@ -172,9 +196,26 @@ The transitions between prestroke and poststroke events in the mechanochemical c
   \section*{Simulating the model}
   Simulations began in the poststroke equilibrium state. The model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{bb}, \dot{\theta}_{bm}, \dot{\theta}_{um}, \dot{\theta}_{ub}\}$, using a timestep of $dt = 10^{-10}s$. In the prestroke state, during each timestep the model had a $k_b*dt$ probability of transitioning into the poststroke state, where $k_b = k_b^0\left(1-H\left(X_{uby}-0.1\right)\right)$, where H is the Heaviside function. On transition to poststroke, proper $\theta_{nm}$ and $\theta_{fm}$ angles and proper interhead separation $L$ were calculated to yield a poststroke model with identical cartesian positions to the old poststroke, except with the previously unbound binding domain moved to $y=0$. Once in poststroke, the model was time-evolved via Euler's Method using analytic expressions for $\{\dot{\theta}_{nm}$ and $\dot{\theta}_{fm}\}$ and a timestep of $dt=10^{-10}s$. Each timestep, the poststroke model had a $k_{ub}*dt$ chance of transitioning to prestroke, where $k_{ub} = k^0_{ub}e^{-c(\theta-\theta_{eq})}$. On transitioning, proper values of $\{\theta_{bb}, \theta_{bm}, \theta_{um}, \theta_{ub}\}$ were calculated to create a prestroke model with identical cartesian positions to the old poststroke model.
 
-  \section*{Calculating leading/lagging probability vs displacement}
+  %% \section*{Calculating leading/lagging probability vs displacement}
 
-  \section*{Calculating force-dependent velocities}
+  %% \section*{Calculating force-dependent velocities}
+
+\section*{Fitting model parameters}
+
+\subsection*{$L_t$, $L_s$, $R_b$, $R_m$, $R_s$, $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$}
+Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
+
+\subsection*{$c_b$, $c_m$, $c_t$}
+Spring constants $c_b$, $c_m$ and $c_t$ were fit using the dynein step length distribution from \cite{yildizpaper}. Three spring constants were drawn uniformly from range $[0.0, 4.0]$ and a simulation was run for 10s simulation time with $k_b=X$, $k_{ub}=Y$, $k_{stk}=Z$, and other parameters noted in Table \ref{tab:params}. One thousand simulations total were run, and the set of spring constants which yielded the lowest root-mean-squared histogram error between the simulation and experimental step length distributions was chosen. \textbf{Probably need to rerun this using our final $k_b$, $k_{ub}$ and $k_{stk}$.}
+
+\subsection*{$k_{ub}$}
+The unbinding rate $k_{ub}$ was estimated from velocity data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 124 nm/s was chosen, as shown in Figure \ref{fig:behavior}.
+
+\subsection*{$c$}
+The exponential unbinding parameter $c$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:tensiongating}. All other parameters were held at the values in Table \ref{tab:params}.
+
+\subsection*{$k_b$, $k_{stk}$}
+The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-final displacement slope?
 
 
 \section{Results}

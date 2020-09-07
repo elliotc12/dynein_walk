@@ -134,6 +134,14 @@ public:
 		  onebound_forces *brownian_test,
 		  onebound_equilibrium_angles* eq_angles,
 		  Rand* mtrand);
+ 
+  Dynein_onebound(bool mc, double bba_init, double bma_init, double fma_init, double fba_init,
+		  double bbx_init, double bby_init, State s,
+		  onebound_forces *internal_test,
+		  onebound_forces *brownian_test,
+		  onebound_equilibrium_angles* eq_angles,
+		  Rand* mtrand);
+
 
   Dynein_onebound(Dynein_bothbound* old_dynein, Rand* rand, State s);
 
