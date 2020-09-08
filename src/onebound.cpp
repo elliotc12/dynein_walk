@@ -91,9 +91,10 @@ int main(int argc, char** argv) {
                                                 rand);
   // fprintf(stderr, "Starting with %g %g %g %g\n",
   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-  // fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", 
-  //	dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
-	
+  if (k ==5){
+  	fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
+  }
+
   double t = 0;
   long iter = 0;
   bool stillStepping = true;
@@ -119,14 +120,14 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    // if (iter%500000 == 0){
-    //	fprintf(stderr, "The time is %g\n", t);
-    // 	fprintf(stderr, "bby %g\n", dynein->get_bby());
-    //	fprintf(stderr, "bmy %g\n", dynein->get_bmy());
-    //	fprintf(stderr, "ty %g\n", dynein->get_ty());
-    //	fprintf(stderr, "umy %g\n", dynein->get_umy());
-    //	fprintf(stderr, "uby %g\n", dynein->get_uby());
-    //  }
+    if (iter%500000 == 0 && k == 5){
+    	fprintf(stderr, "The time is %g\n", t);
+     	fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
+    	fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
+    	fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
+    	fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
+    	fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
+    }
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
