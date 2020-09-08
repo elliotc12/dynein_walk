@@ -54,27 +54,13 @@ def generate_random_bb_any_L(params):
             angle_1 -= rotational_angle
             angle_2 -= rotational_angle
             angle_3 -= rotational_angle
+            angle_4 = np.pi + angle_3
 
-            # Calculate relative angles according to previous angle
-            nba = angle_0 + 2*np.pi
-            nma = np.pi + angle_1 - angle_0 + 2*np.pi # add 2pi to make it positive
-            ta = np.pi + angle_2 - angle_1 + 2*np.pi # add 2pi to make it positive
-            fma = np.pi + angle_2 - angle_3 + 2*np.pi # add 2pi to make it positive
-            fba = np.pi + angle_3 + 2*np.pi # add 2pi to make it positive
+            # Make sure fba is less than 2pi
+            while angle_4 > 2*np.pi:
+                angle_4 -= 2*np.pi
 
-            # Now make sure each angle is between pi and -pi
-            while nba > 2*np.pi:
-                nba -= 2*np.pi
-            while nma > 2*np.pi:
-                nma -= 2*np.pi
-            while ta > 2*np.pi:
-                ta -= 2*np.pi
-            while fma > 2*np.pi:
-                fma -= 2*np.pi
-            while fba > 2*np.pi:
-                fba -= 2*np.pi
-
-            d = DyneinBothBound(nma, fma, params, nba, fba, ta, L)
+            d = DyneinBothBound(angle_1, angle_3, params, angle_0, angle_4, angle_2, L)
             if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
                 return d
 
@@ -147,18 +133,36 @@ class DyneinBothBound:
             self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
             self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
             self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
-            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma+self.nba-np.pi), self.Lt*np.sin(self.nma+self.nba-np.pi)])
+            self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma), self.Lt*np.sin(self.nma)])
 
+        # Calculate relative angles according to previous angle for spring energies
+        self.rel_nba = self.nba + 2*np.pi
+        self.rel_nma = np.pi + self.nma - self.nba + 2*np.pi # add 2pi to make it positive
+        self.rel_ta = np.pi + self.ta - self.nma + 2*np.pi # add 2pi to make it positive
+        self.rel_fma = np.pi + self.ta - self.fma + 2*np.pi # add 2pi to make it positive
+        self.rel_fba = self.fba + 2*np.pi # add 2pi to make it positive
+
+        # Now make sure each angle is between 0 and 2pi
+        while self.rel_nba > 2*np.pi:
+            self.rel_nba -= 2*np.pi
+        while self.rel_nma > 2*np.pi:
+            self.rel_nma -= 2*np.pi
+        while self.rel_ta > 2*np.pi:
+            self.rel_ta -= 2*np.pi
+        while self.rel_fma > 2*np.pi:
+            self.rel_fma -= 2*np.pi
+        while self.rel_fba > 2*np.pi:
+            self.rel_fba -= 2*np.pi
 
         # calculate all of the energies
-        temp_ta = self.ta
+        temp_ta = self.rel_ta
         if temp_ta > np.pi:
             temp_ta -= 2*np.pi
         self.E_t = spring_energy(temp_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
-        self.E_nm = spring_energy(self.nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
-        self.E_fm = spring_energy(self.fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
-        self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])
-        self.E_fb = spring_energy(self.fba, params.for_simulation['eqb'], params.for_simulation['cb'])
+        self.E_nm = spring_energy(self.rel_nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
+        self.E_fm = spring_energy(self.rel_fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
+        self.E_nb = spring_energy(self.rel_nba, params.for_simulation['eqb'], params.for_simulation['cb'])
+        self.E_fb = spring_energy(self.rel_fba, params.for_simulation['eqb'], params.for_simulation['cb'])
 
         self.E_total = self.E_t+self.E_nm+self.E_fm+self.E_nb+self.E_fb
 

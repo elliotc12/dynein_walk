@@ -135,8 +135,8 @@ while Z < N:
             # Calculating partition function
             P = np.exp(-b*dynein.E_total)
             Z += P
-            rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-            rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
+            rate_trailing = np.exp(args.C*(dynein.rel_nba - eqb_angle))
+            rate_leading = np.exp(args.C*(dynein.rel_fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
 
             prob_trailing = P*rate_trailing*0.4     #   Unnormalized (*0.4 in order for prob < 1)
             prob_leading = P*rate_leading*0.4       #   Unnormalized (*0.4 in order for prob < 1)
@@ -174,10 +174,10 @@ while Z < N:
                     if k[0] == 5:
                         print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.nma*57.3, dynein.ta*57.3, dynein.fma*57.3, dynein.fba*57.3))
                         print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-             
+
                     collect_onebound_data(k, state, dynein.nba, dynein.nma, dynein.fma, dynein.fba,
                                             L, leading_data)
-                    
+
                     if k[0] % 10 == 0:
                         print('Saving data!')
                         np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),

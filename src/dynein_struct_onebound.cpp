@@ -6,8 +6,8 @@
 
 // static bool OB_PHYSICAL = true;
 
-/* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */ 
-   
+/* ********************* ONEBOUND DYNEIN FUNCTIONS ************************** */
+
 Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
 				 double uma_init, double uba_init,
 				 double bbx_init, double bby_init,
@@ -103,43 +103,6 @@ Dynein_onebound::Dynein_onebound(Dynein_bothbound* old_dynein, Rand* mtrand, Sta
     printf("DEBUG:      tx = %8g vs %8g       ty = %8g vs %8g\n",
 	   old_dynein->get_tx(), get_tx(), old_dynein->get_ty(), get_ty());
   }
-}
-
-Dynein_onebound::Dynein_onebound(bool mc, double bba_init, double bma_init,
-				 double uma_init, double uba_init,
-				 double bbx_init, double bby_init,
-				 State s, onebound_forces *internal_test,
-				 onebound_forces *brownian_test,
-				 onebound_equilibrium_angles* eq_angles,
-				 Rand* mtrand) {
-  bbx = bbx_init;
-  bby = bby_init;
-
-  bba = bba_init;
-  bma = bma_init + bba_init - M_PI;
-  uma = uma_init + uba_init - M_PI;
-  uba = uba_init;
-
-  while (bba < 0)      bba += 2*M_PI;
-  while (bba > 2*M_PI) bba -= 2*M_PI;
-
-  while (bma < 0)      bma += 2*M_PI;
-  while (bma > 2*M_PI) bma -= 2*M_PI;
-
-  while (uma < 0)      uma += 2*M_PI;
-  while (uma > 2*M_PI) uma -= 2*M_PI;
-
-  while (uba < 0)      uba += 2*M_PI;
-  while (uba > 2*M_PI) uba -= 2*M_PI;
-
-  internal_testcase = internal_test;
-  brownian_testcase = brownian_test;
-
-  eq = onebound_post_powerstroke_internal_angles; // use experimental angles
-
-  rand = mtrand;
-
-  update_velocities();
 }
 
 void Dynein_onebound::update_brownian_forces() {

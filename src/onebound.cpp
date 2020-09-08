@@ -75,7 +75,6 @@ int main(int argc, char** argv) {
   if (state == 1) {
     s = FARBOUND;
   }
-  bool mc = true;
   binding_mode = EXPONENTIAL_UNBINDING;
 
   Rand* rand = new Rand(RAND_INIT_SEED);
@@ -83,7 +82,7 @@ int main(int argc, char** argv) {
   // Does this onebound resemble with the bothbound orientation
 
   // fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
-  Dynein_onebound* dynein = new Dynein_onebound(mc, bba, bma, uma, uba, bbx, bby,
+  Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
                                                 s,
                                                 NULL,
                                                 NULL,
@@ -149,7 +148,7 @@ int main(int argc, char** argv) {
         dynein->set_bma(old_bma);
         dynein->set_uma(old_uma);
         dynein->set_uba(old_uba);
-        dynein->update_velocities();   
+        dynein->update_velocities();
       }
 
       double temp_bba = dynein->get_bba() + dynein->get_d_bba() * dt;

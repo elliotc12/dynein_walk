@@ -140,7 +140,7 @@ def make_bins_and_edges(initial_disp):
     initial_L_bin_width = final_L_bin_width
     return initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L
 
-def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width):
+def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width, **_):
     # Transition Matrix
     T = np.matrix(hist)     # Dimensionless
 
@@ -188,7 +188,7 @@ def make_prob_dist_plot(args, probability_distribution, initial_disp_edge, final
     # plt.savefig(plotpath+'final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
-def make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width):
+def make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
     filtered_probability_distribution = probability_distribution*1.0    # Dimensions: 1/distance**2
 
     # Filter steps where final and initial displacements are within 4 nm of each other
@@ -219,7 +219,7 @@ def make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_ed
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
-def make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width):
+def make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
     step_length_edge = final_disp_edge - initial_disp_edge
     plt.figure('Weird step length prob distribution')
     plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
@@ -307,7 +307,7 @@ def make_step_length_plots(args, probability_distribution, initial_disp_edge, fi
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     # plt.savefig(plotpath+'step_length_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
-def make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t):
+def make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t, **_):
     # Bothbound PLOTS
     # Prob Lagging vs Initial L plot
     plt.figure('Prob lagging vs init L')
@@ -334,31 +334,31 @@ def make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t):
     # plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
-def bug_checking_plots():
+def bug_checking_plots(args, initial_disp_edge, final_disp_edge, normalized_hist, **_):
     plt.figure('From Data')
     plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
     plt.xlabel('initial displacement (nm)')
     plt.ylabel('final displacement (nm)')
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, k_stk))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     plt.colorbar()
     # plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
-    # Plot L to L probability density
-    plt.figure('prob density')
-    plt.legend(loc='best')
-    plt.xlabel('L')
-    plt.ylabel('probability per L')
-
-    # Obtain L to L probability density
-    for i in range(len(P)):
-        plt.plot(final_L, p_den_L, label=f'i is {i}')
-    # plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
-
-    plt.figure('p_den_disp')
-    plt.plot(initial_disp, p_den_disp)
-    plt.xlabel('displacement')
-    plt.ylabel('probability density')
-    # plt.savefig(plotpath+'Probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    # # Plot L to L probability density
+    # plt.figure('prob density')
+    # plt.legend(loc='best')
+    # plt.xlabel('L')
+    # plt.ylabel('probability per L')
+    #
+    # # Obtain L to L probability density
+    # for i in range(len(P)):
+    #     plt.plot(final_L, p_den_L, label=f'i is {i}')
+    # # plt.savefig(plotpath+'L_to_L_prob_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    #
+    # plt.figure('p_den_disp')
+    # plt.plot(initial_disp, p_den_disp)
+    # plt.xlabel('displacement')
+    # plt.ylabel('probability density')
+    # # plt.savefig(plotpath+'Probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
 def main():
@@ -372,7 +372,7 @@ def main():
     initial_disp, hist, normalized_hist = get_onebound_data(args, plotting_data_file)
     bb_L, bb_P_leading, bb_P_trailing, bb_avg_t = get_bothbound_data(args, bothbound_data_file)
     initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L = make_bins_and_edges(initial_disp)
-    probability_distribution = make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width)
+    probability_distribution = make_probability_distribution(**locals())
     # Sum of probability distribution
     probability_distribution_sum = integrate_2d(probability_distribution, final_disp_bin_width, final_disp_bin_width)
     print('final displacement prob distribution 2d integral: ', probability_distribution_sum)
@@ -382,15 +382,16 @@ def main():
 
     make_prob_dist_plot(**locals())
     # make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
-    make_step_length_plots(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
-    make_bothbound_plots(args, bb_L, bb_P_trailing, bb_avg_t)
+    make_step_length_plots(**locals())
+    make_bothbound_plots(**locals())
+    bug_checking_plots(**locals())
 
 
 
 if __name__ == "__main__":
     params = importlib.import_module("params")
     main()
-    plt.show()
+    # plt.show()
     print("""
     TO DO ITEMS:
 
