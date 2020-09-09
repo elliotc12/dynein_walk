@@ -422,12 +422,29 @@
   morenotes={In both the powerstroke and recovery stroke, first the linker swings, then the MTBD changes affinity. In the powerstroke, the linker swings, then the MTBD goes from low to high affinity. Vice versa in the recovery stroke. This is exactly opposite what we would expect. The authors say it's weird, and say there isn't any evidence that the MTBD goes to high affinity before MT binding.}
 }
 
-@Comment ----Writing-----
-@Comment find citations for our assumption that the conformational change is harmonic?
+@article{sutohreview,
+  title={Cytoplasmic Dynein: Its ATPase Cycle and ATPase-dependent Structural Changes},
+  author={Kon, T and Shima, T and Sutoh, K},
+  journal={Comprehensive Biophysics},
+  volume={4},
+  year={2012},
+  pages={},
+  number={},
+  publisher={Elsevier},
+  notes={Pretty good somewhat old review article, but has some really good stuff: an argument for why MT unbinding should precede linker swing in the unbinding process (in contrast with the above MD paper); a good Cianfrocco-like powerstroke cycle that is fully compatible with our model; the rate for MT unbinding MT-D-ATP to D-ATP is 300 per second and D-ATP to D*-ATP is 200 per second; and also a discussion of (our terms) the winch vs powerstroke model.},
+}
 
-@Comment ----Plots------
-@Comment Fit force-v-velocity model's params via velocity to gennerich's force=0 velocity
-@Comment Supplemental: Add more stuff to supplemental methods, like how our drag forces and stuff are calculated and how we calculate unbinding rate
+@article{kuboMCmodel,
+  title={How Cytoplasmic Dynein Couples ATP Hydrolysis Cycle to Diverse Stepping Motions: Kinetic Modeling},
+  author={Kubo, S and SHima, T and Takada, S},
+  journal={Biophysical Journal},
+  volume={118},
+  year={2020},
+  pages={},
+  number={},
+  publisher={Biophysical Society},
+  notes={Cool recent modeling paper with a model fairly similar to ours, but without Brownian Dynamics. They have more states, including importantly a post-powerstroke high MT affinity unbound state, which we don't account for. They have lots of rates which can be useful to us. They calculate velocity and velocity vs force and velocity vs ATP, and say they get somewhat consistent results with experiment. They note a disparity between experimental velocities and their simulated velocities - maybe from not accounting for ATP hydrolysis rate increasing on MT binding leading to much quicker unbinding, or a wrong ADP ejection rate. All in all a good paper to cite.},
+}
 
 @Comment ----Questions for David----
 @Comment Yildiz 2012 fig 1B does head-labeling of dynein, but we're comparing it to our MTBD-labelled data. Is this fair or should we do head-labelling? imaibugress say that due to flexibility of
@@ -435,7 +452,3 @@
 @Comment Do we need to justify our tension gating? Should we run the model with c=0 to show that the behavior is worse? Maybe our model could work fine with c=0.
 @Comment We have the the initial/final displacement plot, which seems to show that the displacements are dependent. However, the figure isn't quantitative. Should we think about getting the
 @Comment      correlation coefficient / mutual information of variables like OB/BB time, step length, etc between i and i+1 steps to be more quantitative and prove our point?
-
-@Comment To Read
-@Comment Stalk-mediated communication in the dynein motor domain
-@Comment The AAA3 domain of cytoplasmic dynein acts as a switch to facilitate microtubule release
