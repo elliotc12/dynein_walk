@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
                                                 rand);
   // fprintf(stderr, "Starting with %g %g %g %g\n",
   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-  if (k ==5){
+  if (k == 5){
   	fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
   }
 
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    if (iter%500000 == 0 && k == 5){
+    if (t == 0 && k == 5){
     	fprintf(stderr, "The time is %g\n", t);
      	fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
     	fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());

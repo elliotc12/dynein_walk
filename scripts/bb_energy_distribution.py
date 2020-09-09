@@ -50,15 +50,28 @@ def generate_random_bb_any_L(params):
 
             #  Rotational angle based on fb coordinates
             rotational_angle = np.arctan2(r_fb[1],r_fb[0])
-            angle_0 -= rotational_angle
+            angle_0 -= rotational_angle 
             angle_1 -= rotational_angle
-            angle_2 -= rotational_angle
+            angle_2 -= rotational_angle 
             angle_3 -= rotational_angle
-            angle_4 = np.pi + angle_3
+            angle_4 = np.pi + angle_3 + 2*np.pi
 
-            # Make sure fba is less than 2pi
+            # Make sure angles are between 0 and 2pi
+            angle_0 += 2*np.pi
+            angle_1 += 2*np.pi
+            angle_2 += 2*np.pi
+            angle_3 += 2*np.pi
+            while angle_0 > 2*np.pi:
+                angle_0 -= 2*np.pi
+            while angle_1 >2*np.pi:
+                angle_1 -= 2*np.pi
+            while angle_2 > 2*np.pi:
+                angle_2 -= 2*np.pi
+            while angle_3 > 2*np.pi:
+                angle_3 -= 2*np.pi
             while angle_4 > 2*np.pi:
                 angle_4 -= 2*np.pi
+
 
             d = DyneinBothBound(angle_1, angle_3, params, angle_0, angle_4, angle_2, L)
             if d.r_nm[1] >= 0 and d.r_t[1] >= 0 and d.r_fm[1] >= 0:
@@ -72,7 +85,9 @@ class DyneinBothBound:
 
     def __init__(self, nma, fma, params, nba = None, fba = None, ta = None, L=None, x=0):
         self.nma = nma
-        self.fma = fma
+        self.fma = ta+np.pi
+        while self.fma > 2*np.pi:
+            self.fma -= 2*np.pi
         self.Lt = params.for_simulation['lt']
         self.Ls = params.for_simulation['ls']
         if nba is None and fba is None and ta is None:
@@ -130,11 +145,11 @@ class DyneinBothBound:
 
             # calculate positions
             self.r_nb = np.array([x*np.ones_like(self.nma), np.zeros_like(self.nma)])
-            self.r_fb = np.array([self.r_nb[0]+self.L, self.r_nb[1]])
             self.r_nm = self.r_nb + np.array([self.Ls*np.cos(self.nba), self.Ls*np.sin(self.nba)])
-            self.r_fm = self.r_fb + np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
             self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.nma), self.Lt*np.sin(self.nma)])
-
+            self.r_fm = self.r_t + np.array([self.Lt*np.cos(self.ta), self.Lt*np.sin(self.ta)])
+            self.r_fb = self.r_fm + np.array([self.Ls*np.cos(fma), self.Ls*np.sin(fma)])
+           
         # Calculate relative angles according to previous angle for spring energies
         self.rel_nba = self.nba + 2*np.pi
         self.rel_nma = np.pi + self.nma - self.nba + 2*np.pi # add 2pi to make it positive
