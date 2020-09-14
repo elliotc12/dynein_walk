@@ -140,21 +140,19 @@ while Z < N:
 
             prob_trailing = P*rate_trailing*0.4     #   Unnormalized (*0.4 in order for prob < 1)
             prob_leading = P*rate_leading*0.4       #   Unnormalized (*0.4 in order for prob < 1)
-            print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.bb_ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-            print('rel_nba: {}, rel_nma: {}, rel_ta: {}, rel_fma: {}, rel_fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.bb_ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
-            print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-            if len(leading_data['L']) == 1:
-                print('leading data: ', leading_data['L'])
-                exit()
+            # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.bb_ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+            # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.bb_ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
+            # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+
             assert(prob_trailing <= 1),"prob trailing > 1" # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
             assert(prob_leading <= 1),"prob leading > 1"
             if np.random.random() < prob_trailing:
                     # FARBOUND State
                     state = 1
-                    print('trailing bout to step')
+
                     collect_onebound_data(k, state, dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
                                             L, trailing_data)
-                    print('trailing stepped')
+                    
                     if k[0] % 10 == 0:
                         print('Saving data!')
                         np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
@@ -173,15 +171,10 @@ while Z < N:
             if np.random.random() < prob_leading:
                     # NEARBOUND State
                     state = 0
-                    print('about to leading step')
-                    if k[0] == 0:
-                        print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.bb_ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-                        print('rel_nba: {}, rel_nma: {}, rel_ta: {}, rel_fma: {}, rel_fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.bb_ta*57.3, dynein.bb_fma, dynein.fba*57.3))
-                        print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-
+                    
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
-                    print('leading stepped')
+                    
                     if k[0] % 10 == 0:
                         print('Saving data!')
                         np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),

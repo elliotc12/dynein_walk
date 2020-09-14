@@ -33,7 +33,8 @@ def generate_random_bb_any_L(params):
         ''' Generate a random and unbiased BB configuration with length L'''
         Ls = params.for_simulation['ls']
         Lt = params.for_simulation['lt']
-        circle = 2*np.pi
+        rt = params.for_simulation['rt']
+        rm = params.for_simulation['rm']
         while True:
             # Pick 4 random uniformly distributed angles for configuration
             angle_0 = np.random.uniform(0,2*np.pi)      # Corresponds to nba
@@ -158,10 +159,7 @@ class DyneinBothBound:
             self.r_fb = self.r_fm - np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
            
         # calculate all of the energies
-        temp_ta = self.bb_ta
-        if temp_ta > np.pi:
-            temp_ta -= 2*np.pi
-        self.E_t = spring_energy(temp_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
+        self.E_t = spring_energy(self.bb_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
         self.E_nm = spring_energy(self.bb_nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_fm = spring_energy(self.bb_fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])

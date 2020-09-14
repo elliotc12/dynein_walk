@@ -90,9 +90,8 @@ int main(int argc, char** argv) {
                                                 rand);
   // fprintf(stderr, "Starting with %g %g %g %g\n",
   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
-  fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
+  // fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
   
-
   double t = 0;
   long iter = 0;
   bool stillStepping = true;
@@ -118,14 +117,15 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    if (t == 0){
-    	fprintf(stderr, "The time is %g\n", t);
-     	fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
-    	fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
-    	fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
-    	fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
-    	fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
-    }
+    // if (iter%10000 == 0){
+    //	fprintf(stderr, "The time is %g\n", t);
+    //  fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
+    //	fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
+    //	fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
+    //	fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
+    //	fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
+    //	fprintf(stderr, "FINAL L: %g \n\n", dynein->get_ubx()-dynein->get_bbx());
+    // }
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
@@ -166,20 +166,12 @@ int main(int argc, char** argv) {
     }
 
     if (am_sticky && binding_prob > 0 && rand->rand() < binding_prob) {
-      if (k == 0){
-	      fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
-      	      fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
-	      fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
-	      fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
-	      fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
-	      fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
-      }
       // We are going to bind!
       // fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
       //         iter, dynein->get_ubx()-dynein->get_bbx(),
       //         dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
       printf("{\n  'L': %g,\n  't': %g,\n}\n",
-              dynein->get_ubx()-dynein->get_bbx(), t);
+	       dynein->get_ubx()-dynein->get_bbx(), t);
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
     }

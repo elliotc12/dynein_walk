@@ -22,6 +22,10 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   bma = bma_init;
   uma = uma_init;
   uba = uba_init;
+  ta = uma - bma;
+  if (ta < 0){
+    ta += 2*M_PI;
+  }
 
   state = s;
   internal_testcase = internal_test;
@@ -155,8 +159,8 @@ void Dynein_onebound::update_internal_forces() {
     f.bmx += -(f1x + f2x);
     f.bmy += -(f1y + f2y);
 
-    T = ct*(uma - bma - eq.ta);
-    PE_ta = 0.5*ct*(uma - bma - eq.ta)*(uma - bma - eq.ta);
+    T = ct*(ta - eq.ta);
+    PE_ta = 0.5*ct*(ta - eq.ta)*(ta - eq.ta);
     f1 = T / Lt;
     f2 = T / Lt;
     f1x = f1 * sin(bma);
