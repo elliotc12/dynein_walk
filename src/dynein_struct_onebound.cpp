@@ -23,9 +23,9 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   uma = uma_init;
   uba = uba_init;
   ta = uma - bma;
-  if (ta < 0){
-    ta += 2*M_PI;
-  }
+//  if (ta < 0){
+//    ta += 2*M_PI;
+//  }
 
   state = s;
   internal_testcase = internal_test;

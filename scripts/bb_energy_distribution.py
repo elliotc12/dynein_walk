@@ -68,7 +68,7 @@ def generate_random_bb_any_L(params):
                 nba -= 2*np.pi
             while nma > 2*np.pi:
                 nma -= 2*np.pi
-            while ta > 2*np.pi:
+            while ta > np.pi:
                 ta -= 2*np.pi
             while fma > 2*np.pi:
                 fma -= 2*np.pi
@@ -140,7 +140,7 @@ class DyneinBothBound:
         else:
             self.nba = nba
             self.fba = fba
-            self.bb_ta = ta
+            self.ta = ta
             self.L = L
             
             # Assign OB absolute motor angles for onebound.cpp
@@ -159,7 +159,7 @@ class DyneinBothBound:
             self.r_fb = self.r_fm - np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
            
         # calculate all of the energies
-        self.E_t = spring_energy(self.bb_ta, params.for_simulation['eqt'], params.for_simulation['ct'])
+        self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
         self.E_nm = spring_energy(self.bb_nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_fm = spring_energy(self.bb_fma, params.for_simulation['eqmpost'], params.for_simulation['cm'])
         self.E_nb = spring_energy(self.nba, params.for_simulation['eqb'], params.for_simulation['cb'])

@@ -140,10 +140,12 @@ while Z < N:
 
             prob_trailing = P*rate_trailing*0.4     #   Unnormalized (*0.4 in order for prob < 1)
             prob_leading = P*rate_leading*0.4       #   Unnormalized (*0.4 in order for prob < 1)
-            # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.bb_ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-            # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.bb_ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
-            # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-
+            print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+            # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
+            print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+            if len(leading_data['L']) == 1:
+                print(leading_data['L'])
+                exit()
             assert(prob_trailing <= 1),"prob trailing > 1" # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
             assert(prob_leading <= 1),"prob leading > 1"
             if np.random.random() < prob_trailing:

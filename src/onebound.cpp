@@ -117,15 +117,15 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    // if (iter%10000 == 0){
-    //	fprintf(stderr, "The time is %g\n", t);
+    if (iter%10000 == 0){
+   	fprintf(stderr, "The time is %g\n", t);
     //  fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
     //	fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
     //	fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
     //	fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
     //	fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
-    //	fprintf(stderr, "FINAL L: %g \n\n", dynein->get_ubx()-dynein->get_bbx());
-    // }
+    	fprintf(stderr, "FINAL L: %g \n\n", dynein->get_ubx()-dynein->get_bbx());
+    }
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
