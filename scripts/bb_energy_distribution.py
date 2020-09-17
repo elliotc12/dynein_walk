@@ -144,12 +144,10 @@ class DyneinBothBound:
             self.L = L
             
             # Assign OB absolute motor angles for onebound.cpp
-            self.ob_nma = nma + nba - np.pi + 2*np.pi
-            self.ob_fma = fma + fba - np.pi + 2*np.pi
-            while self.ob_nma > 2*np.pi:
-                self.ob_nma -= 2*np.pi
-            while self.ob_fma > 2*np.pi:
-                self.ob_fma -= 2*np.pi
+            # It must be the case that:  bb_uma == ob_uma + M_PI - ob_uba
+            # ob_uma = bb_uma - M_PI + ob_uba
+            self.ob_nma = nma + nba - np.pi
+            self.ob_fma = fma + fba - np.pi
 
             # calculate positions
             self.r_nb = np.array([x*np.ones_like(self.nba), np.zeros_like(self.nba)])
