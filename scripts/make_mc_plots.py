@@ -276,7 +276,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.ylabel('Probability Density (1/nm)')
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'Probability_density_step_length_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    plt.savefig(plotpath+'step_length_1d_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+
 
     s_initial_disp_edge, s_final_disp_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
     s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
