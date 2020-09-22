@@ -192,13 +192,19 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     filtered_probability_distribution = probability_distribution*1.0    # Dimensions: 1/distance**2
 
     # Filter steps where final and initial displacements are within 4 nm of each other
-    # FIXME use actual distances here!!!
+    init_L = initial_disp[int(len(initial_disp)/2):]
+    min_init_L = int(min(init_L))
+    index_subtract = 1
+    while min_init_L < 4:
+        index_subtract += 1
+        init_L = init_L[1:]*1.0
+        min_init_L = int(min(init_L))
     for i in range(len(probability_distribution)):
         for j in range(len(probability_distribution[i])):
             if i == j:
                 filtered_probability_distribution[i, j] = 0.0
-                if i >=4 and i <= 95:
-                    filtered_probability_distribution[i-4:i+4,j] = 0.0
+                if i >=index_subtract and i <= len(probability_distribution)-index_subtract-1:
+                    filtered_probability_distribution[i-index_subtract:i+index_subtract,j] = 0.0
 
     # Sum of filtered probability distribution
     filt_probability_distribution_sum = integrate_2d(filtered_probability_distribution, final_disp_bin_width, final_disp_bin_width)
@@ -217,7 +223,7 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     plt.colorbar()
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
     step_length_edge = final_disp_edge - initial_disp_edge
@@ -271,9 +277,10 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # 1D hist step length
     plt.figure('Probability Density of Step Length')
     plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
-    plt.hist(yildiz_step_lengths, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
+    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
+    plt.xlim(-50, 65)
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     plt.savefig(plotpath+'step_length_1d_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
@@ -286,6 +293,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     for j in initial_disp_index:
         s_probability_distribution[initial_disp_index+num_disp-1-j,j] = probability_distribution[initial_disp_index,j]*final_disp_bin_width
         s_probability_distribution[:,j] /= s_bin_width
+    # int, fin = np.meshgrid(final_disp_bin_width, final_disp_bin_width)
+    # s_probability_distribution = probability_distribution*int
 
     # Intercept & Slope for Best-fit of step length
     s_b, s_m, s_lin_fit = least_squares(s_probability_distribution, initial_disp, s_arr, final_disp_bin_width, s_bin_width)
@@ -298,6 +307,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # 2D hist step_length
     plt.figure('Step length probability distribution')
     plt.pcolor(s_initial_disp_edge, s_final_disp_edge, s_probability_distribution)
+    # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
     plt.xlabel('initial displacement (nm)')
@@ -322,7 +332,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.xlabel('Binding domain separation (nm)')
     plt.ylabel('P(lagging step)')
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
+    plt.title('C = {}'.format(args.C))
     plt.savefig(plotpath+'prob_lagging_vs_init_L_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     # Bothbound time plot
@@ -330,8 +340,9 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.plot(bb_L, bb_avg_t,color='C0')
     plt.xlabel('initial L (nm)')
     plt.ylabel('Average time (s)')
+    plt.ylim(0,0.02)
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
+    plt.title('C = {}'.format(args.C))
     plt.savefig(plotpath+'bb_time_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
@@ -382,7 +393,7 @@ def main():
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
     make_prob_dist_plot(**locals())
-    # make_filtered_prob_dist_plot(args, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width)
+    make_filtered_prob_dist_plot(**locals())
     make_step_length_plots(**locals())
     make_bothbound_plots(**locals())
     bug_checking_plots(**locals())
@@ -418,7 +429,7 @@ if __name__ == "__main__":
 
       - Think of using meshgrid for almost everything.
 
-      - HIGH PRIORITY:  Fix filtering prob dist
+      - Done:  Fix filtering prob dist
 
-      - Add Yildiz fit to the match plot.
+      - Done: Add Yildiz fit to the match plot.
       """)
