@@ -7,7 +7,7 @@ from matplotlib import gridspec
 from statistics import mean
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.constants
-import sys
+import sys, re
 sys.path.append("../data")
 import importlib
 import argparse
@@ -76,7 +76,7 @@ def make_individual_ob_time_1dhist():
         plt.xscale('log')
         plt.ylabel('Probability')
         plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(k_b, k_stk))
-        # plt.legend()
+        plt.legend()
         plt.savefig(plotpath+'onebound_time_1dhist_{0:.2e}_{1:.2e}.pdf'.format(float(k_b), float(k_stk)))
 
 def make_step_length_1dhist():
@@ -114,6 +114,6 @@ def make_step_length_1dhist():
 
 
 # make_combined_ob_time_1dhist()
-# make_individual_ob_time_1dhist()
-make_step_length_1dhist()
+make_individual_ob_time_1dhist()
+# make_step_length_1dhist()
 plt.show()
