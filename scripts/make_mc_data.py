@@ -156,20 +156,23 @@ time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
 time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 time_hists = {}
 
-for i_disp in ob_time_dict.keys():
-    time_hists[i_disp] = np.zeros_like(time_bin_center)
-    total_time_counts = len(ob_time_dict[i_disp])
+if len(ob_time_dict.keys()) == 0:
+    print('Do not have data for initial L of 1nm or 8nm')
+else:
+    for i_disp in ob_time_dict.keys():
+        time_hists[i_disp] = np.zeros_like(time_bin_center)
+        total_time_counts = len(ob_time_dict[i_disp])
     
-    for time in ob_time_dict[i_disp]:
-        t_index = None 
-        for i in range(1, len(time_bin_edges)):
-            if time < time_bin_edges[i]:
-                t_index = i-1
-                break
-        if t_index is None:
-            continue
-        else:
-            time_hists[i_disp][t_index] += 1/total_time_counts
+        for time in ob_time_dict[i_disp]:
+            t_index = None 
+            for i in range(1, len(time_bin_edges)):
+                if time < time_bin_edges[i]:
+                    t_index = i-1
+                    break
+            if t_index is None:
+                continue
+            else:
+                time_hists[i_disp][t_index] += 1/total_time_counts
 
 # Saving 'Compressed data' into ../data/compressed_mc_data
 np.savez_compressed(datapath,
