@@ -74,9 +74,10 @@ for leading in leading_files:
         initial_disp.append(-iL)
         final_disp_dict[iL] = leading_data['L']
         final_disp_dict[-iL] = trailing_data['L']
-
-        ob_time_dict[iL] = leading_data['t']
-        ob_time_dict[-iL] = trailing_data['t']
+        
+        if iL == 8.0 or iL == 1.0:
+            ob_time_dict[iL] = leading_data['t']
+            ob_time_dict[-iL] = trailing_data['t']
 
         # calculate probability for step to be leading or trailing
         leading_data_length = len(leading_data['L'])
@@ -112,7 +113,7 @@ initial_disp_center, final_disp_center = np.meshgrid(initial_disp, final_bin_cen
 
 final_disp_bin_width = final_bin_edges[1:] - final_bin_edges[:-1]    # a 1D array giving final displacement bin width
 
-
+# Make 2d histogram plotting data for final displacements
 hist = np.zeros_like(initial_disp_center)
 normalized_hist = np.zeros_like(initial_disp_center)    # Dimensions: 1/distance
 
@@ -148,13 +149,38 @@ for i_disp in initial_disp:
             # Normalized by bin width (length)
             normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
 
+# Make 1d histogram plotting data for ob times
+max_time = 1e-5 # 10 mu s
+increment = 1e-8 # 10ns
+time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
+time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
+time_hists = {}
 
+for i_disp in ob_time_dict.keys():
+    time_hists[i_disp] = np.zeros_like(time_bin_center)
+    total_time_counts = len(ob_time_dict[i_disp])
+    
+    for time in ob_time_dict[i_disp]:
+        t_index = None 
+        for i in range(1, len(time_bin_edges)):
+            if time < time_bin_edges[i]:
+                t_index = i-1
+                break
+        if t_index is None:
+            continue
+        else:
+            time_hists[i_disp][t_index] += 1/total_time_counts
+
+# Saving 'Compressed data' into ../data/compressed_mc_data
 np.savez_compressed(datapath,
                     final_disp_dict=final_disp_dict,
                     ob_time_dict=ob_time_dict,
                     P_unbinding=P_unbinding)
+
+# Saving 'plotting data' into ../data/mc_plotting_data 
 np.savez_compressed(plottingdatapath,
                     initial_disp=initial_disp,
                     hist=hist,
                     normalized_hist=normalized_hist,
-                    P_unbinding=P_unbinding)
+                    P_unbinding=P_unbinding,
+                    time_hists=time_hists)
