@@ -100,7 +100,7 @@ def get_cli_arguments():
 def get_onebound_data(args, plotting_data_file):
     # Onebound Data
     mc_data = np.load(plotting_data_file, allow_pickle=True)
-    return mc_data['initial_disp'], mc_data['hist'], mc_data['normalized_hist'], mc_data['time_hists']
+    return mc_data['initial_disp'], mc_data['hist'], mc_data['normalized_hist'], mc_data['time_hists'].item()
 
 def get_bothbound_data(args, bothbound_data_file):
     # Bothbound Data
@@ -177,9 +177,13 @@ def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trai
     return probability_distribution
 
 def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, b, m, lin_fit, **_):
+    # Yildiz final disp vs initial disp line
+    yildiz_line = [(0.6*x)+9.1 for x in np.asarray(initial_disp)]
+
     plt.figure('Probability Distribution to Match Yildiz')
     plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
     plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
+    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='b')
     plt.xlabel('initial displacement (nm)')
     plt.ylabel('final displacement (nm)')
     plt.colorbar()
@@ -318,22 +322,21 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     plt.savefig(plotpath+'step_length_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
-def make_ob_time_plot(args, plotpath, **_):
-    max_time = 1e-5 # 10 mu s
-    increment = 1e-8 # 10ns
-    time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
+def make_ob_time_plot(args, plotpath, time_hists, **_):
+    max_time = time_hists['max_time']   # 10 mu s
+    increment = time_hists['increment'] # 10ns
     time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
-    
+
     # OB Time Plot
     plt.figure('Onebound Time plot')
-    plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
-    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
-    plt.xlabel('Step Length (nm)')
-    plt.ylabel('Probability Density (1/nm)')
-    plt.xlim(-50, 65)
+    # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
+    plt.bar(time_bin_center, time_hists[-8], width=increment, align='center', label='Model')
+    plt.xlabel('Onebound time (s)')
+    plt.ylabel('Probability')
+    plt.xlim(-increment,1e-6)
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'step_length_1d_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    plt.savefig(plotpath+'ob_time_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
