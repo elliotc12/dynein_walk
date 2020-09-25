@@ -36,9 +36,6 @@ initial_disp = []
 final_disp_dict = {}
 ob_time_dict = {}
 
-# probability of being a leading step
-P_leading_dict = {}
-P_leading = []
 
 for leading in leading_files:
     leading = leading[len(basepath):]
@@ -74,28 +71,16 @@ for leading in leading_files:
         initial_disp.append(-iL)
         final_disp_dict[iL] = leading_data['L']
         final_disp_dict[-iL] = trailing_data['L']
-        
+
         if iL == 8.0 or iL == 1.0:
             ob_time_dict[iL] = leading_data['t']
             ob_time_dict[-iL] = trailing_data['t']
-
-        # calculate probability for step to be leading or trailing
-        leading_data_length = len(leading_data['L'])
-        trailing_data_length = len(trailing_data['L'])
-        P_leading_dict[iL] = leading_data_length / (leading_data_length + trailing_data_length)
     except:
         if not path.exists(leading.replace('l', 't', 1)):
             print('unable to load trailing data for ', leading)
 
-for key in sorted(P_leading_dict.keys()):
-    P_leading.append(P_leading_dict[key])
 
-# Probability of Leading and Trailing Steps Based on Data
-P_leading = np.array(P_leading)
-P_trailing = 1-P_leading
-P_unbinding = {'leading': P_leading, 'trailing': P_trailing}
-
-if len(P_leading) == 0:
+if len(initial_disp) == 0:
     print("we have no data!!! :(")
     exit(1)
 
@@ -155,6 +140,8 @@ increment = 1e-8 # 10ns
 time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
 time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 time_hists = {}
+time_hists['max_time'] = max_time
+time_hists['increment'] = increment
 
 if len(ob_time_dict.keys()) == 0:
     print('Do not have data for initial L of 1nm or 8nm')
@@ -162,9 +149,9 @@ else:
     for i_disp in ob_time_dict.keys():
         time_hists[i_disp] = np.zeros_like(time_bin_center)
         total_time_counts = len(ob_time_dict[i_disp])
-    
+
         for time in ob_time_dict[i_disp]:
-            t_index = None 
+            t_index = None
             for i in range(1, len(time_bin_edges)):
                 if time < time_bin_edges[i]:
                     t_index = i-1
@@ -174,16 +161,14 @@ else:
             else:
                 time_hists[i_disp][t_index] += 1/total_time_counts
 
-# Saving 'Compressed data' into ../data/compressed_mc_data
-np.savez_compressed(datapath,
-                    final_disp_dict=final_disp_dict,
-                    ob_time_dict=ob_time_dict,
-                    P_unbinding=P_unbinding)
-
-# Saving 'plotting data' into ../data/mc_plotting_data 
+# Saving 'plotting data' into ../data/mc_plotting_data
 np.savez_compressed(plottingdatapath,
                     initial_disp=initial_disp,
                     hist=hist,
                     normalized_hist=normalized_hist,
-                    P_unbinding=P_unbinding,
                     time_hists=time_hists)
+
+# Saving 'Compressed data' into ../data/compressed_mc_data
+np.savez_compressed(datapath,
+                    final_disp_dict=final_disp_dict,
+                    ob_time_dict=ob_time_dict)

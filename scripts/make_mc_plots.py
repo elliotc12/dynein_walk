@@ -100,7 +100,7 @@ def get_cli_arguments():
 def get_onebound_data(args, plotting_data_file):
     # Onebound Data
     mc_data = np.load(plotting_data_file, allow_pickle=True)
-    return mc_data['initial_disp'], mc_data['hist'], mc_data['normalized_hist']
+    return mc_data['initial_disp'], mc_data['hist'], mc_data['normalized_hist'], mc_data['time_hists']
 
 def get_bothbound_data(args, bothbound_data_file):
     # Bothbound Data
@@ -318,6 +318,24 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
     plt.savefig(plotpath+'step_length_probability_distribution_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
+def make_ob_time_plot(args, plotpath, **_):
+    max_time = 1e-5 # 10 mu s
+    increment = 1e-8 # 10ns
+    time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
+    time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
+    
+    # OB Time Plot
+    plt.figure('Onebound Time plot')
+    plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
+    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
+    plt.xlabel('Step Length (nm)')
+    plt.ylabel('Probability Density (1/nm)')
+    plt.xlim(-50, 65)
+    plt.legend()
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
+    plt.savefig(plotpath+'step_length_1d_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+
+
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     # Bothbound PLOTS
     # Prob Lagging vs Initial L plot
@@ -381,7 +399,7 @@ def main():
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz".format(args.k_b, args.k_stk)
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
-    initial_disp, hist, normalized_hist = get_onebound_data(args, plotting_data_file)
+    initial_disp, hist, normalized_hist, time_hists = get_onebound_data(args, plotting_data_file)
     bb_L, bb_P_leading, bb_P_trailing, bb_avg_t = get_bothbound_data(args, bothbound_data_file)
     initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L = make_bins_and_edges(initial_disp)
     probability_distribution = make_probability_distribution(**locals())
@@ -395,6 +413,7 @@ def main():
     make_prob_dist_plot(**locals())
     make_filtered_prob_dist_plot(**locals())
     make_step_length_plots(**locals())
+    make_ob_time_plot(**locals())
     make_bothbound_plots(**locals())
     bug_checking_plots(**locals())
 
