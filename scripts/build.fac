@@ -1,2 +1,2 @@
-| python3 make_mc_plots.py
+| python3 make_mc_plots.py -p
 c .pyc

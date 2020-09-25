@@ -95,6 +95,7 @@ def get_cli_arguments():
     parser.add_argument("-k", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
     parser.add_argument("-s", "--k_stk", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
     parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
+    parser.add_argument("-p", "--plot", action="store_false", help="Do not show plots", default=True)
     return parser.parse_args()
 
 def get_onebound_data(args, plotting_data_file):
@@ -327,16 +328,22 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
     increment = time_hists['increment'] # 10ns
     time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 
+    iL = [num for num in time_hists.keys() if isinstance(num, (int, float))]
+
     # OB Time Plot
-    plt.figure('Onebound Time plot')
-    # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
-    plt.bar(time_bin_center, time_hists[-8], width=increment, align='center', label='Model')
-    plt.xlabel('Onebound time (s)')
-    plt.ylabel('Probability')
-    plt.xlim(-increment,1e-6)
-    plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
-    plt.savefig(plotpath+'ob_time_probability_density_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    for i in iL:
+        if len(time_hists[i]) == 0:
+            print("Do not have time data for initial distance ", i)
+        else:
+            plt.figure('Onebound Time plot for iL = {}'.format(i))
+            # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
+            plt.bar(time_bin_center, time_hists[i], width=increment, align='center', label=i)
+            plt.xlabel('Onebound time (s)')
+            plt.ylabel('Probability')
+            plt.xlim(-increment,1e-6)
+            plt.legend()
+            plt.title('kb = {0:.2e}, kstk = {1:.2e}'.format(args.k_b, args.k_stk))
+            plt.savefig(plotpath+'ob_time_probability_density_{0}_{1:.2e}_{2:.2e}.pdf'.format(i, float(args.k_b), float(args.k_stk)))
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
@@ -418,14 +425,14 @@ def main():
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_bothbound_plots(**locals())
-    bug_checking_plots(**locals())
-
-
+    # bug_checking_plots(**locals())
+    print(args.plot)
+    if args.plot == True:
+        plt.show()
 
 if __name__ == "__main__":
     params = importlib.import_module("params")
     main()
-    # plt.show()
     print("""
     TO DO ITEMS:
 
