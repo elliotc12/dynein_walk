@@ -21,15 +21,18 @@ params = importlib.import_module("params")
 parser = argparse.ArgumentParser()
 parser.add_argument("-k", "--kb", type=float, help="Binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
+parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
+parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
+parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
 args = parser.parse_args()
 
 k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 
-basepath = '../data/mc_data_{0:.2e}_{1:.2e}/'.format(k_b, k_stk)
-datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
-plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+basepath = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/'.format(k_b, k_stk, args.cb, args.cm, args.ct)
+datapath = '../data/compressed_mc_data/mc_data_file_{0:.2e}_{1:.2e}_{2}_{3}_{4}'.format(k_b, k_stk, args.cb, args.cm, args.ct)
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}'.format(k_b, k_stk, args.cb, args.cm, args.ct)
 leading_files = glob('{}/l_*.txt'.format(basepath))
 
 initial_disp = []

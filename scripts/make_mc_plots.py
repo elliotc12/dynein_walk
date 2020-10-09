@@ -94,6 +94,9 @@ def get_cli_arguments():
     parser = argparse.ArgumentParser(description = 'Script to generate various plots from Monte Carlo data.')
     parser.add_argument("-k", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
     parser.add_argument("-s", "--k_stk", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
+    parser.add_argument("-cb", "--cb", type=float, help="Spring const binding domain", default=params.for_simulation['cb'])
+    parser.add_argument("-cm", "--cm", type=float, help="Spring const motor domain", default=params.for_simulation['cm'])
+    parser.add_argument("-ct", "--ct", type=float, help="Spring const tail domain", default=params.for_simulation['ct'])
     parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
     parser.add_argument("-p", "--plot", action="store_false", help="Do not show plots", default=True)
     return parser.parse_args()
@@ -406,7 +409,7 @@ def main():
     if not path.exists(plotpath):
         mkdir(plotpath)
     args = get_cli_arguments()
-    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}.npz".format(args.k_b, args.k_stk)
+    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}.npz".format(args.k_b, args.k_stk, args.cb, args.cm, args.ct)
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
     initial_disp, hist, normalized_hist, time_hists = get_onebound_data(args, plotting_data_file)

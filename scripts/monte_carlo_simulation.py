@@ -95,7 +95,7 @@ params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 
 # Create MC Data Directory if don't exist
-mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}'.format(k_b, k_stk)
+mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}'.format(k_b, k_stk, args.cb, args.cm, args.ct)
 if not os.path.exists(mc_data_dir):
     os.mkdir(mc_data_dir)
 
@@ -120,6 +120,10 @@ leading_data = {    # Leading step data
         'L': [],
         't': []
 }
+
+# Strings for data file name
+t_data_file = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/t_{5}_{6}_{7}_{8:.2e}_{9:.2e}_{10}_{11}_{12}_{13}_{14}.txt'.format(k_b, k_stk, args.cb, args.cm, args.ct, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)
+l_data_file = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/l_{5}_{6}_{7}_{8:.2e}_{9:.2e}_{10}_{11}_{12}_{13}_{14}.txt'.format(k_b, k_stk, args.cb, args.cm, args.ct, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)
 
 seed = 0
 np.random.seed(0)
@@ -161,23 +165,15 @@ while Z < N:
                     
             if k[0] % 10 == 0:
                     print('Saving data!')
-                    np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                    np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk, int(L),
-                                N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-                                (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                    if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                    np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                    np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                    if os.path.getsize(t_data_file) > 700000:
                         break
-                    if os.path.getsize('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L), N, args.kub, k_b, k_stk,  dt, args.cb, args.cm, args.ct, args.C)) > 700000:
+                    if os.path.getsize(l_data_file) > 700000:
                         break
 
 
-np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/t_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-            (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-np.savetxt('../data/mc_data_{0:.2e}_{1:.2e}/l_{2}_{3}_{4}_{5:.2e}_{6:.2e}_{7}_{8}_{9}_{10}_{11}.txt'.format(k_b, k_stk,int(L),
-            N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C),
-            (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 
 # END OF SIM
