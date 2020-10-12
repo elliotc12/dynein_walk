@@ -167,10 +167,10 @@ while Z < N:
                     print('Saving data!')
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                    # if os.path.getsize(t_data_file) > 700000:
-                    #     break
-                    # if os.path.getsize(l_data_file) > 700000:
-                    #     break
+                    if os.path.getsize(t_data_file) > 700000:
+                        break
+                    if os.path.getsize(l_data_file) > 700000:
+                        break
 
 
 np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
