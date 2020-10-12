@@ -386,7 +386,7 @@ def bug_checking_plots(args, plotpath, initial_disp_edge, final_disp_edge, norma
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}'.format(args.k_b, args.k_stk, args.cb, args.cm, args.ct))
 
     plt.colorbar()
-    # plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
+    plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
 
     # # Plot L to L probability density
     # plt.figure('prob density')
@@ -430,7 +430,7 @@ def main():
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_bothbound_plots(**locals())
-    # bug_checking_plots(**locals())
+    bug_checking_plots(**locals())
     print(args.plot)
     if args.plot == True:
         plt.show()
