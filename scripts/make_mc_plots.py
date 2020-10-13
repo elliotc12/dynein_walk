@@ -53,7 +53,6 @@ def least_squares(arr, x, y, dx, dy):
 
     return b, m, lin_fit
 
-
 def L_to_initial_displacement(P_leading, P_trailing):
     """
     Returns a matrix (technically array) which when multiplied by a
@@ -234,16 +233,6 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0:.2e}_{1:.2e}_{2}_{3}_{4}.pdf'.format(float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct))
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
-    step_length_edge = final_disp_edge - initial_disp_edge
-    plt.figure('Weird step length prob distribution')
-    plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
-    plt.xlabel('initial displacement (nm)')
-    plt.ylabel('final displacement (nm)')
-    plt.colorbar()
-    plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}'.format(args.k_b, args.k_stk, args.cb, args.cm, args.ct))
-
-
     # STEP LENGTH (s) PLOTS CALCULATION
     num_disp = len(probability_distribution)
     initial_disp_index = np.arange(0,num_disp)
@@ -295,7 +284,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.savefig(plotpath+'step_length_1d_probability_density_{0:.2e}_{1:.2e}_{2}_{3}_{4}.pdf'.format(float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct))
 
 
-    s_initial_disp_edge, s_final_disp_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
+    s_initial_disp_edge, s_length__edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
     s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
 
     s_probability_distribution = np.zeros((2*num_disp-1,num_disp))
@@ -315,7 +304,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     # 2D hist step_length
     plt.figure('Step length probability distribution')
-    plt.pcolor(s_initial_disp_edge, s_final_disp_edge, s_probability_distribution)
+    plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution)
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
@@ -326,6 +315,21 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}'.format(args.k_b, args.k_stk, args.cb, args.cm, args.ct))
     plt.savefig(plotpath+'step_length_probability_distribution_{0:.2e}_{1:.2e}_{2}_{3}_{4}.pdf'.format(float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct))
+
+
+    step_length_edge = final_disp_edge - initial_disp_edge
+    plt.figure('Parallelogram step length prob distribution')
+    plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
+    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
+    plt.xlabel('initial displacement (nm)')
+    plt.ylabel('Step length (nm)')
+    plt.ylim(-50,50)
+    plt.xlim(-50,50)
+    plt.colorbar()
+    plt.legend()
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}'.format(args.k_b, args.k_stk, args.cb, args.cm, args.ct))
+
+
 
 def make_ob_time_plot(args, plotpath, time_hists, **_):
     max_time = time_hists['max_time']   # 10 mu s
@@ -426,7 +430,7 @@ def main():
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
     make_prob_dist_plot(**locals())
-    make_filtered_prob_dist_plot(**locals())
+    # make_filtered_prob_dist_plot(**locals())
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_bothbound_plots(**locals())
