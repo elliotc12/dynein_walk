@@ -138,10 +138,11 @@ int main(int argc, char** argv) {
     double old_uba = dynein->get_uba();
     // fprintf(stderr, "energy: %g at time %g with cumulative %g\n", dynein->get_PE(), t, cumulative_prob);
 
-
     bool accept_step = false;
     int attempts = 0;
-    while(!accept_step){
+    if (attempts%10000) fprintf(stderr, "%g %g   %g   %g   %g   %g \n", t, dynein->get_bba(), dynein->get_bma(), dynein->get_uma()-dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
+
+   while(!accept_step){
       if (attempts > 0) {
         dynein->set_bba(old_bba);
         dynein->set_bma(old_bma);
