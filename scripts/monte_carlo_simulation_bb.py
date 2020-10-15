@@ -81,8 +81,8 @@ while Z.min() < args.N:
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
 
-            assert(P*this_rate_trailing*0.4 <= 1),"prob trailing > 1"
-            assert(P*this_rate_leading*0.4 <= 1),"prob leading > 1"
+            assert(P*this_rate_trailing <= 1),"prob trailing > 1"
+            assert(P*this_rate_leading <= 1),"prob leading > 1"
 
             rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
             rate_leading[i] += P*this_rate_leading       #   Not yet normalized

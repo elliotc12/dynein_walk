@@ -25,7 +25,7 @@ for_simulation= {"k_b": 5.5e9, # 3.4e9, # previously 3e6
                  "angle-logging-mode": False,
                  "long-angle-logging-mode": False,
                  "label": "test",
-                 "boltzmann-constant": 2.726097017, # kB in ATP energies per K (from default_parameters.h)
+                 "boltzmann-constant": 2.726097017e-4, # kB in ATP energies per K (from default_parameters.h)
                  "T": 310.15  # temperature in K
 }
 # other good combos of ct/cm/cb: 0.03/1.01/0.2 and 0.23/1.36/0.09

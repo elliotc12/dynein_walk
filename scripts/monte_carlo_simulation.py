@@ -142,8 +142,8 @@ while Z < N:
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
 
-            prob_trailing = P*rate_trailing*0.4     #   Unnormalized (*0.4 in order for prob < 1)
-            prob_leading = P*rate_leading*0.4       #   Unnormalized (*0.4 in order for prob < 1)
+            prob_trailing = P*rate_trailing     #   Unnormalized (*0.4 in order for prob < 1)
+            prob_leading = P*rate_leading       #   Unnormalized (*0.4 in order for prob < 1)
             # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
             # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
             # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
@@ -159,11 +159,11 @@ while Z < N:
             if np.random.random() < prob_leading:
                     # NEARBOUND State
                     state = 0
-                    
+
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
                     
-            if k[0] % 10 == 0:
+            if k[0] % 10 == 0 and k[0]>0:
                     print('Saving data!')
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')

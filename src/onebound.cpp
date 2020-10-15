@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
 
     bool accept_step = false;
     int attempts = 0;
-    if (attempts%10000) fprintf(stderr, "%g %g   %g   %g   %g   %g \n", t, dynein->get_bba(), dynein->get_bma(), dynein->get_uma()-dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
+    // if (attempts%10000) fprintf(stderr, "%g %g   %g   %g   %g   %g \n", t, dynein->get_bba(), dynein->get_bma(), dynein->get_uma()-dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
 
    while(!accept_step){
       if (attempts > 0) {
