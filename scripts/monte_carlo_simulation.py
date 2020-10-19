@@ -163,8 +163,8 @@ while Z < N:
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
                     
-            if k[0] % 10 == 0 and k[0]>0:
-                    print('Saving data!')
+            if k[0] % 50 == 0 and k[0]>0:
+                    print('Saving data! {}% finished'.format(Z/N))
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     if os.path.getsize(t_data_file) > 200000:
@@ -172,7 +172,7 @@ while Z < N:
                     if os.path.getsize(l_data_file) > 200000:
                         break
 
-
+print('Finished! ()%'.format(Z/N))
 np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 

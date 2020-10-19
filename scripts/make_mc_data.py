@@ -42,9 +42,6 @@ ob_time_dict = {}
 
 for leading in leading_files:
     leading = leading[len(basepath):]
-    if len(np.loadtxt(basepath+leading)) == 0:
-        print('There is no data in: ', leading)
-        continue
     leading_data = {'L': [], 't': []}
     trailing_data = {'L': [], 't': []}
     trailing = leading.replace('l_', 't_')
@@ -68,11 +65,13 @@ for leading in leading_files:
     cm = leading[sixth_+1:seventh_]
     ct = leading[seventh_+1:eigth_]
     C = leading[eigth_+1:leading.rfind('.')]
-    leading_data['L'] = np.loadtxt(basepath+leading)[0]
-    leading_data['t'] = np.loadtxt(basepath+leading)[1]
+    if len(np.loadtxt(basepath+leading)) > 0:
+        leading_data['L'] = np.loadtxt(basepath+leading)[0]
+        leading_data['t'] = np.loadtxt(basepath+leading)[1]
     try:
-        trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
-        trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
+        if len(np.loadtxt(basepath+trailing)) > 0:
+            trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
+            trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
         initial_disp.append(iL)
         initial_disp.append(-iL)
         final_disp_dict[iL] = leading_data['L']
