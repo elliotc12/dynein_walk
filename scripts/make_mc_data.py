@@ -42,6 +42,9 @@ ob_time_dict = {}
 
 for leading in leading_files:
     leading = leading[len(basepath):]
+    if len(np.loadtxt(basepath+leading)) == 0:
+        print('There is no data in: ', leading)
+        continue
     leading_data = {'L': [], 't': []}
     trailing_data = {'L': [], 't': []}
     trailing = leading.replace('l_', 't_')
