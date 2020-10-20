@@ -202,7 +202,7 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     init_L = initial_disp[int(len(initial_disp)/2):]
     min_init_L = int(min(init_L))
     index_subtract = 1
-    while min_init_L < 4:
+    while min_init_L < 2:
         index_subtract += 1
         init_L = init_L[1:]*1.0
         min_init_L = int(min(init_L))
@@ -430,7 +430,7 @@ def main():
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
     make_prob_dist_plot(**locals())
-    # make_filtered_prob_dist_plot(**locals())
+    make_filtered_prob_dist_plot(**locals())
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_bothbound_plots(**locals())
