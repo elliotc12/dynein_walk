@@ -266,11 +266,28 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     s_bin_edges[-1] = 2*s_arr[-1] - s_bin_edges[-2]
 
     # step length histogram from Yildiz 2012 figure 1B top head-labelled panel
-    yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*2, [-30]*3, [-29]*1, [-28]*1, [-27]*4, [-26]*4, [-25]*2, [-24]*3, [-23]*4, [-21]*4, [-20]*3,
-                                          [-19]*3, [-18]*5, [-17]*3, [-16]*3, [-15]*7, [-14]*5, [-13]*7, [-12]*12, [-11]*16, [-10]*14, [-9]*20, [-8]*14, [-7]*10, [-6]*9, [-5]*11,
-                                          [-4]*8, [-3]*2, [4]*6, [5]*7, [6]*12, [7]*20, [8]*19, [9]*22, [10]*30, [11]*34, [12]*26, [13]*21, [14]*23, [15]*22, [16]*30, [17]*29,
-                                          [18]*23, [19]*22, [20]*26, [21]*12, [22]*21, [23]*16, [24]*7, [25]*8, [26]*7, [27]*8, [28]*5, [29]*9, [30]*7, [31]*8, [32]*6, [33]*2,
-                                          [34]*2, [35]*9, [36]*4, [37]*9, [38]*5, [39]*1, [40]*2, [41]*1, [42]*3, [43]*2, [44]*4, [45]*4, [46]*1, [47]*1))
+    # yildiz_step_lengths = np.concatenate(([-37]*1, [-35]*1, [-34]*1, [-33]*2, [-31]*2, [-30]*3, [-29]*1, [-28]*1, [-27]*4, [-26]*4, [-25]*2, [-24]*3, [-23]*4, [-21]*4, [-20]*3,
+    #                                       [-19]*3, [-18]*5, [-17]*3, [-16]*3, [-15]*7, [-14]*5, [-13]*7, [-12]*12, [-11]*16, [-10]*14, [-9]*20, [-8]*14, [-7]*10, [-6]*9, [-5]*11,
+    #                                       [-4]*8, [-3]*2, [4]*6, [5]*7, [6]*12, [7]*20, [8]*19, [9]*22, [10]*30, [11]*34, [12]*26, [13]*21, [14]*23, [15]*22, [16]*30, [17]*29,
+    #                                       [18]*23, [19]*22, [20]*26, [21]*12, [22]*21, [23]*16, [24]*7, [25]*8, [26]*7, [27]*8, [28]*5, [29]*9, [30]*7, [31]*8, [32]*6, [33]*2,
+    #                                       [34]*2, [35]*9, [36]*4, [37]*9, [38]*5, [39]*1, [40]*2, [41]*1, [42]*3, [43]*2, [44]*4, [45]*4, [46]*1, [47]*1))
+
+    # load data from Yildiz 2012 Fig 3.A scatter plot
+    yildiz_IF_data = np.loadtxt("data/yildiz_2012_if_scatter_coordinates.txt", delimiter=", ")
+
+    center_px_x = 157 # from data file
+    center_px_y = 128
+    right_center_px_x = 311
+    right_center_nm_x = 56
+    bottom_center_px_y = 254
+    bottom_center_nm_y = 56
+
+    yildiz_data_nm = yildiz_IF_data + np.array((-center_px_x, -center_px_y)) # shift origin to (0, 0)
+    yildiz_data_nm = yildiz_data_nm*np.array((1.0, -1.0)) # invert the y
+    yildiz_data_nm = yildiz_data_nm*np.array((right_center_nm_x / (right_center_px_x-center_px_x),
+                                              bottom_center_nm_y / (bottom_center_px_y-center_px_y))) # rescale to nm
+
+    yildiz_step_lengths = yildiz_data_nm[:,1]
 
     # 1D hist step length
     plt.figure('Probability Density of Step Length')
