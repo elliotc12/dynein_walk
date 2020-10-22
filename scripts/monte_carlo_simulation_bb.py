@@ -80,7 +80,9 @@ while Z.min() < args.N:
 
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-
+            if P*this_rate_trailing > 1 or P*this_rate_leading > 1:
+                print('Prob t: ',P*this_rate_trailing)
+                print('Prob l: ',P*this_rate_leading)
             assert(P*this_rate_trailing <= 1),"prob trailing > 1"
             assert(P*this_rate_leading <= 1),"prob leading > 1"
 
