@@ -273,7 +273,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     #                                       [34]*2, [35]*9, [36]*4, [37]*9, [38]*5, [39]*1, [40]*2, [41]*1, [42]*3, [43]*2, [44]*4, [45]*4, [46]*1, [47]*1))
 
     # load data from Yildiz 2012 Fig 3.A scatter plot
-    yildiz_IF_data = np.loadtxt("data/yildiz_2012_if_scatter_coordinates.txt", delimiter=", ")
+    yildiz_IF_data = np.loadtxt("../data/yildiz_2012_if_scatter_coordinates.txt", delimiter=", ")
 
     center_px_x = 157 # from data file
     center_px_y = 128
@@ -292,7 +292,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # 1D hist step length
     plt.figure('Probability Density of Step Length')
     plt.fill_between(s_arr,0*s_den, s_den, label='Model', color='C1')
-    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=True, color='C0')
+    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=False, color='C0')
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
