@@ -37,6 +37,9 @@ params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
 
 # Create MC Data Directory if don't exist
 mc_bb_data_dir = '../data/mc_bb_data/'
@@ -46,17 +49,15 @@ bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant_{}'.format(args.C)
 
 dL = 1.0 # 1 nm resolution
 L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
+P_factor = 1.0
+
 rate_leading = np.zeros_like(L_arr)
 rate_trailing = np.zeros_like(rate_leading)
 
-start_time = time.time()
 Z = np.zeros_like(L_arr) # Partition Function
 Ndata = np.zeros_like(Z)
 
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
-eqb_angle = params.for_simulation['eqb']
-if bb_energy_distribution.eq_in_degrees:
-        eqb_angle = eqb_angle*np.pi/180
 
 seed = 0
 np.random.seed(0)
@@ -80,14 +81,16 @@ while Z.min() < args.N:
 
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-            if P*this_rate_trailing > 1 or P*this_rate_leading > 1:
-                print('Prob t: ',P*this_rate_trailing)
-                print('Prob l: ',P*this_rate_leading)
-            assert(P*this_rate_trailing <= 1),"prob trailing > 1"
-            assert(P*this_rate_leading <= 1),"prob leading > 1"
+            if P*this_rate_trailing*P_factor > 1 or P*this_rate_leading*P_factor > 1:
+                P_factor = P_factor-0.05
+                Z = np.zeros_like(L_arr)
+                Ndata = np.zeros_like(Z)
+                rate_leading = np.zeros_like(Z)
+                rate_trailing = np.zeros_like(rate_leading)
+                continue
 
-            rate_trailing[i] += P*this_rate_trailing     #   Not yet normalized
-            rate_leading[i] += P*this_rate_leading       #   Not yet normalized
+            rate_trailing[i] += P*this_rate_trailing*P_factor     
+            rate_leading[i] += P*this_rate_leading*P_factor
             # print('at L={},  i={}, we are {} done'.format(L,i, Z[i]/args.N))
             if np.sum(Ndata) % 5000 == 0:
                 print('SAVING DATA, progress = {}'.format(Z.min()/args.N))

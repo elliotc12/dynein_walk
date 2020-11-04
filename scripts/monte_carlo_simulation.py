@@ -94,6 +94,10 @@ params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 
+eqb_angle = params.for_simulation['eqb']
+if bb_energy_distribution.eq_in_degrees:
+        eqb_angle = eqb_angle*np.pi/180
+
 # Create MC Data Directory if don't exist
 mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}'.format(k_b, k_stk, args.cb, args.cm, args.ct)
 if not os.path.exists(mc_data_dir):
@@ -104,22 +108,9 @@ N = args.N           # Count
 Z = 0                # Partition Function
 k = [0]              # Dynein Count
 L_err = 0.5          # Margin of error for Length
+P_factor = 1.0
 
-max_unbinding = 1
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
-eqb_angle = params.for_simulation['eqb']
-if bb_energy_distribution.eq_in_degrees:
-        eqb_angle = eqb_angle*np.pi/180
-
-# Onebound Data
-trailing_data = {   # Trailing step data
-        'L': [],
-        't': []
-}
-leading_data = {    # Leading step data
-        'L': [],
-        't': []
-}
 
 # Strings for data file name
 t_data_file = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/t_{5}_{6}_{7}_{8:.2e}_{9:.2e}_{10}_{11}_{12}_{13}_{14}.txt'.format(k_b, k_stk, args.cb, args.cm, args.ct, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)
@@ -129,6 +120,11 @@ seed = 0
 np.random.seed(0)
 
 while Z < N:
+        if k[0] == 0:
+            # Onebound Data
+            trailing_data = {'L': [], 't': []} # Trailing step data
+            leading_data = {'L': [], 't': []}  # Leading step data
+
         # Making random motor angles
         dynein = bb_energy_distribution.generate_random_bb(L-L_err, L+L_err, params)
 
@@ -140,15 +136,18 @@ while Z < N:
             P = np.exp(-b*dynein.E_total)
             Z += P
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
-            rate_leading = np.exp(args.C*(dynein.fba - eqb_angle)) # rate_max = np.exp(args.C*(-np.pi (or 0 or np.pi???) - eqb_angle)) if C is negative (check and figure this out!!!!!!!!!)
+            rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
 
-            prob_trailing = P*rate_trailing     #   Unnormalized (*0.4 in order for prob < 1)
-            prob_leading = P*rate_leading       #   Unnormalized (*0.4 in order for prob < 1)
+            prob_trailing = P*rate_trailing*P_factor
+            prob_leading = P*rate_leading*P_factor
             # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
             # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
             # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-            assert(prob_trailing <= 1),"prob trailing > 1" # if this crashes, we could add a factor to reduce the prob_ to be always less than 1
-            assert(prob_leading <= 1),"prob leading > 1"
+            if prob_trailing > 1 or prob_leading > 1:
+                P_factor = P_factor - 0.05
+                k[0] = 0
+                Z = 0
+                continue
             if np.random.random() < prob_trailing:
                     # FARBOUND State
                     state = 1
@@ -162,7 +161,7 @@ while Z < N:
 
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
-                    
+
             if k[0] % 50 == 0 and k[0]>0:
                     print('Saving data! {}% finished'.format(Z/N))
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')

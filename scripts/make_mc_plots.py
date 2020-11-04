@@ -267,7 +267,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     # step length histogram from Yildiz 2012 figure 1B top head-labelled panel
     yildiz_hist_fig_1B = np.array(
-        [[-37, 1],
+        [[-40,0],[-39,0],[-38,0],[-37, 1],
         [-36, 0],
         [-35, 1],
         [-34, 1],
@@ -310,7 +310,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
         [4, 6],
         [5, 7], [6, 12], [7, 20], [8, 19], [9, 22], [10, 30], [11, 34], [12, 26], [13, 21], [14, 23], [15, 22], [16, 30], [17, 29],
         [18, 23], [19, 22], [20, 26], [21, 12], [22, 21], [23, 16], [24, 7], [25, 8], [26, 7], [27, 8], [28, 5], [29, 9], [30, 7], [31, 8], [32, 6], [33, 2],
-        [34, 2], [35, 9], [36, 4], [37, 9], [38, 5], [39, 1], [40, 2], [41, 1], [42, 3], [43, 2], [44, 4], [45, 4], [46, 1], [47, 1]])
+        [34, 2], [35, 9], [36, 4], [37, 9], [38, 5], [39, 1], [40, 2], [41, 1], [42, 3], [43, 2], [44, 4], [45, 4], [46, 1], [47, 1],[48,0],[49,0],[50,0],[51,0],
+        [52,0],[53,0],[54,0],[55,0]])
     yildiz_step_lengths_fig_1B = []
     for i in range(len(yildiz_hist_fig_1B)):
         yildiz_step_lengths_fig_1B.extend([yildiz_hist_fig_1B[i,0]]*yildiz_hist_fig_1B[i,1])
@@ -320,8 +321,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     norm_length_min = 7.75
 
-    norm = np.sum(step_length_count_fig_1B[step_length_bin_center_fig_1B>norm_length_min])
-    yildiz_normalized_prob_fig_1B = step_length_count_fig_1B/norm
+    norm_1B = np.sum(step_length_count_fig_1B[step_length_bin_center_fig_1B>norm_length_min])
+    yildiz_normalized_prob_fig_1B = step_length_count_fig_1B/norm_1B
 
     step_length_bin_edges_fig_1B = np.zeros(2*len(step_length_bin_center_fig_1B))
     yildiz_normalized_prob_edges_fig_1B = np.zeros(2*len(step_length_bin_center_fig_1B))
@@ -346,16 +347,37 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     yildiz_data_nm = yildiz_data_nm*np.array((right_center_nm_x / (right_center_px_x-center_px_x),
                                               bottom_center_nm_y / (bottom_center_px_y-center_px_y))) # rescale to nm
 
-    yildiz_step_lengths = yildiz_data_nm[:,1]
+    yildiz_step_lengths_fig_3A = yildiz_data_nm[:,1]
+    step_length_count_fig_3A = np.zeros_like(step_length_count_fig_1B)
+    print(np.min(step_length_bin_center_fig_1B[0]))
+    print(np.max(yildiz_step_lengths_fig_3A))
+    print(np.min(yildiz_step_lengths_fig_3A))
+    for i in range(len(yildiz_step_lengths_fig_3A)):
+        bin = int(np.round(yildiz_step_lengths_fig_3A[i]) - step_length_bin_center_fig_1B[0])
+        if bin == len(step_length_count_fig_3A):
+            bin = bin-1
+        step_length_count_fig_3A[bin] += 1
+    norm_3A = np.sum(step_length_count_fig_3A[step_length_bin_center_fig_1B>norm_length_min])
+    yildiz_normalized_prob_fig_3A = step_length_count_fig_3A/norm_3A
+
+    step_length_bin_edges_fig_3A = np.zeros_like(step_length_bin_edges_fig_1B)
+    yildiz_normalized_prob_edges_fig_3A = np.zeros_like(yildiz_normalized_prob_edges_fig_1B)
+    for i in range(len(step_length_bin_center_fig_1B)):
+        step_length_bin_edges_fig_3A[2*i] = step_length_bin_center_fig_1B[i]-0.5
+        step_length_bin_edges_fig_3A[2*i+1] = step_length_bin_center_fig_1B[i]+0.5
+        yildiz_normalized_prob_edges_fig_3A[2*i] = yildiz_normalized_prob_fig_3A[i]
+        yildiz_normalized_prob_edges_fig_3A[2*i+1] = yildiz_normalized_prob_fig_3A[i]
 
     # 1D hist step length
     plt.figure('Probability Density of Step Length')
     s_den_norm = np.sum(s_den[s_arr > norm_length_min])*(s_arr[1]-s_arr[0])
     plt.fill_between(s_arr,0*s_den, s_den/s_den_norm, label='Model', color='C1')
-    plt.hist(yildiz_step_lengths, bins=32, alpha=0.5, label='Experiment', density=True, stacked=False, color='C0')
-    plt.hist(yildiz_step_lengths_fig_1B, bins=32, alpha=0.5, label='Experiment Fig 1B', density=True, stacked=False, color='C2')
+    plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A)
+    plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
+                yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
     plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B)
-    plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, label='Great', color='C3', alpha=0.5)
+    plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
+                yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C3', alpha=0.5)
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
