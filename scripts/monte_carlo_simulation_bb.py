@@ -89,11 +89,10 @@ while Z.min() < args.N:
                 rate_trailing = np.zeros_like(rate_leading)
                 continue
 
-            rate_trailing[i] += P*this_rate_trailing*P_factor     
+            rate_trailing[i] += P*this_rate_trailing*P_factor
             rate_leading[i] += P*this_rate_leading*P_factor
             # print('at L={},  i={}, we are {} done'.format(L,i, Z[i]/args.N))
             if np.sum(Ndata) % 5000 == 0:
-                print('SAVING DATA, progress = {}'.format(Z.min()/args.N))
                 current_rate_trailing = rate_trailing/Z
                 current_rate_leading = rate_leading/Z
                 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=current_rate_leading, rate_trailing=current_rate_trailing)
@@ -101,5 +100,4 @@ while Z.min() < args.N:
 
 rate_leading /= Z # Normalize our average, but we're still missing the unbinding rate factor
 rate_trailing /= Z
-print('saving to', bbdatapath)
 np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)

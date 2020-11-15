@@ -98,6 +98,7 @@ def get_cli_arguments():
     parser.add_argument("-ct", "--ct", type=float, help="Spring const tail domain", default=params.for_simulation['ct'])
     parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
     parser.add_argument("-p", "--plot", action="store_false", help="Do not show plots", default=True)
+    parser.add_argument("-e", "--extra", action="store_false", help="Show extra plots", default=True)
     return parser.parse_args()
 
 def get_onebound_data(args, plotting_data_file):
@@ -267,47 +268,11 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     # step length histogram from Yildiz 2012 figure 1B top head-labelled panel
     yildiz_hist_fig_1B = np.array(
-        [[-40,0],[-39,0],[-38,0],[-37, 1],
-        [-36, 0],
-        [-35, 1],
-        [-34, 1],
-        [-33, 2],
-        [-31, 2],
-        [-30, 3],
-        [-29, 1],
-        [-28, 1],
-        [-27, 4],
-        [-26, 4],
-        [-25, 2],
-        [-24, 3],
-        [-23, 4],
-        [-22, 0],
-        [-21, 4],
-        [-20, 3],
-        [-19, 3],
-        [-18, 5],
-        [-17, 3],
-        [-16, 3],
-        [-15, 7],
-        [-14, 5],
-        [-13, 7],
-        [-12, 12],
-        [-11, 16],
-        [-10, 14],
-        [-9, 20],
-        [-8, 14],
-        [-7, 10],
-        [-6, 9],
-        [-5, 11],
-        [-4, 8],
-        [-3, 2],
-        [-2, 0],
-        [-1, 0],
-        [0, 0],
-        [1, 0],
-        [2, 0],
-        [3, 0],
-        [4, 6],
+        [[-40,0],[-39,0],[-38,0],[-37, 1],[-36, 0],[-35, 1],[-34, 1],[-33, 2],[-31, 2],
+        [-30, 3],[-29, 1],[-28, 1],[-27, 4],[-26, 4],[-25, 2],[-24, 3],[-23, 4],[-22, 0],[-21, 4],[-20, 3],
+        [-19, 3],[-18, 5],[-17, 3],[-16, 3],[-15, 7],[-14, 5],[-13, 7],[-12, 12],[-11, 16],
+        [-10, 14],[-9, 20],[-8, 14],[-7, 10],[-6, 9],[-5, 11],[-4, 8],[-3, 2],[-2, 0],[-1, 0],
+        [0, 0],[1, 0],[2, 0],[3, 0],[4, 6],
         [5, 7], [6, 12], [7, 20], [8, 19], [9, 22], [10, 30], [11, 34], [12, 26], [13, 21], [14, 23], [15, 22], [16, 30], [17, 29],
         [18, 23], [19, 22], [20, 26], [21, 12], [22, 21], [23, 16], [24, 7], [25, 8], [26, 7], [27, 8], [28, 5], [29, 9], [30, 7], [31, 8], [32, 6], [33, 2],
         [34, 2], [35, 9], [36, 4], [37, 9], [38, 5], [39, 1], [40, 2], [41, 1], [42, 3], [43, 2], [44, 4], [45, 4], [46, 1], [47, 1],[48,0],[49,0],[50,0],[51,0],
@@ -349,9 +314,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     yildiz_step_lengths_fig_3A = yildiz_data_nm[:,1]
     step_length_count_fig_3A = np.zeros_like(step_length_count_fig_1B)
-    print(np.min(step_length_bin_center_fig_1B[0]))
-    print(np.max(yildiz_step_lengths_fig_3A))
-    print(np.min(yildiz_step_lengths_fig_3A))
+
     for i in range(len(yildiz_step_lengths_fig_3A)):
         bin = int(np.round(yildiz_step_lengths_fig_3A[i]) - step_length_bin_center_fig_1B[0])
         if bin == len(step_length_count_fig_3A):
@@ -532,12 +495,12 @@ def main():
     b, m, lin_fit = least_squares(probability_distribution, initial_disp, initial_disp, final_disp_bin_width, final_disp_bin_width)
 
     make_prob_dist_plot(**locals())
-    make_filtered_prob_dist_plot(**locals())
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
-    make_bothbound_plots(**locals())
-    bug_checking_plots(**locals())
-    print(args.plot)
+    if args.extra == False:
+        make_filtered_prob_dist_plot(**locals())
+        make_bothbound_plots(**locals())
+        bug_checking_plots(**locals())
     if args.plot == True:
         plt.show()
 
