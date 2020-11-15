@@ -140,9 +140,11 @@ while Z < N:
 
             prob_trailing = P*rate_trailing*P_factor
             prob_leading = P*rate_leading*P_factor
-            # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-            # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
-            # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+            # if (len(trailing_data['L'])) == 7:
+            #     print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+            #     print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
+            #     print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+
             if prob_trailing > 1 or prob_leading > 1:
                 P_factor = P_factor - 0.05
                 k[0] = 0
