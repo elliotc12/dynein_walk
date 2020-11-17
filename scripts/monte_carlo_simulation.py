@@ -94,6 +94,7 @@ params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
 
+
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
