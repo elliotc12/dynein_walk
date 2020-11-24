@@ -13,6 +13,13 @@ def draw(ax, x_coords, y_coords, alpha=1):
 def _draw_circle(x,y,R, color, alpha):
     angles = np.linspace(0, np.pi, 1000)
     plt.fill_between(x + R*np.cos(angles), y + R*np.sin(angles), y - R*np.sin(angles), color=color, alpha=alpha)
+    angles = np.linspace(0, 2*np.pi, 1000)
+    xs = np.linspace(-R, R, 2000)
+    y_outer = np.sqrt(R**2 - xs**2)
+    y_inner = np.sqrt((0.9*R)**2 - xs**2)
+    y_inner[y_inner != y_inner] = 0
+    plt.fill_between(x + xs, y + y_outer, y + y_inner, color='w', alpha=alpha)
+    plt.fill_between(x + xs, y - y_outer, y - y_inner, color='w', alpha=alpha)
 
 def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
     stalk_length = np.sqrt((xm-xb)**2+(ym-yb)**2)

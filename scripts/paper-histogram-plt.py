@@ -9,7 +9,6 @@ if 'show' not in sys.argv:
 
 import argparse
 import datetime
-import dynein.draw.cartoon as cartoon
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.patches import Rectangle
