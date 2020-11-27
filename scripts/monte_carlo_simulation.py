@@ -83,7 +83,7 @@ parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", defaul
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
-params.for_simulation['k_ub'] = args.kub
+k_ub = args.kub
 k_b = args.kb        # Binding Rate Constant
 k_stk = args.ks      # Sticky Rate Constant
 params.for_simulation['cb'] = args.cb
@@ -100,7 +100,7 @@ if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
 # Create MC Data Directory if don't exist
-mc_data_dir = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}'.format(k_b, k_stk, args.cb, args.cm, args.ct)
+mc_data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
 if not os.path.exists(mc_data_dir):
     os.mkdir(mc_data_dir)
 
@@ -114,8 +114,8 @@ P_factor = 1.0
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 
 # Strings for data file name
-t_data_file = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/t_{5}_{6}_{7}_{8:.2e}_{9:.2e}_{10}_{11}_{12}_{13}_{14}.txt'.format(k_b, k_stk, args.cb, args.cm, args.ct, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)
-l_data_file = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}/l_{5}_{6}_{7}_{8:.2e}_{9:.2e}_{10}_{11}_{12}_{13}_{14}.txt'.format(k_b, k_stk, args.cb, args.cm, args.ct, int(L), N, args.kub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.C)
+t_data_file = mc_data_dir + '/t_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+l_data_file = mc_data_dir + '/l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 seed = 0
 np.random.seed(0)
