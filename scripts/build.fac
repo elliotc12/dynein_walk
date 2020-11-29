@@ -1,2 +1,2 @@
-| python3 make_mc_plots.py -p -e --ct 0.36
+| python3 make_mc_plots.py -p -e 
 c .pyc

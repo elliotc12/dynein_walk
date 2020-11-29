@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
   // fprintf(stderr, "Starting with %g %g %g %g\n",
   //         dynein->get_bba(), dynein->get_bma(), dynein->get_uma(), dynein->get_uba());
   // fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
-  
+
   double t = 0;
   long iter = 0;
   bool stillStepping = true;
@@ -171,8 +171,10 @@ int main(int argc, char** argv) {
       // fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
       //         iter, dynein->get_ubx()-dynein->get_bbx(),
       //         dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
-      printf("{\n  'L': %g,\n  't': %g,\n}\n",
-	       dynein->get_ubx()-dynein->get_bbx(), t);
+      printf("{\n  'L': %g,\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
+	       dynein->get_ubx()-dynein->get_bbx(), t,
+         dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
+         dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
     }

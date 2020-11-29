@@ -51,16 +51,16 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         Call run_onebound function and collect onebound statistics
         """
         step = run_onebound(bba, bma, uma, uba, state, k[0])
+        step_data['L'].append(step['L'])
+        step_data['t'].append(step['t'])
 
-        if state == 0:
-            # NEARBOUND State - Leading step ddata
-            step_data['L'].append(step['L'])
-            step_data['t'].append(step['t'])
+        if k[0] % 50 == 0:
+            pictures['bb_init'] = np.array([step['bbx'], step['bby']])
+            pictures['bm_init'] = np.array([step['bmx'], step['bmy']])
+            pictures['t_init'] = np.array([step['tx'], step['ty']])
+            pictures['um_init'] = np.array([step['umx'], step['umy']])
+            pictures['ub_init'] = np.array([step['ubx'], step['uby']])
 
-        else:
-            # FARBOUND State - Trailing step data
-            step_data['L'].append(step['L'])
-            step_data['t'].append(step['t'])
 
         k[0]+=1
         sys.stdout.flush()
@@ -116,6 +116,7 @@ b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])  
 # Strings for data file name
 t_data_file = mc_data_dir + '/t_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 l_data_file = mc_data_dir + '/l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+pictures_data_file = mc_data_dir + '/pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 seed = 0
 np.random.seed(0)
@@ -125,6 +126,8 @@ while Z < N:
             # Onebound Data
             trailing_data = {'L': [], 't': []} # Trailing step data
             leading_data = {'L': [], 't': []}  # Leading step data
+            pictures = {'bb_init': {}, 'bm_init': {}, 't_init': [], 'um_init': [], 'ub_init': [],
+                        'bb_final': {}, 'bm_final': {}, 't_final': [], 'um_final': [], 'ub_final': [],}
 
         # Making random motor angles
         dynein = bb_energy_distribution.generate_random_bb(L-L_err, L+L_err, params)
@@ -154,20 +157,33 @@ while Z < N:
             if np.random.random() < prob_trailing:
                     # FARBOUND State
                     state = 1
-
+                    if k[0] % 50 == 0:
+                        pictures['bb_init'] = dynein.r_fb
+                        pictures['bm_init'] = dynein.r_fm
+                        pictures['t_init'] = dynein.r_t
+                        pictures['um_init'] = dynein.r_nm
+                        pictures['ub_init'] = dynein.r_nb
                     collect_onebound_data(k, state, dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
                                             L, trailing_data)
 
             if np.random.random() < prob_leading:
                     # NEARBOUND State
                     state = 0
-
+                    if k[0] % 50 == 0:
+                        pictures['bb_init'] = dynein.r_nb
+                        pictures['bm_init'] = dynein.r_nm
+                        pictures['t_init'] = dynein.r_t
+                        pictures['um_init'] = dynein.r_fm
+                        pictures['ub_init'] = dynein.r_fb
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
 
-            if k[0] % 50 == 0 and k[0]>0: 
+            if k[0] % 50 == 0 and k[0]>0:
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+                    np.savetxt(pictures_data_file, (pictures['bb_init'], pictures['bm_init'], pictures['t_init'], pictures['um_init'], pictures['ub_init'],
+                                                    pictures['bb_final'], pictures['bm_final'], pictures['t_final'], pictures['um_final'], pictures['ub_final']),
+                                                    fmt='%.6e', delimiter=' ', newline='\n\n')
                     if os.path.getsize(t_data_file) > 200000:
                         break
                     if os.path.getsize(l_data_file) > 200000:
@@ -176,5 +192,8 @@ while Z < N:
 
 np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savetxt(pictures_data_file, (pictures['bb_init'], pictures['bm_init'], pictures['t_init'], pictures['um_init'], pictures['ub_init'],
+                                pictures['bb_final'], pictures['bm_final'], pictures['t_final'], pictures['um_final'], pictures['ub_final']),
+                                fmt='%.6e', delimiter=' ', newline='\n\n')
 
 # END OF SIM
