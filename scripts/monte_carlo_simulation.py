@@ -158,11 +158,11 @@ while Z < N:
                     # FARBOUND State
                     state = 1
                     if k[0] % 50 == 0:
-                        pictures['bb_init'].append(dynein.r_fb)
-                        pictures['bm_init'].append(dynein.r_fm)
-                        pictures['t_init'].append(dynein.r_t)
-                        pictures['um_init'].append(dynein.r_nm)
-                        pictures['ub_init'].append(dynein.r_nb)
+                        pictures['bb_init'].append(np.array([dynein.r_fb[0]-L, dynein.r_fb[1]]))
+                        pictures['bm_init'].append(np.array([dynein.r_fm[0]-L, dynein.r_fm[1]]))
+                        pictures['t_init'].append(np.array([dynein.r_t[0]-L, dynein.r_t[1]]))
+                        pictures['um_init'].append(np.array([dynein.r_nm[0]-L, dynein.r_nm[1]]))
+                        pictures['ub_init'].append(np.array([dynein.r_nb[0]-L, dynein.r_nb[1]]))
                     collect_onebound_data(k, state, dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
                                             L, trailing_data)
 

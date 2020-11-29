@@ -10,16 +10,19 @@ sys.path.append("../data")
 import importlib
 import argparse
 import subprocess
-import bb_energy_distribution
 from glob import glob
+
+import bb_energy_distribution
+import dynein.draw.cartoon as cartoon
 
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="Initial L", default=8)
-parser.add_argument("-u", "--kub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
-parser.add_argument("-k", "--kb", type=float, help="Binding const", default=params.for_simulation['k_b'])
-parser.add_argument("-s", "--ks", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
+parser.add_argument("-L", "--L", type=int, help="Initial L", default=8)
+parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e20)
+parser.add_argument("-u", "--k_ub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
+parser.add_argument("-k", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-s", "--k_stk", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
 parser.add_argument("-ct", "--ct", type=float, help="Spring constant tail domain", default=params.for_simulation['ct'])
@@ -27,8 +30,38 @@ parser.add_argument("--eqb", type=float, help="Binding equilibrium angle", defau
 parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", default=params.for_simulation['eqmpre'])
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Time step dt", default=params.for_simulation['dt'])
+parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
-basepath = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}/'.format(args.k_ub, args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+pictures_file = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}/pictures_{9}_{10}_{11}_{12:.2e}_{13:.2e}_{14}_{15}_{16}_{17}_{18}_{19}_{20}_{21}.npz'.format(args.k_ub,
+                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost,
+                    args.L, args.N, args.k_ub, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
-pictures_files = glob('{}/pictures_*.txt'.format(basepath))
+pictures_data = np.load(pictures_file, allow_pickle=True)
+
+pictures = pictures_data['pictures'].item()
+
+print(pictures['bb_init'][0][1])
+print(len(pictures['bb_init']))
+
+for i in range(len(pictures['bb_init'])):
+    fig = plt.figure()
+    cartoon.dyneinCircles(pictures['bb_init'][i][0], pictures['bb_init'][i][1], params.for_simulation['rb'],
+                          pictures['bm_init'][i][0], pictures['bm_init'][i][1], params.for_simulation['rm'],
+                          pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
+                          'red', 0.5, fig.gca())
+    cartoon.dyneinCircles(pictures['ub_init'][i][0], pictures['ub_init'][i][1], params.for_simulation['rb'],
+                          pictures['um_init'][i][0], pictures['um_init'][i][1], params.for_simulation['rm'],
+                          pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
+                          'blue', 0.3, fig.gca())
+
+    cartoon.dyneinCircles(pictures['bb_final'][i][0], pictures['bb_final'][i][1], params.for_simulation['rb'],
+                          pictures['bm_final'][i][0], pictures['bm_final'][i][1], params.for_simulation['rm'],
+                          pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
+                          'orange', 0.5, fig.gca())
+    cartoon.dyneinCircles(pictures['ub_final'][i][0], pictures['ub_final'][i][1], params.for_simulation['rb'],
+                          pictures['um_final'][i][0], pictures['um_final'][i][1], params.for_simulation['rm'],
+                          pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
+                          'purple', 0.2, fig.gca())
+
+    plt.show()
