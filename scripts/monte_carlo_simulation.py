@@ -126,8 +126,8 @@ while Z < N:
             # Onebound Data
             trailing_data = {'L': [], 't': []} # Trailing step data
             leading_data = {'L': [], 't': []}  # Leading step data
-            pictures = {'bb_init': {}, 'bm_init': {}, 't_init': [], 'um_init': [], 'ub_init': [],
-                        'bb_final': {}, 'bm_final': {}, 't_final': [], 'um_final': [], 'ub_final': [],}
+            pictures = {'bb_init': [], 'bm_init': [], 't_init': [], 'um_init': [], 'ub_init': [],
+                        'bb_final': [], 'bm_final': [], 't_final': [], 'um_final': [], 'ub_final': [],}
 
         # Making random motor angles
         dynein = bb_energy_distribution.generate_random_bb(L-L_err, L+L_err, params)
