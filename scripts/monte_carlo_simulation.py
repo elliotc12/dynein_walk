@@ -116,7 +116,7 @@ b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])  
 # Strings for data file name
 t_data_file = mc_data_dir + '/t_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 l_data_file = mc_data_dir + '/l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-pictures_data_file = mc_data_dir + '/pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+pictures_data_file = mc_data_dir + '/pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 seed = 0
 np.random.seed(0)
@@ -181,9 +181,7 @@ while Z < N:
             if k[0] % 50 == 0 and k[0]>0:
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-                    np.savetxt(pictures_data_file, (pictures['bb_init'], pictures['bm_init'], pictures['t_init'], pictures['um_init'], pictures['ub_init'],
-                                                    pictures['bb_final'], pictures['bm_final'], pictures['t_final'], pictures['um_final'], pictures['ub_final']),
-                                                    fmt='%.6e', delimiter=' ', newline='\n\n')
+                    np.savez_compressed(pictures_data_file, pictures=pictures)
                     if os.path.getsize(t_data_file) > 200000:
                         break
                     if os.path.getsize(l_data_file) > 200000:
@@ -192,8 +190,7 @@ while Z < N:
 
 np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
 np.savetxt(l_data_file, (leading_data['L'], leading_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')
-np.savetxt(pictures_data_file, (pictures['bb_init'], pictures['bm_init'], pictures['t_init'], pictures['um_init'], pictures['ub_init'],
-                                pictures['bb_final'], pictures['bm_final'], pictures['t_final'], pictures['um_final'], pictures['ub_final']),
-                                fmt='%.6e', delimiter=' ', newline='\n\n')
+np.savez_compressed(pictures_data_file, pictures=pictures)
+
 
 # END OF SIM
