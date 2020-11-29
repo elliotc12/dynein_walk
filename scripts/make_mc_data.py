@@ -46,6 +46,7 @@ initial_disp = []
 final_disp_dict = {}
 ob_time_dict = {}
 
+print('Making data for data file: \n ', basepath)
 
 for leading in leading_files:
     leading = leading[len(basepath):]
@@ -65,13 +66,13 @@ for leading in leading_files:
     if iL in initial_disp:
         print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
         exit(1)
-    N = leading[second_+1:third_]
-    k_b = leading[third_+1:fourth_]
-    dt = leading[fourth_+1:fifth_]
-    cb = leading[fifth_+1:sixth_]
-    cm = leading[sixth_+1:seventh_]
-    ct = leading[seventh_+1:eigth_]
-    C = leading[eigth_+1:leading.rfind('.')]
+    # N = leading[second_+1:third_]
+    # k_b = leading[third_+1:fourth_]
+    # dt = leading[fourth_+1:fifth_]
+    # cb = leading[fifth_+1:sixth_]
+    # cm = leading[sixth_+1:seventh_]
+    # ct = leading[seventh_+1:eigth_]
+    # C = leading[eigth_+1:leading.rfind('.')]
     if len(np.loadtxt(basepath+leading)) > 0:
         leading_data['L'] = np.loadtxt(basepath+leading)[0]
         leading_data['t'] = np.loadtxt(basepath+leading)[1]
