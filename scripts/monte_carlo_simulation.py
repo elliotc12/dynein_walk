@@ -55,11 +55,11 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         step_data['t'].append(step['t'])
 
         if k[0] % 50 == 0:
-            pictures['bb_init'] = np.array([step['bbx'], step['bby']])
-            pictures['bm_init'] = np.array([step['bmx'], step['bmy']])
-            pictures['t_init'] = np.array([step['tx'], step['ty']])
-            pictures['um_init'] = np.array([step['umx'], step['umy']])
-            pictures['ub_init'] = np.array([step['ubx'], step['uby']])
+            pictures['bb_final'].append(np.array([step['bbx'], step['bby']]))
+            pictures['bm_final'].append(np.array([step['bmx'], step['bmy']]))
+            pictures['t_final'].append(np.array([step['tx'], step['ty']]))
+            pictures['um_final'].append(np.array([step['umx'], step['umy']]))
+            pictures['ub_final'].append(np.array([step['ubx'], step['uby']]))
 
 
         k[0]+=1
@@ -158,11 +158,11 @@ while Z < N:
                     # FARBOUND State
                     state = 1
                     if k[0] % 50 == 0:
-                        pictures['bb_init'] = dynein.r_fb
-                        pictures['bm_init'] = dynein.r_fm
-                        pictures['t_init'] = dynein.r_t
-                        pictures['um_init'] = dynein.r_nm
-                        pictures['ub_init'] = dynein.r_nb
+                        pictures['bb_init'].append(dynein.r_fb)
+                        pictures['bm_init'].append(dynein.r_fm)
+                        pictures['t_init'].append(dynein.r_t)
+                        pictures['um_init'].append(dynein.r_nm)
+                        pictures['ub_init'].append(dynein.r_nb)
                     collect_onebound_data(k, state, dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
                                             L, trailing_data)
 
@@ -170,11 +170,11 @@ while Z < N:
                     # NEARBOUND State
                     state = 0
                     if k[0] % 50 == 0:
-                        pictures['bb_init'] = dynein.r_nb
-                        pictures['bm_init'] = dynein.r_nm
-                        pictures['t_init'] = dynein.r_t
-                        pictures['um_init'] = dynein.r_fm
-                        pictures['ub_init'] = dynein.r_fb
+                        pictures['bb_init'].append(dynein.r_nb)
+                        pictures['bm_init'].append(dynein.r_nm)
+                        pictures['t_init'].append(dynein.r_t)
+                        pictures['um_init'].append(dynein.r_fm)
+                        pictures['ub_init'].append(dynein.r_fb)
                     collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
                                             L, leading_data)
 
