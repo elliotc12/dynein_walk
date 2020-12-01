@@ -63,5 +63,6 @@ for i in range(len(pictures['bb_init'])):
                           pictures['um_final'][i][0], pictures['um_final'][i][1], params.for_simulation['rm'],
                           pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
                           'purple', 0.2, fig.gca())
+    plt.gca().set_aspect('equal')
 
     plt.show()
