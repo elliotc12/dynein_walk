@@ -46,23 +46,33 @@ print(len(pictures['bb_init']))
 
 for i in range(len(pictures['bb_init'])):
     fig = plt.figure()
-    cartoon.dyneinCircles(pictures['bb_init'][i][0], pictures['bb_init'][i][1], params.for_simulation['rb'],
-                          pictures['bm_init'][i][0], pictures['bm_init'][i][1], params.for_simulation['rm'],
-                          pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
-                          'red', 0.5, fig.gca())
-    cartoon.dyneinCircles(pictures['ub_init'][i][0], pictures['ub_init'][i][1], params.for_simulation['rb'],
-                          pictures['um_init'][i][0], pictures['um_init'][i][1], params.for_simulation['rm'],
-                          pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
-                          'blue', 0.3, fig.gca())
+    if pictures['bb_init'][i][0] < pictures['ub_init'][i][0]:
+        # it is a leading step
+        leading = 'u'
+        trailing = 'b'
+    else:
+        # it is a trailing step
+        leading = 'b'
+        trailing = 'u'
+    cartoon.dyneinCircles(pictures[trailing+'b_init'][i][0], pictures[trailing+'b_init'][i][1], params.for_simulation['rb'],
+                        pictures[trailing+'m_init'][i][0], pictures[trailing+'m_init'][i][1], params.for_simulation['rm'],
+                        pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
+                        'red', 0.5, fig.gca())
+    cartoon.dyneinCircles(pictures[leading+'b_init'][i][0], pictures[leading+'b_init'][i][1], params.for_simulation['rb'],
+                        pictures[leading+'m_init'][i][0], pictures[leading+'m_init'][i][1], params.for_simulation['rm'],
+                        pictures['t_init'][i][0], pictures['t_init'][i][1], params.for_simulation['rt'],
+                        'blue', 0.3, fig.gca())
 
-    cartoon.dyneinCircles(pictures['bb_final'][i][0], pictures['bb_final'][i][1], params.for_simulation['rb'],
-                          pictures['bm_final'][i][0], pictures['bm_final'][i][1], params.for_simulation['rm'],
-                          pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
-                          'orange', 0.5, fig.gca())
-    cartoon.dyneinCircles(pictures['ub_final'][i][0], pictures['ub_final'][i][1], params.for_simulation['rb'],
-                          pictures['um_final'][i][0], pictures['um_final'][i][1], params.for_simulation['rm'],
-                          pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
-                          'purple', 0.2, fig.gca())
+    cartoon.dyneinCircles(pictures[trailing+'b_final'][i][0], pictures[trailing+'b_final'][i][1], params.for_simulation['rb'],
+                        pictures[trailing+'m_final'][i][0], pictures[trailing+'m_final'][i][1], params.for_simulation['rm'],
+                        pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
+                        'orange', 0.5, fig.gca())
+    cartoon.dyneinCircles(pictures[leading+'b_final'][i][0], pictures[leading+'b_final'][i][1], params.for_simulation['rb'],
+                        pictures[leading+'m_final'][i][0], pictures[leading+'m_final'][i][1], params.for_simulation['rm'],
+                        pictures['t_final'][i][0], pictures['t_final'][i][1], params.for_simulation['rt'],
+                        'purple', 0.2, fig.gca())
+    plt.arrow(pictures['ub_init'][i][0], 0, pictures['ub_final'][i][0] - pictures['ub_init'][i][0], 0,
+                head_width=2, length_includes_head=True)
     plt.gca().set_aspect('equal')
 
     plt.show()
