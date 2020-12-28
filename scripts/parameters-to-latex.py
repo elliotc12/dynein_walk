@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
 
 import numpy as np
-import sys, os
+import sys, os, importlib
 
 sys.path.insert(0, os.getcwd() + "/data/")
-import paper_params as params
+params = importlib.import_module("params")
 
 def latex_format(x):
     if isinstance(x, float) or isinstance(x, int):
@@ -32,23 +32,23 @@ def latex_format(x):
     return x
 
 parameters = {
-"k_b" :               params.k_b,
-"k_ub" :              params.k_ub,
-"trajectory_k_b" :    params.trajectory_k_b,
-"trajectory_k_ub" :   params.trajectory_k_ub,
-"cexp" :              params.cexp,
-"cb" :                params.cb,
-"cm" :                params.cm,
-"ct" :                params.ct,
-"eqb" :               params.eqb,
-"eqmpre" :            params.eqmpre,
-"eqmpost" :           params.eqmpost,
-"eqt" :               params.eqt,
-"ls" :                params.ls,
-"lt" :                params.lt,
-"radius_t" :          params.radius_t,
-"radius_m" :          params.radius_m,
-"radius_b" :          params.radius_b
+"k_b" :               params.for_simulation['k_b'],
+"k_ub" :              params.for_simulation['k_ub'],
+"trajectory_k_b" :    9.5e9, # params.trajectory_k_b,
+"trajectory_k_ub" :   1e20, # params.trajectory_k_ub,
+"cexp" :              params.for_simulation['exp-unbinding-constant'],
+"cb" :                params.for_simulation['cb'],
+"cm" :                params.for_simulation['cm'],
+"ct" :                params.for_simulation['ct'],
+"eqb" :               params.for_simulation['eqb'],
+"eqmpre" :            params.for_simulation['eqmpre'],
+"eqmpost" :           params.for_simulation['eqmpost'],
+"eqt" :               params.for_simulation['eqt'],
+"ls" :                params.for_simulation['ls'],
+"lt" :                params.for_simulation['lt'],
+"radius_t" :          params.for_simulation['rt'],
+"radius_m" :          params.for_simulation['rm'],
+"radius_b" :          params.for_simulation['rb']
 }
 
 with open("data/paper_params.tex", "w") as f:

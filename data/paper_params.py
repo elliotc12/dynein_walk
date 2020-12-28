@@ -5,7 +5,7 @@ k_ub = 30 # s^-1
 
 trajectory_k_b  = 9.5e9 # s^-1
 trajectory_k_ub = 1e20 # s^-1
-trajectory_seed = 14 
+trajectory_seed = 14
 
 stroke_angle_k_b  = k_b # s^-1
 stroke_angle_k_ub = k_ub # s^-1

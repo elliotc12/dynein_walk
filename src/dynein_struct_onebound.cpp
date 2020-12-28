@@ -188,10 +188,10 @@ void Dynein_onebound::update_internal_forces() {
 
     f.tx += tail_force;
 
-    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
-    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
-    if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
-    if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
+//    if (get_bmy() < 0) f.bmy += MICROTUBULE_REPULSION_FORCE * fabs(get_bmy());
+//    if (get_ty()  < 0) f.ty  += MICROTUBULE_REPULSION_FORCE * fabs(get_ty());
+//    if (get_umy() < 0) f.umy += MICROTUBULE_REPULSION_FORCE * fabs(get_umy());
+//    if (get_uby() < 0) f.uby += MICROTUBULE_REPULSION_FORCE * fabs(get_uby());
   }
 }
 
@@ -1059,7 +1059,7 @@ bool Dynein_onebound::update_velocities() {
 }
 
 double Dynein_onebound::get_binding_rate() {
-  if (get_uby() < MICROTUBULE_BINDING_DISTANCE) {
+  if (abs(get_uby()) < MICROTUBULE_BINDING_DISTANCE) {
     if (binding_mode == GIBBS_FULL) {
       if (am_debugging_conversions) printf("Creating bothbound from onebound to test energy\n");
       double dG_spring = Dynein_bothbound(this, rand, true).get_PE() - get_PE();

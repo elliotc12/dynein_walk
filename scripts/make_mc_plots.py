@@ -197,7 +197,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.colorbar()
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-                args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+                args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
     plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
                 float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
@@ -354,7 +354,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.xlim(-50, 65)
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
     plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
               float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
