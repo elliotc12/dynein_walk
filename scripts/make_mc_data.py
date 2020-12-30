@@ -38,9 +38,9 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 
 basepath = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-datapath = '../data/compressed_mc_data/mc_data_file_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-leading_files = glob('{}/l_*.txt'.format(basepath))
+datapath = '../data/compressed_mc_data/mc_data_file_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+leading_files = glob('{}/u_l_*.txt'.format(basepath))
 
 initial_disp = []
 final_disp_dict = {}
@@ -61,8 +61,7 @@ for leading in leading_files:
     sixth_ = leading.find('_', fifth_+1)
     seventh_ = leading.find('_', sixth_+1)
     eigth_ = leading.find('_', seventh_+1)
-    iL = float(leading[2:first_])
-
+    iL = float(leading[4:second_])
     if iL in initial_disp:
         print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
         exit(1)

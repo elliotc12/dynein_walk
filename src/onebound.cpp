@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
 
     // if (iter%10000 == 0){
     	// fprintf(stderr, "The time is %g\n", t);
-     // fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
+    	// fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
     	// fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
     	// fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
     	// fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
