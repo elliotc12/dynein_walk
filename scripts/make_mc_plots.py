@@ -174,6 +174,7 @@ def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trai
         P_L_to_L = np.array(P_L_to_L)[:,0]                      # convert to a dimensionless 1D array from a column vector
         norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
         p_den_L = P_L_to_L*norm_const                           # dimensions 1/distance, a probability density
+        # FIXME DR idea: plot p_den_L
 
     p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
 
