@@ -89,6 +89,8 @@ def L_to_L(T, P_leading, P_trailing):
     # plt.show()
     return T_L
 
+#FIXME Add exp unbinding const C to naming scheme when saving
+
 def get_cli_arguments():
     parser = argparse.ArgumentParser(description = 'Script to generate various plots from Monte Carlo data.')
     parser.add_argument("-u", "--k_ub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
