@@ -1,0 +1,74 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{ulem} 
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[labelfont=bf, textfont=md]{caption}
+
+\usepackage[square,numbers]{natbib}
+\usepackage{indentfirst}
+
+\title{
+	\Huge{Modeling the mechanisms of dynein's step using Monte Carlo simulations and Brownian dynamics}\vspace{1em}\\
+	\Large{Jin Kiatvongcharoen} \vspace{0.5em}\\ 
+	\normalsize{Department of Physics, Oregon State University}\vspace{2em}\\
+	\includegraphics[width=0.4\columnwidth]{OSU_logo.png}\vspace{1em}\\
+	\normalsize{An undergraduate thesis advised by Dr. David Roundy}\\
+	\normalsize{in partial fulfillment of the requirements for the degree of}\\
+	\normalsize{Baccalaureate of Science in Physics}\vspace{1.5 em}\\
+	\normalsize{Submitted \today}\\
+
+
+}
+\date{}
+
+\begin{document}
+    \maketitle
+    \onehalfspacing
+
+
+	\chapter*{Abstract}
+	Molecular motor proteins are responsible for the cell’s ability to move, divide, and spatially organize itself. A defect within any of the three motor proteins can cause severe damage to the cell’s functionality and lead to neurological diseases. In order to fully understand the cause of such possible diseases, the motor protein dynein and more specifically its structure has been extensively studied. However, there has been limited research focused on the motion of dynein. To investigate this, we will simulate dynein’s stepping mechanisms using Monte Carlo methods and Brownian dynamics. The dynein will be computationally replicated with a particle-rod model undergoing Brownian motion in a fluid, where its stepping will be repeatedly simulated to generate an ensemble of statistics, via the Monte Carlo. The program will optimize dynein’s stepping patterns by fitting parameters according to experimental results of dynein’s step length, time, and probability of stepping. 
+	
+    \begin{spacing}{1.2}
+	\tableofcontents
+	\listoffigures
+	\end{spacing}
+	
+	
+	\chapter{Introduction}
+	\input{./Chapters/1Introduction}
+	\chapter{Dynein}
+	\input{./Chapters/2Dynein}
+	\chapter{Theory}
+	\input{./Chapters/3Theory}
+	\chapter{Methods}
+	\input{./Chapters/4Methods}
+	\chapter{Results \& Discussion}
+	\input{./Chapters/5Results}
+	\chapter{Conclusion}
+	\input{./Chapters/6Conclusion}
+
+
+\newpage
+\cite{Burgess2003} \cite{Cianfrocco2015mechanism} \cite{Dewitt2012} \cite{Capek2017}
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+
+\end{document}

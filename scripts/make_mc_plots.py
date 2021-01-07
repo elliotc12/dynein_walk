@@ -174,6 +174,7 @@ def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trai
         P_L_to_L = np.array(P_L_to_L)[:,0]                      # convert to a dimensionless 1D array from a column vector
         norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
         p_den_L = P_L_to_L*norm_const                           # dimensions 1/distance, a probability density
+        # FIXME DR idea: plot p_den_L
 
     p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
 
@@ -192,13 +193,15 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
     plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='b')
-    plt.xlabel('initial displacement (nm)')
-    plt.ylabel('final displacement (nm)')
-    plt.colorbar()
+    plt.xlabel('Initial displacement (nm)')
+    plt.ylabel('Final displacement (nm)')
+    plt.colorbar().set_label('Probability')
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
                 args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
-    plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    # plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    #             float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.savefig(plotpath+'u_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
                 float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
 
@@ -232,13 +235,15 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     plt.figure('Filtered Probability Distribution to Match Yildiz')
     plt.pcolor(initial_disp_edge, final_disp_edge, filtered_probability_distribution)
     plt.plot(initial_disp, lin_fit_filt, label='Model: y = ({:.3}) + ({:.3})x'.format(b_filt,m_filt), linestyle=":", color='r')
-    plt.xlabel('initial displacement (nm)')
-    plt.ylabel('final displacement (nm)')
+    plt.xlabel('Initial displacement (nm)')
+    plt.ylabel('Final displacement (nm)')
     plt.colorbar()
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.savefig(plotpath+'u_filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
               float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
@@ -355,7 +360,9 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
-    plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    # plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.savefig(plotpath+'u_step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
               float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
 
@@ -383,14 +390,16 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    plt.xlabel('initial displacement (nm)')
+    plt.xlabel('Initial displacement (nm)')
     plt.ylabel('step length (nm)')
     plt.ylim(-50,50)
     plt.colorbar()
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    # plt.savefig(plotpath+'step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.savefig(plotpath+'u_step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
               float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
 
@@ -398,7 +407,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.figure('Parallelogram step length prob distribution')
     plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    plt.xlabel('initial displacement (nm)')
+    plt.xlabel('Initial displacement (nm)')
     plt.ylabel('Step length (nm)')
     plt.ylim(-50,50)
     plt.xlim(-50,50)
@@ -430,7 +439,9 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
             plt.legend()
             plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-            plt.savefig(plotpath+'ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
+            # plt.savefig(plotpath+'ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
+            #                 args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+            plt.savefig(plotpath+'u_ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
                             args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
 
@@ -465,8 +476,8 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
 def bug_checking_plots(args, plotpath, initial_disp_edge, final_disp_edge, normalized_hist, **_):
     plt.figure('From Data')
     plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
-    plt.xlabel('initial displacement (nm)')
-    plt.ylabel('final displacement (nm)')
+    plt.xlabel('Initial displacement (nm)')
+    plt.ylabel('Final displacement (nm)')
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
 
@@ -496,7 +507,9 @@ def main():
     if not path.exists(plotpath):
         mkdir(plotpath)
     args = get_cli_arguments()
-    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.npz".format(args.k_ub,
+    # plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.npz".format(args.k_ub,
+    #                         args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.npz".format(args.k_ub,
                             args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
