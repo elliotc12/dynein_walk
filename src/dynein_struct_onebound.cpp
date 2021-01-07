@@ -1049,7 +1049,7 @@ bool Dynein_onebound::update_velocities() {
 
   // printf("specs: nby: %g, nmy: %g, ty: %g, umy: %g, uby: %g\n", get_bby(), get_bmy(), get_ty(), get_umy(), get_uby());
 
-  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0 or )) {  	//get_uby() < 0.0)) {
+  if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {  	//or get_uby() < 0.0)) {
   // if (am_avoiding_sub_MT and (get_bmy() < 0.0 or get_ty() < 0.0 or get_umy() < 0.0)) {
     // printf("Onebound domain under MT, retrying...\n");
     // fprintf(stderr, "Onebound domain under MT, retrying...\n");
