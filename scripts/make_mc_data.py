@@ -30,6 +30,7 @@ parser.add_argument("--eqb", type=float, help="Binding equilibrium angle", defau
 parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", default=params.for_simulation['eqmpre'])
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Time step dt", default=params.for_simulation['dt'])
+parser.add_argument("-C", "--C", type=float, help="exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
 k_ub = float(args.kub)      # Unbinding Rate Constant
@@ -38,8 +39,8 @@ k_stk = float(args.ks)      # Sticky Rate Constant
 
 
 basepath = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-datapath = '../data/compressed_mc_data/mc_data_file_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+datapath = '../data/compressed_mc_data/mc_data_file_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 leading_files = glob('{}/u_l_*.txt'.format(basepath))
 
 initial_disp = []

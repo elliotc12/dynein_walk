@@ -199,12 +199,12 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.ylabel('Final displacement (nm)')
     plt.colorbar().set_label('Probability')
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-                args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
-    # plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-    #             float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'u_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-                float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+                args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
+    # plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+    #             float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+'u_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+                float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 
 def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
@@ -241,12 +241,12 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     plt.ylabel('Final displacement (nm)')
     plt.colorbar()
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'u_filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+'u_filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
     # STEP LENGTH (s) PLOTS CALCULATION
@@ -360,12 +360,12 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost), fontsize=7)
-    # plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'u_step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
+    # plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+'u_step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 
     s_initial_disp_edge, s_length__edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
@@ -397,12 +397,12 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.ylim(-50,50)
     plt.colorbar()
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    # plt.savefig(plotpath+'step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
-    plt.savefig(plotpath+'u_step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    # plt.savefig(plotpath+'step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+    #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+'u_step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
+              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 
     step_length_edge = final_disp_edge - initial_disp_edge
@@ -415,8 +415,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.xlim(-50,50)
     plt.colorbar()
     plt.legend()
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 
 
@@ -439,12 +439,12 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
             plt.ylabel('Probability')
             plt.xlim(-increment,1e-6)
             plt.legend()
-            plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+            plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
             # plt.savefig(plotpath+'ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
-            #                 args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+            #                 args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
             plt.savefig(plotpath+'u_ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
-                            args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+                            args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
@@ -480,8 +480,8 @@ def bug_checking_plots(args, plotpath, initial_disp_edge, final_disp_edge, norma
     plt.pcolor(initial_disp_edge, final_disp_edge, normalized_hist)
     plt.xlabel('Initial displacement (nm)')
     plt.ylabel('Final displacement (nm)')
-    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}'.format(args.k_b,
-            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost))
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
     plt.colorbar()
     # plt.savefig(plotpath+'2dhist_initL_vs_finalL_{0:.2e}_{1:.2e}.pdf'.format(float(args.k_b), float(args.k_stk)))
@@ -509,10 +509,10 @@ def main():
     if not path.exists(plotpath):
         mkdir(plotpath)
     args = get_cli_arguments()
-    # plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.npz".format(args.k_ub,
-    #                         args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
-    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}.npz".format(args.k_ub,
-                            args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost)
+    # plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.npz".format(args.k_ub,
+    #                         args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.npz".format(args.k_ub,
+                            args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
     initial_disp, hist, normalized_hist, time_hists = get_onebound_data(args, plotting_data_file)
