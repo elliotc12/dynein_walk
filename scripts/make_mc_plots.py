@@ -93,9 +93,9 @@ def L_to_L(T, P_leading, P_trailing):
 
 def get_cli_arguments():
     parser = argparse.ArgumentParser(description = 'Script to generate various plots from Monte Carlo data.')
-    parser.add_argument("-u", "--k_ub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
-    parser.add_argument("-k", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
-    parser.add_argument("-s", "--k_stk", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
+    parser.add_argument("-u", "--k_ub", type=float, help="Unbinding rate", default=params.for_simulation['k_ub'])
+    parser.add_argument("-b", "--k_b", type=float, help="Binding rate", default=params.for_simulation['k_b'])
+    parser.add_argument("-s", "--k_stk", type=float, help="Sticky rate", default=params.for_simulation['k_stk'])
     parser.add_argument("-cb", "--cb", type=float, help="Spring const binding domain", default=params.for_simulation['cb'])
     parser.add_argument("-cm", "--cm", type=float, help="Spring const motor domain", default=params.for_simulation['cm'])
     parser.add_argument("-ct", "--ct", type=float, help="Spring const tail domain", default=params.for_simulation['ct'])
@@ -105,6 +105,7 @@ def get_cli_arguments():
     parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
     parser.add_argument("-p", "--plot", action="store_false", help="Do not show plots", default=True)
     parser.add_argument("-e", "--extra", action="store_false", help="Show extra plots", default=True)
+    parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
     return parser.parse_args()
 
 def get_onebound_data(args, plotting_data_file):
@@ -211,8 +212,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
                 args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
     # plt.savefig(plotpath+'final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
     #             float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    plt.savefig(plotpath+'u_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
-                float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+u+'final_disp_probability_distribution_'+params_string+'.png')
 
 
 def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
@@ -253,8 +253,7 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
     # plt.savefig(plotpath+'filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
     #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    plt.savefig(plotpath+'u_filtered_final_disp_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+u+'filtered_final_disp_probability_distribution_'+params_string+'.png')
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
     # STEP LENGTH (s) PLOTS CALCULATION
@@ -372,8 +371,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
     # plt.savefig(plotpath+'step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
     #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    plt.savefig(plotpath+'u_step_length_1d_probability_density_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+u+'step_length_1d_probability_density_'+params_string+'.png')
 
 
     s_initial_disp_edge, s_length__edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
@@ -409,8 +407,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
     # plt.savefig(plotpath+'step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
     #           float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    plt.savefig(plotpath+'u_step_length_probability_distribution_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(args.k_ub,
-              float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+u+'step_length_probability_distribution_'+params_string+'.png')
 
 
     step_length_edge = final_disp_edge - initial_disp_edge
@@ -451,8 +448,7 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
             # plt.savefig(plotpath+'ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
             #                 args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-            plt.savefig(plotpath+'u_ob_time_probability_density_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}.png'.format(i,
-                            args.k_ub, float(args.k_b), float(args.k_stk), args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+            plt.savefig(plotpath+u+'ob_time_probability_density_'+params_string+'.png')
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
@@ -517,10 +513,14 @@ def main():
     if not path.exists(plotpath):
         mkdir(plotpath)
     args = get_cli_arguments()
-    # plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.npz".format(args.k_ub,
-    #                         args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}.npz".format(args.k_ub,
-                            args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+    global u
+    u = ''
+    if args.underMT == False:
+        u = 'u_'
+    global params_string
+    params_string =  "{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}".format(args.k_ub, args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+
+    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
     initial_disp, hist, normalized_hist, time_hists = get_onebound_data(args, plotting_data_file)
