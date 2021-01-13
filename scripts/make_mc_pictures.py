@@ -33,15 +33,14 @@ parser.add_argument("-t", "--dt", type=float, help="Time step dt", default=param
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 args = parser.parse_args()
 
-pictures_file = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}/pictures_{9}_{10}_{11}_{12:.2e}_{13:.2e}_{14}_{15}_{16}_{17}_{18}_{19}_{20}_{21}.npz'.format(args.k_ub,
-                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost,
+pictures_file = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/pictures_{10}_{11}_{12}_{13:.2e}_{14:.2e}_{15}_{16}_{17}_{18}_{19}_{20}_{21}_{22}.npz'.format(args.k_ub,
+                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C,
                     args.L, args.N, args.k_ub, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 pictures_data = np.load(pictures_file, allow_pickle=True)
 
 pictures = pictures_data['pictures'].item()
 
-print(pictures['bb_init'][0][1])
 print(len(pictures['bb_init']))
 
 for i in range(len(pictures['bb_init'])):

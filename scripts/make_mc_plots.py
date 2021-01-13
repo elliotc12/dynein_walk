@@ -150,7 +150,7 @@ def make_bins_and_edges(initial_disp):
     initial_L_bin_width = final_L_bin_width
     return initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L
 
-def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width, **_):
+def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width, **_):
     # Transition Matrix
     T = np.matrix(hist)     # Dimensionless
 
@@ -177,6 +177,14 @@ def make_probability_distribution(hist, normalized_hist, bb_P_leading, bb_P_trai
         norm_const = 1/((P_L_to_L*final_L_bin_width).sum())     # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
         p_den_L = P_L_to_L*norm_const                           # dimensions 1/distance, a probability density
         # FIXME DR idea: plot p_den_L
+
+    plt.figure('p_den_L')
+    plt.plot(initial_L, p_den_L)
+    plt.xlabel('L (nm)')
+    plt.ylabel('Probability density')
+    plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
+                args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
+
 
     p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
 
