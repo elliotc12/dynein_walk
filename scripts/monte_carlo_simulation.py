@@ -151,8 +151,8 @@ while Z < N:
 
             if prob_trailing > 1 or prob_leading > 1:
                 P_factor = P_factor - 0.05
-                k[0] = 0
-                Z = 0
+                # k[0] = 0
+                # Z = 0
                 continue
             if np.random.random() < prob_trailing:
                     # FARBOUND State
