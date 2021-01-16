@@ -31,21 +31,28 @@ parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", 
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Time step dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
+parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
 args = parser.parse_args()
 
 k_ub = float(args.kub)      # Unbinding Rate Constant
 k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
+u = ''
+if args.underMT == False:
+    u = 'u_'
+params_string =  "{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}".format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
-basepath = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-datapath = '../data/compressed_mc_data/mc_data_file_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_u_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-leading_files = glob('{}/u_l_*.txt'.format(basepath))
+
+basepath = '../data/mc_data_' + params_string
+datapath = '../data/compressed_mc_data/mc_data_file_' + u + params_string
+plottingdatapath = '../data/mc_plotting_data/mc_plotting_data_' + u + params_string
+leading_files = glob('{}/{}l_*.txt'.format(basepath, u))
 
 initial_disp = []
 final_disp_dict = {}
 ob_time_dict = {}
+max_final_disp = []
 
 print('Making data for data file: \n ', basepath)
 
@@ -54,7 +61,9 @@ for leading in leading_files:
     leading_data = {'L': [], 't': []}
     trailing_data = {'L': [], 't': []}
     trailing = leading.replace('l_', 't_')
-    first_ = leading.find('_',2)
+    first_ = 2
+    if args.underMT == False:
+        first_ = 4
     second_ = leading.find('_', first_+1)
     third_ = leading.find('_', second_+1)
     fourth_ = leading.find('_', third_+1)
@@ -62,7 +71,7 @@ for leading in leading_files:
     sixth_ = leading.find('_', fifth_+1)
     seventh_ = leading.find('_', sixth_+1)
     eigth_ = leading.find('_', seventh_+1)
-    iL = float(leading[4:second_])
+    iL = float(leading[first_+1:second_])
     if iL in initial_disp:
         print('woopsies, we have two files with the same L', iL, 'one of them is', leading)
         exit(1)
@@ -84,6 +93,8 @@ for leading in leading_files:
         initial_disp.append(-iL)
         final_disp_dict[iL] = leading_data['L']
         final_disp_dict[-iL] = trailing_data['L']
+        max_final_disp.append(np.max(leading_data['L']))
+        max_final_disp.append(np.max(trailing_data['L']))
 
         if iL == 8.0 or iL == 1.0:
             ob_time_dict[iL] = leading_data['t']
