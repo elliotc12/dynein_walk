@@ -51,11 +51,11 @@ def generate_random_bb_any_L(params):
 
             #  Rotational angle based on fb coordinates
             rotational_angle = np.arctan2(r_fb[1],r_fb[0])
-            angle_0 -= rotational_angle 
+            angle_0 -= rotational_angle
             angle_1 -= rotational_angle
-            angle_2 -= rotational_angle 
+            angle_2 -= rotational_angle
             angle_3 -= rotational_angle
-    
+
             # Calculate BB angles according to previous angle for spring energies
             nba = angle_0 + 2*np.pi
             nma = np.pi + angle_1 - angle_0 + 2*np.pi # add 2pi to make it positive
@@ -142,7 +142,7 @@ class DyneinBothBound:
             self.fba = fba
             self.ta = ta
             self.L = L
-            
+
             # Assign OB absolute motor angles for onebound.cpp
             # It must be the case that:  bb_uma == ob_uma + M_PI - ob_uba
             # ob_uma = bb_uma - M_PI + ob_uba
@@ -155,7 +155,7 @@ class DyneinBothBound:
             self.r_t = self.r_nm + np.array([self.Lt*np.cos(self.ob_nma), self.Lt*np.sin(self.ob_nma)])
             self.r_fm = self.r_t - np.array([self.Lt*np.cos(self.ob_fma), self.Lt*np.sin(self.ob_fma)])
             self.r_fb = self.r_fm - np.array([self.Ls*np.cos(self.fba), self.Ls*np.sin(self.fba)])
-           
+
         # calculate all of the energies
         self.E_t = spring_energy(self.ta, params.for_simulation['eqt'], params.for_simulation['ct'])
         self.E_nm = spring_energy(self.bb_nma, params.for_simulation['eqmpost'], params.for_simulation['cm'])

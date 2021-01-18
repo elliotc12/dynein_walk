@@ -141,20 +141,31 @@ while Z < N:
             Z += P
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
+            print(dynein.E_t)
+            print(dynein.E_nm)
+            print(dynein.E_fm)
 
             prob_trailing = P*rate_trailing*P_factor
             prob_leading = P*rate_leading*P_factor
+
+            print('Energy: ', dynein.E_total)
+            print('P: ', P)
+            print('rate: ', rate_trailing, rate_leading)
+            print(P_factor)
+            print('probs: ', prob_trailing, prob_leading)
+            print('')
             # if (len(trailing_data['L'])) == 7:
             #     print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
             #     print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
             #     print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
 
             if prob_trailing > 1 or prob_leading > 1:
-                P_factor = P_factor - 0.05
+                P_factor = P_factor*0.99
                 # k[0] = 0
                 # Z = 0
                 continue
             if np.random.random() < prob_trailing:
+                    print('About to t step!')
                     # FARBOUND State
                     state = 1
                     if k[0] % 50 == 0:
@@ -167,6 +178,7 @@ while Z < N:
                                             L, trailing_data)
 
             if np.random.random() < prob_leading:
+                    print('About to l step!')
                     # NEARBOUND State
                     state = 0
                     if k[0] % 50 == 0:
