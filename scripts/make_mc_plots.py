@@ -65,10 +65,10 @@ def L_to_initial_displacement(P_leading, P_trailing):
     P_step = np.zeros((num_col,num_rows))
     for i in range(num_col):
         if i < num_col/2:
-            P_step[num_rows-1-i,i] = P_trailing[num_rows-1-i]              # P_trailing array starts at 1 to 50
-            P_step[num_rows+i, i] = P_leading[num_rows-1-i]        # P_leading array starts at 1 to 50
-            # P_step[num_rows-1-i,i] = P_trailing[i]              # P_trailing array starts at 1 to 50
-            # P_step[num_rows+i, i] = P_leading[i]        # P_leading array starts at 1 to 50
+            # P_step[num_rows-1-i,i] = P_trailing[num_rows-1-i]              # P_trailing array starts at 1 to 50
+            # P_step[num_rows+i, i] = P_leading[num_rows-1-i]        # P_leading array starts at 1 to 50
+            P_step[num_rows-1-i,i] = P_trailing[i]              # P_trailing array starts at 1 to 50
+            P_step[num_rows+i, i] = P_leading[i]        # P_leading array starts at 1 to 50
     return P_step
 
 def L_to_L(T, P_leading, P_trailing):

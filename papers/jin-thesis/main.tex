@@ -23,6 +23,13 @@
 \usepackage[square,numbers]{natbib}
 \usepackage{indentfirst}
 
+\floatstyle{plaintop}
+\newfloat{algorithm}{thb}{lop}
+\floatname{algorithm}{Algorithm}
+\newenvironment{alg}
+{\hrulefill\begin{enumerate}}
+{\end{enumerate}\hrulefill}
+
 \title{
 	\Huge{Modeling the mechanisms of dynein's step using Monte Carlo simulations and Brownian dynamics}\vspace{1em}\\
 	\Large{Jin Kiatvongcharoen} \vspace{0.5em}\\ 
