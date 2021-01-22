@@ -49,7 +49,7 @@ bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant_{}'.format(args.C)
 
 dL = 1.0 # 1 nm resolution
 L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
-P_factor = 1.0
+P_factor = 1.0e100
 
 rate_leading = np.zeros_like(L_arr)
 rate_trailing = np.zeros_like(rate_leading)
@@ -82,7 +82,7 @@ while Z.min() < args.N:
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
             if P*this_rate_trailing*P_factor > 1 or P*this_rate_leading*P_factor > 1:
-                P_factor = P_factor-0.05
+                P_factor = P_factor*0.5
                 Z = np.zeros_like(L_arr)
                 Ndata = np.zeros_like(Z)
                 rate_leading = np.zeros_like(Z)

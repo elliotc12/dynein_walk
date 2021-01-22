@@ -109,7 +109,7 @@ N = args.N           # Count
 Z = 0                # Partition Function
 k = [0]              # Dynein Count
 L_err = 0.5          # Margin of error for Length
-P_factor = 1.0
+P_factor = 1.0e100
 
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 
@@ -150,10 +150,11 @@ while Z < N:
             #     print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
             #     print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
 
+            assert(prob_trailing > 0 and prob_leading > 0), "Underflow of probability! Need to fix P_factor"
             if prob_trailing > 1 or prob_leading > 1:
-                P_factor = P_factor*0.99
-                # k[0] = 0
-                # Z = 0
+                P_factor = P_factor*0.5
+                k[0] = 0
+                Z = 0
                 continue
             if np.random.random() < prob_trailing:
                     # FARBOUND State
