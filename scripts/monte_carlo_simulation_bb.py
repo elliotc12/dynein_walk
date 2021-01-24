@@ -7,11 +7,12 @@ import argparse
 import subprocess
 import bb_energy_distribution
 import time
+import math
 
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=50)
+parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=(2*math.ceil(params.for_simulation['ls']+params.for_simulation['lt'])))
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e12)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
