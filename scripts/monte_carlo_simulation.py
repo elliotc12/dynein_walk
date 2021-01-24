@@ -81,6 +81,8 @@ parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", 
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
+parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
+
 args = parser.parse_args()
 
 k_ub = args.kub
@@ -100,7 +102,7 @@ if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
 # Create MC Data Directory if don't exist
-mc_data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+mc_data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 if not os.path.exists(mc_data_dir):
     os.mkdir(mc_data_dir)
 
@@ -114,9 +116,13 @@ P_factor = 1.0e100
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 
 # Strings for data file name
-t_data_file = mc_data_dir + '/u_t_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-l_data_file = mc_data_dir + '/u_l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-pictures_data_file = mc_data_dir + '/pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+u = ''
+if args.underMT == False:
+    u = 'u_'
+
+t_data_file = mc_data_dir + u + 't_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+l_data_file = mc_data_dir + u + 'l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+pictures_data_file = mc_data_dir + u + 'pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 seed = 0
 np.random.seed(0)
