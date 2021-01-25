@@ -58,19 +58,19 @@ def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_pe
     Ds = np.array([params.radius_b, params.radius_m, params.radius_t, params.radius_m, params.radius_b])*units_per_nm*points_per_axes_units*2 # turn radii into diameters
 
     plt.figure(fig.number)
-    # plt.plot(Xs, Ys, c="white", zorder=1)
-    # plt.plot([Xs[0], Xs[0] + 5*units_per_nm*np.cos(mt_angle)], [Ys[0], Ys[0] + 5*units_per_nm*np.sin(mt_angle)], c="red", linewidth=1, zorder=5)
-    # plt.scatter(Xs, Ys, c="#aeaae5", s=Ds*Ds, zorder=2, edgecolor='white', alpha=0.3)
-    # plt.scatter(Xs, Ys, s=Ds*Ds, zorder=3, edgecolor='white', facecolors="none", linewidth=1)
+    plt.plot(Xs, Ys, c="white", zorder=1)
+    plt.plot([Xs[0], Xs[0] + 5*units_per_nm*np.cos(mt_angle)], [Ys[0], Ys[0] + 5*units_per_nm*np.sin(mt_angle)], c="red", linewidth=1, zorder=5)
+    plt.scatter(Xs, Ys, c="#aeaae5", s=Ds*Ds, zorder=2, edgecolor='white', alpha=0.3)
+    plt.scatter(Xs, Ys, s=Ds*Ds, zorder=3, edgecolor='white', facecolors="none", linewidth=1)
 
-    cartoon.dyneinCircles(Xs[0], Ys[0], params.radius_b*units_per_nm,
-                          Xs[1], Ys[1], params.radius_m*units_per_nm,
-                          Xs[2], Ys[2], params.radius_t*units_per_nm,
-                          'red', 0.75, fig.gca())
-    cartoon.dyneinCircles(Xs[4], Ys[4], params.radius_b*units_per_nm,
-                          Xs[3], Ys[3], params.radius_m*units_per_nm,
-                          Xs[2], Ys[2], params.radius_t*units_per_nm,
-                          'blue', 0.25, fig.gca())
+    # cartoon.dyneinCircles(Xs[0], Ys[0], params.radius_b*units_per_nm,
+    #                       Xs[1], Ys[1], params.radius_m*units_per_nm,
+    #                       Xs[2], Ys[2], params.radius_t*units_per_nm,
+    #                       'red', 0.75, fig.gca())
+    # cartoon.dyneinCircles(Xs[4], Ys[4], params.radius_b*units_per_nm,
+    #                       Xs[3], Ys[3], params.radius_m*units_per_nm,
+    #                       Xs[2], Ys[2], params.radius_t*units_per_nm,
+    #                       'blue', 0.25, fig.gca())
 
 def plot_image(img, org, dpi):
     fig = plt.figure(figsize = (5,5), dpi=dpi)

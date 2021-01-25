@@ -20,7 +20,7 @@ In order to best simulate the stretching and forward kicking motion of the power
     F_i=-c_i(\theta_i-\theta_{i,eq})
 \end{equation}
 where $c_i$ is the spring constant, $\theta_i$ is angle corresponding to the $i^{th}$ domain, and $\theta_{i,eq}$ is the equilibrium angle in which biases the motion. Using this, we can calculate the energy of each domain by integrating and arriving to the familiar equation for spring energy.
-\begin{equation} \label{eq:energy}
+\begin{equation} \label{eqn:energy}
     U_i=\frac{1}{2}c_i(\theta_i-\theta_{i,eq})^2
 \end{equation}
 %Since dynein is symmetric for each heavy chain leg, the equilibrium angle will be identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. 
@@ -68,7 +68,7 @@ We introduce a new model parameter $C$, the exponential unbinding constant, that
 
 \section{Simulation}
 
-The key difference between the works discussed in \cite{Capek2017, } (\textit{Elliott and John's paper}) and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both bound state. Capek and Waczak were able to fully simulate both states of dynein's walk with a Brownian dynamics simulation and collect data of multiple steps during a walk. However, they noticed that their simulation took significant computation time because of the unbinding process taking a large amount of time relative to the total stepping time. They also noticed that the both bound configuration of dynein does not impact the final step length. We developed this new method of analyzing the both bound state to significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one bound state. 
+The key difference between the works discussed in \cite{Capek2017, } (\textit{Elliott and John's paper}) and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both bound state. Capek and Waczak were able to fully simulate both states of dynein's walk with a Brownian dynamics simulation and collect data of multiple steps during a walk. However, they noticed that the unbinding process took a large amount of computation time relative to the total stepping time. They also noticed that the both bound configuration of dynein does not impact the final step length. We developed this new method of analyzing the both bound state to significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one bound state. 
 
 %These quick simulations are governed by a Monte Carlo algorithm, while the movement of the model is dictated by equations of motion describing domains interacting with a force of drag and a random force. This type of molecular simulations are more commonly known as Brownian dynamics. (\textbf{Possible take out sentence introducing MC and Brownian dynamics for later})
 
@@ -91,7 +91,7 @@ where $\gamma$ is the drag coefficient defined from Stokes' law to be:
 \end{equation}
 This equation specifies the drag term by a given radius $a$ and liquid viscocity $\eta$. 
 
-The secondary force that we can easily identify is the random force inspiring the Brownian motion. This force describes the random interactions the domains experience with the paticles making the solvent and will be denoted as \textbf{F}$_{rand}$. The ``randomness" will be sampled from a zero-centered Gaussian with variance:
+The secondary force that we can easily identify is the random force inspiring the Brownian motion. This force describes the random interactions the domains experience with the paticles making the solvent. It will be denoted as \textbf{F}$_{rand}$, and the ``randomness" will be sampled from a zero-centered Gaussian with variance:
 \begin{equation}
 	\sigma^2=\sqrt{\frac{2\gamma}{\beta\Delta t}}.
 \end{equation}
@@ -108,51 +108,28 @@ As mentioned earlier, in order to properly demonstrate Brownian dynamics, we mus
 which is a differential equation we can solve for the equations of motion for the domains in the one bound state. The derivation and final equations of motion can be found in \cite{Capek2017, W}
 
 
-\subsection{Monte Carlo Algorithm}
-Since research and Waczak/Capek suggests that the dynein spends the majority of the stepping time in the both bound state, we can safely assume that the dynein equilibriates before unbinding. This allows us to use Monte Carlo methods for analyzing a single step by interpreting our model as a system. Typically, Monte Carlo methods are used to analyze equilibrium theromodynamics of fluids where a system of atoms can possess many different microstates. For this model, the dynein is the system and the different possible microstates are the both bound configurations our model can achieve. Each both bound configuration are independent from one another and can produce different total energy values. The benefit of this method is the ability to sample a large ensemble of both bound states and quickly generate statitics about the step. Eventually, this will allow us to create probability distributions for important variables. The algorithm is as follows:
-\begin{algorithm}[H]
-	\caption{Monte Carlo}
-	\label{alg:MonteCarlo}
+\subsection{Monte Carlo for Both Bound}
+Since research and Waczak/Capek suggests that the dynein spends the majority of the stepping time in the both bound state, we can safely assume that the dynein equilibriates before unbinding. This inspired us to use Monte Carlo methods for analyzing dynein's step by interpreting our model as a system. Typically, Monte Carlo methods are used to analyze equilibrium theromodynamics of fluids where a system of atoms can possess many different microstates. For this model, the dynein is the system and the different possible microstates are the many both bound configurations our model can achieve. However, unlike the more commonly known Markov Chain Monte Carlo, each both bound configuration are independent from one another and can produce different total energy values. The benefit of this method is the ability to sample a large ensemble of both bound configurations and quickly generate stepping statitics. Eventually, this will allow us to create probability distributions for important variables.
 
-	\begin{alg}
-	\item Initialize an unsigned distance, L, between the binding domains.
-	
-	\item Randomly pick 4 angles ($\theta_0$, $\theta_1$, $\theta_2$, $\theta_3$) to generate a completely random configuration of dynein in space. (\textit{Include picture})
-	
-	\item Calculate the distance between the binding domains and check if the distance is within a range of $L\pm l$, where $l$ is arbitrarily small.
-	
-	\item Rotate the configuration so that both binding domains are on the microtubule and recalculate both bound state angles with the naming convention in Figure (\ref{fig:OBvsBB}).
-	
-	\item Calculate the total energy of the configuration by summing the energy of each domain (using Equation (\ref{eq:energy})).
-	\begin{equation}
-		E_{total, n}=\sum_{i}\frac{1}{2}c_i(\theta_i-\theta_{i,eq})^2
-	\end{equation}
-	Here, $n$ refers to the specific both bound configuration.	
-	
-	\item Define a Boltzmann distribution for the relative probability of unbinding and a partition function, $Z$.
-	\begin{equation}
-		P_{ub}\propto e^{-\beta E_{total, n}}
-	\end{equation}
-	\begin{equation}
-		Z=\sum_{n}e^{\beta E_{total, n}}
-	\end{equation}
-	
-	\item Calculate the probability of unbinding with the unbinding rate and Boltzmann distribution.
-	\begin{equation}
-		P_{ub} = \rho_{ub}e^{-\beta E_{total, n}}
-	\end{equation}
-	
-	\item ``Roll a die" for a value within the range of $[0,1]$ and check if the value is less than $P_{ub}$. If not, repeat algorithm from step 1.
-	
-	\item If dynein unbinds, run one bound Brownian dynamics simulation of the step and wait until rebinding.
-	
-	\item Collect statistics about final displacement and one bound time. 	
-	
-	\end{alg}
+With the assumption of thermodyamic equilibrium during the both bound state, we can define the probability of dynein being in that configuration from a Boltzmann distribution and calculate the relative probability of unbinding for that specifc configuration by using a proportionality expression. That is, 
+\begin{equation}
+	P_{ub}\propto e^{-\beta E_{total}}.
+\end{equation}
+With this Boltzmann factor, we can also generate a partition function, 
+\begin{equation} \label{eqn:partition}
+	Z=\sum_{i}e^{-\beta E_{total,i}},
+\end{equation}
+where $i$ refers to the specific both bound configuration. In order to guarantee an accurate thermodynamic ensemble of both bound configurations, the simulation must run a large number of trials to ensure that the sample space is covered well. The thermodynamic ensemble can then generate an ensemble of steps that can eventually produce smooth statictics. With the partition function defined in Equation (\ref{eqn:partition}), we can also define ensemble averages for both bound statistics, such as the average unbinding rates, unbinding probability, and both bound time. The equations to do so are all shown below in that order:
+\begin{equation}
+	\langle\rho_{ub, n}\rangle=\frac{\sum_{i}\rho_{ub, n} e^{-\beta E_{total,i}}}{Z}, \indent \langle\rho_{ub, f}\rangle=\frac{\sum_{i}\rho_{ub, f} e^{-\beta E_{total,i}}}{Z}
+\end{equation}
+\begin{equation}
+	\langle P_{ub, n}(L)\rangle = \frac{\langle\rho_{ub, n}\rangle}{\langle\rho_{ub, n}\rangle + \langle\rho_{ub, f}\rangle}
+\end{equation}
+\begin{equation}
+	\langle t_{bb} \rangle =\frac{1}{\langle\rho_{ub, n}\rangle + \langle\rho_{ub, f}\rangle}.
+\end{equation}
 
-\end{algorithm}
-
- 
 
 
 

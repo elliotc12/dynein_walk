@@ -193,7 +193,6 @@ def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
                 args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
 
-
     p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
     plt.figure('p_den_disp')
     plt.plot(p_den_disp)
@@ -465,6 +464,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', linestyle='', capsize=3)
 
     plt.scatter(bb_L, bb_P_trailing, label='Model',color='C1')
+    plt.xlim(0, 55)
     plt.xlabel('Binding domain separation (nm)')
     plt.ylabel('P(lagging step)')
     plt.legend()
