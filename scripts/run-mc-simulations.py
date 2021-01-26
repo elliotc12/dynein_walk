@@ -10,7 +10,7 @@ import time
 params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--L", type=float, help="Array of initial L", default=50)
+parser.add_argument("-L", "--L", type=float, help="Array of initial L", default=76)
 parser.add_argument("-i", "--i", type=float, help="Increment", default=3)
 parser.add_argument("-o", "--o", type=float, help="Starting value", default=3)
 parser.add_argument("-u", "--kub", type=float, help="unbinding const", default=params.for_simulation['k_ub'])
