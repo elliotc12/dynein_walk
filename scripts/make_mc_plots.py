@@ -222,7 +222,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.legend()
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
                 args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
-    # plt.savefig(plotpath+u+'final_disp_probability_distribution_'+params_string+'.png')
+    plt.savefig(plotpath+u+'final_disp_probability_distribution_'+params_string+'.png')
 
 
 def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):

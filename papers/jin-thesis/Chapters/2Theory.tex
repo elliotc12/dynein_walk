@@ -33,7 +33,7 @@ According to the Mechanochemical Cycle (Figure \ref{fig:MechanochemicalCycle}), 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{Figures/OB_vs_BB.PNG}
-	\caption[One Bound vs. Both Bound]{\textbf{One Bound vs. Both Bound} \textit{Figure on left}: Prestroke one bound state with labeling scheme 'b-’ and ‘u-’ for bound leg and unbound leg. \textit{Figure on the right}: Poststroke both bound state with labeling scheme ‘n-’ and ‘f-’ for ``near" leg and ``far'' leg. \cite{Capek2017}.}
+	\caption[One Bound vs. Both Bound]{\textbf{One Bound vs. Both Bound} \textit{Left}: Prestroke one bound state with labeling scheme 'b-’ and ‘u-’ for bound leg and unbound leg. \textit{Right}: Poststroke both bound state with labeling scheme ‘n-’ and ‘f-’ for ``near" leg and ``far'' leg. \cite{Capek2017}.}
 	\label{fig:OBvsBB}
 \end{figure}
 
@@ -121,15 +121,15 @@ With this Boltzmann factor, we can also generate a partition function,
 \end{equation}
 where $i$ refers to the specific both bound configuration. In order to guarantee an accurate thermodynamic ensemble of both bound configurations, the simulation must run a large number of trials to ensure that the sample space is covered well. The thermodynamic ensemble can then generate an ensemble of steps that can eventually produce smooth statictics. With the partition function defined in Equation (\ref{eqn:partition}), we can also define ensemble averages for both bound statistics, such as the average unbinding rates, unbinding probability, and both bound time. The equations to do so are all shown below in that order:
 \begin{equation}
-	\langle\rho_{ub, n}\rangle=\frac{\sum_{i}\rho_{ub, n} e^{-\beta E_{total,i}}}{Z}, \indent \langle\rho_{ub, f}\rangle=\frac{\sum_{i}\rho_{ub, f} e^{-\beta E_{total,i}}}{Z}
+	\langle\rho_{ub, trail.}\rangle=\frac{\sum_{i}\rho_{ub, trail.} e^{-\beta E_{total,i}}}{Z}, \indent \langle\rho_{ub, lead.}\rangle=\frac{\sum_{i}\rho_{ub, lead.} e^{-\beta E_{total,i}}}{Z}
+\end{equation}
+\begin{equation} \label{eqn:ProbTrail}
+	\langle P_{ub, trail.}(L)\rangle = \frac{\langle\rho_{ub, trail.}\rangle}{\langle\rho_{ub, trail.}\rangle + \langle\rho_{ub, lead.}\rangle}
 \end{equation}
 \begin{equation}
-	\langle P_{ub, n}(L)\rangle = \frac{\langle\rho_{ub, n}\rangle}{\langle\rho_{ub, n}\rangle + \langle\rho_{ub, f}\rangle}
+	\langle t_{bb} \rangle =\frac{1}{\langle\rho_{ub, trail.}\rangle + \langle\rho_{ub, lead.}\rangle},
 \end{equation}
-\begin{equation}
-	\langle t_{bb} \rangle =\frac{1}{\langle\rho_{ub, n}\rangle + \langle\rho_{ub, f}\rangle}.
-\end{equation}
-
+where $trail.$ and $lead.$ signifies a trailing or leading step.
 
 
 
