@@ -111,7 +111,7 @@ N = args.N           # Count
 Z = 0                # Partition Function
 k = [0]              # Dynein Count
 L_err = 0.5          # Margin of error for Length
-P_factor = 1.0e100
+P_factor = 1.0e300
 
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 
@@ -147,10 +147,10 @@ while Z < N:
             Z += P
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-
+            
             prob_trailing = P*rate_trailing*P_factor
             prob_leading = P*rate_leading*P_factor
-
+            
             # if (len(trailing_data['L'])) == 7:
             #     print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
             #     print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
