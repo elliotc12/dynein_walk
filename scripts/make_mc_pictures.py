@@ -31,11 +31,20 @@ parser.add_argument("--eqmpre", type=float, help="Motor pre equilibrium angle", 
 parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle", default=params.for_simulation['eqmpost'])
 parser.add_argument("-t", "--dt", type=float, help="Time step dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
+parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
 args = parser.parse_args()
 
-pictures_file = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/pictures_{10}_{11}_{12}_{13:.2e}_{14:.2e}_{15}_{16}_{17}_{18}_{19}_{20}_{21}_{22}.npz'.format(args.k_ub,
-                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C,
-                    args.L, args.N, args.k_ub, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+u = ''
+if args.underMT == False:
+    u = 'u_'
+
+data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(args.k_ub,
+                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+
+params_extenstion = 'pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.npz'.format(args.L,
+                    args.N, args.k_ub, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+
+pictures_file = data_dir + u + params_extenstion
 
 pictures_data = np.load(pictures_file, allow_pickle=True)
 
