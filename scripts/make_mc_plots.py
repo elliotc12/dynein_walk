@@ -476,7 +476,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.plot(bb_L, bb_avg_t,color='C0')
     plt.xlabel('initial L (nm)')
     plt.ylabel('Average time (s)')
-    plt.ylim(0,0.02)
+    plt.ylim(0,0.04)
     plt.legend()
     plt.title('C = {}'.format(args.C))
     plt.savefig(plotpath+'bb_time_{}.png'.format(args.C))

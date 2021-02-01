@@ -2,10 +2,10 @@
 
 for_simulation= {"k_b": 5.5e9, # 3.4e9, previously 3e6
                  "k_ub": 30.0,
-                 "k_stk": 1e9,  # NEW: Sticky Rate
-                 "cb": 0.08,
-                 "cm": 1.05,
-                 "ct": 0.0, # OLD: 0.36,
+                 "k_stk": 1e8,  # NEW: Sticky Rate
+                 "cb": 0.0, # OLD: 0.08,
+                 "cm": 1.0, # OLD: 1.05,
+                 "ct": 1.0, # OLD: 0.36,
                  "ls": 20.75,
                  "lt": 23.0,
                  "rt": 6.0,
@@ -18,7 +18,7 @@ for_simulation= {"k_b": 5.5e9, # 3.4e9, previously 3e6
                  "eqmpost": 242.0,
                  "eqt": 0,
                  "force": 0,
-                 "exp-unbinding-constant": -0.3563,
+                 "exp-unbinding-constant": -0.5, # -0.3563,
                  "runtime": 0.1,
                  "crash-movie": False,
                  "nomovie": True,

@@ -1,6 +1,11 @@
 \section{Findings}
 \textit{What do our results indicate? Do we think our model correctly represents real dynein and its stepping patterns?}
 
+The model has the flexibility to replicate many sets of experimental data. The most unique set is Yildiz and we were able to reproduce his observations to the best of our ability with the set of parameters we used. We discovered an inherent problem when trying to fit to data that cannot observe 0nm steps. We usec Monte Carlo that produces a smooth probability distribution because of running large numbers of simulations and law of large numbers. However, In order to best fit the linear regression, the simulation must average 0nm step lengths, meaning we need to force parameters so that model dynein takes very quick and short steps. But, if we do this, the average step length will be a lot less than what they observe and the model will not be able to achieve large steps. 
+
+
 
 \section{Further Work}
 \textit{How can we improve our model?}
+
+We can improve our model by implementing a third dimension that utilizes the off-axis. We could always run more simulations with different sets of parameters until we find the perfect set. We could implement a optimization process of maximizing and minimizing all parameters so that we get a large range of combinations and eventually narrow down to a parameter space that cleany replicates data. 
