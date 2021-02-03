@@ -34,6 +34,7 @@ def latex_format(x):
 parameters = {
 "k_b" :               params.for_simulation['k_b'],
 "k_ub" :              params.for_simulation['k_ub'],
+"k_stk" :              params.for_simulation['k_stk'],
 "trajectory_k_b" :    9.5e9, # params.trajectory_k_b,
 "trajectory_k_ub" :   1e20, # params.trajectory_k_ub,
 "cexp" :              params.for_simulation['exp-unbinding-constant'],
