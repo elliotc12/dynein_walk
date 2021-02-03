@@ -158,7 +158,7 @@ def make_bins_and_edges(initial_disp):
     initial_L_bin_width = final_L_bin_width
     return initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L
 
-def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width, **_):
+def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_P_trailing, initial_L, final_L_bin_width, initial_disp, **_):
     # Transition Matrix
     T = np.matrix(hist)     # Dimensionless
 
@@ -195,7 +195,7 @@ def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_
 
     p_den_disp = L_to_initial_displacement(P_ub_leading, P_ub_trailing).dot(p_den_L)   # Dimensions: 1/distance
     plt.figure('p_den_disp')
-    plt.plot(p_den_disp)
+    plt.plot(initial_disp, p_den_disp)
     plt.xlabel('L (nm)')
     plt.ylabel('Probability density')
     plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,

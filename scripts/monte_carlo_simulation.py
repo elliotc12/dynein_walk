@@ -143,22 +143,22 @@ while Z < N:
             continue
         else:
             # Calculating partition function
-            P = np.exp(-b*dynein.E_total)
+            P = np.exp(-b*dynein.E_total+np.log(P_factor))
             Z += P
             rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-            
-            prob_trailing = P*rate_trailing*P_factor
-            prob_leading = P*rate_leading*P_factor
-            
-            # if (len(trailing_data['L'])) == 7:
-            #     print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-            #     print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
-            #     print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
 
-            assert(prob_trailing > 0 and prob_leading > 0), "Underflow of probability! Need to fix P_factor"
+            prob_trailing = P*rate_trailing
+            prob_leading = P*rate_leading
+
+            # if (len(trailing_data['L'])) == 7:
+                # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+                # print('nba: {}, bb_nma: {}, ta: {}, bb_fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.bb_nma*57.3, dynein.ta*57.3, dynein.bb_fma*57.3, dynein.fba*57.3))
+                # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+
+            # assert(prob_trailing > 0 and prob_leading > 0), "Underflow of probability! Need to fix P_factor"
             if prob_trailing > 1 or prob_leading > 1:
-                P_factor = P_factor*0.5
+                P_factor = P_factor/max(prob_trailing, prob_leading)
                 k[0] = 0
                 Z = 0
                 continue
