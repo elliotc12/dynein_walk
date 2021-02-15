@@ -17,12 +17,35 @@
 // see dynein_struct.h for possible command line parameters (extern double ... )
 // they are all defined in default_parameters.h
 
-void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state, double *k, double *sticky_rate){
+void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iteration) {
+
+  const char *format = "%d\t"
+  	"%.10g\t"
+  	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
+  	"%g\t%g\t%g\t%g\t"
+  	"%g\t%g\t%g\t%g\t"
+  	"%g\t%g\t"
+  	"%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
+  	"\n";
+	Dynein_onebound* dyn_ob = (Dynein_onebound*) dyn;
+	onebound_forces dyn_ob_f = dyn_ob->get_internal();
+	fprintf(data_file, format,
+		dyn_ob->get_state(),
+		iteration*dt,
+		dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
+		dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+		dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
+		dyn_ob->get_ubx(), dyn_ob->get_uby(),
+		dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
+		dyn_ob_f.ty, dyn_ob_f.umx, dyn_ob_f.umy, dyn_ob_f.ubx, dyn_ob_f.uby);
+}
+
+void get_command_line_flags(int argc, char** argv, double *bba, double *bma, double *uma, double *uba, double *state, double *k, double *sticky_rate, int *movie, long *frames){
   // for(int i=1; i<argc; i++){
   //   fprintf(stderr, "%s ", argv[i]);
   // }
   // fprintf(stderr, "\n");
-  assert(argc==25);
+  assert(argc==27);
   int i = 1;
   low_affinity_binding_rate = atof(argv[i++]);
   *sticky_rate = atof(argv[i++]);
@@ -63,13 +86,18 @@ void get_command_line_flags(int argc, char** argv, double *bba, double *bma, dou
   *uba = atof(argv[i++]);
   *state = atof(argv[i++]);
   *k = atof(argv[i++]);
-  assert(i==25);
+  *movie = atof(argv[i++]);
+  *frames = atof(argv[i++]);
+  assert(i==27);
   // note we are not using runtime as onebound runs indefinitely until binding event
 }
 
 int main(int argc, char** argv) {
   double bba, bma, uma, uba, bbx = 0, bby = 0, state, k, sticky_rate;
-  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k, &sticky_rate);
+  int movie;
+  long frames;
+  get_command_line_flags(argc, argv, &bba, &bma, &uma, &uba, &state, &k, &sticky_rate, &movie, &frames);
+
   State s = NEARBOUND;
   // fprintf(stderr, "angles: %g %g %g %g\n state: %g\n", bba, bma, uma, uba, state);
   if (state == 1) {
@@ -79,7 +107,33 @@ int main(int argc, char** argv) {
 
   Rand* rand = new Rand(RAND_INIT_SEED);
 
-  // Does this onebound resemble with the bothbound orientation
+  char *movie_data_fname = new char[200];
+  sprintf(movie_data_fname, "/home/jin/dynein_walk/data/mc_movie_data_%.3g_%.3g_%.2g_%.2g_%.2g_%.4g_%.4g_%.4g.txt", low_affinity_binding_rate, sticky_rate, cb, cm, ct,
+          onebound_post_powerstroke_internal_angles.bba*180/M_PI, onebound_post_powerstroke_internal_angles.uma*180/M_PI, onebound_post_powerstroke_internal_angles.bma*180/M_PI);
+  FILE *movie_data_file = 0;
+
+  // movie_data_struct* movie_data;
+  // movie_data = new movie_data_struct[frames];
+  // static int buffer_position = 0;
+  if (movie == 1){
+    // std::ofstream output("%s", movie_data_fname);
+    // movie_data_file = 0;
+    movie_data_file = fopen(movie_data_fname, "w");
+    if (!movie_data_file) {
+      printf("Error opening %s!\n", movie_data_fname);
+      exit(1);
+    }
+    setvbuf(movie_data_file, NULL, _IOLBF, 0); // turn on line-buffering
+    fprintf(movie_data_file, "#State\ttime\tPE_b1\tPE_m1\tPE_t\tPE_m2\tPE_b2\t"
+            "x1\ty1\tx2\ty2\tx3\ty3\tx4\ty4\tx5\ty5\t"
+            "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
+  }
+
+  // fprintf(stderr, "%s \n", movie_data_fname);
+  // fprintf(stderr, "%i \n", movie);
+
+  // if (movie == 1){
+  // }
 
   // fprintf(stderr, "angles: %g %g %g %g\n state: %i\n", bba, bma, uma, uba, s);
   Dynein_onebound* dynein = new Dynein_onebound(bba, bma, uma, uba, bbx, bby,
@@ -117,15 +171,11 @@ int main(int argc, char** argv) {
     // fprintf(stderr, "sticky rate: %g  sticky prob: %g\n", sticky_rate, sticky_prob);
 
 
-    // if (iter%10000 == 0){
-    	// fprintf(stderr, "The time is %g\n", t);
-    	// fprintf(stderr, "bbx %g, bby %g\n", dynein->get_bbx(), dynein->get_bby());
-    	// fprintf(stderr, "bmx %g, bmy %g\n", dynein->get_bmx(), dynein->get_bmy());
-    	// fprintf(stderr, "tx %g, ty %g\n", dynein->get_tx(), dynein->get_ty());
-    	// fprintf(stderr, "umx %g, umy %g\n", dynein->get_umx(), dynein->get_umy());
-    	// fprintf(stderr, "ubx %g, uby %g\n", dynein->get_ubx(), dynein->get_uby());
-    	// fprintf(stderr, "FINAL L: %g \n\n", dynein->get_ubx()-dynein->get_bbx());
-    // }
+    if (movie == 1 && iter%frames == 0){
+      log_stepping_movie_data(movie_data_file, dynein, s, iter);
+    }
+
+
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);
 
@@ -171,10 +221,17 @@ int main(int argc, char** argv) {
       // fprintf(stderr, "I took a step after %ld! Final L = %f\n =====> %.15g %.15g %.15g %.15g\n",
       //         iter, dynein->get_ubx()-dynein->get_bbx(),
       //         dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
+      if (movie == 1){
+        if (movie_data_file) fclose(movie_data_file);
+      }
       printf("{\n  'L': %g,\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
-	       dynein->get_ubx()-dynein->get_bbx(), t,
-         dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
-         dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
+      dynein->get_ubx()-dynein->get_bbx(), t,
+      dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
+      dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
+      //
+      //   // printf("{\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
+      //   //    t, dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
+      //   //    dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
       // printf("L: %g,\nt: %g\n", dynein->get_bbx()-dynein->get_ubx(), t); // YAML version
       exit(0);
     }

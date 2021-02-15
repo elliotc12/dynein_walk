@@ -238,7 +238,7 @@ void log_angle_data(FILE* data_file, void* dyn, long long iteration, long long m
 
 // on unbinding, print the past ob and bb log if the past step was > 10nm
 // on unbinding, compare the current feet positions to the past unbinding positions to see if the past ob period created a large displacement
-// when entering BB, compare the stored 
+// when entering BB, compare the stored
 
 // bb, far stepped, from nearbound: "bb", tx - nbx, ty, fma, fba
 // bb, near stepped, from farbound: "bb", tx - fbx, ty, nma, fba

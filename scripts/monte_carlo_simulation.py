@@ -38,7 +38,7 @@ def run_onebound(bba, bma, uma, uba, state, k):
                                     str(params.for_simulation['eqt']),
                                     str(params.for_simulation['force']),
                                     str(params.for_simulation['exp-unbinding-constant']),
-                                    str(bba), str(bma), str(uma), str(uba), str(state), str(k),
+                                    str(bba), str(bma), str(uma), str(uba), str(state), str(k), str(movie), str(frames),
         ], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
@@ -53,6 +53,13 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         step = run_onebound(bba, bma, uma, uba, state, k[0])
         step_data['L'].append(step['L'])
         step_data['t'].append(step['t'])
+        # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+        # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba, dynein.ob_nma, dynein.ta, dynein.ob_fma, dynein.fba))
+        # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+        # print('s', state)
+        # print(step['L'])
+        # print(step['t'])
+        # exit()
 
         if k[0] % 50 == 0:
             pictures['bb_final'].append(np.array([step['bbx'], step['bby']]))
@@ -95,7 +102,8 @@ params.for_simulation['eqb'] = args.eqb
 params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
-
+movie = 0
+frames = 0
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
@@ -150,6 +158,15 @@ while Z < N:
 
             prob_trailing = P*rate_trailing
             prob_leading = P*rate_leading
+
+            # if k[0] % 5 == 0:
+            #     print('P_factor: ', P_factor)
+            #     print('b*energy: ', -b*dynein.E_total)
+            #     print('log(P_Fac): ', np.log(P_factor))
+            #     print('P', P)
+            #     print('prob trailing: ', prob_trailing)
+            #     print('prob leading: ', prob_leading)
+            #     print()
 
             # if (len(trailing_data['L'])) == 7:
                 # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
