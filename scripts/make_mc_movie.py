@@ -14,6 +14,7 @@ import bb_energy_distribution
 import dynein.draw.cartoon as cartoon
 
 from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FFMpegWriter
 
 def animate(i):
     ax.cla()
@@ -69,9 +70,12 @@ cartoon.dyneinCircles(ub[0][0], ub[1][0], params.for_simulation['rb'],
                             t[0][0], t[1][0], params.for_simulation['rt'],
                             'blue', 0.3, fig.gca())
 
-movie = FuncAnimation(fig, animate, frames = len(time), interval = 100)
+movie = FuncAnimation(fig, animate, frames = len(time), interval = 50)
 
 
-plt.show()
+# plt.show()
 
-# movie.save("../plots/mc_plots/mc_movie.mp4")
+movie_save_fname =r"../plots/mc_plots/mc_movie.mp4"
+writervideo = FFMpegWriter(fps=10)
+
+movie.save(movie_save_fname, writer = writervideo)

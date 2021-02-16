@@ -53,12 +53,16 @@ def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
         step = run_onebound(bba, bma, uma, uba, state, k[0])
         step_data['L'].append(step['L'])
         step_data['t'].append(step['t'])
-        # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-        # print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba, dynein.ob_nma, dynein.ta, dynein.ob_fma, dynein.fba))
-        # print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-        # print('s', state)
-        # print(step['L'])
-        # print(step['t'])
+        print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
+        print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba, dynein.ob_nma, dynein.ta, dynein.ob_fma, dynein.fba))
+        print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
+        print('s', state)
+        print(step['L'])
+        print(step['t'])
+        print(k)
+        if state == 1:
+            if step['L'] > 0:
+                exit()
         # exit()
 
         if k[0] % 50 == 0:
@@ -89,6 +93,8 @@ parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle"
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
+parser.add_argument("-f", "--frames", type=float, help="Set the frames per dt", default=10000)
+
 
 args = parser.parse_args()
 
@@ -102,8 +108,8 @@ params.for_simulation['eqb'] = args.eqb
 params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
-movie = 0
-frames = 0
+movie = 1
+frames = args.frames
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:

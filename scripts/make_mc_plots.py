@@ -365,10 +365,10 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.figure('Probability Density of Step Length')
     s_den_norm = np.sum(s_den[s_arr > norm_length_min])*(s_arr[1]-s_arr[0])
     plt.fill_between(s_arr,0*s_den, s_den/s_den_norm, label='Model', color='C1')
-    plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A)
+    plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, alpha = 0.8)
     plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
                 yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
-    plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C4')
+    plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C4', alpha = 0.8)
     plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
                 yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C3', alpha=0.5)
     plt.xlabel('Step Length (nm)')
@@ -443,9 +443,13 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
         else:
             plt.figure('Onebound Time plot for iL = {}'.format(i))
             # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
+            # print(time_bin_center)
             plt.bar(time_bin_center, time_hists[i], width=increment, align='center', label=i)
             plt.xlabel('Onebound time (s)')
             plt.ylabel('Probability')
+            plt.xscale('log')
+            # locs, labels = plt.xticks()
+            # plt.xticks(labels = locs*1e6)
             plt.xlim(-increment,1e-6)
             plt.legend()
             plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
