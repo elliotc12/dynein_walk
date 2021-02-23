@@ -46,24 +46,27 @@ def run_onebound(bba, bma, uma, uba, state, k):
         assert(exit_code == 0);
         return output_data
 
-def collect_onebound_data(k, state, bba, bma, uma, uba, L, step_data):
+def collect_onebound_data(bba, bma, uma, uba, state, k, L, step_data):
         """
         Call run_onebound function and collect onebound statistics
         """
         step = run_onebound(bba, bma, uma, uba, state, k[0])
         step_data['L'].append(step['L'])
         step_data['t'].append(step['t'])
-        print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba*57.3, dynein.ob_nma*57.3, dynein.ta*57.3, dynein.ob_fma*57.3, dynein.fba*57.3))
-        print('nba: {}, nma: {}, ta: {}, fma: {}, fba: {}'.format(dynein.nba, dynein.ob_nma, dynein.ta, dynein.ob_fma, dynein.fba))
-        print('nb: {}, nm: {}, t: {}, fm: {}, fb: {}'.format(dynein.r_nb, dynein.r_nm, dynein.r_t, dynein.r_fm, dynein.r_fb))
-        print('s', state)
-        print(step['L'])
-        print(step['t'])
-        print(k)
-        if state == 1:
-            if step['L'] > 0:
-                exit()
-        # exit()
+        if args.movie == 1:
+            if state == 1:
+                L = -1.0*L
+            with open(movie_script_L_dir + '{0}_{1}_{2}_{3:.3e}.py'.format(k[0], L, step['L'], step['t']), 'w') as movie_script:
+                movie_script.write('import subprocess \nimport sys \nsys.path.append("../../") \nimport make_mc_movie \nimport os \n')
+                movie_script.write('''process = subprocess.run([\'../../../onebound\', \'{0}\', \'{1}\', \'{2}\', \'{3}\', \'{4}\', \'{5}\', \'{6}\',
+                                     \'{7}\', \'{8}\', \'{9}\', \'{10}\', \'{11}\', \'{12}\', \'{13}\', \'{14}\', \'{15}\', \'{16}\', \'{17}\',
+                                     \'{18}\', \'{19}\', \'{20}\', \'{21}\', \'{22}\', \'{23}\', \'{24}\', \'{25}\'])'''.format(k_b,
+                                     k_stk, params.for_simulation['cb'], params.for_simulation['cm'], params.for_simulation['ct'],
+                                     params.for_simulation['ls'], params.for_simulation['lt'], params.for_simulation['rt'], params.for_simulation['rm'], params.for_simulation['rb'],
+                                     seed, dt, params.for_simulation['eqb'], params.for_simulation['eqmpre'], params.for_simulation['eqmpost'], params.for_simulation['eqt'],
+                                     params.for_simulation['force'], params.for_simulation['exp-unbinding-constant'],
+                                     bba, bma, uma, uba, state, k[0], 1, frames))
+                movie_script.write("\nmake_mc_movie.main() \nos.remove('../../../data/mc_movie_data.txt')")
 
         if k[0] % 50 == 0:
             pictures['bb_final'].append(np.array([step['bbx'], step['bby']]))
@@ -93,7 +96,8 @@ parser.add_argument("--eqmpost", type=float, help="Motor post equilibrium angle"
 parser.add_argument("-t", "--dt", type=float, help="Manually set the dt", default=params.for_simulation['dt'])
 parser.add_argument("-C", "--C", type=float, help="Exponential unbinding constant", default=params.for_simulation['exp-unbinding-constant'])
 parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
-parser.add_argument("-f", "--frames", type=float, help="Set the frames per dt", default=10000)
+parser.add_argument("-f", "--framerate", type=float, help="Set the frame rate", default=100000)
+parser.add_argument("-m", "--movie", type=float, help="Save movie scripts", default=0)
 
 
 args = parser.parse_args()
@@ -108,17 +112,13 @@ params.for_simulation['eqb'] = args.eqb
 params.for_simulation['eqmpre'] = args.eqmpre
 params.for_simulation['eqmpost'] = args.eqmpost
 dt = args.dt          # Time Step
-movie = 1
-frames = args.frames
+movie = 0
+frames = args.framerate
 
 eqb_angle = params.for_simulation['eqb']
 if bb_energy_distribution.eq_in_degrees:
         eqb_angle = eqb_angle*np.pi/180
 
-# Create MC Data Directory if don't exist
-mc_data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-if not os.path.exists(mc_data_dir):
-    os.mkdir(mc_data_dir)
 
 L = args.L           # Initial Length
 N = args.N           # Count
@@ -134,9 +134,25 @@ u = ''
 if args.underMT == False:
     u = 'u_'
 
-t_data_file = mc_data_dir + u + 't_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-l_data_file = mc_data_dir + u + 'l_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.txt'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-pictures_data_file = mc_data_dir + u + 'pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+params_string = '{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+dir_params_string = '{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+
+# Create MC Data Directory if don't exist
+mc_data_dir = '../data/mc_data_' + dir_params_string
+if not os.path.exists(mc_data_dir):
+    os.mkdir(mc_data_dir)
+
+if args.movie == 1:
+    movie_script_dir = 'movie_' + u + dir_params_string
+    if not os.path.exists(movie_script_dir):
+        os.mkdir(movie_script_dir)
+    movie_script_L_dir = movie_script_dir + 'movie_scripts_{0}/'.format(int(L))
+    if not os.path.exists(movie_script_L_dir):
+        os.mkdir(movie_script_L_dir)
+
+t_data_file = mc_data_dir + u + 't_' + params_string + '.txt'
+l_data_file = mc_data_dir + u + 'l_' + params_string + '.txt'
+pictures_data_file = mc_data_dir + u + 'pictures_' + params_string
 
 seed = 0
 np.random.seed(0)
@@ -194,8 +210,8 @@ while Z < N:
                         pictures['t_init'].append(np.array([dynein.r_t[0]-L, dynein.r_t[1]]))
                         pictures['um_init'].append(np.array([dynein.r_nm[0]-L, dynein.r_nm[1]]))
                         pictures['ub_init'].append(np.array([dynein.r_nb[0]-L, dynein.r_nb[1]]))
-                    collect_onebound_data(k, state, dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
-                                            L, trailing_data)
+                    collect_onebound_data(dynein.fba, dynein.ob_fma, dynein.ob_nma, dynein.nba,
+                                            state, k, L, trailing_data)
 
             if np.random.random() < prob_leading:
                     # NEARBOUND State
@@ -206,8 +222,8 @@ while Z < N:
                         pictures['t_init'].append(dynein.r_t)
                         pictures['um_init'].append(dynein.r_fm)
                         pictures['ub_init'].append(dynein.r_fb)
-                    collect_onebound_data(k, state, dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
-                                            L, leading_data)
+                    collect_onebound_data(dynein.nba, dynein.ob_nma, dynein.ob_fma, dynein.fba,
+                                            state, k, L, leading_data)
 
             if k[0] % 50 == 0 and k[0]>0:
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t']), fmt='%.6e', delimiter=' ', newline='\n\n')

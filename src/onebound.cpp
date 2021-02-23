@@ -108,16 +108,13 @@ int main(int argc, char** argv) {
   Rand* rand = new Rand(RAND_INIT_SEED);
 
   char *movie_data_fname = new char[200];
-  sprintf(movie_data_fname, "/home/jin/dynein_walk/data/mc_movie_data_%.3g_%.3g_%.2g_%.2g_%.2g_%.4g_%.4g_%.4g.txt", low_affinity_binding_rate, sticky_rate, cb, cm, ct,
-          onebound_post_powerstroke_internal_angles.bba*180/M_PI, onebound_post_powerstroke_internal_angles.uma*180/M_PI, onebound_post_powerstroke_internal_angles.bma*180/M_PI);
+  sprintf(movie_data_fname, "../../../data/mc_movie_data.txt");
   FILE *movie_data_file = 0;
+  
+  // fprintf(stderr, "%s \n", movie_data_fname);
+  // fprintf(stderr, "%i \n", movie);
 
-  // movie_data_struct* movie_data;
-  // movie_data = new movie_data_struct[frames];
-  // static int buffer_position = 0;
   if (movie == 1){
-    // std::ofstream output("%s", movie_data_fname);
-    // movie_data_file = 0;
     movie_data_file = fopen(movie_data_fname, "w");
     if (!movie_data_file) {
       printf("Error opening %s!\n", movie_data_fname);
@@ -129,8 +126,6 @@ int main(int argc, char** argv) {
             "fx1\tfy1\tfx2\tfy2\tfx3\tfy3\tfx4\tfy4\tfx5\tfy5\n");
   }
 
-  // fprintf(stderr, "%s \n", movie_data_fname);
-  // fprintf(stderr, "%i \n", movie);
 
   // if (movie == 1){
   // }
@@ -223,6 +218,7 @@ int main(int argc, char** argv) {
       //         dynein->get_bmy(), dynein->get_ty(), dynein->get_umy(), dynein->get_uby());
       if (movie == 1){
         if (movie_data_file) fclose(movie_data_file);
+        exit(0);
       }
       printf("{\n  'L': %g,\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
       dynein->get_ubx()-dynein->get_bbx(), t,

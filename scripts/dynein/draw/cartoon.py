@@ -76,7 +76,7 @@ def dyneinPolygon(xb, yb, xm, ym,xt,yt, c, a, ax):
             )
         )
 
-def dyneinCircles(xb, yb, Rb, xm, ym, Rm, xt, yt, Rt, color, alpha, ax):
+def dyneinCircles(xb, yb, Rb, xm, ym, Rm, xt, yt, Rt, color, alpha): #, ax):
     stalk_length = np.sqrt((xm-xb)**2+(ym-yb)**2)
 
     for (x,y,R) in [(xb,yb,Rb), (xm,ym,Rm), (xt,yt,Rt)]:
