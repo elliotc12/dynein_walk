@@ -1,5 +1,5 @@
 \section{Model}
-In order to reliably reproduce experimental observations of dynein's step, a model of dynein should responsibly conserve dynein's spatial information and complex structure without limiting the physical interactions with its environment. Doing so computationally introduces a strict balance between model accuracy and computational efficiency. In an attempt to best satisfy this difficult balance, we propose a simple model of dynein under a series of assumptions that benefits quick simulations of dynein taking a step. 
+To reliably reproduce experimental observations of dynein's step, a model of dynein should responsibly conserve dynein's spatial information and complex structure without limiting the physical interactions with its environment. Doing so computationally introduces a strict balance between model accuracy and computational efficiency. In an attempt to best satisfy this difficult balance, we propose a simple model of dynein under a series of assumptions that benefits quick simulations of dynein taking a step. 
 
 
 \subsection{2D Rigid Rod Model}
@@ -12,10 +12,10 @@ Since our goal is to investigate dynein's interhead coordination during its forw
 	\label{fig:model}
 \end{figure}
 
-Despite dynein's complexity allowing its step to vary in both length and direction, we limit our model to one direction to eliminate a dimension (the off-axis) when analyzing the forward stepping pattern of dynein. This would also simplify the asymmetry of the microtubule when the dynein is stepping either on the $\alpha$ or $\beta$ tubulin. We also simplify the stalk and linker to be massless because we are assuming the drag force to be much larger than the mass of the rods and domains. The reasoning for this will be later discussed in Section \ref{sec:BrownianDynamics} when we introduce Brownian dynamics. Although the stalk and linker of real dynein definitely have mass, we counteract the loss of interactions the rods experience with its environment by increasing the radii of the domains slightly larger than experimental measurements.
+Despite dynein's complexity allowing its step to vary in both length and direction, we limit our model to one direction to eliminate the off-axis dimension when analyzing the forward stepping pattern of dynein. This would also simplify the asymmetry of the microtubule when the dynein is stepping either on the $\alpha$ or $\beta$ tubulin. We also simplify the stalk and linker to be massless because we are assuming the drag force to be much larger than the mass of the rods and domains. The reasoning for this will be later discussed in Section \ref{sec:BrownianDynamics} when we introduce Brownian dynamics. Although the stalk and linker of real dynein definitely have mass, we counteract the loss of interactions the rods experience with the environment by increasing the radii of the domains slightly larger than experimental measurements.
 
 \subsection{Domains as Angular Springs}
-In order to best simulate the stretching and forward kicking motion of the power stroke, we define our domains to act as springs with spring constants $c_b$, $c_m$, and $c_t$ -- one for each respective domain. This can be analogous to how humans walk, where the domains correspond to flexible joints when taking a step. Defining our domains as springs will also allow us to influence forward bias walking by introducing a restoring force in each domain using Hooke's law: 
+To best simulate the stretching and forward kicking motion of the power stroke, we define the domains to act as springs with spring constants $c_b$, $c_m$, and $c_t$ for each domain. This can be analogous to how humans walk, where the domains correspond to flexible joints when taking a step. Defining the domains as springs will also allow us to influence forward bias walking by introducing a restoring force in each domain using Hooke's law: 
 \begin{equation}
     F_i=-c_i(\theta_i-\theta_{i,eq})
 \end{equation}
@@ -24,11 +24,11 @@ where $c_i$ is the spring constant, $\theta_i$ is angle corresponding to the $i^
     U_i=\frac{1}{2}c_i(\theta_i-\theta_{i,eq})^2
 \end{equation}
 %Since dynein is symmetric for each heavy chain leg, the equilibrium angle will be identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. 
-This equation would then be used throughout the entirety of the simulation to determine the total energy of our dynein at a given conformation. 
+This equation is used throughout the simulation to determine the total energy of our dynein at a given conformation. 
 
 
 \subsection{Two-State System}
-According to the Mechanochemical Cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has one foot bounded while the other diffuses above the microtubule or has both feet bounded to the microtubule. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding \cite{}, we categorize the cycle into two main conformations: the pre-stroke one bound state and the post-stroke both bound state.
+According to the mechanochemical cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has one foot bounded while the other diffuses above the microtubule or has both feet bounded to the microtubule. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding \cite{}, we categorize the cycle into two main conformations: the pre-stroke one bound state and the post-stroke both bound state.
 
 \begin{figure}[H]
 	\centering
@@ -37,7 +37,7 @@ According to the Mechanochemical Cycle (Figure \ref{fig:MechanochemicalCycle}), 
 	\label{fig:OBvsBB}
 \end{figure}
 
-Differentiating the two allows us to more conveniently bias the conformational change by defining different equilibrium angles for both states. Since dynein is symmetric for each heavy chain leg, the equilibrium angles for the both bound state will be identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. However, in the one bound state, the unbound leg wants to exhibit the powerstroke and kick out. Therefore, the equilibrium angles for the motor domains will differ in order to bias the unbound leg to straighten and perform the powerstroke. This straightening mechanic resembles the linker being primed before allowing the binding domain to rebind.
+Differentiating the two allows us to more conveniently bias the conformational change by defining different equilibrium angles for both states. Since dynein is symmetric for each heavy chain leg, the equilibrium angles for the both bound state is identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. However, in the one bound state, the unbound leg exhibits the powerstroke and kick out. Therefore, the equilibrium angles for the motor domains differ in order to bias the unbound leg to straighten and perform the powerstroke. This straightening mechanic resembles the linker being primed before allowing the binding domain to rebind.
 
 
 \subsection{Transitioning Between States}
@@ -52,7 +52,7 @@ Similar to other simulations, the binding and unbinding process is governed by a
 \end{equation} 
 Here, the $k_p$ is the priming rate constant, $k_b$ is the binding rate constant, $H$ is the Heaviside step function, $r_{ub,y}$ is the y position of the unbound binding domain, and $\epsilon$ is the range within the microtubule.
 
-When the dynein is in the both bound state and wants to unbind, we incorporate a stepping bias in the unbinding rate. As supported from Yildiz in Figure (\ref{fig:trailingbias}), the likelihood of the trailing leg unbinding is greater than the leading leg when the distance between the two legs increase. 
+When the dynein is in the both bound state and wants to unbind, we incorporate a stepping bias in the unbinding rate. As supported from Yildiz in Figure (\ref{fig:trailingbias}), the likelihood of the trailing leg unbinding is greater than the leading leg when the distance between the two legs increases. 
 
 
 \begin{figure}[H]
@@ -66,7 +66,7 @@ To favor trailing steps, we define an angle dependent exponential factor within 
 \begin{equation}
 	\rho_{ub}=k_{ub}e^{C(\theta_b-theta_{b,eq})}.
 \end{equation}
-We introduce a new model parameter $C$, the exponential unbinding constant, that allows us to control this bias. For the trailing step bias we want to achieve, we define $C$ to be negative because the trailing $\theta_b$ tends to be less than the leading $\theta_b$ and  when $\theta_b$ is less than $\theta_{b,eq}$, the unbinding rate becomes large.
+We introduce a new model parameter $C$, the exponential unbinding constant, that controls this bias. To achieve trailing step bias, we define $C$ to be negative because the trailing $\theta_b$ tends to be less than the leading $\theta_b$ and  when $\theta_b$ is less than $\theta_{b,eq}$, the unbinding rate becomes large.
 
 
 \section{Simulation}
@@ -79,32 +79,31 @@ The key difference between the works discussed in \cite{Capek2017, } (\textit{El
 \subsection{Brownian Dynamics for One Bound}
 \label{sec:BrownianDynamics}
 
-When simulating dynein's one bound motion, the domains of constant mass must still obey classical Newtonian physics and follow Newton's laws of motion. Knowing this, we can use Newton's second law to derive the equations of motion for each domain when experiencing various forces. That is,
+When simulating dynein's one bound motion, the domains of constant mass must obey classical Newtonian physics and follow Newton's laws of motion. That is,
 \begin{equation}
 	\sum_{i}\textbf{F}_i=m\ddot{\textbf{r}}.
 \end{equation} 
-
-For our domains experiencing the aqueous environment in the cell, the first force we can identify is the force of linear drag:
+For the domains in the aqueous environment of the cell, linear drag force is
 \begin{equation}
-	\textbf{F}_{drag}=-\gamma \dot{\textbf{r}}
+	\textbf{F}_{drag}=-\gamma \dot{\textbf{r}},
 \end{equation}
-where $\gamma$ is the drag coefficient defined from Stokes' law to be:
+where $\gamma$ is the drag coefficient defined by Stokes' law,
 \begin{equation}
 	\gamma=6\pi\eta a.
 \end{equation}
 This equation specifies the drag term by a given radius $a$ and liquid viscocity $\eta$. 
 
-The secondary force that we can easily identify is the random force inspiring the Brownian motion. This force describes the random interactions the domains experience with the paticles making the solvent. It will be denoted as \textbf{F}$_{rand}$, and the ``randomness" will be sampled from a zero-centered Gaussian with variance:
+A second force is the random force inspiring the Brownian motion. \textbf{F}$_{rand}$ describes the random interactions between the domains and the solvent paticles. \textbf{F}$_{rand}$ is sampled from a zero-centered Gaussian with variance
 \begin{equation}
-	\sigma^2=\sqrt{\frac{2\gamma}{\beta\Delta t}}.
+	\sigma^2=\sqrt{\frac{2\gamma}{\beta\Delta t}},
 \end{equation}
-where $\beta$ is the thermodynamic beta and $\Delta t$ is a time-step. 
+where $\beta=\frac{1}{k_bT}$  and $\Delta t$ is a time-step. 
 
-The final existing force on the domains will be the tension force the domains have on each other \textit{via} their connecting rods. We will name this \textbf{F}$_T$. Incorporting all these forces with Newton's second law, we can produce an equation otherwise known as the \textit{Langevin Equation}:
+The final force is the tension force, \textbf{F}$_T$, between the domains \textit{via} their connecting rods. Incorporting all these forces, we produce the \textit{Langevin Equation}:
 \begin{equation}
 	-\gamma \dot{\textbf{r}} + \textbf{F}_{rand} + \textbf{F}_T = m\ddot{\textbf{r}}.
 \end{equation}
-As mentioned earlier, in order to properly demonstrate Brownian dynamics, we must assume strong drag where $|\gamma \dot{\textbf{r}}|\ll |m\ddot{\textbf{r}}|$. Or in otherwords, we assume that the immense viscosity in the environment stricts the ability for our domains to accelerate. Simplifying the \textit{Langevin Equation} and solving for $\dot{\textbf{r}}$, we get:
+To properly demonstrate Brownian dynamics, we must assume strong drag where $|\gamma \dot{\textbf{r}}|\ll |m\ddot{\textbf{r}}|$. In other words, we assume that the immense viscosity in the environment restricts the ability for the domains to accelerate. Simplifying the \textit{Langevin Equation} and solving for $\dot{\textbf{r}}$, we get:
 \begin{equation}
 	\dot{\textbf{r}}=\frac{1}{\gamma}(\textbf{F}_{rand} + \textbf{F}_T)
 \end{equation}
