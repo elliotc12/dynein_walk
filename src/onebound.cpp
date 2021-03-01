@@ -22,7 +22,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
   const char *format = "%d\t"
   	"%.10g\t"
   	"%.2g\t%.2g\t%.2g\t%.2g\t%.2g\t"
-  	"%g\t%g\t%g\t%g\t"
+  	"%g\t%g\t%g\t%g\t%g\t"
   	"%g\t%g\t%g\t%g\t"
   	"%g\t%g\t"
   	"%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g"
@@ -33,7 +33,7 @@ void log_stepping_movie_data(FILE* data_file, void* dyn, State s, long long iter
 		dyn_ob->get_state(),
 		iteration*dt,
 		dyn_ob->PE_bba, dyn_ob->PE_bma, dyn_ob->PE_ta, dyn_ob->PE_uma, 0.0,
-		dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
+		dyn_ob->get_uma()-dyn_ob->get_bma(), dyn_ob->get_bbx(), dyn_ob->get_bby(), dyn_ob->get_bmx(), dyn_ob->get_bmy(),
 		dyn_ob->get_tx(), dyn_ob->get_ty(), dyn_ob->get_umx(), dyn_ob->get_umy(),
 		dyn_ob->get_ubx(), dyn_ob->get_uby(),
 		dyn_ob_f.bbx, dyn_ob_f.bby, dyn_ob_f.bmx, dyn_ob_f.bmy, dyn_ob_f.tx,
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
   char *movie_data_fname = new char[200];
   sprintf(movie_data_fname, "../../../data/mc_movie_data.txt");
   FILE *movie_data_file = 0;
-  
+
   // fprintf(stderr, "%s \n", movie_data_fname);
   // fprintf(stderr, "%i \n", movie);
 
@@ -169,7 +169,10 @@ int main(int argc, char** argv) {
     if (movie == 1 && iter%frames == 0){
       log_stepping_movie_data(movie_data_file, dynein, s, iter);
     }
-
+    // if (iter % 10000 == 0){
+    // fprintf(stderr, "bba %g, bma %g, ta %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, (dynein->get_uma()-dynein->get_bma())*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
+    // fprintf(stderr, "E bba %g, E bma %g, E ta %g, E uma %g, E uba %g\n \n", dynein->PE_bba, dynein->PE_bma, dynein->PE_ta, dynein->PE_uma, 0.0);
+    // }
 
     // if (binding_prob > 0) fprintf(stderr, "binding_prob is %g at time %g with angle %g (total %g)\n",
     //                               binding_prob, t, dynein->get_uba(), cumulative_prob);

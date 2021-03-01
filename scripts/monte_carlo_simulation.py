@@ -53,6 +53,7 @@ def collect_onebound_data(bba, bma, uma, uba, state, k, L, step_data):
         step = run_onebound(bba, bma, uma, uba, state, k[0])
         step_data['L'].append(step['L'])
         step_data['t'].append(step['t'])
+
         if args.movie == 1:
             if state == 1:
                 L = -1.0*L
@@ -85,7 +86,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e20)
 parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
-parser.add_argument("-k", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-b", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Manually set the sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
