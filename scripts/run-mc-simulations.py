@@ -14,7 +14,7 @@ parser.add_argument("-L", "--L", type=float, help="Array of initial L", default=
 parser.add_argument("-i", "--i", type=float, help="Increment", default=3)
 parser.add_argument("-o", "--o", type=float, help="Starting value", default=3)
 parser.add_argument("-u", "--kub", type=float, help="unbinding const", default=params.for_simulation['k_ub'])
-parser.add_argument("-k", "--kb", type=float, help="binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-b", "--kb", type=float, help="binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="spring const binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="spring const motor domain", default=params.for_simulation['cm'])
@@ -43,7 +43,7 @@ if args.cancel == True:
 else:
     for i in range(len(init_L)):
         if args.underMT == False:
-            os.system('rq run -J dynein-mc-{0}-{1:.2e}-{2:.2e}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10} -o L-{11}-{12:.2e}-{13:.2e}-{14}-{15}-{16}-{17}-{18}-{19}-{20}-{21} python3 monte_carlo_simulation.py -u {22} -k {23} -s {24} -cb {25} -cm {26} -ct {27} --eqb {28} --eqmpre {29} --eqmpost {30} -C {31} -L {32} --underMT'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i]))
+            os.system('rq run -J dynein-mc-{0}-{1:.2e}-{2:.2e}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10} -o L-{11}-{12:.2e}-{13:.2e}-{14}-{15}-{16}-{17}-{18}-{19}-{20}-{21} python3 monte_carlo_simulation.py -u {22} -b {23} -s {24} -cb {25} -cm {26} -ct {27} --eqb {28} --eqmpre {29} --eqmpost {30} -C {31} -L {32} --underMT'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i]))
         else:
-            os.system('rq run -J dynein-mc-{0}-{1:.2e}-{2:.2e}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10} -o L-{11}-{12:.2e}-{13:.2e}-{14}-{15}-{16}-{17}-{18}-{19}-{20}-{21} python3 monte_carlo_simulation.py -u {22} -k {23} -s {24} -cb {25} -cm {26} -ct {27} --eqb {28} --eqmpre {29} --eqmpost {30} -C {31} -L {32}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i]))
+            os.system('rq run -J dynein-mc-{0}-{1:.2e}-{2:.2e}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10} -o L-{11}-{12:.2e}-{13:.2e}-{14}-{15}-{16}-{17}-{18}-{19}-{20}-{21} python3 monte_carlo_simulation.py -u {22} -b {23} -s {24} -cb {25} -cm {26} -ct {27} --eqb {28} --eqmpre {29} --eqmpost {30} -C {31} -L {32}'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i], k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C, init_L[i]))
         time.sleep(0.1)
