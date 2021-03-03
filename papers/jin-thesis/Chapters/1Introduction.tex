@@ -1,31 +1,41 @@
 %\textit{Introduce topic by talking about cells. Attention grabber, relate biophysics study to cancer reserach and many areas where we need to focus our research. Short and sweet, maybe 1 or 2 short paragraphs.}
 
-	Neurodegenerative diseases, such as Alzheimer's and Huntinton's disease, have consistently been one of the leading causes of death in the United States \cite{eschbach2011cytoplasmic}. Scientists all over the world struggle to find a solution for these diseases and continue to hope for a breakthrough in science in attempt to prevent or even cure these fatal diseases. Although this breakthrough has yet to come, research suggests that motor protein failure is a main cause of cell degeneration. More specifically, defects in the motor protein dynein have been linked to neurodegeneration due to the cell's funtional dependence on dynein and its mechanical properties. However, unlike dynein's motor protein siblings, dynein possesses a unique structure causing it to stochasitcally move around the cell and be unpredictable in nature. Thus, fully understanding the mechanisms of dynein can allow us to further understand causes of its failure. In this paper, we propose a model of dynein that uses Monte Carlo methods and a Brownian dynamics simulation to reproduce dynein's unique steping behavior. What follows is a brief introduction to the dynein motor protein, a review of the powerstroke model, and the framework for a computational simulation of the powerstroke, which we seek to replicate Yildiz's observation of correlated stepping.  
+	Neurodegenerative diseases, such as Alzheimer's or Huntinton's disease, is a leading cause of death in the United States \cite{eschbach2011cytoplasmic}. Scientists have yet to find a prevention or cure to these fatal diseases but suggests that motor protein failure directly contributes to cell degeneration. More specifically, defects in the motor protein dynein have been linked to neurodegeneration due to the cell's funtional dependence on dynein and its mechanical properties. However, dynein possesses a unique structure causing it to stochasitcally move around the cell and be unpredictable in nature. Thus, fully understanding the mechanisms of dynein can allow us to further understand causes of its failure. In this paper, we propose a model of dynein that uses Monte Carlo methods and a Brownian dynamics simulation to reproduce dynein's unique steping behavior. What follows is a brief introduction to the dynein motor protein, a review of the powerstroke model, and the framework for a computational simulation of the powerstroke, which we seek to replicate Yildiz's observation of correlated stepping \cite{Dewitt2012}.  
 
 \section{Background}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\columnwidth]{Figures/dynein_walking_art.jpg}
+	\includegraphics[width=0.3\columnwidth]{Figures/dynein_walking_art.jpg}
 	\caption[Artist Rendition of Dynein]{\textbf{Artist Rendition of Dynein} walking along a microtubule in a cell. \cite{JohnsonArt}}
 	\label{fig:ArtDynein}
 \end{figure}
 
-Cells are complicated. They have the ability to move, perfectly divide, and spatially organize themselves when they are functional, but can also be responsible for death when they are not. They can function because tiny, two-legged molecular proteins, named \textit{motor proteins}, carry cargo with information around the cell. These motor proteins are kinesin, myosin, and dynein. They travel around the cell on a cytoskeleton composed of microtubules (MT) that act as a walkway for the proteins. A depiction of dynein walking along the microtubule is shown above in Figure (\ref{fig:ArtDynein}). Microtubules are constructed from negatively charged $\alpha$- and positively charged $\beta$-tubulin dimers that polarize the microtubule depending on which tubulin is left hanging at the ends. In a eukaryotic cell, microtubules typically stem outwards from the cell's nucleus to the cell walls where the $\beta$ tubulin is exposed, generating a positive end that pulls kinesin and myosin. However, dynein walks toward the nucleus cell body where the MT is negatively charged. This attraction to drives the directed stepping motion for each motor protein and is shown in Figure (\ref{fig:transport}). 
+Cells are complicated. They have the ability to move, perfectly divide, and spatially organize themselves but are also responsible for fatal diseases when these functions fail. Their functionality entirely depends on two-legged molecular proteins, named \textit{motor proteins}, that carry information to different parts of the cell. They travel around the cell on a cytoskeleton composed of microtubules that act as a walkway for the proteins (see Figure (\ref{fig:ArtDynein})). These motor proteins are myosin, kinesin, and dynein and are shown below in Figure (\ref{fig:Compare}). Because of kinesin and myosin's compact structure being close to the microtubule, they exhibit a uniform ``hand-over-hand" stepping pattern where their legs take turns alternating steps like a human. On the other hand, dynein's structure involves two autonomous motors that cause inconsistent steps. Dynein exhibits an inchworm pattern while walking where one leg consistently stays ahead of the other, emulating a limping motion.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\columnwidth]{Figures/motor_comparison.png}
+	\caption[Motor Proteins]{\textbf{Motor Proteins} Structure of myosin, kinesin, and dynein. \cite{JohnsonArt}}
+	\label{fig:Compare}
+\end{figure}
+
+In addition to their structural differences, dynein walks in the oppposite direction of its motor protein siblings and towards the negative end of the microtubule. Because microtubules are protein dimers constructed from negatively charged $\alpha$- and positively charged $\beta$-tubulins, the microtubule track is polarized depending on which tubulin dominates at the end points. In a eukaryotic cell, microtubules typically stem outwards from the cell's nucleus to the cell walls where the $\beta$ tubulin is exposed, generating a negative end at the nucleus and influencing dynein's directionality. Figure (\ref{fig:transport}) displays kinesin and dynein experiencing a charged attraction to the end points, while they share a cargo to deliver information during axonal transport. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\columnwidth]{Figures/retrograde_transport.jpg}
-	\caption[Charge Influenced Transport]{\textbf{Charge Influenced Transport}. Dynein and kinesin transporting cargo on the axon of a neuron cell for building the axon growth cone. They share cargo and take turns delivering each other to opposite ends of the cell. \cite{Vale2003molecular}}
+	\caption[Charge Influenced Transport]{\textbf{Charge Influenced Transport}. Dynein and kinesin transporting cargo with information on the axon of a neuron cell for building the axon growth cone. They share cargo and take turns delivering each other to opposite ends of the cell. \cite{Vale2003molecular}}
 	\label{fig:transport}
 \end{figure}
 
-Both kinesin and myosin exhibit hand-over-hand stepping, where their ``legs" take turns alternating steps like a human. Due to dynein's massive size compared to its motor protein siblings, dynein does not step uniformly but rather inchworms its ``feet" like a drunk human. This unique property makes dynein difficult to study when analyzing possible sources of molecular failure, but illustrates the importance of understanding the physical structure of the entire motor protein.
+These unique properties make dynein difficult to study when analyzing possible sources of molecular failure, but illustrates the importance of understanding its entire physical structure and the chemical interactions with ATP to produce motion.
 
+\newpage
 \section{Structure}
 %\textit{In-detail background knowledge on structure of dynein. Talk about each domain and their roles. Binding domain, six AAA+ domains, tail, and cargo. Stalk and linker that attaches things together. How the structure is so much larger than that of kinesin. dynein has flexibility because of its linker and in order to compensate for its huge domains. }
 
-Dynein is composed of two motor heavy chain subunits of linked amino acids, called polypeptides, each which are separated into domains. Figure (\ref{fig:structure}) displays these domains and labels them as the tail domain, motor domains (constructed from six AAA+ domains that form a ring), and the microtubule binding domains. The tail and the motor domains are connected by separate linkers, while the motor and the binding domains are connected by the stalks.
+Dynein's ``leg" is a complex protein assembly composed of linked amino acids subunits, called polypeptides, separated into three main domains. Figure (\ref{fig:structure}) displays these as the tail, the AAA+ rings (or motor), and the microtubule binding domain. The tail and the motor domains are connected by separate linkers, while the motor and the binding domains are connected by stalks.
 
 %\begin{figure}[H]
 %	\centering
@@ -41,7 +51,7 @@ Dynein is composed of two motor heavy chain subunits of linked amino acids, call
 	\label{fig:structure}
 \end{figure}
 
-Dynein's crystal structure has been rigorously studied because of the pivotal role it plays in dynein's unpredictable stepping nature. Its inability to step uniformly is largely due to the large lengths between each major domain site, as the linker and stalk are about a factor of a half larger than the diameter of the AAA+ ring. In kinesin and myosin, the motor domains are much closer to the MT, causing a more controlled and consistent step due to their low center of mass. Despite dynein's large structure, it can still achieve processive stepping due to the interaction of adenosine triphosphate (ATP) with the AAA+ domains, which is why the AAA+ domains are referred to as the motor domains.
+Dynein's physical structure has been rigorously studied because of the pivotal role it plays in dynein's unpredictable stepping nature. Its inability to step uniformly is due to the large lengths between each major domain site, as the linker and stalk are about a factor of a half larger than the diameter of the AAA+ ring. In kinesin and myosin, the motor domains are much closer to the MT, causing a more controlled and consistent step due to their low center of mass. Despite dynein's large structure, it can still achieve processive stepping due to the interaction of adenosine triphosphate (ATP) with the AAA+ domains, which is why the AAA+ domains are referred to as the motor domains.
 
 
 
@@ -50,9 +60,9 @@ Dynein's crystal structure has been rigorously studied because of the pivotal ro
 \section{Stepping}
 %\textit{Biology and chemistry of stepping. What is actually causing it to step? ATP hydrolysis. Maybe short introduction on stepping and go more in detail in Power Stroke model. Say there are multiple theories and models of how dynein steps. Powerstroke, Winch, etc. Power stroke is most accepted. It can step on microtubule that is made up of tubulin dimers, $\alpha$ and $\beta$ tubulins. They are normally 8nm apart and so experimentalists believe dynein average step is always factor of 8nm. }
 
-Dynein's ability to step is entirely ATP driven under the process of ATP hydrolysis. The ATP binds to the motor domain and converts chemical energy into mechanical energy for the dynein to transition between differenet conformational states during a step. This process allows the binding domains to let go and reattach to the microtubule at different locations causing varying step sizes. We can measure dynein's step length by definining an axis on the microtubule for where dynein can step.
+Dynein's ability to step is entirely ATP driven under the process of ATP hydrolysis. The ATP binds to the motor domain and converts chemical energy into mechanical energy for the dynein to transition between different conformational states (physicial arrangements) during a step. This process allows the binding domains to let go and reattach to the microtubule at different locations causing varying step sizes. To measure dynein's step length, an axis is defined on the microtubule for where dynein can step.
 
-The on-axis is defined to be the axis parallel to the direction of forward stepping towards the negative end of the microtubule, while the off-axis is defined to be the axis perpendicular, as shown in Figure (\ref{fig:axis}). Figure (\ref{fig:axis}) also displays the alternative helix structure of the $\alpha$- and $\beta$-tubulin dimers, in which act as the landing zones for dynein's binding domain.  
+The on-axis is defined to be parallel to the direction of forward stepping towards the negative end of the microtubule, while the off-axis is perpendicular, as shown in Figure (\ref{fig:axis}). Figure (\ref{fig:axis}) also displays the alternating helix structure of the $\alpha$- and $\beta$-tubulin dimers, in which act as the landing zones for dynein's binding domain.  
 
 \begin{figure}[H]
 	\centering
@@ -73,11 +83,11 @@ The widely accepted powerstroke model was best exhibted within the mechanochemic
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{Figures/mechanochemical_cycle.jpeg}
-	\caption[Mechanochemical Cycle]{\textbf{Mechanochemical Cycle.} The proposed series of conformational stages dynein undergoes during a step. The interaction of ATP with the motor domain is the main factor causing the powerstroke.  \cite{Cianfrocco2015mechanism}}
+	\caption[Mechanochemical Cycle]{\textbf{Mechanochemical Cycle.} The proposed series of conformational stages dynein undergoes during a step. The interaction of ATP with the motor domain is the main cause of the powerstroke, and high and low affinity indicated by the tightness of yellow polypeptides in the stalk. \cite{Cianfrocco2015mechanism}}
 	\label{fig:MechanochemicalCycle}
 \end{figure}
 
-The cycle utilizes the conformational transition between high affinity and low affinity to explain dynein's unbinding and rebinding process. This transition is governed by the addition of an ATP unit, which loosens the ``foot" from the MT (steps 3 to 4), stretches the linker (steps 5 to 6), and tightens the ``foot" back onto the MT (steps 6 to 7), pulling the whole protein forward. This key detail within the transition of stretching the linker distinguishes a ``pre-" and a ``post-" stroke state during the powerstroke model and can be analogous to bending a knee upwards and kicking the foot forwards to stretch the knee and take a step. A closer visualization of this transition between pre- and post-stroke states can be seen in Figure (\ref{fig:Powerstroke}), where the linker is highlighted in yellow.  
+Here, affinity refers to the tendency and strength of the binding domain binding to the microtubule - high affinity being a secure attachment to the microtubule and low affinity being loose. The cycle utilizes the conformational transition between high and low affinity to explain dynein's unbinding and rebinding process. This transition is governed by the addition of an ATP unit, which loosens the ``foot" from the MT (steps 3 to 4), stretches the linker (steps 5 to 6), and tightens the ``foot" back onto the MT (steps 6 to 7), pulling the whole protein forward. This key detail within the transition of stretching the linker distinguishes a ``pre-" and a ``post-" stroke state during the powerstroke model and can be analogous to bending a knee upwards and kicking the foot forwards to stretch the knee and take a step. A closer visualization of this transition between pre- and post-stroke states can be seen in Figure (\ref{fig:Powerstroke}), where the linker is highlighted in yellow.  
 
 \begin{figure}[H]
 	\centering
@@ -86,34 +96,33 @@ The cycle utilizes the conformational transition between high affinity and low a
 	\label{fig:Powerstroke}
 \end{figure}
 
-Although the mechanochemical cycle provides a reasonable model for dynein's step and illustrates the motion between the domains, the model still generalizes the dependencies of the step and fails to analyze different geometric factors that can alter the conformations.
-
+Although the mechanochemical cycle provides a reasonable model for dynein's step and illustrates the motion between the domains, the model still generalizes the dependence on the configuration of the entire dynein (not just one motor) before the step and fails to analyze different geometric factors that can alter the conformations.
 
 \section{Experimental Research on Dynein}
 
-Experimental research investigates the correlations within dynein's stepping pattern and how different parameters may affect the step. These consists of the angle dependency during the stretching of the linker, the affect of the initial conformation when taking a step, the ATP concentration for hydrolysis, etc. However, due to dynein's small scale, experiment often disagrees with one another and differs depending on the technique of measuring dynein. 
+Experimental research investigates the correlations within dynein's step and how different parameters may affect the pattern. These consist of the angle dependency during the stretching of the linker, the effect of the initial domain distance before the step, the ATP concentration for hydrolysis, etc. However, due to dynein's small scale, experiment often disagrees with one another and differs depending on the measuring technique. 
 
 %Although the mechanochemical cycle provides a reasonable model for dynein's step, the model fails to analyze the precise movements of each domain and how different configurations alter the conformational transitions. To what extent does the linker stretch when exhibiting the powerstroke and is it angle dependent? How does the separation between the two subunits of dynein affect the step length of the powerstroke? Consequently, these questions inspire experimentalists to measure dynein's step and study correlations between different parameters within a step.
 
 \subsection{Measuring}
 %\textit{How are experimentalists measuring dyneins stepping? Quantum dots on motor domains or quantum rod on tail, etc. }
 
-Experimentalists approach measuring dynein in various ways, which can involve electron microscopy or quantum measuring techniques. Some attach quantum dots to dynein's motor domains, while others replace the tail with an artificial quantum rod. Despite the different procedures, all measuring techniques suffer from their inability to measure small (\textit{change word}) movement. This causes steps with short step lengths to be undetectable, such as if dynein quickly rebinds at the same spot after unbinding. The various measuring procedures and experimental limitations leads to different results and unique findings when observing different variables. In this paper, we will focus on Yildiz et al. unique finding of observing a stepping correlation between the initial interhead separation and step length. 
+Experimentalists approach measuring dynein in various ways, which involve electron microscopy or quantum measuring techniques. Some attach quantum dots to dynein's motor domains, while others replace the tail with an artificial quantum rod. Despite the different procedures, all measuring techniques suffer from their inability to measure steps within $\sim 0.4$ nm of where the binding domain lifted off. This causes short step lengths, where the binding domain quickly rebinds after unbinding, to be undetectable. The various measuring procedures and experimental limitations leads to different results and unique findings when observing different variables. In this paper, we will focus on Yildiz et al. unique finding of observing a stepping correlation between the initial interhead separation and step length. 
 
 
 \subsection{Yildiz's Stepping Correlation}
 %\textit{Purpose of my research. Trying to make model and fit to Yildiz analysis of dynein having interstep correlation. Dependency between step length and initial inter head separation.}
 
-Dynein's large size and stochastic nature implies completely independent stepping from the initial conformational state before the step. However, in 2012, Yildiz et al. observed a correlation between the initial on-axis separation and the step length, indicating a dependence on the interhead separation \cite{Dewitt2012}. This discovery challenged established views on dynein's stepping processivity and pose the question of whether there exists interhead coordination between the motor domains when stepping. Figure (\ref{fig:YildizCorrelation}) below displays this correlation with a linear regression where an existing non-zero slope indicates a dependence between the step and the initial on-axis separation.
+Due to dynein's large size and stochastic nature, dynein's step was previously hypothesized to be independent from the initial conformational before the step. However, in 2012, Yildiz et al. observed a correlation between the initial on-axis separation and the step length, indicating a dependence on the interhead separation \cite{Dewitt2012}. This discovery challenged established views on dynein's stepping processivity and pose the question of whether there exists interhead coordination between the motor domains when stepping. Figure (\ref{fig:YildizCorrelation}) below displays this correlation with a linear regression where an existing non-zero slope indicates a dependence between the step and the initial on-axis separation.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{Figures/Yildiz_stepping.png}
-	\caption[Stepping Correlation]{\textbf{Stepping Correlation.} A scatter plot of step sizes vs. on-axis separation which hints at a functional dependency between the step  length and the initial distance between the binding domains. The 1D histogram for the trailing head on the left only generalizes the step lengths for negative on-axis separation, while the histogram for the leading head does the same for positive on-axis separation. \cite{Dewitt2012} }
+	\caption[Stepping Correlation]{\textbf{Stepping Correlation.} A scatter plot of step sizes vs. on-axis separation which hints at a functional dependency between the step  length and the initial distance between the binding domains. The 1D histogram for the trailing head on the left records the step lengths for the negative on-axis separation, while the histogram for the leading head does the same for positive on-axis separation. \cite{Dewitt2012} }
 	\label{fig:YildizCorrelation}
 \end{figure}
 
-This correlation implies a connection between the physical state of dynein and its stepping behavior, inferring that dynein's step is not only ATP dependent. Unfortunately, experiment is inherently limited and can massively benefit from accurate models that can simulate dynein's stepping under realistic circumstances.
+This correlation implies a connection between the physical state of dynein and its stepping behavior, inferring that dynein's step is not only ATP dependent. Because of the limited sample size from experiment producing a unique correlation, observations like Yildiz's can massively benefit from accurate computational models that can simulate dynein's stepping under realistic circumstances.
 
 
 \section{Motivation}
