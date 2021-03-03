@@ -14,11 +14,13 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 	\begin{alg}
 	\item Initialize an unsigned distance, $L$, between the binding domains.
 	
-	\item Randomly pick 4 angles ($\theta_0$, $\theta_1$, $\theta_2$, $\theta_3$) to generate a completely random configuration of dynein in space. (\textit{Include picture})
+	\item Randomly pick 4 angles ($\theta_0$, $\theta_1$, $\theta_2$, $\theta_3$) to generate a completely random configuration of dynein in space.
+	
 	
 	\item Calculate the distance between the binding domains and check if the distance is within a range of $L\pm l$, where $l$ is arbitrarily small.
 	
 	\item Rotate the configuration so that both binding domains are on the microtubule and recalculate angles with the naming convention in Figure (\ref{fig:OBvsBB}).
+
 	
 	\item Calculate the total energy of the configuration by summing the energy of each domain (using Equation (\ref{eqn:energy})),
 	\begin{equation}
@@ -28,7 +30,7 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 	
 	\item Calculate the relative unbinding probability from a Boltzmann distribution and add a term to the partition function:
 	\begin{equation}
-		P_{ub} \propto \rho_{ub}e^{-\beta E_{total, n}}\kappa,
+		P_{ub} \propto \rho_{ub}e^{-\beta E_{total, i}}\kappa,
 	\end{equation}
 	\begin{equation}
 		Z=\sum_{i}e^{\beta E_{total, i}}.
@@ -46,6 +48,16 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 \end{algorithm}
 
 A more in-depth explanation and rigorous flow chart for the one bound Brownian dynamics simulation can be found here \cite{Capek2017, }.
+
+\newpage
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{Figures/algorithm.png}
+	\caption[Dynein Model]{\textbf{Dynein Model.} }
+	\label{fig:alg}
+	\end{figure}
+	
+
 
 %\section{Time Evolution}
 %\textit{Simulate over a delta t during one bound and every iteration check for rebinding. How are the probabilities of binding and unbinding affected by the time.}
