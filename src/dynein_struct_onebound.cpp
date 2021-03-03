@@ -22,7 +22,6 @@ Dynein_onebound::Dynein_onebound(double bba_init, double bma_init,
   bma = bma_init;
   uma = uma_init;
   uba = uba_init;
-  ta = uma - bma;
 
   state = s;
   internal_testcase = internal_test;

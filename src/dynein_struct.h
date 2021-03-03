@@ -208,7 +208,6 @@ private:
   double bma;
   double uma;
   double uba;
-  double ta;
 
   double bbx, bby;
 
