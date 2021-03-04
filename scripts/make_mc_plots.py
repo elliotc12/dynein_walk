@@ -454,7 +454,7 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
             plt.legend()
             plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
             args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-            # plt.savefig(plotpath+u+'ob_time_probability_density_'+params_string+'.png')
+            plt.savefig(plotpath+u+'ob_time_probability_density_'+params_string+'.png')
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
