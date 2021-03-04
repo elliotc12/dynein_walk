@@ -1,5 +1,6 @@
 | pdflatex main.tex && bibtex main.aux && pdflatex main.tex && pdflatex main.tex
 < ../../../plots/burgess-model-figure.pdf
 < ../../../plots/grotjahn-model-figure.pdf
-< ../../../plots/mc_plots/u_final_disp_probability_distribution_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5.png
-< ../../../plots/mc_plots/u_step_length_1d_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5.png
+< ../../../plots/mc_plots/thesis_u_final_disp_probability_distribution_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5.png
+< ../../../plots/mc_plots/thesis_u_step_length_1d_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5.png
+< ../../../plots/mc_plots/thesis_prob_lagging_vs_init_L_-0.5.png
