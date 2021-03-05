@@ -30,32 +30,36 @@ The set of parameters that best fit Yildiz's data are shown in Table (\ref{tab:p
   \label{tab:params}
 \end{table}
 
-After many trials, this combination of parameters best demonstrated the interstep correlation observed from Yildiz's experiment, while still preserving dynein's geometric constants. \textit{FIXME: Plots are wrong, need to fix and ask which plots to finalize}
+After many trials, this combination of parameters best demonstrated the interstep correlation observed from Yildiz's experiment, while still preserving dynein's geometric constants. \textit{FIXME: Not finalized yet!! Still a WIP, need to fix and wait for simulations to finish}
 
 
-\section{Stepping Patterns}
-The plots that were used to compare with experiment and optimize our parameters are shown below
+\section{Stepping Plots}
+The final displacement and step lengths are plotted against experiment and shown below.
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{/mc_plots/thesis_u_final_disp_probability_distribution_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\includegraphics[width=0.6\textwidth]{/mc_plots/thesis_u_step_length_1d_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.7\textwidth]{/mc_plots/u_final_disp_probability_distribution_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.6\textwidth]{/mc_plots/u_step_length_1d_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
 	\caption[Final Displacement Probability Distribution]{\textbf{Stepping Probability Distribution Plots.} \textit{Top:} Two dimensional heatmap of binding domain displacement before and after a stepping cycle. Linear regression of the probability distribution indicates a dependence between the final displacement of the step and its initial displacement. \textit{Bottom:} One dimensional probability density of step length. Step length defined as final displacement minus the initial displacement. Model compared to two experimental figures of stepping patterns from \citep{Dewitt2012}.} 
 	\label{fig:DataStep}
 \end{figure}
-The first plot in Figure (\ref{fig:DataStep}) displayed the joint probability density of having a specific final displacement and initial displacement. The linear regression from experiment indicated the functionality between the two with an average final displacement of 9.1nm, indicated from the y-intercept. The second plot in Figure (\ref{fig:DataStep}) displayed the one-dimensional probability density of step lengths, defined as final displacement minus the initial displacement. The limitation of experiment was made very obvious here due to their inability to record short step lengths. This factor heavily influenced the parameter fitting because in order to best fit the linear correlation within steps, the model dynein had to take very fast and short steps. Since Yildiz observed a linear regression that averaged 0nm step lengths without being able to record 0nm, the model dynein was forced to take steps with very quick rebinding. The step lengths close to 0nm from Experiment Fig 3A in Figure (\ref{fig:DataStep}) were large step lengths in the off-axis. 
+\newpage
+The top plot in Figure (\ref{fig:DataStep}) displays the joint probability density of having a specific final displacement and initial displacement. The linear regression from Yildiz's experiment indicates the functionality between the two with an average final displacement of 9.1 nm, shown from the y-intercept. The bottom plot in Figure (\ref{fig:DataStep}) displays the one-dimensional probability density of step lengths, defined as final displacement minus the initial displacement. The limitation of experiment was made very obvious here due to their inability to record short step lengths. This factor heavily influenced the parameter fitting because in order to best fit the linear correlation, the model dynein had to take very fast and short steps. Since Yildiz observed a linear regression that averaged close to 0 nm step lengths without being able to record 0nm, the model dynein was forced to take steps with very quick rebinding. The step lengths close to 0 nm from Experiment Fig 3A were lateral steps in the off-axis. 
 
-We fit the pre-exponential unbinding factor, $C$, based on experimental probability of having a trailing (lagging) step, as shown below 
+We fit the pre-exponential unbinding factor, $C$, based on experimental probability of having a trailing (lagging) step, as shown below.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\columnwidth]{../../plots/mc_plots/thesis_prob_lagging_vs_init_L_-0.5}
+	\includegraphics[width=0.7\columnwidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
 	\caption[Probability of Lagging Step]{\textbf{Probability of Lagging Step}}
 	\label{fig:ProbTrail}
 \end{figure}
 
-\textit{Need to include time plots and maybe more figures. Talk about the short time step.}
+\textit{Need to include time plots and maybe more figures. Talk about the short time step. Sorry this is also still a WIP}
 
 \section{Agree with Experiment?}
 \textit{Whole point of parameter fitting was to agree with Yildiz and/or other experimental data. Did we do a good job? }
 
 \textit{Need to eventually bring up the issue of being able to fit both the 2d hist linear regression and step length plot: If we want to fit linear regression, we must have short steps, but if we have short steps, the step length plot will not match at steps $>$ 20nm. Hard to agree with experiment when our dynein is forced to take short steps. Mention time too.}
+
+\textit{\textbf{Note for Assignment 9.1:} I apologize that this section is still incomplete and a skeleton, but there were some hiccups in the code that delayed the simulations and may change the agreement based on how we solve the bug. I felt it was best to occupy my time trying to polish the code instead of writing a generalized version of this section.}
