@@ -142,6 +142,7 @@ int main(int argc, char** argv) {
   // fprintf(stderr, "bba %g, bma %g, uma %g, uba %g\n", dynein->get_bba()*57.3, dynein->get_bma()*57.3, dynein->get_uma()*57.3, dynein->get_uba()*57.3);
 
   double t = 0;
+  double affinity_transition_time = 0;
   long iter = 0;
   bool stillStepping = true;
   double cumulative_prob = 0;
@@ -159,6 +160,9 @@ int main(int argc, char** argv) {
 
     // We are sticky if we were already sticky or if we become sticky.
     am_sticky = am_sticky || rand->rand() < sticky_prob;
+    if (am_sticky == false) {
+      affinity_transition_time = t;
+    };
 
     double binding_prob = dynein->get_binding_rate()*dt;
     cumulative_prob += binding_prob;
@@ -223,10 +227,10 @@ int main(int argc, char** argv) {
         if (movie_data_file) fclose(movie_data_file);
         exit(0);
       }
-      printf("{\n  'L': %g,\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
+      printf("{\n  'L': %g,\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n  't_affinity': %g,\n}\n",
       dynein->get_ubx()-dynein->get_bbx(), t,
       dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
-      dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby());
+      dynein->get_umx(), dynein->get_umy(), dynein->get_ubx(), dynein->get_uby(), affinity_transition_time);
       //
       //   // printf("{\n  't': %g, \n 'bbx': %g,\n  'bby': %g,\n  'bmx': %g,\n  'bmy': %g,\n  'tx': %g,\n  'ty': %g, \n 'umx': %g,\n  'umy': %g,\n  'ubx': %g,\n  'uby': %g,\n}\n",
       //   //    t, dynein->get_bbx(), dynein->get_bby(), dynein->get_bmx(), dynein->get_bmy(), dynein->get_tx(), dynein->get_ty(),
