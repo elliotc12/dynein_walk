@@ -447,7 +447,7 @@ def make_ob_time_plot(args, plotpath, time_hists, **_):
             plt.bar(time_bin_center, time_hists[i], width=increment, align='center', label=i)
             plt.xlabel('Onebound time (s)')
             plt.ylabel('Probability')
-            plt.xscale('log')
+            # plt.xscale('log')
             # locs, labels = plt.xticks()
             # plt.xticks(labels = locs*1e6)
             plt.xlim(-increment,1e-6)

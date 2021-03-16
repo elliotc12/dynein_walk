@@ -52,6 +52,7 @@ leading_files = glob('{}/{}l_*.txt'.format(basepath, u))
 initial_disp = []
 final_disp_dict = {}
 ob_time_dict = {}
+affinity_time_dict = {}
 max_final_disp = []
 
 print('Making data for data file: \n ', basepath)
@@ -96,9 +97,11 @@ for leading in leading_files:
         max_final_disp.append(np.max(leading_data['L']))
         max_final_disp.append(np.max(trailing_data['L']))
 
-        if iL == 8.0 or iL == 1.0:
+        if iL == 8.0 or iL == 16.0:
             ob_time_dict[iL] = leading_data['t']
             ob_time_dict[-iL] = trailing_data['t']
+            affinity_time_dict[iL] = leading_data['t_affinity']
+            affinity_time_dict[-iL] = trailing_data['t_affinity']
     except:
         if not path.exists(leading.replace('l', 't', 1)):
             print('unable to load trailing data for ', leading)
@@ -159,18 +162,20 @@ for i_disp in initial_disp:
             normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
 
 # Make 1d histogram plotting data for ob times
-max_time = 1e-5 # 10 mu s
-increment = 1e-8 # 10ns
+max_time = 1e-5 # 10 micro s
+increment = 1e-8 # 10 ns
 time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
 time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 time_hists = {}
 time_hists['max_time'] = max_time
 time_hists['increment'] = increment
+avg_affinity_time = {}
 
 if len(ob_time_dict.keys()) == 0:
     print('Do not have data for initial L of 1nm or 8nm')
 else:
     for i_disp in ob_time_dict.keys():
+        avg_affinity_time[i_disp] = np.mean(affinity_time_dict[i_disp])
         time_hists[i_disp] = np.zeros_like(time_bin_center)
         total_time_counts = len(ob_time_dict[i_disp])
 
@@ -185,12 +190,14 @@ else:
             else:
                 time_hists[i_disp][t_index] += 1/total_time_counts
 
+
 # Saving 'plotting data' into ../data/mc_plotting_data
 np.savez_compressed(plottingdatapath,
                     initial_disp=initial_disp,
                     hist=hist,
                     normalized_hist=normalized_hist,
-                    time_hists=time_hists)
+                    time_hists=time_hists,
+                    avg_affinity_time=avg_affinity_time)
 
 # Saving 'Compressed data' into ../data/compressed_mc_data
 np.savez_compressed(datapath,

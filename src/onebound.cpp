@@ -160,9 +160,6 @@ int main(int argc, char** argv) {
 
     // We are sticky if we were already sticky or if we become sticky.
     am_sticky = am_sticky || rand->rand() < sticky_prob;
-    if (am_sticky == false) {
-      affinity_transition_time = t;
-    };
 
     double binding_prob = dynein->get_binding_rate()*dt;
     cumulative_prob += binding_prob;
@@ -183,6 +180,10 @@ int main(int argc, char** argv) {
 
     t += dt;  // iterate time
     iter ++;
+
+    if (am_sticky == false) {
+      affinity_transition_time = t;
+    };
 
     double old_bba = dynein->get_bba();
     double old_bma = dynein->get_bma();

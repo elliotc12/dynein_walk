@@ -53,6 +53,7 @@ def collect_onebound_data(bba, bma, uma, uba, state, k, L, step_data):
         step = run_onebound(bba, bma, uma, uba, state, k[0])
         step_data['L'].append(step['L'])
         step_data['t'].append(step['t'])
+        step_data['t_affinity'].append(step['t_affinity'])
 
         if args.movie == 1:
             if state == 1:
@@ -161,8 +162,8 @@ np.random.seed(0)
 while Z < N:
         if k[0] == 0:
             # Onebound Data
-            trailing_data = {'L': [], 't': []} # Trailing step data
-            leading_data = {'L': [], 't': []}  # Leading step data
+            trailing_data = {'L': [], 't': [], 't_affinity': []} # Trailing step data
+            leading_data = {'L': [], 't': [], 't_affinity': []}  # Leading step data
             pictures = {'bb_init': [], 'bm_init': [], 't_init': [], 'um_init': [], 'ub_init': [],
                         'bb_final': [], 'bm_final': [], 't_final': [], 'um_final': [], 'ub_final': [],}
 
