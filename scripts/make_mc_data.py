@@ -59,8 +59,8 @@ print('Making data for data file: \n ', basepath)
 
 for leading in leading_files:
     leading = leading[len(basepath):]
-    leading_data = {'L': [], 't': []}
-    trailing_data = {'L': [], 't': []}
+    leading_data = {'L': [], 't': [], 't_affinity': []}
+    trailing_data = {'L': [], 't': [], 't_affinity': []}
     trailing = leading.replace('l_', 't_')
     first_ = 2
     if args.underMT == False:
@@ -86,10 +86,12 @@ for leading in leading_files:
     if len(np.loadtxt(basepath+leading)) > 0:
         leading_data['L'] = np.loadtxt(basepath+leading)[0]
         leading_data['t'] = np.loadtxt(basepath+leading)[1]
+        # leading_data['t_affinity'] = np.loadtxt(basepath+leading)[2]
     try:
         if len(np.loadtxt(basepath+trailing)) > 0:
             trailing_data['L'] = np.loadtxt(basepath+trailing)[0]
             trailing_data['t'] = np.loadtxt(basepath+trailing)[1]
+            # trailing_data['t_affinity'] = np.loadtxt(basepath+trailing)[2]
         initial_disp.append(iL)
         initial_disp.append(-iL)
         final_disp_dict[iL] = leading_data['L']
@@ -100,6 +102,8 @@ for leading in leading_files:
         if iL == 8.0 or iL == 16.0:
             ob_time_dict[iL] = leading_data['t']
             ob_time_dict[-iL] = trailing_data['t']
+            leading_data['t_affinity'] = np.loadtxt(basepath+leading)[2]
+            trailing_data['t_affinity'] = np.loadtxt(basepath+leading)[2]
             affinity_time_dict[iL] = leading_data['t_affinity']
             affinity_time_dict[-iL] = trailing_data['t_affinity']
     except:
