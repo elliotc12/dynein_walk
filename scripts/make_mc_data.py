@@ -149,11 +149,11 @@ for i_disp in initial_disp:
         if f_disp_index is None or f_disp < final_bin_edges[0] or f_disp > final_bin_edges[-1]:
             # Data that is outside of range goes into the bin edges.
             if f_disp < final_bin_edges[0]:
-                normalized_hist[0, i_disp_index] += 1/total_counts/final_disp_bin_width[0]
                 hist[0, i_disp_index] += 1/total_counts
+                normalized_hist[0, i_disp_index] += 1/total_counts/final_disp_bin_width[0]
             if f_disp > final_bin_edges[-1]:
-                normalized_hist[-1, i_disp_index] += 1/total_counts/final_disp_bin_width[-1]
                 hist[-1, i_disp_index] += 1/total_counts
+                normalized_hist[-1, i_disp_index] += 1/total_counts/final_disp_bin_width[-1]
             continue
             # print("crazasges", f_disp, 'vs', final_bin_edges[0], 'and', final_bin_edges[-1])
             # Possibly think about making a infinite bin for final_L that goes outside plot

@@ -50,13 +50,22 @@ bbdatapath = mc_bb_data_dir + 'bb_exp-unbinding-constant_{}'.format(args.C)
 
 dL = 1.0 # 1 nm resolution
 L_arr = np.arange(dL, args.L + dL/2, dL)               # All initial lengths
-P_factor = 1.0e100
+P_factor = 1.0e300
 
 rate_leading = np.zeros_like(L_arr)
 rate_trailing = np.zeros_like(rate_leading)
 
 Z = np.zeros_like(L_arr) # Partition Function
 Ndata = np.zeros_like(Z)
+
+# For bb time probability distribution
+bb_times = dict.fromkeys(L_arr, np.array([]))
+min_time = 1e-3 # 1 ms
+max_time = 50e-3 # 50 ms
+increment = 0.5e-3 # 0.5 ms
+time_bin_edges = np.arange(min_time, max_time+increment, increment, dtype=float)
+time_bin_center = np.arange(min_time+increment/2, max_time, increment, dtype=float)
+time_hist = {}
 
 b = 1/(params.for_simulation['boltzmann-constant']*params.for_simulation['T'])       # thermodynamic beta from default_parameters.h
 
@@ -76,29 +85,51 @@ while Z.min() < args.N:
             i = int(L/dL+ 0.5)
             if i >= len(L_arr):
                 continue
-            P = np.exp(-b*dynein.E_total)
+            P = np.exp(-b*dynein.E_total+np.log(P_factor))
             Z[i] += P
             Ndata[i] += 1
 
             this_rate_trailing = np.exp(args.C*(dynein.nba - eqb_angle))
             this_rate_leading = np.exp(args.C*(dynein.fba - eqb_angle))
-            if P*this_rate_trailing*P_factor > 1 or P*this_rate_leading*P_factor > 1:
-                P_factor = P_factor*0.5
+            if P*this_rate_trailing > 1 or P*this_rate_leading > 1:
+                P_factor = P_factor/max(P*this_rate_trailing, P*this_rate_leading)
                 Z = np.zeros_like(L_arr)
                 Ndata = np.zeros_like(Z)
                 rate_leading = np.zeros_like(Z)
                 rate_trailing = np.zeros_like(rate_leading)
                 continue
 
-            rate_trailing[i] += P*this_rate_trailing*P_factor
-            rate_leading[i] += P*this_rate_leading*P_factor
+            rate_trailing[i] += P*this_rate_trailing
+            rate_leading[i] += P*this_rate_leading
             # print('at L={},  i={}, we are {} done'.format(L,i, Z[i]/args.N))
+
+            # print(i+1)
+            bb_times[i+1] = np.append(bb_times[i+1], 1/(this_rate_trailing*k_ub+this_rate_trailing*k_ub))
+
             if np.sum(Ndata) % 5000 == 0:
                 current_rate_trailing = rate_trailing/Z
                 current_rate_leading = rate_leading/Z
-                np.savez_compressed(bbdatapath, L=L_arr, rate_leading=current_rate_leading, rate_trailing=current_rate_trailing)
+
+                if np.sum(Ndata) % 50000 == 0:
+                    for i_disp in bb_times.keys():
+                        time_hist[i_disp] = np.zeros_like(time_bin_center)
+                        total_time_counts = len(bb_times[i_disp])
+                        # print(np.zeros_like(time_bin_center))
+
+                        for time in bb_times[i_disp]:
+                            t_index = None
+                            for i in range(1, len(time_bin_edges)):
+                                if time < time_bin_edges[i]:
+                                    t_index = i-1
+                                    break
+                            if t_index is None:
+                                continue
+                            else:
+                                time_hist[i_disp][t_index] += 1/total_time_counts
+                    # print(time_hist)
+                np.savez_compressed(bbdatapath, L=L_arr, rate_leading=current_rate_leading, rate_trailing=current_rate_trailing, time_hist=time_hist, time_bin_center=time_bin_center)
 
 
 rate_leading /= Z # Normalize our average, but we're still missing the unbinding rate factor
 rate_trailing /= Z
-np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing)
+np.savez_compressed(bbdatapath, L=L_arr, rate_leading=rate_leading, rate_trailing=rate_trailing, time_hist=time_hist, time_bin_center=time_bin_center)
