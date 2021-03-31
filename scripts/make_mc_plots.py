@@ -136,9 +136,10 @@ def get_bothbound_data(args, bothbound_data_file):
     bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
     bb_avg_t = 1/(bb_rate_leading+bb_rate_trailing)
 
-    bb_time_hist = mc_bb_data['time_hist'].item()
-    bb_time_center = mc_bb_data['time_bin_center']
-    return bb_L, bb_P_leading, bb_P_trailing, bb_avg_t, bb_time_hist, bb_time_center
+    # bb_time_hist = mc_bb_data['time_hist'].item()
+    # bb_time_center = mc_bb_data['time_bin_center']
+    # return bb_L, bb_P_leading, bb_P_trailing, bb_rate_trailing+bb_rate_leading, bb_avg_t, bb_time_hist, bb_time_center
+    return bb_L, bb_P_leading, bb_P_trailing, bb_rate_trailing+bb_rate_leading
 
 def make_bins_and_edges(initial_disp):
     # make bin center the data point (for pcolor)
@@ -497,32 +498,27 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     # plt.title('C = {}'.format(args.C))
     plt.savefig(plotpath+'bb_time_{}.png'.format(args.C))
 
-def make_trajectory_plot(args, plotpath, bb_time_hist, bb_time_center, bb_P_trailing, hist, initial_disp, **_):
+def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, initial_disp, **_):
     L = 15.0
     bx_position = np.array([[0.0, L]])
     bb_step_time = np.array([0.0])
-    num_steps = 10
+    num_steps = 400
     j = 0
 
     while j < num_steps:
         L = np.abs(bx_position[j, 1] - bx_position[j, 0])
-        bb_time_rand = np.random.random()
-        bb_time_prob = 0
-        for i in range(len(bb_time_hist[L])):
-            bb_time_prob += bb_time_hist[L][i]
-            if bb_time_rand < bb_time_prob:
-                bb_time = bb_time_center[i]
-                break
+        bb_time = np.random.exponential(1/bb_rate_total[int(L)-1])
 
         trailing_leading_rand = np.random.random()
         if trailing_leading_rand < bb_P_trailing[int(L)-1]:
             init_disp = -L
-            trailing_or_leading = 0
+            am_trailing = True
         else:
             init_disp = L
-            trailing_or_leading = 1
+            am_trailing = False
 
         ind = find_nearest(initial_disp, init_disp)
+
         disp_rand = np.random.random()
         disp_prob = 0
         for i in range(len(hist[:,ind])):
@@ -531,23 +527,26 @@ def make_trajectory_plot(args, plotpath, bb_time_hist, bb_time_center, bb_P_trai
                 final_disp = initial_disp[i]
                 break
 
-        if trailing_or_leading == 0:
-            new_bx_position = np.array([final_disp-init_disp, 0]) + bx_position[j]
+        if am_trailing:
+            if bx_position[j, 0] < bx_position[j, 1]:
+                new_bx_position = np.array([final_disp-init_disp, 0]) + bx_position[j]
+            else:
+                new_bx_position = np.array([0, final_disp-init_disp]) + bx_position[j]
         else:
-            new_bx_position = np.array([0, final_disp-init_disp]) + bx_position[j]
+            if bx_position[j, 0] > bx_position[j, 1]:
+                new_bx_position = np.array([final_disp-init_disp, 0]) + bx_position[j]
+            else:
+                new_bx_position = np.array([0, final_disp-init_disp]) + bx_position[j]
 
         new_L = np.abs(new_bx_position[1] - new_bx_position[0])
 
-        if new_L < 1 or new_L > max(bb_time_hist.keys()) or new_L > max(initial_disp) or np.abs(new_bx_position[0]) > max(initial_disp) or np.abs(new_bx_position[1]) > max(initial_disp):
-            continue
-        else:
-            j += 1
+        j += 1
 
         bb_step_time = np.append(bb_step_time, bb_time)
         bx_position = np.concatenate((bx_position, np.array([new_bx_position])))
 
 
-    print(bx_position)
+    # print(bx_position)
     cumulative_time = np.append(np.cumsum(bb_step_time), np.cumsum(bb_step_time)[-1])
     vline_x = cumulative_time[1:-1]
 
@@ -556,11 +555,13 @@ def make_trajectory_plot(args, plotpath, bb_time_hist, bb_time_center, bb_P_trai
     plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
-    plt.yticks(np.append(initial_disp, 0))
-    plt.ylim(np.amin(bx_position)-1, np.amax(bx_position)+1)
+    # plt.yticks(np.append(initial_disp, 0))
+    # plt.ylim(np.amin(bx_position)-1, np.amax(bx_position)+1)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.grid()
+    plt.savefig(plotpath+u+'trajectory_plot_'+str(num_steps)+'_'+params_string+'.png')
+
 
 def bug_checking_plots(args, plotpath, initial_disp_edge, final_disp_edge, normalized_hist, **_):
     plt.figure('From Data')
@@ -608,7 +609,8 @@ def main():
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
     # initial_disp, hist, normalized_hist, time_hists, avg_affinity_time = get_onebound_data(args, plotting_data_file)
     initial_disp, hist, normalized_hist, time_hists = get_onebound_data(args, plotting_data_file)
-    bb_L, bb_P_leading, bb_P_trailing, bb_avg_t, bb_time_hist, bb_time_center = get_bothbound_data(args, bothbound_data_file)
+    # bb_L, bb_P_leading, bb_P_trailing, bb_rate_total, bb_avg_t, bb_time_hist, bb_time_center = get_bothbound_data(args, bothbound_data_file)
+    bb_L, bb_P_leading, bb_P_trailing, bb_rate_total = get_bothbound_data(args, bothbound_data_file)
     initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L = make_bins_and_edges(initial_disp)
     probability_distribution = make_probability_distribution(**locals())
     # Sum of probability distribution
