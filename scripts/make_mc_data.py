@@ -167,7 +167,7 @@ for i_disp in initial_disp:
 
 # Make 1d histogram plotting data for ob times
 max_time = 1e-6 # 10 micro s
-increment = 0.5e-9 # 10 ns
+increment = 1e-9 # 10 ns
 time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
 time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 time_hists = {}
