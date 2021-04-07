@@ -166,8 +166,8 @@ for i_disp in initial_disp:
             normalized_hist[f_disp_index, i_disp_index] += 1/total_counts/final_disp_bin_width[f_disp_index]     # Dimensions: 1/distance
 
 # Make 1d histogram plotting data for ob times
-max_time = 1e-5 # 10 micro s
-increment = 1e-8 # 10 ns
+max_time = 1e-6 # 10 micro s
+increment = 0.5e-9 # 10 ns
 time_bin_edges = np.arange(0.0, max_time+increment, increment, dtype=float)
 time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
 time_hists = {}
