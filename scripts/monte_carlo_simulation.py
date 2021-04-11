@@ -229,9 +229,9 @@ while Z < N:
                     np.savetxt(t_data_file, (trailing_data['L'], trailing_data['t'], trailing_data['t_affinity']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savetxt(l_data_file, (leading_data['L'], leading_data['t'], leading_data['t_affinity']), fmt='%.6e', delimiter=' ', newline='\n\n')
                     np.savez_compressed(pictures_data_file, pictures=pictures)
-                    if os.path.getsize(t_data_file) > 200000:
+                    if os.path.getsize(t_data_file) > 500000:
                         break
-                    if os.path.getsize(l_data_file) > 200000:
+                    if os.path.getsize(l_data_file) > 500000:
                         break
 
 
