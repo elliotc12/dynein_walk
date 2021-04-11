@@ -222,8 +222,8 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
 
     plt.figure('Probability Distribution to Match Yildiz')
     plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
-    plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='r')
-    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='b')
+    plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='C1')
+    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='C0')
     plt.xlabel('Initial displacement (nm)')
     plt.ylabel('Final displacement (nm)')
     plt.xlim(-48,48)
@@ -375,12 +375,12 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.figure('Probability Density of Step Length')
     s_den_norm = np.sum(s_den[s_arr > norm_length_min])*(s_arr[1]-s_arr[0])
     plt.fill_between(s_arr,0*s_den, s_den/s_den_norm, label='Model', color='C1')
-    plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, alpha = 0.8)
-    plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
-                yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
-    plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C4', alpha = 0.8)
+    # plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, alpha = 0.8)
+    # plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
+    #             yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
+    plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
     plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
-                yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C3', alpha=0.5)
+                yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
@@ -412,31 +412,31 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(initial_disp)]
 
     # 2D hist step_length
-    plt.figure('Step length probability distribution')
-    plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution)
-    # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
-    plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
-    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    plt.xlabel('Initial displacement (nm)')
-    plt.ylabel('step length (nm)')
-    plt.ylim(-50,50)
-    plt.colorbar()
-    plt.legend()
+    # plt.figure('Step length probability distribution')
+    # plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution)
+    # # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
+    # plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
+    # plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
+    # plt.xlabel('Initial displacement (nm)')
+    # plt.ylabel('step length (nm)')
+    # plt.ylim(-50,50)
+    # plt.colorbar()
+    # plt.legend()
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
             # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    plt.savefig(plotpath+u+'step_length_probability_distribution_'+params_string+'.png')
-
-
-    step_length_edge = final_disp_edge - initial_disp_edge
-    plt.figure('Parallelogram step length prob distribution')
-    plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
-    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    plt.xlabel('Initial displacement (nm)')
-    plt.ylabel('Step length (nm)')
-    plt.ylim(-50,50)
-    plt.xlim(-50,50)
-    plt.colorbar()
-    plt.legend()
+    # plt.savefig(plotpath+u+'step_length_probability_distribution_'+params_string+'.png')
+    #
+    #
+    # step_length_edge = final_disp_edge - initial_disp_edge
+    # plt.figure('Parallelogram step length prob distribution')
+    # plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
+    # plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
+    # plt.xlabel('Initial displacement (nm)')
+    # plt.ylabel('Step length (nm)')
+    # plt.ylim(-50,50)
+    # plt.xlim(-50,50)
+    # plt.colorbar()
+    # plt.legend()
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
             # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
 
@@ -460,8 +460,8 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                 plt.figure('Onebound Time plot for iL = {}'.format(i))
                 # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
                 # print(time_bin_center)
-                plt.bar(time_bin_center, time_hists[i], width=increment, align='center', label='Leading', alpha = 0.8, color='blue')
-                plt.bar(time_bin_center, time_hists[-i], width=increment, align='center', label='Trailing', alpha = 0.6, color='C02')
+                plt.bar(time_bin_center, time_hists[i], width=increment, align='center', label='Leading', alpha = 0.8, color='xkcd:blue')
+                plt.bar(time_bin_center, time_hists[-i], width=increment, align='center', label='Trailing', alpha = 0.6, color='xkcd:green')
                 plt.xlabel(r'One-bound time ($\mu s$)')
                 plt.ylabel('Probability')
                 plt.axvline(avg_affinity_time[i], color='Red', ls='--', label='Average affinity time')
@@ -513,10 +513,12 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
 
 def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, initial_disp, **_):
     L = 15.0
-    num_steps = 550
+    num_steps = 400
     bx_position = np.array([[0.0, L]])
     bb_step_time = np.array([0.0])
     j = 0
+    seed_for_kub_2 = 4000
+    np.random.seed(seed_for_kub_2)
 
     while j < num_steps:
         L = np.abs(bx_position[j, 1] - bx_position[j, 0])
@@ -563,16 +565,17 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     cumulative_time = np.append(np.cumsum(bb_step_time), np.cumsum(bb_step_time)[-1])
     vline_x = cumulative_time[1:-1]
 
-    yildiz_data = np.loadtxt("../data/yildiz_tracking_data.txt", dtype = np.float64)
+    yildiz_data = np.loadtxt("../data/yildiz_fig2A_tracking_data.txt", dtype = np.float64)
     plt.figure('Trajectory Plot')
-    plt.plot(yildiz_data[:,0]/1e3, yildiz_data[:,1], 'o-', label="Experiment", markersize=0, linewidth=0.5, color="C0", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[1], '--', label="Experiment", markersize=0, color="blue", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[2], '--', label="Experiment", markersize=0, color="red", alpha=0.8)
     plt.hlines(bx_position[:,1], cumulative_time[:-1], cumulative_time[1:], color='blue')
     plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
     # plt.yticks(np.append(initial_disp, 0))
-    plt.ylim(np.amin(bx_position)-50, 1000)
-    plt.xlim(-0.2, right=5)
+    plt.ylim(np.amin(bx_position)-50, 800)
+    plt.xlim(-1, right=24)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.gca().spines['right'].set_visible(False)
@@ -622,6 +625,8 @@ def main():
     global params_string
     data_params_string =  "{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}".format(args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
     params_string = str(args.k_ub) + '_' + data_params_string
+
+    plt.rcParams.update({'font.size': 14})
 
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
