@@ -129,8 +129,10 @@ def get_bothbound_data(args, bothbound_data_file):
     # Bothbound Data
     mc_bb_data = np.load(bothbound_data_file, allow_pickle=True)
     bb_L = mc_bb_data['L']
-    bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
-    bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
+    bb_rate_leading = mc_bb_data['rate_leading']*args.k_ub
+    # bb_rate_leading = mc_bb_data['rate_leading']*params.for_simulation['k_ub']
+    bb_rate_trailing = mc_bb_data['rate_trailing']*args.k_ub
+    # bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
     bb_P_leading = bb_rate_leading/(bb_rate_leading+bb_rate_trailing)
     bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
     bb_avg_t = 1/(bb_rate_leading+bb_rate_trailing)
@@ -224,6 +226,8 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='b')
     plt.xlabel('Initial displacement (nm)')
     plt.ylabel('Final displacement (nm)')
+    plt.xlim(-48,48)
+    plt.ylim(-48,48)
     plt.colorbar().set_label('Probability')
     plt.legend()
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
@@ -442,7 +446,8 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
     max_time = time_hists['max_time']   # 10 mu s
     increment = time_hists['increment'] # 10ns
     time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
-    x_upper_lim = 2e-6
+    x_upper_lim = 0.5e-6
+    x_increment = 0.1e-6
 
     iL = [num for num in time_hists.keys() if isinstance(num, (int, float))]
 
@@ -461,10 +466,10 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                 plt.ylabel('Probability')
                 plt.axvline(avg_affinity_time[i], color='Red', ls='--', label='Average affinity time')
                 # plt.axvline(avg_affinity_time[-i], color='Red', ls='--')
-                xticks = np.arange(0.0, x_upper_lim+0.5e-6, 0.5e-6)
-                labels = np.arange(0.0, (x_upper_lim+0.5e-6)*1e6, 0.5)
+                xticks = np.arange(0.0, x_upper_lim+x_increment, x_increment)
+                labels = np.arange(0.0, (x_upper_lim+x_increment)*1e6, x_increment*1e6)
                 plt.xlim(-increment,x_upper_lim)
-                plt.xticks(xticks, labels)
+                plt.xticks(xticks, np.around(labels,decimals=1))
                 plt.legend()
                 plt.gca().spines['right'].set_visible(False)
                 plt.gca().spines['top'].set_visible(False)
@@ -566,8 +571,8 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
     # plt.yticks(np.append(initial_disp, 0))
-    # plt.ylim(np.amin(bx_position)-1, np.amax(bx_position)+1)
-    plt.xlim(right=5)
+    plt.ylim(np.amin(bx_position)-50, 1000)
+    plt.xlim(-0.2, right=5)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.gca().spines['right'].set_visible(False)
@@ -615,9 +620,10 @@ def main():
     if args.underMT == False:
         u = 'u_'
     global params_string
-    params_string =  "{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}".format(args.k_ub, args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+    data_params_string =  "{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}".format(args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+    params_string = str(args.k_ub) + '_' + data_params_string
 
-    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + params_string + ".npz"
+    plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
     assert(path.exists(bothbound_data_file)), "Bothbound data missing. Need to run monte_carlo_simulation_bb.py with params exp-ub-const = {}".format(params.for_simulation['exp-unbinding-constant'])
     initial_disp, hist, normalized_hist, time_hists, avg_affinity_time = get_onebound_data(args, plotting_data_file)

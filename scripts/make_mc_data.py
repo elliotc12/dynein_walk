@@ -20,7 +20,6 @@ params = importlib.import_module("params")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e20)
-parser.add_argument("-u", "--kub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-b", "--kb", type=float, help="Binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
@@ -34,14 +33,13 @@ parser.add_argument("-C", "--C", type=float, help="exponential unbinding constan
 parser.add_argument("--underMT", action="store_false", help="Plot sims where binding domain can go under MT", default=True)
 args = parser.parse_args()
 
-k_ub = float(args.kub)      # Unbinding Rate Constant
 k_b = float(args.kb)        # Binding Rate Constant
 k_stk = float(args.ks)      # Sticky Rate Constant
 
 u = ''
 if args.underMT == False:
     u = 'u_'
-params_string =  "{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}".format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+params_string =  "{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}".format(k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 
 basepath = '../data/mc_data_' + params_string

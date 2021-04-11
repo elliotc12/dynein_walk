@@ -86,7 +86,6 @@ params = importlib.import_module("params")
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=float, help="displacement in nm", default=32)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e20)
-parser.add_argument("-u", "--kub", type=float, help="Manually set the unbinding const", default=params.for_simulation['k_ub'])
 parser.add_argument("-b", "--kb", type=float, help="Manually set the binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--ks", type=float, help="Manually set the sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
@@ -104,7 +103,6 @@ parser.add_argument("-m", "--movie", type=float, help="Save movie scripts", defa
 
 args = parser.parse_args()
 
-k_ub = args.kub
 k_b = args.kb        # Binding Rate Constant
 k_stk = args.ks      # Sticky Rate Constant
 params.for_simulation['cb'] = args.cb
@@ -136,8 +134,8 @@ u = ''
 if args.underMT == False:
     u = 'u_'
 
-params_string = '{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}'.format(int(L), N, k_ub, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
-dir_params_string = '{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(k_ub, k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+params_string = '{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}_{10}_{11}'.format(int(L), N, k_b, k_stk, dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+dir_params_string = '{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}/'.format(k_b, k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 # Create MC Data Directory if don't exist
 mc_data_dir = '../data/mc_data_' + dir_params_string

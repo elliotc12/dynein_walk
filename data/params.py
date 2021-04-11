@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 for_simulation= {"k_b": 5.5e9, # 3.4e9, previously 3e6
-                 "k_ub": 30.0,
+                 "k_ub": 10.0,
                  "k_stk": 1e8,  # NEW: Sticky Rate
                  "cb": 0.0, # OLD: 0.08,
                  "cm": 1.0, # OLD: 1.05,
