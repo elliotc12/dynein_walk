@@ -1,5 +1,5 @@
 \section{Optimized Parameters}\label{sec:Params}
-The set of parameters that best fit Yildiz's data are shown in Table (\ref{tab:params}) below.
+The set of parameters that best fit Yildiz's observed stepping correlation is shown below in Table (\ref{tab:params}).
 
 \begin{table}[H]
   \centering
@@ -10,7 +10,7 @@ The set of parameters that best fit Yildiz's data are shown in Table (\ref{tab:p
     $c_b$ & $\cb \Delta G_{ATP}$ &  & \\
     $c_m$ & $\cm \Delta G_{ATP}$ &  & \\
     $c_t$ & $\ct \Delta G_{ATP}$ &  & \\
-    $k_p$ & $\kstk s^{-1}$&  & \\
+    $k_a$ & $\kstk s^{-1}$&  & \\
     $k_b$ & $\kb s^{-1}$&  & \\
     $k_{ub}$ & $\kub s^{-1}$ & & \\
     $C$ & $\cexp$ & & \\
@@ -25,50 +25,87 @@ The set of parameters that best fit Yildiz's data are shown in Table (\ref{tab:p
     $R_b$ & $\radiusb$ & $3.5nm$ & \cite{Burgess2003}\\
     \hline
   \end{tabular}
-  \caption{Optimized model parameters for following data sets. }
-%  \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
+  \caption{Optimized model parameters for Figures (\ref{fig:DataFitYildiz}-\ref{fig:Trajectory}).}
   \label{tab:params}
 \end{table}
 
-After many trials, this combination of parameters best demonstrated the interstep correlation observed from Yildiz's experiment, while still preserving dynein's geometric constants. \textit{FIXME: Not finalized yet!! Still a WIP, need to fix and wait for simulations to finish}
+After many trials, this combination of parameters best demonstrated the interstep correlation observed from Yildiz's experiment, while still preserving forward directionality with positive step lengths. 
 
-
-\section{Stepping Plots}
 The final displacement and step lengths are plotted against experiment and shown below.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{/mc_plots/u_final_disp_probability_distribution_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\includegraphics[width=0.65\textwidth]{/mc_plots/u_step_length_1d_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.8\textwidth]{/mc_plots/u_final_disp_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.8\textwidth]{/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
 	\caption[Final Displacement Probability Distribution]{\textbf{Stepping Probability Distribution Plots.} \textit{Top:} Two dimensional heatmap of binding domain displacement before and after a stepping cycle. Linear regression of the probability distribution indicates a dependence between the final displacement of the step and its initial displacement. \textit{Bottom:} One dimensional probability density of step length. Step length defined as final displacement minus the initial displacement. Model compared to two experimental figures of stepping patterns from \citep{Dewitt2012}.} 
-	\label{fig:DataStep}
+	\label{fig:DataFitYildiz}
 \end{figure}
 \newpage
 The top plot in Figure (\ref{fig:DataStep}) displays the joint probability density of having a specific final displacement and initial displacement. The linear regression from Yildiz's experiment indicates the functionality between the two with an average final displacement of 9.1 nm, shown from the y-intercept. The bottom plot in Figure (\ref{fig:DataStep}) displays the one-dimensional probability density of step lengths, defined as final displacement minus the initial displacement. The limitation of experiment was made very obvious here due to their inability to record short step lengths. This factor heavily influenced the parameter fitting because in order to best fit the linear correlation, the model dynein had to take very fast and short steps. Since Yildiz observed a linear regression that averaged close to 0 nm step lengths without being able to record 0nm, the model dynein was forced to take steps with very quick rebinding. The step lengths close to 0 nm from Experiment Fig 3A were lateral steps in the off-axis. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[One-bound times]{\textbf{One-bound times.} Distribution of time spent in the one-bound state from either a trailing or leading step for an initial distance $L=16$. Average affinity time labeled at $\langle t_a \rangle \approx 0.01 \mu s$, and probability outside the time range is $P(t>0.5\mu s) \approx 0.0066$.}
+	\label{fig:OBtime}
+\end{figure}
 
 We fit the pre-exponential unbinding factor, $C$, based on experimental probability of having a trailing (lagging) step, as shown below.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
-	\caption[Probability of Lagging Step]{\textbf{Probability of Lagging Step}}
+	\includegraphics[width=0.7\columnwidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
+	\caption[Probability of Lagging Step]{\textbf{Probability of Lagging Step.} Likelihood of a trailing step vs. the initial binding domain distance, i.e. $P_{trail.}(L)$ calculated with Equation (\ref{eqn:ProbTrail}). Experimental data from Yildiz \textit{et al.} \cite{Dewitt2012}.}
 	\label{fig:ProbTrail}
+\end{figure}
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/bb_time_-0.5}
+%	\caption[Probability of Lagging Step]{\textbf{Probability of Lagging Step}}
+%	\label{fig:ProbTrail}
+%\end{figure}
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Stepping Trace]{\textbf{Stepping Trace.} Trajectory of binding domains over 24 seconds of walking. Red and blue lines distinguishing binding domains, and experimental data from Yildiz \textit{et al.} \cite{Dewitt2012}}
+	\label{fig:Trajectory}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{/mc_plots/u_final_disp_probability_distribution_2.0_5.50e+10_9.00e+99_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.65\textwidth]{/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_9.00e+99_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Final Displacement Probability Distribution]{\textbf{Stepping Probability Distribution Plots.} \textit{Top:} Two dimensional heatmap of binding domain displacement before and after a stepping cycle. Linear regression of the probability distribution indicates a dependence between the final displacement of the step and its initial displacement. \textit{Bottom:} One dimensional probability density of step length. Step length defined as final displacement minus the initial displacement. Model compared to two experimental figures of stepping patterns from \citep{Dewitt2012}.} 
+	\label{fig:DataFitYildiz}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/u_ob_time_probability_density_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\caption[One-bound times]{\textbf{One-bound times}}
-	\label{fig:ProbTrail}
+	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+10_9.00e+99_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[One-bound times]{\textbf{One-bound times.} Distribution of time spent in the one-bound state from either a trailing or leading step for an initial distance $L=16$. Average affinity time labeled at $\langle t_a \rangle \approx 0.01 \mu s$, and probability outside the time range is $P(t>0.5\mu s) \approx 0.0066$.}
+	\label{fig:OBtime}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/u_trajectory_plot_30.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\caption[Stepping Trace]{\textbf{Stepping Trace}}
-	\label{fig:ProbTrail}
+	\includegraphics[width=0.7\textwidth]{/mc_plots/u_final_disp_probability_distribution_2.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\includegraphics[width=0.65\textwidth]{/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Final Displacement Probability Distribution]{\textbf{Stepping Probability Distribution Plots.} \textit{Top:} Two dimensional heatmap of binding domain displacement before and after a stepping cycle. Linear regression of the probability distribution indicates a dependence between the final displacement of the step and its initial displacement. \textit{Bottom:} One dimensional probability density of step length. Step length defined as final displacement minus the initial displacement. Model compared to two experimental figures of stepping patterns from \citep{Dewitt2012}.} 
+	\label{fig:DataFitYildiz}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+09_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[One-bound times]{\textbf{One-bound times.} Distribution of time spent in the one-bound state from either a trailing or leading step for an initial distance $L=16$. Average affinity time labeled at $\langle t_a \rangle \approx 0.01 \mu s$, and probability outside the time range is $P(t>0.5\mu s) \approx 0.0066$.}
+	\label{fig:OBtime}
+\end{figure}
 
 
 

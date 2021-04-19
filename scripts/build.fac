@@ -1,2 +1,8 @@
-| python3 make_mc_plots.py -p -e --underMT
+| python3 make_mc_plots.py -p --underMT -b 5.5e9 -s 1e8
+c .pyc
+| python3 make_mc_plots.py -p -e --underMT -b 5.5e10 -s 1e8
+c .pyc
+| python3 make_mc_plots.py -p --underMT -b 5.5e10 -s 1e9
+c .pyc
+| python3 make_mc_plots.py -p --underMT -b 5.5e10 -s 9e99
 c .pyc

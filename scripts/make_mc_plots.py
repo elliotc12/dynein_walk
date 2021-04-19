@@ -375,12 +375,12 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.figure('Probability Density of Step Length')
     s_den_norm = np.sum(s_den[s_arr > norm_length_min])*(s_arr[1]-s_arr[0])
     plt.fill_between(s_arr,0*s_den, s_den/s_den_norm, label='Model', color='C1')
-    # plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, alpha = 0.8)
-    # plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
-    #             yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
-    plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
-    plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
-                yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
+    plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, color='C0', alpha = 0.8)
+    plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
+                yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
+    # plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
+    # plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
+    #             yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
@@ -448,6 +448,12 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
     time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
     x_upper_lim = 0.5e-6
     x_increment = 0.1e-6
+    ind = 1
+    for j in time_bin_center:
+        if j < x_upper_lim:
+            ind += 1
+        else:
+            break
 
     iL = [num for num in time_hists.keys() if isinstance(num, (int, float))]
 
@@ -457,6 +463,11 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
             print("Do not have time data for initial distance ", i)
         else:
             if i == 16.0:
+
+                print('Remaining probability outside of x range for ', i,', ' , np.sum(time_hists[i][ind:]))
+                print('Remaining probability outside of x range for -', i,', ', np.sum(time_hists[-i][ind:]))
+                print('Remaining total prob outside of x range, ', (np.sum(time_hists[i][ind:])+np.sum(time_hists[-i][ind:]))/2)
+
                 plt.figure('Onebound Time plot for iL = {}'.format(i))
                 # plt.fill_between(time_bin_center,0*time_hists[8], time_hists[8], label='Model')
                 # print(time_bin_center)
@@ -504,7 +515,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.xlabel('initial L (nm)')
     plt.ylabel('Average time (s)')
     plt.xlim(0)
-    plt.ylim(0,0.04)
+    plt.ylim(0,0.3)
     plt.legend()
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
@@ -567,22 +578,24 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
 
     yildiz_data = np.loadtxt("../data/yildiz_fig2A_tracking_data.txt", dtype = np.float64)
     plt.figure('Trajectory Plot')
-    plt.plot(yildiz_data[0], yildiz_data[1], '--', label="Experiment", markersize=0, color="blue", alpha=0.8)
-    plt.plot(yildiz_data[0], yildiz_data[2], '--', label="Experiment", markersize=0, color="red", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[1]+200, '--', markersize=0, color="blue", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[2]+200, '--', label="Experiment", markersize=0, color="red", alpha=0.8)
     plt.hlines(bx_position[:,1], cumulative_time[:-1], cumulative_time[1:], color='blue')
-    plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
+    plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], label="model", color='red')
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
     # plt.yticks(np.append(initial_disp, 0))
-    plt.ylim(np.amin(bx_position)-50, 800)
+    plt.ylim(np.amin(bx_position)-50, 1000)
     plt.xlim(-1, right=24)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
+    plt.legend()
     plt.grid()
     plt.savefig(plotpath+u+'trajectory_plot_'+params_string+'.png')
 
+    print('Avg velocity Yildiz: ', yildiz_data[1][-1]/yildiz_data[0][-1])
 
 def bug_checking_plots(args, plotpath, initial_disp_edge, final_disp_edge, normalized_hist, **_):
     plt.figure('From Data')
@@ -626,7 +639,7 @@ def main():
     data_params_string =  "{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}".format(args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
     params_string = str(args.k_ub) + '_' + data_params_string
 
-    plt.rcParams.update({'font.size': 14})
+    plt.rcParams.update({'font.size': 12})
 
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
