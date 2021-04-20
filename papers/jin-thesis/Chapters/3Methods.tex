@@ -1,6 +1,6 @@
 %\textit{All code for simulation can be accessed from GitHub through this link:}
 
-The entire model and simulation code can be found at \url{https://github.com/kiatvonj/dynein_walk}, where the model and simulation were coded using both Python and C++. The both bound Monte Carlo was coded on Python due to the calculations being less computationally rigorous and time independent, while the one bound Brownian dynamics was coded on C++ to utilize the faster computation speed for the time  dependent Brownian motion.
+The entire model and simulation code can be found at \url{https://github.com/kiatvonj/dynein_walk}, where the model and simulation were coded using both Python and C++. The both bound Monte Carlo was coded on Python due to the calculations being less computationally rigorous, while the time dependent one-bound Brownian dynamics was coded on C++ to utilize faster computation speed.
 
 \section{Simulation}
 %\textit{Picking Random angles to create random distribution of dynein configurations. Make sure to clarify that the simulation is split into two parts, the monte carlo both bound and brownian one bound. It is done this way in order for MC to generate ensemble of data rather quickly.}\\
@@ -103,7 +103,7 @@ A more in-depth explanation and rigorous flow chart for the one bound Brownian d
 \section{Model Parameters}
 %\textit{How we defined our constants based on experiment and pictures.  Need to include figures here of experiment dynein and how we measure the pre and post stroke equilibrium angles.}
 
-We match model paramters concerning dynein's geometry based on experiment by analyzing electron microscopy pictures of dynein. These pictures are shown in Figure (\ref{fig:ParamsPics}), where experimental dynein is in the conformations analogous to the both bound and one bound states. We can measure the domain radii \{$R_i$\}, equilibrium angles \{$\theta_{i,eq}$\}, and the stalk and tail lengths ($L_s$, $L_t$) from these figures (refer to Section \ref{sec:Params} for measurements).  
+We match model paramters concerning dynein's geometry based on experiment by analyzing electron microscopy pictures of dynein. These pictures are shown in Figure (\ref{fig:ParamsPics}), where experimental dynein is in the conformations analogous to the both-bound and one-bound states. We can measure the domain radii \{$R_i$\}, equilibrium angles \{$\theta_{i,eq}$\}, and the stalk and tail lengths ($L_s$, $L_t$) from these figures (refer to Section \ref{sec:Params} for measurements).  
 
 \begin{figure}[hbt!]
 	\centering
@@ -113,7 +113,7 @@ We match model paramters concerning dynein's geometry based on experiment by ana
 	\label{fig:ParamsPics}
 \end{figure}
 
-However, these pictures do not help identify the binding rates ($k_a$, $k_b$, $k_{ub}$) and spring constants ($c_b$, $c_m$, $c_t$), making these parameters \textit{free variables} in the model. Fortunately, the Monte Carlo simulation can quickly optimize these free variables and fit different combinations of parameters to  different sets of experimental data. Since we want to replicate Yildiz's observations from Figure (\ref{fig:YildizCorrelation}), the free variables will be optimized according to the slope and y-intercept of the correlation. 
+However, these pictures do not help identify the binding rates ($k_a$, $k_b$, $k_{ub}$) and spring constants ($c_b$, $c_m$, $c_t$), making these parameters \textit{free variables} in the model. Fortunately, the Monte Carlo simulation can quickly optimize these free variables and fit different combinations of parameters to  different sets of experimental data. Since we want to replicate Yildiz's observations from Figure (\ref{fig:YildizCorrelation}), the free variables will be optimized according to Yildiz's data. %the slope and y-intercept of the correlation. 
 
 \subsection{Validation for Model Parameters}
 %\textit{Fitting our rate constants were a huge part of our model and how we made sure our dynein can match experimentalist results. Maybe bring up sticky rate???}
@@ -125,7 +125,7 @@ Despite simulating many combinations of parameters, the number of free variables
 
 
 \section{Data Analysis} \label{sec:DataAna}
-As mentioned earlier, the simulation collects statistics only for a given initial binding domain distance, $L$. This limits the probability data of landing at a final position to be a function of $L$. However, we can not calculate the step length for a trailing or leading step with an unsigned distance. This promotes the new naming scheme of using initial and final displacement, $x_i$ and $x_f$, when identifying the distances between the binding domains before and after the step. The displacement is the $x$ position of the unbounded binding domain, where the origin is defined at the bounded binding domain. This implies a negative initial displacement for a trailing step and a positive initial displacement for a leading step. 
+As mentioned earlier, the simulation collects statistics only for a given initial binding domain distance, $L$. This limits the probability of landing at a final position to be a function of $L$. However, we can not calculate the step length for a trailing or leading step with an unsigned distance. This promotes the new naming scheme of using initial and final displacement, $x_i$ and $x_f$, when identifying the distances between the binding domains before and after the step. The displacement is the $x$ position of the unbounded binding domain, where the origin is defined at the bounded binding domain. This implies a negative initial displacement for a trailing step and a positive initial displacement for a leading step. 
 
 However, the simulation still outputs a probability distribution of final displacements as a function of initial displacements. To properly reproduce Yildiz's stepping plot, we need a joint probability distribution with both $x_i$ and $x_f$ as variables. Using probability notation, we want $p(x_i,x_f)$ (the probability of $x_i$ \textit{and} $x_f$) but we have $p(x_f|x_i)$ (the probability of $x_f$ \textit{given} $x_i$). To solve this problem, we can use conditional probability and solve for $p(x_i,x_f)$, as shown below:
 
