@@ -1,6 +1,6 @@
 %\textit{Introduce topic by talking about cells. Attention grabber, relate biophysics study to cancer reserach and many areas where we need to focus our research. Short and sweet, maybe 1 or 2 short paragraphs.}
 
-	Neurodegenerative diseases, such as Alzheimer's or Huntinton's disease, are a leading cause of death in the United States \cite{eschbach2011cytoplasmic}. Scientists have yet to find a prevention or cure to these fatal diseases but suggests that motor protein failure directly contributes to cell degeneration. More specifically, defects in the motor protein dynein have been linked to neurodegeneration due to the cell's funtional dependence on dynein and its mechanical properties. However, dynein possesses a unique structure causing it to stochasitcally move around the cell and be unpredictable in nature. Thus, fully understanding the mechanisms of dynein can allow us to further understand causes of its failure. In this paper, we propose a model of dynein that uses Monte Carlo methods and a Brownian dynamics simulation to reproduce dynein's unique steping behavior. What follows is a brief introduction to the dynein motor protein, a review of the powerstroke model, and the framework for a computational simulation of the powerstroke, which we seek to replicate Yildiz's observation of correlated stepping \cite{Dewitt2012}.  
+	Neurodegenerative diseases, such as Alzheimer's or Huntinton's disease, are a leading cause of death in the United States \cite{eschbach2011cytoplasmic}. Scientists have yet to find a prevention or cure to these fatal diseases but suggests that motor protein failure directly contributes to cell degeneration. More specifically, defects in the motor protein dynein have been linked to neurodegeneration due to the cell's funtional dependence on dynein and its mechanical properties. However, dynein possesses a unique structure causing it to stochasitcally move around the cell and be unpredictable in nature. Thus, fully understanding the mechanisms of dynein can allow us to further understand causes of its failure. In this paper, we propose a model of dynein that uses Monte Carlo methods and a Brownian dynamics simulation to reproduce dynein's unique steping behavior. What follows is a brief introduction to the dynein motor protein, a review of the powerstroke model, and the framework for a computational simulation of the powerstroke, which seeks to replicate an inter head stepping correlation observed by experimentalist Ahmet Yildiz \textit{et al.} \cite{Dewitt2012}.  
 
 \section{Background}
 
@@ -11,7 +11,7 @@
 	\label{fig:ArtDynein}
 \end{figure}
 
-Cells are complicated. They have the ability to move, perfectly divide, and spatially organize themselves but are responsible for fatal diseases when these functions fail. Their functionality entirely depends on two-legged molecular proteins, named \textit{motor proteins}, that carry information along a microtubule track. These microtubules form the cytoskeleton in the cell and act as a walkway for the proteins (see Figure (\ref{fig:ArtDynein})). These motor proteins are myosin, kinesin, and dynein and are shown below in Figure (\ref{fig:Compare}). Because of kinesin and myosin's compact structure being close to the microtubule, their legs take turns alternating steps like a human and exhibit a uniform ``hand-over-hand" stepping pattern. On the other hand, dynein's structure involves two autonomous motors that cause inconsistent steps. As opposed to kinesin and myosin's uniform stepping, dynein exhibits an inchworm walk with one leg consistently ahead of the other, emulating a limping motion.
+Cells are complicated. They are the fundamental unit of life and have the ability to move, perfectly divide, and spatially organize themselves. When these functions fail, cell degeneration can cause fatal diseases within their host. Their functionality entirely depends on two-legged molecular proteins, named \textit{motor proteins}, that carry information along a microtubule track. These microtubules form the cytoskeleton in the cell and act as a walkway for the proteins (see Figure (\ref{fig:ArtDynein})). These motor proteins are myosin, kinesin, and dynein and are shown below in Figure (\ref{fig:Compare}). Because of kinesin and myosin's compact structure being close to the microtubule, their legs take turns alternating steps like a human and exhibit a uniform ``hand-over-hand" stepping pattern. On the contrary, dynein's structure involves two autonomous motors that cause inconsistent steps. As opposed to kinesin and myosin's uniform stepping, dynein exhibits an inchworm walk with one leg consistently ahead of the other, emulating a limping motion.
 
 \begin{figure}[H]
 	\centering
@@ -29,7 +29,7 @@ In addition to their structural differences, dynein walks towards the negative e
 	\label{fig:transport}
 \end{figure}
 
-These unique properties make dynein difficult to study when analyzing possible sources of molecular failure, but illustrates the importance of understanding its entire physical structure and the chemical interactions with ATP to produce motion.
+These unique properties make dynein difficult to study when analyzing possible sources of molecular failure, but illustrates the importance of understanding its entire physical structure and chemical interaction with ATP to produce motion.
 
 \newpage
 \section{Structure}
@@ -51,7 +51,7 @@ Dynein's ``leg" is a complex protein assembly composed of linked amino acids sub
 	\label{fig:structure}
 \end{figure}
 
-Dynein's physical structure has been rigorously studied because of the pivotal role it plays in dynein's unpredictable stepping nature. Its inability to step uniformly is due to the large lengths between each major domain site, as the linker and stalk are 1.5x larger than the diameter of the AAA+ ring. In kinesin and myosin, the motor domains are much closer to the microtubule, causing a more controlled and consistent step due to their low center of mass. Despite dynein's large structure, it can still achieve processive stepping due to the interaction of adenosine triphosphate (ATP) with the AAA+ domains, which is why the AAA+ domains are referred to as the motor domains.
+Dynein's physical structure has been rigorously studied because of the pivotal role it plays in dynein's unpredictable stepping nature. Its inability to step uniformly is due to the large lengths between each major domain site, as the linker and stalk are 1.5x larger than the diameter of the AAA+ ring. In kinesin and myosin, the motor domains are much closer to the microtubule, causing a more controlled and consistent step due to their low center of mass. Despite dynein's large structure, it still achieves processive stepping due to the interaction of adenosine triphosphate (ATP) with the AAA+ domains, which is why the AAA+ domains are referred to as the motor domains.
 
 
 
@@ -71,7 +71,7 @@ The on-axis is defined parallel to the direction of forward stepping towards the
 	\label{fig:axis}
 \end{figure}
 
-While ATP hydrolysis dictates the forward stepping during dynein's walk, the geometry of the domains is still a question for experimentalists. How exactly do the motor, tail, and linker achieve processive motion? Do the motor domains act as knees and stretch out for a step? Or do the knees stay bent, while the tail swings forward? Despite ongoing debates, researchers suggest the former and named this process the powerestroke model. 
+While ATP hydrolysis dictates the forward stepping during dynein's walk, the geometry of the domains is still a question for experimentalists. How exactly do the motor, tail, and linker achieve processive motion? Do the motor domains act as knees and stretch out for a step? Or do the knees stay bent, while the tail swings forward? Despite ongoing debates, recent studies suggest the former and named this process the powerestroke model. 
 
 
 
@@ -87,7 +87,7 @@ The widely accepted powerstroke model was best exhibted within the mechanochemic
 	\label{fig:MechanochemicalCycle}
 \end{figure}
 
-Here, affinity refers to the tendency and strength of the domain binding to the microtubule - high affinity being a secure attachment to the microtubule, while low affinity is more relaxed. The cycle utilizes the conformational transitions between high and low affinity to explain dynein's unbinding and rebinding process. This transition is governed by the addition of an ATP unit, which loosens the ``foot" from the MT (steps 3 to 4), stretches the linker (steps 5 to 6), and tightens the ``foot" back onto the MT (steps 6 to 7), pulling the whole protein forward. This key detail within the transition of stretching the linker distinguishes a ``pre-" and a ``post-" stroke state during the powerstroke model and can be analogous to bending a knee upwards and kicking the foot forwards to stretch the knee and take a step. A closer visualization of this transition between pre- and post-stroke states can be seen in Figure (\ref{fig:Powerstroke}), where the linker is highlighted in yellow.  
+Here, affinity refers to the tendency and strength of the domain binding to the microtubule - high affinity being a secure attachment to the microtubule, while low affinity is more relaxed. The cycle utilizes the conformational transitions between high and low affinity to explain dynein's unbinding and rebinding process. This transition is governed by the addition of an ATP unit, which loosens the ``foot" from the microtubule (steps 3 to 4), stretches the linker (steps 5 to 6), and tightens the ``foot" back onto the microtubule (steps 6 to 7), pulling the whole protein forward. This key detail within the transition of stretching the linker distinguishes a ``pre-" and a ``post-" stroke state during the powerstroke model and can be analogous to bending a knee upwards and kicking the foot forwards to stretch the knee and take a step. A closer visualization of this transition between pre- and post-stroke states can be seen in Figure (\ref{fig:Powerstroke}), where the linker is highlighted in yellow.  
 
 \begin{figure}[H]
 	\centering

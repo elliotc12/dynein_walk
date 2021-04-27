@@ -1,11 +1,11 @@
 %\textit{All code for simulation can be accessed from GitHub through this link:}
 
-The entire model and simulation code can be found at \url{https://github.com/kiatvonj/dynein_walk}, where the model and simulation were coded using both Python and C++. The both bound Monte Carlo was coded on Python due to the calculations being less computationally rigorous, while the time dependent one-bound Brownian dynamics was coded on C++ to utilize faster computation speed.
+The entire model and simulation code can be found at \url{https://github.com/kiatvonj/dynein_walk}, where the model and simulation were coded using both Python and C++. The both-bound Monte Carlo was coded on Python due to the calculations being less computationally rigorous, while the time dependent one-bound Brownian dynamics was coded on C++ to utilize faster computation speed.
 
 \section{Simulation}
-%\textit{Picking Random angles to create random distribution of dynein configurations. Make sure to clarify that the simulation is split into two parts, the monte carlo both bound and brownian one bound. It is done this way in order for MC to generate ensemble of data rather quickly.}\\
+%\textit{Picking Random angles to create random distribution of dynein configurations. Make sure to clarify that the simulation is split into two parts, the monte carlo both-bound and brownian one-bound. It is done this way in order for MC to generate ensemble of data rather quickly.}\\
 %\textit{Include a flow chart.}
-To generate an ensemble of steps, we use the Monte Carlo method to simulate a single step at a time, as opposed to a walk. This simplifies the code into two parts (the Monte Carlo both bound and the Brownian dynamics one bound) that cycle repeatedly after the model takes a step. The simulation starts in the both bound state, where the Monte Carlo randomly picks a both bound configuration and calculates the total energy. If the configuration successfully unbinds, then we use the positions of the domains as initial conditions for the one bound simulation and execute the Brownian dynamics. Once the one bound dynein diffuses onto the microtubule and rebinds, the simulation repeats the cycle and generates a completely different both bound configuration for another step. However, this method comes with a caveat: we must initialize the distance between the binding domains, $L$, to ensure that our ensemble covers the whole sample space of possible both bound configurations. This forces the measured probabilities to be a function of $L$ and will be addressed later in the Data Analysis section (Section \ref{sec:DataAna}). The algorithm for the both bound process is shown below:
+To generate an ensemble of steps, we use the Monte Carlo method to simulate a single step at a time, as opposed to a walk. This simplifies the code into two parts (the Monte Carlo both-bound and the Brownian dynamics one-bound) that cycle repeatedly after the model takes a step. The simulation starts in the both-bound state, where the Monte Carlo randomly picks a both-bound configuration and calculates the total energy. If the configuration successfully unbinds, then we use the positions of the domains as initial conditions for the one-bound simulation and execute the Brownian dynamics. Once the one-bound dynein diffuses onto the microtubule and rebinds, the simulation repeats the cycle and generates a completely different both-bound configuration for another step. However, this method comes with a caveat: we must initialize the distance between the binding domains, $L$, to ensure that our ensemble covers the whole sample space of possible both-bound configurations. This forces the measured probabilities to be a function of $L$ and will be addressed later in the Data Analysis section (Section \ref{sec:DataAna}). The algorithm for the both-bound process is shown below:
 
 \newpage
 \begin{center}\label{alg:MonteCarlo}
@@ -54,7 +54,7 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 	\begin{equation}
 		Z=\sum_{i}e^{\beta E_{total, i}}.
 	\end{equation}
-	Here, $i$ refers to the specific both bound configuration and $k$ is the domain. We also defined $\kappa$ to normalize the relative unbinding probability to keep it less than 1. 
+	Here, $i$ refers to the specific both-bound configuration and $k$ is the domain. We also defined $\kappa$ to normalize the relative unbinding probability to keep it less than 1. 
 	
 	\item ``Roll a die" for a value within the range of $[0,1]$ and check if the value is less than $P_{ub}$. If not, repeat algorithm from step 2.
 \end{enumerate}
@@ -70,7 +70,7 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 
 \begin{enumerate}
 	\setcounter{enumi}{6}
-	\item If dynein unbinds, initialize the one bound state with the both bound configuration, run the Brownian dynamics simulation of the step, and wait until it rebinds.
+	\item If dynein unbinds, initialize the one-bound state with the both-bound configuration, run the Brownian dynamics simulation of the step, and wait until it rebinds.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -82,7 +82,7 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 
 \begin{enumerate}
 	\setcounter{enumi}{7}
-	\item Collect statistics about the final position and one bound time. Repeat algorithm from step 2. 
+	\item Collect statistics about the final position and one-bound time. Repeat algorithm from step 2. 
 \end{enumerate}
 
 \begin{figure}[H]
@@ -94,11 +94,11 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 
 \noindent\rule{16.5cm}{0.4pt}
 
-A more in-depth explanation and rigorous flow chart for the one bound Brownian dynamics simulation can be found here \cite{Capek2017, }.
+A more in-depth explanation and rigorous flow chart for the one-bound Brownian dynamics simulation can be found here \cite{Capek2017, }.
 
 
 %\section{Time Evolution}
-%\textit{Simulate over a delta t during one bound and every iteration check for rebinding. How are the probabilities of binding and unbinding affected by the time.}
+%\textit{Simulate over a delta t during one-bound and every iteration check for rebinding. How are the probabilities of binding and unbinding affected by the time.}
 
 \section{Model Parameters}
 %\textit{How we defined our constants based on experiment and pictures.  Need to include figures here of experiment dynein and how we measure the pre and post stroke equilibrium angles.}
@@ -109,7 +109,7 @@ We match model paramters concerning dynein's geometry based on experiment by ana
 	\centering
 	\includegraphics[width=0.3\columnwidth]{../../plots/burgess-model-figure.pdf}
 	\includegraphics[width=0.5\columnwidth]{../../plots/grotjahn-model-figure.pdf}%
-	\caption[Experimental Pictures of Dynein for Model Parameters]{\textbf{Experimental Pictures of Dynein for Model Parameters} \textit{Left:} Micrograph of both bound dynein with model domains to identify post-stroke equilbrium angles. The arrow indicates 15 nm \cite{Burgess2003}.  \textit{Right:} Cryo-electron tomograph of one bound dynein for pre-stroke equilbrium angles \cite{grotjahn2018cryo}.} 
+	\caption[Experimental Pictures of Dynein for Model Parameters]{\textbf{Experimental Pictures of Dynein for Model Parameters} \textit{Left:} Micrograph of both-bound dynein with model domains to identify post-stroke equilbrium angles. The arrow indicates 15 nm \cite{Burgess2003}.  \textit{Right:} Cryo-electron tomograph of one-bound dynein for pre-stroke equilbrium angles \cite{grotjahn2018cryo}.} 
 	\label{fig:ParamsPics}
 \end{figure}
 
@@ -118,7 +118,7 @@ However, these pictures do not help identify the binding rates ($k_a$, $k_b$, $k
 \subsection{Validation for Model Parameters}
 %\textit{Fitting our rate constants were a huge part of our model and how we made sure our dynein can match experimentalist results. Maybe bring up sticky rate???}
 
-Despite simulating many combinations of parameters, the number of free variables still produce many degrees of freedom. This makes it difficult to test the entire parameter space and truly invesitage the relationships between different sets of parameters. We approach this problem by individually attributing the parameters to a specific data set from exerpiment. For instance, the exponential unbinding constant, $C$, is fitted specifically to Figure (\ref{fig:trailingbias}). We use time data (\textit{cite paper for time data}\cite{}) to fit the unbinding rate constant, $k_{ub}$, because the inverse yields the average time it takes to unbind, i.e. the both bound time. The rebinding rates, $k_a$ and $k_b$, are harder to optimize because they directly correlate to step length. The ability for dynein to take long steps is dependent on how long dynein diffuses above the microtubule. Therefore, the rebinding rates have a much larger parameter space due to the flexibility of optimizing according to the one bound time or step length. Since we are interested in Yildiz's step lengths, we match these rates to the linear regression from Figure (\ref{fig:YildizCorrelation}) and Yildiz's step length plots. The last parameters are the spring constants. The spring constants also influence the step length because they dictate the strength of the restoring force. We fit the spring constants last to control the variance of step lengths.
+Despite simulating many combinations of parameters, the number of free variables still produce many degrees of freedom. This makes it difficult to test the entire parameter space and truly invesitage the relationships between different sets of parameters. We approach this problem by individually attributing the parameters to a specific data set from exerpiment. For instance, the exponential unbinding constant, $C$, is fitted specifically to Figure (\ref{fig:trailingbias}). We use time data (\textit{cite paper for time data}\cite{}) to fit the unbinding rate constant, $k_{ub}$, because the inverse yields the average time it takes to unbind, i.e. the both-bound time. The rebinding rates, $k_a$ and $k_b$, are harder to optimize because they directly correlate to step length. The ability for dynein to take long steps is dependent on how long dynein diffuses above the microtubule. Therefore, the rebinding rates have a much larger parameter space due to the flexibility of optimizing according to the one-bound time or step length. Since we are interested in Yildiz's step lengths, we match these rates to the linear regression from Figure (\ref{fig:YildizCorrelation}) and Yildiz's step length plots. The last parameters are the spring constants. The spring constants also influence the step length because they dictate the strength of the restoring force. We fit the spring constants last to control the variance of step lengths.
 
 
 %An increase in the binding rate will cause fast steps and significantly shorter step lengths that approach 0nm (rebinds where foot unbinded). This causes a dilemma because experiments cannot record step lengths close to 0nm. 

@@ -327,7 +327,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     norm_length_min = 7.75
     if args.k_stk == 9e99:
-        norm_length_min = 3
+        norm_length_min = 0
 
     norm_1B = np.sum(step_length_count_fig_1B[step_length_bin_center_fig_1B>norm_length_min])
     yildiz_normalized_prob_fig_1B = step_length_count_fig_1B/norm_1B
@@ -452,6 +452,11 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
     time_bin_center = np.arange(increment/2, max_time, increment, dtype=float)
     x_upper_lim = 0.5e-6
     x_increment = 0.1e-6
+    decimal = 1
+    if args.k_stk == 9e99:
+        x_upper_lim = 0.05e-6
+        x_increment = 0.01e-6
+        decimal = 2
     ind = 1
     for j in time_bin_center:
         if j < x_upper_lim:
@@ -484,7 +489,7 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                 xticks = np.arange(0.0, x_upper_lim+x_increment, x_increment)
                 labels = np.arange(0.0, (x_upper_lim+x_increment)*1e6, x_increment*1e6)
                 plt.xlim(-increment,x_upper_lim)
-                plt.xticks(xticks, np.around(labels,decimals=1))
+                plt.xticks(xticks, np.around(labels,decimals=decimal))
                 plt.legend()
                 plt.subplots_adjust(top=0.93)
                 plt.gca().spines['right'].set_visible(False)

@@ -3,19 +3,19 @@ To reliably reproduce experimental observations of dynein's step, a model of dyn
 
 
 \subsection{2D Rigid Rod Model}
-Since our goal is to investigate dynein's interhead coordination during its forward directed stepping, we decided to model dynein as a 2-dimensional system of circular domains held together by massless rigid rods. These cirular domains embody the two binding domains, two motor domains, and one tail domain, where each domain act as independent angular springs with their own spring constants. A labeled picture of the model is shown below in Figure (\ref{fig:model}). 
+Since our goal is to investigate dynein's interhead coordination during its forward directed stepping, we decided to model dynein as a two-dimensional system of circular domains held together by massless rigid rods. These cirular domains embody the two binding domains, two motor domains, and one tail domain, where each domain act as independent angular springs with their own spring constants. A labeled picture of the model is shown below in Figure (\ref{fig:model}). 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\columnwidth]{Figures/model-cartoon.png}
-	\caption[Dynein Model]{\textbf{Dynein Model.} A model of the dynein in the both bound state where both binding domains are bounded to the microtubule. The springs are only a visualization of how they control the domains and are not a part of the model geometry. \cite{Capek2017}}
+	\caption[Dynein Model]{\textbf{Dynein Model.} A model of the dynein in the both-bound state where both binding domains are bounded to the microtubule. The springs are only a visualization of how they control the domains and are not a part of the model geometry. \cite{Capek2017}}
 	\label{fig:model}
 \end{figure}
 
-Despite dynein's complexity allowing its step to vary in both length and direction, we limit our model to one direction to eliminate the off-axis dimension when analyzing the forward stepping pattern of dynein. This would also simplify the asymmetry of the microtubule when the dynein is stepping either on the $\alpha$ or $\beta$ tubulin. We also simplify the stalk and linker to be massless because we are assuming the drag force to be much larger than the mass of the rods and domains. The reasoning for this will be later discussed in Section \ref{sec:BrownianDynamics} when we introduce Brownian dynamics. Although the stalk and linker of real dynein definitely have mass, we counteract the loss of interactions the rods experience with the environment by increasing the radii of the domains abitrarily 10\% larger than experimental measurements.
+Despite dynein's step varying in both length and direction, we limit our model in one direction to eliminate the off-axis and only focus on dynein's forward stepping. This would simplify the asymmetry of the microtubule when dynein is stepping on the $\alpha$ or $\beta$ tubulin. We also assume massless stalks and linkers due to the strong drag force terms dominating the mass of the rods and domains in the equations of motion. The reasoning for this will be later discussed in Section \ref{sec:BrownianDynamics} when we introduce Brownian dynamics. Although the stalk and linker of real dynein definitely have mass, we counteract the loss of interactions the rods experience with the environment by increasing the radii of the domains abitrarily 10\% larger than experimental measurements.
 
 \subsection{Domains as Angular Springs}
-To best simulate the stretching and forward kicking motion of the power stroke, we define the domains to act as springs with spring constants $c_b$, $c_m$, and $c_t$. This can be analogous to how humans walk, where the domains correspond to flexible joints when taking a step. Defining the domains as springs also allows us to influence forward bias walking by introducing a restoring force in each domain using Hooke's law, 
+To best simulate the stretching and forward kicking motion of the power stroke, we define the domains to act as springs with spring constants $c_b$, $c_m$, and $c_t$. This is analogous to how humans walk, where the domains correspond to flexible joints when taking a step. Defining the domains as springs influences forward bias walking by introducing a restoring force in each domain using Hooke's law, 
 \begin{equation}
     F_i=-c_i(\theta_i-\theta_{i,eq}),
 \end{equation}
@@ -28,22 +28,22 @@ This equation is used throughout the simulation to determine the total energy of
 
 
 \subsection{Two-State System}
-According to the mechanochemical cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has low affinity (unbinded domain diffusing above microtubule) or high affinity. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding \cite{}, we categorize the cycle into two main conformations: the pre-stroke one bound state and the post-stroke both bound state.
+According to the mechanochemical cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has low affinity (unbinded domain diffusing above microtubule) or high affinity. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding \cite{}, we categorize the cycle into two main conformations: the pre-stroke one-bound state and the post-stroke both-bound state.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{Figures/OB_vs_BB.PNG}
-	\caption[One Bound vs. Both Bound]{\textbf{One Bound vs. Both Bound} \textit{Left}: Prestroke one bound state with labeling scheme 'b-’ and ‘u-’ for bound leg and unbound leg. \textit{Right}: Poststroke both bound state with labeling scheme ‘n-’ and ‘f-’ for ``near" leg and ``far'' leg. \cite{Capek2017}.}
+	\caption[One-Bound vs. Both-Bound]{\textbf{One-Bound vs. Both-Bound} \textit{Left}: Prestroke one-bound state with labeling scheme 'b-’ and ‘u-’ for bound leg and unbound leg. \textit{Right}: Poststroke both-bound state with labeling scheme ‘n-’ and ‘f-’ for ``near" leg and ``far'' leg. \cite{Capek2017}.}
 	\label{fig:OBvsBB}
 \end{figure}
 
-Differentiating the two allows us to more conveniently bias the conformational change by defining different equilibrium angles for both states. Since dynein is symmetric for each heavy chain leg, the equilibrium angles for the both bound state is identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. However, in the one bound state, the unbound leg exhibits the powerstroke and kick out. Therefore, the equilibrium angles for the motor domains differ in order to bias the unbound leg to straighten and perform the powerstroke. This straightening mechanic resembles the linker being primed before allowing the binding domain to rebind.
+Differentiating the two conveniently biases the conformational changes by defining different equilibrium angles for both states. Since dynein is symmetric for each heavy chain leg, the equilibrium angles for the both-bound state is identical for both binding and motor domain pairs, i.e. $\theta_{b,eq}$ is defined as the equilibrium angle for both binding domains, while $\theta_{m,eq}$ is defined as the equilibrium angle for both motor domains. However, in the one-bound state, the unbound leg exhibits the powerstroke and kicks out. Therefore, the equilibrium angles for the motor domains differ in order to bias the unbound leg to straighten and perform the powerstroke. This straightening mechanic resembles the linker being primed before allowing the binding domain to rebind.
 
 
 \subsection{Transitioning Between States}
 %\textit{Physics about conformational energy changes. How we model transitioning between BB state and OB state using transitioning rates and spring energies.}
 
-Similar to other simulations, the binding and unbinding process is governed by rate-limiting steps, where each process is associated with binding rates. These binding rates are model parameters defined by binding constants with units of probability per time. When the dynein is in the one bound state, the binding domain depends on two rebinding parameters: the affinity transition time ($t_a$) and the binding rate ($\rho_b$). We assume that the unbound binding domain can only bind when high affinity completely transitions into low affinity and when the domain is within a vertical range of the microtubule, i.e.
+Similar to other simulations, the binding and unbinding process is governed by rate-limiting steps, where each process is associated with binding rates. These binding rates are model parameters defined by binding constants with units of probability per time. When the dynein is in the one-bound state, the binding domain depends on two rebinding parameters: the affinity transition time ($t_a$) and the binding rate ($\rho_b$). We assume that the one-bound can only bind when high affinity completely transitions into low affinity and when the domain is within a vertical range of the microtubule, i.e.
 \begin{equation}
 	t>t_a=\frac{1}{k_a}
 \end{equation}
@@ -51,9 +51,9 @@ and
 \begin{equation}
 	\rho_b=k_b(1-H(r_{ub,y}-\epsilon)).
 \end{equation} 
-Here, $t$ is the total one bound time, $k_a$ is the affinity transition rate, $k_b$ is the binding rate constant, $H$ is the Heaviside step function, $r_{ub,y}$ is the y position of the unbound binding domain, and $\epsilon$ is the range within the microtubule.
+Here, $t$ is the total one-bound time, $k_a$ is the affinity transition rate, $k_b$ is the binding rate constant, $H$ is the Heaviside step function, $r_{ub,y}$ is the y position of the unbound binding domain, and $\epsilon$ is the range within the microtubule.
 
-When the dynein is in the both bound state and wants to unbind, we incorporate a stepping bias in the unbinding rate. As supported from Yildiz in Figure (\ref{fig:trailingbias}), the likelihood of the trailing leg unbinding is greater than the leading leg when the distance between the two legs increases. 
+When the dynein is in the both-bound state and wants to unbind, we incorporate a stepping bias in the unbinding rate. As supported from Yildiz in Figure (\ref{fig:trailingbias}), the likelihood of the trailing leg unbinding is greater than the leading leg when the distance between the two legs increases. 
 
 
 \begin{figure}[H]
@@ -72,15 +72,15 @@ We introduce a new model parameter $C$, the exponential unbinding constant, that
 
 \section{Simulation}
 
-The key difference between the works in \cite{Capek2017, } (\textit{Elliott and John's paper}) and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both bound state. In addition to the large both bound time mentioned earlier, they also noticed that the initial both bound configuration of the domains does not impact the stepping, giving a better incentive to apply a Monte Carlo approach. This new method of analyzing the both bound state will significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one bound state. 
+The key difference between the works in \cite{Capek2017, } (\textit{Elliott and John's paper}) and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both-bound state. In addition to the large both-bound time mentioned earlier, they noticed that the initial both-bound configuration of the motor and tail domains do not impact the stepping, giving a better incentive to apply a Monte Carlo approach. This new method of analyzing the both-bound state will significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one-bound state. 
 
 %These quick simulations are governed by a Monte Carlo algorithm, while the movement of the model is dictated by equations of motion describing domains interacting with a force of drag and a random force. This type of molecular simulations are more commonly known as Brownian dynamics. (\textbf{Possible take out sentence introducing MC and Brownian dynamics for later})
 
 
-\subsection{Brownian Dynamics for One Bound}
+\subsection{Brownian Dynamics for One-Bound}
 \label{sec:BrownianDynamics}
 
-When simulating dynein's one bound motion, the domains of constant mass must obey classical Newtonian physics and follow Newton's laws of motion. That is,
+When simulating dynein's one-bound motion, the domains of constant mass must obey classical Newtonian physics and follow Newton's laws of motion. That is,
 \begin{equation}
 	\sum_{i}\textbf{F}_i=m\ddot{\textbf{r}}.
 \end{equation} 
@@ -108,13 +108,13 @@ To properly demonstrate Brownian dynamics, we must assume strong drag where $|\g
 \begin{equation}
 	\dot{\textbf{r}}=\frac{1}{\gamma}(\textbf{F}_{rand} + \textbf{F}_T)
 \end{equation}
-which is a differential equation we can solve for the equations of motion for the domains in the one bound state. The derivation and final equations of motion can be found in \cite{Capek2017, W}
+which is a differential equation we can solve for the equations of motion for the domains in the one-bound state. The derivation and final equations of motion can be found in \cite{Capek2017, W}
 
 
-\subsection{Monte Carlo for Both Bound}
-Since dynein spends the majority of time in the both bound state, we can safely assume that the dynein equilibriates before unbinding. This allows us to use Monte Carlo methods for analyzing dynein's step by interpreting our model as a system. Typically, Monte Carlo methods analyze equilibrium theromodynamics of fluids where a system of atoms possess many different microstates. For this model, dynein is the system and the many possible both bound configurations is analogous to the ``microstates." However, unlike the more commonly known Markov Chain Monte Carlo, each both bound configuration are independent from one another and can produce different total energy values. The enables the ability to sample a large ensemble of both bound configurations and quickly generate stepping statitics. Eventually, this allows us to create probability distributions for important variables.
+\subsection{Monte Carlo for Both-Bound}
+Since dynein spends most of its stepping time in the both-bound state, we safely assume dynein equilibriates before unbinding. This allows us to use Monte Carlo methods for analyzing dynein's step by interpreting our model as a system. Typically, Monte Carlo methods analyze equilibrium theromodynamics of fluids, where a system of atoms possess many different microstates. For this model, dynein is the system and the many possible both-bound configurations are the ``microstates." However, unlike the more commonly known Markov Chain Monte Carlo, each both-bound configuration is independent and can generate different total energy values. This produces a large ensemble of of both-bound configurations, which we sample to create stepping statistics. Eventually, these statistics will reduce to probability distributions for important variables.
 
-With the assumption of thermodyamic equilibrium during the both bound state, we define the probability of a configuration from a Boltzmann distribution and calculate the relative unbinding probability for that configuration by using a proportionality expression. That is, 
+With the assumption of thermodyamic equilibrium during the both-bound state, we use a Boltzmann distribution to define the probability of a configuration and calculate the relative unbinding probability with a proportionality expression. That is, 
 \begin{equation}
 	P_{ub}\propto e^{-\beta E_{total}}.
 \end{equation}
@@ -122,7 +122,7 @@ With this Boltzmann factor, we can also generate a partition function,
 \begin{equation} \label{eqn:partition}
 	Z=\sum_{i}e^{-\beta E_{total,i}},
 \end{equation}
-where $i$ refers to the specific both bound configuration. In order to guarantee an accurate thermodynamic ensemble of both bound configurations, the simulation must run a large number of trials to ensure that the sample space is covered well. The thermodynamic ensemble then generates an ensemble of steps that can eventually produce smooth statictics. With the partition function defined in Equation (\ref{eqn:partition}), we also define ensemble averages for both bound statistics, such as the average unbinding rates, unbinding probability, and both bound time. The equations to do so are all shown below in that order:
+where $i$ refers to the specific both-bound configuration. In order to guarantee an accurate thermodynamic ensemble of both-bound configurations, the simulation must run a large number of trials to ensure that the sample space is covered well. The thermodynamic ensemble then generates an ensemble of steps that can eventually produce smooth statictics. With the partition function defined in Equation (\ref{eqn:partition}), we also define ensemble averages for both-bound statistics, such as the average unbinding rates, unbinding probability, and both-bound time. The equations to do so are all shown below in that order:
 \begin{equation}
 	\langle\rho_{\textit{ub, trail.}}\rangle=\frac{\sum_{i}\rho_{\textit{ub, trail.}} e^{-\beta E_{total,i}}}{Z}, \indent \langle\rho_{\textit{ub, lead.}}\rangle=\frac{\sum_{i}\rho_{\textit{ub, lead.}} e^{-\beta E_{total,i}}}{Z}
 \end{equation}
