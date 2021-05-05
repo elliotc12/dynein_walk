@@ -19,7 +19,6 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 	\item Randomly pick 4 angles ($\theta_0$, $\theta_1$, $\theta_2$, $\theta_3$) to generate a completely random configuration of dynein in space.
 	
 	\item Calculate the distance between the binding domains and check if the distance is within a range of $L\pm l$, where $l$ is arbitrarily small. If not, repeat step 2.
-	   \davidsays{Mention going back to 2 if the distance isn't in range.}
 \end{enumerate}
 
 \begin{figure}[H]
@@ -94,7 +93,7 @@ To generate an ensemble of steps, we use the Monte Carlo method to simulate a si
 
 \noindent\rule{16.5cm}{0.4pt}
 
-A more in-depth explanation and rigorous flow chart for the one-bound Brownian dynamics simulation can be found here \cite{Capek2017, }.
+A more in-depth explanation and rigorous flow chart for the one-bound Brownian dynamics simulation can be found here \cite{waczak2019drunken}.
 
 
 %\section{Time Evolution}
@@ -118,7 +117,7 @@ However, these pictures do not help identify the binding rates ($k_a$, $k_b$, $k
 \subsection{Validation for Model Parameters}
 %\textit{Fitting our rate constants were a huge part of our model and how we made sure our dynein can match experimentalist results. Maybe bring up sticky rate???}
 
-Despite simulating many combinations of parameters, the number of free variables still produce many degrees of freedom. This makes it difficult to test the entire parameter space and truly invesitage the relationships between different sets of parameters. We approach this problem by individually attributing the parameters to a specific data set from exerpiment. For instance, the exponential unbinding constant, $C$, is fitted specifically to Figure (\ref{fig:trailingbias}). We use time data (\textit{cite paper for time data}\cite{}) to fit the unbinding rate constant, $k_{ub}$, because the inverse yields the average time it takes to unbind, i.e. the both-bound time. The rebinding rates, $k_a$ and $k_b$, are harder to optimize because they directly correlate to step length. The ability for dynein to take long steps is dependent on how long dynein diffuses above the microtubule. Therefore, the rebinding rates have a much larger parameter space due to the flexibility of optimizing according to the one-bound time or step length. Since we are interested in Yildiz's step lengths, we match these rates to the linear regression from Figure (\ref{fig:YildizCorrelation}) and Yildiz's step length plots. The last parameters are the spring constants. The spring constants also influence the step length because they dictate the strength of the restoring force. We fit the spring constants last to control the variance of step lengths.
+Despite simulating many combinations of parameters, the number of free variables still produce many degrees of freedom. This makes it difficult to test the entire parameter space and truly invesitage the relationships between different sets of parameters. We approach this problem by individually attributing the parameters to a specific data set from exerpiment. For instance, the exponential unbinding constant, $C$, is fitted specifically to Figure (\ref{fig:trailingbias}). We fit the unbinding rate constant, $k_{ub}$, according to velocities for dynein's walk by matching to experimental trajectory data. The rebinding rates, $k_a$ and $k_b$, are harder to optimize because they directly correlate to step length. The ability for dynein to take long steps is dependent on how long dynein diffuses above the microtubule. Therefore, the rebinding rates have a much larger parameter space due to the flexibility of optimizing according to the one-bound time or step length. Since we are interested in Yildiz's step lengths, we match these rates to the linear regression from Figure (\ref{fig:YildizCorrelation}) and Yildiz's step length plots. The last parameters are the spring constants. The spring constants also influence the step length because they dictate the strength of the restoring force. We fit the spring constants last to control the variance of step lengths.
 
 
 %An increase in the binding rate will cause fast steps and significantly shorter step lengths that approach 0nm (rebinds where foot unbinded). This causes a dilemma because experiments cannot record step lengths close to 0nm. 

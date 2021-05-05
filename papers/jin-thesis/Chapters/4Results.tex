@@ -25,7 +25,7 @@ The set of parameters that best fit Yildiz's observed stepping correlation is sh
     $R_b$ & $\radiusb nm$ & $1.25nm$ & \cite{Burgess2003}\\
     \hline
   \end{tabular}
-  \caption{Optimized model parameters for Figures (\ref{fig:DataFitYildiz}-\ref{fig:Trajectory}).}
+  \caption{Optimized model parameters for Figures (\ref{fig:DataFitYildiz}-\ref{fig:BBPlots}).}
   \label{tab:params}
 \end{table}
 
@@ -42,7 +42,7 @@ After many trials, this combination of parameters best demonstrated the interste
 The first plot in Figure (\ref{fig:DataFitYildiz}) displays the joint probability distribution of having a specific initial displacement and final displacement ($p(x_i,x_f)$). The linear regression from Yildiz's experiment indicates a functionality between the two with an average final displacement of 9.1 nm, shown from the y-intercept, and a slope of 0.6. The model produced steps with an average final displacement of 6.28 nm and a slope of 0.501. Despite the $16.5\%$ percent error in the slope, the model dynein was able to reproduce Yildiz's interhead correlation only if dynein prefers fast stutter steps with step lengths close to 0 nm. This is apparent from the diagonal shaded region with a slope of 1, indicating a step where $x_f\approx x_i$.
 
 
-The bottom plot in Figure (\ref{fig:DataFitYildiz}) displays the one-dimensional probability density of step lengths, defined as final displacement ($x_f$) minus initial displacement ($x_i$). The accumulative density from the diagonal shaded region is evident in this plot due to the peak at 0 nm. However, experiment was unable to detect 0 nm steps and is shown from the dip in Experiment Fig 3A (small density at 0 nm were lateral steps on the off-axis with little change on the on-axis). Our model suggests that dynein can still achieve forward directed motion with more positive steps than negatives ones but prefers short stuttered steps with fast one-bound times. A distribution of said one-bound times is shown below in Figure (\ref{fig:OBtime}) 
+The bottom plot in Figure (\ref{fig:DataFitYildiz}) displays the one-dimensional probability density of step lengths, defined as final displacement ($x_f$) minus initial displacement ($x_i$). The accumulative density from the diagonal shaded region is evident in this plot due to the peak at 0 nm. However, experiment was unable to detect 0 nm steps. This was shown from the dip in Experiment Fig 3A, where the small density at 0 nm were lateral steps in the off-axis. Figure (\ref{fig:DataFitYildiz}) suggests that dynein can still achieve forward directed motion from favoring positive steps rather than negative ones, but prefers short stuttered steps with fast one-bound times. A distribution of said one-bound times is shown below in Figure (\ref{fig:OBtime}) 
 
 \begin{figure}[H]
 	\centering
@@ -51,7 +51,7 @@ The bottom plot in Figure (\ref{fig:DataFitYildiz}) displays the one-dimensional
 	\label{fig:OBtime}
 \end{figure}
 
-As the distribution of times in Figure (\ref{fig:OBtime}) indicates, the model dynein frequently spends $<$ 0.1 $\mu s$ in the one-bound state, with the dynein most likely to rebind immediately after the affinity transitions. This demonstrates the importance of a buffer time when the dynein unbinds to avoid instantaneous rebinding while still achieving large positive step lengths. A deeper analysis of this will be discussed in the Limiting Cases section (Section \ref{sec:LimitingCase}).
+As the distribution of times in Figure (\ref{fig:OBtime}) indicates, the model dynein frequently spends $<$ 0.1 $\mu s$ in the one-bound state, with the dynein most likely to rebind immediately after the affinity transitions. This demonstrates the importance of a buffer time when the dynein unbinds to avoid instantaneous rebinding while still achieving large positive step lengths. A deeper analysis of this will be discussed in the Limiting Cases section (Section \ref{sec:LimitingCases}).
 
 We also fit the pre-exponential unbinding factor ($C$) and unbinding rate ($k_{ub}$) based on the following experimental plots.
 
@@ -65,12 +65,12 @@ We also fit the pre-exponential unbinding factor ($C$) and unbinding rate ($k_{u
 
 By measuring the unbinding rates from the ensemble of both-bound configurations, we were able to accurately reproduce the experiments unbinding probability for the trailing leg as a function of the initial binding domain separation (L). This result forced the model to prefer trailing steps for large initial distances and influenced forward directed stepping from the trailing leg's powerstroke. The model dynein also replicated experiment's velocities over a long walk by modifying the unbinding rate ($k_{ub}$) and comparing the slopes of the binding position trajectories. Both the experiment and model were able to record dynein's average velocity to be $v\approx25$ nm/s. Additionally, the bottom plot in Figure (\ref{fig:BBPlots}) displays the model's ability to replicate dynein's ``drunken" walk, with steps that vary forward and backwards. 
 
-Based on the resemblence with experimental observations, we are fairly confident with the model's ability to replicate the stepping patterns of real dynein. In our spring model, we assumed each domain to act as springs to influence the powerstroke. However, the simulations displayed more consistent forward stepping when we turned off the binding domain spring and only allowed the motor and tail to have non-zero spring constants. That is, $c_b=0$ while $c_m=c_t=1$ from Table (\ref{tab:params}). This adjustment displays the flexibility within the model and the potential to fine-tune paramters to fit different sets of data. 
+Based on the resemblence with experimental observations, we are fairly confident with the model's ability to replicate the stepping patterns of real dynein. In our spring model, we assumed each domain to act as springs to influence the powerstroke. However, the simulations displayed more consistent forward stepping when we ``turned off" the binding domain spring and only allowed the motor and tail to have non-zero spring constants. That is, $c_b=0$ while $c_m=c_t=1$ from Table (\ref{tab:params}). This adjustment displays the flexibility within the model and the potential to fine-tune paramters to fit different sets of data. 
 
 \newpage
-\section{Limiting Case}\label{sec:LimitingCase} 
+\section{Limiting Cases}\label{sec:LimitingCases} 
 
-As mentioned previously, the model dynein had to take very rapid steps in order to closely generate Yildiz's stepping correlation. To lessen the error and achieve a slope closer to Yildiz's value of 0.6, the binding rate ($k_b$) and affinity transition rate ($k_a$) must both increase significantly. This led to instantaneous rebinding, as we investigated the limiting case of $k_a\gg k_b$ (affinity transition time $t_a\to 0$) and is shown in Figure (\ref{fig:DataFitYildiz99})
+As mentioned previously, the model dynein took very rapid steps in order to closely generate Yildiz's stepping correlation. To lessen the error and achieve a slope closer to Yildiz's value, dynein would have to take even faster steps. We investigated this by increasing the affinity transition rate ($k_a$) significantly, which nullified the buffer period after unbinding. This limiting case of $k_a\gg k_b$ (affinity transition time $t_a\to 0$) is shown in Figure (\ref{fig:DataFitYildiz99})
 
 \begin{figure}[H]
 	\begin{minipage}[b]{0.5\textwidth}
@@ -86,7 +86,9 @@ As mentioned previously, the model dynein had to take very rapid steps in order 
 	\label{fig:DataFitYildiz99}
 \end{figure}
 
-When fitting to Yildiz's slope, we avoided instant rebinding by also prioritizing the large positive step lengths Yildiz observed in Experiment Fig 3A (on Figure \ref{fig:DataFitYildiz}). The binding and affinity transition rates can be better optimizied to fit the larger step lengths (we classified ``large'' steps as $> 40$ nm), but doing so would decrease the correlation between the displacements and thus, the value for the slope. This caused an optimization problem of whether to fit according to the slope or the step lengths. We believed that the parameters shown in Table (\ref{tab:params}) best demonstrated the functionality of the displacements from the slope, while maintaining dynein's forward directionality with a similar step length trend towards large steps.
+As Figure (\ref{fig:DataFitYildiz99}) showed, dynein exhibited instantaneous rebinding. If we ignored the transition period between low and high affinity, the model dynein would immediately rebind with an average one-bound time of 5 ns. The step length plot in Figure (\ref{fig:DataFitYildiz99}) also displayed a lack of directionality when stepping. 
+
+We avoided instant rebinding by also prioritizing the large positive step lengths Yildiz observed in Experiment Fig 3A (we classifed ``large'' steps as $> 40$ nm). By lowering the binding and affinity transition rates,  the model dynein recorded larger step lengths better and achieved processive motion. However, decreasing the rates would subsequently decrease the correlation between the displacements and thus, the value for the slope. This caused an optimization problem of whether to fit according to the slope or the large step lengths. We believed that the parameters shown in Table (\ref{tab:params}) best demonstrated the functionality of the displacements from the slope, while maintaining dynein's forward directionality with a similar step length trend towards large steps.
 
 %\begin{figure}[H]
 %	\centering

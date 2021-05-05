@@ -327,7 +327,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     norm_length_min = 7.75
     if args.k_stk == 9e99:
-        norm_length_min = 0
+        norm_length_min = 3.5
 
     norm_1B = np.sum(step_length_count_fig_1B[step_length_bin_center_fig_1B>norm_length_min])
     yildiz_normalized_prob_fig_1B = step_length_count_fig_1B/norm_1B

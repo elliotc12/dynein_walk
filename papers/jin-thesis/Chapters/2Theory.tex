@@ -28,7 +28,7 @@ This equation is used throughout the simulation to determine the total energy of
 
 
 \subsection{Two-State System}
-According to the mechanochemical cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has low affinity (unbinded domain diffusing above microtubule) or high affinity. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding \cite{}, we categorize the cycle into two main conformations: the pre-stroke one-bound state and the post-stroke both-bound state.
+According to the mechanochemical cycle (Figure \ref{fig:MechanochemicalCycle}), dynein can be in eight states over the course of a single step. However, many of these states possess similar conformations, where the dynein either has low affinity (unbinded domain diffusing above microtubule) or high affinity. Since we assume simple ATP exchange and that the two physical states are during binding and unbinding, we categorize the cycle into two main conformations: the pre-stroke one-bound state and the post-stroke both-bound state.
 
 \begin{figure}[H]
 	\centering
@@ -72,7 +72,7 @@ We introduce a new model parameter $C$, the exponential unbinding constant, that
 
 \section{Simulation}
 
-The key difference between the works in \cite{Capek2017, } (\textit{Elliott and John's paper}) and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both-bound state. In addition to the large both-bound time mentioned earlier, they noticed that the initial both-bound configuration of the motor and tail domains do not impact the stepping, giving a better incentive to apply a Monte Carlo approach. This new method of analyzing the both-bound state will significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one-bound state. 
+The key difference between the works in \cite{Capek2017, waczak2019drunken} and this paper is the implementation of a Monte Carlo algorithm in replacement for the Brownian dynamics both-bound state. In addition to the large both-bound time mentioned earlier, they noticed that the initial both-bound configuration of the motor and tail domains do not impact the stepping, giving a better incentive to apply a Monte Carlo approach. This new method of analyzing the both-bound state will significantly improve computational efficiency while still maintaining the dynamical simulation of the actual step in the one-bound state. 
 
 %These quick simulations are governed by a Monte Carlo algorithm, while the movement of the model is dictated by equations of motion describing domains interacting with a force of drag and a random force. This type of molecular simulations are more commonly known as Brownian dynamics. (\textbf{Possible take out sentence introducing MC and Brownian dynamics for later})
 
@@ -108,11 +108,11 @@ To properly demonstrate Brownian dynamics, we must assume strong drag where $|\g
 \begin{equation}
 	\dot{\textbf{r}}=\frac{1}{\gamma}(\textbf{F}_{rand} + \textbf{F}_T)
 \end{equation}
-which is a differential equation we can solve for the equations of motion for the domains in the one-bound state. The derivation and final equations of motion can be found in \cite{Capek2017, W}
+which is a differential equation we can solve for the equations of motion for the domains in the one-bound state. The derivation and final equations of motion can be found in \cite{Capek2017}
 
 
 \subsection{Monte Carlo for Both-Bound}
-Since dynein spends most of its stepping time in the both-bound state, we safely assume dynein equilibriates before unbinding. This allows us to use Monte Carlo methods for analyzing dynein's step by interpreting our model as a system. Typically, Monte Carlo methods analyze equilibrium theromodynamics of fluids, where a system of atoms possess many different microstates. For this model, dynein is the system and the many possible both-bound configurations are the ``microstates." However, unlike the more commonly known Markov Chain Monte Carlo, each both-bound configuration is independent and can generate different total energy values. This produces a large ensemble of of both-bound configurations, which we sample to create stepping statistics. Eventually, these statistics will reduce to probability distributions for important variables.
+Since dynein spends most of its stepping time in the both-bound state, we safely assume dynein equilibriates before unbinding. This allows us to use Monte Carlo methods for analyzing dynein's step by interpreting our model as a system. Typically, Monte Carlo methods analyze equilibrium theromodynamics of fluids, where a system of atoms possess many different microstates \cite{lim2007vorticity}. For this model, dynein is the system and the many possible both-bound configurations are the ``microstates." However, unlike the more commonly known Markov Chain Monte Carlo, each both-bound configuration is independent and can generate different total energy values. This produces a large ensemble of of both-bound configurations, which we sample to create stepping statistics. Eventually, these statistics will reduce to probability distributions for important variables.
 
 With the assumption of thermodyamic equilibrium during the both-bound state, we use a Boltzmann distribution to define the probability of a configuration and calculate the relative unbinding probability with a proportionality expression. That is, 
 \begin{equation}
