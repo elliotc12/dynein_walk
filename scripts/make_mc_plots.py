@@ -228,7 +228,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     plt.ylabel('Final displacement (nm)')
     plt.xlim(-48,48)
     plt.ylim(-48,48)
-    plt.colorbar().set_label('Probability')
+    plt.colorbar().set_label(r'Probability (1/nm$^2$)')
     plt.legend()
     plt.subplots_adjust(top=0.90, bottom = 0.10)
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
@@ -327,7 +327,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
 
     norm_length_min = 7.75
     if args.k_stk == 9e99:
-        norm_length_min = 3.5
+        norm_length_min = 1
 
     norm_1B = np.sum(step_length_count_fig_1B[step_length_bin_center_fig_1B>norm_length_min])
     yildiz_normalized_prob_fig_1B = step_length_count_fig_1B/norm_1B
@@ -380,14 +380,17 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.fill_between(s_arr,0*s_den, s_den/s_den_norm, label='Model', color='C1')
     plt.plot(step_length_bin_edges_fig_3A, yildiz_normalized_prob_edges_fig_3A, color='C0', alpha = 0.8)
     plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
-                yildiz_normalized_prob_edges_fig_3A, label='Experiment Fig 3A', color='C2', alpha=0.5)
+                yildiz_normalized_prob_edges_fig_3A, label='Experiment', color='C2', alpha=0.5)
     # plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
     # plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
     #             yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
     plt.xlabel('Step Length (nm)')
     plt.ylabel('Probability Density (1/nm)')
     plt.xlim(-50, 65)
-    plt.ylim(0)
+    if args.k_stk == 9e99:
+        plt.ylim(0,0.08)
+    else:
+        plt.ylim(0)
     plt.legend()
     plt.subplots_adjust(top=0.95)
     plt.gca().spines['right'].set_visible(False)
@@ -484,11 +487,11 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                 plt.bar(time_bin_center, time_hists[-i], width=increment, align='center', label='Trailing', alpha = 0.6, color='xkcd:green')
                 plt.xlabel(r'One-bound time ($\mu s$)')
                 plt.ylabel('Probability')
-                plt.axvline(avg_affinity_time[i], color='Red', ls='--', label='Average affinity time')
+                plt.axvline(avg_affinity_time[i], color='Red', ls='--', linewidth=2, label='Average affinity time')
                 # plt.axvline(avg_affinity_time[-i], color='Red', ls='--')
                 xticks = np.arange(0.0, x_upper_lim+x_increment, x_increment)
                 labels = np.arange(0.0, (x_upper_lim+x_increment)*1e6, x_increment*1e6)
-                plt.xlim(-increment,x_upper_lim)
+                plt.xlim(0,x_upper_lim)
                 plt.xticks(xticks, np.around(labels,decimals=decimal))
                 plt.legend()
                 plt.subplots_adjust(top=0.93)
@@ -502,14 +505,14 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     # Bothbound PLOTS
     # Prob Lagging vs Initial L plot
-    plt.figure('Prob lagging vs init L', figsize=(9,3))
+    plt.figure('Prob lagging vs init L', figsize=(9,4))
 
     yildiz_displacements = [10, 20, 30, 40, 50]
     yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
     yildiz_lagging_uncertainty = [0.06, 0.04, 0.035, 0.045, 0.075]
     plt.errorbar(yildiz_displacements, yildiz_lagging_fractions, yerr=yildiz_lagging_uncertainty, label="Experiment", fmt='o-', c='C0', linestyle='', capsize=3)
 
-    plt.scatter(bb_L, bb_P_trailing, label='Model',color='C1')
+    plt.plot(bb_L, bb_P_trailing, label='Model',color='C1')
     plt.xlim(0, 55)
     plt.xlabel('Binding domain separation (nm)')
     plt.ylabel('P(lagging step)')
@@ -590,20 +593,21 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     yildiz_data = np.loadtxt("../data/yildiz_fig2A_tracking_data.txt", dtype = np.float64)
     plt.figure('Trajectory Plot', figsize=(7.5,5))
     plt.hlines(bx_position[:,1], cumulative_time[:-1], cumulative_time[1:], color='blue')
-    plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], label="model", color='red')
+    plot1 = plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
+    plot2 = plt.hlines(bx_position[0,0], cumulative_time[0], cumulative_time[1], color='red', linestyle='--')
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
     plt.plot(yildiz_data[0], yildiz_data[1]+200, '--', markersize=0, color="blue", alpha=0.8)
-    plt.plot(yildiz_data[0], yildiz_data[2]+200, '--', label="Experiment", markersize=0, color="red", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[2]+200, '--', markersize=0, color="red", alpha=0.8)
     # plt.yticks(np.append(initial_disp, 0))
-    plt.ylim(np.amin(bx_position)-50, 1000)
-    plt.xlim(-1, right=24)
+    plt.ylim(np.amin(bx_position)-50, 810)
+    plt.xlim(0, right=24)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
     plt.subplots_adjust(top=0.85, bottom = 0.05)
-    plt.legend()
+    plt.legend([plot1, plot2], ["Model", "Experiment"])
     plt.grid()
     plt.savefig(plotpath+u+'trajectory_plot_'+params_string+'.png', bbox_inches = 'tight')
 

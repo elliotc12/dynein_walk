@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \graphicspath{{./Figures/},{../../plots/}}
 \usepackage{geometry}
-\geometry{margin=1in}
+\geometry{margin=1in, top=0.75in}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
@@ -36,7 +36,7 @@
 \newcommand\davidsays[1]{\textbf{\it [D: #1]}}
 
 \title{
-	\Large{Simulating Dynein: A Monte Carlo Improvement to a Dynamical Model of the Dynein Motor Protein}\vspace{1em}\\
+	\Large{Simulating the Dynein Motor Protein: A Monte Carlo Approach to Achieve Coordinated Stepping}\vspace{1em}\\
 	\large{by} \\ 
 	\Large{Jin Kiatvongcharoen} \vspace{0.5em}\\[2in] 
 %	\includegraphics[width=0.4\columnwidth]{OSU_logo.png}\vspace{1em}\\
@@ -44,7 +44,7 @@
 	\normalsize{submitted to the Department of Physics, Oregon State University}\\%\vspace{2em}\\
 	\normalsize{in partial fulfillment of the requirements for the degree of}\\
 	\normalsize{B.S. in Physics}\vspace{1.5 em}\\
-	\normalsize{Draft submitted \today}\\
+	\normalsize{Submitted \today}\\
 
 
 }
@@ -56,7 +56,7 @@
 
 
 	\chapter*{Abstract}
-	The motor protein dynein is responsible for cellular processes such as axonal transport and cell division by delivering vital information along the microtubule track. A failed delivery can cause severe damage to the cell’s functionality and lead to neurological diseases. Despite dynein's rich history in cellular research, the mechanisms of its motility remains poorly understood due to its large size, flexible structure, and stochastic stepping. Unlike its motor protein siblings which posses uniform stepping, dynein's step is unpredictable and can vary in size and direction. However, experimentalist Ahmet Yildiz and colleagues observed a stepping dependence within the interhead separation, indicating a possible correlation during dynein's step. To investigate this, we developed a two-dimensional, particle-rod model of dynein and simulated its stepping mechanisms using Monte Carlo methods and Brownian dynamics. We simplified the mechanochemical cycle by simulating rate limiting steps that transitions between a both-bound and one-bound state and emulated the powerstroke by defining springs in each domain. After optimizing parameters sets, the model achieved Yildiz's stepping correlation only when the binding rates were significantly large. Our simulations indicate that dynein must take many short ($\langle t \rangle < 0.1 \mu s$) and immediate steps, with step lengths close to 0 nm, in order to reproduce a stepping dependence within the interhead domain separation. These results demonstrates the model's ability to capture dynamic properties from experimental observations and provide further support for other experimental hypotheses regarding dynein's step.
+	The motor protein dynein is responsible for cellular processes such as axonal transport and cell division by delivering vital information along the microtubule track. A failed delivery can cause severe damage to the cell’s functionality and lead to neurological diseases. Despite dynein's rich history in cellular research, the mechanism of its motility remains poorly understood due to its large size, flexible structure, and stochastic stepping. Unlike its motor protein siblings which possess uniform stepping, dynein's step is unpredictable and can vary in size and direction. However, experimentalist Ahmet Yildiz and colleagues observed a stepping dependence within the interhead separation, indicating a possible correlation during dynein's step. To investigate this, we developed a two-dimensional, particle-rod model of dynein and simulated its stepping mechanisms using Monte Carlo methods and Brownian dynamics. We simplified the mechanochemical cycle by simulating rate limiting steps that transitions between a both-bound and one-bound state and emulated the powerstroke by defining springs in each domain. After optimizing parameters sets, the model achieved Yildiz's stepping correlation only when the binding rates were significantly large. Our simulations indicate that dynein must take many short ($\langle t \rangle < 0.1 \mu s$) and immediate steps, with step lengths close to 0 nm, to reproduce a stepping dependence within the interhead domain separation. These results demonstrate the model's ability to capture dynamic properties from experimental observations and provide further support for other experimental hypotheses regarding dynein's step.
 	
 	 
 %	
@@ -85,7 +85,7 @@
 
 \newpage
 
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{references}
 
 

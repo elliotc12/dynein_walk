@@ -59,7 +59,7 @@ def plot_dynein_equilibrium_onebound(fig, start_x_units, start_y_units, units_pe
 
     plt.figure(fig.number)
     plt.plot(Xs, Ys, c="white", zorder=1)
-    plt.plot([Xs[0], Xs[0] + 5*units_per_nm*np.cos(mt_angle)], [Ys[0], Ys[0] + 5*units_per_nm*np.sin(mt_angle)], c="red", linewidth=1, zorder=5)
+    # plt.plot([Xs[0], Xs[0] + 5*units_per_nm*np.cos(mt_angle)], [Ys[0], Ys[0] + 5*units_per_nm*np.sin(mt_angle)], c="red", linewidth=1, zorder=5)
     plt.scatter(Xs, Ys, c="#aeaae5", s=Ds*Ds, zorder=2, edgecolor='white', alpha=0.3)
     plt.scatter(Xs, Ys, s=Ds*Ds, zorder=3, edgecolor='white', facecolors="none", linewidth=1)
 
@@ -99,7 +99,7 @@ merged_crystalstruct_img = mpimg.imread('papers/paper/figures/model-raw-images/p
 units_per_nm = 4.13
 scalebar_nm = 15
 fig = plot_image(merged_burgess_img, "lower", dpi=100)
-plt.plot([57, 57+scalebar_nm*units_per_nm], [10, 10])
+plt.plot([57, 57+scalebar_nm*units_per_nm])
 plt.axis('off')
 plot_dynein_equilibrium_onebound(fig, 57, 29, units_per_nm, -np.pi*0.31)
 plt.gca().set_aspect('equal')
@@ -111,7 +111,7 @@ scalebar_nm = 26.3 # using tip-to-tip distance between MTBD and AAA1, known from
 fig = plot_image(grotjahn_img, "upper", dpi=100)
 plt.imshow(grotjahn_img) # angles rotate cw
 plot_dynein_equilibrium_onebound(fig, 850, 667.5, units_per_nm, np.pi, flipx=True)
-plt.plot([850, 850+scalebar_nm*units_per_nm*np.cos(-params.eqb*np.pi/180.0)], [667.5, 667.5+scalebar_nm*units_per_nm*np.sin(-params.eqb*np.pi/180.0)])
+# plt.plot([850, 850+scalebar_nm*units_per_nm*np.cos(-params.eqb*np.pi/180.0)], [667.5, 667.5+scalebar_nm*units_per_nm*np.sin(-params.eqb*np.pi/180.0)])
 plt.axis('off')
 plt.gca().set_aspect('equal')
 plt.savefig("plots/grotjahn-model-figure.pdf", bbox_inches='tight', format="pdf", interpolation='none', dpi=100)

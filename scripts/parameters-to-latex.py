@@ -32,9 +32,9 @@ def latex_format(x):
     return x
 
 parameters = {
-"k_b" :               params.for_simulation['k_b'],
+"k_b" :               params.for_simulation['k_b']*0.01, #kb in nm/s
 "k_ub" :              params.for_simulation['k_ub'],
-"k_stk" :              params.for_simulation['k_stk'],
+"k_stk" :             params.for_simulation['k_stk'],
 "trajectory_k_b" :    9.5e9, # params.trajectory_k_b,
 "trajectory_k_ub" :   1e20, # params.trajectory_k_ub,
 "cexp" :              params.for_simulation['exp-unbinding-constant'],
@@ -49,7 +49,8 @@ parameters = {
 "lt" :                params.for_simulation['lt'],
 "radius_t" :          params.for_simulation['rt'],
 "radius_m" :          params.for_simulation['rm'],
-"radius_b" :          params.for_simulation['rb']
+"radius_b" :          params.for_simulation['rb'],
+"MT_binding_distance":            0.01, #nm MICROTUBULE_BINDING_DISTANCE from default_parameters.h
 }
 
 with open("data/paper_params.tex", "w") as f:
