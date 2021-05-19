@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--L", type=int, help="Initial L", default=8)
 parser.add_argument("-N", "--N", type=float, help="how many steps to do", default=1e20)
 parser.add_argument("-u", "--k_ub", type=float, help="Unbinding const", default=params.for_simulation['k_ub'])
-parser.add_argument("-k", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
+parser.add_argument("-b", "--k_b", type=float, help="Binding const", default=params.for_simulation['k_b'])
 parser.add_argument("-s", "--k_stk", type=float, help="Sticky const", default=params.for_simulation['k_stk'])
 parser.add_argument("-cb", "--cb", type=float, help="Spring constant binding domain", default=params.for_simulation['cb'])
 parser.add_argument("-cm", "--cm", type=float, help="Spring constant motor domain", default=params.for_simulation['cm'])
@@ -38,11 +38,11 @@ u = ''
 if args.underMT == False:
     u = 'u_'
 
-data_dir = '../data/mc_data_{0}_{1:.2e}_{2:.2e}_{3}_{4}_{5}_{6}_{7}_{8}_{9}/'.format(args.k_ub,
-                    args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+data_dir = '../data/mc_data_{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}/'.format(args.k_b,
+            args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
-params_extenstion = 'pictures_{0}_{1}_{2}_{3:.2e}_{4:.2e}_{5}_{6}_{7}_{8}_{9}_{10}_{11}_{12}.npz'.format(args.L,
-                    args.N, args.k_ub, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
+params_extenstion = 'pictures_{0}_{1}_{2:.2e}_{3:.2e}_{4}_{5}_{6}_{7}_{8}_{9}_{10}_{11}.npz'.format(args.L,
+                    args.N, args.k_b, args.k_stk, args.dt, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
 
 pictures_file = data_dir + u + params_extenstion
 
