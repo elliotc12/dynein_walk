@@ -27,73 +27,31 @@
   Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
 \end{abstract}
 
-\section*{TODO August 2020}
-\begin{enumerate}
-  \item Get new simulations working !!!!!!!!!!!!!!!!!!!
-  \item Articulate data we fit to
-  \begin{enumerate}
-    \item Velocity -> unbinding rate
-    \item Ratio of leading vs trailing steps -> exponential parameter
-    \item Average step length -> other parameters
-    \item Yildiz weird slope -> sticky rate + binding rate
-    \item Avoid instant rebinds -> sticky rate
-    \item Time to kick from MD??
-    \item efficiency (affects instant rebind)
-  \end{enumerate}
-  \item Do the fit (requires 1 above)
-  \item Could have a fixed binding immunity time rather than sticky rate
-  \paragraph{Advantages of immunity time}
-  \begin{enumerate}
-    \item Might accurately reflect a diffusive escape from an energy well
-  \end{enumerate}
-  \paragraph{Advantages of sticky rate}
-  \begin{enumerate}
-    \item Accurately reflects the dynamics of a chemical process
-  \end{enumerate}
-\end{enumerate}
+%\section*{TODO August 2020}
+%\begin{enumerate}
+%  \item Get new simulations working !!!!!!!!!!!!!!!!!!!
+%  \item Articulate data we fit to
+%  \begin{enumerate}
+%    \item Velocity -> unbinding rate
+%    \item Ratio of leading vs trailing steps -> exponential parameter
+%    \item Average step length -> other parameters
+%    \item Yildiz weird slope -> sticky rate + binding rate
+%    \item Avoid instant rebinds -> sticky rate
+%    \item Time to kick from MD??
+%    \item efficiency (affects instant rebind)
+%  \end{enumerate}
+%  \item Do the fit (requires 1 above)
+%  \item Could have a fixed binding immunity time rather than sticky rate
+%  \paragraph{Advantages of immunity time}
+%  \begin{enumerate}
+%    \item Might accurately reflect a diffusive escape from an energy well
+%  \end{enumerate}
+%  \paragraph{Advantages of sticky rate}
+%  \begin{enumerate}
+%    \item Accurately reflects the dynamics of a chemical process
+%  \end{enumerate}
+%\end{enumerate}
 
-\section*{Plots from MC}
-%\begin{figure}[tbhp]
-%\centering
-%\includegraphics[width=\linewidth]{../../plots/mc_plots/final_disp_probability_distribution_30.0_5.50e+09_1.00e+09_0.08_1.05_0.0_120.0_197.0_242.0_-0.3563}
-%\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
-%\label{fig:final_disp_prob}
-%\end{figure}
-
-%\begin{figure}[tbhp]
-%\centering
-%\includegraphics[width=\linewidth]{../../plots/mc_plots/step_length_probability_distribution_30.0_5.50e+09_1.00e+09_0.08_1.05_0.0_120.0_197.0_242.0_-0.3563}
-%\caption{\textbf{Probability distribution plot of step length vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
-%\label{fig:step_length_prob}
-%\end{figure}
-
-%\begin{figure}[tbhp]
-%\centering
-%\includegraphics[width=\linewidth]{../../plots/mc_plots/step_length_1d_probability_density_30.0_5.50e+09_1.00e+09_0.08_1.05_0.0_120.0_197.0_242.0_-0.3563}
-%\caption{\textbf{Probability density of step lengths.} Dimentions: $nm^{-1}$ (Probability per nm).}
-%\label{fig:step_length_prob_den}
-%\end{figure}
-%
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
-\caption{\textbf{Probability of lagging step vs. initial L.} Dimentions: dimensionless (Probability).}
-\label{fig:prob_lagging}
-\end{figure}
-
-%% \begin{figure}[tbhp]
-%% \centering
-%% \includegraphics[width=\linewidth]{../../plots/mc_plots/ob_time_probability_density_8.0_30.0_5.50e+09_1.00e+09_0.08_1.05_0.0_120.0_197.0_242.0_-0.3563}
-%% \caption{\textbf{Onebounnd Time} Dimentions: $s$.}
-%% \label{fig:ob_time}
-%% \end{figure}
-
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/mc_plots/bb_time_-0.5}
-\caption{\textbf{Bothbound Time.} Dimentions: $s$ .}
-\label{fig:bothbound_time}
-\end{figure}
 
 \newpage
 
@@ -267,6 +225,40 @@ The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-
 
 
 \section{Results}
+
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=\linewidth]{../../plots/mc_plots/u_final_disp_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
+\label{fig:final_disp_prob}
+\end{figure}
+
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
+\label{fig:final_disp_prob}
+\end{figure}
+
+
+
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=\linewidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
+\label{fig:final_disp_prob}
+\end{figure}
+
+
+\begin{figure}[tbhp]
+	\centering
+	\includegraphics[width=\linewidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
+	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
+	\label{fig:BBPlots}
+\end{figure}
+
+
 
 Motion equations were derived for the pre-stroke and post-stroke states of the model. The model was simulated by starting in the equilibrium post-stroke position and using Euler's method to time-evolve the model, using a timestep of 1e-10 \textit{s}. The model was transitioned between post-stroke and pre-stroke states using unbinding and binding rates. Model parameters were estimated from various experimental results. Spring constants were chosen to fit the model stepping size to single-molecule head-labelled experiments\cite{yildizpaper}, as outlined in Figure S\ref{fig:supp-model-fit}. Model rate constants were fit to motor velocities from the same experiment, along with theoretical calculations for the prestroke and poststroke times outlined in the Methods section. The tension-gating parameter $c$ was fit to the leading/lagging unbinding likelihood versus interhead separation from the same experiment, as shown in Figure \ref{fig:tensiongating}. Thirty-two 5-second simulations were run, each initialized with a different random seed. Each simulation was forward directed, took both forward and backward steps, and displayed stepping dynamics similar to that seen in experiment.
 
