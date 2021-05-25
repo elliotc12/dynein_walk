@@ -3,9 +3,10 @@ from os import path, mkdir
 import numpy as np
 from numpy.linalg import matrix_power
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 from matplotlib import gridspec
 from statistics import mean
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes, zoomed_inset_axes
 import scipy.constants
 import sys
 sys.path.append("../data")
@@ -220,10 +221,10 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     # Yildiz final disp vs initial disp line
     yildiz_line = [(0.6*x)+9.1 for x in np.asarray(initial_disp)]
 
-    plt.figure('Probability Distribution to Match Yildiz')
-    plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution)
-    plt.plot(initial_disp, lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(b,m), linestyle=":", color='C1')
-    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='C0')
+    plt.figure('Probability Distribution to Match Yildiz', figsize = (8,6))
+    plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution, vmax = 0.003)
+    plt.plot(initial_disp, lin_fit, label='Model: y = ({:.2}) + ({:.1})x'.format(b,m), linestyle=":", color='C1')
+    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='Red')
     plt.xlabel('Initial displacement (nm)')
     plt.ylabel('Final displacement (nm)')
     plt.xlim(-48,48)
@@ -419,19 +420,21 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(initial_disp)]
 
     # 2D hist step_length
-    # plt.figure('Step length probability distribution')
-    # plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution)
-    # # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
-    # plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='r')
-    # plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    # plt.xlabel('Initial displacement (nm)')
-    # plt.ylabel('step length (nm)')
-    # plt.ylim(-50,50)
-    # plt.colorbar()
-    # plt.legend()
+    plt.figure('Step length probability distribution', figsize = (8,6))
+    plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution, vmax = 0.003)
+    # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
+    plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='C1')
+    plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='Red')
+    plt.xlabel('Initial displacement (nm)')
+    plt.ylabel('step length (nm)')
+    plt.gca().set_aspect('equal')
+    plt.ylim(-56,56)
+    plt.xlim(-56,56)
+    plt.colorbar().set_label(r'Probability (1/nm$^2$)')
+    plt.legend(loc = 'lower left')
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
-            # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
-    # plt.savefig(plotpath+u+'step_length_probability_distribution_'+params_string+'.png')
+    #         args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    plt.savefig(plotpath+u+'step_length_probability_distribution_'+params_string+'.png')
     #
     #
     # step_length_edge = final_disp_edge - initial_disp_edge
@@ -591,24 +594,47 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     vline_x = cumulative_time[1:-1]
 
     yildiz_data = np.loadtxt("../data/yildiz_fig2A_tracking_data.txt", dtype = np.float64)
-    plt.figure('Trajectory Plot', figsize=(7.5,5))
+    fig, ax = plt.subplots(figsize=(7.5,5))
     plt.hlines(bx_position[:,1], cumulative_time[:-1], cumulative_time[1:], color='blue')
     plot1 = plt.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
     plot2 = plt.hlines(bx_position[0,0], cumulative_time[0], cumulative_time[1], color='red', linestyle='--')
     plt.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
     plt.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
-    plt.plot(yildiz_data[0], yildiz_data[1]+200, '--', markersize=0, color="blue", alpha=0.8)
-    plt.plot(yildiz_data[0], yildiz_data[2]+200, '--', markersize=0, color="red", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[1]+120, '--', markersize=0, color="blue", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[2]+120, '--', markersize=0, color="red", alpha=0.8)
+
+    x1, x2, y1, y2 = [6, 10, 250, 370]
+    box_v = np.array([x1, x2])
+    box_h = np.array([y1, y2])
+    plt.hlines(box_h, box_v[0],box_v[1], linewidth = 0.5)
+    plt.vlines(box_v, box_h[0],box_h[1], linewidth = 0.5)
+
+
     # plt.yticks(np.append(initial_disp, 0))
-    plt.ylim(np.amin(bx_position)-50, 810)
+    plt.ylim(np.amin(bx_position)-50, 720)
+    # plt.ylim(np.amin(bx_position), 500)
     plt.xlim(0, right=24)
     plt.xlabel('Time (s)')
     plt.ylabel('On-axis position (nm)')
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
     plt.subplots_adjust(top=0.85, bottom = 0.05)
-    plt.legend([plot1, plot2], ["Model", "Experiment"])
+    plt.legend([plot1, plot2], ["Model", "Experiment"], loc = 'upper left')
     plt.grid()
+
+    ax2 = fig.add_axes([0.5,0.08, 0.35,0.3])
+    ax2.hlines(bx_position[:,1], cumulative_time[:-1], cumulative_time[1:], color='blue')
+    ax2.hlines(bx_position[:,0], cumulative_time[:-1], cumulative_time[1:], color='red')
+    ax2.vlines(vline_x, bx_position[:-1,1], bx_position[1:,1], color='blue')
+    ax2.vlines(vline_x, bx_position[:-1,0], bx_position[1:,0], color='red')
+    ax2.axhline(300, color='grey', linewidth = 1, alpha = 0.5)
+    ax2.plot(yildiz_data[0], yildiz_data[1]+150, '--', markersize=0, color="blue", alpha=0.8)
+    ax2.plot(yildiz_data[0], yildiz_data[2]+150, '--', markersize=0, color="red", alpha=0.8)
+    ax2.set_xlim(x1,x2)
+    ax2.set_ylim(y1,y2+30)
+    ax2.get_xaxis().set_ticks([])
+    ax2.get_yaxis().set_ticks([])
+
     plt.savefig(plotpath+u+'trajectory_plot_'+params_string+'.png', bbox_inches = 'tight')
 
     print('Avg velocity Yildiz: ', yildiz_data[1][-1]/yildiz_data[0][-1])
@@ -655,7 +681,7 @@ def main():
     data_params_string =  "{0:.2e}_{1:.2e}_{2}_{3}_{4}_{5}_{6}_{7}_{8}".format(args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
     params_string = str(args.k_ub) + '_' + data_params_string
 
-    plt.rcParams.update({'font.size': 12})
+    plt.rcParams.update({'font.size': 14})
 
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(args.C)
