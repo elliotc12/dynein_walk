@@ -222,7 +222,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     yildiz_line = [(0.6*x)+9.1 for x in np.asarray(initial_disp)]
 
     plt.figure('Probability Distribution to Match Yildiz', figsize = (8,6))
-    plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution, vmax = 0.003)
+    plt.pcolor(initial_disp_edge, final_disp_edge, probability_distribution, vmax= 0.003)
     plt.plot(initial_disp, lin_fit, label='Model: y = ({:.2}) + ({:.1})x'.format(b,m), linestyle=":", color='C1')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (0.6)x', linestyle=":", color='Red')
     plt.xlabel('Initial displacement (nm)')
@@ -401,7 +401,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.savefig(plotpath+u+'step_length_1d_probability_density_'+params_string+'.png')
 
 
-    s_initial_disp_edge, s_length__edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
+    s_initial_disp_edge, s_length_edge = np.meshgrid(initial_disp_edge[0], s_bin_edges)
     s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]    # a 1D array giving final displacement bin width
 
     s_probability_distribution = np.zeros((2*num_disp-1,num_disp))
@@ -419,9 +419,15 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # Yildiz step length vs initial disp line
     yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(initial_disp)]
 
+    spd_max = np.max(s_probability_distribution)
+    # clevels = np.array([0.01*spd_max, 0.05*spd_max, 0.1*spd_max, 0.3*spd_max, 0.5*spd_max, 0.7*spd_max, 0.9*spd_max])
+    clevels = np.array([0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9])
+
     # 2D hist step_length
     plt.figure('Step length probability distribution', figsize = (8,6))
-    plt.pcolor(s_initial_disp_edge, s_length__edge, s_probability_distribution, vmax = 0.003)
+    contours = plt.contour(s_initial_disp_edge[:-1, :-1], s_length_edge[:-1, :-1], s_probability_distribution/spd_max, levels = clevels, colors = 'black')
+    plt.clabel(contours, clevels[::2], inline = True, fontsize= 9)
+    plt.pcolor(s_initial_disp_edge, s_length_edge, s_probability_distribution, vmax = 0.003)
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit, label='Model: y = ({:.3}) + ({:.3})x'.format(s_b,s_m), linestyle=":", color='C1')
     plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='Red')
