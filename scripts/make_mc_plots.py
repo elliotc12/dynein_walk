@@ -487,12 +487,14 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     s_bin_width = s_bin_edges[1:] - s_bin_edges[:-1]
 
     s_probability_distribution = np.zeros((2*num_disp-1, num_disp))
-    for j in initial_disp_index:
-        s_probability_distribution[initial_disp_index+num_disp-1-j,
-                                   j] = probability_distribution[initial_disp_index, j]*final_disp_bin_width
-        s_probability_distribution[:, j] /= s_bin_width
-    # int, fin = np.meshgrid(final_disp_bin_width, final_disp_bin_width)
-    # s_probability_distribution = probability_distribution*int
+    initial_disp_center = 0.5*(initial_disp_edge[0][:-1]  + initial_disp_edge[0][1:])
+    step_length_center = 0.5*(s_bin_edges[1:]+ s_bin_edges[:-1])
+    for i_initial in initial_disp_index:
+        for i_step_length in range(2*num_disp-1):
+            this_step_length = step_length_center[i_step_length]
+            final_displacement = this_step_length + initial_disp_center[i_initial]
+            i_final = np.argmin(abs(initial_disp_center - final_displacement))
+            s_probability_distribution[i_step_length, i_initial] = probability_distribution[i_final, i_initial]
 
     # Intercept & Slope for Best-fit of step length
     s_b, s_m, s_lin_fit = least_squares(
