@@ -507,14 +507,33 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     yildiz_line = [(-0.4*x)+9.1 for x in np.asarray(initial_disp)]
 
     spd_max = np.max(s_probability_distribution)
-    # clevels = np.array([0.01*spd_max, 0.05*spd_max, 0.1*spd_max, 0.3*spd_max, 0.5*spd_max, 0.7*spd_max, 0.9*spd_max])
-    clevels = np.array([0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9])
+
+    def percentile(prob):
+        return s_probability_distribution[s_probability_distribution>prob].sum()/s_probability_distribution.sum()
+    def find_percentile(fraction):
+        pmax = 1
+        pmin = 0
+        while pmax - pmin > 1e-6:
+            pmid = 0.5*(pmin + pmax)
+            if percentile(pmid) > fraction:
+                pmin = pmid
+            else:
+                pmax = pmid
+        return pmid
+    quantiles = {
+        find_percentile(0.5): '50%',
+        find_percentile(0.9): '90%',
+    }
 
     # 2D hist step_length
-    plt.figure('Step length probability distribution', figsize=(8, 6))
-    contours = plt.contour(s_initial_disp_edge[:-1, :-1], s_length_edge[:-1, :-1],
-                           s_probability_distribution/spd_max, levels=clevels, colors='black')
-    plt.clabel(contours, clevels[::2], inline=True, fontsize=9)
+    plt.figure('Step length probability distribution', figsize=(16, 12))
+    
+    s_initial_disp_center, s_length_center = np.meshgrid(
+        initial_disp_center,
+        step_length_center)
+    contours = plt.contour(s_initial_disp_center, s_length_center,
+                           s_probability_distribution, levels=sorted(list(quantiles.keys())), colors='white')
+    plt.clabel(contours, quantiles.keys(), fmt=quantiles, inline=True, fontsize=9)
     plt.pcolor(s_initial_disp_edge, s_length_edge,
                s_probability_distribution, vmax=0.003)
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
@@ -847,32 +866,3 @@ def main():
 if __name__ == "__main__":
     params = importlib.import_module("params")
     main()
-    print("""
-    TO DO ITEMS:
-
-    a) Clean code and make less bug-prone:
-
-      - DONE: Move to consistent names (displacement = disp, L only means L,
-        etc, maybe P is dimensionless prob and p is probability density,
-        bin width is delta_disp, delta_L?)
-
-      - Possibly all caps for 2D arrays? Or some other naming.
-
-      - DONE: Perhaps introduce functions to integrate? 1D & 2D
-
-      - Possibly introduce "random" units.  Define nm = random #, and then
-        multiply by nm when you read, divide by nm if you want to print a
-        distance in nm.  (low priority)
-
-      - Mainly DONE: Document dimensions and meaning of quantities.
-
-      - Introduce 2D arrays for 1D quantities.
-
-      - Document each functions/more
-
-      - Think of using meshgrid for almost everything.
-
-      - Done:  Fix filtering prob dist
-
-      - Done: Add Yildiz fit to the match plot.
-      """)
