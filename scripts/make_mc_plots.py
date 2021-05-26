@@ -224,11 +224,10 @@ def make_probability_distribution(args, hist, normalized_hist, bb_P_leading, bb_
         P_L_to_L = (L_to_L(T, P_ub_leading, P_ub_trailing)**num_steps)*P
         # convert to a dimensionless 1D array from a column vector
         P_L_to_L = np.array(P_L_to_L)[:, 0]
-        # Dimensions: 1/distance, sum of (P_L_to_L flat * bin width of both axis)
-        norm_const = 1/((P_L_to_L*final_L_bin_width).sum())
-        # dimensions 1/distance, a probability density
-        p_den_L = P_L_to_L*norm_const
-        # FIXME DR idea: plot p_den_L
+        # First normalize the dimensionless probability
+        P_L_to_L /= P_L_to_L.sum()
+        # dimensions 1/distance, a probability density, divide by size of each bin
+        p_den_L = P_L_to_L/final_L_bin_width
 
     # plt.figure('p_den_L')
     # plt.plot(initial_L, p_den_L)
