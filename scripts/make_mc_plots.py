@@ -260,7 +260,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
 
     plt.figure('Probability Distribution to Match Yildiz', figsize=(8, 6))
     plt.pcolor(initial_disp_edge, final_disp_edge,
-               probability_distribution, vmax=0.003)
+               probability_distribution)
     plt.plot(initial_disp, lin_fit,
              label='Model: y = ({:.2}) + ({:.1})x'.format(b, m), linestyle=":", color='C1')
     plt.plot(initial_disp, yildiz_line,
@@ -275,7 +275,7 @@ def make_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_e
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
     # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
     plt.savefig(plotpath+u+'final_disp_probability_distribution_' +
-                params_string+'.png')
+                params_string+'.pdf')
 
 
 def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
@@ -321,7 +321,7 @@ def make_filtered_prob_dist_plot(args, plotpath, probability_distribution, initi
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
     # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
     plt.savefig(
-        plotpath+u+'filtered_final_disp_probability_distribution_'+params_string+'.png')
+        plotpath+u+'filtered_final_disp_probability_distribution_'+params_string+'.pdf')
 
 
 def make_step_length_plots(args, plotpath, probability_distribution, initial_disp_edge, final_disp_edge, initial_disp, final_disp_bin_width, **_):
@@ -339,22 +339,6 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     s_arr[-1] = np.sum(final_disp_bin_width)-ds[-1]
     for i in range(1, len(ds)-1):
         s_arr[i] = s_arr[i-1] + ds[i]
-
-    for i in initial_disp_index:
-        s_range1 = np.arange(i, num_disp)
-        s_range2 = np.arange(0, num_disp - i)
-        s_current1 = np.zeros(np.shape(probability_distribution))
-        s_current2 = np.zeros(np.shape(probability_distribution))
-        s_current1[s_range1,
-                   s_range2] = probability_distribution[s_range1, s_range2]
-        s_current2[s_range2,
-                   s_range1] = probability_distribution[s_range2, s_range1]
-        s_den[i+len(probability_distribution)-1] = integrate_2d(s_current1,
-                                                                final_disp_bin_width, final_disp_bin_width)  # negative step length
-        s_den[len(probability_distribution)-i-1] = integrate_2d(s_current2,
-                                                                final_disp_bin_width, final_disp_bin_width)  # positive step length
-    s_den = s_den/ds  # dimensions probability/length
-    print('1d step length integral: ', integrate_1d(s_den, ds))
 
     # 2D probability distribution of step length
     s_bin_edges = np.zeros(len(s_arr)+1)
@@ -453,34 +437,8 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
         yildiz_normalized_prob_edges_fig_3A[2 *
                                             i+1] = yildiz_normalized_prob_fig_3A[i]
 
-    # 1D hist step length
-    plt.figure('Probability Density of Step Length', figsize=(9, 5))
-    s_den_norm = np.sum(s_den[s_arr > norm_length_min])*(s_arr[1]-s_arr[0])
-    plt.fill_between(s_arr, 0*s_den, s_den/s_den_norm,
-                     label='Model', color='C1')
-    plt.plot(step_length_bin_edges_fig_3A,
-             yildiz_normalized_prob_edges_fig_3A, color='C0', alpha=0.8)
-    plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
-                     yildiz_normalized_prob_edges_fig_3A, label='Experiment', color='C2', alpha=0.5)
-    # plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
-    # plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
-    #             yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
-    plt.xlabel('Step Length (nm)')
-    plt.ylabel('Probability Density (1/nm)')
-    plt.xlim(-50, 65)
-    if args.k_stk == 9e99:
-        plt.ylim(0, 0.08)
-    else:
-        plt.ylim(0)
-    plt.legend()
-    plt.subplots_adjust(top=0.95)
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['top'].set_visible(False)
-    # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
-    # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
-    plt.savefig(plotpath+u+'step_length_1d_probability_density_' +
-                params_string+'.png')
 
+    # FOR 2D Plot
     s_initial_disp_edge, s_length_edge = np.meshgrid(
         initial_disp_edge[0], s_bin_edges)
     # a 1D array giving final displacement bin width
@@ -521,21 +479,24 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
                 pmax = pmid
         return pmid
     quantiles = {
+        # find_percentile(0.01): '1%',
+        find_percentile(0.05): '5%',
+        find_percentile(0.25): '25%',
         find_percentile(0.5): '50%',
         find_percentile(0.9): '90%',
     }
 
-    # 2D hist step_length
-    plt.figure('Step length probability distribution', figsize=(16, 12))
-    
     s_initial_disp_center, s_length_center = np.meshgrid(
-        initial_disp_center,
-        step_length_center)
+    initial_disp_center,
+    step_length_center)
+
+    # 2D hist step_length
+    plt.figure('Step length probability distribution', figsize=(8, 6))
     contours = plt.contour(s_initial_disp_center, s_length_center,
                            s_probability_distribution, levels=sorted(list(quantiles.keys())), colors='white')
-    plt.clabel(contours, quantiles.keys(), fmt=quantiles, inline=True, fontsize=9)
+    plt.clabel(contours, quantiles.keys(), fmt=quantiles, inline=True, fontsize=7)
     plt.pcolor(s_initial_disp_edge, s_length_edge,
-               s_probability_distribution, vmax=0.003)
+               s_probability_distribution)
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit,
              label='Model: y = ({:.3}) + ({:.3})x'.format(s_b, s_m), linestyle=":", color='C1')
@@ -551,21 +512,42 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
     #         args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
     plt.savefig(plotpath+u+'step_length_probability_distribution_' +
-                params_string+'.png')
-    #
-    #
-    # step_length_edge = final_disp_edge - initial_disp_edge
-    # plt.figure('Parallelogram step length prob distribution')
-    # plt.pcolor(initial_disp_edge, step_length_edge, probability_distribution)
-    # plt.plot(initial_disp, yildiz_line, label='Experiment: y = (9.1) + (-0.4)x', linestyle=":", color='b')
-    # plt.xlabel('Initial displacement (nm)')
-    # plt.ylabel('Step length (nm)')
-    # plt.ylim(-50,50)
-    # plt.xlim(-50,50)
-    # plt.colorbar()
-    # plt.legend()
+                params_string+'.pdf')
+
+
+    s_den = np.zeros_like(step_length_center)
+    for i in range(len(step_length_center)):
+        s_den[i] = integrate_1d(s_probability_distribution[i], final_disp_bin_width)
+    s_den_norm = np.sum(s_den[step_length_center > norm_length_min])*(step_length_center[1]-step_length_center[0])
+
+    # 1D hist step length
+    plt.figure('Probability Density of Step Length', figsize=(9, 5))
+    plt.fill_between(step_length_center, 0*s_den, s_den/s_den_norm,
+                     label='Model', color='C1')
+    plt.plot(step_length_bin_edges_fig_3A,
+             yildiz_normalized_prob_edges_fig_3A, color='C0', alpha=0.8)
+    plt.fill_between(step_length_bin_edges_fig_3A, 0*yildiz_normalized_prob_edges_fig_3A,
+                     yildiz_normalized_prob_edges_fig_3A, label='Experiment', color='C2', alpha=0.5)
+    # plt.plot(step_length_bin_edges_fig_1B, yildiz_normalized_prob_edges_fig_1B, color='C0', alpha = 0.8)
+    # plt.fill_between(step_length_bin_edges_fig_1B, 0*yildiz_normalized_prob_edges_fig_1B,
+    #             yildiz_normalized_prob_edges_fig_1B, label='Experiment Fig 1B', color='C2', alpha=0.5)
+    plt.xlabel('Step Length (nm)')
+    plt.ylabel('Probability Density (1/nm)')
+    plt.xlim(-50, 65)
+    if args.k_stk == 9e99:
+        plt.ylim(0, 0.08)
+    else:
+        plt.ylim(0)
+    plt.legend()
+    plt.subplots_adjust(top=0.95)
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
-    # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
+    # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
+    plt.savefig(plotpath+u+'step_length_1d_probability_density_' +
+                params_string+'.pdf')
+
+
 
 
 def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
@@ -627,7 +609,7 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                 # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
                 # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
                 plt.savefig(
-                    plotpath+u+'ob_time_probability_density_'+params_string+'.png')
+                    plotpath+u+'ob_time_probability_density_'+params_string+'.pdf')
 
 
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
@@ -651,7 +633,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.subplots_adjust(top=0.92)
     # plt.title('C = {}'.format(args.C))
     plt.savefig(
-        plotpath+'prob_lagging_vs_init_L_{}.png'.format(args.C), bbox_inches='tight')
+        plotpath+'prob_lagging_vs_init_L_{}.pdf'.format(args.C), bbox_inches='tight')
 
     # Bothbound time plot
     plt.figure('BB time plot')
@@ -664,7 +646,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
     # plt.title('C = {}'.format(args.C))
-    plt.savefig(plotpath+'bb_time_{}.png'.format(args.C))
+    plt.savefig(plotpath+'bb_time_{}.pdf'.format(args.C))
 
 
 def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, initial_disp, **_):
@@ -778,7 +760,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     ax2.get_yaxis().set_ticks([])
 
     plt.savefig(plotpath+u+'trajectory_plot_' +
-                params_string+'.png', bbox_inches='tight')
+                params_string+'.pdf', bbox_inches='tight')
 
     print('Avg velocity Yildiz: ', yildiz_data[1][-1]/yildiz_data[0][-1])
 
