@@ -55,6 +55,30 @@
 
 \newpage
 
+\davidsays{Main point: earlier models cannot explain the experimentally observed correlation between
+  the initial displacement and step size.
+
+  Introduce experiment first, esp. Yildiz.
+
+  Explain existing models a bit more.  Not many details about each model, but for every model explain what
+  it does and does not explain.
+
+  QUESTION: Do we want to give the geometric argument for a typical final displacement?
+
+  QUESTION: What predictions can we make?
+  
+  There should be many very short-distance steps that are not shown in experiment.
+
+  The typical time spent actually taking a step (i.e. one-bound) should be very short.  (Be quantitative.)
+  It's not been measured, and puts a limit on the time spent getting ready to rebind.  Does this mean we
+  want the onebound time histogram?  I think not, but we do want the average value, and maybe median or similar?
+
+  Power stroke model works? Even if the stalk does not do work by exerting torque.  Does that make
+  it a winch model? This will require discussion early and late.
+
+  Future work: add a backwards force to the model.
+}
+
 %% \dropcap{C}ytoplasmic dynein-1 is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
 
 %% Dynein is unique in that it has a widely varied step size. Dynein's average step is 8 \textit{nm} in the forwards direction, but it is capable of taking 32 \textit{nm} steps in the forwards and reverse directions \cite{weihongpaper} \cite{yildizpaper}. This stochastic, varied stepping is contrasted with the much more regular 8 \textit{nm} step size of kinesin, another bipedal motor protein \cite{kinesin-step-size}. It has been suggested that the long separation between dynein's MTBD and dimerization sites facilitates larger diffusive searches, allowing dynein to take larger steps than kinesin \cite{cargotransport}.\\
@@ -80,15 +104,33 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
 \begin{figure}[tbhp]
 \centering
 \includegraphics[width=\linewidth]{figures/model-cartoon-simple.pdf}
-\caption{\textbf{Basic geometric model in pre-stroke and post-stroke states.} \textit{Left: } Pre-stroke model of dynein with one MTBD bound to microtubule and the other free. Angles are measured from the $+\hat{x}$ direction. \textit{Right: } Post-stroke model with both MTBDs bound to microtubule. MTBD angles are relative to $+\hat{x}$ direction, and motor angles are between stalk and tail. Lengths and radii not to scale.}
+\caption{\textbf{Basic geometric model in pre-stroke and post-stroke states.}
+\davidsays{FIXME remove spring on binding domain and fix caption.}
+\textit{Left: } Pre-stroke model of dynein with one MTBD bound to microtubule
+and the other free. Angles are measured from the $+\hat{x}$ direction.
+\textit{Right: } Post-stroke model with both MTBDs bound to microtubule. MTBD
+angles are relative to $+\hat{x}$ direction, and motor angles are between stalk
+and tail. Lengths and radii not to scale.}
 \label{fig:model}
 \end{figure}
 
 \begin{figure}[tbhp]
-\includegraphics[width=0.4\linewidth]{../../plots/burgess-model-figure.pdf}%
-\includegraphics[width=0.6\linewidth]{../../plots/grotjahn-model-figure.pdf}%
+  \centering
+\includegraphics[width=0.5\linewidth]{../../plots/burgess-model-figure.pdf}%
+% \includegraphics[width=0.6\linewidth]{../../plots/grotjahn-model-figure.pdf}%
 %% \includegraphics[width=0.3\linewidth]{../../plots/crystal-model-figure.pdf}%
-\caption{\textbf{Scale model compared with experimental images.} \textit{Left:} Model with angles at pre-stroke equilibrium superimposed over axonemal dynein c heavy chain micrograph in the pre-stroke ADP-Vi-bound state \cite{burgess-paper}. Interdomain lengths and radii scaled to micrograph scale bar. No microtubule is present, so $\theta_{nb}$ is arbitrary. \textit{Right: } Model with angles at pre-stroke equilibrium superimposed over density map of full-length native cytoplasmic dynein with accessory tail proteins (map ID EMD-7000) \cite{grotjahn}. Interdomain lengths and radii scaled to density map.}
+\caption{\textbf{Scale model compared with experimental images.}
+%  \textit{Left:}
+ Model with angles at pre-stroke equilibrium superimposed over
+ axonemal dynein c heavy chain micrograph in the pre-stroke ADP-Vi-bound state
+ \cite{burgess-paper}. Interdomain lengths and radii scaled to micrograph scale
+ bar. % No microtubule is present, so $\theta_{nb}$ is arbitrary.
+%   \textit{Right: }
+%  Model with angles at pre-stroke equilibrium superimposed over density map of
+%  full-length native cytoplasmic dynein with accessory tail proteins (map ID
+%  EMD-7000) \cite{grotjahn}. Interdomain lengths and radii scaled to density
+%  map.
+ }
 \label{fig:micrographs}
 \end{figure}
 
@@ -112,9 +154,9 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
     $L_s$ & $\ls$ nm & $21$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
     $L_t$ & $\lt$ nm & $23$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
 %    $\theta_b$ & $\eqb$ &  120 & \cite{leschziner} \\
-    $\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  197 & \cite{Burgess2003}\\
-    $\theta_m^{\mbox{post}}$ & $\eqmpost$ & 242 & \cite{Burgess2003}\\
-    $\theta_t$ & $\eqt$ &  & \\
+    $\theta_m^{\mbox{pre}}$ & $\eqmpre^\circ$ &  197$^\circ$ & \cite{Burgess2003}\\
+    $\theta_m^{\mbox{post}}$ & $\eqmpost^\circ$ & 242$^\circ$ & \cite{Burgess2003}\\
+    $\theta_t$ & $\eqt^\circ$ &  & \\
     $R_t$ & $\radiust$ nm & $4$ nm & \cite{Burgess2003}\\
     $R_m$ & $\radiusm$ nm & $5.5$ nm & \cite{Burgess2003}\\
     $R_b$ & $\radiusb$ nm & $1.25$ nm & \cite{Burgess2003}\\
@@ -132,8 +174,30 @@ The dynein model represents a full dynein complex consisting of two dynein heavy
 
 Values for $R$ and $L$ were acquired by aligning the dynein model with EM micrographs of the full dynein complex \cite{burgess-paper,grotjahn}, as shown in Figure \ref{fig:micrographs}. See Table \ref{table:params} for these values. $L_t$, the stem length between motor domain and tail, was calculated as the distance between the center of the EM motor domains and identified dimerization site in the tail domain \cite{}. However, studies which compare truncated GST-linked dynein lacking a tail and native dynein find the two step with similar dynamics \cite{weihongpaper-i-think}, suggesting that our model with an $L_t$ value from native dynein should be comparable with studies on truncated dynein constructs as well.
 
+\davidsays{Maybe we want to discuss right here the likely step sizes for leading and trailing steps
+\emph{if it goes to its equilibrium configuration}.  It's pretty simple and can serve as a ``validation"
+of our model geometry.}
+
 \subsection*{Equilibrium forces}
-The prestroke state has four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um}$ and $\theta_{ub}$. The poststroke state has two: $\theta_{nm}$ and $\theta_{fm}$. The model is free to vary across all of these degrees of freedom, depending on its state, barring steric interactions with the microtubule. These angles describe a planar model which is not capable of transverse motion. To capture the gross dynamics and interdomain oscillations of the protein, restoring forces are imposed on each angle about equilibrium angles $\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for prestroke and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for poststroke. Each domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$ which exerts a restoring force pushing it back to equilibrium, where $c_b$, $c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles are taken to be the average angle occupied by the protein in solution, and are thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. These angles were extracted from axonemal dynein, but structural similarity suggests they should be applicable to cytoplasmic dynein as well \cite{dynein-c-paper}. Electron microscopy studies using ADP-Vi to freeze dynein in the pre-stroke state allow for both pre- and post-stroke equilibrium angles to be found \cite{burgess-paper}.
+The prestroke state has four degrees of freedom: $\theta_{bb}, \theta_{bm},
+\theta_{um}$ and $\theta_{ub}$. The poststroke state has two: $\theta_{nm}$ and
+$\theta_{fm}$. The model is free to vary across all of these degrees of freedom,
+depending on its state, barring steric interactions with the microtubule. These
+angles describe a planar model which is not capable of transverse motion.  \davidsays{FIXME edit here.} To
+capture the gross dynamics and interdomain oscillations of the protein,
+restoring forces are imposed on each angle about equilibrium angles
+$\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for
+prestroke and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for poststroke. Each
+domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$
+which exerts a restoring force pushing it back to equilibrium, where $c_b$,
+$c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles
+are taken to be the average angle occupied by the protein in solution, and are
+thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. These
+angles were extracted from axonemal dynein, but structural similarity suggests
+they should be applicable to cytoplasmic dynein as well \cite{dynein-c-paper}.
+Electron microscopy studies using ADP-Vi to freeze dynein in the pre-stroke
+state allow for both pre- and post-stroke equilibrium angles to be found
+\cite{burgess-paper}.
 
 
 \subsection*{Binding}
@@ -244,6 +308,28 @@ The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-
 \end{figure}
 
 \section{Results}
+
+\davidsays{Discuss each figure, and each parameter (how we got it).}
+
+\davidsays{Fig. \ref{fig:ProbLagPlot} gives us the exponential unbinding constant. Also rerun to get better.
+
+Explain that the bothbound time does not vary by more than X\% regardless of initial $L$ in our model.
+}
+
+\davidsays{Do not add average both-bound time vs. L? This is a measurable prediction if we can't find an experimental
+result.  Otherwise, we can compare with experiment.  Maybe just add a sentence or two}
+
+\davidsays{histogram plot.  It shows that we are stepping the right distance, our springs are not too stiff,
+    and our angles work out.  Report the average step length.}
+
+\davidsays{contour plot. Gave us the binding rate and the affinity time.  
+Very fast binding required (to get slope right) and need affinity time to avoid instantly
+ rebinding.}
+
+ \davidsays{Trajectory plot.  Similar to experiment. The bothbound time determines velocity and depends on ATP.}
+
+
+ \davidsays{one-bound time plot. Cut?}
 
 \begin{figure}[tbhp]
 \centering
