@@ -226,15 +226,28 @@ The unbinding rate $k_{ub}$ was estimated from velocity data in the Yildiz \text
 \subsection*{$c$}
 The exponential unbinding parameter $c$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:tensiongating}. All other parameters were held at the values in Table \ref{tab:params}.
 
+\begin{figure}[tbhp]
+	\centering
+	\includegraphics[width=\linewidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
+	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
+	\label{fig:ProbLagPlot}
+\end{figure}
+
 \subsection*{$k_b$, $k_{stk}$}
 The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-final displacement slope?
 
+\begin{figure}[tbhp]
+	\centering
+	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
+	\label{fig:TrajPlot}
+\end{figure}
 
 \section{Results}
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/mc_plots/u_final_disp_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
 \caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
 \label{fig:final_disp_prob}
 \end{figure}
@@ -256,13 +269,7 @@ The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-
 \end{figure}
 
 
-\begin{figure}[tbhp]
-	\centering
-	\includegraphics[width=\linewidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
-	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
-	\label{fig:BBPlots}
-\end{figure}
+
 
 
 
