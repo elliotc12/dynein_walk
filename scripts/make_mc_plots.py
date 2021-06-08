@@ -161,9 +161,11 @@ def get_bothbound_data(args, bothbound_data_file):
     # bb_rate_trailing = mc_bb_data['rate_trailing']*params.for_simulation['k_ub']
     bb_P_leading = bb_rate_leading/(bb_rate_leading+bb_rate_trailing)
     bb_P_trailing = bb_rate_trailing/(bb_rate_leading+bb_rate_trailing)
+    bb_lt = 1/bb_rate_leading
+    bb_tt = 1/bb_rate_trailing
     bb_avg_t = 1/(bb_rate_leading+bb_rate_trailing)
 
-    return bb_L, bb_P_leading, bb_P_trailing, bb_rate_trailing+bb_rate_leading, bb_avg_t
+    return bb_L, bb_P_leading, bb_P_trailing, bb_rate_trailing+bb_rate_leading, bb_avg_t, bb_lt, bb_tt
 
 
 def make_bins_and_edges(initial_disp):
@@ -612,7 +614,7 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
                     plotpath+u+'ob_time_probability_density_'+params_string+'.pdf')
 
 
-def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
+def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, bb_lt, bb_tt, **_):
     # Bothbound PLOTS
     # Prob Lagging vs Initial L plot
     plt.figure('Prob lagging vs init L', figsize=(9, 4))
@@ -647,6 +649,30 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, **_):
     plt.gca().spines['top'].set_visible(False)
     # plt.title('C = {}'.format(args.C))
     plt.savefig(plotpath+'bb_time_{}.pdf'.format(args.C))
+
+    # # plt.figure('BB time plot')
+    # plt.plot(bb_L, bb_lt, color='red')
+    # plt.xlabel('initial L (nm)')
+    # plt.ylabel('Average time (s)')
+    # plt.xlim(0)
+    # # plt.ylim(0, 0.3)
+    # plt.legend()
+    # plt.gca().spines['right'].set_visible(False)
+    # plt.gca().spines['top'].set_visible(False)
+    # # plt.title('C = {}'.format(args.C))
+    # plt.savefig(plotpath+'bb_time_{}.pdf'.format(args.C))
+    #
+    # # plt.figure('BB time plot')
+    # plt.plot(bb_L, bb_tt, color='green')
+    # plt.xlabel('initial L (nm)')
+    # plt.ylabel('Average time (s)')
+    # plt.xlim(0)
+    # # plt.ylim(0, 0.3)
+    # plt.legend()
+    # plt.gca().spines['right'].set_visible(False)
+    # plt.gca().spines['top'].set_visible(False)
+    # # plt.title('C = {}'.format(args.C))
+    # plt.savefig(plotpath+'bb_time_{}.pdf'.format(args.C))
 
 
 def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, initial_disp, **_):
@@ -810,6 +836,7 @@ def main():
 
     plt.rcParams.update({'font.size': 14})
 
+    args.C = -0.35
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + \
         u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(
@@ -818,7 +845,7 @@ def main():
         params.for_simulation['exp-unbinding-constant'])
     initial_disp, hist, normalized_hist, time_hists, avg_affinity_time = get_onebound_data(
         args, plotting_data_file)
-    bb_L, bb_P_leading, bb_P_trailing, bb_rate_total, bb_avg_t = get_bothbound_data(
+    bb_L, bb_P_leading, bb_P_trailing, bb_rate_total, bb_avg_t, bb_lt, bb_tt = get_bothbound_data(
         args, bothbound_data_file)
     initial_disp_edge, final_disp_edge, final_L_bin_width, final_disp_bin_width, initial_L = make_bins_and_edges(
         initial_disp)

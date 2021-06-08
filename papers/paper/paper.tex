@@ -55,29 +55,24 @@
 
 \newpage
 
-\davidsays{Main point: earlier models cannot explain the experimentally observed correlation between
-  the initial displacement and step size.
+\davidsays{Discuss each figure, and each parameter (how we got it).}
 
-  Introduce experiment first, esp. Yildiz.
+\davidsays{Fig. \ref{fig:ProbLagPlot} gives us the exponential unbinding constant. Also rerun to get better.
 
-  Explain existing models a bit more.  Not many details about each model, but for every model explain what
-  it does and does not explain.
+Explain that the bothbound time does not vary by more than X\% regardless of initial $L$ in our model.}
 
-  QUESTION: Do we want to give the geometric argument for a typical final displacement?
+\davidsays{Do not add average both-bound time vs. L? This is a measurable prediction if we can't find an experimental result.  Otherwise, we can compare with experiment.  Maybe just add a sentence or two}
 
-  QUESTION: What predictions can we make?
-  
-  There should be many very short-distance steps that are not shown in experiment.
+\davidsays{histogram plot.  It shows that we are stepping the right distance, our springs are not too stiff, and our angles work out.  Report the average step length.}
 
-  The typical time spent actually taking a step (i.e. one-bound) should be very short.  (Be quantitative.)
-  It's not been measured, and puts a limit on the time spent getting ready to rebind.  Does this mean we
-  want the onebound time histogram?  I think not, but we do want the average value, and maybe median or similar?
+\davidsays{contour plot. Gave us the binding rate and the affinity time.  
+Very fast binding required (to get slope right) and need affinity time to avoid instantly rebinding.}
 
-  Power stroke model works? Even if the stalk does not do work by exerting torque.  Does that make
-  it a winch model? This will require discussion early and late.
+\davidsays{Trajectory plot.  Similar to experiment. The bothbound time determines velocity and depends on ATP.}
 
-  Future work: add a backwards force to the model.
-}
+
+\davidsays{one-bound time plot. Cut?}
+
 
 %% \dropcap{C}ytoplasmic dynein-1 is a motor protein used to generate directed force in cells. The protein is a homodimer which binds to cellular filaments known as microtubules (MTs). Each monomer has several ATPase domains arranged in a larger globular domain known as the ``head''. This head is the site which hydrolyzes ATP and undergoes the conformational changes responsible for dynein's step. The head is attached via a long chain to the microtubule binding domain (MTBD). Dynein is an interesting structure in that it manages to coordinate ATPase chemistry at its head with MT-releasing chemistry at its MTBD, some 20nm away \cite{mt-atp-coupling}. The head has a long tail domain coming off it, which eventually dimerizes to the other monomer.\\
 
@@ -103,34 +98,20 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{figures/model-cartoon-simple.pdf}
+\includegraphics[width=0.8\linewidth]{figures/bothbound-cartoon-simple-new.pdf}
+\includegraphics[width=0.8\linewidth]{figures/onebound-cartoon-simple-new.pdf}
 \caption{\textbf{Basic geometric model in pre-stroke and post-stroke states.}
 \davidsays{FIXME remove spring on binding domain and fix caption.}
-\textit{Left: } Pre-stroke model of dynein with one MTBD bound to microtubule
-and the other free. Angles are measured from the $+\hat{x}$ direction.
-\textit{Right: } Post-stroke model with both MTBDs bound to microtubule. MTBD
-angles are relative to $+\hat{x}$ direction, and motor angles are between stalk
-and tail. Lengths and radii not to scale.}
+ \textit{Left: } Pre-stroke model of dynein with one MTBD bound to microtubule and the other free. Angles are measured from the $+\hat{x}$ direction. \textit{Right: } Post-stroke model with both MTBDs bound to microtubule. MTBD angles are relative to $+\hat{x}$ direction, and motor angles are between stalk and tail. Lengths and radii not to scale.}
 \label{fig:model}
 \end{figure}
 
 \begin{figure}[tbhp]
-  \centering
+\centering
 \includegraphics[width=0.5\linewidth]{../../plots/burgess-model-figure.pdf}%
-% \includegraphics[width=0.6\linewidth]{../../plots/grotjahn-model-figure.pdf}%
+%\includegraphics[width=0.6\linewidth]{../../plots/grotjahn-model-figure.pdf}%
 %% \includegraphics[width=0.3\linewidth]{../../plots/crystal-model-figure.pdf}%
-\caption{\textbf{Scale model compared with experimental images.}
-%  \textit{Left:}
- Model with angles at pre-stroke equilibrium superimposed over
- axonemal dynein c heavy chain micrograph in the pre-stroke ADP-Vi-bound state
- \cite{burgess-paper}. Interdomain lengths and radii scaled to micrograph scale
- bar. % No microtubule is present, so $\theta_{nb}$ is arbitrary.
-%   \textit{Right: }
-%  Model with angles at pre-stroke equilibrium superimposed over density map of
-%  full-length native cytoplasmic dynein with accessory tail proteins (map ID
-%  EMD-7000) \cite{grotjahn}. Interdomain lengths and radii scaled to density
-%  map.
- }
+\caption{\textbf{Scale model compared with experimental images.} \textit{Left:} Model with angles at pre-stroke equilibrium superimposed over axonemal dynein c heavy chain micrograph in the pre-stroke ADP-Vi-bound state \cite{burgess-paper}. Interdomain lengths and radii scaled to micrograph scale bar. No microtubule is present, so $\theta_{nb}$ is arbitrary. \textit{Right: } Model with angles at pre-stroke equilibrium superimposed over density map of full-length native cytoplasmic dynein with accessory tail proteins (map ID EMD-7000) \cite{grotjahn}. Interdomain lengths and radii scaled to density map.}
 \label{fig:micrographs}
 \end{figure}
 
@@ -154,9 +135,9 @@ and tail. Lengths and radii not to scale.}
     $L_s$ & $\ls$ nm & $21$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
     $L_t$ & $\lt$ nm & $23$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
 %    $\theta_b$ & $\eqb$ &  120 & \cite{leschziner} \\
-    $\theta_m^{\mbox{pre}}$ & $\eqmpre^\circ$ &  197$^\circ$ & \cite{Burgess2003}\\
-    $\theta_m^{\mbox{post}}$ & $\eqmpost^\circ$ & 242$^\circ$ & \cite{Burgess2003}\\
-    $\theta_t$ & $\eqt^\circ$ &  & \\
+    $\theta_m^{\mbox{pre}}$ & $\eqmpre$ &  197 & \cite{Burgess2003}\\
+    $\theta_m^{\mbox{post}}$ & $\eqmpost$ & 242 & \cite{Burgess2003}\\
+    $\theta_t$ & $\eqt$ &  & \\
     $R_t$ & $\radiust$ nm & $4$ nm & \cite{Burgess2003}\\
     $R_m$ & $\radiusm$ nm & $5.5$ nm & \cite{Burgess2003}\\
     $R_b$ & $\radiusb$ nm & $1.25$ nm & \cite{Burgess2003}\\
@@ -174,31 +155,19 @@ The dynein model represents a full dynein complex consisting of two dynein heavy
 
 Values for $R$ and $L$ were acquired by aligning the dynein model with EM micrographs of the full dynein complex \cite{burgess-paper,grotjahn}, as shown in Figure \ref{fig:micrographs}. See Table \ref{table:params} for these values. $L_t$, the stem length between motor domain and tail, was calculated as the distance between the center of the EM motor domains and identified dimerization site in the tail domain \cite{}. However, studies which compare truncated GST-linked dynein lacking a tail and native dynein find the two step with similar dynamics \cite{weihongpaper-i-think}, suggesting that our model with an $L_t$ value from native dynein should be comparable with studies on truncated dynein constructs as well.
 
-\davidsays{Maybe we want to discuss right here the likely step sizes for leading and trailing steps
-\emph{if it goes to its equilibrium configuration}.  It's pretty simple and can serve as a ``validation"
-of our model geometry.}
+\davidsays{Maybe we want to discuss right here the likely step sizes for leading and trailing steps \emph{if it goes to its equilibrium configuration}.  It's pretty simple and can serve as a ``validation" of our model geometry.}
+
 
 \subsection*{Equilibrium forces}
-The prestroke state has four degrees of freedom: $\theta_{bb}, \theta_{bm},
-\theta_{um}$ and $\theta_{ub}$. The poststroke state has two: $\theta_{nm}$ and
-$\theta_{fm}$. The model is free to vary across all of these degrees of freedom,
-depending on its state, barring steric interactions with the microtubule. These
-angles describe a planar model which is not capable of transverse motion.  \davidsays{FIXME edit here.} To
-capture the gross dynamics and interdomain oscillations of the protein,
-restoring forces are imposed on each angle about equilibrium angles
-$\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for
-prestroke and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for poststroke. Each
-domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$
-which exerts a restoring force pushing it back to equilibrium, where $c_b$,
-$c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles
-are taken to be the average angle occupied by the protein in solution, and are
-thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. These
-angles were extracted from axonemal dynein, but structural similarity suggests
-they should be applicable to cytoplasmic dynein as well \cite{dynein-c-paper}.
-Electron microscopy studies using ADP-Vi to freeze dynein in the pre-stroke
-state allow for both pre- and post-stroke equilibrium angles to be found
-\cite{burgess-paper}.
+The prestroke state has four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um}$ and $\theta_{ub}$. The poststroke state has two: $\theta_{nm}$ and $\theta_{fm}$. The model is free to vary across all of these degrees of freedom, depending on its state, barring steric interactions with the microtubule. These angles describe a planar model which is not capable of transverse motion. To capture the gross dynamics and interdomain oscillations of the protein, restoring forces are imposed on each angle about equilibrium angles $\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for prestroke and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for poststroke. Each domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$ which exerts a restoring force pushing it back to equilibrium, where $c_b$, $c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles are taken to be the average angle occupied by the protein in solution, and are thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. These angles were extracted from axonemal dynein, but structural similarity suggests they should be applicable to cytoplasmic dynein as well \cite{dynein-c-paper}. Electron microscopy studies using ADP-Vi to freeze dynein in the pre-stroke state allow for both pre- and post-stroke equilibrium angles to be found \cite{burgess-paper}.
 
+\begin{figure}[tbhp]
+\centering
+\includegraphics[width=1\linewidth]{figures/equilibrium.pdf}
+\caption{\textbf{Equilibrium configuration.} Model with stiff springs in equilibrium configurations.
+}
+\label{fig:OBequil}
+\end{figure}
 
 \subsection*{Binding}
 Conformational changes on nucleotide binding, also known as the mechanochemical cycle \cite{cianfrocco}, are captured by transitioning the model between the prestroke and poststroke states. During prestroke, the free MTBD must first release from the MT by transitioning from high to low affinity. The affinity transition rate, $k_a$, governs this process. Binding can then occur when the prestroke model's unbound foot diffuses near enough the microtubule. When within a distance of $\epsilon$, binding occurs at a rate of $k_b$ (Table \ref{table:params}). On binding, the prestroke model changes state to a poststroke model while retaining the positions of its domains. The previously unbound domain is transported to the microtubule.
@@ -212,17 +181,17 @@ The transitions between prestroke and poststroke events in the mechanochemical c
 Brownian dynamics is used to study the model's dynamics in a biophysical manner. In the Brownian regime, protein motion is given by $\dot{\vec{X}} = \frac{1}{\gamma}\left(\vec{F}+\vec{R}\right)$. In the model, each circular domain has its own associated $\gamma$ factor given by Stokes' Law as $\gamma_i = 6\pi\nu R_i$ with dynamic viscosity $\nu$ \cite{stokeslaw}. The force on each domain is given by $\vec{F} = \vec{F}_{spr} + \vec{T}$, where $\vec{T}$ is the tension force between domains maintaining the rigid rod constraint. Each domain feels not only a harmonic restoring force, but also a Brownian force $\vec{R}$. This force is a Gaussian-distributed zero-mean magnitude with variance $R_{\sigma^2} = \sqrt{\frac{2k_bT\gamma}{\delta t}}$ and uniformly random direction.
 
 \subsection*{Monte Carlo}
-A Monte Carlo algorithm governs the simulation of the step. Starting at 
+A Monte Carlo algorithm governs the simulation of the step. We initialize a two-headed bound configuration of dynein by randomly picking domain angles and calculating the total harmonic energy by summing the energies of each domain. A probability of unbinding, $P_{ub}$, is then calculated from a Boltzmann distribution, where $P_{ub}\propto e^{-\beta E_{total}}$. If dynein unbinds, then the configuration transitions into the one-headed bound state where Brownian dynamics is performed. This process is repeated to generate an ensemble of independent configurations which takes a single step and contributes to a large sample of stepping staistics. A partition function, $Z=\sum e^{-\beta E{total}}$, can then calculate ensemble averages of unbinding rates and probability.  
 
-\section*{Fitting $k_b$ and $k_{ub}$}
-To fit the binding and unbinding rate constants $k_b$ and $k_{ub}$ a simple theoretical model for stepping was used, similar to one previously published \cite{myosindutyratio}. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD, that is, that there is no inter-head coordination. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the prestroke state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a prestroke and poststroke state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for poststroke time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for prestroke time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for prestroke and poststroke time in terms of experimental observables of velocity, run time and step length:
-
-  \begin{align}
-    \bar{t}_{ob} &= \frac{\bar{L}^2}{\bar{v}^2\left(\bar{L}/v+\bar{t}_{run}\right)}\\
-    \bar{t}_{bb} &= \frac{\bar{L}\bar{t}_{run}}{v\left(\bar{t}_{run}+\bar{L}/v\right)}
-  \end{align}
-
-  For estimating prestroke and poststroke times from Yildiz \textit{et al}\cite{yildiz}, a velocity of $124 nm/s$ is used. A study with a similar velocity is used to estimate $\bar{t}_{run} = 1060 nm / 134 nm / s = 7.9s$ \cite{weihongpaper}. These observables, along with $\bar{L} = 8nm$, yield estimations $\bar{t}_{ob} = 5.2*10^{-4}s$ and $\bar{t}_{bb} = 6.4 * 10^{-2}s$.
+%\section*{Fitting $k_b$ and $k_{ub}$}
+%To fit the binding and unbinding rate constants $k_b$ and $k_{ub}$ a simple theoretical model for stepping was used, similar to one previously published \cite{myosindutyratio}. First, it is assumed that the unbinding rate of an MTBD does not depend on the binding state of the other MTBD, that is, that there is no inter-head coordination. Then the dissociation rate of the whole complex from the microtubule, $k_{dis}$, is estimated as $k_{dis} = P(ob)*k_{ub} = \frac{\bar{t}_{ob}}{\bar{t}_{step}} * \frac{1}{\bar{t}_{bb}}$, where $P(ob)$ is the probability of a dynein complex being in the prestroke state, $\bar{t}_{ob}$ and $\bar{t}_{bb}$ are the expected durations for a prestroke and poststroke state, and $\bar{t}_{step} = \bar{t}_{ob} + \bar{t}_{bb}$ is the expected step duration. Plugging in the last definition yields $k_{dis} = \frac{\bar{t}_{step} - \bar{t}_{bb}}{\bar{t}_{step}\bar{t}_{bb}}$. Introducing a new variable $\bar{t}_{run}$, the average run length of in vivo dynein, and using the relation $\bar{t}_{run} = k_{dis}^{-1}$, a new relation is found for poststroke time: $\bar{t}_{bb} = \frac{\bar{t}_{run}\bar{t}_{step}}{\bar{t}_{run}+\bar{t}_{step}}$. Using the definition of $\bar{t}_{step}$ a similar relation is found for prestroke time: $\bar{t}_{ob} = \frac{\bar{t}_{step}^2}{\bar{t}_{step}+\bar{t}_{run}}$. Finally, using the relation $\bar{t}_{step} = \frac{v}{L_{step}}$ for dynein velocity $v$ and expected tail step length $\bar{L}_{step}$, the following equations are found for prestroke and poststroke time in terms of experimental observables of velocity, run time and step length:
+%
+%  \begin{align}
+%    \bar{t}_{ob} &= \frac{\bar{L}^2}{\bar{v}^2\left(\bar{L}/v+\bar{t}_{run}\right)}\\
+%    \bar{t}_{bb} &= \frac{\bar{L}\bar{t}_{run}}{v\left(\bar{t}_{run}+\bar{L}/v\right)}
+%  \end{align}
+%
+%  For estimating prestroke and poststroke times from Yildiz \textit{et al}\cite{yildiz}, a velocity of $124 nm/s$ is used. A study with a similar velocity is used to estimate $\bar{t}_{run} = 1060 nm / 134 nm / s = 7.9s$ \cite{weihongpaper}. These observables, along with $\bar{L} = 8nm$, yield estimations $\bar{t}_{ob} = 5.2*10^{-4}s$ and $\bar{t}_{bb} = 6.4 * 10^{-2}s$.
 
 \section*{Prestroke motion equations derivation}
 Brownian Dynamics was used to describe the motion of each domain, indexing with $i \in \{bb, bm, t, um, ub\}$, corresponding to bound-binding, bound-motor, tail, unbound-motor, unbound-binding:
@@ -276,16 +245,32 @@ Simulations began in the poststroke equilibrium state. The model was time-evolve
 
   %% \section*{Calculating force-dependent velocities}
 
+
+\section{Results}
+
+\davidsays{Discuss each figure, and each parameter (how we got it).}
+
+\davidsays{Fig. \ref{fig:ProbLagPlot} gives us the exponential unbinding constant. Also rerun to get better.
+
+Explain that the bothbound time does not vary by more than X\% regardless of initial $L$ in our model.}
+
+\davidsays{Do not add average both-bound time vs. L? This is a measurable prediction if we can't find an experimental result.  Otherwise, we can compare with experiment.  Maybe just add a sentence or two}
+
+\davidsays{histogram plot.  It shows that we are stepping the right distance, our springs are not too stiff, and our angles work out.  Report the average step length.}
+
+\davidsays{contour plot. Gave us the binding rate and the affinity time. Very fast binding required (to get slope right) and need affinity time to avoid instantly rebinding.}
+
+\davidsays{Trajectory plot.  Similar to experiment. The bothbound time determines velocity and depends on ATP.}
+
+\davidsays{one-bound time plot. Cut?}
+
+
 \section*{Fitting model parameters}
 
 \subsection*{$L_t$, $L_s$, $R_b$, $R_m$, $R_s$, $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$}
 Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
 
-\subsection*{$c_b$, $c_m$, $c_t$}
-Spring constants $c_b$, $c_m$ and $c_t$ were fit using the dynein step length distribution from \cite{yildizpaper}. Three spring constants were drawn uniformly from range $[0.0, 4.0]$ and a simulation was run for 10s simulation time with $k_b=X$, $k_{ub}=Y$, $k_{stk}=Z$, and other parameters noted in Table \ref{tab:params}. One thousand simulations total were run, and the set of spring constants which yielded the lowest root-mean-squared histogram error between the simulation and experimental step length distributions was chosen. \textbf{Probably need to rerun this using our final $k_b$, $k_{ub}$ and $k_{stk}$.}
 
-\subsection*{$k_{ub}$}
-The unbinding rate $k_{ub}$ was estimated from velocity data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 124 nm/s was chosen, as shown in Figure \ref{fig:behavior}.
 
 \subsection*{$c$}
 The exponential unbinding parameter $c$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:tensiongating}. All other parameters were held at the values in Table \ref{tab:params}.
@@ -297,8 +282,10 @@ The exponential unbinding parameter $c$ was estimated using the likelihood of le
 	\label{fig:ProbLagPlot}
 \end{figure}
 
-\subsection*{$k_b$, $k_{stk}$}
-The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-final displacement slope?
+
+\subsection*{$k_{ub}$}
+The unbinding rate $k_{ub}$ was estimated from velocity data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 124 nm/s was chosen, as shown in Figure \ref{fig:behavior}.
+
 
 \begin{figure}[tbhp]
 	\centering
@@ -307,39 +294,14 @@ The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-
 	\label{fig:TrajPlot}
 \end{figure}
 
-\section{Results}
 
-\davidsays{Discuss each figure, and each parameter (how we got it).}
+\subsection*{$k_b$, $k_{stk}$}
+The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-final displacement slope?
 
-\davidsays{Fig. \ref{fig:ProbLagPlot} gives us the exponential unbinding constant. Also rerun to get better.
-
-Explain that the bothbound time does not vary by more than X\% regardless of initial $L$ in our model.
-}
-
-\davidsays{Do not add average both-bound time vs. L? This is a measurable prediction if we can't find an experimental
-result.  Otherwise, we can compare with experiment.  Maybe just add a sentence or two}
-
-\davidsays{histogram plot.  It shows that we are stepping the right distance, our springs are not too stiff,
-    and our angles work out.  Report the average step length.}
-
-\davidsays{contour plot. Gave us the binding rate and the affinity time.  
-Very fast binding required (to get slope right) and need affinity time to avoid instantly
- rebinding.}
-
- \davidsays{Trajectory plot.  Similar to experiment. The bothbound time determines velocity and depends on ATP.}
-
-
- \davidsays{one-bound time plot. Cut?}
 
 \begin{figure}[tbhp]
 \centering
 \includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
-\label{fig:final_disp_prob}
-\end{figure}
-
-\begin{figure}[tbhp]
-\centering
 \includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
 \caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
 \label{fig:final_disp_prob}
@@ -347,21 +309,30 @@ Very fast binding required (to get slope right) and need affinity time to avoid 
 
 
 
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=\linewidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
-\label{fig:final_disp_prob}
-\end{figure}
+\subsection*{$c_b$, $c_m$, $c_t$}
+Spring constants $c_b$, $c_m$ and $c_t$ were fit using the dynein step length distribution from \cite{yildizpaper}. Three spring constants were drawn uniformly from range $[0.0, 4.0]$ and a simulation was run for 10s simulation time with $k_b=X$, $k_{ub}=Y$, $k_{stk}=Z$, and other parameters noted in Table \ref{tab:params}. One thousand simulations total were run, and the set of spring constants which yielded the lowest root-mean-squared histogram error between the simulation and experimental step length distributions was chosen. \textbf{Probably need to rerun this using our final $k_b$, $k_{ub}$ and $k_{stk}$.}
 
 
 
 
 
 
-Motion equations were derived for the pre-stroke and post-stroke states of the model. The model was simulated by starting in the equilibrium post-stroke position and using Euler's method to time-evolve the model, using a timestep of 1e-10 \textit{s}. The model was transitioned between post-stroke and pre-stroke states using unbinding and binding rates. Model parameters were estimated from various experimental results. Spring constants were chosen to fit the model stepping size to single-molecule head-labelled experiments\cite{yildizpaper}, as outlined in Figure S\ref{fig:supp-model-fit}. Model rate constants were fit to motor velocities from the same experiment, along with theoretical calculations for the prestroke and poststroke times outlined in the Methods section. The tension-gating parameter $c$ was fit to the leading/lagging unbinding likelihood versus interhead separation from the same experiment, as shown in Figure \ref{fig:tensiongating}. Thirty-two 5-second simulations were run, each initialized with a different random seed. Each simulation was forward directed, took both forward and backward steps, and displayed stepping dynamics similar to that seen in experiment.
+%
+%\begin{figure}[tbhp]
+%\centering
+%\includegraphics[width=\linewidth]{../../plots/mc_plots/u_ob_time_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+%\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
+%\label{fig:final_disp_prob}
+%\end{figure}
 
-As seen in Figure \ref{fig:trajectory}, the model is highly variant in trajectory, but biased to moving in the $+\hat{x}$ direction, corresponding to the microtubule minus-end. When unbound the free MTBD diffuses both parallel and perpendicular to the microtubule, reaching up to 50 \textit{nm} above the track. Though the unbound MTBD freely approaches the microtubule, it does not always bind, as seen in the $7-9 \mu s$ part of the simulation. The cartoons in Figure \ref{fig:trajectory} reveal the model taking on many conformations, revealing the model's structural flexibility. The model seems to prefer alternating hand-over-hand stepping, but occasionally takes steps in a semi-inchworm fashion, as seen at time $5.3 \mu s$ in Figure \ref{fig:trajectory}.
+
+
+
+
+%%%%% OLD RESULTS SECTION: %%%%%%
+%Motion equations were derived for the pre-stroke and post-stroke states of the model. The model was simulated by starting in the equilibrium post-stroke position and using Euler's method to time-evolve the model, using a timestep of 1e-10 \textit{s}. The model was transitioned between post-stroke and pre-stroke states using unbinding and binding rates. Model parameters were estimated from various experimental results. Spring constants were chosen to fit the model stepping size to single-molecule head-labelled experiments\cite{yildizpaper}, as outlined in Figure S\ref{fig:supp-model-fit}. Model rate constants were fit to motor velocities from the same experiment, along with theoretical calculations for the prestroke and poststroke times outlined in the Methods section. The tension-gating parameter $c$ was fit to the leading/lagging unbinding likelihood versus interhead separation from the same experiment, as shown in Figure \ref{fig:tensiongating}. Thirty-two 5-second simulations were run, each initialized with a different random seed. Each simulation was forward directed, took both forward and backward steps, and displayed stepping dynamics similar to that seen in experiment.
+%
+%As seen in Figure \ref{fig:trajectory}, the model is highly variant in trajectory, but biased to moving in the $+\hat{x}$ direction, corresponding to the microtubule minus-end. When unbound the free MTBD diffuses both parallel and perpendicular to the microtubule, reaching up to 50 \textit{nm} above the track. Though the unbound MTBD freely approaches the microtubule, it does not always bind, as seen in the $7-9 \mu s$ part of the simulation. The cartoons in Figure \ref{fig:trajectory} reveal the model taking on many conformations, revealing the model's structural flexibility. The model seems to prefer alternating hand-over-hand stepping, but occasionally takes steps in a semi-inchworm fashion, as seen at time $5.3 \mu s$ in Figure \ref{fig:trajectory}.
 
 %\begin{figure}[tbhp]
 %\centering
@@ -370,7 +341,7 @@ As seen in Figure \ref{fig:trajectory}, the model is highly variant in trajector
 %\label{fig:trajectory}
 %\end{figure}
 
-The model was then compared to TIRF studies of dynein stepping in DeWitt \textit{et. al.} \cite{yildizpaper}. Figure \ref{fig:behavior}.a shows 8 representative model trajectories compared to experimental dynein. The eight simulations track experimental very well over 5 seconds, and average to the same position. The eight simulations end up distributed over a 200 \textit{nm} area, showing the variation in the model stepping extends to a variation in velocity in the long term. The step size distribution for the 32 simulations are shown in Figure \ref{fig:behavior}.b). The model is capable of taking both positive and negative steps, with steps extending from -40 \textit{nm} to 50 \textit{nm}, matching experimental dynein. The most probable step is 12 \textit{nm}, with an average step size of 6.2 \textit{nm}. This matches the peak experimental step size window of 7-13 \textit{nm}. The pre-stroke and post-stroke state occupation times are shown in Figure \ref{fig:behavior}.c and d.). The model prefers long pre-stroke times, but is capable of taking very fast steps. The post-stroke time has a heavy-tailed distribution. Experimental technique does not resolve time spent in pre- and post-stroke, but we outline a technique for calculating these values for experimental trajectories in Methods. These theoretical values correspond well to model behavior, and square with experimental findings that dynein is almost always in the post-stroke state \cite{imaiburgess}.
+%The model was then compared to TIRF studies of dynein stepping in DeWitt \textit{et. al.} \cite{yildizpaper}. Figure \ref{fig:behavior}.a shows 8 representative model trajectories compared to experimental dynein. The eight simulations track experimental very well over 5 seconds, and average to the same position. The eight simulations end up distributed over a 200 \textit{nm} area, showing the variation in the model stepping extends to a variation in velocity in the long term. The step size distribution for the 32 simulations are shown in Figure \ref{fig:behavior}.b). The model is capable of taking both positive and negative steps, with steps extending from -40 \textit{nm} to 50 \textit{nm}, matching experimental dynein. The most probable step is 12 \textit{nm}, with an average step size of 6.2 \textit{nm}. This matches the peak experimental step size window of 7-13 \textit{nm}. The pre-stroke and post-stroke state occupation times are shown in Figure \ref{fig:behavior}.c and d.). The model prefers long pre-stroke times, but is capable of taking very fast steps. The post-stroke time has a heavy-tailed distribution. Experimental technique does not resolve time spent in pre- and post-stroke, but we outline a technique for calculating these values for experimental trajectories in Methods. These theoretical values correspond well to model behavior, and square with experimental findings that dynein is almost always in the post-stroke state \cite{imaiburgess}.
 
 %\begin{figure}[tbhp]
 %  \centering
@@ -387,8 +358,8 @@ Dependence of the unbinding MTBD on its relation to its partner MTBD is studied 
 %  \caption{\textbf{Analysis of foot order on unbinding.} \textit{Top: } Heatmap of initial foot position vs length of ensuing step. Initial displacement defined as position of the stepping MTBD minus the position of the stationary MTBD, before the step takes place. Line of best fit calculated with equation shown in legend in orange. Line of best fit from the same plot in DeWitt \textit{et al} \cite{yildizpaper} on cytoplasmic dynein shown in blue. \textit{Bottom: } Likelihood of a lagging-MTBD unbinding event vs the absolute value of initial displacement for model. The lagging-MTBD is the MTBD with more negative x position. Probability calculated as P(lagging step)$ = k_{ub}^{\text{lag}} / \left(k_{ub}^{\text{lag}} + k_{ub}^{\text{lead}}\right)$, where $k_{ub}^{\text{lag}}$ is the lagging-MTBD unbinding rate and $k_{ub}^{\text{lead}}$ the leading-MTBD unbinding rate. Lagging step probability also shown for DeWitt \textit{et. al.} cytoplasmic dynein.}
 %  \label{fig:tensiongating}
 %\end{figure}
-
-The effect of force on the model was then assessed by applying an artificial force on the tail domain of the model in the $+\hat{x}$ direction. The results of this study are shown in Figure \ref{fig:force}. An expected decrease in velocity is seen as stronger and stronger negative forces are applied to the model, pulling it against its natural walking direction. Unlike experiment, a reversal in velocity is not seen for this trial, indicating that perhaps the dynamics of force-mediated velocity reversal are more complicated than what this simplified model can handle. The results are consistent with an experiment done by Grotjahn \textit{et. al} where force is applied via optical tweezers to dynein constructs and their velocity is assayed. It will need to be studied why odd behavior is seen in the mdoel for positive forces.
+%
+%The effect of force on the model was then assessed by applying an artificial force on the tail domain of the model in the $+\hat{x}$ direction. The results of this study are shown in Figure \ref{fig:force}. An expected decrease in velocity is seen as stronger and stronger negative forces are applied to the model, pulling it against its natural walking direction. Unlike experiment, a reversal in velocity is not seen for this trial, indicating that perhaps the dynamics of force-mediated velocity reversal are more complicated than what this simplified model can handle. The results are consistent with an experiment done by Grotjahn \textit{et. al} where force is applied via optical tweezers to dynein constructs and their velocity is assayed. It will need to be studied why odd behavior is seen in the mdoel for positive forces.
 
 %\begin{figure}[tbhp]
 %  \centering
@@ -397,7 +368,7 @@ The effect of force on the model was then assessed by applying an artificial for
 %\label{fig:force}
 %\end{figure}
 
-The independence of dynein steps is then studied in Figure \ref{fig:independence}. Whether dynein works like a Markovian process, where each step is a history-free, is an interesting question. Figure \ref{fig:independence} demonstrates the impact of initial displacement of MTBDs to their final displacement, before and after a step is taken. The asymmetry in the plot is indicative that the initial configuration of the motor does have significant impact on the later state. The Brownian forces act to mitigate momentum and prevent information transfer through motion. However, the binding orientation of the dynein model to the microtubule is stable through time, and can influence the binding orientation of dynein to the microtubule at a later time. There seems to be a roughly tension-gated process occurring where negative displacements initially lead to positive displacements later.
+%The independence of dynein steps is then studied in Figure \ref{fig:independence}. Whether dynein works like a Markovian process, where each step is a history-free, is an interesting question. Figure \ref{fig:independence} demonstrates the impact of initial displacement of MTBDs to their final displacement, before and after a step is taken. The asymmetry in the plot is indicative that the initial configuration of the motor does have significant impact on the later state. The Brownian forces act to mitigate momentum and prevent information transfer through motion. However, the binding orientation of the dynein model to the microtubule is stable through time, and can influence the binding orientation of dynein to the microtubule at a later time. There seems to be a roughly tension-gated process occurring where negative displacements initially lead to positive displacements later.
 
 %\begin{figure}[tbhp]
 %  \centering
@@ -419,9 +390,10 @@ The independence of dynein steps is then studied in Figure \ref{fig:independence
 %\label{fig:stroke}
 %\end{figure}
 
-We then examined how the model took its forward steps. Two existing theories for motion generation are depicted in Figure \ref{fig:stroke}.a. The winch model \cite{carterwinch, uenoem, sarlahmodel, nicastro, kinoshitaPSwinch, lippert}, on the left, predicts that the prestroke to poststroke transition causes the just-bound motor's head to act like a winch, pulling the tail domain down and forwards toward the microtubule. The powerstroke model \cite{mallikps, burgessknight, robertspowerstroke, burgess-paper}, on the right, predicts that the transition will cause a lever-like action of the just bound stalk, pulling the just bound motor's head and tail forward. The most notable differences between these two models are whether the stalk angle changes during the stroke \cite{lippert}, and whether the tail domain moves closer or further from the microtubule. Arrows indicate these predictions in Figure \ref{fig:stroke}.a.
-
-The average change of motor angles and positions during the prestroke-to-poststroke transition is shown in subfigures \ref{fig:stroke}.b-e. Only positive steps were used for clarity. Subfigure \ref{fig:stroke}.b indicates the model's just-bound stalk experiences a consistent angular displacement after binding, rotating to point more towards the minus end of the MT. Interestingly, this transition takes the binding angle out of equilibrium. This transition is permanent once made, as shown in \ref{fig:stroke}.f, which shows the no change even up to a millisecond after binding. This forward transition of the head domain is accompanied by a forward displacement of the tail domain by roughly 12 $nm$, as shown in Figure \ref{fig:stroke}.d, and a displacement away from the microtubule by 5-8 $nm$, as shown in Figure \ref{fig:stroke}.e. This tail displacement takes roughly 300ns, which corresponds roughly to the prestroke-to-powerstroke transition time from MD \cite{mdstroke} (DOES IT ACTUALLY THOUGH? LOOK AGAIN). The motor angle is shown in Figure \ref{fig:stroke}.c to transition from the pre-stroke equilibrium to the post-stroke equilibrium in time with the stalk angle change. Taken together, this data indicates that our simulated dynein moves through a powerstroke-, not a winch-type mechanism. We hypothesize that the out of equilibrium state of the motor angle post-transition is highly energetic, and it is quicker for the model to re-equilibrate the high-energy state through pushing the motor forward in a powerstroke than winching the faraway bulky tail downwards.
+%%%%%%%%%%%%%% DISCUSSION ABOUT MODELS: %%%%%%%%%%
+%We then examined how the model took its forward steps. Two existing theories for motion generation are depicted in Figure \ref{fig:stroke}.a. The winch model \cite{carterwinch, uenoem, sarlahmodel, nicastro, kinoshitaPSwinch, lippert}, on the left, predicts that the prestroke to poststroke transition causes the just-bound motor's head to act like a winch, pulling the tail domain down and forwards toward the microtubule. The powerstroke model \cite{mallikps, burgessknight, robertspowerstroke, burgess-paper}, on the right, predicts that the transition will cause a lever-like action of the just bound stalk, pulling the just bound motor's head and tail forward. The most notable differences between these two models are whether the stalk angle changes during the stroke \cite{lippert}, and whether the tail domain moves closer or further from the microtubule. Arrows indicate these predictions in Figure \ref{fig:stroke}.a.
+%
+%The average change of motor angles and positions during the prestroke-to-poststroke transition is shown in subfigures \ref{fig:stroke}.b-e. Only positive steps were used for clarity. Subfigure \ref{fig:stroke}.b indicates the model's just-bound stalk experiences a consistent angular displacement after binding, rotating to point more towards the minus end of the MT. Interestingly, this transition takes the binding angle out of equilibrium. This transition is permanent once made, as shown in \ref{fig:stroke}.f, which shows the no change even up to a millisecond after binding. This forward transition of the head domain is accompanied by a forward displacement of the tail domain by roughly 12 $nm$, as shown in Figure \ref{fig:stroke}.d, and a displacement away from the microtubule by 5-8 $nm$, as shown in Figure \ref{fig:stroke}.e. This tail displacement takes roughly 300ns, which corresponds roughly to the prestroke-to-powerstroke transition time from MD \cite{mdstroke} (DOES IT ACTUALLY THOUGH? LOOK AGAIN). The motor angle is shown in Figure \ref{fig:stroke}.c to transition from the pre-stroke equilibrium to the post-stroke equilibrium in time with the stalk angle change. Taken together, this data indicates that our simulated dynein moves through a powerstroke-, not a winch-type mechanism. We hypothesize that the out of equilibrium state of the motor angle post-transition is highly energetic, and it is quicker for the model to re-equilibrate the high-energy state through pushing the motor forward in a powerstroke than winching the faraway bulky tail downwards.
 
 %% \begin{figure*}[tbhp]
 %%     \includegraphics[width=0.5\linewidth]{../../plots/paper_foot_order_histogram.pdf}
