@@ -268,45 +268,47 @@ Explain that the bothbound time does not vary by more than X\% regardless of ini
 \section*{Fitting model parameters}
 
 \subsection*{$L_t$, $L_s$, $R_b$, $R_m$, $R_s$, $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$}
-Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
+Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\theta_{m}^{pre}$, $\theta_{b}^{post}$, $\theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
 
 
 
-\subsection*{$c$}
-The exponential unbinding parameter $c$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:tensiongating}. All other parameters were held at the values in Table \ref{tab:params}.
+\subsection*{$C$}
+The exponential unbinding parameter $C$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:ProbLagPlot}. All other parameters were held at the values in Table \ref{table:params}.
 
 \begin{figure}[tbhp]
 	\centering
 	\includegraphics[width=\linewidth]{../../plots/mc_plots/prob_lagging_vs_init_L_-0.5}
-	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
+	\caption[Lagging preferred steps]{\textbf{Lagging preferred steps.} Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$. Exponential unbinding parameter, $C$, fitted with \cite{Dewitt2012}.}
 	\label{fig:ProbLagPlot}
 \end{figure}
 
 
 \subsection*{$k_{ub}$}
-The unbinding rate $k_{ub}$ was estimated from velocity data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 124 nm/s was chosen, as shown in Figure \ref{fig:behavior}.
+The unbinding rate $k_{ub}$ was estimated from stepping trace data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 26 nm/s was chosen, as shown in Figure \ref{fig:TrajPlot}.
 
 
-\begin{figure}[tbhp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\caption[Fitting Both-bound Parameters]{\textbf{Fitting Both-bound Parameters.} \textit{Top: }Likelihood of a trailing step vs. the initial binding domain distance ($P_{trail.}(L)$ from Equation (\ref{eqn:ProbTrail})). \textit{Bottom: }Trajectory of binding domains over 24 seconds of walking. Experimental data from \cite{Dewitt2012}.}
+	\caption[Stepping trace of head labeled dynein]{\textbf{Stepping trace of head labeled dynein.} Trajectory of MTBD over 24 seconds of walking. Red and blue labeled heads shows independence from each other during processive walking. Experimentalal trace from \cite{Dewitt2012} offset by 120 nm to display comparison. Average velocity of 26 nm/s for both traces.}
 	\label{fig:TrajPlot}
 \end{figure}
 
+\newpage
 
-\subsection*{$k_b$, $k_{stk}$}
-The sticky rate and binding rate were chosen ... based on the Yildiz initial-vs-final displacement slope?
+\subsection*{$k_b$, $k_{a}$}
+The binding and affinity rates directly influenced the onebond stepping statistics shown in Figure \ref{fig:SteppingPlots}. The binding rate controlled the tendency for immediate steps. The affinity rate controlled the transition time from low affinity to high affinity and introduced a buffer time after unbinding to prevent instantaneous steps. This was crucial when fitting to Yildiz's slope of m = -0.4, as our model was only able to replicate the stepping correlation if dynein prefered steps within 8 nm.  
 
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-\includegraphics[width=\linewidth]{../../plots/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-\caption{\textbf{Probability distribution plot of final displacement vs. initial displacement.} Dimentions: $nm^{-2}$ (Probability per area of box).}
-\label{fig:final_disp_prob}
+\includegraphics[width=1\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\includegraphics[width=1\linewidth]{../../plots/mc_plots/u_step_length_1d_probability_density_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+\caption[Stepping statistics of model]{\textbf{Stepping statistics of model.} \textit{Top: } Heatmap of initial foot displacement vs. step length. Initial displacement defined as position of the stepping MTBD minus the position of the stationary MTBD, before the step takes place. Step length defined as final displacement minus initial displacement. Linear regression calculated in orange, compared with Yildiz's linear regression plotted in red. Contours of 90\%, 50\%, 25\%, and 5\% displayed as white lines. \textit{Bottom: } Probability density of model step sizes plotted against Yildiz's distribution of step sizes. }
+\label{fig:SteppingPlots}
 \end{figure}
 
+\newpage
 
 
 \subsection*{$c_b$, $c_m$, $c_t$}

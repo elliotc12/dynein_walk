@@ -549,9 +549,6 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.savefig(plotpath+u+'step_length_1d_probability_density_' +
                 params_string+'.pdf')
 
-
-
-
 def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
     max_time = time_hists['max_time']   # 10 mu s
     increment = time_hists['increment']  # 10ns
@@ -836,7 +833,7 @@ def main():
 
     plt.rcParams.update({'font.size': 14})
 
-    args.C = -0.35
+    # args.C = -0.35
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + \
         u + data_params_string + ".npz"
     bothbound_data_file = "../data/mc_bb_data/bb_exp-unbinding-constant_{}.npz".format(
