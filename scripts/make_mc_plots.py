@@ -678,7 +678,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     bx_position = np.array([[0.0, L]])
     bb_step_time = np.array([0.0])
     j = 0
-    seed_for_kub_2 = 4000
+    seed_for_kub_2 = 2
     np.random.seed(seed_for_kub_2)
 
     while j < num_steps:
@@ -742,12 +742,16 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
                        cumulative_time[1], color='red', linestyle='--')
     plt.vlines(vline_x, bx_position[:-1, 1], bx_position[1:, 1], color='blue')
     plt.vlines(vline_x, bx_position[:-1, 0], bx_position[1:, 0], color='red')
-    plt.plot(yildiz_data[0], yildiz_data[1]+120, '--',
+    # plt.plot(yildiz_data[0], yildiz_data[1], '--',
+    #          markersize=0, color="blue", alpha=0.8)
+    # plt.plot(yildiz_data[0], yildiz_data[2], '--',
+    #          markersize=0, color="red", alpha=0.8)
+    plt.plot(yildiz_data[0], yildiz_data[1]+80, '--',
              markersize=0, color="blue", alpha=0.8)
-    plt.plot(yildiz_data[0], yildiz_data[2]+120, '--',
+    plt.plot(yildiz_data[0], yildiz_data[2]+80, '--',
              markersize=0, color="red", alpha=0.8)
 
-    x1, x2, y1, y2 = [6, 10, 250, 370]
+    x1, x2, y1, y2 = [6, 9, 190, 320]
     box_v = np.array([x1, x2])
     box_h = np.array([y1, y2])
     plt.hlines(box_h, box_v[0], box_v[1], linewidth=0.5)
@@ -765,7 +769,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     plt.legend([plot1, plot2], ["Model", "Experiment"], loc='upper left')
     plt.grid()
 
-    ax2 = fig.add_axes([0.5, 0.08, 0.35, 0.3])
+    ax2 = fig.add_axes([0.6, 0.08, 0.3, 0.35])
     ax2.hlines(bx_position[:, 1], cumulative_time[:-1],
                cumulative_time[1:], color='blue')
     ax2.hlines(bx_position[:, 0], cumulative_time[:-1],
@@ -773,12 +777,12 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     ax2.vlines(vline_x, bx_position[:-1, 1], bx_position[1:, 1], color='blue')
     ax2.vlines(vline_x, bx_position[:-1, 0], bx_position[1:, 0], color='red')
     ax2.axhline(300, color='grey', linewidth=1, alpha=0.5)
-    ax2.plot(yildiz_data[0], yildiz_data[1]+150, '--',
+    ax2.plot(yildiz_data[0], yildiz_data[1]+80, '--',
              markersize=0, color="blue", alpha=0.8)
-    ax2.plot(yildiz_data[0], yildiz_data[2]+150, '--',
+    ax2.plot(yildiz_data[0], yildiz_data[2]+80, '--',
              markersize=0, color="red", alpha=0.8)
     ax2.set_xlim(x1, x2)
-    ax2.set_ylim(y1, y2+30)
+    ax2.set_ylim(y1, y2)
     ax2.get_xaxis().set_ticks([])
     ax2.get_yaxis().set_ticks([])
 
