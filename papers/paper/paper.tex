@@ -98,8 +98,9 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=0.8\linewidth]{figures/bothbound-cartoon-simple-new.pdf}
-\includegraphics[width=0.8\linewidth]{figures/onebound-cartoon-simple-new.pdf}
+%\includegraphics[width=0.8\linewidth]{figures/bothbound-cartoon-simple-new.pdf}
+%\includegraphics[width=0.8\linewidth]{figures/onebound-cartoon-simple-new.pdf}
+\includegraphics[width=1\linewidth]{figures/equilibrium-positions-final.pdf}
 \caption{\textbf{Basic geometric model in pre-stroke and post-stroke states.}
 \davidsays{FIXME remove spring on binding domain and fix caption.}
  \textit{Left: } Pre-stroke model of dynein with one MTBD bound to microtubule and the other free. Angles are measured from the $+\hat{x}$ direction. \textit{Right: } Post-stroke model with both MTBDs bound to microtubule. MTBD angles are relative to $+\hat{x}$ direction, and motor angles are between stalk and tail. Lengths and radii not to scale.}
@@ -161,13 +162,6 @@ Values for $R$ and $L$ were acquired by aligning the dynein model with EM microg
 \subsection*{Equilibrium forces}
 The prestroke state has four degrees of freedom: $\theta_{bb}, \theta_{bm}, \theta_{um}$ and $\theta_{ub}$. The poststroke state has two: $\theta_{nm}$ and $\theta_{fm}$. The model is free to vary across all of these degrees of freedom, depending on its state, barring steric interactions with the microtubule. These angles describe a planar model which is not capable of transverse motion. To capture the gross dynamics and interdomain oscillations of the protein, restoring forces are imposed on each angle about equilibrium angles $\theta^{eq}_{bb}, \theta^{eq}_{bm}, \theta^{eq}_{um}, \theta^{eq}_{ub}$ for prestroke and $\theta^{eq}_{nm}$ and $\theta^{eq}_{fm}$ for poststroke. Each domain $i$ has a harmonic energy $c_i\left(\theta_i-\theta^{eq}_i\right)^2$ which exerts a restoring force pushing it back to equilibrium, where $c_b$, $c_m$ and $c_t$ are spring constants for each domain. These equilibrium angles are taken to be the average angle occupied by the protein in solution, and are thus extracted from EM micrographs, shown in Figure \ref{fig:micrographs}. These angles were extracted from axonemal dynein, but structural similarity suggests they should be applicable to cytoplasmic dynein as well \cite{dynein-c-paper}. Electron microscopy studies using ADP-Vi to freeze dynein in the pre-stroke state allow for both pre- and post-stroke equilibrium angles to be found \cite{burgess-paper}.
 
-\begin{figure}[tbhp]
-\centering
-\includegraphics[width=1\linewidth]{figures/equilibrium.pdf}
-\caption{\textbf{Equilibrium configuration.} Model with stiff springs in equilibrium configurations.
-}
-\label{fig:OBequil}
-\end{figure}
 
 \subsection*{Binding}
 Conformational changes on nucleotide binding, also known as the mechanochemical cycle \cite{cianfrocco}, are captured by transitioning the model between the prestroke and poststroke states. During prestroke, the free MTBD must first release from the MT by transitioning from high to low affinity. The affinity transition rate, $k_a$, governs this process. Binding can then occur when the prestroke model's unbound foot diffuses near enough the microtubule. When within a distance of $\epsilon$, binding occurs at a rate of $k_b$ (Table \ref{table:params}). On binding, the prestroke model changes state to a poststroke model while retaining the positions of its domains. The previously unbound domain is transported to the microtubule.
@@ -267,13 +261,16 @@ Explain that the bothbound time does not vary by more than X\% regardless of ini
 
 \section*{Fitting model parameters}
 
-\subsection*{$L_t$, $L_s$, $R_b$, $R_m$, $R_s$, $\Theta_{b}$, $\Theta_{m}^{pre}$, $\Theta_{b}^{post}$, $\Theta_{t}$}
-Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\theta_{m}^{pre}$, $\theta_{b}^{post}$, $\theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
+The model's simplistic nature allowed flexible optimization for each parameter in order to most accurately portray stepping results from experiment. We investigated this parameter space by associating each stepping parameter to a property of dynein's step observed from Yildiz's experiment. Dynein most properly demonstrated forward motility and correlated stepping when binding rates increased to promote $<$8 nm step sizes and $<$100 ns unbound times. The 2-HB state dominated dynein's dwell time, while the 1-HB state happened almost instantaneous, forcing the velocity to be highly dependent on the unbding parameters. Consequently, dynein fails to equilibrate during the stepping motion and quickly rebinds shortly after unbinding. 
+
+We first estimated structural parameters $L_t$, $L_s$, $R_b$, $R_m$, $R_s$, and equilibrium angles $\theta_{m}^{pre}$, $\theta_{m}^{post}$, and $\theta_{t}$ from cryo-electron microscopy class averages and density maps of cytoplasmic and axonoemal dynein, shown in Figure \ref{fig:micrographs}. We defined the tail and motor equilibrium angles from Burgess \textit{et al. } class average image, where the left stalk's motor was in the apo post-powerstroke state and right stalk's motor was in the ADP-bound apo pre-powerstroke state.  
+
+%Structural parameters $L_t$, $L_s$, $R_b$, $R_m$, and $R_s$ and equilibrium angles $\theta_{m}^{pre}$, $\theta_{b}^{post}$, $\theta_{t}$ were estimated using cryo-electron microscopy class averages and density maps of cytoplasmic and axonemal dynein, shown in Figure \ref{fig:micrographs}. In the class average image from Burgess \textit{et. al.} \cite{burgess} the different tail-motor-MTBD angles were taken to indicate that left stalk's motor domain was in the apo post-powerstroke state, and the right stalk's motor domain in the ADP-bound pre-powerstroke state. In the Grotjahn \textit{et. al} \cite{grotjahn} density map, both motor domains were taken to be in the post-powerstroke state.
 
 
-
-\subsection*{$C$}
-The exponential unbinding parameter $C$ was estimated using the likelihood of leading/lagging head unbinding vs interhead separation data provided in DeWitt \textit{et. al.} \cite{dewitt}. The value of $c$ was chosen which led to the lowest root-mean-squared error in P(lagging step) vs interhead separation between the experiment and the model, as shown in Figure \ref{fig:ProbLagPlot}. All other parameters were held at the values in Table \ref{table:params}.
+%
+%\subsection*{$C$}
+We determined the exponential unbinding parameter $C$ based on the likelihood for a lagging head to unbind vs. the interhead separation provided from DeWitt \textit{et. al.} \cite{dewitt}. A test for the lowest root-mean-squared error between the experiment and the model generated a value of $C=-0.35$, as shown in Figure \ref{fig:ProbLagPlot}. This parameter governs the tension-gating between dynein's heads, as the probability of a lagging step increases with $C$. All other parameters were held at the values in Table \ref{table:params}.
 
 \begin{figure}[tbhp]
 	\centering
@@ -283,21 +280,8 @@ The exponential unbinding parameter $C$ was estimated using the likelihood of le
 \end{figure}
 
 
-\subsection*{$k_{ub}$}
-The unbinding rate $k_{ub}$ was estimated from stepping trace data in the Yildiz \textit{et. al.} experiment. The $k_{ub}$ value which led to an average velocity of 26 nm/s was chosen, as shown in Figure \ref{fig:TrajPlot}.
-
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
-	\caption[Stepping trace of head labeled dynein]{\textbf{Stepping trace of head labeled dynein.} Trajectory of MTBD over 24 seconds of walking. Red and blue labeled heads shows independence from each other during processive walking. Experimentalal trace from \cite{Dewitt2012} offset by 120 nm to display comparison. Average velocity of 26 nm/s for both traces.}
-	\label{fig:TrajPlot}
-\end{figure}
-
-\newpage
-
-\subsection*{$k_b$, $k_{a}$}
-The binding and affinity rates directly influenced the onebond stepping statistics shown in Figure \ref{fig:SteppingPlots}. The binding rate controlled the tendency for immediate steps. The affinity rate controlled the transition time from low affinity to high affinity and introduced a buffer time after unbinding to prevent instantaneous steps. This was crucial when fitting to Yildiz's slope of m = -0.4, as our model was only able to replicate the stepping correlation if dynein prefered steps within 8 nm.  
+%\subsection*{$k_b$, $k_{a}$}
+The binding and affinity rates directly influenced the stepping statistics shown in Figure \ref{fig:SteppingPlots}. The binding rate controlled the tendency for immediate steps, while the affinity rate controlled the transition time from low affinity to high affinity and introduced a buffer time after unbinding to prevent instantaneous steps. This was crucial when fitting to Yildiz's slope of m = -0.4, as our model was only able to replicate the stepping correlation if dynein stepped within 8 nm 56\% of the time.  
 
 
 \begin{figure}[tbhp]
@@ -310,11 +294,23 @@ The binding and affinity rates directly influenced the onebond stepping statisti
 
 \newpage
 
+%\subsection*{$k_{ub}$}
+Due to dynein's step equilibrating during the 2-HB state, the time spent reaching this equilibrium heavily influences the velocity of a walk. Similarly, the ATP concentration controls the rate of steps and the time spent in the 2-HB state. Thus, we matched the unbinding rate $k_{ub}$ from stepping trace data in the Yildiz \textit{et. al.} experiment which led to an average velocity of 26 nm/s. The unbinding rate directly correlates to the rate of steps, as the inverse, $k_{ub}^{-1}$, is the average time spent in the 2-HB state. This fitting is shown in Figure \ref{fig:TrajPlot}.
 
-\subsection*{$c_b$, $c_m$, $c_t$}
-Spring constants $c_b$, $c_m$ and $c_t$ were fit using the dynein step length distribution from \cite{yildizpaper}. Three spring constants were drawn uniformly from range $[0.0, 4.0]$ and a simulation was run for 10s simulation time with $k_b=X$, $k_{ub}=Y$, $k_{stk}=Z$, and other parameters noted in Table \ref{tab:params}. One thousand simulations total were run, and the set of spring constants which yielded the lowest root-mean-squared histogram error between the simulation and experimental step length distributions was chosen. \textbf{Probably need to rerun this using our final $k_b$, $k_{ub}$ and $k_{stk}$.}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\linewidth]{../../plots/mc_plots/u_trajectory_plot_2.0_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.5}
+	\caption[Stepping trace of head labeled dynein]{\textbf{Stepping trace of head labeled dynein.} Trajectory of MTBD over 24 seconds of walking. Red and blue labeled heads shows independence from each other during processive walking. Experimentalal trace from \cite{Dewitt2012} offset by 120 nm to display comparison. Average velocity of 26 nm/s for both traces.}
+	\label{fig:TrajPlot}
+\end{figure}
+
+\newpage
 
 
+%
+%\subsection*{$c_m$, $c_t$}
+The motor and tail spring constants, $c_m$ and $c_t$, relates to the tendency for equilibrium positions in the 1-HB and 2-HB state. We picked these parameters in accordance to the model's ability to perform the powerstroke and achieve processive motion. With these spring constants, the model dynein preferred forward steps towards the minus-end rather than backward steps, while still maintaining flexibility within the stalk and stapping variance.
 
 
 

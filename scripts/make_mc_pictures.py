@@ -2,15 +2,10 @@ import os
 from os import path
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
-from statistics import mean
-import scipy.constants
 import sys
 sys.path.append("../data")
 import importlib
 import argparse
-import subprocess
-from glob import glob
 
 import bb_energy_distribution
 import dynein.draw.cartoon as cartoon
