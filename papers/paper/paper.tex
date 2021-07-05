@@ -125,14 +125,6 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
   \begin{tabular}{lrrr}
     Param & Model & Experimental & Source \\
     \hline
-%    $c_b$ & $\cb \Delta G_{ATP}$ &  & \\
-    $c_m$ & $\cm \Delta G_{ATP}$ &  & \\
-    $c_t$ & $\ct \Delta G_{ATP}$ &  & \\
-    $k_a$ & $\kstk$  $s^{-1}$ &  & \\
-    $k_b$ & $\kb$  nm $s^{-1}$ &  & \\
-    $\epsilon$ &  $\MTbindingdistance$ nm & & \\
-    $k_{ub}$ & $\kub$ $s^{-1}$ & & \\
-    $C$ & $\cexp$ & & \\
     $L_s$ & $\ls$ nm & $21$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
     $L_t$ & $\lt$ nm & $23$ nm & \cite{Burgess2003, 3vkh-cite, carter-paper}\\
 %    $\theta_b$ & $\eqb$ &  120 & \cite{leschziner} \\
@@ -142,6 +134,25 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
     $R_t$ & $\radiust$ nm & $4$ nm & \cite{Burgess2003}\\
     $R_m$ & $\radiusm$ nm & $5.5$ nm & \cite{Burgess2003}\\
     $R_b$ & $\radiusb$ nm & $1.25$ nm & \cite{Burgess2003}\\
+    \hline
+  \end{tabular}
+  \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
+  \label{table:params}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lr}
+    Param & Model  \\
+    \hline
+%    $c_b$ & $\cb \Delta G_{ATP}$ &  & \\
+    $c_m$ & $\cm \Delta G_{ATP}$  \\
+    $c_t$ & $\ct \Delta G_{ATP}$  \\
+    $k_a$ & $\kstk$  $s^{-1}$  \\
+    $k_b$ & $\kb$  nm $s^{-1}$  \\
+    $\epsilon$ &  $\MTbindingdistance$ nm  \\
+    $k_{ub}$ & $\kub$ $s^{-1}$  \\
+    $C$ & $\cexp$  \\
     \hline
   \end{tabular}
   \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}

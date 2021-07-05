@@ -6,7 +6,7 @@ for_simulation= {"k_b": 5.5e10, # 3.4e9, previously 3e6
                  "cb": 0.0, # OLD: 0.08,
                  "cm": 1.0, # OLD: 1.05,
                  "ct": 1.0, # OLD: 0.36,
-                 "ls": 20.75,
+                 "ls": 21, #20.75,
                  "lt": 23.0,
                  "rt": 6.0,
                  "rm": 5.5,
