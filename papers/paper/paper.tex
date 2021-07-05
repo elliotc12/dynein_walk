@@ -136,7 +136,7 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
     $R_b$ & $\radiusb$ nm & $1.25$ nm & \cite{Burgess2003}\\
     \hline
   \end{tabular}
-  \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
+  \caption{Constant parameters used in simulation. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. The $\theta$ parameters are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
   \label{table:params}
 \end{table}
 
@@ -155,7 +155,7 @@ Here we use a Monte Carlo simulation that investigates dynein's inter-step corre
     $C$ & $\cexp$  \\
     \hline
   \end{tabular}
-  \caption{Parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $L_s$ and $L_t$ are the lengths of the stalk and tail interdomain linkers. $c$ is the tension-gating factor. The $\theta$ values are the equilibrium values for each angle, where $\theta_m^{\mbox{pre}}$ is the equilibrium angle for the unbound motor in pre-stroke, whereas $\theta_m^{\mbox{post}}$ is the equilibrium angle for the bound pre-stroke motor and both post-stroke motors. $R_b$, $R_m$ and $R_t$ are the MTBD, motor and tail radii. Parameters used for all simulations unless otherwise noted}
+  \caption{Free parameters used in simulation. $c_b$, $c_m$ and $c_t$ are the MTBD, motor and tail spring constants, respectively. $k_a$ is the affinity transition rate from high to low affinity when MTBD unbinds. $k_b$ and $k_{ub}$ are the rates of pre-stroke to post-stroke and post-stroke to pre-stroke transitions, respectively. $\epsilon$ is the vertical position allowed for rebinding. $C$ is the tension-gating factor.}
   \label{table:params}
 \end{table}
 
@@ -272,7 +272,8 @@ Explain that the bothbound time does not vary by more than X\% regardless of ini
 
 \section*{Fitting model parameters}
 
-The model's simplistic nature allowed flexible optimization for each parameter in order to most accurately portray stepping results from experiment. We investigated this parameter space by associating each stepping parameter to a property of dynein's step observed from Yildiz's experiment. Dynein most properly demonstrated forward motility and correlated stepping when binding rates increased to promote $<$8 nm step sizes and $<$100 ns unbound times. The 2-HB state dominated dynein's dwell time, while the 1-HB state happened almost instantaneous, forcing the velocity to be highly dependent on the unbding parameters. Consequently, dynein fails to equilibrate during the stepping motion and quickly rebinds shortly after unbinding. 
+We present the following results from single step Brownian dynamics simulations at a constant temperature of $T=310.15$ $K$ and with a time step of $\delta t =1 * 10^{-13}$ $s$. The Monte Carlo algorithm simulated $>$18000 step cycles for each initial unsigned distance from $L_i\in [1, 72]$. The algorithm's fast computation allowed flexible optimization for each parameter in order to most accurately replicate stepping results from experiment. We investigated this parameter space by associating each stepping parameter to a property of dynein's step, observed from Yildiz's experiment. Dynein most properly demonstrated forward motility and correlated stepping when binding rates increased to promote $<$8 nm step sizes and $<$100 ns stepping times. 
+%The 2-HB state dominated dynein's dwell time, while the 1-HB state happened almost instantaneous, forcing the velocity to be highly dependent on the unbding parameters. Consequently, dynein fails to equilibrate during the stepping motion and quickly rebinds shortly after unbinding. 
 
 We first estimated structural parameters $L_t$, $L_s$, $R_b$, $R_m$, $R_s$, and equilibrium angles $\theta_{m}^{pre}$, $\theta_{m}^{post}$, and $\theta_{t}$ from cryo-electron microscopy class averages and density maps of cytoplasmic and axonoemal dynein, shown in Figure \ref{fig:micrographs}. We defined the tail and motor equilibrium angles from Burgess \textit{et al. } class average image, where the left stalk's motor was in the apo post-powerstroke state and right stalk's motor was in the ADP-bound apo pre-powerstroke state.  
 
