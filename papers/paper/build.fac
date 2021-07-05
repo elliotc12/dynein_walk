@@ -2,10 +2,11 @@
 < ../../plots/paper_force_vs_velocity.pdf
 < ../../data/paper_params.tex
 < ../../plots/grotjahn-model-figure.pdf
+< ../../plots/burgess-model-figure.pdf
 < ../../plots/paper_trajectory_plot.pdf
 < ../../plots/paper_initial_vs_final_displacement.pdf
 < ../../papers/paper/figures/model-cartoon-simple.pdf
 < ../../papers/paper/figures/winch-powerstroke-cartoon.pdf
 < ../../papers/paper/figures/onebound-cartoon-simple-new.pdf
 < ../../papers/paper/figures/bothbound-cartoon-simple-new.pdf
-< ../../papers/paper/figures/equilibrium.pdf
+< ../../papers/paper/figures/equilibrium-positions-final.pdf
