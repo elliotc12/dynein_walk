@@ -8,6 +8,7 @@
 \usepackage{subcaption}
 \usepackage{breqn}
 \usepackage{color}
+\usepackage{subcaption}
 
 \newcommand\davidsays[1]{{\em\color{blue} {\bf DR:} #1}}
 
@@ -287,7 +288,14 @@ In order to best replicate experimental observation of correlated stepping betwe
 
 \begin{figure}[tbhp]
 \centering
-\includegraphics[width=1\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.5_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.35}
+\begin{subfigure}{.75\columnwidth}
+	\centering
+	\includegraphics[width=1\linewidth]{../../plots/mc_plots/u_step_length_probability_distribution_2.5_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.35}
+\end{subfigure}
+\begin{subfigure}{.2\columnwidth}
+	\centering
+	\includegraphics[width=1.3\linewidth]{../../plots/mc_plots/u_colorbar_2.5_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.35}
+\end{subfigure}
 \includegraphics[width=1\linewidth]{../../plots/mc_plots/u_step_length_1d_probability_density_2.5_5.50e+10_1.00e+08_0.0_1.0_1.0_120.0_197.0_242.0_-0.35}
 \caption[Stepping statistics of model]{\textbf{Stepping statistics of model.} \textit{Top: } Heatmap of initial foot displacement vs. step length. Initial displacement defined as position of the stepping MTBD minus the position of the stationary MTBD, before the step takes place. Step length defined as final displacement minus initial displacement. Linear regression calculated in orange, compared with Yildiz's linear regression plotted in red. Contours of 90\%, 50\%, 25\%, and 5\% displayed as white lines. \textit{Bottom: } Probability density of model step sizes plotted against Yildiz's distribution of step sizes. }
 \label{fig:SteppingPlots}

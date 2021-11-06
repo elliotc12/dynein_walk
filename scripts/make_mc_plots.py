@@ -493,11 +493,11 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     step_length_center)
 
     # 2D hist step_length
-    plt.figure('Step length probability distribution', figsize=(8, 6))
+    plt.figure('Step length probability distribution', figsize=(3.5, 3))
     contours = plt.contour(s_initial_disp_center, s_length_center,
                            s_probability_distribution, levels=sorted(list(quantiles.keys())), colors='white')
-    plt.clabel(contours, quantiles.keys(), fmt=quantiles, inline=True, fontsize=7)
-    plt.pcolor(s_initial_disp_edge, s_length_edge,
+    plt.clabel(contours, quantiles.keys(), fmt=quantiles, inline=True, fontsize=6)
+    pcm = plt.pcolor(s_initial_disp_edge, s_length_edge,
                s_probability_distribution)
     # plt.pcolor(initial_disp_edge, step_length_edge, s_probability_distribution)
     plt.plot(initial_disp, s_lin_fit,
@@ -509,13 +509,18 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     plt.gca().set_aspect('equal')
     plt.ylim(-56, 56)
     plt.xlim(-56, 56)
-    plt.colorbar().set_label(r'Probability (1/nm$^2$)')
-    plt.legend(loc='lower left')
+    plt.legend(loc='lower left', fontsize = 8)
+    plt.tight_layout()
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
     #         args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C))
     plt.savefig(plotpath+u+'step_length_probability_distribution_' +
-                params_string+'.pdf')
+                params_string+'.pdf', bbox_inches = 'tight')
 
+    fig, ax = plt.subplots(figsize = (3.2, 3.0))
+    plt.colorbar(pcm, orientation = 'vertical', label = r'Probability (1/nm$^2$)')
+    ax.remove()
+    plt.savefig(plotpath+u+'colorbar_' +
+                params_string+'.pdf', bbox_inches = 'tight')
 
     s_den = np.zeros_like(step_length_center)
     for i in range(len(step_length_center)):
@@ -523,7 +528,7 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     s_den_norm = np.sum(s_den[step_length_center > norm_length_min])*(step_length_center[1]-step_length_center[0])
 
     # 1D hist step length
-    plt.figure('Probability Density of Step Length', figsize=(9, 5))
+    plt.figure('Probability Density of Step Length', figsize=(3.5, 2.5))
     plt.fill_between(step_length_center, 0*s_den, s_den/s_den_norm,
                      label='Model', color='C1')
     plt.plot(step_length_bin_edges_fig_3A,
@@ -541,13 +546,14 @@ def make_step_length_plots(args, plotpath, probability_distribution, initial_dis
     else:
         plt.ylim(0)
     plt.legend()
-    plt.subplots_adjust(top=0.95)
+    # plt.subplots_adjust(top=0.95)
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
+    plt.tight_layout()
     # plt.title('kb = {0:.2e}, kstk = {1:.2e}, cb = {2}, cm = {3}, ct = {4}, eqb = {5}, eqmpre = {6}, eqmpost = {7}, C = {8}'.format(args.k_b,
     # args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C), fontsize=7)
     plt.savefig(plotpath+u+'step_length_1d_probability_density_' +
-                params_string+'.pdf')
+                params_string+'.pdf', bbox_inches = 'tight')
 
 def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
     max_time = time_hists['max_time']   # 10 mu s
@@ -614,7 +620,7 @@ def make_ob_time_plot(args, plotpath, time_hists, avg_affinity_time, **_):
 def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, bb_lt, bb_tt, **_):
     # Bothbound PLOTS
     # Prob Lagging vs Initial L plot
-    plt.figure('Prob lagging vs init L', figsize=(9, 4))
+    plt.figure('Prob lagging vs init L', figsize=(3.5, 3))
 
     yildiz_displacements = [10, 20, 30, 40, 50]
     yildiz_lagging_fractions = [0.525, 0.545, 0.61, 0.59, 0.67]
@@ -630,6 +636,7 @@ def make_bothbound_plots(args, plotpath, bb_L, bb_P_trailing, bb_avg_t, bb_lt, b
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
     plt.subplots_adjust(top=0.92)
+    plt.tight_layout()
     # plt.title('C = {}'.format(args.C))
     plt.savefig(
         plotpath+'prob_lagging_vs_init_L_{}.pdf'.format(args.C), bbox_inches='tight')
@@ -733,7 +740,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
 
     yildiz_data = np.loadtxt(
         "../data/yildiz_fig2A_tracking_data.txt", dtype=np.float64)
-    fig, ax = plt.subplots(figsize=(7.5, 5))
+    fig, ax = plt.subplots(figsize=(3.5, 2.8))
     plt.hlines(bx_position[:, 1], cumulative_time[:-1],
                cumulative_time[1:], color='blue')
     plot1 = plt.hlines(
@@ -769,7 +776,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     plt.legend([plot1, plot2], ["Model", "Experiment"], loc='upper left')
     plt.grid()
 
-    ax2 = fig.add_axes([0.6, 0.08, 0.3, 0.35])
+    ax2 = fig.add_axes([0.62, 0.2, 0.32, 0.35])
     ax2.hlines(bx_position[:, 1], cumulative_time[:-1],
                cumulative_time[1:], color='blue')
     ax2.hlines(bx_position[:, 0], cumulative_time[:-1],
@@ -785,6 +792,7 @@ def make_trajectory_plot(args, plotpath, bb_P_trailing, bb_rate_total, hist, ini
     ax2.set_ylim(y1, y2)
     ax2.get_xaxis().set_ticks([])
     ax2.get_yaxis().set_ticks([])
+    fig.tight_layout()
 
     plt.savefig(plotpath+u+'trajectory_plot_' +
                 params_string+'.pdf', bbox_inches='tight')
@@ -835,7 +843,11 @@ def main():
         args.k_b, args.k_stk, args.cb, args.cm, args.ct, args.eqb, args.eqmpre, args.eqmpost, args.C)
     params_string = str(args.k_ub) + '_' + data_params_string
 
-    plt.rcParams.update({'font.size': 14})
+    plt.rcParams["font.family"] = "Times"
+    plt.rcParams.update({'font.size': 9})
+    plt.rcParams['figure.dpi'] = 300
+    plt.rcParams['savefig.dpi'] = 300
+
 
     # args.C = -0.35
     plotting_data_file = "../data/mc_plotting_data/mc_plotting_data_" + \
@@ -865,9 +877,9 @@ def main():
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_trajectory_plot(**locals())
+    make_bothbound_plots(**locals())
     if args.extra == False:
         make_filtered_prob_dist_plot(**locals())
-        make_bothbound_plots(**locals())
         bug_checking_plots(**locals())
     if args.plot == True:
         plt.show()
