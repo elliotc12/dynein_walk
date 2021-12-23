@@ -877,7 +877,7 @@ def main():
     make_step_length_plots(**locals())
     make_ob_time_plot(**locals())
     make_trajectory_plot(**locals())
-    make_bothbound_plots(**locals())
+    # make_bothbound_plots(**locals())
     if args.extra == False:
         make_filtered_prob_dist_plot(**locals())
         bug_checking_plots(**locals())

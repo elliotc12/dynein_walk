@@ -2,5 +2,5 @@
 c .pyc
 | python3 make_mc_plots.py -p --underMT -u 2.0 -C -0.5 -b 5.5e10 -s 1e8 -e
 c .pyc
-| python3 make_mc_plots.py -p --underMT -u 2.0 -C -0.5 -b 5.5e10 -s 9e99 
+| python3 make_mc_plots.py -p --underMT -u 2.0 -C -0.5 -b 5.5e10 -s 9e99
 c .pyc
